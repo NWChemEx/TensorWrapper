@@ -43,7 +43,7 @@ cpp_find_or_build_dependency(
 find_package(Boost REQUIRED COMPONENTS container)
 
 cpp_add_library(
-    chemist
+    tensorwrapper
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
     INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/tensorwrapper"
     DEPENDS nwx::pluginplay tiledarray Boost::container
