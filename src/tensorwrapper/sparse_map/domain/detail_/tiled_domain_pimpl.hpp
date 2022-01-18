@@ -1,5 +1,6 @@
 #pragma once
 #include "domain_pimpl.hpp"
+#include <TiledArray/tiled_range.h>
 
 namespace tensorwrapper::sparse_map::detail_ {
 
