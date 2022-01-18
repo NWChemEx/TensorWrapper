@@ -1,5 +1,5 @@
-#include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 #include "detail_/tiled_sparse_map_pimpl.hpp"
+#include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 
 namespace tensorwrapper::sparse_map {
 

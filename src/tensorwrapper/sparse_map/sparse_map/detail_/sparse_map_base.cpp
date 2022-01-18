@@ -1,6 +1,6 @@
+#include "sparse_map_pimpl.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/detail_/sparse_map_base.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
-#include "sparse_map_pimpl.hpp"
 #include "tiled_sparse_map_pimpl.hpp"
 
 namespace {

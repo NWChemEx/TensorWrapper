@@ -6,7 +6,7 @@ namespace tensorwrapper::tensor::detail_ {
  *
  *  This class basically exists so that we don't have to do a bunch of SFINAE to
  *  only enable fully templated versions of `operator+`, `operator-`, etc. for
- *  the operations in this component of tensorwrapper, i.e., without this class 
+ *  the operations in this component of tensorwrapper, i.e., without this class
  *  we have:
  *
  *  @code

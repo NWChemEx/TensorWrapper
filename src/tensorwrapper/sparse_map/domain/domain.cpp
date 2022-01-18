@@ -1,6 +1,6 @@
+#include "detail_/tiled_domain_pimpl.hpp"
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
 #include "tensorwrapper/ta_helpers/get_block_idx.hpp"
-#include "detail_/tiled_domain_pimpl.hpp"
 #include <string>
 
 namespace tensorwrapper::sparse_map {

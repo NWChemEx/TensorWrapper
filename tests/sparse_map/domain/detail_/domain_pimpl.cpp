@@ -1675,7 +1675,8 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
 }
 
 TEMPLATE_LIST_TEST_CASE("DomainPIMPL comparisons", "", index_types) {
-    using DomainPIMPL = tensorwrapper::sparse_map::detail_::DomainPIMPL<TestType>;
+    using DomainPIMPL =
+      tensorwrapper::sparse_map::detail_::DomainPIMPL<TestType>;
 
     TestType e1{1}, e12{1, 2}, e2{2};
 

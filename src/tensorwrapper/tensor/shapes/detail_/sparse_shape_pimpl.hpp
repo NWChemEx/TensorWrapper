@@ -1,6 +1,6 @@
 #pragma once
-#include "tensorwrapper/tensor/shapes/sparse_shape.hpp"
 #include "shape_pimpl.hpp"
+#include "tensorwrapper/tensor/shapes/sparse_shape.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
 

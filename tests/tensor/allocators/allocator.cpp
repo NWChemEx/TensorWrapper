@@ -71,7 +71,8 @@ TEST_CASE("Allocator") {
     }
 
     SECTION("Comparisons") {
-        const auto prhs = tensorwrapper::tensor::default_allocator<field_type>();
+        const auto prhs =
+          tensorwrapper::tensor::default_allocator<field_type>();
         REQUIRE(*palloc == *prhs);
         REQUIRE_FALSE(*palloc != *prhs);
 

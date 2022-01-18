@@ -1,5 +1,5 @@
-#include "tensorwrapper/tensor/type_traits/type_traits.hpp"
 #include "tensorwrapper/tensor/tensor.hpp"
+#include "tensorwrapper/tensor/type_traits/type_traits.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
