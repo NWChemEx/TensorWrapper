@@ -15,11 +15,15 @@ void to_contiguous_buffer(const ScalarTensorWrapper& t, double* buffer_begin,
     auto t_ta = t.get<TA::TSpArrayD>();
     t_ta.make_replicated();
 
+    // Have to use this range to compute ordinal index, using i_range will give
+    // us the offset from the tile start
+    auto erange = t_ta.elements_range();
+
     // XXX: This prohibits vectorization, should be looked into
     for(const auto& tile_i : t_ta) {
         const auto& i_range = tile_i.get().range();
         for(auto idx : i_range)
-            buffer_begin[i_range.ordinal(idx)] = tile_i.get()[idx];
+            buffer_begin[erange.ordinal(idx)] = tile_i.get()[idx];
     }
 }
 
