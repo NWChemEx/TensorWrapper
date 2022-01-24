@@ -399,18 +399,18 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
     }
 
     SECTION("hash") {
-        auto lhs = pluginplay::hash_objects(vov2);
+        auto lhs = pz::hash_objects(vov2);
 
         SECTION("Same") {
             pimpl_type rhs(vov_data, vov_shape->clone(), alloc->clone());
-            REQUIRE(lhs == pluginplay::hash_objects(rhs));
+            REQUIRE(lhs == pz::hash_objects(rhs));
         }
 
         SECTION("Different values") {
             auto tr = alloc->make_tiled_range(extents_type{2});
             ta_tensor_type rhs_data(alloc->runtime(), tr, {v0, v0});
             pimpl_type rhs(rhs_data, vov_shape->clone(), alloc->clone());
-            REQUIRE(lhs != pluginplay::hash_objects(rhs));
+            REQUIRE(lhs != pz::hash_objects(rhs));
         }
 
         SECTION("Different shape") {
@@ -423,7 +423,7 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             extents_type two{2};
             auto new_shape = std::make_unique<sparse_shape>(two, sm);
             pimpl_type rhs(vov_data, new_shape->clone(), alloc->clone());
-            REQUIRE(lhs != pluginplay::hash_objects(rhs));
+            REQUIRE(lhs != pz::hash_objects(rhs));
         }
     }
 

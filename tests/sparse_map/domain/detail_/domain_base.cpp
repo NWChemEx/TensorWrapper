@@ -1167,83 +1167,54 @@ TEMPLATE_LIST_TEST_CASE("DomainBase", "", index_types) {
 
     SECTION("hash") {
         SECTION("LHS == empty") {
-            auto h = pluginplay::hash_objects(d_empty);
+            auto h = pz::hash_objects(d_empty);
             SECTION("RHS == empty") {
-                REQUIRE(h == pluginplay::hash_objects(base_t{}));
+                REQUIRE(h == pz::hash_objects(base_t{}));
             }
 
-            SECTION("RHS == rank 0") {
-                REQUIRE(h != pluginplay::hash_objects(d0));
-            }
-            SECTION("RHS == rank 1") {
-                REQUIRE(h != pluginplay::hash_objects(d1));
-            }
-            SECTION("RHS == rank 2") {
-                REQUIRE(h != pluginplay::hash_objects(d2));
-            }
+            SECTION("RHS == rank 0") { REQUIRE(h != pz::hash_objects(d0)); }
+            SECTION("RHS == rank 1") { REQUIRE(h != pz::hash_objects(d1)); }
+            SECTION("RHS == rank 2") { REQUIRE(h != pz::hash_objects(d2)); }
         }
 
         SECTION("LHS == rank 0") {
-            auto h = pluginplay::hash_objects(d0);
-            SECTION("RHS == empty") {
-                REQUIRE(h != pluginplay::hash_objects(d_empty));
-            }
+            auto h = pz::hash_objects(d0);
+            SECTION("RHS == empty") { REQUIRE(h != pz::hash_objects(d_empty)); }
             SECTION("RHS == rank 0") {
-                REQUIRE(h == pluginplay::hash_objects(base_t{i0}));
+                REQUIRE(h == pz::hash_objects(base_t{i0}));
             }
-            SECTION("RHS == rank 1") {
-                REQUIRE(h != pluginplay::hash_objects(d1));
-            }
-            SECTION("RHS == rank 2") {
-                REQUIRE(h != pluginplay::hash_objects(d2));
-            }
+            SECTION("RHS == rank 1") { REQUIRE(h != pz::hash_objects(d1)); }
+            SECTION("RHS == rank 2") { REQUIRE(h != pz::hash_objects(d2)); }
         }
 
         SECTION("LHS == rank 1") {
-            auto h = pluginplay::hash_objects(d1);
-            SECTION("RHS == empty") {
-                REQUIRE(h != pluginplay::hash_objects(d_empty));
-            }
-            SECTION("RHS == rank 0") {
-                REQUIRE(h != pluginplay::hash_objects(d0));
-            }
+            auto h = pz::hash_objects(d1);
+            SECTION("RHS == empty") { REQUIRE(h != pz::hash_objects(d_empty)); }
+            SECTION("RHS == rank 0") { REQUIRE(h != pz::hash_objects(d0)); }
             SECTION("RHS == rank 1") {
-                SECTION("Same") {
-                    REQUIRE(h == pluginplay::hash_objects(base_t{i1}));
-                }
+                SECTION("Same") { REQUIRE(h == pz::hash_objects(base_t{i1})); }
                 SECTION("Different") {
-                    REQUIRE(h != pluginplay::hash_objects(base_t{TestType{2}}));
+                    REQUIRE(h != pz::hash_objects(base_t{TestType{2}}));
                 }
             }
-            SECTION("RHS == rank 2") {
-                REQUIRE(h != pluginplay::hash_objects(d2));
-            }
+            SECTION("RHS == rank 2") { REQUIRE(h != pz::hash_objects(d2)); }
         }
 
         SECTION("LHS == rank 2") {
-            auto h = pluginplay::hash_objects(d2);
-            SECTION("RHS == empty") {
-                REQUIRE(h != pluginplay::hash_objects(d_empty));
-            }
-            SECTION("RHS == rank 0") {
-                REQUIRE(h != pluginplay::hash_objects(d0));
-            }
-            SECTION("RHS == rank 1") {
-                REQUIRE(h != pluginplay::hash_objects(d1));
-            }
+            auto h = pz::hash_objects(d2);
+            SECTION("RHS == empty") { REQUIRE(h != pz::hash_objects(d_empty)); }
+            SECTION("RHS == rank 0") { REQUIRE(h != pz::hash_objects(d0)); }
+            SECTION("RHS == rank 1") { REQUIRE(h != pz::hash_objects(d1)); }
             SECTION("RHS == rank 2") {
-                SECTION("Same") {
-                    REQUIRE(h == pluginplay::hash_objects(base_t{i2}));
-                }
+                SECTION("Same") { REQUIRE(h == pz::hash_objects(base_t{i2})); }
                 SECTION("Different") {
-                    REQUIRE(h !=
-                            pluginplay::hash_objects(base_t{TestType{2, 1}}));
+                    REQUIRE(h != pz::hash_objects(base_t{TestType{2, 1}}));
                 }
             }
         }
 
         SECTION("LHS == No PIMPL") {
-            REQUIRE_THROWS_AS(pluginplay::hash_objects(mf), std::runtime_error);
+            REQUIRE_THROWS_AS(pz::hash_objects(mf), std::runtime_error);
         }
     } // SECTION("hash")
 

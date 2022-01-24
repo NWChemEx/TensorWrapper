@@ -250,7 +250,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
     }
 
     SECTION("hash") {
-        using pluginplay::hash_objects;
+        using pz::hash_objects;
 
         sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
         extents_type matrix{3, 5};
@@ -472,7 +472,7 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
     }
 
     SECTION("hash") {
-        using pluginplay::hash_objects;
+        using pz::hash_objects;
 
         sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
         extents_type extents{2, 2};

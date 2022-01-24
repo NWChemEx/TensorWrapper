@@ -289,9 +289,8 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Scalar>", "", scalar_variant) {
 
     SECTION("hash") {
         TWrapper other_vec(vec_data);
-        REQUIRE(pluginplay::hash_objects(other_vec) ==
-                pluginplay::hash_objects(vec));
-        REQUIRE(pluginplay::hash_objects(vec) != pluginplay::hash_objects(mat));
+        REQUIRE(pz::hash_objects(other_vec) == pz::hash_objects(vec));
+        REQUIRE(pz::hash_objects(vec) != pz::hash_objects(mat));
     }
 
     SECTION("comparisons") {

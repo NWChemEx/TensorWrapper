@@ -3,7 +3,7 @@
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/tensor_fwd.hpp"
 #include <memory>
-#include <pluginplay/pluginplay.hpp>
+#include <parallelzone/hasher.hpp>
 #include <vector>
 
 namespace tensorwrapper::tensor {
@@ -203,7 +203,7 @@ public:
      *                   internal state of @p h will be updated to include the
      *                   hash of the current Shape instance.
      */
-    void hash(pluginplay::Hasher& h) const;
+    void hash(pz::Hasher& h) const;
 
 protected:
     /** @brief Creates the Shape with the specified PIMPL

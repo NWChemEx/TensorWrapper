@@ -102,7 +102,7 @@ TEST_CASE("SparseShape<field::Scalar>") {
     }
 
     SECTION("hash") {
-        using pluginplay::hash_objects;
+        using pz::hash_objects;
         SECTION("LHS is matrix") {
             auto lhs = hash_objects(m);
 
@@ -236,7 +236,7 @@ TEST_CASE("SparseShape<field::Tensor>") {
     }
 
     SECTION("hash") {
-        using pluginplay::hash_objects;
+        using pz::hash_objects;
         SECTION("LHS is matrix") {
             auto lhs = hash_objects(t);
 

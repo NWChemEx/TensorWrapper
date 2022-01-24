@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/ta_helpers/ta_headers.hpp"
 #include <madness/world/safempi.h>
-#include <pluginplay/hasher.hpp>
+#include <parallelzone/hasher.hpp>
 
 namespace TiledArray {
 //------------------------------------------------------------------------------
@@ -13,9 +13,9 @@ namespace TiledArray {
  * Free function to enable hashing with BPHash library.
  *
  * @param[in] R Range object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
-inline void hash_object(const TA::Range& R, pluginplay::Hasher& h) {
+inline void hash_object(const TA::Range& R, pz::Hasher& h) {
     // To create a unique hash for this type with the default constructor
     const char* mytype = "TA::Range";
     h(mytype);
@@ -32,9 +32,9 @@ inline void hash_object(const TA::Range& R, pluginplay::Hasher& h) {
  * Free function to enable hashing with BPHash library.
  *
  * @param[in] tr TiledRange1 object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
-inline void hash_object(const TA::TiledRange1& tr, pluginplay::Hasher& h) {
+inline void hash_object(const TA::TiledRange1& tr, pz::Hasher& h) {
     const char* mytype = "TA::TiledRange1";
     h(mytype);
     for(const auto& tile : tr) h(tile.first);
@@ -46,10 +46,9 @@ inline void hash_object(const TA::TiledRange1& tr, pluginplay::Hasher& h) {
  * Free function to enable hashing with BPHash library.
  *
  * @param[in] tr TiledRange object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
-inline void hash_object(const TiledArray::TiledRange& tr,
-                        pluginplay::Hasher& h) {
+inline void hash_object(const TiledArray::TiledRange& tr, pz::Hasher& h) {
     const char* mytype = "TA::TiledRange";
     h(mytype);
     for(std::size_t i = 0; i < tr.rank(); ++i) h(tr.dim(i));
@@ -60,9 +59,9 @@ inline void hash_object(const TiledArray::TiledRange& tr,
  * Free function to enable hashing with BPHash library.
  *
  * @param[in] p Pmap object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
-inline void hash_object(const TiledArray::Pmap& p, pluginplay::Hasher& h) {
+inline void hash_object(const TiledArray::Pmap& p, pz::Hasher& h) {
     const char* mytype = "TA::Pmap";
     h(mytype);
     h(p.rank());
@@ -76,11 +75,10 @@ inline void hash_object(const TiledArray::Pmap& p, pluginplay::Hasher& h) {
  * @tparam ValueType Type of value for the @p A tensor.
  * @tparam AllocatorType Type of allocator for the @p A tensor.
  * @param[in] A Tensor object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
 template<typename ValueType, typename AllocatorType>
-void hash_object(const TA::Tensor<ValueType, AllocatorType>& A,
-                 pluginplay::Hasher& h) {
+void hash_object(const TA::Tensor<ValueType, AllocatorType>& A, pz::Hasher& h) {
     const char* mytype = "TA::Tensor";
     h(A.range());
     const auto n = A.range().volume();
@@ -95,24 +93,24 @@ void hash_object(const TA::Tensor<ValueType, AllocatorType>& A,
  * @tparam PolicyType Type of policy for @p A. Either DensePolicy or
  * SparsePolicy.
  * @param[in] A DistArray object
- * @return pluginplay::HashValue for TA::DistArray
+ * @return pz::HashValue for TA::DistArray
  */
 template<typename TensorType, typename PolicyType>
-pluginplay::HashValue get_tile_hash_sum(
+pz::HashValue get_tile_hash_sum(
   const TA::DistArray<TensorType, PolicyType>& A) {
     auto& madworld = A.world();
     auto& mpiworld = madworld.mpi.Get_mpi_comm();
 
     // Note: Without the fence orbital space hash tests hang on parallel runs.
     madworld.gop.fence();
-    pluginplay::HashValue myhash;
-    pluginplay::HashValue mytotal(16, 0); // pluginplay::HashType::Hash128 has
-                                          // 16 uint8_t
-    pluginplay::HashValue hashsum(16, 0);
+    pz::HashValue myhash;
+    pz::HashValue mytotal(16, 0); // pz::HashType::Hash128 has
+                                  // 16 uint8_t
+    pz::HashValue hashsum(16, 0);
 
     for(auto it = A.begin(); it != A.end(); ++it) {
         auto tile = A.find(it.index()).get();
-        myhash    = pluginplay::make_hash(pluginplay::HashType::Hash128, tile);
+        myhash    = pz::make_hash(pz::HashType::Hash128, tile);
         for(auto i = 0; i < myhash.size(); i++) { mytotal[i] += myhash[i]; }
     }
     if(madworld.size() > 1 && !A.pmap().get()->is_replicated()) {
@@ -134,12 +132,12 @@ pluginplay::HashValue get_tile_hash_sum(
  * @tparam PolicyType Type of policy for @p A. Either DensePolicy or
  * SparsePolicy.
  * @param[in] A DistArray object
- * @param[in, out] h pluginplay::Hasher object.
+ * @param[in, out] h pz::Hasher object.
  */
 
 template<typename TensorType, typename PolicyType>
 void hash_object(const TA::DistArray<TensorType, PolicyType>& A,
-                 pluginplay::Hasher& h) {
+                 pz::Hasher& h) {
     const char* mytype = "TA::DistArray";
     h(mytype);
     if(A.is_initialized()) {
@@ -163,7 +161,7 @@ template<typename ValueTypeA, typename AllocatorTypeA, typename ValueTypeB,
          typename AllocatorTypeB>
 bool operator==(const TA::Tensor<ValueTypeA, AllocatorTypeA>& A,
                 const TA::Tensor<ValueTypeB, AllocatorTypeB>& B) {
-    return pluginplay::hash_objects(A) == pluginplay::hash_objects(B);
+    return pz::hash_objects(A) == pz::hash_objects(B);
 }
 
 /** @brief Enables comparison between TA tensor objects

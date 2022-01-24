@@ -1,13 +1,13 @@
 #include "tensorwrapper/ta_helpers/ta_hashers.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include <catch2/catch.hpp>
-#include <pluginplay/hasher.hpp>
+#include <parallelzone/hasher.hpp>
 
-using pluginplay::hash_objects;
-/* Alternative to pluginplay::hash_objects
+using pz::hash_objects;
+/* Alternative to pz::hash_objects
 auto hash_string = [](auto a) {
-    return pluginplay::hash_to_string(
-        pluginplay::make_hash(pluginplay::HashType::Hash128, a));
+    return pz::hash_to_string(
+        pz::make_hash(pz::HashType::Hash128, a));
 };
 */
 

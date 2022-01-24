@@ -508,7 +508,7 @@ public:
      *                   internal hash of @p h will be updated to include this
      *                   SparseMap's state.
      */
-    void hash(pluginplay::Hasher& h) const;
+    void hash(pz::Hasher& h) const;
 
 protected:
     /// Ensures the instance has a PIMPL and returns it
@@ -518,11 +518,11 @@ protected:
     const pimpl_type& pimpl_() const;
 
 private:
-    /// Implements chain when RHpluginplaypIdx == ElementIndex
+    /// Implements chain when RHSDepIdx == ElementIndex
     SparseMap<IndIndex, ElementIndex> chain_(
       const SparseMap<DepIndex, ElementIndex>& sm) const;
 
-    /// Implements chain when RHpluginplaypIdx == TileIndex
+    /// Implements chain when HSDepIdx == TileIndex
     SparseMap<IndIndex, TileIndex> chain_(
       const SparseMap<DepIndex, TileIndex>& sm) const;
 
