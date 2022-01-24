@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/sparse_map/domain/detail_/domain_traits.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
-#include <memory>                    // For smart pointers
-#include <parallelzone/hasher.hpp>   // For hashing
+#include <memory>                  // For smart pointers
+#include <parallelzone/hasher.hpp> // For hashing
 
 namespace tensorwrapper::sparse_map {
 
