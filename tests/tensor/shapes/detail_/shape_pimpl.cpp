@@ -53,7 +53,7 @@ TEMPLATE_LIST_TEST_CASE("ShapePIMP", "", fields) {
     }
 
     SECTION("hash") {
-        using pz::hash_objects;
+        using tensorwrapper::detail_::hash_objects;
         REQUIRE(hash_objects(defaulted) == hash_objects(scalar));
 
         const auto v2_hash = hash_objects(pimpl_type(vector_extents));

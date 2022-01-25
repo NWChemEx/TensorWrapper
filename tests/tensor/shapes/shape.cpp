@@ -85,7 +85,7 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
     }
 
     SECTION("hash") {
-        using pz::hash_objects;
+        using tensorwrapper::detail_::hash_objects;
 
         SECTION("LHS is defaulted") {
             auto lhs = hash_objects(defaulted);

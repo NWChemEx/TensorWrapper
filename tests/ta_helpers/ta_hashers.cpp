@@ -1,9 +1,9 @@
+#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/ta_helpers/ta_hashers.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include <catch2/catch.hpp>
-#include <parallelzone/hasher.hpp>
 
-using pz::hash_objects;
+using tensorwrapper::detail_::hash_objects;
 /* Alternative to pz::hash_objects
 auto hash_string = [](auto a) {
     return pz::hash_to_string(

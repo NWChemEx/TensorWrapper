@@ -1,4 +1,5 @@
 #pragma once
+#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/detail_/sparse_map_traits.hpp"
@@ -508,7 +509,7 @@ public:
      *                   internal hash of @p h will be updated to include this
      *                   SparseMap's state.
      */
-    void hash(pz::Hasher& h) const;
+    void hash(tensorwrapper::detail_::Hasher& h) const;
 
 protected:
     /// Ensures the instance has a PIMPL and returns it

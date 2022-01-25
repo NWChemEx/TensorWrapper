@@ -1,11 +1,11 @@
 #pragma once
+#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/detail_/labeled_tensor_wrapper.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 #include "tensorwrapper/tensor/type_traits/field_traits.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
-#include <parallelzone/hasher.hpp>
 
 namespace tensorwrapper::tensor {
 namespace detail_ {
@@ -597,7 +597,7 @@ public:
      *  @param[in] h The hasher we are adding the wrapped
      * tensor to.
      */
-    void hash(pz::Hasher& h) const;
+    void hash(tensorwrapper::detail_::Hasher& h) const;
 
     /** @brief Determines if two TensorWrappers wrap identical
      * tensors.

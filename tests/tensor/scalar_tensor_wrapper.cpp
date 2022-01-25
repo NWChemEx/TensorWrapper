@@ -288,9 +288,10 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Scalar>", "", scalar_variant) {
     }
 
     SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
         TWrapper other_vec(vec_data);
-        REQUIRE(pz::hash_objects(other_vec) == pz::hash_objects(vec));
-        REQUIRE(pz::hash_objects(vec) != pz::hash_objects(mat));
+        REQUIRE(hash_objects(other_vec) == hash_objects(vec));
+        REQUIRE(hash_objects(vec) != hash_objects(mat));
     }
 
     SECTION("comparisons") {

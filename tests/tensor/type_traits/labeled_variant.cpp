@@ -15,7 +15,7 @@ using tensor_types = std::tuple<typename scalar_traits::tensor_type<double>,
 
 TEMPLATE_LIST_TEST_CASE("LabeledVariant", "", tensor_types) {
     using input  = std::variant<TestType>;
-    using type   = typename detail_::LabeledVariant<input>::type;
+    using type   = typename tensor::detail_::LabeledVariant<input>::type;
     using traits = TensorTraits<TestType>;
     using corr   = std::variant<typename traits::labeled_tensor_type>;
     STATIC_REQUIRE(std::is_same_v<type, corr>);

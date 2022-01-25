@@ -51,7 +51,7 @@ bool SHAPE::operator==(const Shape& rhs) const noexcept {
 }
 
 template<typename FieldType>
-void SHAPE::hash(pz::Hasher& h) const {
+void SHAPE::hash(tensorwrapper::detail_::Hasher& h) const {
     h(m_pimpl_);
 }
 

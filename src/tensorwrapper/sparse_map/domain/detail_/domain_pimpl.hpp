@@ -1,15 +1,15 @@
 #pragma once
+#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/domain/detail_/domain_traits.hpp"
 #include <boost/container/flat_set.hpp>
 #include <memory>
-#include <parallelzone/hasher.hpp>
 #include <set>
 #include <utilities/iter_tools.hpp>
 
 namespace boost::container {
 template<typename ElementType>
 void hash_object(const boost::container::flat_set<ElementType>& v,
-                 pz::Hasher& h) {
+                 tensorwrapper::detail_::Hasher& h) {
     for(const auto& x : v) h(x);
 }
 } // namespace boost::container
@@ -308,7 +308,7 @@ public:
      *                   internal state will be updated with the hash of the
      *                   Domain's state.
      */
-    void hash(pz::Hasher& h) const { h(m_domain_); }
+    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_domain_); }
 
 protected:
     DomainPIMPL(const DomainPIMPL& other)     = default;
