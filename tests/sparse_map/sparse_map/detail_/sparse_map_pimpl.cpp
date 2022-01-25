@@ -835,18 +835,18 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
     SECTION("hash") {
         SECTION("Empty == Empty") {
-            auto h  = pluginplay::hash_objects(sms.at("Empty"));
-            auto h2 = pluginplay::hash_objects(pimpl_t{});
+            auto h  = pz::hash_objects(sms.at("Empty"));
+            auto h2 = pz::hash_objects(pimpl_t{});
             REQUIRE(h == h2);
         }
 
         SECTION("Empty != non-empty") {
-            auto h = pluginplay::hash_objects(sms.at("Empty"));
+            auto h = pz::hash_objects(sms.at("Empty"));
             for(std::size_t i = 0; i < 3; ++i) {
                 std::string key = "Ind == rank " + std::to_string(i);
                 auto& rhs       = sms.at(key);
                 SECTION(key) {
-                    auto h2 = pluginplay::hash_objects(rhs);
+                    auto h2 = pz::hash_objects(rhs);
                     REQUIRE(h != h2);
                 }
             }
@@ -854,26 +854,26 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto h    = pluginplay::hash_objects(lhs);
-            auto h2   = pluginplay::hash_objects(*(lhs.clone()));
+            auto h    = pz::hash_objects(lhs);
+            auto h2   = pz::hash_objects(*(lhs.clone()));
             REQUIRE(h == h2);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto h    = pluginplay::hash_objects(lhs);
+            auto h    = pz::hash_objects(lhs);
             auto copy = lhs.clone();
             copy->add_to_domain(i0, dep_idx_t{3});
-            auto h2 = pluginplay::hash_objects(*copy);
+            auto h2 = pz::hash_objects(*copy);
             REQUIRE(h != h2);
         }
 
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
-            auto h    = pluginplay::hash_objects(lhs);
+            auto h    = pz::hash_objects(lhs);
             auto copy = lhs.clone();
             copy->add_to_domain(ind_idx_t{3}, dep_idx_t{3});
-            auto h2 = pluginplay::hash_objects(copy);
+            auto h2 = pz::hash_objects(copy);
             REQUIRE(h != h2);
         }
     }

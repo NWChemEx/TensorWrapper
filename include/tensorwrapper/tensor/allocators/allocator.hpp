@@ -206,7 +206,7 @@ public:
      *                   @p h will contain a hash of the present allocator.
      *
      */
-    void hash(pluginplay::Hasher& h) const { return hash_(h); }
+    void hash(pz::Hasher& h) const { return hash_(h); }
 
     /** @brief Non-polymorphically compares two Allocators for equality.
      *
@@ -266,7 +266,7 @@ protected:
      *                   will contain a hash of this allocator instance.
      *
      */
-    virtual void hash_(pluginplay::Hasher& h) const;
+    virtual void hash_(pz::Hasher& h) const;
 
 private:
     /// Deleted to avoid slicing
@@ -387,7 +387,7 @@ bool Allocator<FieldType>::is_equal_(const Allocator& rhs) const noexcept {
 }
 
 template<typename FieldType>
-void Allocator<FieldType>::hash_(pluginplay::Hasher& h) const {
+void Allocator<FieldType>::hash_(pz::Hasher& h) const {
     // h(m_world_);
 }
 

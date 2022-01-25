@@ -50,7 +50,7 @@ protected:
     /// Defaulted copy ctor, used to implement clone_
     OneBigTile(const OneBigTile&) = default;
 
-    virtual void hash_(pluginplay::Hasher& h) const override;
+    virtual void hash_(pz::Hasher& h) const override;
 
 private:
     /// Implement the Allocator interface
@@ -98,7 +98,7 @@ bool OneBigTile<VariantType>::is_equal_(const base_type& rhs) const noexcept {
 }
 
 template<typename VariantType>
-void OneBigTile<VariantType>::hash_(pluginplay::Hasher& h) const {
+void OneBigTile<VariantType>::hash_(pz::Hasher& h) const {
     base_type::hash_(h);
 }
 

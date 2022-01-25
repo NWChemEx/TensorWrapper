@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/tensor/allocators/allocator.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
-#include <pluginplay/pluginplay.hpp>
+#include <parallelzone/hasher.hpp>
 
 namespace tensorwrapper::tensor::detail_ {
 
@@ -136,11 +136,11 @@ public:
      *                   this call the interal state of @p h will be updated
      *                   with a hash of the current instance.
      */
-    void hash(pluginplay::Hasher& h) const { hash_(h); }
+    void hash(pz::Hasher& h) const { hash_(h); }
 
 protected:
     /// To be overridden by the derived class to implement hash()
-    virtual void hash_(pluginplay::Hasher& h) const { h(m_extents_); }
+    virtual void hash_(pz::Hasher& h) const { h(m_extents_); }
 
 private:
     /// To be overridden by the derived class to implement clone()

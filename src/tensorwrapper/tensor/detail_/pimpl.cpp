@@ -181,7 +181,7 @@ std::ostream& PIMPL_TYPE::print(std::ostream& os) const {
 }
 
 template<typename FieldType>
-void PIMPL_TYPE::hash(pluginplay::Hasher& h) const {
+void PIMPL_TYPE::hash(pz::Hasher& h) const {
     h(m_shape_, m_allocator_);
     auto l = [&](auto&& arg) { h(arg); };
     std::visit(l, m_tensor_);

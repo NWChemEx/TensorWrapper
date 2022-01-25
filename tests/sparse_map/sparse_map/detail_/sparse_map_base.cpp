@@ -1009,24 +1009,24 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
     SECTION("hash") {
         SECTION("Empty == Empty") {
-            auto h  = pluginplay::hash_objects(sms.at("Empty"));
-            auto h2 = pluginplay::hash_objects(derived_t{});
+            auto h  = pz::hash_objects(sms.at("Empty"));
+            auto h2 = pz::hash_objects(derived_t{});
             REQUIRE(h == h2);
         }
 
         SECTION("Empty == No PIMPL") {
-            auto h  = pluginplay::hash_objects(sms.at("Empty"));
-            auto h2 = pluginplay::hash_objects(sms.at("No PIMPL"));
+            auto h  = pz::hash_objects(sms.at("Empty"));
+            auto h2 = pz::hash_objects(sms.at("No PIMPL"));
             REQUIRE(h == h2);
         }
 
         SECTION("Empty != non-empty") {
-            auto h = pluginplay::hash_objects(sms.at("Empty"));
+            auto h = pz::hash_objects(sms.at("Empty"));
             for(std::size_t i = 0; i < 3; ++i) {
                 std::string key = "Ind == rank " + std::to_string(i);
                 auto& rhs       = sms.at(key);
                 SECTION(key) {
-                    auto h2 = pluginplay::hash_objects(rhs);
+                    auto h2 = pz::hash_objects(rhs);
                     REQUIRE(h != h2);
                 }
             }
@@ -1034,36 +1034,36 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto h    = pluginplay::hash_objects(lhs);
-            auto h2   = pluginplay::hash_objects(derived_t(lhs));
+            auto h    = pz::hash_objects(lhs);
+            auto h2   = pz::hash_objects(derived_t(lhs));
             REQUIRE(h == h2);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto h    = pluginplay::hash_objects(lhs);
+            auto h    = pz::hash_objects(lhs);
             derived_t copy(lhs);
             copy.add_to_domain(i0, dep_idx_t{3});
-            auto h2 = pluginplay::hash_objects(copy);
+            auto h2 = pz::hash_objects(copy);
             REQUIRE(h != h2);
         }
 
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
-            auto h    = pluginplay::hash_objects(lhs);
+            auto h    = pz::hash_objects(lhs);
             derived_t copy(lhs);
             copy.add_to_domain(ind_idx_t{3}, dep_idx_t{3});
-            auto h2 = pluginplay::hash_objects(copy);
+            auto h2 = pz::hash_objects(copy);
             REQUIRE(h != h2);
         }
 
         SECTION("No PIMPL != non-empty") {
             auto& lhs = sms.at("No PIMPL");
-            auto h    = pluginplay::hash_objects(lhs);
+            auto h    = pz::hash_objects(lhs);
             for(std::size_t i = 0; i < 3; ++i) {
                 std::string key = "Ind == rank " + std::to_string(i);
                 auto& rhs       = sms.at(key);
-                auto h2         = pluginplay::hash_objects(rhs);
+                auto h2         = pz::hash_objects(rhs);
                 SECTION(key) { REQUIRE(h != h2); }
             }
         }

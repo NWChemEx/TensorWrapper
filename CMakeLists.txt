@@ -18,11 +18,20 @@ option(BUILD_TESTING "Should we build the tests?" OFF)
 option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cpp_find_or_build_dependency(
-    pluginplay
-    URL github.com/NWChemEx-Project/PluginPlay
+    utilities
+    URL github.com/NWChemEx-Project/utilities
     PRIVATE TRUE
-    BUILD_TARGET pluginplay
-    FIND_TARGET nwx::pluginplay
+    BUILD_TARGET utilities
+    FIND_TARGET nwx::utilities
+    CMAKE_ARGS BUILD_TESTING=OFF
+)
+
+cpp_find_or_build_dependency(
+    parallelzone
+    URL github.com/NWChemEx-Project/ParallelZone
+    PRIVATE TRUE
+    BUILD_TARGET parallelzone
+    FIND_TARGET nwx::parallelzone
     CMAKE_ARGS BUILD_TESTING=OFF
 )
 
@@ -46,11 +55,11 @@ cpp_add_library(
     tensorwrapper
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
     INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/tensorwrapper"
-    DEPENDS nwx::pluginplay tiledarray Boost::container
+    DEPENDS nwx::utilities nwx::parallelzone tiledarray Boost::container
 )
 
 include(nwx_python_mods)
-cppyy_make_python_package(PYTHONIZE MPI BLAS TILED PACKAGE tensorwrapper NAMESPACES tensorwrapper TA DEPPACKAGES pluginplay)
+cppyy_make_python_package(PYTHONIZE MPI BLAS TILED PACKAGE tensorwrapper NAMESPACES tensorwrapper TA DEPPACKAGES parallelzone)
 
 if("${BUILD_TESTING}")
     cpp_find_or_build_dependency(

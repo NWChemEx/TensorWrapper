@@ -85,7 +85,7 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
     }
 
     SECTION("hash") {
-        using pluginplay::hash_objects;
+        using pz::hash_objects;
 
         SECTION("LHS is defaulted") {
             auto lhs = hash_objects(defaulted);

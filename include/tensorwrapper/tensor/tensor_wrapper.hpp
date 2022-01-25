@@ -5,7 +5,7 @@
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 #include "tensorwrapper/tensor/type_traits/field_traits.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
-#include <pluginplay/hasher.hpp>
+#include <parallelzone/hasher.hpp>
 
 namespace tensorwrapper::tensor {
 namespace detail_ {
@@ -597,7 +597,7 @@ public:
      *  @param[in] h The hasher we are adding the wrapped
      * tensor to.
      */
-    void hash(pluginplay::Hasher& h) const;
+    void hash(pz::Hasher& h) const;
 
     /** @brief Determines if two TensorWrappers wrap identical
      * tensors.

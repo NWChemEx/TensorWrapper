@@ -268,71 +268,71 @@ TEST_CASE("Index::end const") {
 TEST_CASE("Index::hash") {
     SECTION("Default Index") {
         Index i;
-        auto hi = pluginplay::hash_objects(i);
+        auto hi = pz::hash_objects(i);
 
         SECTION("Default Index") {
             Index j;
-            REQUIRE(hi == pluginplay::hash_objects(j));
+            REQUIRE(hi == pz::hash_objects(j));
         }
 
         SECTION("Rank 1 Index") {
             Index j{1};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
 
         SECTION("Rank 2 Index") {
             Index j{1, 2};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
     }
 
     SECTION("Rank 1 Index") {
         Index i{1};
-        auto hi = pluginplay::hash_objects(i);
+        auto hi = pz::hash_objects(i);
 
         SECTION("Default Index") {
             Index j;
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
 
         SECTION("Same Rank 1 Index") {
             Index j{1};
-            REQUIRE(hi == pluginplay::hash_objects(j));
+            REQUIRE(hi == pz::hash_objects(j));
         }
 
         SECTION("Different Rank 1 Index") {
             Index j{2};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
 
         SECTION("Rank 2 Index") {
             Index j{1, 2};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
     }
 
     SECTION("Rank 2 Index") {
         Index i{1, 2};
-        auto hi = pluginplay::hash_objects(i);
+        auto hi = pz::hash_objects(i);
 
         SECTION("Default Index") {
             Index j;
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
 
         SECTION("Rank 1 Index") {
             Index j{1};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
 
         SECTION("Same Rank 2 Index") {
             Index j{1, 2};
-            REQUIRE(hi == pluginplay::hash_objects(j));
+            REQUIRE(hi == pz::hash_objects(j));
         }
 
         SECTION("Different Rank 2 Index") {
             Index j{2, 1};
-            REQUIRE(hi != pluginplay::hash_objects(j));
+            REQUIRE(hi != pz::hash_objects(j));
         }
     }
 }

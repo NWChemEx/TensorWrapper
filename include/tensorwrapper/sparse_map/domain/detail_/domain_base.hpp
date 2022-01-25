@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/sparse_map/domain/detail_/domain_traits.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
-#include <memory>                    // For smart pointers
-#include <pluginplay/pluginplay.hpp> // For hashing
+#include <memory>                  // For smart pointers
+#include <parallelzone/hasher.hpp> // For hashing
 
 namespace tensorwrapper::sparse_map {
 
@@ -513,7 +513,7 @@ public:
      *  @throws std::runtime_error if the PIMPL is not set. Strong throw
      *                             guarantee.
      */
-    void hash(pluginplay::Hasher& h) const;
+    void hash(pz::Hasher& h) const;
 
     /** @brief Adds a string representation of this Domain to the provided
      *         stream.

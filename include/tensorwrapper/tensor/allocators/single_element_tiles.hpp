@@ -43,7 +43,7 @@ protected:
     /// Copy ctor is used to implement clone, but shouldn't be called otherwise
     SingleElementTiles(const SingleElementTiles&) = default;
 
-    virtual void hash_(pluginplay::Hasher& h) const override;
+    virtual void hash_(pz::Hasher& h) const override;
 
 private:
     /// Implement the Allocator interface
@@ -95,7 +95,7 @@ bool SingleElementTiles<VariantType>::is_equal_(
 }
 
 template<typename VariantType>
-void SingleElementTiles<VariantType>::hash_(pluginplay::Hasher& h) const {
+void SingleElementTiles<VariantType>::hash_(pz::Hasher& h) const {
     base_type::hash_(h);
 }
 

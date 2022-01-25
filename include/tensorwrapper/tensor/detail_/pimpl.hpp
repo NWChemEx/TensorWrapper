@@ -308,7 +308,7 @@ public:
      *
      *  @param[in,out] h The hasher we are adding the wrapped tensor to.
      */
-    void hash(pluginplay::Hasher& h) const;
+    void hash(pz::Hasher& h) const;
 
     /** @brief Determines if two TensorWrapperPIMPLs wrap identical
      *         tensors.
