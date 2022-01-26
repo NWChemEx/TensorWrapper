@@ -134,7 +134,7 @@ public:
 
 protected:
     /// Additionally hashes the sparse map and index mapping
-    void hash_(pz::Hasher& h) const override;
+    void hash_(tensorwrapper::detail_::Hasher& h) const override;
 
 private:
     /// Makes a polymorphic deep copy of this PIMPL

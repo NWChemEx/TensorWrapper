@@ -218,7 +218,7 @@ bool DOMAINBASE::operator==(const DomainBase& rhs) const noexcept {
 }
 
 template<typename DerivedType, typename IndexType>
-void DOMAINBASE::hash(pz::Hasher& h) const {
+void DOMAINBASE::hash(tensorwrapper::detail_::Hasher& h) const {
     h(pimpl_());
 }
 

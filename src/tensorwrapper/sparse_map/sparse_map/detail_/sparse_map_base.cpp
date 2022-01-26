@@ -205,7 +205,7 @@ bool SPARSEMAPBASE::operator==(const SparseMapBase& rhs) const noexcept {
 }
 
 template<typename DerivedType, typename IndIndex, typename DepIndex>
-void SPARSEMAPBASE::hash(pz::Hasher& h) const {
+void SPARSEMAPBASE::hash(tensorwrapper::detail_::Hasher& h) const {
     if(m_pimpl_)
         pimpl_().hash(h);
     else

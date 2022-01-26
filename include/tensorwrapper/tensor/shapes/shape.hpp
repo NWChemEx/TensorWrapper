@@ -1,9 +1,9 @@
 #pragma once
+#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/tensor_fwd.hpp"
 #include <memory>
-#include <parallelzone/hasher.hpp>
 #include <vector>
 
 namespace tensorwrapper::tensor {
@@ -203,7 +203,7 @@ public:
      *                   internal state of @p h will be updated to include the
      *                   hash of the current Shape instance.
      */
-    void hash(pz::Hasher& h) const;
+    void hash(tensorwrapper::detail_::Hasher& h) const;
 
 protected:
     /** @brief Creates the Shape with the specified PIMPL

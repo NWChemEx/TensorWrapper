@@ -195,7 +195,7 @@ std::ostream& TENSOR_WRAPPER::print(std::ostream& os) const {
 }
 
 template<typename FieldType>
-void TENSOR_WRAPPER::hash(pz::Hasher& h) const {
+void TENSOR_WRAPPER::hash(tensorwrapper::detail_::Hasher& h) const {
     if(m_pimpl_) pimpl_().hash(h);
 }
 

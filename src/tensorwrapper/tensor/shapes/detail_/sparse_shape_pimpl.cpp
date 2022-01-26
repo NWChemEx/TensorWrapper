@@ -143,7 +143,7 @@ typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::clone_() const {
 }
 
 template<typename FieldType>
-void SPARSE_SHAPE_PIMPL::hash_(pz::Hasher& h) const {
+void SPARSE_SHAPE_PIMPL::hash_(tensorwrapper::detail_::Hasher& h) const {
     h(m_sm_, m_i2m_);
     base_type::hash_(h);
 }

@@ -399,11 +399,13 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
     }
 
     SECTION("hash") {
-        auto lhs = pz::hash_objects(m2);
+        using tensorwrapper::detail_::hash_objects;
+
+        auto lhs = hash_objects(m2);
 
         SECTION("Same") {
             pimpl_type rhs(matrix, m_shape->clone(), alloc->clone());
-            REQUIRE(lhs == pz::hash_objects(rhs));
+            REQUIRE(lhs == hash_objects(rhs));
         }
 
         SECTION("Different values") {
@@ -411,7 +413,7 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
             ta_tensor_type rhs_data(alloc->runtime(), tr,
                                     {{2.0, 3.0}, {4.0, 5.0}});
             pimpl_type rhs(rhs_data, m_shape->clone(), alloc->clone());
-            REQUIRE(lhs != pz::hash_objects(rhs));
+            REQUIRE(lhs != hash_objects(rhs));
         }
 
         SECTION("Different shape") {
@@ -425,7 +427,7 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
               std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
 
             pimpl_type rhs(matrix, new_shape->clone(), alloc->clone());
-            REQUIRE(lhs != pz::hash_objects(rhs));
+            REQUIRE(lhs != hash_objects(rhs));
         }
     }
 
