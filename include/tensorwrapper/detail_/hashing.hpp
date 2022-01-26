@@ -5,10 +5,10 @@
 namespace tensorwrapper::detail_ {
 
 // From ParallelZone
-using pz::hash_objects;
-using pz::Hasher;
-using pz::HashType;
-using pz::HashValue;
-using pz::make_hash;
+using parallelzone::hash_objects;
+using parallelzone::Hasher;
+using parallelzone::HashType;
+using parallelzone::HashValue;
+using parallelzone::make_hash;
 
 } // namespace tensorwrapper::detail_
