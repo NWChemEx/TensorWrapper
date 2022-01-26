@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['allocator_5fpointer_387',['allocator_pointer',['../classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aba79d43b5ac9179c6603179d29a026a7',1,'tensorwrapper::tensor::detail_::TensorWrapperPIMPL::allocator_pointer()'],['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a046030feb8a4de1b88cc7fd5ddd1ed60',1,'tensorwrapper::tensor::TensorWrapper::allocator_pointer()']]],
+  ['allocator_5fptr_388',['allocator_ptr',['../classtensorwrapper_1_1tensor_1_1Allocator.html#a31609138f6622e829586af041e8291bb',1,'tensorwrapper::tensor::Allocator']]],
+  ['allocator_5ftype_389',['allocator_type',['../classtensorwrapper_1_1tensor_1_1Shape.html#aa1eedef7272fbc25f807eaeff1c38f1f',1,'tensorwrapper::tensor::Shape::allocator_type()'],['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a9ae36f416c21c8c88c7e5bfa638c4d74',1,'tensorwrapper::tensor::TensorWrapper::allocator_type()']]],
+  ['annotation_5ftype_390',['annotation_type',['../classtensorwrapper_1_1tensor_1_1detail___1_1LabeledTensorWrapper.html#a17a29bbea60dea9f6059a78c5fb47597',1,'tensorwrapper::tensor::detail_::LabeledTensorWrapper::annotation_type()'],['../classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a862f2fe01bff968f5ce192a3e312c312',1,'tensorwrapper::tensor::detail_::TensorWrapperPIMPL::annotation_type()'],['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a82c6a1a1cd64241060c854d051afe121',1,'tensorwrapper::tensor::TensorWrapper::annotation_type()']]]
+];
