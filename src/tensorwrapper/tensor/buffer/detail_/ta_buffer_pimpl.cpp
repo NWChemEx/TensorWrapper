@@ -5,7 +5,7 @@
 #define TEMPLATE_PARAMS template<typename FieldType>
 #define TABUFFERPIMPL TABufferPIMPL<FieldType>
 
-namespace tensorwrapper::tensor::detail_ {
+namespace tensorwrapper::tensor::buffer::detail_ {
 namespace {
 
 // TODO: these should be replaced by the Conversion class
@@ -63,7 +63,18 @@ TEMPLATE_PARAMS
 TABUFFERPIMPL::TABufferPIMPL(default_tensor_type t2wrap) :
   m_tensor_(std::move(t2wrap)) {}
 
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
+    // Can't use make_unique b/c copy ctor is protected
+    return std::unique_ptr<base_type>(new TABufferPIMPL(*this));
+}
+
 // -- Utilities ----------------------------------------------------------------
+
+TEMPLATE_PARAMS
+void TABUFFERPIMPL::hash_(hasher_reference h) const {
+    std::visit([&](auto&& t) { h(t); }, m_tensor_);
+}
 
 TEMPLATE_PARAMS
 bool TABUFFERPIMPL::are_equal_(const base_type& rhs) const noexcept {
@@ -150,7 +161,7 @@ void TABUFFERPIMPL::times_(const_annotation_reference my_idx,
 template class TABufferPIMPL<field::Scalar>;
 template class TABufferPIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::buffer::detail_
 
 #undef TEMPLATE_PARAMS
 #undef TABUFFERPIMPL

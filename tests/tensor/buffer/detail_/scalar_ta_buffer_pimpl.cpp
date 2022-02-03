@@ -15,7 +15,7 @@ using namespace tensorwrapper::tensor;
 
 TEST_CASE("TABufferPIMPL<Scalar>") {
     using field_type  = field::Scalar;
-    using buffer_type = detail_::TABufferPIMPL<field_type>;
+    using buffer_type = buffer::detail_::TABufferPIMPL<field_type>;
     using tensor_type = typename buffer_type::default_tensor_type;
 
     auto& world = TA::get_default_world();
@@ -27,6 +27,17 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
     buffer_type vec(vec_ta);
     buffer_type mat(mat_ta);
     buffer_type t3d(t3d_ta);
+
+    SECTION("clone()") {
+        auto vec2 = vec.clone();
+        REQUIRE(vec2->are_equal(vec));
+
+        auto mat2 = mat.clone();
+        REQUIRE(mat2->are_equal(mat));
+
+        auto t3d2 = t3d.clone();
+        REQUIRE(t3d2->are_equal(t3d));
+    }
 
     // For these tests we do exactly the same operations under the hood so
     // we should be able to achieve value equality
@@ -198,6 +209,16 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
             std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
             REQUIRE(corr == ss.str());
         }
+    }
+
+    SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
+        auto lhs = hash_objects(vec);
+
+        SECTION("Are same") {
+            REQUIRE(lhs == hash_objects(buffer_type(vec_ta)));
+        }
+        SECTION("Different") { REQUIRE(lhs != hash_objects(mat)); }
     }
 
     SECTION("are_equal") {
