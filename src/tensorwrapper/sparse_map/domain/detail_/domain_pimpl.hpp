@@ -1,5 +1,6 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
+#include "tensorwrapper/index.hpp"
 #include <boost/container/flat_set.hpp>
 #include <memory>
 #include <set>

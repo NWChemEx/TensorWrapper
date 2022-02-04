@@ -1,4 +1,4 @@
-// TODO: Is this still needed?
+/// TODO: Is this still needed?
 // #pragma once
 // #include "tensorwrapper/sparse_map/index.hpp"
 // #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
@@ -31,7 +31,7 @@
 //                         const TA::TiledRange& trange_rv, const T& t_of_t) {
 //     const auto& range_rv = tile.range();
 
-//     // TODO: comment these
+//     /// TODO: comment these
 //     const auto inv_esm = esm.inverse();
 //     SparseMap<TileIndex, ElementIndex> tesm(t_of_t.trange(), esm);
 //     const auto inv_tesm = tesm.inverse();
