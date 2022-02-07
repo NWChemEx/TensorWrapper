@@ -22,7 +22,8 @@ public:
 
     using typename base_type::hasher_reference;
 
-    using default_tensor_type = typename traits_type::tensor_type<double>;
+    using default_tensor_type =
+      typename traits_type::template tensor_type<double>;
 
     using ta_shape_type = TA::SparseShape<float>;
 
