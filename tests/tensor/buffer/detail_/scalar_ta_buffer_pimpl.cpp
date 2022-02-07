@@ -14,9 +14,11 @@ using namespace tensorwrapper::tensor;
  */
 
 TEST_CASE("TABufferPIMPL<Scalar>") {
-    using field_type  = field::Scalar;
-    using buffer_type = buffer::detail_::TABufferPIMPL<field_type>;
-    using tensor_type = typename buffer_type::default_tensor_type;
+    using field_type    = field::Scalar;
+    using buffer_type   = buffer::detail_::TABufferPIMPL<field_type>;
+    using tensor_type   = typename buffer_type::default_tensor_type;
+    using trange_type   = typename buffer_type::ta_trange_type;
+    using ta_shape_type = typename buffer_type::ta_shape_type;
 
     auto& world = TA::get_default_world();
     tensor_type vec_ta(world, {1.0, 2.0, 3.0});
@@ -39,8 +41,88 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
         REQUIRE(t3d2->are_equal(t3d));
     }
 
+    SECTION("retile") {
+        // These may need to use allclose
+        SECTION("vector") {
+            trange_type tr{{0, 1, 2, 3}};
+            vec.retile(tr);
+            buffer_type corr(tensor_type(world, tr, {1.0, 2.0, 3.0}));
+            REQUIRE(vec.are_equal(corr));
+        }
+        SECTION("matrix") {
+            trange_type tr{{0, 1, 2}, {0, 1, 2}};
+            mat.retile(tr);
+            buffer_type corr(tensor_type(world, tr, {{1.0, 2.0}, {3.0, 4.0}}));
+            REQUIRE(mat.are_equal(corr));
+        }
+        SECTION("tensor") {
+            trange_type tr{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+            t3d.retile(tr);
+            buffer_type corr(tensor_type(
+              world, tr, {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}}));
+            REQUIRE(t3d.are_equal(corr));
+        }
+    }
+
+    SECTION("set_shape") {
+        auto max = std::numeric_limits<float>::max();
+        SECTION("vector") {
+            trange_type tr{{0, 1, 2, 3}};
+            TA::Tensor<float> tile_norms(TA::Range{{0, 3}}, {max, 0.0, max});
+            ta_shape_type ss(tile_norms, tr);
+            vec.retile(tr);
+            vec.set_shape(ss);
+            buffer_type corr(tensor_type(world, tr, {1.0, 0.0, 3.0}));
+            REQUIRE(vec.are_equal(corr));
+        }
+        SECTION("matrix") {
+            trange_type tr{{0, 1, 2}, {0, 1, 2}};
+            TA::Range r{{0, 2}, {0, 2}};
+            TA::Tensor<float> tile_norms(r, {max, 0.0, max, 0.0});
+            ta_shape_type ss(tile_norms, tr);
+            mat.retile(tr);
+            mat.set_shape(ss);
+            buffer_type corr(tensor_type(world, tr, {{1.0, 0.0}, {3.0, 0.0}}));
+            REQUIRE(mat.are_equal(corr));
+        }
+        SECTION("tensor") {
+            trange_type tr{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+            TA::Range r{{0, 2}, {0, 2}, {0, 2}};
+            TA::Tensor<float> tile_norms(
+              r, {max, 0.0, max, 0.0, max, 0.0, max, 0.0});
+            ta_shape_type ss(tile_norms, tr);
+            t3d.retile(tr);
+            t3d.set_shape(ss);
+            buffer_type corr(tensor_type(
+              world, tr, {{{1.0, 0.0}, {3.0, 0.0}}, {{5.0, 0.0}, {7.0, 0.0}}}));
+            REQUIRE(t3d.are_equal(corr));
+        }
+    }
+
     // For these tests we do exactly the same operations under the hood so
     // we should be able to achieve value equality
+    SECTION("scale") {
+        tensor_type out_ta;
+        buffer_type out;
+        SECTION("vector") {
+            vec.scale("i", "i", out, 2.0);
+            out_ta("i") = 2.0 * vec_ta("i");
+            REQUIRE(out.are_equal(buffer_type(out_ta)));
+        }
+
+        SECTION("matrix") {
+            mat.scale("i,j", "i,j", out, 2.0);
+            out_ta("i,j") = 2.0 * mat_ta("i,j");
+            REQUIRE(out.are_equal(buffer_type(out_ta)));
+        }
+
+        SECTION("tensor") {
+            t3d.scale("i,j,k", "i,j,k", out, 2.0);
+            out_ta("i,j,k") = 2.0 * t3d_ta("i,j,k");
+            REQUIRE(out.are_equal(buffer_type(out_ta)));
+        }
+    }
+
     SECTION("add") {
         tensor_type out_ta, rhs_ta;
 

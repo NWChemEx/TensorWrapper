@@ -24,10 +24,22 @@ public:
 
     using default_tensor_type = typename traits_type::tensor_type<double>;
 
+    using ta_shape_type = TA::SparseShape<float>;
+
+    using ta_trange_type = TA::TiledRange;
+
     TABufferPIMPL(default_tensor_type t2wrap = {});
+
+    void retile(ta_trange_type trange);
+
+    void set_shape(ta_shape_type new_shape);
 
 private:
     pimpl_pointer clone_() const override;
+
+    void scale_(const_annotation_reference my_idx,
+                const_annotation_reference out_idx, base_type& out,
+                double rhs) const override;
 
     void add_(const_annotation_reference my_idx,
               const_annotation_reference out_idx, base_type& out,

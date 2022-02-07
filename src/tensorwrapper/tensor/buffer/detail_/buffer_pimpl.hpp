@@ -30,6 +30,17 @@ public:
 
     virtual ~BufferPIMPL() noexcept = default;
 
+    pimpl_pointer slice() const;
+
+    /** @brief Implements operator*(double)
+     *
+     */
+    void scale(const_annotation_reference my_idx,
+               const_annotation_reference out_idx, my_type& out,
+               double rhs) const {
+        scale_(my_idx, out_idx, out, rhs);
+    }
+
     /** @brief Implements operator+
      *
      */
@@ -97,6 +108,11 @@ protected:
 private:
     /// To be overridden by derived class to implement clone
     virtual pimpl_pointer clone_() const = 0;
+
+    /// To be overridden by derived class to implement operator*(double)
+    virtual void scale_(const_annotation_reference my_idx,
+                        const_annotation_reference out_idx, my_type& out,
+                        double rhs) const = 0;
 
     /// To be overridden by derived class to implement operator+
     virtual void add_(const_annotation_reference my_idx,

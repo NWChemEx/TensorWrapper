@@ -69,6 +69,37 @@ typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
     return std::unique_ptr<base_type>(new TABufferPIMPL(*this));
 }
 
+// -- Setters ------------------------------------------------------------------
+
+TEMPLATE_PARAMS
+void TABUFFERPIMPL::retile(ta_trange_type trange) {
+    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+        auto l = [trange{std::move(trange)}](auto&& arg) {
+            arg = TA::retile(arg, std::move(trange));
+        };
+        std::visit(l, m_tensor_);
+    } else {
+        throw std::runtime_error("retile NYI for ToTs!!!!");
+    }
+}
+
+TEMPLATE_PARAMS
+void TABUFFERPIMPL::set_shape(ta_shape_type new_shape) {
+    auto l = [new_shape{std::move(new_shape)}](auto&& t) {
+        auto outer_rank                 = t.trange().rank();
+        decltype(outer_rank) inner_rank = 0;
+        if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+            if(t.is_initialized()) {
+                const auto& tile0 = t.begin()->get();
+                inner_rank        = tile0[0].range().rank();
+            }
+        }
+        auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
+        t(idx)   = t(idx).set_shape(std::move(new_shape));
+    };
+    std::visit(l, m_tensor_);
+}
+
 // -- Utilities ----------------------------------------------------------------
 
 TEMPLATE_PARAMS
@@ -99,6 +130,15 @@ std::string TABUFFERPIMPL::to_str_() const {
 }
 
 // -- Math Ops -----------------------------------------------------------------
+
+TEMPLATE_PARAMS
+void TABUFFERPIMPL::scale_(const_annotation_reference my_idx,
+                           const_annotation_reference out_idx, base_type& out,
+                           double rhs) const {
+    auto& out_tensor = downcast(out).m_tensor_;
+    auto l = [&](auto&& out, auto&& lhs) { out(out_idx) = lhs(my_idx) * rhs; };
+    double_call(out_tensor, m_tensor_, l);
+}
 
 TEMPLATE_PARAMS
 void TABUFFERPIMPL::add_(const_annotation_reference my_idx,
