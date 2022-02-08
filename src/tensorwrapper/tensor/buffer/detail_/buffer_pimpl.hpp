@@ -25,12 +25,13 @@ public:
     /// Type of a mutable hasher reference
     using hasher_reference = typename buffer_type::hasher_reference;
 
+    /// Default constructs the derived class
+    pimpl_pointer default_clone() const { return default_clone_(); }
+
     /// Deep polymorphic copy
     pimpl_pointer clone() const { return clone_(); }
 
     virtual ~BufferPIMPL() noexcept = default;
-
-    pimpl_pointer slice() const;
 
     /** @brief Implements operator*(double)
      *
@@ -106,6 +107,9 @@ protected:
     ///@}
 
 private:
+    /// To be overriden by derived class to implement default_clone
+    virtual pimpl_pointer default_clone_() const = 0;
+
     /// To be overridden by derived class to implement clone
     virtual pimpl_pointer clone_() const = 0;
 

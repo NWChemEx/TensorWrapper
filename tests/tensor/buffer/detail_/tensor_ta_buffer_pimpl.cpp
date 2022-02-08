@@ -34,6 +34,11 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
     buffer_type vom(vom_ta);
     buffer_type mov(mov_ta);
 
+    SECTION("default_clone()") {
+        buffer_type defaulted;
+        REQUIRE(vov.default_clone()->are_equal(defaulted));
+    }
+
     SECTION("clone()") {
         auto vov2 = vov.clone();
         REQUIRE(vov2->are_equal(vov));

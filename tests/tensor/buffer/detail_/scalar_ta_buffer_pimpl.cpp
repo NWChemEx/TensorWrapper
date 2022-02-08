@@ -30,6 +30,11 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
     buffer_type mat(mat_ta);
     buffer_type t3d(t3d_ta);
 
+    SECTION("default_clone()") {
+        buffer_type defaulted;
+        REQUIRE(vec.default_clone()->are_equal(defaulted));
+    }
+
     SECTION("clone()") {
         auto vec2 = vec.clone();
         REQUIRE(vec2->are_equal(vec));
