@@ -1,3 +1,4 @@
+#pragma once
 #include "tensorwrapper/sparse_map/index.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 #include <TiledArray/tiled_range.h>
@@ -46,8 +47,8 @@ inline sparse_map::SparseMap tile_independent_indices(
  *  @throw std::runtime_error if the rank of the tiled range does not match the
  *                            rank of the dependent indices.
  */
-sparse_map::SparseMap tile_dependent_indices(const sparse_map::SparseMap& sm,
-                                             const TA::TiledRange& tr) {
+inline sparse_map::SparseMap tile_dependent_indices(
+  const sparse_map::SparseMap& sm, const TA::TiledRange& tr) {
     if(tr.rank() != sm.dep_rank())
         throw std::runtime_error("Rank of TiledRange does not equal"
                                  "dependent index rank");
@@ -76,9 +77,9 @@ sparse_map::SparseMap tile_dependent_indices(const sparse_map::SparseMap& sm,
  *  @throw std::runtime_error if the ranks of the tiled range does not match the
  *                            ranks of the indices.
  */
-sparse_map::SparseMap tile_indices(const sparse_map::SparseMap& sm,
-                                   const TA::TiledRange& ind_tr,
-                                   const TA::TiledRange& dep_tr, ) {
+inline sparse_map::SparseMap tile_indices(const sparse_map::SparseMap& sm,
+                                          const TA::TiledRange& ind_tr,
+                                          const TA::TiledRange& dep_tr) {
     auto intermediate_sm = tile_independent_indices(sm, ind_tr);
     return tile_dependent_indices(intermediate_sm, dep_tr);
 }
@@ -105,8 +106,9 @@ inline sparse_map::SparseMap untile_independent_indices(
                                  "independent index rank");
     sparse_map::SparseMap new_sm;
     for(const auto& [ind_idx, d] : sm) {
-        for(const auto& new_idx : tr.make_tile_range(ind_idx)) {
+        for(const auto& temp : tr.make_tile_range(ind_idx)) {
             for(const auto& dep_idx : d) {
+                sparse_map::Index new_idx(temp.begin(), temp.end());
                 new_sm.add_to_domain(new_idx, dep_idx);
             }
         }
@@ -137,7 +139,8 @@ inline sparse_map::SparseMap untile_dependent_indices(
     sparse_map::SparseMap new_sm;
     for(const auto& [ind_idx, d] : sm) {
         for(const auto& dep_idx : d) {
-            for(const auto& new_idx : tr.make_tile_range(dep_idx)) {
+            for(const auto& temp : tr.make_tile_range(dep_idx)) {
+                sparse_map::Index new_idx(temp.begin(), temp.end());
                 new_sm.add_to_domain(ind_idx, new_idx);
             }
         }
@@ -159,11 +162,30 @@ inline sparse_map::SparseMap untile_dependent_indices(
  *  @throw std::runtime_error if the ranks of the tiled range does not match the
  *                            ranks of the indices.
  */
-sparse_map::SparseMap untile_indices(const sparse_map::SparseMap& sm,
-                                     const TA::TiledRange& ind_tr,
-                                     const TA::TiledRange& dep_tr, ) {
+inline sparse_map::SparseMap untile_indices(const sparse_map::SparseMap& sm,
+                                            const TA::TiledRange& ind_tr,
+                                            const TA::TiledRange& dep_tr) {
     auto intermediate_sm = untile_independent_indices(sm, ind_tr);
     return untile_dependent_indices(intermediate_sm, dep_tr);
+}
+
+inline sparse_map::Domain tile_domain(const Domain& d,
+                                      const TA::TiledRange& trange) {
+    sparse_map::Domain new_domain;
+    const auto& erange = trange.elements_range();
+    for(const auto& x : d) {
+        if(!erange.includes(x)) {
+            std::stringstream ss, ss1;
+            ss << x;
+            ss1 << trange;
+            throw std::out_of_range("Initial element index: " + ss.str() +
+                                    " is not in the TiledRange: " + ss1.str());
+        }
+        const auto t_cardinal_index = trange.element_to_tile(x.m_index);
+        const auto tidx = trange.tiles_range().idx(t_cardinal_index);
+        new_domain.insert(Index(tidx.begin(), tidx.end()));
+    }
+    return new_domain;
 }
 
 } // namespace tensorwrapper::sparse_map::detail_

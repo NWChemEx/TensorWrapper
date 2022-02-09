@@ -1,6 +1,6 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/index.hpp"
+#include "tensorwrapper/sparse_map/index.hpp"
 #include <boost/container/flat_set.hpp>
 #include <memory>
 #include <set>
@@ -250,6 +250,21 @@ public:
      */
     DomainPIMPL& operator^=(const DomainPIMPL& other);
 
+    /** @brief Compares two DomainPIMPL instances for exact equality.
+     *
+     *  Two DomainPIMPL instances are equal if they contain the same set of
+     *  indices, regardless of whether the individual indices are actually
+     *  stored in memory.
+     *
+     *  @param[in] rhs The DomainPIMPL on the right side of the operator.
+     *
+     *  @return True if the two instances contain the same indices and false
+     *          otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool operator==(const DomainPIMPL& rhs) const noexcept;
+
     /** @brief Computes the hash of the Domain.
      *
      *  @param[in,out] h The object computing the hash. After this call the
@@ -304,25 +319,6 @@ std::ostream& operator<<(std::ostream& os, const DomainPIMPL& p) {
         if(i + 1 != p.size()) os << ", ";
     }
     return os << "}";
-}
-
-/** @brief Compares two DomainPIMPL instances for exact equality.
- *
- *  Two DomainPIMPL instances are equal if they contain the same set of
- *  indices, regardless of whether the individual indices are actually
- *  stored in memory.
- *
- *  @param[in] rhs The DomainPIMPL on the right side of the operator.
- *
- *  @return True if the two instances contain the same indices and false
- *          otherwise.
- *
- *  @throw None No throw guarantee.
- */
-bool operator==(const DomainPIMPL& lhs, const DomainPIMPL& rhs) {
-    if(lhs.rank() != rhs.rank()) return false;
-    if(lhs.size() != rhs.size()) return false;
-    return lhs.m_domain_ == rhs.m_domain_;
 }
 
 /** @brief Determines if two DomainPIMPL instances are different
@@ -432,8 +428,7 @@ DomainPIMPL& DomainPIMPL::operator*=(const DomainPIMPL& other) {
     return *this;
 }
 
-DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other);
-{
+DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other) {
     if(other.m_domain_.empty())
         return *this;
     else if(m_domain_.empty())
@@ -466,6 +461,12 @@ DomainPIMPL& DomainPIMPL::operator^=(const DomainPIMPL& other) {
         if(other.count(x)) insert(x);
 
     return *this;
+}
+
+bool DomainPIMPL::operator==(const DomainPIMPL& rhs) const noexcept {
+    if(rank() != rhs.rank()) return false;
+    if(size() != rhs.size()) return false;
+    return m_domain_ == rhs.m_domain_;
 }
 
 void DomainPIMPL::bounds_check_(size_type i) const {

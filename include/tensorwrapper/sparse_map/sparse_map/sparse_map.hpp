@@ -16,7 +16,7 @@ class SparseMapPIMPL;
 class SparseMap {
 private:
     /// Type of the PIMPL
-    using pimpl_type = SparseMapPIMPL;
+    using pimpl_type = detail_::SparseMapPIMPL;
 
     /// Type of a pointer to a PIMPL instance
     using pimpl_ptr = std::unique_ptr<pimpl_type>;
@@ -520,7 +520,7 @@ private:
  *
  *  @return @p os with this SparseMap added to it.
  */
-std::ostream& operator<<(std::ostream& os, const SparseMap& smb) {
+inline std::ostream& operator<<(std::ostream& os, const SparseMap& smb) {
     return smb.print(os);
 }
 
@@ -539,7 +539,7 @@ std::ostream& operator<<(std::ostream& os, const SparseMap& smb) {
  *
  *  @throw None No throw guarantee.
  */
-bool operator!=(const SparseMap& lhs, const SparseMap& rhs) {
+inline bool operator!=(const SparseMap& lhs, const SparseMap& rhs) {
     return !(lhs == rhs);
 }
 

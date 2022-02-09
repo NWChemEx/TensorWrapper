@@ -342,8 +342,13 @@ typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank() const noexcept {
     return 0; // We get here if it's empty or if all Domains have rank 0
 }
 
-void SparseMapPIMPL::add_to_domain(const key_type& ind, const DepIndex& dep) {
-    add_to_domain_(ind, dep);
+void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
+    if(!m_sm_.empty() && ind_rank() != ind.size())
+        throw std::runtime_error("Independent index");
+    else if(!m_sm_.empty() && dep_rank() != dep.size())
+        throw std::runtime_error("Dependent index");
+
+    m_sm_[ind].insert(dep);
 }
 
 auto& SparseMapPIMPL::at(size_type i) {
@@ -374,17 +379,7 @@ std::ostream& SparseMapPIMPL::print(std::ostream& os) const {
     return os;
 }
 
-void SparseMapPIMPL::add_to_domain_(const key_type& ind, const DepIndex& dep) {
-    if(!m_sm_.empty() && ind_rank() != ind.size())
-        throw std::runtime_error("Independent index");
-    else if(!m_sm_.empty() && dep_rank() != dep.size())
-        throw std::runtime_error("Dependent index");
-
-    m_sm_[ind].insert(dep);
-}
-
-SparseMapPIMPL& SparseMapPIMPL::direct_product_assign(
-  const SparseMapPIMPL& rhs) {
+auto& SparseMapPIMPL::direct_product_assign(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty() || rhs.m_sm_.empty()) {
         m_sm_.clear();
         return *this;

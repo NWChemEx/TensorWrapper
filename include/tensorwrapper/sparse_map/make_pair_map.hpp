@@ -31,7 +31,7 @@ namespace tensorwrapper::sparse_map {
  *  @throw std::runtime_error if the independent rank of @p L_ia is not 1.
  *                            Strong throw guarantee.
  */
-auto make_pair_map(const SparseMap& L_ia, const SparseMap& L_ij) {
+inline auto make_pair_map(const SparseMap& L_ia, const SparseMap& L_ij) {
     if(L_ia.ind_rank() != L_ij.ind_rank()) {
         std::string msg = "Independent rank of L_ia (" +
                           std::to_string(L_ia.ind_rank()) + ") does not match" +

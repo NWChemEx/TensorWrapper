@@ -1,4 +1,4 @@
-#include "sparse_map_pimpl.hpp"
+#include "detail_/sparse_map_pimpl.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 
 namespace tensorwrapper::sparse_map {
@@ -93,7 +93,7 @@ SparseMap SparseMap::operator*(const SparseMap& rhs) const {
 
 SparseMap& SparseMap::operator*=(const SparseMap& rhs) {
     if(!m_pimpl_ || !rhs.m_pimpl_) {
-        m_pimpl_ = new_pimpl<IndIndex, DepIndex>();
+        m_pimpl_ = std::make_unique<pimpl_type>();
         return *this;
     }
     pimpl_() *= rhs.pimpl_();
@@ -102,7 +102,7 @@ SparseMap& SparseMap::operator*=(const SparseMap& rhs) {
 
 SparseMap& SparseMap::operator^=(const SparseMap& rhs) {
     if(!m_pimpl_ || !rhs.m_pimpl_) {
-        m_pimpl_ = new_pimpl<IndIndex, DepIndex>();
+        m_pimpl_ = std::make_unique<pimpl_type>();
         return *this;
     }
     pimpl_() ^= rhs.pimpl_();
@@ -128,7 +128,7 @@ SparseMap SparseMap::inverse() const {
 SparseMap& SparseMap::operator+=(const SparseMap& rhs) {
     if(!m_pimpl_) {
         if(!rhs.m_pimpl_)
-            m_pimpl_ = new_pimpl<IndIndex, DepIndex>();
+            m_pimpl_ = std::make_unique<pimpl_type>();
         else
             m_pimpl_ = std::make_unique<pimpl_type>(rhs.pimpl_());
         return *this;

@@ -22,7 +22,7 @@ class DomainPIMPL;
 class Domain {
 private:
     /// Type of a PIMPL containing the data for an instance of this class
-    using pimpl_type = DomainPIMPL;
+    using pimpl_type = detail_::DomainPIMPL;
 
     /// Type of a pointer to a PIMPL
     using pimpl_ptr = std::unique_ptr<pimpl_type>;
@@ -524,7 +524,9 @@ private:
  *
  *  @throw None No throw guarantee.
  */
-bool operator!=(const Domain& lhs, const Domain& rhs) { return !(lhs == rhs); }
+inline bool operator!=(const Domain& lhs, const Domain& rhs) {
+    return !(lhs == rhs);
+}
 
 /** @brief Adds a string representation of this Domain to the provided
  *         stream.
@@ -536,7 +538,7 @@ bool operator!=(const Domain& lhs, const Domain& rhs) { return !(lhs == rhs); }
  *  @param[in] d The domain to print.
  *  @return @p os after adding this Domain to it.
  */
-std::ostream& operator<<(std::ostream& os, const Domain > &d) {
+inline std::ostream& operator<<(std::ostream& os, const Domain& d) {
     return d.print(os);
 }
 
