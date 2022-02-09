@@ -36,6 +36,7 @@ private:
     template<typename T, typename U = void>
     using enable_if_diff_field_t = std::enable_if_t<!same_field_v<T>, U>;
 
+    /// The type of this instance
     using my_type = Buffer<FieldType>;
 
 public:
@@ -86,17 +87,78 @@ public:
 
     Buffer(pimpl_pointer pimpl) noexcept;
 
+    /** @brief Initializes this Buffer with a deep copy of another Buffer.
+     *
+     *  This ctor will initialize the present Buffer to:
+     *
+     *  - an uninitiailzed state if `other.is_initialized() == false`, or
+     *  - a deep copy of @p other otherwise.
+     *
+     *  @param[in] other The buffer being copied.
+     *
+     *  @throw std::bad_alloc if there is a problem initializing the Buffer.
+     *                        Strong throw guarantee.
+     */
     Buffer(const Buffer& other);
 
+    /** @brief Initializes this Buffer by taking ownership of another Buffer's
+     *         state.
+     *
+     *  This function creates a new Buffer instance by taking ownership of the
+     *  PIMPL pointer in @p other.
+     *
+     *  @param[in,out] other The Buffer providing the state to this instance.
+     *                       After this call @p other will be in an
+     *                       uninitialized state.
+     *
+     *  @throw None No throw guarantee.
+     */
     Buffer(Buffer&& other) noexcept;
 
+    /** @brief Assigns a deep-copy of @p rhs to this Buffer.
+     *
+     *  This function will override the state of the current Buffer (and thereby
+     *  invalidating all references to the previous state) with: a deep copy of
+     *  another instance (if @p rhs is initialized), or an uninitialized PIMPL
+     *  if @p rhs is also uninitialized.
+     *
+     *  @param[in] rhs The Buffer we are assining this instance to.
+     *
+     *  @return The current Buffer instance, now containing a deep copy of
+     *          @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the new state.
+     *                        Strong throw guarantee.
+     */
     Buffer& operator=(const Buffer& rhs);
 
+    /** @brief Replaces this instance's state with that of @p rhs.
+     *
+     *  This function overrides the state of the current Buffer (and thereby
+     *  invalidates all references to its previous state) with the state of
+     *  @p rhs. The state will be moved, and not copied.
+     *
+     *  @param[in,out] rhs The Buffer whose state is being taken. After this
+     *                 operation @p rhs will be in an uninitialized state.
+     *
+     *  @return The current Buffer instance, after taking ownership of the state
+     *          contained in @p rhs.
+     *
+     *  @throw None No throw guarantee.
+     */
     Buffer& operator=(Buffer&& rhs) noexcept;
 
+    /// Defaulted destructor
     ~Buffer() noexcept;
 
     /** @brief Exchanges the state of this Buffer with that of @p other.
+     *
+     *  This function is used to swap the state of the present Buffer instance
+     *  with the state of @p other.
+     *
+     *  @param[in,out] other The Buffer whose state is being swapped with this
+     *                       instance's state. After this call @p other will
+     *                       contain the current Buffer's state.
      *
      *  @throw None No throw guarantee.
      */
@@ -168,6 +230,29 @@ public:
              const_annotation_reference out_idx, my_type& out,
              const_annotation_reference rhs_idx, const my_type& rhs) const;
 
+    /** @brief Sums another tensor into this tensor
+     *
+     *  This function will sum the tensor wrapped inside @p rhs into the tensor
+     *  wrapped in the present instance. The present instance's state will be
+     *  overriden with the result. The operation is expressed using einstein
+     *  notation which allows a permutation to optionally happen as part of the
+     *  operation.
+     *
+     *  ```.cpp
+     *  // To run A("i,j") += B("j,i") run:
+     *  A.inplace_add("i,j", "j,i", B);
+     *  ```
+     *
+     *  @param[in] my_idx The einstein indices for the current buffer.
+     *  @param[in] rhs_idx The einstein indices for the buffer being summed into
+     *                     the present buffer.
+     *  @param[in] rhs The buffer being summed into this buffer.
+     *
+     *  @throw std::runtime_error if the present buffer is not initialized.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if @p rhs is not initialized. Strong throw
+     *                            guarantee.
+     */
     void inplace_add(const_annotation_reference my_idx,
                      const_annotation_reference rhs_idx, const my_type& rhs);
 
@@ -201,6 +286,29 @@ public:
                   const_annotation_reference out_idx, my_type& out,
                   const_annotation_reference rhs_idx, const my_type& rhs) const;
 
+    /** @brief Subtracts another tensor from this tensor
+     *
+     *  This function will subtract the tensor wrapped inside @p rhs from the
+     *  tensor wrapped in the present instance. The present instance's state
+     *  will be overriden with the result. The operation is expressed using
+     *  einstein notation which allows a permutation to optionally happen as
+     *  part of the operation.
+     *
+     *  ```.cpp
+     *  // To run A("i,j") -= B("j,i") run:
+     *  A.inplace_subtract("i,j", "j,i", B);
+     *  ```
+     *
+     *  @param[in] my_idx The einstein indices for the current buffer.
+     *  @param[in] rhs_idx The einstein indices for the buffer being subtracted
+     *                     from the present buffer.
+     *  @param[in] rhs The buffer being subtracted from this buffer.
+     *
+     *  @throw std::runtime_error if the present buffer is not initialized.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if @p rhs is not initialized. Strong throw
+     *                            guarantee.
+     */
     void inplace_subtract(const_annotation_reference my_idx,
                           const_annotation_reference rhs_idx,
                           const my_type& rhs);
@@ -236,9 +344,33 @@ public:
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
 
+    /** @brief Compares two Buffers for value equality.
+     *
+     *  Two Buffers are considered equal if they:
+     *
+     *  - are over the same field (i.e., have the same template type parameter),
+     *  - have the same backend implementation, and
+     *  - if the backend implementations compare equal by value.
+     *
+     *  N.B. slight differences occurring from floating point arithmetic will
+     *  result in this function returning inequality. Hence, in practice this
+     *  function is primarily used in unit testing situations where the state of
+     *  the Buffer is tightly controlled. Algorithms depending on tensor
+     *  equality typically want to use allclose (TODO: ensure there's a cross
+     *  link).
+     *
+     *  This overload is selected when @p rhs has the same field as the present
+     *  instance.
+     *
+     *  @param[in] rhs The buffer being compared to.
+     */
     bool operator==(const Buffer& rhs) const noexcept;
 
     /** @brief Compares two buffers with different fields.
+     *
+     *  This overload only participates in overload resolution when @p T is a
+     *  different type than @p FieldType. This oveload always returns false
+     *  because buffers over different fields are never equal.
      *
      *  @tparam T The field for @p rhs. This function only participates in
      *            overload resolution if @p T is different than FieldType.
@@ -255,6 +387,37 @@ public:
     bool operator==(const Buffer<T>& rhs) const noexcept {
         return false;
     }
+
+    /** @brief Hashes the present buffer.
+     *
+     *
+     *  @param[in,out] h The object to use for hashing this instance. After this
+     *                   call the internal state of @p h will be updated to
+     *                   include a hash of this Buffer's state.
+     */
+    void hash(hasher_reference h) const;
+
+    /** @brief Prints a buffer to the provided ostream.
+     *
+     *  This function adds a text representation of the current tensor to the
+     *  provided stream. The exact representation depends on the backend that
+     *  is implementing the buffer. Generally speaking, the representation is
+     *  only suitable for debugging purposes and should not be used as a long
+     *  term means of storing the tensor or for data analysis.
+     *
+     *  @param[in,out] os The stream we are printing the buffer to. After this
+     *                    call @p os will contain a text representation of this
+     *                    buffer.
+     *
+     *  @return @p os after adding this buffer to it.
+     *
+     *  @throw std::ios_base::failure if adding the current Buffer instance to
+     *                                to the stream fails. After the throw the
+     *                                Buffer will be in the same state, but the
+     *                                stream may be a different (albeit valid)
+     *                                state.
+     */
+    std::ostream& print(std::ostream& os) const;
 
 private:
     /// Asserts the PIMPL is initialized, throwing std::runtime_error if not
@@ -287,6 +450,34 @@ private:
 template<typename T, typename U>
 bool operator!=(const Buffer<T>& lhs, const Buffer<U>& rhs) {
     return !(lhs == rhs);
+}
+
+/** @brief Prints a buffer to the provided ostream.
+ *
+ *  @relates Buffer
+ *
+ *  This function simply calls the print `member` of the Buffer class and exists
+ *  so that Buffer instances can be printed via stream insertion operator (i.e.,
+ *  the usual C++ way).
+ *
+ *  @tparam T The field type for the buffer. Expected to be either field::Scalar
+ *            or field::Tensor.
+ *
+ *  @param[in,out] os The stream we are printing the buffer to. After this call
+ *                    @p os will contain a text representation of @p rhs.
+ *  @param[in] rhs The buffer we are printing.
+ *
+ *  @return @p os after adding @p rhs to it.
+ *
+ *  @throw std::ios_base::failure if adding the current Buffer instance to
+ *                                to the stream fails. After the throw the
+ *                                Buffer will be in the same state, but the
+ *                                stream may be a different (albeit valid)
+ *                                state.
+ */
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Buffer<T>& rhs) {
+    return rhs.print(os);
 }
 
 extern template class Buffer<field::Scalar>;

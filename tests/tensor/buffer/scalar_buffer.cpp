@@ -27,19 +27,24 @@ TEST_CASE("Buffer<Scalar>") {
     buffer_type t3d(pt3d->clone());
 
     SECTION("CTors") {
+        SECTION("Default") { REQUIRE_FALSE(defaulted.is_initialized()); }
         SECTION("Copy") {
             buffer_type v2(vec);
+            REQUIRE(v2.is_initialized());
             REQUIRE(v2 == vec);
         }
         SECTION("Move") {
             buffer_type corr(vec);
             buffer_type v2(std::move(vec));
+            REQUIRE(v2.is_initialized());
+            REQUIRE_FALSE(vec.is_initialized());
             REQUIRE(v2 == corr);
         }
         SECTION("Copy assignment") {
             buffer_type v2;
             auto pv2 = &(v2 = vec);
             REQUIRE(pv2 == &v2);
+            REQUIRE(v2.is_initialized());
             REQUIRE(v2 == vec);
         }
         SECTION("Move assignment") {
@@ -47,6 +52,8 @@ TEST_CASE("Buffer<Scalar>") {
             buffer_type corr(vec);
             auto pv2 = &(v2 = std::move(vec));
             REQUIRE(pv2 == &v2);
+            REQUIRE_FALSE(vec.is_initialized());
+            REQUIRE(v2.is_initialized());
             REQUIRE(v2 == corr);
         }
     }
@@ -281,6 +288,30 @@ TEST_CASE("Buffer<Scalar>") {
         }
     }
 
+    SECTION("print") {
+        std::stringstream ss;
+        auto pss = &(vec.print(ss));
+        SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+        SECTION("Value") {
+            std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
+            REQUIRE(corr == ss.str());
+        }
+    }
+
+    SECTION("hash") {
+        using parallelzone::hash_objects;
+        REQUIRE(hash_objects(defaulted) == hash_objects(buffer_type{}));
+
+        // TODO: Reenable when hashing includes types
+        using other_buffer = buffer::Buffer<field::Tensor>;
+        // REQUIRE_FALSE(hash_objects(defaulted) ==
+        // hash_objects(other_buffer{}));
+
+        REQUIRE_FALSE(hash_objects(defaulted) == hash_objects(vec));
+
+        REQUIRE_FALSE(hash_objects(vec) == hash_objects(mat));
+    }
+
     SECTION("Comparisons") {
         REQUIRE(defaulted == buffer_type{});
         REQUIRE_FALSE(defaulted != buffer_type{});
@@ -293,5 +324,21 @@ TEST_CASE("Buffer<Scalar>") {
 
         REQUIRE_FALSE(vec == mat);
         REQUIRE(vec != mat);
+    }
+}
+
+TEST_CASE("operator<<(std::ostream, Buffer<Scalar>") {
+    using field_type  = field::Scalar;
+    using buffer_type = buffer::Buffer<field_type>;
+
+    auto&& [pvec, pmat, pt3d] = testing::make_pimpl<field_type>();
+    buffer_type vec(pvec->clone());
+
+    std::stringstream ss;
+    auto pss = &(ss << vec);
+    SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+    SECTION("Value") {
+        std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
+        REQUIRE(corr == ss.str());
     }
 }

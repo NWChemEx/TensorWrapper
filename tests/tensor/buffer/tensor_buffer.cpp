@@ -37,6 +37,7 @@ TEST_CASE("Buffer<Tensor>") {
             buffer_type corr(vov);
             buffer_type v2(std::move(vov));
             REQUIRE(v2.is_initialized());
+            REQUIRE_FALSE(vov.is_initialized());
             REQUIRE(v2 == corr);
         }
         SECTION("Copy assignment") {
@@ -52,6 +53,7 @@ TEST_CASE("Buffer<Tensor>") {
             auto pv2 = &(v2 = std::move(vov));
             REQUIRE(pv2 == &v2);
             REQUIRE(v2.is_initialized());
+            REQUIRE_FALSE(vov.is_initialized());
             REQUIRE(v2 == corr);
         }
     }
@@ -260,6 +262,34 @@ TEST_CASE("Buffer<Tensor>") {
         }
     }
 
+    SECTION("print") {
+        std::stringstream ss;
+        auto pss = &(vov.print(ss));
+        SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+        SECTION("Value") {
+            std::string corr = "0: [ [0], [3] ) {\n"
+                               "  [0]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [1]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [2]:[ [0], [3] ) { 1 2 3 }\n"
+                               "}\n";
+            REQUIRE(corr == ss.str());
+        }
+    }
+
+    SECTION("hash") {
+        using parallelzone::hash_objects;
+        REQUIRE(hash_objects(defaulted) == hash_objects(buffer_type{}));
+
+        // TODO: Reenable when hashing includes types
+        using other_buffer = buffer::Buffer<field::Scalar>;
+        // REQUIRE_FALSE(hash_objects(defaulted) ==
+        // hash_objects(other_buffer{}));
+
+        REQUIRE_FALSE(hash_objects(defaulted) == hash_objects(vov));
+
+        REQUIRE_FALSE(hash_objects(vov) == hash_objects(vom));
+    }
+
     SECTION("Comparisons") {
         REQUIRE(defaulted == buffer_type{});
         REQUIRE_FALSE(defaulted != buffer_type{});
@@ -272,5 +302,25 @@ TEST_CASE("Buffer<Tensor>") {
 
         REQUIRE_FALSE(vov == mov);
         REQUIRE(vov != mov);
+    }
+}
+
+TEST_CASE("operator<<(std::ostream, Buffer<Tensor>)") {
+    using field_type  = field::Tensor;
+    using buffer_type = buffer::Buffer<field_type>;
+
+    auto&& [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
+    buffer_type vov(pvov->clone());
+
+    std::stringstream ss;
+    auto pss = &(ss << vov);
+    SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+    SECTION("Value") {
+        std::string corr = "0: [ [0], [3] ) {\n"
+                           "  [0]:[ [0], [3] ) { 1 2 3 }\n"
+                           "  [1]:[ [0], [3] ) { 1 2 3 }\n"
+                           "  [2]:[ [0], [3] ) { 1 2 3 }\n"
+                           "}\n";
+        REQUIRE(corr == ss.str());
     }
 }
