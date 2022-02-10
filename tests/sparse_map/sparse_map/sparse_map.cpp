@@ -4,10 +4,6 @@
 using namespace tensorwrapper::sparse_map;
 using namespace tensorwrapper::sparse_map::detail_;
 
-using index_list = std::tuple<
-  std::pair<ElementIndex, ElementIndex>, std::pair<ElementIndex, TileIndex>,
-  std::pair<TileIndex, ElementIndex>, std::pair<TileIndex, TileIndex>>;
-
 /* General notes on testing:
  *
  * - We know that the Domain class works from unit testing it. We use a variety
@@ -17,49 +13,41 @@ using index_list = std::tuple<
  *
  */
 
-TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
-    using ind_idx_t = std::tuple_element_t<0, TestType>;
-    using dep_idx_t = std::tuple_element_t<1, TestType>;
-    using derived_t = SparseMap<ind_idx_t, dep_idx_t>;
-    using base_t    = SparseMapBase<derived_t, ind_idx_t, dep_idx_t>;
-    using domain_t  = Domain<dep_idx_t>;
+TEST_CASE("SparseMap") {
+    Index i0{}, i1{1}, i12{2}, i2{1, 2}, i22{2, 3};
+    Index d0{}, d1{1}, d12{2}, d2{1, 2}, d22{2, 3};
 
-    ind_idx_t i0{}, i1{1}, i12{2}, i2{1, 2}, i22{2, 3};
-    dep_idx_t d0{}, d1{1}, d12{2}, d2{1, 2}, d22{2, 3};
-
-    std::map<std::string, derived_t> sms;
+    std::map<std::string, SparseMap> sms;
     sms["Empty"];
-    sms["Ind == rank 0"] = derived_t{{i0, {d1, d12}}};
-    sms["Ind == rank 1"] = derived_t{{i12, {}}, {i1, {d1}}};
-    sms["Ind == rank 2"] = derived_t{{i2, {d2}}, {i22, {d22}}};
-    derived_t temp(std::move(sms["No PIMPL"]));
+    sms["Ind == rank 0"] = SparseMap{{i0, {d1, d12}}};
+    sms["Ind == rank 1"] = SparseMap{{i12, {}}, {i1, {d1}}};
+    sms["Ind == rank 2"] = SparseMap{{i2, {d2}}, {i22, {d22}}};
+    SparseMap temp(std::move(sms["No PIMPL"]));
 
     SECTION("CTors") {
         SECTION("Typedefs") {
-            using traits = SparseMapTraits<derived_t>;
-
             SECTION("size_type") {
-                using corr_t = typename traits::size_type;
-                using the_t  = typename base_t::size_type;
+                using corr_t = std::size_t;
+                using the_t  = SparseMap::size_type;
                 STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
             }
 
             SECTION("key_type") {
-                using corr_t = typename traits::key_type;
-                using the_t  = typename base_t::key_type;
+                using corr_t = Index;
+                using the_t  = SparseMap::key_type;
                 STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
             }
 
             SECTION("mapped_type") {
-                using corr_t = typename traits::mapped_type;
-                using the_t  = typename base_t::mapped_type;
+                using corr_t = Domain;
+                using the_t  = SparseMap::mapped_type;
                 STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
             }
 
             SECTION("const_iterator") {
                 using corr_t =
-                  typename traits::template const_iterator<derived_t>;
-                using the_t = typename base_t::const_iterator;
+                  utilities::iterators::OffsetIterator<const SparseMap>;
+                using the_t = SparseMap::const_iterator;
                 STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
             }
         }
@@ -74,7 +62,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
         SECTION("Initializer list") {
             SECTION("Empty") {
-                base_t sm_empty({});
+                SparseMap sm_empty({});
                 REQUIRE(sm_empty == sms.at("Empty"));
             }
 
@@ -106,7 +94,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Copy ctor") {
             for(auto [k, v] : sms) {
                 SECTION(k) {
-                    base_t copy(v);
+                    SparseMap copy(v);
                     REQUIRE(copy == v);
                 }
             }
@@ -115,8 +103,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Move ctor") {
             for(auto [k, v] : sms) {
                 SECTION(k) {
-                    base_t corr(v);
-                    base_t moved2(std::move(v));
+                    SparseMap corr(v);
+                    SparseMap moved2(std::move(v));
                     REQUIRE(moved2 == corr);
                 }
             }
@@ -125,7 +113,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Copy assignment") {
             for(auto [k, v] : sms) {
                 SECTION(k) {
-                    base_t copy;
+                    SparseMap copy;
                     auto pcopy = &(copy = v);
                     SECTION("Value") { REQUIRE(copy == v); }
                     SECTION("Returns *this") { REQUIRE(pcopy == &copy); }
@@ -136,8 +124,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Move ctor") {
             for(auto [k, v] : sms) {
                 SECTION(k) {
-                    base_t corr(v);
-                    base_t moved2;
+                    SparseMap corr(v);
+                    SparseMap moved2;
                     auto pmoved = &(moved2 = std::move(v));
                     SECTION("Value") { REQUIRE(moved2 == corr); }
                     SECTION("Returns *this") { REQUIRE(pmoved == &moved2); }
@@ -151,8 +139,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         for(auto& [lhs_k, lhs_v] : sms) {
             for(auto& [rhs_k, rhs_v] : sms) {
                 SECTION(lhs_k + " swapped with " + rhs_k) {
-                    base_t corr_lhs(rhs_v);
-                    base_t corr_rhs(lhs_v);
+                    SparseMap corr_lhs(rhs_v);
+                    SparseMap corr_rhs(lhs_v);
                     lhs_v.swap(rhs_v);
                     REQUIRE(lhs_v == corr_lhs);
                     REQUIRE(rhs_v == corr_rhs);
@@ -270,7 +258,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Empty") {
             auto& sm = sms.at("Empty");
             sm.add_to_domain(i0, d0);
-            base_t corr{{i0, {d0}}};
+            SparseMap corr{{i0, {d0}}};
             REQUIRE(sm == corr);
         }
 
@@ -285,8 +273,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                                   std::runtime_error);
             }
             SECTION("Add to existing independent index") {
-                sm0.add_to_domain(i0, dep_idx_t{3});
-                base_t corr{{i0, {d1, d12, dep_idx_t{3}}}};
+                sm0.add_to_domain(i0, Index{3});
+                SparseMap corr{{i0, {d1, d12, Index{3}}}};
                 REQUIRE(sm0 == corr);
             }
         }
@@ -303,12 +291,12 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             }
             SECTION("Add to existing independent index") {
                 sm1.add_to_domain(i12, d12);
-                base_t corr{{i1, {d1}}, {i12, {d12}}};
+                SparseMap corr{{i1, {d1}}, {i12, {d12}}};
                 REQUIRE(sm1 == corr);
             }
             SECTION("Add to non-existing independent index") {
-                sm1.add_to_domain(ind_idx_t{4}, d12);
-                base_t corr{{i12, {}}, {i1, {d1}}, {ind_idx_t{4}, {d12}}};
+                sm1.add_to_domain(Index{4}, d12);
+                SparseMap corr{{i12, {}}, {i1, {d1}}, {Index{4}, {d12}}};
                 REQUIRE(sm1 == corr);
             }
         }
@@ -324,13 +312,13 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                                   std::runtime_error);
             }
             SECTION("Add to existing independent index") {
-                sm2.add_to_domain(i2, dep_idx_t{3, 4});
-                base_t corr{{i2, {d2, dep_idx_t{3, 4}}}, {i22, {d22}}};
+                sm2.add_to_domain(i2, Index{3, 4});
+                SparseMap corr{{i2, {d2, Index{3, 4}}}, {i22, {d22}}};
                 REQUIRE(sm2 == corr);
             }
             SECTION("Add to non-existing independent index") {
-                sm2.add_to_domain(ind_idx_t{3, 4}, d2);
-                base_t corr{{i2, {d2}}, {i22, {d22}}, {ind_idx_t{3, 4}, {d2}}};
+                sm2.add_to_domain(Index{3, 4}, d2);
+                SparseMap corr{{i2, {d2}}, {i22, {d22}}, {Index{3, 4}, {d2}}};
                 REQUIRE(sm2 == corr);
             }
         }
@@ -338,7 +326,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("No PIMPL") {
             auto& mf = sms.at("No PIMPL");
             mf.add_to_domain(i0, d0);
-            REQUIRE(mf == base_t{{i0, {d0}}});
+            REQUIRE(mf == SparseMap{{i0, {d0}}});
         }
     }
 
@@ -353,7 +341,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             SECTION("Throws if wrong ind rank") {
                 REQUIRE_THROWS_AS(sm[i1], std::runtime_error);
             }
-            SECTION("Value") { REQUIRE(sm[i0] == domain_t{d1, d12}); }
+            SECTION("Value") { REQUIRE(sm[i0] == Domain{d1, d12}); }
         }
 
         SECTION("Ind == rank 1") {
@@ -362,9 +350,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                 REQUIRE_THROWS_AS(sm[i0], std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                REQUIRE_THROWS_AS(sm[ind_idx_t{4}], std::out_of_range);
+                REQUIRE_THROWS_AS(sm[Index{4}], std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm[i1] == domain_t{d1}); }
+            SECTION("Value") { REQUIRE(sm[i1] == Domain{d1}); }
         }
 
         SECTION("Ind == rank 2") {
@@ -373,10 +361,10 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                 REQUIRE_THROWS_AS(sm[i1], std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                ind_idx_t i23{3, 4};
+                Index i23{3, 4};
                 REQUIRE_THROWS_AS(sm[i23], std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm[i2] == domain_t{d2}); }
+            SECTION("Value") { REQUIRE(sm[i2] == Domain{d2}); }
         }
 
         SECTION("No PIMPL") {
@@ -396,7 +384,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             SECTION("Throws if wrong ind rank") {
                 REQUIRE_THROWS_AS(sm.at(i1), std::runtime_error);
             }
-            SECTION("Value") { REQUIRE(sm.at(i0) == domain_t{d1, d12}); }
+            SECTION("Value") { REQUIRE(sm.at(i0) == Domain{d1, d12}); }
         }
 
         SECTION("Ind == rank 1") {
@@ -405,9 +393,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                 REQUIRE_THROWS_AS(sm.at(i0), std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                REQUIRE_THROWS_AS(sm.at(ind_idx_t{4}), std::out_of_range);
+                REQUIRE_THROWS_AS(sm.at(Index{4}), std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm.at(i1) == domain_t{d1}); }
+            SECTION("Value") { REQUIRE(sm.at(i1) == Domain{d1}); }
         }
 
         SECTION("Ind == rank 2") {
@@ -416,10 +404,10 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
                 REQUIRE_THROWS_AS(sm.at(i1), std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                ind_idx_t i23{3, 4};
+                Index i23{3, 4};
                 REQUIRE_THROWS_AS(sm.at(i23), std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm.at(i2) == domain_t{d2}); }
+            SECTION("Value") { REQUIRE(sm.at(i2) == Domain{d2}); }
         }
 
         SECTION("No PIMPL") {
@@ -431,7 +419,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
     SECTION("direct_product") {
         SECTION("LHS == Empty") {
             auto& lhs = sms.at("Empty");
-            derived_t corr(lhs);
+            SparseMap corr(lhs);
 
             for(auto [key, rhs] : sms) {
                 SECTION("RHS == " + key) {
@@ -452,24 +440,23 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
             SECTION("RHS == Ind == rank 0") {
                 auto& rhs = sms.at("Ind == rank 0");
-                derived_t corr{{i0,
-                                {dep_idx_t{1, 1}, dep_idx_t{1, 2},
-                                 dep_idx_t{2, 1}, dep_idx_t{2, 2}}}};
+                SparseMap corr{
+                  {i0, {Index{1, 1}, Index{1, 2}, Index{2, 1}, Index{2, 2}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 1") {
                 auto& rhs = sms.at("Ind == rank 1");
-                derived_t corr{{i1, {dep_idx_t{1, 1}, dep_idx_t{2, 1}}}};
+                SparseMap corr{{i1, {Index{1, 1}, Index{2, 1}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 2") {
                 auto& rhs = sms.at("Ind == rank 2");
-                derived_t corr{{i2, {dep_idx_t{1, 1, 2}, dep_idx_t{2, 1, 2}}},
-                               {i22, {dep_idx_t{1, 2, 3}, dep_idx_t{2, 2, 3}}}};
+                SparseMap corr{{i2, {Index{1, 1, 2}, Index{2, 1, 2}}},
+                               {i22, {Index{1, 2, 3}, Index{2, 2, 3}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
@@ -492,26 +479,26 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
             SECTION("RHS == Ind == rank 0") {
                 auto& rhs = sms.at("Ind == rank 0");
-                derived_t corr{{i1, {dep_idx_t{1, 1}, dep_idx_t{1, 2}}}};
+                SparseMap corr{{i1, {Index{1, 1}, Index{1, 2}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 1") {
                 auto& rhs = sms.at("Ind == rank 1");
-                derived_t corr{{ind_idx_t{1, 1}, {dep_idx_t{1, 1}}},
-                               {ind_idx_t{2, 1}, {}},
-                               {ind_idx_t{2, 2}, {}}};
+                SparseMap corr{{Index{1, 1}, {Index{1, 1}}},
+                               {Index{2, 1}, {}},
+                               {Index{2, 2}, {}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 2") {
                 auto& rhs = sms.at("Ind == rank 2");
-                derived_t corr{{ind_idx_t{1, 1, 2}, {dep_idx_t{1, 1, 2}}},
-                               {ind_idx_t{1, 2, 3}, {dep_idx_t{1, 2, 3}}},
-                               {ind_idx_t{2, 1, 2}, {}},
-                               {ind_idx_t{2, 2, 3}, {}}};
+                SparseMap corr{{Index{1, 1, 2}, {Index{1, 1, 2}}},
+                               {Index{1, 2, 3}, {Index{1, 2, 3}}},
+                               {Index{2, 1, 2}, {}},
+                               {Index{2, 2, 3}, {}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
@@ -534,29 +521,28 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
             SECTION("RHS == Ind == rank 0") {
                 auto& rhs = sms.at("Ind == rank 0");
-                derived_t corr{{i2, {dep_idx_t{1, 2, 1}, dep_idx_t{1, 2, 2}}},
-                               {i22, {dep_idx_t{2, 3, 1}, dep_idx_t{2, 3, 2}}}};
+                SparseMap corr{{i2, {Index{1, 2, 1}, Index{1, 2, 2}}},
+                               {i22, {Index{2, 3, 1}, Index{2, 3, 2}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 1") {
                 auto& rhs = sms.at("Ind == rank 1");
-                derived_t corr{{ind_idx_t{1, 2, 1}, {dep_idx_t{1, 2, 1}}},
-                               {ind_idx_t{1, 2, 2}, {}},
-                               {ind_idx_t{2, 3, 1}, {dep_idx_t{2, 3, 1}}},
-                               {ind_idx_t{2, 3, 2}, {}}};
+                SparseMap corr{{Index{1, 2, 1}, {Index{1, 2, 1}}},
+                               {Index{1, 2, 2}, {}},
+                               {Index{2, 3, 1}, {Index{2, 3, 1}}},
+                               {Index{2, 3, 2}, {}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
 
             SECTION("RHS == Ind == rank 2") {
                 auto& rhs = sms.at("Ind == rank 2");
-                derived_t corr{
-                  {ind_idx_t{1, 2, 1, 2}, {dep_idx_t{1, 2, 1, 2}}},
-                  {ind_idx_t{1, 2, 2, 3}, {dep_idx_t{1, 2, 2, 3}}},
-                  {ind_idx_t{2, 3, 1, 2}, {dep_idx_t{2, 3, 1, 2}}},
-                  {ind_idx_t{2, 3, 2, 3}, {dep_idx_t{2, 3, 2, 3}}}};
+                SparseMap corr{{Index{1, 2, 1, 2}, {Index{1, 2, 1, 2}}},
+                               {Index{1, 2, 2, 3}, {Index{1, 2, 2, 3}}},
+                               {Index{2, 3, 1, 2}, {Index{2, 3, 1, 2}}},
+                               {Index{2, 3, 2, 3}, {Index{2, 3, 2, 3}}}};
                 auto result = lhs.direct_product(rhs);
                 REQUIRE(result == corr);
             }
@@ -570,7 +556,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
         SECTION("LHS == No PIMPL") {
             auto& lhs = sms.at("No PIMPL");
-            derived_t corr(lhs);
+            SparseMap corr(lhs);
 
             for(auto [key, rhs] : sms) {
                 SECTION("RHS == " + key) {
@@ -591,7 +577,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             auto& lhs = sms.at("Empty");
 
             SECTION("RHS == empty") {
-                derived_t rhs;
+                SparseMap rhs;
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
@@ -607,11 +593,11 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             }
 
             SECTION("RHS == non-empty") {
-                derived_t rhs{{ind_idx_t{1}, {dep_idx_t{2}}}};
+                SparseMap rhs{{Index{1}, {Index{2}}}};
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
-                    SECTION("Value") { REQUIRE(lhs == derived_t{}); }
+                    SECTION("Value") { REQUIRE(lhs == SparseMap{}); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
@@ -624,20 +610,20 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         }
 
         SECTION("LHS == non-empty") {
-            derived_t lhs{{ind_idx_t{1}, {dep_idx_t{1}}}};
+            SparseMap lhs{{Index{1}, {Index{1}}}};
 
             SECTION("RHS same independent, single element domain") {
-                derived_t rhs{{ind_idx_t{1}, {dep_idx_t{2}}}};
+                SparseMap rhs{{Index{1}, {Index{2}}}};
 
                 SECTION("lhs *= rhs") {
-                    derived_t corr{{ind_idx_t{1}, {dep_idx_t{1, 2}}}};
+                    SparseMap corr{{Index{1}, {Index{1, 2}}}};
                     auto plhs = &(lhs *= rhs);
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
-                    derived_t corr{{ind_idx_t{1}, {dep_idx_t{2, 1}}}};
+                    SparseMap corr{{Index{1}, {Index{2, 1}}}};
                     auto prhs = &(rhs *= lhs);
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
@@ -645,19 +631,17 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             }
 
             SECTION("RHS same independent, two element domain") {
-                derived_t rhs{{ind_idx_t{1}, {dep_idx_t{2}, dep_idx_t{3}}}};
+                SparseMap rhs{{Index{1}, {Index{2}, Index{3}}}};
 
                 SECTION("lhs *= rhs") {
-                    derived_t corr{
-                      {ind_idx_t{1}, {dep_idx_t{1, 2}, dep_idx_t{1, 3}}}};
+                    SparseMap corr{{Index{1}, {Index{1, 2}, Index{1, 3}}}};
                     auto plhs = &(lhs *= rhs);
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
-                    derived_t corr{
-                      {ind_idx_t{1}, {dep_idx_t{2, 1}, dep_idx_t{3, 1}}}};
+                    SparseMap corr{{Index{1}, {Index{2, 1}, Index{3, 1}}}};
                     auto prhs = &(rhs *= lhs);
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
@@ -665,35 +649,34 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             }
 
             SECTION("RHS different independent, single element domain") {
-                derived_t rhs{{ind_idx_t{2}, {dep_idx_t{2}}}};
+                SparseMap rhs{{Index{2}, {Index{2}}}};
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
-                    SECTION("Value") { REQUIRE(lhs == derived_t{}); }
+                    SECTION("Value") { REQUIRE(lhs == SparseMap{}); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
                     auto prhs = &(rhs *= lhs);
-                    SECTION("Value") { REQUIRE(rhs == derived_t{}); }
+                    SECTION("Value") { REQUIRE(rhs == SparseMap{}); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
                 }
             }
 
             SECTION("RHS multiple independent") {
-                derived_t rhs{{ind_idx_t{1}, {dep_idx_t{2}}},
-                              {ind_idx_t{2}, {dep_idx_t{2}}}};
+                SparseMap rhs{{Index{1}, {Index{2}}}, {Index{2}, {Index{2}}}};
 
                 SECTION("lhs * rhs") {
                     auto plhs = &(lhs *= rhs);
-                    derived_t corr{{ind_idx_t{1}, {dep_idx_t{1, 2}}}};
+                    SparseMap corr{{Index{1}, {Index{1, 2}}}};
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs * lhs") {
                     auto prhs = &(rhs *= lhs);
-                    derived_t corr{{ind_idx_t{1}, {dep_idx_t{2, 1}}}};
+                    SparseMap corr{{Index{1}, {Index{2, 1}}}};
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
                 }
@@ -710,8 +693,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
     SECTION("operator*") {
         auto& lhs = sms.at("Ind == rank 2");
         auto& rhs = sms.at("Ind == rank 2");
-        derived_t corr{{ind_idx_t{1, 2}, {dep_idx_t{1, 2, 1, 2}}},
-                       {ind_idx_t{2, 3}, {dep_idx_t{2, 3, 2, 3}}}};
+        SparseMap corr{{Index{1, 2}, {Index{1, 2, 1, 2}}},
+                       {Index{2, 3}, {Index{2, 3, 2, 3}}}};
         auto r = lhs * rhs;
         REQUIRE(r == corr);
     }
@@ -722,16 +705,16 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
      */
     SECTION("operator+=") {
         SECTION("Empty / Empty") {
-            derived_t sm, sm2;
+            SparseMap sm, sm2;
             auto psm = &(sm += sm2);
             SECTION("Value") { REQUIRE(sm == sm2); }
             SECTION("Returns *this") { REQUIRE(psm == &sm); }
         }
 
         SECTION("Empty / Non-empty") {
-            derived_t sm;
-            derived_t sm2{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                          {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
+            SparseMap sm;
+            SparseMap sm2{{Index{1}, {Index{0}, Index{3}}},
+                          {Index{2}, {Index{1}, Index{2}}}};
             SECTION("sm += sm2") {
                 auto psm = &(sm += sm2);
                 REQUIRE(sm == sm2);
@@ -746,20 +729,19 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         }
 
         SECTION("Non-empty / Non-empty") {
-            derived_t sm{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                         {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
+            SparseMap sm{{Index{1}, {Index{0}, Index{3}}},
+                         {Index{2}, {Index{1}, Index{2}}}};
 
             SECTION("Compatible") {
-                derived_t sm2{{ind_idx_t{0}, {dep_idx_t{0}, dep_idx_t{3}}},
-                              {ind_idx_t{1}, {dep_idx_t{1}, dep_idx_t{2}}},
-                              {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}},
-                              {ind_idx_t{3}, {dep_idx_t{1}, dep_idx_t{2}}}};
-                derived_t corr{
-                  {ind_idx_t{0}, {dep_idx_t{0}, dep_idx_t{3}}},
-                  {ind_idx_t{1},
-                   {dep_idx_t{0}, dep_idx_t{1}, dep_idx_t{2}, dep_idx_t{3}}},
-                  {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}},
-                  {ind_idx_t{3}, {dep_idx_t{1}, dep_idx_t{2}}}};
+                SparseMap sm2{{Index{0}, {Index{0}, Index{3}}},
+                              {Index{1}, {Index{1}, Index{2}}},
+                              {Index{2}, {Index{1}, Index{2}}},
+                              {Index{3}, {Index{1}, Index{2}}}};
+                SparseMap corr{
+                  {Index{0}, {Index{0}, Index{3}}},
+                  {Index{1}, {Index{0}, Index{1}, Index{2}, Index{3}}},
+                  {Index{2}, {Index{1}, Index{2}}},
+                  {Index{3}, {Index{1}, Index{2}}}};
                 SECTION("sm += sm2") {
                     auto psm = &(sm += sm2);
                     SECTION("Value") { REQUIRE(sm == corr); }
@@ -778,16 +760,14 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
             }
 
             SECTION("Incompatible independent indices") {
-                derived_t incompatible{
-                  {ind_idx_t{1, 2}, {dep_idx_t{0}, dep_idx_t{3}}},
-                  {ind_idx_t{2, 3}, {dep_idx_t{1}, dep_idx_t{2}}}};
+                SparseMap incompatible{{Index{1, 2}, {Index{0}, Index{3}}},
+                                       {Index{2, 3}, {Index{1}, Index{2}}}};
                 REQUIRE_THROWS_AS(sm += incompatible, std::runtime_error);
             }
 
             SECTION("Incompatible dependent indices") {
-                derived_t incompatible{
-                  {ind_idx_t{1}, {dep_idx_t{0, 1}, dep_idx_t{3, 4}}},
-                  {ind_idx_t{2}, {dep_idx_t{1, 2}, dep_idx_t{2, 3}}}};
+                SparseMap incompatible{{Index{1}, {Index{0, 1}, Index{3, 4}}},
+                                       {Index{2}, {Index{1, 2}, Index{2, 3}}}};
                 REQUIRE_THROWS_AS(sm += incompatible, std::runtime_error);
             }
         }
@@ -802,39 +782,39 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
     SECTION("operator^=") {
         SECTION("Empty / Empty") {
-            derived_t sm;
+            SparseMap sm;
             auto psm = &(sm ^= sm);
-            SECTION("Value") { REQUIRE(sm == derived_t{}); }
+            SECTION("Value") { REQUIRE(sm == SparseMap{}); }
             SECTION("Returns *this") { REQUIRE(psm == &sm); }
         }
 
         SECTION("Empty / Non-empty") {
-            derived_t sm;
-            derived_t sm2{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                          {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
+            SparseMap sm;
+            SparseMap sm2{{Index{1}, {Index{0}, Index{3}}},
+                          {Index{2}, {Index{1}, Index{2}}}};
 
             SECTION("sm ^= sm2") {
                 auto psm = &(sm ^= sm2);
-                SECTION("Value") { REQUIRE(sm == derived_t{}); }
+                SECTION("Value") { REQUIRE(sm == SparseMap{}); }
                 SECTION("Returns *this") { REQUIRE(psm == &sm); }
             }
 
             SECTION("sm2 ^= sm") {
                 auto psm2 = &(sm2 ^= sm);
-                SECTION("Value") { REQUIRE(sm2 == derived_t{}); }
+                SECTION("Value") { REQUIRE(sm2 == SparseMap{}); }
                 SECTION("Returns *this") { REQUIRE(psm2 == &sm2); }
             }
         }
 
         SECTION("Non-empty / Non-empty") {
-            derived_t sm{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                         {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
-            derived_t sm2{{ind_idx_t{0}, {dep_idx_t{0}, dep_idx_t{3}}},
-                          {ind_idx_t{1}, {dep_idx_t{1}, dep_idx_t{2}}},
-                          {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}},
-                          {ind_idx_t{3}, {dep_idx_t{1}, dep_idx_t{2}}}};
+            SparseMap sm{{Index{1}, {Index{0}, Index{3}}},
+                         {Index{2}, {Index{1}, Index{2}}}};
+            SparseMap sm2{{Index{0}, {Index{0}, Index{3}}},
+                          {Index{1}, {Index{1}, Index{2}}},
+                          {Index{2}, {Index{1}, Index{2}}},
+                          {Index{3}, {Index{1}, Index{2}}}};
 
-            derived_t corr{{ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
+            SparseMap corr{{Index{2}, {Index{1}, Index{2}}}};
 
             SECTION("sm ^= sm2") {
                 auto psm = &(sm ^= sm2);
@@ -856,7 +836,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
             SECTION("different ranks") {
                 auto psm = &(sm ^= sms.at("Ind == rank 2"));
-                SECTION("Value") { REQUIRE(sm == derived_t{}); }
+                SECTION("Value") { REQUIRE(sm == SparseMap{}); }
                 SECTION("Returns *this") { REQUIRE(psm == &sm); }
             }
         }
@@ -870,69 +850,62 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
     SECTION("inverse") {
         SECTION("Empty") {
-            derived_t sm;
-            SparseMap<dep_idx_t, ind_idx_t> corr;
+            SparseMap sm;
+            SparseMap corr;
             REQUIRE(sm.inverse() == corr);
         }
 
         SECTION("Non-empty") {
-            derived_t sm{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                         {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
-            SparseMap<dep_idx_t, ind_idx_t> corr{
-              {dep_idx_t{0}, {ind_idx_t{1}}},
-              {dep_idx_t{3}, {ind_idx_t{1}}},
-              {dep_idx_t{1}, {ind_idx_t{2}}},
-              {dep_idx_t{2}, {ind_idx_t{2}}}};
+            SparseMap sm{{Index{1}, {Index{0}, Index{3}}},
+                         {Index{2}, {Index{1}, Index{2}}}};
+            SparseMap corr{{Index{0}, {Index{1}}},
+                           {Index{3}, {Index{1}}},
+                           {Index{1}, {Index{2}}},
+                           {Index{2}, {Index{2}}}};
             REQUIRE(sm.inverse() == corr);
             REQUIRE(sm.inverse().inverse() == sm);
         }
     }
 
     SECTION("chain") {
-        using new_idx_t = ElementIndex;
-        using rhs_t     = SparseMap<dep_idx_t, new_idx_t>;
-        using result_t  = SparseMap<ind_idx_t, new_idx_t>;
-
-        derived_t lsm1{{ind_idx_t{1}, {dep_idx_t{0}, dep_idx_t{3}}},
-                       {ind_idx_t{2}, {dep_idx_t{1}, dep_idx_t{2}}}};
-        rhs_t rsm1{{dep_idx_t{1}, {new_idx_t{0}, new_idx_t{3}}},
-                   {dep_idx_t{2}, {new_idx_t{1}, new_idx_t{2}}}};
+        SparseMap lsm1{{Index{1}, {Index{0}, Index{3}}},
+                       {Index{2}, {Index{1}, Index{2}}}};
+        SparseMap rsm1{{Index{1}, {Index{0}, Index{3}}},
+                       {Index{2}, {Index{1}, Index{2}}}};
 
         SECTION("Empty / Empty") {
-            derived_t sm;
-            rhs_t rhs;
-            result_t corr;
+            SparseMap sm;
+            SparseMap rhs;
+            SparseMap corr;
             REQUIRE(sm.chain(rhs) == corr);
         }
 
         SECTION("Empty / Non-empty") {
-            derived_t sm;
+            SparseMap sm;
             REQUIRE_THROWS_AS(sm.chain(rsm1), std::runtime_error);
         }
 
         SECTION("Non-empty / Non-empty") {
-            rhs_t rsm2{{dep_idx_t{0}, {new_idx_t{0}, new_idx_t{3}}},
-                       {dep_idx_t{1}, {new_idx_t{1}, new_idx_t{2}}},
-                       {dep_idx_t{2}, {new_idx_t{1}, new_idx_t{2}}},
-                       {dep_idx_t{3}, {new_idx_t{1}, new_idx_t{2}}}};
-            result_t corr{
-              {ind_idx_t{1},
-               {new_idx_t{0}, new_idx_t{1}, new_idx_t{2}, new_idx_t{3}}},
-              {ind_idx_t{2}, {new_idx_t{1}, new_idx_t{2}}}};
+            SparseMap rsm2{{Index{0}, {Index{0}, Index{3}}},
+                           {Index{1}, {Index{1}, Index{2}}},
+                           {Index{2}, {Index{1}, Index{2}}},
+                           {Index{3}, {Index{1}, Index{2}}}};
+            SparseMap corr{{Index{1}, {Index{0}, Index{1}, Index{2}, Index{3}}},
+                           {Index{2}, {Index{1}, Index{2}}}};
             REQUIRE(lsm1.chain(rsm2) == corr);
         }
 
         SECTION("Non-empty / incompatible") {
-            rhs_t incompatible{{dep_idx_t{1, 2}, {new_idx_t{0}, new_idx_t{3}}},
-                               {dep_idx_t{2, 3}, {new_idx_t{1}, new_idx_t{2}}}};
+            SparseMap incompatible{{Index{1, 2}, {Index{0}, Index{3}}},
+                                   {Index{2, 3}, {Index{1}, Index{2}}}};
             REQUIRE_THROWS_AS(lsm1.chain(incompatible), std::runtime_error);
         }
     }
 
     SECTION("comparisons") {
         SECTION("Empty == Empty") {
-            REQUIRE(sms.at("Empty") == derived_t{});
-            REQUIRE_FALSE(sms.at("Empty") != derived_t{});
+            REQUIRE(sms.at("Empty") == SparseMap{});
+            REQUIRE_FALSE(sms.at("Empty") != SparseMap{});
         }
 
         SECTION("Empty == No PIMPL") {
@@ -954,23 +927,23 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
 
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
-            derived_t copy(lhs);
+            SparseMap copy(lhs);
             REQUIRE(lhs == copy);
             REQUIRE_FALSE(lhs != copy);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
-            derived_t copy(lhs);
-            copy.add_to_domain(i0, dep_idx_t{3});
+            SparseMap copy(lhs);
+            copy.add_to_domain(i0, Index{3});
             REQUIRE_FALSE(lhs == copy);
             REQUIRE(lhs != copy);
         }
 
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
-            derived_t copy(lhs);
-            copy.add_to_domain(ind_idx_t{3}, dep_idx_t{3});
+            SparseMap copy(lhs);
+            copy.add_to_domain(Index{3}, Index{3});
             REQUIRE_FALSE(lhs == copy);
             REQUIRE(lhs != copy);
         }
@@ -1011,7 +984,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         using tensorwrapper::detail_::hash_objects;
         SECTION("Empty == Empty") {
             auto h  = hash_objects(sms.at("Empty"));
-            auto h2 = hash_objects(derived_t{});
+            auto h2 = hash_objects(SparseMap{});
             REQUIRE(h == h2);
         }
 
@@ -1036,15 +1009,15 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
             auto h    = hash_objects(lhs);
-            auto h2   = hash_objects(derived_t(lhs));
+            auto h2   = hash_objects(SparseMap(lhs));
             REQUIRE(h == h2);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
             auto h    = hash_objects(lhs);
-            derived_t copy(lhs);
-            copy.add_to_domain(i0, dep_idx_t{3});
+            SparseMap copy(lhs);
+            copy.add_to_domain(i0, Index{3});
             auto h2 = hash_objects(copy);
             REQUIRE(h != h2);
         }
@@ -1052,8 +1025,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
             auto h    = hash_objects(lhs);
-            derived_t copy(lhs);
-            copy.add_to_domain(ind_idx_t{3}, dep_idx_t{3});
+            SparseMap copy(lhs);
+            copy.add_to_domain(Index{3}, Index{3});
             auto h2 = hash_objects(copy);
             REQUIRE(h != h2);
         }
@@ -1077,7 +1050,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapBase", "", index_list) {
  */
 TEST_CASE("operator<<(std::ostream, SparseMapBase)") {
     std::stringstream ss;
-    SparseMap<TileIndex, TileIndex> sm;
+    SparseMap sm;
     auto pss = &(ss << sm);
     REQUIRE(pss == &ss);
     REQUIRE(ss.str() == "{}");

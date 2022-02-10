@@ -4,7 +4,7 @@
 
 using namespace tensorwrapper::ta_helpers;
 using scalar_types = std::tuple<float, double>;
-using idx_type     = tensorwrapper::sparse_map::ElementIndex;
+using idx_type     = tensorwrapper::sparse_map::Index;
 
 TEST_CASE("is_empty_slice_") {
     using namespace tensorwrapper::ta_helpers::detail_;
@@ -24,7 +24,7 @@ TEST_CASE("is_empty_slice_") {
 
 TEST_CASE("get_slice_tile_indices_") {
     using namespace tensorwrapper::ta_helpers::detail_;
-    using tile_idx = tensorwrapper::sparse_map::TileIndex;
+    using tile_idx = tensorwrapper::sparse_map::Index;
 
     SECTION("vector") {
         TA::TiledRange tr{{0, 2, 4}};

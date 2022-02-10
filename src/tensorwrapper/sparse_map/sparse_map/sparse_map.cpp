@@ -14,8 +14,9 @@ SparseMap::SparseMap(il_t il) : SparseMap() {
         for(const auto& dep : v) add_to_domain(k, dep);
 }
 
-SparseMap::SparseMap(const SparseMap& rhs) :
-  m_pimpl_(std::make_unique<pimpl_type>(rhs.pimpl_())) {}
+SparseMap::SparseMap(const SparseMap& rhs) : SparseMap() {
+    if(rhs.m_pimpl_) m_pimpl_ = std::make_unique<pimpl_type>(rhs.pimpl_());
+}
 
 SparseMap::SparseMap(SparseMap&&) noexcept = default;
 
