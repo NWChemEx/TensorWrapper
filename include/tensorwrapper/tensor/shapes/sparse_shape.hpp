@@ -43,7 +43,7 @@ public:
     using typename base_type::pointer_type;
 
     /// Type of the sparse map taken as input
-    using sparse_map_type = sparse_map::SparseMapEE;
+    using sparse_map_type = sparse_map::SparseMap;
 
     /// Type of a read-only reference to the sparse map the shape is using
     using const_sparse_map_reference = const sparse_map_type&;

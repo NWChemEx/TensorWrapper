@@ -2,6 +2,7 @@
 #include "tensorwrapper/sparse_map/index.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 #include "tensorwrapper/ta_helpers/get_block_idx.hpp"
+#include "tiling_map_index.hpp"
 #include <TiledArray/conversions/make_array.h>
 #include <algorithm>
 #include <iterator>
@@ -27,8 +28,7 @@ namespace detail_ {
  *                       uninjected index. Strong throw guarantee.
  */
 inline auto uninject_index_(
-  const ElementIndex& idx,
-  const std::map<std::size_t, std::size_t>& injections) {
+  const Index& idx, const std::map<std::size_t, std::size_t>& injections) {
     const auto r = idx.size();
     if(injections.empty()) return idx;
     for(const auto& [k, v] : injections)
@@ -43,7 +43,7 @@ inline auto uninject_index_(
             ++counter;
         }
     }
-    return ElementIndex(std::move(uninjected_idx));
+    return Index(std::move(uninjected_idx));
 }
 
 /** @brief Fills in the provided ToT tile.
@@ -62,9 +62,7 @@ inline auto uninject_index_(
  * @return The ToT tile after filling it in.
  */
 template<typename TileType, typename T>
-auto make_tot_tile_(TileType tile,
-                    const SparseMap<ElementIndex, ElementIndex>& sm,
-                    const T& tensor,
+auto make_tot_tile_(TileType tile, const SparseMap& sm, const T& tensor,
                     const std::map<std::size_t, std::size_t>& ind2mode = {}) {
     using inner_tile_t = typename std::decay_t<TileType>::value_type;
 
@@ -76,9 +74,9 @@ auto make_tot_tile_(TileType tile,
     // Move allocations out of loops
     std::map<std::size_t, std::size_t> injections; // Map for injections
 
-    for(const auto& oeidx_v :
-        tile.range()) { // Loop over outer-elemental indices
-        const ElementIndex oeidx(oeidx_v.begin(), oeidx_v.end());
+    // Loop over outer-elemental indices
+    for(const auto& oeidx_v : tile.range()) {
+        const Index oeidx(oeidx_v.begin(), oeidx_v.end());
 
         // Handle scenario where independent index has no domain
         if(!sm.count(oeidx)) {
@@ -93,7 +91,7 @@ auto make_tot_tile_(TileType tile,
         // TODO: This is just a copy of d if do_inj == false
         for(const auto& [k, v] : ind2mode) injections[v] = oeidx[k];
         auto injected_d = d.inject(injections);
-        Domain<TileIndex> tdomain(trange, injected_d);
+        auto tdomain    = detail_::tile_domain(injected_d, trange);
 
         for(const auto& itidx : tdomain) { // Loop over inner-tile indices
             if(tensor.is_zero(itidx)) continue;
@@ -142,8 +140,8 @@ auto make_tot_tile_(TileType tile,
  * @return The tensor-of-tensors resulting from applying @p esm to @p tensor.
  */
 template<typename T>
-auto from_sparse_map(const SparseMap<ElementIndex, ElementIndex>& esm,
-                     const T& tensor, const TA::TiledRange outer_trange,
+auto from_sparse_map(const SparseMap& esm, const T& tensor,
+                     const TA::TiledRange outer_trange,
                      const std::map<std::size_t, std::size_t>& ind2mode = {}) {
     using scalar_type = typename T::scalar_type;
     using tot_type =
@@ -152,93 +150,16 @@ auto from_sparse_map(const SparseMap<ElementIndex, ElementIndex>& esm,
     if(esm.dep_rank() + ind2mode.size() != tensor.trange().rank())
         throw std::runtime_error("Ranks don't work out.");
 
-    SparseMap<TileIndex, ElementIndex> tesm(outer_trange, esm);
-    auto l = [=](auto& tile, const auto& range) {
+    auto tesm = detail_::tile_independent_indices(esm, outer_trange);
+    auto l    = [=](auto& tile, const auto& range) {
         using tile_type = std::decay_t<decltype(tile)>;
         auto otidx      = ta_helpers::get_block_idx(outer_trange, range);
-        if(!tesm.count(TileIndex(otidx.begin(), otidx.end()))) return 0.0;
+        if(!tesm.count(Index(otidx.begin(), otidx.end()))) return 0.0;
         tile = detail_::make_tot_tile_(tile_type(range), esm, tensor, ind2mode);
         return tile.norm();
     };
 
     return TA::make_array<tot_type>(tensor.world(), outer_trange, l);
-}
-
-/** @brief Sparsifies a tensor according to the provided SparseMap.
- *
- *  This overload creates an element-to-element sparse map from an
- *  element-to-tile sparse map and then calls the element-to-element version.
- *
- * @tparam T The type of the tensor being sparsified, assumed to be a TiledArray
- *           tensor.
- *
- * @param[in] etsm The element-to-tile sparse map describing how to sparsify
- *                the tensor.
- * @param[in] tensor The tensor we are sparsifying.
- * @param[in] outer_trange The TiledRange for the outer tensor of the
- *            tensor-of-tensor this function is creating.
- * @param[in] ind2mode A map from independent index mode to the mode in
- *                     @p tensor it maps to.  *i.e.*, `ind2mode[i]` is the mode
- *                     of @p tensor that the `i`-th mode of an independent index
- *                     maps to.
- * @return The tensor-of-tensors resulting from applying @p etsm to @p tensor.
- */
-template<typename T>
-auto from_sparse_map(const SparseMap<ElementIndex, TileIndex>& etsm,
-                     const T& tensor, const TA::TiledRange& trange,
-                     const std::map<std::size_t, std::size_t>& ind2mode = {}) {
-    SparseMap<ElementIndex, ElementIndex> esm(etsm);
-    return from_sparse_map(esm, tensor, trange, ind2mode);
-}
-
-/** @brief Sparsifies a tensor according to the provided SparseMap.
- *
- *  This overload creates an element-to-element sparse map from an
- *  tile-to-element sparse map and then calls the element-to-element version.
- *
- * @tparam T The type of the tensor being sparsified, assumed to be a TiledArray
- *           tensor.
- *
- * @param[in] tesm The tile-to-element sparse map describing how to sparsify
- *                 the tensor.
- * @param[in] tensor The tensor we are sparsifying.
- * @param[in] ind2mode A map from independent index mode to the mode in
- *                     @p tensor it maps to.  *i.e.*, `ind2mode[i]` is the mode
- *                     of @p tensor that the `i`-th mode of an independent index
- *                     maps to.
- * @return The tensor-of-tensors resulting from applying @p tesm to @p tensor.
- */
-template<typename T>
-auto from_sparse_map(const SparseMap<TileIndex, ElementIndex>& tesm,
-                     const T& tensor,
-                     const std::map<std::size_t, std::size_t>& ind2mode = {}) {
-    SparseMap<ElementIndex, ElementIndex> esm(tesm);
-    return from_sparse_map(esm, tensor, tesm.trange(), ind2mode);
-}
-
-/** @brief Sparsifies a tensor according to the provided SparseMap.
- *
- *  This overload creates an element-to-element sparse map from an
- *  tile-to-tile sparse map and then calls the element-to-element version.
- *
- * @tparam T The type of the tensor being sparsified, assumed to be a TiledArray
- *           tensor.
- *
- * @param[in] tsm The tile-to-tile sparse map describing how to sparsify
- *                the tensor.
- * @param[in] tensor The tensor we are sparsifying.
- * @param[in] ind2mode A map from independent index mode to the mode in
- *                     @p tensor it maps to.  *i.e.*, `ind2mode[i]` is the mode
- *                     of @p tensor that the `i`-th mode of an independent index
- *                     maps to.
- * @return The tensor-of-tensors resulting from applying @p tsm to @p tensor.
- */
-template<typename T>
-auto from_sparse_map(const SparseMap<TileIndex, TileIndex>& tsm,
-                     const T& tensor,
-                     const std::map<std::size_t, std::size_t>& ind2mode = {}) {
-    SparseMap<ElementIndex, ElementIndex> esm(tsm);
-    return from_sparse_map(esm, tensor, tsm.trange(), ind2mode);
 }
 
 } // namespace tensorwrapper::sparse_map

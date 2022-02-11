@@ -157,7 +157,7 @@ typename PIMPL_TYPE::size_type PIMPL_TYPE::size() const {
 template<typename FieldType>
 typename PIMPL_TYPE::pimpl_pointer PIMPL_TYPE::slice(
   const il_type& lo, const il_type& hi, allocator_pointer p) const {
-    sparse_map::ElementIndex low(lo), high(hi);
+    sparse_map::Index low(lo), high(hi);
     auto l = [=](auto&& arg) {
         using clean_t         = std::decay_t<decltype(arg)>;
         constexpr bool is_tot = TensorTraits<clean_t>::is_tot;

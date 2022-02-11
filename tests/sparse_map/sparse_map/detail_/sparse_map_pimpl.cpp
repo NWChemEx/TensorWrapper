@@ -5,10 +5,6 @@
 using namespace tensorwrapper::sparse_map;
 using namespace tensorwrapper::sparse_map::detail_;
 
-using index_list = std::tuple<
-  std::pair<ElementIndex, ElementIndex>, std::pair<ElementIndex, TileIndex>,
-  std::pair<TileIndex, ElementIndex>, std::pair<TileIndex, TileIndex>>;
-
 /* General notes on testing:
  *
  * - We know that the Domain class works from unit testing it. We use a variety
@@ -18,16 +14,11 @@ using index_list = std::tuple<
  *
  */
 
-TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
-    using ind_idx_t = std::tuple_element_t<0, TestType>;
-    using dep_idx_t = std::tuple_element_t<1, TestType>;
-    using pimpl_t   = SparseMapPIMPL<ind_idx_t, dep_idx_t>;
-    using domain_t  = Domain<dep_idx_t>;
+TEST_CASE("SparseMapPIMPL") {
+    Index i0{}, i1{1}, i12{2}, i2{1, 2}, i22{2, 3};
+    Index d0{}, d1{1}, d12{2}, d2{1, 2}, d22{2, 3};
 
-    ind_idx_t i0{}, i1{1}, i12{2}, i2{1, 2}, i22{2, 3};
-    dep_idx_t d0{}, d1{1}, d12{2}, d2{1, 2}, d22{2, 3};
-
-    std::map<std::string, pimpl_t> sms;
+    std::map<std::string, SparseMapPIMPL> sms;
     sms["Empty"];
     sms["Ind == rank 0"].add_to_domain(i0, d1);
     sms["Ind == rank 0"].add_to_domain(i0, d12);
@@ -36,23 +27,21 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
     sms["Ind == rank 2"].add_to_domain(i22, d22);
 
     SECTION("Typedefs") {
-        using traits = SparseMapTraits<SparseMap<ind_idx_t, dep_idx_t>>;
-
         SECTION("size_type") {
-            using corr_t = typename traits::size_type;
-            using the_t  = typename pimpl_t::size_type;
+            using corr_t = std::size_t;
+            using the_t  = SparseMapPIMPL::size_type;
             STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
         }
 
         SECTION("key_type") {
-            using corr_t = typename traits::key_type;
-            using the_t  = typename pimpl_t::key_type;
+            using corr_t = Index;
+            using the_t  = SparseMapPIMPL::key_type;
             STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
         }
 
         SECTION("mapped_type") {
-            using corr_t = typename traits::mapped_type;
-            using the_t  = typename pimpl_t::mapped_type;
+            using corr_t = Domain;
+            using the_t  = SparseMapPIMPL::mapped_type;
             STATIC_REQUIRE(std::is_same_v<corr_t, the_t>);
         }
     }
@@ -65,13 +54,46 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             REQUIRE(sm.dep_rank() == 0);
         }
 
-        SECTION("clone") {
-            for(const auto& [k, v] : sms) {
-                SECTION(k) {
-                    auto psm = v.clone();
-                    REQUIRE(*psm == v);
-                }
+        SECTION("Copy Ctor") {
+            SparseMapPIMPL p0;
+            p0.add_to_domain(i1, d1);
+            SparseMapPIMPL p1(p0);
+            REQUIRE(p0 == p1);
+            SECTION("Is deep copy") {
+                p0.add_to_domain(i12, d12);
+                REQUIRE_THROWS_AS(p1.at(1), std::out_of_range);
             }
+        }
+
+        SECTION("Copy Assignment") {
+            SparseMapPIMPL p0, p1;
+            p0.add_to_domain(i1, d1);
+            auto pp1 = &(p1 = p0);
+            SECTION("Returns *this") { REQUIRE(pp1 == &p1); }
+            REQUIRE(p0 == p1);
+            SECTION("Is deep copy") {
+                p0.add_to_domain(i12, d12);
+                REQUIRE_THROWS_AS(p1.at(1), std::out_of_range);
+            }
+        }
+
+        SECTION("Move Ctor") {
+            SparseMapPIMPL p0, p1;
+            p0.add_to_domain(i1, d1);
+            p1.add_to_domain(i1, d1);
+            SparseMapPIMPL p2(std::move(p0));
+            REQUIRE(p1 == p2);
+            REQUIRE_FALSE(p0 == p2);
+        }
+
+        SECTION("Move Assignment") {
+            SparseMapPIMPL p0, p1, p2;
+            p0.add_to_domain(i1, d1);
+            p2.add_to_domain(i1, d1);
+            auto pp1 = &(p1 = std::move(p0));
+            SECTION("Returns *this") { REQUIRE(pp1 == &p1); }
+            REQUIRE(p1 == p2);
+            REQUIRE_FALSE(p0 == p2);
         }
     } // SECTION("CTORS")
 
@@ -162,7 +184,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             REQUIRE(sm.ind_rank() == 0);
             REQUIRE(sm.dep_rank() == 0);
             REQUIRE(sm.at(0).first == i0);
-            REQUIRE(sm.at(0).second == domain_t{d0});
+            REQUIRE(sm.at(0).second == Domain{d0});
         }
 
         SECTION("Ind == rank 0") {
@@ -176,12 +198,12 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                                   std::runtime_error);
             }
             SECTION("Add to existing independent index") {
-                sm0.add_to_domain(i0, dep_idx_t{3});
+                sm0.add_to_domain(i0, Index{3});
                 REQUIRE(sm0.size() == 1);
                 REQUIRE(sm0.ind_rank() == 0);
                 REQUIRE(sm0.dep_rank() == 1);
                 REQUIRE(sm0.at(0).first == i0);
-                REQUIRE(sm0.at(0).second == domain_t{d1, d12, dep_idx_t{3}});
+                REQUIRE(sm0.at(0).second == Domain{d1, d12, Index{3}});
             }
         }
 
@@ -201,17 +223,17 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 REQUIRE(sm1.ind_rank() == 1);
                 REQUIRE(sm1.dep_rank() == 1);
                 REQUIRE(sm1.at(0).first == i1);
-                REQUIRE(sm1.at(0).second == domain_t{d1, d12});
+                REQUIRE(sm1.at(0).second == Domain{d1, d12});
             }
             SECTION("Add to non-existing independent index") {
-                sm1.add_to_domain(ind_idx_t{4}, d12);
+                sm1.add_to_domain(Index{4}, d12);
                 REQUIRE(sm1.size() == 2);
                 REQUIRE(sm1.ind_rank() == 1);
                 REQUIRE(sm1.dep_rank() == 1);
                 REQUIRE(sm1.at(0).first == i1);
-                REQUIRE(sm1.at(0).second == domain_t{d1});
-                REQUIRE(sm1.at(1).first == ind_idx_t{4});
-                REQUIRE(sm1.at(1).second == domain_t{d12});
+                REQUIRE(sm1.at(0).second == Domain{d1});
+                REQUIRE(sm1.at(1).first == Index{4});
+                REQUIRE(sm1.at(1).second == Domain{d12});
             }
         }
 
@@ -226,30 +248,30 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                                   std::runtime_error);
             }
             SECTION("Add to existing independent index") {
-                sm2.add_to_domain(i2, dep_idx_t{3, 4});
+                sm2.add_to_domain(i2, Index{3, 4});
                 REQUIRE(sm2.size() == 2);
                 REQUIRE(sm2.ind_rank() == 2);
                 REQUIRE(sm2.dep_rank() == 2);
                 REQUIRE(sm2.at(0).first == i2);
-                REQUIRE(sm2.at(0).second == domain_t{d2, dep_idx_t{3, 4}});
+                REQUIRE(sm2.at(0).second == Domain{d2, Index{3, 4}});
                 REQUIRE(sm2.at(1).first == i22);
-                REQUIRE(sm2.at(1).second == domain_t{d22});
+                REQUIRE(sm2.at(1).second == Domain{d22});
             }
             SECTION("Add to non-existing independent index") {
-                sm2.add_to_domain(ind_idx_t{3, 4}, d2);
-                pimpl_t corr;
+                sm2.add_to_domain(Index{3, 4}, d2);
+                SparseMapPIMPL corr;
                 corr.add_to_domain(i2, d2);
                 corr.add_to_domain(i22, d22);
-                corr.add_to_domain(ind_idx_t{3, 4}, d2);
+                corr.add_to_domain(Index{3, 4}, d2);
                 REQUIRE(sm2.size() == 3);
                 REQUIRE(sm2.ind_rank() == 2);
                 REQUIRE(sm2.dep_rank() == 2);
                 REQUIRE(sm2.at(0).first == i2);
-                REQUIRE(sm2.at(0).second == domain_t{d2});
+                REQUIRE(sm2.at(0).second == Domain{d2});
                 REQUIRE(sm2.at(1).first == i22);
-                REQUIRE(sm2.at(1).second == domain_t{d22});
-                REQUIRE(sm2.at(2).first == ind_idx_t{3, 4});
-                REQUIRE(sm2.at(2).second == domain_t{d2});
+                REQUIRE(sm2.at(1).second == Domain{d22});
+                REQUIRE(sm2.at(2).first == Index{3, 4});
+                REQUIRE(sm2.at(2).second == Domain{d2});
             }
         }
     }
@@ -265,7 +287,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             SECTION("Throws if wrong ind rank") {
                 REQUIRE_THROWS_AS(sm.at(i1), std::runtime_error);
             }
-            SECTION("Value") { REQUIRE(sm.at(i0) == domain_t{d1, d12}); }
+            SECTION("Value") { REQUIRE(sm.at(i0) == Domain{d1, d12}); }
         }
 
         SECTION("Ind == rank 1") {
@@ -274,9 +296,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 REQUIRE_THROWS_AS(sm.at(i0), std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                REQUIRE_THROWS_AS(sm.at(ind_idx_t{4}), std::out_of_range);
+                REQUIRE_THROWS_AS(sm.at(Index{4}), std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm.at(i1) == domain_t{d1}); }
+            SECTION("Value") { REQUIRE(sm.at(i1) == Domain{d1}); }
         }
 
         SECTION("Ind == rank 2") {
@@ -285,10 +307,10 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 REQUIRE_THROWS_AS(sm.at(i1), std::runtime_error);
             }
             SECTION("Throws if value is not present") {
-                ind_idx_t i23{3, 4};
+                Index i23{3, 4};
                 REQUIRE_THROWS_AS(sm.at(i23), std::out_of_range);
             }
-            SECTION("Value") { REQUIRE(sm.at(i2) == domain_t{d2}); }
+            SECTION("Value") { REQUIRE(sm.at(i2) == Domain{d2}); }
         }
 
     } // SECTION("at() const")
@@ -296,7 +318,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
     SECTION("direct_product_assign") {
         SECTION("LHS == Empty") {
             auto& lhs = sms.at("Empty");
-            pimpl_t corr;
+            SparseMapPIMPL corr;
 
             for(auto& [key, rhs] : sms) {
                 SECTION("RHS == " + key) {
@@ -322,11 +344,11 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("Value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(i0, dep_idx_t{1, 1});
-                    corr.add_to_domain(i0, dep_idx_t{1, 2});
-                    corr.add_to_domain(i0, dep_idx_t{2, 1});
-                    corr.add_to_domain(i0, dep_idx_t{2, 2});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(i0, Index{1, 1});
+                    corr.add_to_domain(i0, Index{1, 2});
+                    corr.add_to_domain(i0, Index{2, 1});
+                    corr.add_to_domain(i0, Index{2, 2});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -336,9 +358,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(i1, dep_idx_t{1, 1});
-                    corr.add_to_domain(i1, dep_idx_t{2, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(i1, Index{1, 1});
+                    corr.add_to_domain(i1, Index{2, 1});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -348,11 +370,11 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(i2, dep_idx_t{1, 1, 2});
-                    corr.add_to_domain(i2, dep_idx_t{2, 1, 2});
-                    corr.add_to_domain(i22, dep_idx_t{1, 2, 3});
-                    corr.add_to_domain(i22, dep_idx_t{2, 2, 3});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(i2, Index{1, 1, 2});
+                    corr.add_to_domain(i2, Index{2, 1, 2});
+                    corr.add_to_domain(i22, Index{1, 2, 3});
+                    corr.add_to_domain(i22, Index{2, 2, 3});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -373,9 +395,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(i1, dep_idx_t{1, 1});
-                    corr.add_to_domain(i1, dep_idx_t{1, 2});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(i1, Index{1, 1});
+                    corr.add_to_domain(i1, Index{1, 2});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -385,8 +407,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1, 1}, dep_idx_t{1, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1, 1}, Index{1, 1});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -396,9 +418,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1, 1, 2}, dep_idx_t{1, 1, 2});
-                    corr.add_to_domain(ind_idx_t{1, 2, 3}, dep_idx_t{1, 2, 3});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1, 1, 2}, Index{1, 1, 2});
+                    corr.add_to_domain(Index{1, 2, 3}, Index{1, 2, 3});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -419,11 +441,11 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(i2, dep_idx_t{1, 2, 1});
-                    corr.add_to_domain(i2, dep_idx_t{1, 2, 2});
-                    corr.add_to_domain(i22, dep_idx_t{2, 3, 1});
-                    corr.add_to_domain(i22, dep_idx_t{2, 3, 2});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(i2, Index{1, 2, 1});
+                    corr.add_to_domain(i2, Index{1, 2, 2});
+                    corr.add_to_domain(i22, Index{2, 3, 1});
+                    corr.add_to_domain(i22, Index{2, 3, 2});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -433,9 +455,9 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1, 2, 1}, dep_idx_t{1, 2, 1});
-                    corr.add_to_domain(ind_idx_t{2, 3, 1}, dep_idx_t{2, 3, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1, 2, 1}, Index{1, 2, 1});
+                    corr.add_to_domain(Index{2, 3, 1}, Index{2, 3, 1});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -445,15 +467,11 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
                 auto plhs = &(lhs.direct_product_assign(rhs));
                 SECTION("returns *this") { REQUIRE(plhs == &lhs); }
                 SECTION("value") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1, 2, 1, 2},
-                                       dep_idx_t{1, 2, 1, 2});
-                    corr.add_to_domain(ind_idx_t{1, 2, 2, 3},
-                                       dep_idx_t{1, 2, 2, 3});
-                    corr.add_to_domain(ind_idx_t{2, 3, 1, 2},
-                                       dep_idx_t{2, 3, 1, 2});
-                    corr.add_to_domain(ind_idx_t{2, 3, 2, 3},
-                                       dep_idx_t{2, 3, 2, 3});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1, 2, 1, 2}, Index{1, 2, 1, 2});
+                    corr.add_to_domain(Index{1, 2, 2, 3}, Index{1, 2, 2, 3});
+                    corr.add_to_domain(Index{2, 3, 1, 2}, Index{2, 3, 1, 2});
+                    corr.add_to_domain(Index{2, 3, 2, 3}, Index{2, 3, 2, 3});
                     REQUIRE(lhs == corr);
                 }
             }
@@ -470,7 +488,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             auto& lhs = sms.at("Empty");
 
             SECTION("RHS == empty") {
-                pimpl_t rhs;
+                SparseMapPIMPL rhs;
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
@@ -486,12 +504,12 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             }
 
             SECTION("RHS == non-empty") {
-                pimpl_t rhs;
-                rhs.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
+                SparseMapPIMPL rhs;
+                rhs.add_to_domain(Index{1}, Index{2});
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
-                    SECTION("Value") { REQUIRE(lhs == pimpl_t{}); }
+                    SECTION("Value") { REQUIRE(lhs == SparseMapPIMPL{}); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
@@ -504,24 +522,24 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
         }
 
         SECTION("LHS == non-empty") {
-            pimpl_t lhs;
-            lhs.add_to_domain(ind_idx_t{1}, dep_idx_t{1});
+            SparseMapPIMPL lhs;
+            lhs.add_to_domain(Index{1}, Index{1});
 
             SECTION("RHS same independent, single element domain") {
-                pimpl_t rhs;
-                rhs.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
+                SparseMapPIMPL rhs;
+                rhs.add_to_domain(Index{1}, Index{2});
 
                 SECTION("lhs *= rhs") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{1, 2});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{1, 2});
                     auto plhs = &(lhs *= rhs);
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{2, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{2, 1});
                     auto prhs = &(rhs *= lhs);
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
@@ -529,23 +547,23 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             }
 
             SECTION("RHS same independent, two element domain") {
-                pimpl_t rhs;
-                rhs.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
-                rhs.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
+                SparseMapPIMPL rhs;
+                rhs.add_to_domain(Index{1}, Index{2});
+                rhs.add_to_domain(Index{1}, Index{3});
 
                 SECTION("lhs *= rhs") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{1, 2});
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{1, 3});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{1, 2});
+                    corr.add_to_domain(Index{1}, Index{1, 3});
                     auto plhs = &(lhs *= rhs);
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{2, 1});
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{3, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{2, 1});
+                    corr.add_to_domain(Index{1}, Index{3, 1});
                     auto prhs = &(rhs *= lhs);
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
@@ -553,39 +571,39 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             }
 
             SECTION("RHS different independent, single element domain") {
-                pimpl_t rhs;
-                rhs.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+                SparseMapPIMPL rhs;
+                rhs.add_to_domain(Index{2}, Index{2});
 
                 SECTION("lhs *= rhs") {
                     auto plhs = &(lhs *= rhs);
-                    SECTION("Value") { REQUIRE(lhs == pimpl_t{}); }
+                    SECTION("Value") { REQUIRE(lhs == SparseMapPIMPL{}); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs *= lhs") {
                     auto prhs = &(rhs *= lhs);
-                    SECTION("Value") { REQUIRE(rhs == pimpl_t{}); }
+                    SECTION("Value") { REQUIRE(rhs == SparseMapPIMPL{}); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
                 }
             }
 
             SECTION("RHS multiple independent") {
-                pimpl_t rhs;
-                rhs.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
-                rhs.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+                SparseMapPIMPL rhs;
+                rhs.add_to_domain(Index{1}, Index{2});
+                rhs.add_to_domain(Index{2}, Index{2});
 
                 SECTION("lhs * rhs") {
                     auto plhs = &(lhs *= rhs);
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{1, 2});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{1, 2});
                     SECTION("Value") { REQUIRE(lhs == corr); }
                     SECTION("Returns *this") { REQUIRE(plhs == &lhs); }
                 }
 
                 SECTION("rhs * lhs") {
                     auto prhs = &(rhs *= lhs);
-                    pimpl_t corr;
-                    corr.add_to_domain(ind_idx_t{1}, dep_idx_t{2, 1});
+                    SparseMapPIMPL corr;
+                    corr.add_to_domain(Index{1}, Index{2, 1});
                     SECTION("Value") { REQUIRE(rhs == corr); }
                     SECTION("Returns *this") { REQUIRE(prhs == &rhs); }
                 }
@@ -605,19 +623,19 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
      */
     SECTION("operator+=") {
         SECTION("Empty / Empty") {
-            pimpl_t sm, sm2;
+            SparseMapPIMPL sm, sm2;
             auto psm = &(sm += sm2);
             SECTION("Value") { REQUIRE(sm == sm2); }
             SECTION("Returns *this") { REQUIRE(psm == &sm); }
         }
 
         SECTION("Empty / Non-empty") {
-            pimpl_t sm;
-            pimpl_t sm2;
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{0});
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+            SparseMapPIMPL sm;
+            SparseMapPIMPL sm2;
+            sm2.add_to_domain(Index{1}, Index{0});
+            sm2.add_to_domain(Index{1}, Index{3});
+            sm2.add_to_domain(Index{2}, Index{1});
+            sm2.add_to_domain(Index{2}, Index{2});
             SECTION("sm += sm2") {
                 auto psm = &(sm += sm2);
                 REQUIRE(sm == sm2);
@@ -632,34 +650,34 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
         }
 
         SECTION("Non-empty / Non-empty") {
-            pimpl_t sm;
-            sm.add_to_domain(ind_idx_t{1}, dep_idx_t{0});
-            sm.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
-            sm.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            sm.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+            SparseMapPIMPL sm;
+            sm.add_to_domain(Index{1}, Index{0});
+            sm.add_to_domain(Index{1}, Index{3});
+            sm.add_to_domain(Index{2}, Index{1});
+            sm.add_to_domain(Index{2}, Index{2});
 
             SECTION("Compatible") {
-                pimpl_t sm2;
-                sm2.add_to_domain(ind_idx_t{0}, dep_idx_t{0});
-                sm2.add_to_domain(ind_idx_t{0}, dep_idx_t{3});
-                sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{1});
-                sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
-                sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-                sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
-                sm2.add_to_domain(ind_idx_t{3}, dep_idx_t{1});
-                sm2.add_to_domain(ind_idx_t{3}, dep_idx_t{2});
+                SparseMapPIMPL sm2;
+                sm2.add_to_domain(Index{0}, Index{0});
+                sm2.add_to_domain(Index{0}, Index{3});
+                sm2.add_to_domain(Index{1}, Index{1});
+                sm2.add_to_domain(Index{1}, Index{2});
+                sm2.add_to_domain(Index{2}, Index{1});
+                sm2.add_to_domain(Index{2}, Index{2});
+                sm2.add_to_domain(Index{3}, Index{1});
+                sm2.add_to_domain(Index{3}, Index{2});
 
-                pimpl_t corr;
-                corr.add_to_domain(ind_idx_t{0}, dep_idx_t{0});
-                corr.add_to_domain(ind_idx_t{0}, dep_idx_t{3});
-                corr.add_to_domain(ind_idx_t{1}, dep_idx_t{0});
-                corr.add_to_domain(ind_idx_t{1}, dep_idx_t{1});
-                corr.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
-                corr.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
-                corr.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-                corr.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
-                corr.add_to_domain(ind_idx_t{3}, dep_idx_t{1});
-                corr.add_to_domain(ind_idx_t{3}, dep_idx_t{2});
+                SparseMapPIMPL corr;
+                corr.add_to_domain(Index{0}, Index{0});
+                corr.add_to_domain(Index{0}, Index{3});
+                corr.add_to_domain(Index{1}, Index{0});
+                corr.add_to_domain(Index{1}, Index{1});
+                corr.add_to_domain(Index{1}, Index{2});
+                corr.add_to_domain(Index{1}, Index{3});
+                corr.add_to_domain(Index{2}, Index{1});
+                corr.add_to_domain(Index{2}, Index{2});
+                corr.add_to_domain(Index{3}, Index{1});
+                corr.add_to_domain(Index{3}, Index{2});
                 SECTION("sm += sm2") {
                     auto psm = &(sm += sm2);
                     SECTION("Value") { REQUIRE(sm == corr); }
@@ -678,20 +696,20 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
             }
 
             SECTION("Incompatible independent indices") {
-                pimpl_t incompatible;
-                incompatible.add_to_domain(ind_idx_t{1, 2}, dep_idx_t{0});
-                incompatible.add_to_domain(ind_idx_t{1, 2}, dep_idx_t{3});
-                incompatible.add_to_domain(ind_idx_t{2, 3}, dep_idx_t{1});
-                incompatible.add_to_domain(ind_idx_t{2, 3}, dep_idx_t{2});
+                SparseMapPIMPL incompatible;
+                incompatible.add_to_domain(Index{1, 2}, Index{0});
+                incompatible.add_to_domain(Index{1, 2}, Index{3});
+                incompatible.add_to_domain(Index{2, 3}, Index{1});
+                incompatible.add_to_domain(Index{2, 3}, Index{2});
                 REQUIRE_THROWS_AS(sm += incompatible, std::runtime_error);
             }
 
             SECTION("Incompatible dependent indices") {
-                pimpl_t incompatible;
-                incompatible.add_to_domain(ind_idx_t{1}, dep_idx_t{0, 1});
-                incompatible.add_to_domain(ind_idx_t{1}, dep_idx_t{3, 4});
-                incompatible.add_to_domain(ind_idx_t{2}, dep_idx_t{1, 2});
-                incompatible.add_to_domain(ind_idx_t{2}, dep_idx_t{2, 3});
+                SparseMapPIMPL incompatible;
+                incompatible.add_to_domain(Index{1}, Index{0, 1});
+                incompatible.add_to_domain(Index{1}, Index{3, 4});
+                incompatible.add_to_domain(Index{2}, Index{1, 2});
+                incompatible.add_to_domain(Index{2}, Index{2, 3});
                 REQUIRE_THROWS_AS(sm += incompatible, std::runtime_error);
             }
         }
@@ -699,52 +717,52 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
     SECTION("operator^=") {
         SECTION("Empty / Empty") {
-            pimpl_t sm;
+            SparseMapPIMPL sm;
             auto psm = &(sm ^= sm);
-            SECTION("Value") { REQUIRE(sm == pimpl_t{}); }
+            SECTION("Value") { REQUIRE(sm == SparseMapPIMPL{}); }
             SECTION("Returns *this") { REQUIRE(psm == &sm); }
         }
 
         SECTION("Empty / Non-empty") {
-            pimpl_t sm;
-            pimpl_t sm2;
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{0});
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+            SparseMapPIMPL sm;
+            SparseMapPIMPL sm2;
+            sm2.add_to_domain(Index{1}, Index{0});
+            sm2.add_to_domain(Index{1}, Index{3});
+            sm2.add_to_domain(Index{2}, Index{1});
+            sm2.add_to_domain(Index{2}, Index{2});
 
             SECTION("sm ^= sm2") {
                 auto psm = &(sm ^= sm2);
-                SECTION("Value") { REQUIRE(sm == pimpl_t{}); }
+                SECTION("Value") { REQUIRE(sm == SparseMapPIMPL{}); }
                 SECTION("Returns *this") { REQUIRE(psm == &sm); }
             }
 
             SECTION("sm2 ^= sm") {
                 auto psm2 = &(sm2 ^= sm);
-                SECTION("Value") { REQUIRE(sm2 == pimpl_t{}); }
+                SECTION("Value") { REQUIRE(sm2 == SparseMapPIMPL{}); }
                 SECTION("Returns *this") { REQUIRE(psm2 == &sm2); }
             }
         }
 
         SECTION("Non-empty / Non-empty") {
-            pimpl_t sm;
-            sm.add_to_domain(ind_idx_t{1}, dep_idx_t{0});
-            sm.add_to_domain(ind_idx_t{1}, dep_idx_t{3});
-            sm.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            sm.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
-            pimpl_t sm2;
-            sm2.add_to_domain(ind_idx_t{0}, dep_idx_t{0});
-            sm2.add_to_domain(ind_idx_t{0}, dep_idx_t{3});
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{1});
-            sm2.add_to_domain(ind_idx_t{1}, dep_idx_t{2});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            sm2.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
-            sm2.add_to_domain(ind_idx_t{3}, dep_idx_t{1});
-            sm2.add_to_domain(ind_idx_t{3}, dep_idx_t{2});
+            SparseMapPIMPL sm;
+            sm.add_to_domain(Index{1}, Index{0});
+            sm.add_to_domain(Index{1}, Index{3});
+            sm.add_to_domain(Index{2}, Index{1});
+            sm.add_to_domain(Index{2}, Index{2});
+            SparseMapPIMPL sm2;
+            sm2.add_to_domain(Index{0}, Index{0});
+            sm2.add_to_domain(Index{0}, Index{3});
+            sm2.add_to_domain(Index{1}, Index{1});
+            sm2.add_to_domain(Index{1}, Index{2});
+            sm2.add_to_domain(Index{2}, Index{1});
+            sm2.add_to_domain(Index{2}, Index{2});
+            sm2.add_to_domain(Index{3}, Index{1});
+            sm2.add_to_domain(Index{3}, Index{2});
 
-            pimpl_t corr;
-            corr.add_to_domain(ind_idx_t{2}, dep_idx_t{1});
-            corr.add_to_domain(ind_idx_t{2}, dep_idx_t{2});
+            SparseMapPIMPL corr;
+            corr.add_to_domain(Index{2}, Index{1});
+            corr.add_to_domain(Index{2}, Index{2});
 
             SECTION("sm ^= sm2") {
                 auto psm = &(sm ^= sm2);
@@ -766,7 +784,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
             SECTION("different ranks") {
                 auto psm = &(sm ^= sms.at("Ind == rank 2"));
-                SECTION("Value") { REQUIRE(sm == pimpl_t{}); }
+                SECTION("Value") { REQUIRE(sm == SparseMapPIMPL{}); }
                 SECTION("Returns *this") { REQUIRE(psm == &sm); }
             }
         }
@@ -774,8 +792,8 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
     SECTION("comparisons") {
         SECTION("Empty == Empty") {
-            REQUIRE(sms.at("Empty") == pimpl_t{});
-            REQUIRE_FALSE(sms.at("Empty") != pimpl_t{});
+            REQUIRE(sms.at("Empty") == SparseMapPIMPL{});
+            REQUIRE_FALSE(sms.at("Empty") != SparseMapPIMPL{});
         }
 
         SECTION("Empty != non-empty") {
@@ -792,25 +810,25 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto copy = lhs.clone();
-            REQUIRE(lhs == *copy);
-            REQUIRE_FALSE(lhs != *copy);
+            SparseMapPIMPL copy(lhs);
+            REQUIRE(lhs == copy);
+            REQUIRE_FALSE(lhs != copy);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto copy = lhs.clone();
-            copy->add_to_domain(i0, dep_idx_t{3});
-            REQUIRE_FALSE(lhs == *copy);
-            REQUIRE(lhs != *copy);
+            SparseMapPIMPL copy(lhs);
+            copy.add_to_domain(i0, Index{3});
+            REQUIRE_FALSE(lhs == copy);
+            REQUIRE(lhs != copy);
         }
 
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
-            auto copy = lhs.clone();
-            copy->add_to_domain(ind_idx_t{3}, dep_idx_t{3});
-            REQUIRE_FALSE(lhs == *copy);
-            REQUIRE(lhs != *copy);
+            SparseMapPIMPL copy(lhs);
+            copy.add_to_domain(Index{3}, Index{3});
+            REQUIRE_FALSE(lhs == copy);
+            REQUIRE(lhs != copy);
         }
     }
 
@@ -837,7 +855,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
         using tensorwrapper::detail_::hash_objects;
         SECTION("Empty == Empty") {
             auto h  = hash_objects(sms.at("Empty"));
-            auto h2 = hash_objects(pimpl_t{});
+            auto h2 = hash_objects(SparseMapPIMPL{});
             REQUIRE(h == h2);
         }
 
@@ -855,25 +873,26 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
 
         SECTION("Same non-empty") {
             auto& lhs = sms.at("Ind == rank 0");
-            auto h    = hash_objects(lhs);
-            auto h2   = hash_objects(*(lhs.clone()));
+            SparseMapPIMPL copy(lhs);
+            auto h  = hash_objects(lhs);
+            auto h2 = hash_objects(copy);
             REQUIRE(h == h2);
         }
 
         SECTION("Domain is subset/superset") {
             auto& lhs = sms.at("Ind == rank 0");
             auto h    = hash_objects(lhs);
-            auto copy = lhs.clone();
-            copy->add_to_domain(i0, dep_idx_t{3});
-            auto h2 = hash_objects(*copy);
+            SparseMapPIMPL copy(lhs);
+            copy.add_to_domain(i0, Index{3});
+            auto h2 = hash_objects(copy);
             REQUIRE(h != h2);
         }
 
         SECTION("Different independent indices") {
             auto& lhs = sms.at("Ind == rank 1");
             auto h    = hash_objects(lhs);
-            auto copy = lhs.clone();
-            copy->add_to_domain(ind_idx_t{3}, dep_idx_t{3});
+            SparseMapPIMPL copy(lhs);
+            copy.add_to_domain(Index{3}, Index{3});
             auto h2 = hash_objects(copy);
             REQUIRE(h != h2);
         }
@@ -886,7 +905,7 @@ TEMPLATE_LIST_TEST_CASE("SparseMapPIMPL", "", index_list) {
  */
 TEST_CASE("operator<<(std::ostream, SparseMapPIMPL)") {
     std::stringstream ss;
-    SparseMapPIMPL<TileIndex, TileIndex> sm;
+    SparseMapPIMPL sm;
     auto pss = &(ss << sm);
     REQUIRE(pss == &ss);
     REQUIRE(ss.str() == "{}");

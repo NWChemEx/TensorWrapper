@@ -27,8 +27,8 @@ namespace detail_ {
  *  @throws None All checks performed in this function are assertions, which
  *               will terminate execution if they fail. No throw guarantee.
  */
-inline bool is_empty_slice_(const sparse_map::ElementIndex& lo,
-                            const sparse_map::ElementIndex& hi) {
+inline bool is_empty_slice_(const sparse_map::Index& lo,
+                            const sparse_map::Index& hi) {
     const auto rank = lo.size();
 
     // lo and hi must have same rank
@@ -69,14 +69,14 @@ inline bool is_empty_slice_(const sparse_map::ElementIndex& lo,
  *                       Strong throw guarantee.
  */
 inline auto get_slice_tile_indices_(const TA::TiledRange& tr,
-                                    const sparse_map::ElementIndex& lo,
-                                    const sparse_map::ElementIndex& hi_m1) {
+                                    const sparse_map::Index& lo,
+                                    const sparse_map::Index& hi_m1) {
     const auto temp   = get_block_idx(tr, lo);
     const auto thi_m1 = get_block_idx(tr, hi_m1);
 
     // This is the first tile we don't want
-    sparse_map::TileIndex tol(temp.begin(), temp.end());
-    sparse_map::TileIndex thi(thi_m1.begin(), thi_m1.end());
+    sparse_map::Index tol(temp.begin(), temp.end());
+    sparse_map::Index thi(thi_m1.begin(), thi_m1.end());
     for(auto& x : thi.m_index) ++x;
     return std::make_pair(tol, thi);
 }
@@ -101,8 +101,8 @@ inline auto get_slice_tile_indices_(const TA::TiledRange& tr,
  * @return The requested slice of the tensor.
  */
 template<typename TensorType>
-auto slice(const TensorType& t, const sparse_map::ElementIndex& lo,
-           const sparse_map::ElementIndex& hi) {
+auto slice(const TensorType& t, const sparse_map::Index& lo,
+           const sparse_map::Index& hi) {
     const auto& tr        = t.trange();
     const auto rank       = tr.rank();
     const auto annotation = TA::detail::dummy_annotation(rank);
@@ -117,7 +117,7 @@ auto slice(const TensorType& t, const sparse_map::ElementIndex& lo,
 
     // hi is just past the last element we want, hi "minus 1" is the last
     // element we want.
-    sparse_map::ElementIndex hi_m1(hi);
+    sparse_map::Index hi_m1(hi);
     for(auto& x : hi_m1) x -= 1;
     TA_ASSERT(tr.elements_range().includes(hi_m1));
 
