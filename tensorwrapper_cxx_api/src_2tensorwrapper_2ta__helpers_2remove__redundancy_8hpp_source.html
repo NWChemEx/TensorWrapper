@@ -93,8 +93,8 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">auto</span> extents = evecs.elements_range().extent();</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::size_t hi0(extents[0]), hi1(extents[1]);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    sparse_map::ElementIndex lo{0, hi1 - n_nonzero};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    sparse_map::ElementIndex hi{hi0, hi1};</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    sparse_map::Index lo{0, hi1 - n_nonzero};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    sparse_map::Index hi{hi0, hi1};</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">auto</span> non0_evecs = slice(evecs, lo, hi);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">using</span> tensor_type = std::decay_t&lt;decltype(evecs)&gt;;</div>

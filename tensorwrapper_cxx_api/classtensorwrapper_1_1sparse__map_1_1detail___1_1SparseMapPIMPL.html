@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: tensorwrapper::sparse_map::detail_::SparseMapPIMPL&lt; IndIndex, DepIndex &gt; Class Template Reference</title>
+<title>tensorwrapper: tensorwrapper::sparse_map::detail_::SparseMapPIMPL Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,18 +62,17 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1sparse__map.html">sparse_map</a></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a></li>  </ul>
+<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><b>sparse_map</b></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">tensorwrapper::sparse_map::detail_::SparseMapPIMPL&lt; IndIndex, DepIndex &gt; Class Template Reference</div>  </div>
+<div class="title">tensorwrapper::sparse_map::detail_::SparseMapPIMPL Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -84,160 +83,113 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a30ab02de004cd6df0d6af344fbb4b8ae"><td class="memItemLeft" align="right" valign="top"><a id="a30ab02de004cd6df0d6af344fbb4b8ae"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> = typename traits_type::size_type</td></tr>
-<tr class="memdesc:a30ab02de004cd6df0d6af344fbb4b8ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for counting and offsets. <br /></td></tr>
-<tr class="separator:a30ab02de004cd6df0d6af344fbb4b8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a424b03fbf4f53f6d0b74da145bf9a77b"><td class="memItemLeft" align="right" valign="top"><a id="a424b03fbf4f53f6d0b74da145bf9a77b"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> = typename traits_type::key_type</td></tr>
-<tr class="memdesc:a424b03fbf4f53f6d0b74da145bf9a77b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the independent indices stored in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. <br /></td></tr>
-<tr class="separator:a424b03fbf4f53f6d0b74da145bf9a77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60316bd5374e7a5081272c6cecca4023"><td class="memItemLeft" align="right" valign="top"><a id="a60316bd5374e7a5081272c6cecca4023"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a60316bd5374e7a5081272c6cecca4023">mapped_type</a> = typename traits_type::mapped_type</td></tr>
-<tr class="memdesc:a60316bd5374e7a5081272c6cecca4023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the dependent index containing Domains. <br /></td></tr>
-<tr class="separator:a60316bd5374e7a5081272c6cecca4023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f6b74882d131d72cfe6ad447c63206"><td class="memItemLeft" align="right" valign="top"><a id="a17f6b74882d131d72cfe6ad447c63206"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a> = std::size_t</td></tr>
+<tr class="memdesc:a17f6b74882d131d72cfe6ad447c63206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for counting and offsets. <br /></td></tr>
+<tr class="separator:a17f6b74882d131d72cfe6ad447c63206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fac1ee4c438311ca3bf8f0579aad223"><td class="memItemLeft" align="right" valign="top"><a id="a0fac1ee4c438311ca3bf8f0579aad223"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> = <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">Index</a></td></tr>
+<tr class="memdesc:a0fac1ee4c438311ca3bf8f0579aad223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the independent indices stored in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. <br /></td></tr>
+<tr class="separator:a0fac1ee4c438311ca3bf8f0579aad223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f2f56307587d652058c2e07a7d6009d"><td class="memItemLeft" align="right" valign="top"><a id="a2f2f56307587d652058c2e07a7d6009d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a2f2f56307587d652058c2e07a7d6009d">mapped_type</a> = <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html">Domain</a></td></tr>
+<tr class="memdesc:a2f2f56307587d652058c2e07a7d6009d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the dependent index containing Domains. <br /></td></tr>
+<tr class="separator:a2f2f56307587d652058c2e07a7d6009d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1136b71c2325e6087ac2d7387f73ee4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ae1136b71c2325e6087ac2d7387f73ee4">SparseMapPIMPL</a> ()=default</td></tr>
-<tr class="memdesc:ae1136b71c2325e6087ac2d7387f73ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ae1136b71c2325e6087ac2d7387f73ee4">More...</a><br /></td></tr>
-<tr class="separator:ae1136b71c2325e6087ac2d7387f73ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7191b2d26eb3429bdf96b205961f920"><td class="memItemLeft" align="right" valign="top"><a id="aa7191b2d26eb3429bdf96b205961f920"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aa7191b2d26eb3429bdf96b205961f920">~SparseMapPIMPL</a> ()=default</td></tr>
-<tr class="memdesc:aa7191b2d26eb3429bdf96b205961f920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default polymorphic dtor. <br /></td></tr>
-<tr class="separator:aa7191b2d26eb3429bdf96b205961f920"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ddf763e52d39597a19a343bc5b45a92"><td class="memItemLeft" align="right" valign="top"><a id="a6ddf763e52d39597a19a343bc5b45a92"></a>
-std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clone</b> () const</td></tr>
-<tr class="separator:a6ddf763e52d39597a19a343bc5b45a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fcb5747f4f68de994a3b0bffba775be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be">size</a> () const noexcept</td></tr>
-<tr class="memdesc:a9fcb5747f4f68de994a3b0bffba775be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be">More...</a><br /></td></tr>
-<tr class="separator:a9fcb5747f4f68de994a3b0bffba775be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a72fbfc65ab23706d34273dad65d7db"><td class="memItemLeft" align="right" valign="top"><a id="a2a72fbfc65ab23706d34273dad65d7db"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>count</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;ind) const noexcept</td></tr>
-<tr class="separator:a2a72fbfc65ab23706d34273dad65d7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8ceba62588cd8a89dd0c1f065adac88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88">ind_rank</a> () const noexcept</td></tr>
-<tr class="memdesc:af8ceba62588cd8a89dd0c1f065adac88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rank of the independent indices.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88">More...</a><br /></td></tr>
-<tr class="separator:af8ceba62588cd8a89dd0c1f065adac88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c2dbd780ed373cef507923d80ebdbae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a8c2dbd780ed373cef507923d80ebdbae">dep_rank</a> () const noexcept</td></tr>
-<tr class="memdesc:a8c2dbd780ed373cef507923d80ebdbae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of independent modes associated with each <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a8c2dbd780ed373cef507923d80ebdbae">More...</a><br /></td></tr>
-<tr class="separator:a8c2dbd780ed373cef507923d80ebdbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a062137fa39a5a86d95c48abff85b21d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a062137fa39a5a86d95c48abff85b21d4">add_to_domain</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;ind, const DepIndex &amp;dep)</td></tr>
-<tr class="memdesc:a062137fa39a5a86d95c48abff85b21d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a dependent index to an independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a062137fa39a5a86d95c48abff85b21d4">More...</a><br /></td></tr>
-<tr class="separator:a062137fa39a5a86d95c48abff85b21d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee5cf73b5b83c0c8081c2ef5bd0d4c15"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aee5cf73b5b83c0c8081c2ef5bd0d4c15">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> i)</td></tr>
-<tr class="memdesc:aee5cf73b5b83c0c8081c2ef5bd0d4c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i-th</code> std::pair&lt;IndIndex, Domain&lt;DepIndex&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aee5cf73b5b83c0c8081c2ef5bd0d4c15">More...</a><br /></td></tr>
-<tr class="separator:aee5cf73b5b83c0c8081c2ef5bd0d4c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed63415e4263d26550dfd6e8a78c01f4"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aed63415e4263d26550dfd6e8a78c01f4">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> i) const</td></tr>
-<tr class="memdesc:aed63415e4263d26550dfd6e8a78c01f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i-th</code> std::pair&lt;IndIndex, Domain&lt;DepIndex&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aed63415e4263d26550dfd6e8a78c01f4">More...</a><br /></td></tr>
-<tr class="separator:aed63415e4263d26550dfd6e8a78c01f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a248b26b32d880b550c72de31f792252a"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a248b26b32d880b550c72de31f792252a">at</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;ind) const</td></tr>
-<tr class="memdesc:a248b26b32d880b550c72de31f792252a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with the specified independent index.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a248b26b32d880b550c72de31f792252a">More...</a><br /></td></tr>
-<tr class="separator:a248b26b32d880b550c72de31f792252a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d74429e474a0a54bf8ec93f96bc7f2c"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0d74429e474a0a54bf8ec93f96bc7f2c">direct_product_assign</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a0d74429e474a0a54bf8ec93f96bc7f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> and another <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0d74429e474a0a54bf8ec93f96bc7f2c">More...</a><br /></td></tr>
-<tr class="separator:a0d74429e474a0a54bf8ec93f96bc7f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a871c21fcb250f16243859c398601896b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a871c21fcb250f16243859c398601896b">operator*=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a871c21fcb250f16243859c398601896b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> with domains given by the Cartesian product of the Domains previously in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> with the Domains in <code>rhs</code>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a871c21fcb250f16243859c398601896b">More...</a><br /></td></tr>
-<tr class="separator:a871c21fcb250f16243859c398601896b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846d1eeabe9b6a5c07e17dacd3b3e7ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a846d1eeabe9b6a5c07e17dacd3b3e7ce">operator+=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a846d1eeabe9b6a5c07e17dacd3b3e7ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this to the union of this and another map.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a846d1eeabe9b6a5c07e17dacd3b3e7ce">More...</a><br /></td></tr>
-<tr class="separator:a846d1eeabe9b6a5c07e17dacd3b3e7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46dba3019d4455fba551e49032213da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a46dba3019d4455fba551e49032213da3">operator^=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a46dba3019d4455fba551e49032213da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> and another map.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a46dba3019d4455fba551e49032213da3">More...</a><br /></td></tr>
-<tr class="separator:a46dba3019d4455fba551e49032213da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2e1e7a8be5d0e1bef84d7f220b3ca37"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ab2e1e7a8be5d0e1bef84d7f220b3ca37">operator==</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs) const noexcept</td></tr>
-<tr class="memdesc:ab2e1e7a8be5d0e1bef84d7f220b3ca37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if two SparseMaps are identical.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ab2e1e7a8be5d0e1bef84d7f220b3ca37">More...</a><br /></td></tr>
-<tr class="separator:ab2e1e7a8be5d0e1bef84d7f220b3ca37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5730644273e5bc2afb8a8cb1a2cf4a5a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5730644273e5bc2afb8a8cb1a2cf4a5a">print</a> (std::ostream &amp;os) const</td></tr>
-<tr class="memdesc:a5730644273e5bc2afb8a8cb1a2cf4a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the stream.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5730644273e5bc2afb8a8cb1a2cf4a5a">More...</a><br /></td></tr>
-<tr class="separator:a5730644273e5bc2afb8a8cb1a2cf4a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125d9d716dc2ad19d108c2c1f351461a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a125d9d716dc2ad19d108c2c1f351461a">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a125d9d716dc2ad19d108c2c1f351461a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>'s state to a hash.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a125d9d716dc2ad19d108c2c1f351461a">More...</a><br /></td></tr>
-<tr class="separator:a125d9d716dc2ad19d108c2c1f351461a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a7671624dc6181b9193a4c3035d6051dd"><td class="memItemLeft" align="right" valign="top"><a id="a7671624dc6181b9193a4c3035d6051dd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SparseMapPIMPL</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)=default</td></tr>
-<tr class="separator:a7671624dc6181b9193a4c3035d6051dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1721fb4e2be4a61c2c484a47009ec7db"><td class="memItemLeft" align="right" valign="top"><a id="a1721fb4e2be4a61c2c484a47009ec7db"></a>
+<tr class="memitem:a5ffda6740c98d60045263a3e40dc5746"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5ffda6740c98d60045263a3e40dc5746">SparseMapPIMPL</a> ()=default</td></tr>
+<tr class="memdesc:a5ffda6740c98d60045263a3e40dc5746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5ffda6740c98d60045263a3e40dc5746">More...</a><br /></td></tr>
+<tr class="separator:a5ffda6740c98d60045263a3e40dc5746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a470b8f84d336aa8be82f90fc790f76ba"><td class="memItemLeft" align="right" valign="top"><a id="a470b8f84d336aa8be82f90fc790f76ba"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a470b8f84d336aa8be82f90fc790f76ba">SparseMapPIMPL</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)=default</td></tr>
+<tr class="memdesc:a470b8f84d336aa8be82f90fc790f76ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctors. <br /></td></tr>
+<tr class="separator:a470b8f84d336aa8be82f90fc790f76ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5277db0a05106ac30a990a0cbd1f40"><td class="memItemLeft" align="right" valign="top"><a id="a8b5277db0a05106ac30a990a0cbd1f40"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SparseMapPIMPL</b> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&amp;rhs)=default</td></tr>
-<tr class="separator:a1721fb4e2be4a61c2c484a47009ec7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24a030f09214dd8851e5af6f96f76b1d"><td class="memItemLeft" align="right" valign="top"><a id="a24a030f09214dd8851e5af6f96f76b1d"></a>
+<tr class="separator:a8b5277db0a05106ac30a990a0cbd1f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c6496516ed816031d9a85fb78b4a0e"><td class="memItemLeft" align="right" valign="top"><a id="a38c6496516ed816031d9a85fb78b4a0e"></a>
 <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)=default</td></tr>
-<tr class="separator:a24a030f09214dd8851e5af6f96f76b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7c764156caeebb9a9ee45e5597ebd34"><td class="memItemLeft" align="right" valign="top"><a id="af7c764156caeebb9a9ee45e5597ebd34"></a>
+<tr class="separator:a38c6496516ed816031d9a85fb78b4a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4633a58adb41effaaa15300832ffba86"><td class="memItemLeft" align="right" valign="top"><a id="a4633a58adb41effaaa15300832ffba86"></a>
 <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&amp;rhs)=default</td></tr>
-<tr class="separator:af7c764156caeebb9a9ee45e5597ebd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed8991e5f0b2873c4ebae8d6172c7a18"><td class="memItemLeft" align="right" valign="top"><a id="aed8991e5f0b2873c4ebae8d6172c7a18"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aed8991e5f0b2873c4ebae8d6172c7a18">add_to_domain_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;ind, const DepIndex &amp;dep)</td></tr>
-<tr class="memdesc:aed8991e5f0b2873c4ebae8d6172c7a18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement add_to_domain. <br /></td></tr>
-<tr class="separator:aed8991e5f0b2873c4ebae8d6172c7a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1538a0a9478aad2b888d4305c07f0f94"><td class="memItemLeft" align="right" valign="top"><a id="a1538a0a9478aad2b888d4305c07f0f94"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a1538a0a9478aad2b888d4305c07f0f94">dp_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a1538a0a9478aad2b888d4305c07f0f94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement direct_product_assign. <br /></td></tr>
-<tr class="separator:a1538a0a9478aad2b888d4305c07f0f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a496fbfb2a5184c3e3f3439c032c0e189"><td class="memItemLeft" align="right" valign="top"><a id="a496fbfb2a5184c3e3f3439c032c0e189"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a496fbfb2a5184c3e3f3439c032c0e189">prod_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a496fbfb2a5184c3e3f3439c032c0e189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement operator*=. <br /></td></tr>
-<tr class="separator:a496fbfb2a5184c3e3f3439c032c0e189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a341ea52308286b4292feb57005ec9a6b"><td class="memItemLeft" align="right" valign="top"><a id="a341ea52308286b4292feb57005ec9a6b"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a341ea52308286b4292feb57005ec9a6b">union_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a341ea52308286b4292feb57005ec9a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement operator+=. <br /></td></tr>
-<tr class="separator:a341ea52308286b4292feb57005ec9a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394ccfa76bbb4968468f47b46f2b2d25"><td class="memItemLeft" align="right" valign="top"><a id="a394ccfa76bbb4968468f47b46f2b2d25"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a394ccfa76bbb4968468f47b46f2b2d25">int_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a394ccfa76bbb4968468f47b46f2b2d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement operator^=. <br /></td></tr>
-<tr class="separator:a394ccfa76bbb4968468f47b46f2b2d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaa8c3e8a8e7aae335e7f1f9a47622b6"><td class="memItemLeft" align="right" valign="top"><a id="acaa8c3e8a8e7aae335e7f1f9a47622b6"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#acaa8c3e8a8e7aae335e7f1f9a47622b6">equal_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;rhs) const noexcept</td></tr>
-<tr class="memdesc:acaa8c3e8a8e7aae335e7f1f9a47622b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement operator==. <br /></td></tr>
-<tr class="separator:acaa8c3e8a8e7aae335e7f1f9a47622b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a836002330496e50deecd72cb0e2d11db"><td class="memItemLeft" align="right" valign="top"><a id="a836002330496e50deecd72cb0e2d11db"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a836002330496e50deecd72cb0e2d11db">hash_</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a836002330496e50deecd72cb0e2d11db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to implement hash. <br /></td></tr>
-<tr class="separator:a836002330496e50deecd72cb0e2d11db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a4633a58adb41effaaa15300832ffba86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2e420aea42c72eee5f100fae247cf7a"><td class="memItemLeft" align="right" valign="top"><a id="ae2e420aea42c72eee5f100fae247cf7a"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ae2e420aea42c72eee5f100fae247cf7a">~SparseMapPIMPL</a> ()=default</td></tr>
+<tr class="memdesc:ae2e420aea42c72eee5f100fae247cf7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default polymorphic dtor. <br /></td></tr>
+<tr class="separator:ae2e420aea42c72eee5f100fae247cf7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b0de8e91d6311f9117c17f8bd9ae7bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc">size</a> () const noexcept</td></tr>
+<tr class="memdesc:a9b0de8e91d6311f9117c17f8bd9ae7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc">More...</a><br /></td></tr>
+<tr class="separator:a9b0de8e91d6311f9117c17f8bd9ae7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5753b9f9a8a6b7db93e467e3f06d0ef0"><td class="memItemLeft" align="right" valign="top"><a id="a5753b9f9a8a6b7db93e467e3f06d0ef0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>count</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> &amp;ind) const noexcept</td></tr>
+<tr class="separator:a5753b9f9a8a6b7db93e467e3f06d0ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9082e1760c7fa47e31c5aee9b4671e86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86">ind_rank</a> () const noexcept</td></tr>
+<tr class="memdesc:a9082e1760c7fa47e31c5aee9b4671e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rank of the independent indices.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86">More...</a><br /></td></tr>
+<tr class="separator:a9082e1760c7fa47e31c5aee9b4671e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73aa2e676e3badb297fc583f6d14335b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a73aa2e676e3badb297fc583f6d14335b">dep_rank</a> () const noexcept</td></tr>
+<tr class="memdesc:a73aa2e676e3badb297fc583f6d14335b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of independent modes associated with each <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a73aa2e676e3badb297fc583f6d14335b">More...</a><br /></td></tr>
+<tr class="separator:a73aa2e676e3badb297fc583f6d14335b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a726be70eef1f34837703a988eb5fb117"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a726be70eef1f34837703a988eb5fb117">add_to_domain</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> &amp;ind, const <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">Index</a> &amp;dep)</td></tr>
+<tr class="memdesc:a726be70eef1f34837703a988eb5fb117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a dependent index to an independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a726be70eef1f34837703a988eb5fb117">More...</a><br /></td></tr>
+<tr class="separator:a726be70eef1f34837703a988eb5fb117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8398347d9ed178ad5aba3c46418ba4"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aaf8398347d9ed178ad5aba3c46418ba4">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a> i)</td></tr>
+<tr class="memdesc:aaf8398347d9ed178ad5aba3c46418ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i-th</code> std::pair&lt;Index, Domain&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#aaf8398347d9ed178ad5aba3c46418ba4">More...</a><br /></td></tr>
+<tr class="separator:aaf8398347d9ed178ad5aba3c46418ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f99a5e3e6d6613a563423798a7d23b0"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a6f99a5e3e6d6613a563423798a7d23b0">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a> i) const</td></tr>
+<tr class="memdesc:a6f99a5e3e6d6613a563423798a7d23b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i-th</code> std::pair&lt;Index, Domain&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a6f99a5e3e6d6613a563423798a7d23b0">More...</a><br /></td></tr>
+<tr class="separator:a6f99a5e3e6d6613a563423798a7d23b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5099f197dafd241e1ad0fdc0ca0d19e9"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5099f197dafd241e1ad0fdc0ca0d19e9">at</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> &amp;ind) const</td></tr>
+<tr class="memdesc:a5099f197dafd241e1ad0fdc0ca0d19e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with the specified independent index.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a5099f197dafd241e1ad0fdc0ca0d19e9">More...</a><br /></td></tr>
+<tr class="separator:a5099f197dafd241e1ad0fdc0ca0d19e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8cd6c9f6c36239e0148a986fbe58e6d"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8cd6c9f6c36239e0148a986fbe58e6d">direct_product_assign</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)</td></tr>
+<tr class="memdesc:af8cd6c9f6c36239e0148a986fbe58e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> and another <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8cd6c9f6c36239e0148a986fbe58e6d">More...</a><br /></td></tr>
+<tr class="separator:af8cd6c9f6c36239e0148a986fbe58e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083ed20ef4464ceee98b668d43113329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a083ed20ef4464ceee98b668d43113329">operator*=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a083ed20ef4464ceee98b668d43113329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> with domains given by the Cartesian product of the Domains previously in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> with the Domains in <code>rhs</code>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a083ed20ef4464ceee98b668d43113329">More...</a><br /></td></tr>
+<tr class="separator:a083ed20ef4464ceee98b668d43113329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b20438015823ac12074c62b686a9c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ad4b20438015823ac12074c62b686a9c2">operator+=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)</td></tr>
+<tr class="memdesc:ad4b20438015823ac12074c62b686a9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this to the union of this and another map.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#ad4b20438015823ac12074c62b686a9c2">More...</a><br /></td></tr>
+<tr class="separator:ad4b20438015823ac12074c62b686a9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add1edc89455dbf22c11e3190d288745b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#add1edc89455dbf22c11e3190d288745b">operator^=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)</td></tr>
+<tr class="memdesc:add1edc89455dbf22c11e3190d288745b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> and another map.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#add1edc89455dbf22c11e3190d288745b">More...</a><br /></td></tr>
+<tr class="separator:add1edc89455dbf22c11e3190d288745b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afebacf3a688ce46311ec0e02fc6bdd0b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#afebacf3a688ce46311ec0e02fc6bdd0b">operator==</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:afebacf3a688ce46311ec0e02fc6bdd0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if two SparseMaps are identical.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#afebacf3a688ce46311ec0e02fc6bdd0b">More...</a><br /></td></tr>
+<tr class="separator:afebacf3a688ce46311ec0e02fc6bdd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d71a7c049b25558b978066a9610c238"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9d71a7c049b25558b978066a9610c238">print</a> (std::ostream &amp;os) const</td></tr>
+<tr class="memdesc:a9d71a7c049b25558b978066a9610c238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the stream.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9d71a7c049b25558b978066a9610c238">More...</a><br /></td></tr>
+<tr class="separator:a9d71a7c049b25558b978066a9610c238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
+<tr class="memdesc:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state to a hash.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">More...</a><br /></td></tr>
+<tr class="separator:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a9b5cd194203c14c388b778c451f96692"><td class="memTemplParams" colspan="2">template&lt;typename IndIndex , typename DepIndex &gt; </td></tr>
-<tr class="memitem:a9b5cd194203c14c388b778c451f96692"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b5cd194203c14c388b778c451f96692">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;smb)</td></tr>
-<tr class="memdesc:a9b5cd194203c14c388b778c451f96692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the stream.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b5cd194203c14c388b778c451f96692">More...</a><br /></td></tr>
-<tr class="separator:a9b5cd194203c14c388b778c451f96692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99b77b36c04f8e08720de829c8f44b9f"><td class="memTemplParams" colspan="2">template&lt;typename IndIndex , typename DepIndex &gt; </td></tr>
-<tr class="memitem:a99b77b36c04f8e08720de829c8f44b9f"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a99b77b36c04f8e08720de829c8f44b9f">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;lhs, const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;rhs)</td></tr>
-<tr class="memdesc:a99b77b36c04f8e08720de829c8f44b9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if two SparseMaps are different.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a99b77b36c04f8e08720de829c8f44b9f">More...</a><br /></td></tr>
-<tr class="separator:a99b77b36c04f8e08720de829c8f44b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfbe209523044b02cbe658ebe0181c53"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#adfbe209523044b02cbe658ebe0181c53">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;smb)</td></tr>
+<tr class="memdesc:adfbe209523044b02cbe658ebe0181c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the stream.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#adfbe209523044b02cbe658ebe0181c53">More...</a><br /></td></tr>
+<tr class="separator:adfbe209523044b02cbe658ebe0181c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add8fc0f3ba93ea028a06770b95f97409"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#add8fc0f3ba93ea028a06770b95f97409">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;lhs, const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;rhs)</td></tr>
+<tr class="memdesc:add8fc0f3ba93ea028a06770b95f97409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if two SparseMaps are different.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#add8fc0f3ba93ea028a06770b95f97409">More...</a><br /></td></tr>
+<tr class="separator:add8fc0f3ba93ea028a06770b95f97409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename IndIndex, typename DepIndex&gt;<br />
-class tensorwrapper::sparse_map::detail_::SparseMapPIMPL&lt; IndIndex, DepIndex &gt;</h3>
-
-<p>Defines the API for <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html" title="Defines the API for SparseMapPIMPL instances.">SparseMapPIMPL</a> instances. </p>
-<p>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html" title="Defines the API for SparseMapPIMPL instances.">SparseMapPIMPL</a> is in charge of holding the actual state of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> and performing basic manipulations on it.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">IndIndex</td><td>The type of the independent indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> </td></tr>
-    <tr><td class="paramname">DepIndex</td><td>The type of the dependent indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> </td></tr>
-  </table>
-  </dd>
-</dl>
+<div class="textblock"><p>Defines the API for <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html" title="Defines the API for SparseMapPIMPL instances.">SparseMapPIMPL</a> instances. </p>
+<p>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html" title="Defines the API for SparseMapPIMPL instances.">SparseMapPIMPL</a> is in charge of holding the actual state of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> and performing basic manipulations on it. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae1136b71c2325e6087ac2d7387f73ee4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1136b71c2325e6087ac2d7387f73ee4">&#9670;&nbsp;</a></span>SparseMapPIMPL()</h2>
+<a id="a5ffda6740c98d60045263a3e40dc5746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ffda6740c98d60045263a3e40dc5746">&#9670;&nbsp;</a></span>SparseMapPIMPL()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> </td>
+          <td class="memname">tensorwrapper::sparse_map::detail_::SparseMapPIMPL::SparseMapPIMPL </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -250,8 +202,8 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Constructs a new empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </p>
-<p>This constructor is used to create a new <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> which contains no independent elements (and thus no dependent elements either).</p>
+<p>Constructs a new empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </p>
+<p>This constructor is used to create a new <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> which contains no independent elements (and thus no dependent elements either).</p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee </td></tr>
@@ -262,24 +214,22 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a062137fa39a5a86d95c48abff85b21d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a062137fa39a5a86d95c48abff85b21d4">&#9670;&nbsp;</a></span>add_to_domain()</h2>
+<a id="a726be70eef1f34837703a988eb5fb117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a726be70eef1f34837703a988eb5fb117">&#9670;&nbsp;</a></span>add_to_domain()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::add_to_domain </td>
+          <td class="memname">void tensorwrapper::sparse_map::detail_::SparseMapPIMPL::add_to_domain </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> &amp;&#160;</td>
           <td class="paramname"><em>ind</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DepIndex &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">Index</a> &amp;&#160;</td>
           <td class="paramname"><em>dep</em>&#160;</td>
         </tr>
         <tr>
@@ -291,36 +241,34 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </div><div class="memdoc">
 
 <p>Adds a dependent index to an independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
-<p>This function adds an dependent index to and independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. This function will create the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> if the independent index is not already in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. If the dependent index is already in the independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> this is a no-op.</p>
+<p>This function adds an dependent index to and independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. This function will create the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> if the independent index is not already in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. If the dependent index is already in the independent index's <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> this is a no-op.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The independent index to which <code>value</code> should be added. If this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is non-empty the rank of <code>key</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88" title="Returns the rank of the independent indices.">ind_rank()</a></code>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The dependent index being added to <code>key's</code> domain. If <code>key's</code> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> is non-empty the rank of <code>value</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a8c2dbd780ed373cef507923d80ebdbae" title="The number of independent modes associated with each Domain.">dep_rank()</a></code></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The independent index to which <code>value</code> should be added. If this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is non-empty the rank of <code>key</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86" title="Returns the rank of the independent indices.">ind_rank()</a></code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The dependent index being added to <code>key's</code> domain. If <code>key's</code> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> is non-empty the rank of <code>value</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a73aa2e676e3badb297fc583f6d14335b" title="The number of independent modes associated with each Domain.">dep_rank()</a></code></td></tr>
   </table>
   </dd>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to add the new state. Strong throw guarantee. </td></tr>
-    <tr><td class="paramname">std::runtime_error</td><td>if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is non-empty and the rank of <code>key</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88" title="Returns the rank of the independent indices.">ind_rank()</a></code> or if the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with <code>key</code> is non-empty and the rank of <code>value</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a8c2dbd780ed373cef507923d80ebdbae" title="The number of independent modes associated with each Domain.">dep_rank()</a></code>. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is non-empty and the rank of <code>key</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86" title="Returns the rank of the independent indices.">ind_rank()</a></code> or if the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with <code>key</code> is non-empty and the rank of <code>value</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a73aa2e676e3badb297fc583f6d14335b" title="The number of independent modes associated with each Domain.">dep_rank()</a></code>. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a248b26b32d880b550c72de31f792252a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a248b26b32d880b550c72de31f792252a">&#9670;&nbsp;</a></span>at() <span class="overload">[1/3]</span></h2>
+<a id="a5099f197dafd241e1ad0fdc0ca0d19e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5099f197dafd241e1ad0fdc0ca0d19e9">&#9670;&nbsp;</a></span>at() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const auto&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::at </td>
+          <td class="memname">const auto &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::at </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a424b03fbf4f53f6d0b74da145bf9a77b">key_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a0fac1ee4c438311ca3bf8f0579aad223">key_type</a> &amp;&#160;</td>
           <td class="paramname"><em>ind</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -331,106 +279,100 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <p>This function can be used to retrieve the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with a independent index.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The independent index whose <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> we want. The rank of <code>key</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88" title="Returns the rank of the independent indices.">ind_rank()</a></code>.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>The independent index whose <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> we want. The rank of <code>key</code> must be equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86" title="Returns the rank of the independent indices.">ind_rank()</a></code>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with <code>key</code> in a read-only manner.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td>if <code>key</code> is not in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. Strong throw guarantee. </td></tr>
-    <tr><td class="paramname">std::runtime_error</td><td>if the rank of <code>key</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#af8ceba62588cd8a89dd0c1f065adac88" title="Returns the rank of the independent indices.">ind_rank()</a></code>. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>key</code> is not in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if the rank of <code>key</code> is not equal to <code><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9082e1760c7fa47e31c5aee9b4671e86" title="Returns the rank of the independent indices.">ind_rank()</a></code>. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aee5cf73b5b83c0c8081c2ef5bd0d4c15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee5cf73b5b83c0c8081c2ef5bd0d4c15">&#9670;&nbsp;</a></span>at() <span class="overload">[2/3]</span></h2>
+<a id="aaf8398347d9ed178ad5aba3c46418ba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf8398347d9ed178ad5aba3c46418ba4">&#9670;&nbsp;</a></span>at() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">auto&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::at </td>
+          <td class="memname">auto &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::at </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a>&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the <code>i-th</code> std::pair&lt;IndIndex, Domain&lt;DepIndex&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </p>
+<p>Returns the <code>i-th</code> std::pair&lt;Index, Domain&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </p>
 <p>The independent-index-domain pairs are stored in an ordered manner. This function allows one to retrieve the pair they want by offset. It should be noted that the input to this function is <b>NOT</b> used as a key.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>Which independent-domain pair to return. Must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be" title="Returns the number of independent indices in this SparseMap.">size()</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>Which independent-domain pair to return. Must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc" title="Returns the number of independent indices in this SparseMap.">size()</a>). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <code>i-th</code> independent-index-domain pair in a read/write state.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be" title="Returns the number of independent indices in this SparseMap.">size()</a>). Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc" title="Returns the number of independent indices in this SparseMap.">size()</a>). Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aed63415e4263d26550dfd6e8a78c01f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed63415e4263d26550dfd6e8a78c01f4">&#9670;&nbsp;</a></span>at() <span class="overload">[3/3]</span></h2>
+<a id="a6f99a5e3e6d6613a563423798a7d23b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f99a5e3e6d6613a563423798a7d23b0">&#9670;&nbsp;</a></span>at() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const auto&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::at </td>
+          <td class="memname">const auto &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::at </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a>&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the <code>i-th</code> std::pair&lt;IndIndex, Domain&lt;DepIndex&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </p>
+<p>Returns the <code>i-th</code> std::pair&lt;Index, Domain&gt; in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </p>
 <p>The independent-index-domain pairs are stored in an ordered manner. This function allows one to retrieve the pair they want by offset. It should be noted that the input to this function is <b>NOT</b> used as a key.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>Which independent-domain pair to return. Must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be" title="Returns the number of independent indices in this SparseMap.">size()</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>Which independent-domain pair to return. Must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc" title="Returns the number of independent indices in this SparseMap.">size()</a>). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <code>i-th</code> independent-index-domain pair in a read-only state.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9fcb5747f4f68de994a3b0bffba775be" title="Returns the number of independent indices in this SparseMap.">size()</a>). Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9b0de8e91d6311f9117c17f8bd9ae7bc" title="Returns the number of independent indices in this SparseMap.">size()</a>). Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a8c2dbd780ed373cef507923d80ebdbae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c2dbd780ed373cef507923d80ebdbae">&#9670;&nbsp;</a></span>dep_rank()</h2>
+<a id="a73aa2e676e3badb297fc583f6d14335b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73aa2e676e3badb297fc583f6d14335b">&#9670;&nbsp;</a></span>dep_rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::dep_rank </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">SparseMapPIMPL::size_type</a> tensorwrapper::sparse_map::detail_::SparseMapPIMPL::dep_rank </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -444,8 +386,8 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </div><div class="memdoc">
 
 <p>The number of independent modes associated with each <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
-<p>Each independent index maps to a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. Each <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> contains indices of the same rank. For a given <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> all of the mapped to Domains must contain indices of the same rank (or be empty). This function will return the rank of the indices in the Domains. The return is 0 if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is empty, all the Domains are empty, or all Domains contain a rank 0 index.</p>
-<dl class="section return"><dt>Returns</dt><dd>The rank of the indices in the Domains this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> maps to.</dd></dl>
+<p>Each independent index maps to a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. Each <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> contains indices of the same rank. For a given <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> all of the mapped to Domains must contain indices of the same rank (or be empty). This function will return the rank of the indices in the Domains. The return is 0 if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is empty, all the Domains are empty, or all Domains contain a rank 0 index.</p>
+<dl class="section return"><dt>Returns</dt><dd>The rank of the indices in the Domains this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> maps to.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
@@ -455,44 +397,34 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a0d74429e474a0a54bf8ec93f96bc7f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d74429e474a0a54bf8ec93f96bc7f2c">&#9670;&nbsp;</a></span>direct_product_assign()</h2>
+<a id="af8cd6c9f6c36239e0148a986fbe58e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8cd6c9f6c36239e0148a986fbe58e6d">&#9670;&nbsp;</a></span>direct_product_assign()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::direct_product_assign </td>
+          <td class="memname">auto &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::direct_product_assign </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> and another <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </p>
-<p>Given a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> <img class="formulaInl" alt="$A$" src="form_1.png"/> with <img class="formulaInl" alt="$i$" src="form_9.png"/>-th element <img class="formulaInl" alt="$(a_i, \alpha_i)$" src="form_14.png"/> ( <img class="formulaInl" alt="$a_i$" src="form_15.png"/> is the independent index and <img class="formulaInl" alt="$\alpha_i$" src="form_16.png"/> is the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with <img class="formulaInl" alt="$a_i$" src="form_15.png"/>) and a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> <img class="formulaInl" alt="$B$" src="form_3.png"/> with <img class="formulaInl" alt="$j$" src="form_10.png"/>-th element <img class="formulaInl" alt="$(b_j, \beta_j)$" src="form_17.png"/> this function computes a new <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> <img class="formulaInl" alt="$C$" src="form_5.png"/> which we say is the direct product of <img class="formulaInl" alt="$A$" src="form_1.png"/> with <img class="formulaInl" alt="$B$" src="form_3.png"/>. <img class="formulaInl" alt="$C$" src="form_5.png"/> is given by:</p>
+<p>Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> and another <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </p>
+<p>Given a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> <img class="formulaInl" alt="$A$" src="form_1.png"/> with <img class="formulaInl" alt="$i$" src="form_9.png"/>-th element <img class="formulaInl" alt="$(a_i, \alpha_i)$" src="form_14.png"/> ( <img class="formulaInl" alt="$a_i$" src="form_15.png"/> is the independent index and <img class="formulaInl" alt="$\alpha_i$" src="form_16.png"/> is the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> associated with <img class="formulaInl" alt="$a_i$" src="form_15.png"/>) and a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> <img class="formulaInl" alt="$B$" src="form_3.png"/> with <img class="formulaInl" alt="$j$" src="form_10.png"/>-th element <img class="formulaInl" alt="$(b_j, \beta_j)$" src="form_17.png"/> this function computes a new <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> <img class="formulaInl" alt="$C$" src="form_5.png"/> which we say is the direct product of <img class="formulaInl" alt="$A$" src="form_1.png"/> with <img class="formulaInl" alt="$B$" src="form_3.png"/>. <img class="formulaInl" alt="$C$" src="form_5.png"/> is given by:</p>
 <p class="formulaDsp">
 <img class="formulaDsp" alt="\[ C = \left\lbrace (a_ib_j, \alpha_i\beta_j) \forall (a_i, \alpha_i) \in A \forall (b_j, \beta_j) \in B \right\rbrace \]" src="form_18.png"/>
 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> we are taking the direct product with.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> we are taking the direct product with.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> set to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>'s initial state with <code>rhs</code>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> set to the direct product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s initial state with <code>rhs</code>.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is not enough memory to store the new state. Strong throw guarantee. </td></tr>
@@ -502,19 +434,17 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a125d9d716dc2ad19d108c2c1f351461a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125d9d716dc2ad19d108c2c1f351461a">&#9670;&nbsp;</a></span>hash()</h2>
+<a id="a41f5dc2fcdf7631a7ad1e29c1d9c67ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">&#9670;&nbsp;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::hash </td>
+          <td class="memname">void tensorwrapper::sparse_map::detail_::SparseMapPIMPL::hash </td>
           <td>(</td>
           <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
           <td class="paramname"><em>h</em></td><td>)</td>
@@ -528,29 +458,27 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>'s state to a hash. </p>
+<p>Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state to a hash. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The object hashing the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. After this call the internal hash of <code>h</code> will be updated to include this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>'s state. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The object hashing the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. After this call the internal hash of <code>h</code> will be updated to include this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="af8ceba62588cd8a89dd0c1f065adac88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ceba62588cd8a89dd0c1f065adac88">&#9670;&nbsp;</a></span>ind_rank()</h2>
+<a id="a9082e1760c7fa47e31c5aee9b4671e86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9082e1760c7fa47e31c5aee9b4671e86">&#9670;&nbsp;</a></span>ind_rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::ind_rank </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">SparseMapPIMPL::size_type</a> tensorwrapper::sparse_map::detail_::SparseMapPIMPL::ind_rank </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -564,7 +492,7 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns the rank of the independent indices. </p>
-<p>All independent indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> must have the same rank (<em>i.e.</em>, number of modes). This function can be used to determine what the rank of the independent indices are. Note that if the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is empty we return a rank of 0; hence both empty sparse maps and SparseMaps with independent indices of rank 0 return 0 (use <code>empty()</code> to distinguish between the two cases).</p>
+<p>All independent indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> must have the same rank (<em>i.e.</em>, number of modes). This function can be used to determine what the rank of the independent indices are. Note that if the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is empty we return a rank of 0; hence both empty sparse maps and SparseMaps with independent indices of rank 0 return 0 (use <code>empty()</code> to distinguish between the two cases).</p>
 <dl class="section return"><dt>Returns</dt><dd>The rank of the independent indices.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -575,41 +503,31 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a871c21fcb250f16243859c398601896b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a871c21fcb250f16243859c398601896b">&#9670;&nbsp;</a></span>operator*=()</h2>
+<a id="a083ed20ef4464ceee98b668d43113329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a083ed20ef4464ceee98b668d43113329">&#9670;&nbsp;</a></span>operator*=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::operator*= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::operator*= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> with domains given by the Cartesian product of the Domains previously in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> with the Domains in <code>rhs</code>. </p>
-<p>Given a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> <img class="formulaInl" alt="$A$" src="form_1.png"/> which maps independent index <img class="formulaInl" alt="$i$" src="form_9.png"/> to <img class="formulaInl" alt="$a_i$" src="form_15.png"/> and a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> <img class="formulaInl" alt="$B$" src="form_3.png"/> which maps independent index <img class="formulaInl" alt="$i$" src="form_9.png"/> to <img class="formulaInl" alt="$b_i$" src="form_19.png"/>. This function computes a third <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>, <img class="formulaInl" alt="$C$" src="form_5.png"/>, where the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> <img class="formulaInl" alt="$c_i$" src="form_20.png"/>-th element is the Cartesian product of <img class="formulaInl" alt="$a_i$" src="form_15.png"/> with <img class="formulaInl" alt="$b_i$" src="form_19.png"/>.</p>
+<p>Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> with domains given by the Cartesian product of the Domains previously in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> with the Domains in <code>rhs</code>. </p>
+<p>Given a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> <img class="formulaInl" alt="$A$" src="form_1.png"/> which maps independent index <img class="formulaInl" alt="$i$" src="form_9.png"/> to <img class="formulaInl" alt="$a_i$" src="form_15.png"/> and a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> <img class="formulaInl" alt="$B$" src="form_3.png"/> which maps independent index <img class="formulaInl" alt="$i$" src="form_9.png"/> to <img class="formulaInl" alt="$b_i$" src="form_19.png"/>. This function computes a third <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>, <img class="formulaInl" alt="$C$" src="form_5.png"/>, where the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> <img class="formulaInl" alt="$c_i$" src="form_20.png"/>-th element is the Cartesian product of <img class="formulaInl" alt="$a_i$" src="form_15.png"/> with <img class="formulaInl" alt="$b_i$" src="form_19.png"/>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> we are taking the Cartesian product with.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> we are taking the Cartesian product with.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> with Domains set to the resultof the Cartesian product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>'s previous domains with <code>rhs's</code> Domains.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> with Domains set to the resultof the Cartesian product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s previous domains with <code>rhs's</code> Domains.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is not enough memory to store the new state. Strong throw guarantee. </td></tr>
@@ -619,30 +537,20 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a846d1eeabe9b6a5c07e17dacd3b3e7ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a846d1eeabe9b6a5c07e17dacd3b3e7ce">&#9670;&nbsp;</a></span>operator+=()</h2>
+<a id="ad4b20438015823ac12074c62b686a9c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b20438015823ac12074c62b686a9c2">&#9670;&nbsp;</a></span>operator+=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::operator+= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::operator+= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sets this to the union of this and another map. </p>
@@ -650,7 +558,7 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <p>Requires that either one of the sets is empty or both sets have the same rank in independent and dependent indices.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to take the union with this instance.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to take the union with this instance.</td></tr>
   </table>
   </dd>
 </dl>
@@ -664,28 +572,26 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="ab2e1e7a8be5d0e1bef84d7f220b3ca37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2e1e7a8be5d0e1bef84d7f220b3ca37">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="afebacf3a688ce46311ec0e02fc6bdd0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afebacf3a688ce46311ec0e02fc6bdd0b">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::operator== </td>
+          <td class="memname">bool tensorwrapper::sparse_map::detail_::SparseMapPIMPL::operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -693,7 +599,7 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <p>Determines if two SparseMaps are identical. </p>
 <p>Two SparseMaps are the same if they:</p><ul>
 <li>map from the same type of independent/dependent index<ul>
-<li><em>e.g.</em> independent indices ar both ElementalIndex and dependent indices are both <a class="el" href="structtensorwrapper_1_1sparse__map_1_1TileIndex.html" title="Strong type signaling that a tuple of integers should be regarded as the index of a tile in the tenso...">TileIndex</a></li>
+<li><em>e.g.</em> independent indices ar both ElementalIndex and dependent indices are both TileIndex</li>
 </ul>
 </li>
 <li>contain the same number of independent-indices</li>
@@ -702,11 +608,11 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The other <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to compare to.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The other <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to compare to.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is the same as <code>rhs</code> and false otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is the same as <code>rhs</code> and false otherwise.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
@@ -716,41 +622,31 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a46dba3019d4455fba551e49032213da3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46dba3019d4455fba551e49032213da3">&#9670;&nbsp;</a></span>operator^=()</h2>
+<a id="add1edc89455dbf22c11e3190d288745b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add1edc89455dbf22c11e3190d288745b">&#9670;&nbsp;</a></span>operator^=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::operator^= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::operator^= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Makes this the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> and another map. </p>
+<p>Makes this the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> and another map. </p>
 <p>Given two SparseMaps sm1(f -&gt; g) and sm2(f -&gt; g), the intersection is formed by mapping f_i to any element in g which f_i is mapped to by both sm1 and sm2. Note that if the ranks of the independent indices (or the dependent indices) are different between the two maps the intersection is empty. Similarly the intersection of any map with an empty map is also empty.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">sm</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to take the intersection with this instance.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sm</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to take the intersection with this instance.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> set to the intersection of the two maps.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> set to the intersection of the two maps.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to store the new state. Strong throw guarantee. </td></tr>
@@ -760,16 +656,14 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a5730644273e5bc2afb8a8cb1a2cf4a5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5730644273e5bc2afb8a8cb1a2cf4a5a">&#9670;&nbsp;</a></span>print()</h2>
+<a id="a9d71a7c049b25558b978066a9610c238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d71a7c049b25558b978066a9610c238">&#9670;&nbsp;</a></span>print()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::print </td>
+          <td class="memname">std::ostream &amp; tensorwrapper::sparse_map::detail_::SparseMapPIMPL::print </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>os</em></td><td>)</td>
@@ -778,30 +672,28 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the stream. </p>
+<p>Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">os</td><td>The stream we are adding the string representation to. After this call the stream will contain the string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">os</td><td>The stream we are adding the string representation to. After this call the stream will contain the string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>os</code> with this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> added to it. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code> with this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> added to it. </dd></dl>
 
 </div>
 </div>
-<a id="a9fcb5747f4f68de994a3b0bffba775be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fcb5747f4f68de994a3b0bffba775be">&#9670;&nbsp;</a></span>size()</h2>
+<a id="a9b0de8e91d6311f9117c17f8bd9ae7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b0de8e91d6311f9117c17f8bd9ae7bc">&#9670;&nbsp;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a30ab02de004cd6df0d6af344fbb4b8ae">size_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">tensorwrapper::sparse_map::detail_::SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt;::size </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a17f6b74882d131d72cfe6ad447c63206">size_type</a> tensorwrapper::sparse_map::detail_::SparseMapPIMPL::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -814,9 +706,9 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </p>
-<p>Each independent index in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is paired with a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. This function can be used to retrieve the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>, which is also the number of Domains and the number of independent-index-domain pairs.</p>
-<dl class="section return"><dt>Returns</dt><dd>The number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>.</dd></dl>
+<p>Returns the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </p>
+<p>Each independent index in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is paired with a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. This function can be used to retrieve the number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>, which is also the number of Domains and the number of independent-index-domain pairs.</p>
+<dl class="section return"><dt>Returns</dt><dd>The number of independent indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
@@ -827,13 +719,11 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a99b77b36c04f8e08720de829c8f44b9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99b77b36c04f8e08720de829c8f44b9f">&#9670;&nbsp;</a></span>operator!=()</h2>
+<a id="add8fc0f3ba93ea028a06770b95f97409"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add8fc0f3ba93ea028a06770b95f97409">&#9670;&nbsp;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -841,13 +731,13 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
         <tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
@@ -865,29 +755,18 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 <p>Determines if two SparseMaps are different. </p>
 <p>Two SparseMaps are the same if they:</p><ul>
-<li>map from the same type of independent/dependent index<ul>
-<li><em>e.g.</em> independent indices ar both ElementalIndex and dependent indices are both <a class="el" href="structtensorwrapper_1_1sparse__map_1_1TileIndex.html" title="Strong type signaling that a tuple of integers should be regarded as the index of a tile in the tenso...">TileIndex</a></li>
-</ul>
-</li>
 <li>contain the same number of independent-indices</li>
 <li>the set of independent indices is the same, and</li>
 <li>each independent index maps to the same <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a></li>
 </ul>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">IndIndex</td><td>Type of the independent indices </td></tr>
-    <tr><td class="paramname">DepIndex</td><td>Type of the dependent indices</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> on the right side of the operator </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> on the left side of the operator</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> on the right side of the operator </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> on the left side of the operator</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>False if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> is the same as <code>rhs</code> and true otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>False if this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> is the same as <code>rhs</code> and true otherwise.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
@@ -897,13 +776,11 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 
 </div>
 </div>
-<a id="a9b5cd194203c14c388b778c451f96692"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b5cd194203c14c388b778c451f96692">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+<a id="adfbe209523044b02cbe658ebe0181c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfbe209523044b02cbe658ebe0181c53">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndIndex , typename DepIndex &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -917,7 +794,7 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a>&lt; IndIndex, DepIndex &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html">SparseMapPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>smb</em>&#160;</td>
         </tr>
         <tr>
@@ -933,23 +810,16 @@ template&lt;typename IndIndex , typename DepIndex &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> to the stream. </p>
-<p>This is a convenience function for calling <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapBase.html#ade746d28bdc63a27ef712c94620f164f" title="Adds a string representation of the SparseMap to the stream.">SparseMapBase::print</a> on a stream.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">IndIndex</td><td>The type of the independent indices. </td></tr>
-    <tr><td class="paramname">DepIndex</td><td>The type of the dependent indices.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the stream. </p>
+<p>This is a convenience function for calling SparseMapBase::print on a stream.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">os</td><td>The stream we are adding the string representation to. After this call the stream will contain the string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a>. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">smb</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> we are printing.</td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">os</td><td>The stream we are adding the string representation to. After this call the stream will contain the string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">smb</td><td>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> we are printing.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>os</code> with this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html" title="Stores the sparsity relation among indices.">SparseMap</a> added to it. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>os</code> with this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> added to it. </dd></dl>
 
 </div>
 </div>

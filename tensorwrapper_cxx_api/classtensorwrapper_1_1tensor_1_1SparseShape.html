@@ -93,12 +93,12 @@ Inheritance diagram for tensorwrapper::tensor::SparseShape&lt; FieldType &gt;:</
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a543f96c79bfe9b71751594a913f170d6"><td class="memItemLeft" align="right" valign="top"><a id="a543f96c79bfe9b71751594a913f170d6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a> = <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap_3_01ElementIndex_00_01ElementIndex_01_4.html">sparse_map::SparseMapEE</a></td></tr>
-<tr class="memdesc:a543f96c79bfe9b71751594a913f170d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the sparse map taken as input. <br /></td></tr>
-<tr class="separator:a543f96c79bfe9b71751594a913f170d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dfc196e31e63400646ba22caa82f332"><td class="memItemLeft" align="right" valign="top"><a id="a8dfc196e31e63400646ba22caa82f332"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a> = <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">sparse_map::SparseMap</a></td></tr>
+<tr class="memdesc:a8dfc196e31e63400646ba22caa82f332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the sparse map taken as input. <br /></td></tr>
+<tr class="separator:a8dfc196e31e63400646ba22caa82f332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1f5ce396be163319189e8ba2e107431"><td class="memItemLeft" align="right" valign="top"><a id="aa1f5ce396be163319189e8ba2e107431"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aa1f5ce396be163319189e8ba2e107431">const_sparse_map_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a> &amp;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aa1f5ce396be163319189e8ba2e107431">const_sparse_map_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a> &amp;</td></tr>
 <tr class="memdesc:aa1f5ce396be163319189e8ba2e107431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the sparse map the shape is using. <br /></td></tr>
 <tr class="separator:aa1f5ce396be163319189e8ba2e107431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4a4d0a944702caf1a5db05516f3a3ca"><td class="memItemLeft" align="right" valign="top"><a id="ae4a4d0a944702caf1a5db05516f3a3ca"></a>
@@ -165,10 +165,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeeefda7594056d21acf594388077b935"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aeeefda7594056d21acf594388077b935">SparseShape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#aa36e8446d6fad47a93eaac8744a4f1b1">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a> sm)</td></tr>
+<tr class="memitem:aeeefda7594056d21acf594388077b935"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aeeefda7594056d21acf594388077b935">SparseShape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#aa36e8446d6fad47a93eaac8744a4f1b1">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a> sm)</td></tr>
 <tr class="memdesc:aeeefda7594056d21acf594388077b935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html" title="Describes a tensor&#39;s shape when there&#39;s sparsity.">SparseShape</a> from extents and a SparseMap.  <a href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aeeefda7594056d21acf594388077b935">More...</a><br /></td></tr>
 <tr class="separator:aeeefda7594056d21acf594388077b935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f23e74b1d2579c53cd9d39250ba8d9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a6f23e74b1d2579c53cd9d39250ba8d9c">SparseShape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#aa36e8446d6fad47a93eaac8744a4f1b1">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a> sm, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#ae4a4d0a944702caf1a5db05516f3a3ca">idx2mode_type</a> i2m)</td></tr>
+<tr class="memitem:a6f23e74b1d2579c53cd9d39250ba8d9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a6f23e74b1d2579c53cd9d39250ba8d9c">SparseShape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#aa36e8446d6fad47a93eaac8744a4f1b1">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a> sm, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#ae4a4d0a944702caf1a5db05516f3a3ca">idx2mode_type</a> i2m)</td></tr>
 <tr class="memdesc:a6f23e74b1d2579c53cd9d39250ba8d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html" title="Describes a tensor&#39;s shape when there&#39;s sparsity.">SparseShape</a> from extents, a SparseMap, and a mapping from SparseMap indices to tensor modes.  <a href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a6f23e74b1d2579c53cd9d39250ba8d9c">More...</a><br /></td></tr>
 <tr class="separator:a6f23e74b1d2579c53cd9d39250ba8d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefba6693f38242d810d0b1999b11e043"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aefba6693f38242d810d0b1999b11e043">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html">SparseShape</a> &amp;rhs) const noexcept</td></tr>
@@ -292,7 +292,7 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a>&#160;</td>
           <td class="paramname"><em>sm</em>&#160;</td>
         </tr>
         <tr>
@@ -338,7 +338,7 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a543f96c79bfe9b71751594a913f170d6">sparse_map_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">sparse_map_type</a>&#160;</td>
           <td class="paramname"><em>sm</em>, </td>
         </tr>
         <tr>

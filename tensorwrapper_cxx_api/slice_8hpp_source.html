@@ -82,8 +82,8 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>tensorwrapper::ta_helpers {</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>detail_ {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> is_empty_slice_(<span class="keyword">const</span> sparse_map::ElementIndex&amp; lo,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                            <span class="keyword">const</span> sparse_map::ElementIndex&amp; hi) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> is_empty_slice_(<span class="keyword">const</span> sparse_map::Index&amp; lo,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                            <span class="keyword">const</span> sparse_map::Index&amp; hi) {</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> rank = lo.size();</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// lo and hi must have same rank</span></div>
@@ -106,14 +106,14 @@ $(function() {
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> get_slice_tile_indices_(<span class="keyword">const</span> TA::TiledRange&amp; tr,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                    <span class="keyword">const</span> sparse_map::ElementIndex&amp; lo,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                    <span class="keyword">const</span> sparse_map::ElementIndex&amp; hi_m1) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                    <span class="keyword">const</span> sparse_map::Index&amp; lo,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                    <span class="keyword">const</span> sparse_map::Index&amp; hi_m1) {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> temp   = get_block_idx(tr, lo);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> thi_m1 = get_block_idx(tr, hi_m1);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// This is the first tile we don&#39;t want</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    sparse_map::TileIndex tol(temp.begin(), temp.end());</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    sparse_map::TileIndex thi(thi_m1.begin(), thi_m1.end());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    sparse_map::Index tol(temp.begin(), temp.end());</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    sparse_map::Index thi(thi_m1.begin(), thi_m1.end());</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : thi.m_index) ++x;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> std::make_pair(tol, thi);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
@@ -121,8 +121,8 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace detail_</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TensorType&gt;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">auto</span> slice(<span class="keyword">const</span> TensorType&amp; t, <span class="keyword">const</span> sparse_map::ElementIndex&amp; lo,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;           <span class="keyword">const</span> sparse_map::ElementIndex&amp; hi) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">auto</span> slice(<span class="keyword">const</span> TensorType&amp; t, <span class="keyword">const</span> sparse_map::Index&amp; lo,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;           <span class="keyword">const</span> sparse_map::Index&amp; hi) {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; tr        = t.trange();</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> rank       = tr.rank();</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> annotation = TA::detail::dummy_annotation(rank);</div>
@@ -137,7 +137,7 @@ $(function() {
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// hi is just past the last element we want, hi &quot;minus 1&quot; is the last</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">// element we want.</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    sparse_map::ElementIndex hi_m1(hi);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    sparse_map::Index hi_m1(hi);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span>&amp; x : hi_m1) x -= 1;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    TA_ASSERT(tr.elements_range().includes(hi_m1));</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>

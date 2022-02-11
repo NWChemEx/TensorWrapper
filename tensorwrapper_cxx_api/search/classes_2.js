@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elementindex_221',['ElementIndex',['../structtensorwrapper_1_1sparse__map_1_1ElementIndex.html',1,'tensorwrapper::sparse_map']]]
+  ['fieldtraits_170',['FieldTraits',['../structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html',1,'tensorwrapper::tensor::detail_']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: tensorwrapper::sparse_map::detail_::DomainPIMPL&lt; IndexType &gt; Class Template Reference</title>
+<title>tensorwrapper: tensorwrapper::sparse_map::detail_::DomainPIMPL Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,17 +62,16 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1sparse__map.html">sparse_map</a></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a></li>  </ul>
+<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><b>sparse_map</b></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">tensorwrapper::sparse_map::detail_::DomainPIMPL&lt; IndexType &gt; Class Template Reference</div>  </div>
+<div class="title">tensorwrapper::sparse_map::detail_::DomainPIMPL Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -83,137 +82,100 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ae6d450d946e31b2af386c778d6a66fb3"><td class="memItemLeft" align="right" valign="top"><a id="ae6d450d946e31b2af386c778d6a66fb3"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a> = typename traits_type::size_type</td></tr>
-<tr class="memdesc:ae6d450d946e31b2af386c778d6a66fb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used for offsets and indexing. <br /></td></tr>
-<tr class="separator:ae6d450d946e31b2af386c778d6a66fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a016cc38cb89ff8f8c06b3ad6eab7606c"><td class="memItemLeft" align="right" valign="top"><a id="a016cc38cb89ff8f8c06b3ad6eab7606c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> = typename traits_type::value_type</td></tr>
-<tr class="memdesc:a016cc38cb89ff8f8c06b3ad6eab7606c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used to store an index. <br /></td></tr>
-<tr class="separator:a016cc38cb89ff8f8c06b3ad6eab7606c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1df45f090b9915e649923e1d33f2b1a"><td class="memItemLeft" align="right" valign="top"><a id="aa1df45f090b9915e649923e1d33f2b1a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa1df45f090b9915e649923e1d33f2b1a">const_reference</a> = typename traits_type::const_reference</td></tr>
-<tr class="memdesc:aa1df45f090b9915e649923e1d33f2b1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of a read-only reference to an index. <br /></td></tr>
-<tr class="separator:aa1df45f090b9915e649923e1d33f2b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47759429015221b2293c3f98f25476f9"><td class="memItemLeft" align="right" valign="top"><a id="a47759429015221b2293c3f98f25476f9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a47759429015221b2293c3f98f25476f9">extents_type</a> = typename traits_type::extents_type</td></tr>
-<tr class="memdesc:a47759429015221b2293c3f98f25476f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type returned by result_extents. <br /></td></tr>
-<tr class="separator:a47759429015221b2293c3f98f25476f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f98bb632809c16791f4c32dd11ee809"><td class="memItemLeft" align="right" valign="top"><a id="a1f98bb632809c16791f4c32dd11ee809"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a> = std::size_t</td></tr>
+<tr class="memdesc:a1f98bb632809c16791f4c32dd11ee809"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used for offsets and indexing. <br /></td></tr>
+<tr class="separator:a1f98bb632809c16791f4c32dd11ee809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a961c9d40d64bc33c3bd4b18f1d83791b"><td class="memItemLeft" align="right" valign="top"><a id="a961c9d40d64bc33c3bd4b18f1d83791b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a> = <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">Index</a></td></tr>
+<tr class="memdesc:a961c9d40d64bc33c3bd4b18f1d83791b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used to store an index. <br /></td></tr>
+<tr class="separator:a961c9d40d64bc33c3bd4b18f1d83791b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb143825ea35e3de5595740eb8d46258"><td class="memItemLeft" align="right" valign="top"><a id="abb143825ea35e3de5595740eb8d46258"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#abb143825ea35e3de5595740eb8d46258">const_reference</a> = const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a> &amp;</td></tr>
+<tr class="memdesc:abb143825ea35e3de5595740eb8d46258"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of a read-only reference to an index. <br /></td></tr>
+<tr class="separator:abb143825ea35e3de5595740eb8d46258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a770cbd45200b485c9a32fa9331581c5e"><td class="memItemLeft" align="right" valign="top"><a id="a770cbd45200b485c9a32fa9331581c5e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a770cbd45200b485c9a32fa9331581c5e">extents_type</a> = std::vector&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a> &gt;</td></tr>
+<tr class="memdesc:a770cbd45200b485c9a32fa9331581c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type returned by result_extents. <br /></td></tr>
+<tr class="separator:a770cbd45200b485c9a32fa9331581c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad17a922c8a101f45f39688d61befe010"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ad17a922c8a101f45f39688d61befe010">DomainPIMPL</a> ()=default</td></tr>
-<tr class="memdesc:ad17a922c8a101f45f39688d61befe010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes an empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ad17a922c8a101f45f39688d61befe010">More...</a><br /></td></tr>
-<tr class="separator:ad17a922c8a101f45f39688d61befe010"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4c902b3b88aaf81a0c98ceb5d0da2f4"><td class="memItemLeft" align="right" valign="top"><a id="aa4c902b3b88aaf81a0c98ceb5d0da2f4"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa4c902b3b88aaf81a0c98ceb5d0da2f4">~DomainPIMPL</a> () noexcept=default</td></tr>
-<tr class="memdesc:aa4c902b3b88aaf81a0c98ceb5d0da2f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default polymorphic dtor. <br /></td></tr>
-<tr class="separator:aa4c902b3b88aaf81a0c98ceb5d0da2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5e947120312494f639eda1e78363b95"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa5e947120312494f639eda1e78363b95">clone</a> () const</td></tr>
-<tr class="memdesc:aa5e947120312494f639eda1e78363b95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic copy constructor.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa5e947120312494f639eda1e78363b95">More...</a><br /></td></tr>
-<tr class="separator:aa5e947120312494f639eda1e78363b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dc00fba33990ae9fe5e09d2f7451b0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a5dc00fba33990ae9fe5e09d2f7451b0a">count</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa1df45f090b9915e649923e1d33f2b1a">const_reference</a> idx) const noexcept</td></tr>
-<tr class="memdesc:a5dc00fba33990ae9fe5e09d2f7451b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the specified index is in the domain or not.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a5dc00fba33990ae9fe5e09d2f7451b0a">More...</a><br /></td></tr>
-<tr class="separator:a5dc00fba33990ae9fe5e09d2f7451b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd7fac8bbac1d760b81dfcf8151e4353"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#afd7fac8bbac1d760b81dfcf8151e4353">rank</a> () const noexcept</td></tr>
-<tr class="memdesc:afd7fac8bbac1d760b81dfcf8151e4353"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rank of the indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#afd7fac8bbac1d760b81dfcf8151e4353">More...</a><br /></td></tr>
-<tr class="separator:afd7fac8bbac1d760b81dfcf8151e4353"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedca1e0426a685472fcd49dcb3777291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aedca1e0426a685472fcd49dcb3777291">size</a> () const noexcept</td></tr>
-<tr class="memdesc:aedca1e0426a685472fcd49dcb3777291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aedca1e0426a685472fcd49dcb3777291">More...</a><br /></td></tr>
-<tr class="separator:aedca1e0426a685472fcd49dcb3777291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9edcd99bca6bb2c50ba5a1dee8b6d5ae"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a9edcd99bca6bb2c50ba5a1dee8b6d5ae">result_extents</a> () const</td></tr>
-<tr class="memdesc:a9edcd99bca6bb2c50ba5a1dee8b6d5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of extents for the tensor that can be formed from this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a9edcd99bca6bb2c50ba5a1dee8b6d5ae">More...</a><br /></td></tr>
-<tr class="separator:a9edcd99bca6bb2c50ba5a1dee8b6d5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3c08c400bcb6fcc25c7681b9980624b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa3c08c400bcb6fcc25c7681b9980624b">result_index</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> &amp;old) const</td></tr>
-<tr class="memdesc:aa3c08c400bcb6fcc25c7681b9980624b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an index in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to its equivalent value in the inner tensor of the resulting tensor-of-tensors.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa3c08c400bcb6fcc25c7681b9980624b">More...</a><br /></td></tr>
-<tr class="separator:aa3c08c400bcb6fcc25c7681b9980624b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac34f92c3c08d36f098f1d8d84d907e65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac34f92c3c08d36f098f1d8d84d907e65">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a> i) const</td></tr>
-<tr class="memdesc:ac34f92c3c08d36f098f1d8d84d907e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i</code> -th index in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac34f92c3c08d36f098f1d8d84d907e65">More...</a><br /></td></tr>
-<tr class="separator:ac34f92c3c08d36f098f1d8d84d907e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ca7893e363a086f1d8c8066c2d2c2cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1ca7893e363a086f1d8c8066c2d2c2cc">insert</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> idx)</td></tr>
-<tr class="memdesc:a1ca7893e363a086f1d8c8066c2d2c2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <code>idx</code> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1ca7893e363a086f1d8c8066c2d2c2cc">More...</a><br /></td></tr>
-<tr class="separator:a1ca7893e363a086f1d8c8066c2d2c2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2a26331abf6315b0423c83224992583"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#af2a26331abf6315b0423c83224992583">operator*=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:af2a26331abf6315b0423c83224992583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this instance the Cartesian product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#af2a26331abf6315b0423c83224992583">More...</a><br /></td></tr>
-<tr class="separator:af2a26331abf6315b0423c83224992583"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac775f03cb76919e0024cc70cfb0685b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac775f03cb76919e0024cc70cfb0685b7">operator+=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:ac775f03cb76919e0024cc70cfb0685b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to the union of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac775f03cb76919e0024cc70cfb0685b7">More...</a><br /></td></tr>
-<tr class="separator:ac775f03cb76919e0024cc70cfb0685b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38a5a463fdd02e76ca5b80273538e614"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a38a5a463fdd02e76ca5b80273538e614">operator^=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:a38a5a463fdd02e76ca5b80273538e614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and <code>rhs</code>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a38a5a463fdd02e76ca5b80273538e614">More...</a><br /></td></tr>
-<tr class="separator:a38a5a463fdd02e76ca5b80273538e614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a485bea17553e2323062a9e9e4d4fa5bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a485bea17553e2323062a9e9e4d4fa5bb">operator==</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;rhs) const noexcept</td></tr>
-<tr class="memdesc:a485bea17553e2323062a9e9e4d4fa5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html" title="Class which holds the state of the Domain.">DomainPIMPL</a> instances for exact equality.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a485bea17553e2323062a9e9e4d4fa5bb">More...</a><br /></td></tr>
-<tr class="separator:a485bea17553e2323062a9e9e4d4fa5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5c15d82a80486821fa314bbc87ee34a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae5c15d82a80486821fa314bbc87ee34a">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:ae5c15d82a80486821fa314bbc87ee34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae5c15d82a80486821fa314bbc87ee34a">More...</a><br /></td></tr>
-<tr class="separator:ae5c15d82a80486821fa314bbc87ee34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a521fff979cbe4a73735dfb906ab5ea0c"><td class="memItemLeft" align="right" valign="top"><a id="a521fff979cbe4a73735dfb906ab5ea0c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DomainPIMPL</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)=default</td></tr>
-<tr class="separator:a521fff979cbe4a73735dfb906ab5ea0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab914c2a02ed5487ce6fcf0c0ba79241"><td class="memItemLeft" align="right" valign="top"><a id="aab914c2a02ed5487ce6fcf0c0ba79241"></a>
+<tr class="memitem:ad7b76dea27aae77bff2bb7507e2b6712"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ad7b76dea27aae77bff2bb7507e2b6712">DomainPIMPL</a> ()=default</td></tr>
+<tr class="memdesc:ad7b76dea27aae77bff2bb7507e2b6712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes an empty <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ad7b76dea27aae77bff2bb7507e2b6712">More...</a><br /></td></tr>
+<tr class="separator:ad7b76dea27aae77bff2bb7507e2b6712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93886d843b5985b15d7182a257b6202"><td class="memItemLeft" align="right" valign="top"><a id="aa93886d843b5985b15d7182a257b6202"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa93886d843b5985b15d7182a257b6202">DomainPIMPL</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)=default</td></tr>
+<tr class="memdesc:aa93886d843b5985b15d7182a257b6202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy and move ctors. <br /></td></tr>
+<tr class="separator:aa93886d843b5985b15d7182a257b6202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0759ec762280153c1f31db56117546a6"><td class="memItemLeft" align="right" valign="top"><a id="a0759ec762280153c1f31db56117546a6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DomainPIMPL</b> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&amp;other) noexcept=default</td></tr>
-<tr class="separator:aab914c2a02ed5487ce6fcf0c0ba79241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01096d90ca21e19184cf5710985da13f"><td class="memItemLeft" align="right" valign="top"><a id="a01096d90ca21e19184cf5710985da13f"></a>
-<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)=default</td></tr>
-<tr class="separator:a01096d90ca21e19184cf5710985da13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7d0501a7c8043456028eda5d83d239"><td class="memItemLeft" align="right" valign="top"><a id="a8b7d0501a7c8043456028eda5d83d239"></a>
+<tr class="separator:a0759ec762280153c1f31db56117546a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adec4d9ea330bc28919c20638db2c8cb9"><td class="memItemLeft" align="right" valign="top"><a id="adec4d9ea330bc28919c20638db2c8cb9"></a>
+<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)=default</td></tr>
+<tr class="separator:adec4d9ea330bc28919c20638db2c8cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a606f92948a8577e0d65619ebaa9717c1"><td class="memItemLeft" align="right" valign="top"><a id="a606f92948a8577e0d65619ebaa9717c1"></a>
 <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&amp;other) noexcept=default</td></tr>
-<tr class="separator:a8b7d0501a7c8043456028eda5d83d239"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a397e93ec5be2c5610d25c61bbd80f89f"><td class="memItemLeft" align="right" valign="top"><a id="a397e93ec5be2c5610d25c61bbd80f89f"></a>
-virtual std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a397e93ec5be2c5610d25c61bbd80f89f">clone_</a> () const</td></tr>
-<tr class="memdesc:a397e93ec5be2c5610d25c61bbd80f89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by derived class to make a polymorphic clone. <br /></td></tr>
-<tr class="separator:a397e93ec5be2c5610d25c61bbd80f89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1be4ec3413a1e55a9cd197bcca0c9cd"><td class="memItemLeft" align="right" valign="top"><a id="ad1be4ec3413a1e55a9cd197bcca0c9cd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ad1be4ec3413a1e55a9cd197bcca0c9cd">insert_</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> idx)</td></tr>
-<tr class="memdesc:ad1be4ec3413a1e55a9cd197bcca0c9cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements insert. <br /></td></tr>
-<tr class="separator:ad1be4ec3413a1e55a9cd197bcca0c9cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2183d06975d585889baade87ad52b90"><td class="memItemLeft" align="right" valign="top"><a id="aa2183d06975d585889baade87ad52b90"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa2183d06975d585889baade87ad52b90">prod_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:aa2183d06975d585889baade87ad52b90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements operator*=. <br /></td></tr>
-<tr class="separator:aa2183d06975d585889baade87ad52b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae253fde8c7a8c285ab68cc5fd83cd553"><td class="memItemLeft" align="right" valign="top"><a id="ae253fde8c7a8c285ab68cc5fd83cd553"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae253fde8c7a8c285ab68cc5fd83cd553">union_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:ae253fde8c7a8c285ab68cc5fd83cd553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements operator+=. <br /></td></tr>
-<tr class="separator:ae253fde8c7a8c285ab68cc5fd83cd553"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa920672cc988a3b6d55be6d13e1b2f78"><td class="memItemLeft" align="right" valign="top"><a id="aa920672cc988a3b6d55be6d13e1b2f78"></a>
-virtual <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa920672cc988a3b6d55be6d13e1b2f78">int_assign_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other)</td></tr>
-<tr class="memdesc:aa920672cc988a3b6d55be6d13e1b2f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements operator^=. <br /></td></tr>
-<tr class="separator:aa920672cc988a3b6d55be6d13e1b2f78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc313a119ae87a732ccc6bec35a176dd"><td class="memItemLeft" align="right" valign="top"><a id="adc313a119ae87a732ccc6bec35a176dd"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#adc313a119ae87a732ccc6bec35a176dd">equal_</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;other) const noexcept</td></tr>
-<tr class="memdesc:adc313a119ae87a732ccc6bec35a176dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements operator==. <br /></td></tr>
-<tr class="separator:adc313a119ae87a732ccc6bec35a176dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb1d6f2ab8ea48d9848eb18bc01154ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aeb1d6f2ab8ea48d9848eb18bc01154ce">update_mode_map</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa1df45f090b9915e649923e1d33f2b1a">const_reference</a> idx)</td></tr>
-<tr class="memdesc:aeb1d6f2ab8ea48d9848eb18bc01154ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the specified index to the mode_map instance.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aeb1d6f2ab8ea48d9848eb18bc01154ce">More...</a><br /></td></tr>
-<tr class="separator:aeb1d6f2ab8ea48d9848eb18bc01154ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a606f92948a8577e0d65619ebaa9717c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaeeb2ee216664d2b70ad7c07a4d367d"><td class="memItemLeft" align="right" valign="top"><a id="adaeeb2ee216664d2b70ad7c07a4d367d"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#adaeeb2ee216664d2b70ad7c07a4d367d">~DomainPIMPL</a> () noexcept=default</td></tr>
+<tr class="memdesc:adaeeb2ee216664d2b70ad7c07a4d367d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default dtor. <br /></td></tr>
+<tr class="separator:adaeeb2ee216664d2b70ad7c07a4d367d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae87baa5e366e1b65ab5e1535b06d4ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aae87baa5e366e1b65ab5e1535b06d4ff">count</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#abb143825ea35e3de5595740eb8d46258">const_reference</a> idx) const noexcept</td></tr>
+<tr class="memdesc:aae87baa5e366e1b65ab5e1535b06d4ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the specified index is in the domain or not.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aae87baa5e366e1b65ab5e1535b06d4ff">More...</a><br /></td></tr>
+<tr class="separator:aae87baa5e366e1b65ab5e1535b06d4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a483520001ea7336815f534f2575556b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a483520001ea7336815f534f2575556b9">rank</a> () const noexcept</td></tr>
+<tr class="memdesc:a483520001ea7336815f534f2575556b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rank of the indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a483520001ea7336815f534f2575556b9">More...</a><br /></td></tr>
+<tr class="separator:a483520001ea7336815f534f2575556b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b2ed28aa112700f4f24f4064c46b7fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a2b2ed28aa112700f4f24f4064c46b7fd">size</a> () const noexcept</td></tr>
+<tr class="memdesc:a2b2ed28aa112700f4f24f4064c46b7fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of indices in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a2b2ed28aa112700f4f24f4064c46b7fd">More...</a><br /></td></tr>
+<tr class="separator:a2b2ed28aa112700f4f24f4064c46b7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6cd427c3354519be652d52c772991bf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa6cd427c3354519be652d52c772991bf">result_extents</a> () const</td></tr>
+<tr class="memdesc:aa6cd427c3354519be652d52c772991bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of extents for the tensor that can be formed from this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa6cd427c3354519be652d52c772991bf">More...</a><br /></td></tr>
+<tr class="separator:aa6cd427c3354519be652d52c772991bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157b5d78b1ed110defa611d76f77b92b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a157b5d78b1ed110defa611d76f77b92b">result_index</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a> &amp;old) const</td></tr>
+<tr class="memdesc:a157b5d78b1ed110defa611d76f77b92b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an index in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to its equivalent value in the inner tensor of the resulting tensor-of-tensors.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a157b5d78b1ed110defa611d76f77b92b">More...</a><br /></td></tr>
+<tr class="separator:a157b5d78b1ed110defa611d76f77b92b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a829a90bef5f2c0b4f5d2a868becf20b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a829a90bef5f2c0b4f5d2a868becf20b0">at</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a> i) const</td></tr>
+<tr class="memdesc:a829a90bef5f2c0b4f5d2a868becf20b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>i</code> -th index in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a829a90bef5f2c0b4f5d2a868becf20b0">More...</a><br /></td></tr>
+<tr class="separator:a829a90bef5f2c0b4f5d2a868becf20b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52b57c047505bdd732ab9f98eab3d6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#af52b57c047505bdd732ab9f98eab3d6d">insert</a> (<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a> idx)</td></tr>
+<tr class="memdesc:af52b57c047505bdd732ab9f98eab3d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <code>idx</code> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#af52b57c047505bdd732ab9f98eab3d6d">More...</a><br /></td></tr>
+<tr class="separator:af52b57c047505bdd732ab9f98eab3d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc3fa2e67c08cc099bd13622104864ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#adc3fa2e67c08cc099bd13622104864ea">operator*=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)</td></tr>
+<tr class="memdesc:adc3fa2e67c08cc099bd13622104864ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this instance the Cartesian product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#adc3fa2e67c08cc099bd13622104864ea">More...</a><br /></td></tr>
+<tr class="separator:adc3fa2e67c08cc099bd13622104864ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a636056b054ef34d37cf39149cae73910"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a636056b054ef34d37cf39149cae73910">operator+=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)</td></tr>
+<tr class="memdesc:a636056b054ef34d37cf39149cae73910"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to the union of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a636056b054ef34d37cf39149cae73910">More...</a><br /></td></tr>
+<tr class="separator:a636056b054ef34d37cf39149cae73910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3905569d58b8ffce86faa261ed6de844"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a3905569d58b8ffce86faa261ed6de844">operator^=</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;other)</td></tr>
+<tr class="memdesc:a3905569d58b8ffce86faa261ed6de844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and <code>rhs</code>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a3905569d58b8ffce86faa261ed6de844">More...</a><br /></td></tr>
+<tr class="separator:a3905569d58b8ffce86faa261ed6de844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d5b5289e40533db24e7156e52e4a84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac3d5b5289e40533db24e7156e52e4a84">operator==</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:ac3d5b5289e40533db24e7156e52e4a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html" title="Class which holds the state of the Domain.">DomainPIMPL</a> instances for exact equality.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ac3d5b5289e40533db24e7156e52e4a84">More...</a><br /></td></tr>
+<tr class="separator:ac3d5b5289e40533db24e7156e52e4a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd283e4182e65b473bf16c5674125e67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#afd283e4182e65b473bf16c5674125e67">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
+<tr class="memdesc:afd283e4182e65b473bf16c5674125e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the hash of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#afd283e4182e65b473bf16c5674125e67">More...</a><br /></td></tr>
+<tr class="separator:afd283e4182e65b473bf16c5674125e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename IndexType&gt;<br />
-class tensorwrapper::sparse_map::detail_::DomainPIMPL&lt; IndexType &gt;</h3>
-
-<p>Class which holds the state of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
-<p>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> holds a set of indices. There's a variety of ways that a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> instance could actually hold these indices and we leave it up to the PIMPL to choose how this is done. The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html" title="Class which holds the state of the Domain.">DomainPIMPL</a> class assumes that all indices are explicitly stored and also serves as the common API for the derived classes which implement more advanced storage strategies.</p>
+<div class="textblock"><p>Class which holds the state of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
+<p>The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> holds a set of indices. There's a variety of ways that a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> instance could actually hold these indices and we leave it up to the PIMPL to choose how this is done. The <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html" title="Class which holds the state of the Domain.">DomainPIMPL</a> class assumes that all indices are explicitly stored.</p>
 <dl class="section note"><dt>Note</dt><dd>Once an index has been inserted into a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> it can only be retrieved in a read-only fashion (this permits the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to be implemented in a manner which does not explicitly store every index).</dd>
 <dd>
 For developers. Any method which changes the state of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> needs to ensure that it also updates the mode map correctly. See the <code>update_mode_map</code> method for more details. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad17a922c8a101f45f39688d61befe010"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad17a922c8a101f45f39688d61befe010">&#9670;&nbsp;</a></span>DomainPIMPL()</h2>
+<a id="ad7b76dea27aae77bff2bb7507e2b6712"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7b76dea27aae77bff2bb7507e2b6712">&#9670;&nbsp;</a></span>DomainPIMPL()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> </td>
+          <td class="memname">tensorwrapper::sparse_map::detail_::DomainPIMPL::DomainPIMPL </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -238,18 +200,16 @@ template&lt;typename IndexType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac34f92c3c08d36f098f1d8d84d907e65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac34f92c3c08d36f098f1d8d84d907e65">&#9670;&nbsp;</a></span>at()</h2>
+<a id="a829a90bef5f2c0b4f5d2a868becf20b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a829a90bef5f2c0b4f5d2a868becf20b0">&#9670;&nbsp;</a></span>at()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::at </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">DomainPIMPL::value_type</a> tensorwrapper::sparse_map::detail_::DomainPIMPL::at </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a>&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -260,73 +220,33 @@ template&lt;typename IndexType &gt; </div>
 <p>Domains are ordered meaning that any given time it makes sense to speak of say the zeroth, first, second, etc. index. That said the order can change upon insertion of a new index as the indices are also sorted. This function is used to retrieve a read-only reference to the <code>i</code> -th index.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>The offset of the requested index. <code>i</code> must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aedca1e0426a685472fcd49dcb3777291" title="Returns the number of indices in the Domain.">size()</a>).</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>The offset of the requested index. <code>i</code> must be in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a2b2ed28aa112700f4f24f4064c46b7fd" title="Returns the number of indices in the Domain.">size()</a>).</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A copy of the <code>i-th</code> index. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aedca1e0426a685472fcd49dcb3777291" title="Returns the number of indices in the Domain.">size()</a>). Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>i</code> is not in the range [0, <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a2b2ed28aa112700f4f24f4064c46b7fd" title="Returns the number of indices in the Domain.">size()</a>). Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aa5e947120312494f639eda1e78363b95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5e947120312494f639eda1e78363b95">&#9670;&nbsp;</a></span>clone()</h2>
+<a id="aae87baa5e366e1b65ab5e1535b06d4ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae87baa5e366e1b65ab5e1535b06d4ff">&#9670;&nbsp;</a></span>count()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a>&gt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::clone </td>
+          <td class="memname">bool tensorwrapper::sparse_map::detail_::DomainPIMPL::count </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Polymorphic copy constructor. </p>
-<p>This method can be used to create a copy of the derived class through the base class. When copying a <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html" title="Class which holds the state of the Domain.">DomainPIMPL</a> instance the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> class should go through this member and not the copy ctor/assignment operator.</p>
-<dl class="section return"><dt>Returns</dt><dd>A unique_ptr with a deep copy of the derived class.</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to create the copy. Strong throw guarantee.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Derived classes should override clone_ so that it returns a deep copy of the derived class. </dd></dl>
-
-</div>
-</div>
-<a id="a5dc00fba33990ae9fe5e09d2f7451b0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5dc00fba33990ae9fe5e09d2f7451b0a">&#9670;&nbsp;</a></span>count()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::count </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa1df45f090b9915e649923e1d33f2b1a">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#abb143825ea35e3de5595740eb8d46258">const_reference</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -356,19 +276,17 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="ae5c15d82a80486821fa314bbc87ee34a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5c15d82a80486821fa314bbc87ee34a">&#9670;&nbsp;</a></span>hash()</h2>
+<a id="afd283e4182e65b473bf16c5674125e67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd283e4182e65b473bf16c5674125e67">&#9670;&nbsp;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::hash </td>
+          <td class="memname">void tensorwrapper::sparse_map::detail_::DomainPIMPL::hash </td>
           <td>(</td>
           <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
           <td class="paramname"><em>h</em></td><td>)</td>
@@ -392,30 +310,20 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="a1ca7893e363a086f1d8c8066c2d2c2cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ca7893e363a086f1d8c8066c2d2c2cc">&#9670;&nbsp;</a></span>insert()</h2>
+<a id="af52b57c047505bdd732ab9f98eab3d6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af52b57c047505bdd732ab9f98eab3d6d">&#9670;&nbsp;</a></span>insert()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::insert </td>
+          <td class="memname">void tensorwrapper::sparse_map::detail_::DomainPIMPL::insert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Adds <code>idx</code> to the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
@@ -427,38 +335,27 @@ template&lt;typename IndexType &gt; </div>
 </dl>
 <p>Wthrow std::runtime_error If the rank of the index does not match the rank of the indices already in the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. Strong throw guarantee. </p><dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to store the index. Weak throw guarantee.</td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to store the index. Weak throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is implemented by <code>insert_</code>. Derived classes should override <code>insert_</code> as appropriate. </dd></dl>
 
 </div>
 </div>
-<a id="af2a26331abf6315b0423c83224992583"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2a26331abf6315b0423c83224992583">&#9670;&nbsp;</a></span>operator*=()</h2>
+<a id="adc3fa2e67c08cc099bd13622104864ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc3fa2e67c08cc099bd13622104864ea">&#9670;&nbsp;</a></span>operator*=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::operator*= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::DomainPIMPL::operator*= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Makes this instance the Cartesian product of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
@@ -483,30 +380,20 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="ac775f03cb76919e0024cc70cfb0685b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac775f03cb76919e0024cc70cfb0685b7">&#9670;&nbsp;</a></span>operator+=()</h2>
+<a id="a636056b054ef34d37cf39149cae73910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a636056b054ef34d37cf39149cae73910">&#9670;&nbsp;</a></span>operator+=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::operator+= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::DomainPIMPL::operator+= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sets this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to the union of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the provided <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
@@ -525,36 +412,33 @@ template&lt;typename IndexType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to store the new state. Strong throw guarantee.</td></tr>
-    <tr><td class="paramname">std::runtime_error</td><td>if the indices in <code>rhs</code> do not have the same rank as the indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. Strong throw guarantee.</td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if the indices in <code>rhs</code> do not have the same rank as the indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is implemented by calling the virtual function <code>union_assign_</code>. Developers of derived classes should override this function so that it behaves correctly for their class. </dd></dl>
 
 </div>
 </div>
-<a id="a485bea17553e2323062a9e9e4d4fa5bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a485bea17553e2323062a9e9e4d4fa5bb">&#9670;&nbsp;</a></span>operator==()</h2>
+<a id="ac3d5b5289e40533db24e7156e52e4a84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d5b5289e40533db24e7156e52e4a84">&#9670;&nbsp;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::operator== </td>
+          <td class="memname">bool tensorwrapper::sparse_map::detail_::DomainPIMPL::operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -570,38 +454,27 @@ template&lt;typename IndexType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>True if the two instances contain the same indices and false otherwise.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">None</td><td>No throw guarantee.</td></tr>
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This method is implemented by <code>equal_</code>. Derived classes should override <code>equal_</code> as appropriate. </dd></dl>
 
 </div>
 </div>
-<a id="a38a5a463fdd02e76ca5b80273538e614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38a5a463fdd02e76ca5b80273538e614">&#9670;&nbsp;</a></span>operator^=()</h2>
+<a id="a3905569d58b8ffce86faa261ed6de844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3905569d58b8ffce86faa261ed6de844">&#9670;&nbsp;</a></span>operator^=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::operator^= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp; tensorwrapper::sparse_map::detail_::DomainPIMPL::operator^= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">my_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">DomainPIMPL</a> &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Makes this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> the intersection of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> and <code>rhs</code>. </p>
@@ -626,19 +499,17 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="afd7fac8bbac1d760b81dfcf8151e4353"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd7fac8bbac1d760b81dfcf8151e4353">&#9670;&nbsp;</a></span>rank()</h2>
+<a id="a483520001ea7336815f534f2575556b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a483520001ea7336815f534f2575556b9">&#9670;&nbsp;</a></span>rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::rank </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">DomainPIMPL::size_type</a> tensorwrapper::sparse_map::detail_::DomainPIMPL::rank </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -664,16 +535,14 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="a9edcd99bca6bb2c50ba5a1dee8b6d5ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9edcd99bca6bb2c50ba5a1dee8b6d5ae">&#9670;&nbsp;</a></span>result_extents()</h2>
+<a id="aa6cd427c3354519be652d52c772991bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6cd427c3354519be652d52c772991bf">&#9670;&nbsp;</a></span>result_extents()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a>&gt; <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::result_extents </td>
+          <td class="memname">std::vector&lt; typename <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">DomainPIMPL::size_type</a> &gt; tensorwrapper::sparse_map::detail_::DomainPIMPL::result_extents </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -682,7 +551,7 @@ template&lt;typename IndexType &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns a vector of extents for the tensor that can be formed from this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </p>
-<p>This function will compute the extents (in terms of tiles or elements depending on <code>IndexType</code>) for the tensor that results from deleting all elements besides those in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.</p>
+<p>This function will compute the extents (in terms of tiles or elements depending on <code><a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html" title="Thin wrapper class around a multi-rank index.">Index</a></code>) for the tensor that results from deleting all elements besides those in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>A vector such that the <code>i</code>-th element is the extent of the <code>i</code>-th mode of the tensor resulting from this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -693,18 +562,16 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="aa3c08c400bcb6fcc25c7681b9980624b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3c08c400bcb6fcc25c7681b9980624b">&#9670;&nbsp;</a></span>result_index()</h2>
+<a id="a157b5d78b1ed110defa611d76f77b92b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a157b5d78b1ed110defa611d76f77b92b">&#9670;&nbsp;</a></span>result_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::result_index </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">DomainPIMPL::value_type</a> tensorwrapper::sparse_map::detail_::DomainPIMPL::result_index </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a016cc38cb89ff8f8c06b3ad6eab7606c">value_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a961c9d40d64bc33c3bd4b18f1d83791b">value_type</a> &amp;&#160;</td>
           <td class="paramname"><em>old</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -731,19 +598,17 @@ template&lt;typename IndexType &gt; </div>
 
 </div>
 </div>
-<a id="aedca1e0426a685472fcd49dcb3777291"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedca1e0426a685472fcd49dcb3777291">&#9670;&nbsp;</a></span>size()</h2>
+<a id="a2b2ed28aa112700f4f24f4064c46b7fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b2ed28aa112700f4f24f4064c46b7fd">&#9670;&nbsp;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#ae6d450d946e31b2af386c778d6a66fb3">size_type</a> <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::size </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a1f98bb632809c16791f4c32dd11ee809">size_type</a> tensorwrapper::sparse_map::detail_::DomainPIMPL::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -762,49 +627,6 @@ template&lt;typename IndexType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aeb1d6f2ab8ea48d9848eb18bc01154ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb1d6f2ab8ea48d9848eb18bc01154ce">&#9670;&nbsp;</a></span>update_mode_map()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename IndexType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>&lt; IndexType &gt;::update_mode_map </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#aa1df45f090b9915e649923e1d33f2b1a">const_reference</a>&#160;</td>
-          <td class="paramname"><em>idx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds the specified index to the mode_map instance. </p>
-<p>The internal mode map member is used to map from the indices in this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to the indices in the resulting tensor-of-tensors. It is essential that the mode map be updated anytime the contents of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> change.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">idx</td><td>The index we are adding to mode map.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if there is insufficient memory to add the index. Weak throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
