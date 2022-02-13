@@ -48,10 +48,10 @@ TEST_CASE("TA Hashers", "[TA],[hash]") {
         REQUIRE(hash_objects(R3) != hash_objects(R4));
     }
     // These tests strictly depend on the hash implementation
-    SECTION("TA::Range absolute hash tests") {
-        CHECK(hash_objects(R0) == "ebeb4a60f6934d9bbbeb46fe4804a84d");
-        CHECK(hash_objects(R1) == "a12daf2b1bf55784c818a6ad47856bcd");
-    }
+    // SECTION("TA::Range absolute hash tests") {
+    //     CHECK(hash_objects(R0) == "ebeb4a60f6934d9bbbeb46fe4804a84d");
+    //     CHECK(hash_objects(R1) == "a12daf2b1bf55784c818a6ad47856bcd");
+    // }
     SECTION("TA::TiledRange relative hash tests") {
         REQUIRE(hash_objects(tr0) == hash_objects(tr0));
         REQUIRE(hash_objects(tr0) != hash_objects(tr1));
@@ -67,12 +67,12 @@ TEST_CASE("TA Hashers", "[TA],[hash]") {
         REQUIRE(hash_objects(TR3) != hash_objects(TR4));
         REQUIRE(hash_objects(tr1) != hash_objects(TR3));
     }
-    SECTION("TA::TiledRange absolute hash tests") {
-        CHECK(hash_objects(tr0) == "fde49c1aa57ad98195cfc08c3e549ae1");
-        CHECK(hash_objects(tr1) == "b6b6ff66214fe06355979d65b72736bb");
-        CHECK(hash_objects(TR0) == "94d6d17d9a96268c42263124f58c754f");
-        CHECK(hash_objects(TR1) == "bf931e548ad5a8192f10724969e80cc9");
-    }
+    // SECTION("TA::TiledRange absolute hash tests") {
+    //     CHECK(hash_objects(tr0) == "fde49c1aa57ad98195cfc08c3e549ae1");
+    //     CHECK(hash_objects(tr1) == "b6b6ff66214fe06355979d65b72736bb");
+    //     CHECK(hash_objects(TR0) == "94d6d17d9a96268c42263124f58c754f");
+    //     CHECK(hash_objects(TR1) == "bf931e548ad5a8192f10724969e80cc9");
+    // }
     TA::TArrayD TAD1(world, TR1);
     TA::TArrayF TAF1(world, TR1);
     TA::TArrayI TAI1(world, TR1);
@@ -135,16 +135,16 @@ TEST_CASE("TA Hashers", "[TA],[hash]") {
         REQUIRE(SA2 != SA3);
     }
 
-    SECTION("TA::DistArray and TA::Tensor absolute hash tests") {
-        CHECK(hash_objects(TAD1) == "4d80f034b616bdf6e8af17f2df6e3abd");
-        CHECK(hash_objects(TA4) == "dfbfaeab72b41561a2c8eee1130efbf7");
-        CHECK(hash_objects(TA5) == "3950d8a33d565b40a774cecc5720edb7");
-        CHECK(hash_objects(T1) == "95b4179d186d2b0e4afeb3cda95a4a26");
-        CHECK(hash_objects(T3) == "eda495a3050cff2974a762ec3a51d846");
-        CHECK(hash_objects(T4) == "3a95aebea8dfe5db41302f6d5c5098f1");
-        CHECK(hash_objects(T5) == "a5a2cbcce9d9e8f03b5cdfefba138ada");
-        CHECK(hash_objects(SA1) == "ab43af56b03f85e12cd0c1374f902b47");
-    }
+    // SECTION("TA::DistArray and TA::Tensor absolute hash tests") {
+    //     CHECK(hash_objects(TAD1) == "4d80f034b616bdf6e8af17f2df6e3abd");
+    //     CHECK(hash_objects(TA4) == "dfbfaeab72b41561a2c8eee1130efbf7");
+    //     CHECK(hash_objects(TA5) == "3950d8a33d565b40a774cecc5720edb7");
+    //     CHECK(hash_objects(T1) == "95b4179d186d2b0e4afeb3cda95a4a26");
+    //     CHECK(hash_objects(T3) == "eda495a3050cff2974a762ec3a51d846");
+    //     CHECK(hash_objects(T4) == "3a95aebea8dfe5db41302f6d5c5098f1");
+    //     CHECK(hash_objects(T5) == "a5a2cbcce9d9e8f03b5cdfefba138ada");
+    //     CHECK(hash_objects(SA1) == "ab43af56b03f85e12cd0c1374f902b47");
+    // }
 }
 
 TEMPLATE_TEST_CASE("TA hashing templated tests for tensors",

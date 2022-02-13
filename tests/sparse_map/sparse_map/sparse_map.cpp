@@ -991,7 +991,11 @@ TEST_CASE("SparseMap") {
         SECTION("Empty == No PIMPL") {
             auto h  = hash_objects(sms.at("Empty"));
             auto h2 = hash_objects(sms.at("No PIMPL"));
+#ifdef BPHASH_USE_TYPEID
+            REQUIRE_FALSE(h == h2);
+#else
             REQUIRE(h == h2);
+#endif
         }
 
         SECTION("Empty != non-empty") {
