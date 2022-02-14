@@ -4,10 +4,9 @@
 
 namespace tensorwrapper::ta_helpers {
 
-using sparse_map::ElementIndex;
+using sparse_map::Index;
 
-bool is_tile_lower_bound(const TA::TiledRange& tr,
-                         const ElementIndex& elem) noexcept {
+bool is_tile_lower_bound(const TA::TiledRange& tr, const Index& elem) noexcept {
     TA_ASSERT(elem.size() == tr.rank()); // Doesn't throw, just crashes
 
     // Make sure the element is actually in the TiledRange
@@ -22,8 +21,8 @@ bool is_tile_lower_bound(const TA::TiledRange& tr,
     return std::equal(lo.begin(), lo.end(), elem.begin());
 }
 
-bool is_tile_upper_bound(const TA::TiledRange& tr, const ElementIndex& elem) {
-    using size_type = typename ElementIndex::value_type;
+bool is_tile_upper_bound(const TA::TiledRange& tr, const Index& elem) {
+    using size_type = typename Index::value_type;
 
     // TODO: Make no throw guarantee by taking a copy of elem and manipulating
     //       the copy.
@@ -41,7 +40,7 @@ bool is_tile_upper_bound(const TA::TiledRange& tr, const ElementIndex& elem) {
     // Make sure that elem - 1 is in the tiled range
     if(!tr.elements_range().includes(elem_m1)) return false;
 
-    const auto tidx  = get_block_idx(tr, ElementIndex(elem_m1));
+    const auto tidx  = get_block_idx(tr, Index(elem_m1));
     const auto& tile = tr.tile(tidx);
     const auto& hi   = tile.upbound();
     return std::equal(hi.begin(), hi.end(), elem.begin());

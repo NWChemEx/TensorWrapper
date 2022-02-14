@@ -5,12 +5,11 @@
 #include <vector>
 
 namespace tensorwrapper::sparse_map {
-namespace detail_ {
 
+namespace detail_ {
 /// Type used to disable an overload when @p T is integral
 template<typename T>
 using disable_if_integral_t = std::enable_if_t<!std::is_integral_v<T>>;
-
 } // namespace detail_
 
 /** @brief Thin wrapper class around a multi-rank index.
@@ -311,30 +310,6 @@ bool operator!=(const std::vector<T>& v, const Index& i) {
 inline std::ostream& operator<<(std::ostream& os, const Index& idx) {
     return idx.print(os);
 }
-
-/** @brief Strong type signaling that a tuple of integers should be regarded as
- *         the index of an element in the tensor.
- *
- *  ElementIndex instances have no additional features/state over an Index
- *  instance. The type is simply used at compile time to signal that an index
- *  tuple should be treated as indexing an element of a tensor and not a tile of
- *  a tensor.
- */
-struct ElementIndex : public Index {
-    using Index::Index;
-};
-
-/** @brief Strong type signaling that a tuple of integers should be regarded as
- *         the index of a tile in the tensor.
- *
- *  TileIndex instances have no additional features/state over an Index
- *  instance. The type is simply used at compile time to signal that an index
- *  tuple should be treated as indexing the tile of a tensor and not an element
- *  of a tensor.
- */
-struct TileIndex : public Index {
-    using Index::Index;
-};
 
 //------------------------------------------------------------------------------
 //                            Implementations

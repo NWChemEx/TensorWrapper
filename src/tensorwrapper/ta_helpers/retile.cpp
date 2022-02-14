@@ -2,15 +2,15 @@
 
 namespace tensorwrapper::ta_helpers {
 
-using sparse_map::ElementIndex;
+using sparse_map::Index;
 
-TA::TiledRange insert_tile_boundaries(
-  const TA::TiledRange& tr, const std::vector<ElementIndex>& boundaries) {
+TA::TiledRange insert_tile_boundaries(const TA::TiledRange& tr,
+                                      const std::vector<Index>& boundaries) {
     const auto rank = tr.rank();
 
     // Make the sorted union of the desired boundaries and the current
     // boundaries, asserting all input indices are of the correct rank
-    std::set<ElementIndex> bounds2;
+    std::set<Index> bounds2;
     for(const auto& x : boundaries) {
         TA_ASSERT(x.size() == rank);
         bounds2.insert(x);
@@ -20,8 +20,8 @@ TA::TiledRange insert_tile_boundaries(
         const auto trange  = tr.tile(tile);
         const auto lobound = trange.lobound();
         const auto upbound = trange.upbound();
-        bounds2.insert(ElementIndex(lobound.begin(), lobound.end()));
-        bounds2.insert(ElementIndex(upbound.begin(), upbound.end()));
+        bounds2.insert(Index(lobound.begin(), lobound.end()));
+        bounds2.insert(Index(upbound.begin(), upbound.end()));
     }
 
     // If you think of bounds 2 as a matrix (rows are index number, columns are

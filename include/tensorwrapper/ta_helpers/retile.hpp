@@ -19,8 +19,7 @@ namespace tensorwrapper::ta_helpers {
  *          in @p tr and the elements in @p boundaries.
  */
 TA::TiledRange insert_tile_boundaries(
-  const TA::TiledRange& tr,
-  const std::vector<sparse_map::ElementIndex>& boundaries);
+  const TA::TiledRange& tr, const std::vector<sparse_map::Index>& boundaries);
 
 /** @brief Convenience function for calling insert_tile_boundaries when the
  *         desired boundaries are not already in an std::vector.
@@ -42,9 +41,9 @@ TA::TiledRange insert_tile_boundaries(
  */
 template<typename... Args>
 TA::TiledRange insert_tile_boundaries(const TA::TiledRange& tr,
-                                      const sparse_map::ElementIndex& e0,
+                                      const sparse_map::Index& e0,
                                       Args&&... args) {
-    using vector_type = std::vector<sparse_map::ElementIndex>;
+    using vector_type = std::vector<sparse_map::Index>;
     const vector_type boundaries{e0, std::forward<Args>(args)...};
     return insert_tile_boundaries(tr, boundaries);
 }

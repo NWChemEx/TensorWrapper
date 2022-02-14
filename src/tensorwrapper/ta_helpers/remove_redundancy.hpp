@@ -21,8 +21,8 @@ auto remove_redundancy(const T& C, const T& S, double thresh = 1.0E-8) {
 
     auto extents = evecs.elements_range().extent();
     std::size_t hi0(extents[0]), hi1(extents[1]);
-    sparse_map::ElementIndex lo{0, hi1 - n_nonzero};
-    sparse_map::ElementIndex hi{hi0, hi1};
+    sparse_map::Index lo{0, hi1 - n_nonzero};
+    sparse_map::Index hi{hi0, hi1};
     auto non0_evecs = slice(evecs, lo, hi);
 
     using tensor_type = std::decay_t<decltype(evecs)>;

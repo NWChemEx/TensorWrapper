@@ -1,3 +1,4 @@
+#include "../sparse_map/sparse_map/detail_/from_sparse_map.hpp"
 #include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
 namespace tensorwrapper::tensor {

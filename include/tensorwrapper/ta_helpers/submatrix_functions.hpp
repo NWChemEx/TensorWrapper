@@ -1,5 +1,6 @@
 #pragma once
 #include "tensorwrapper/sparse_map/sparse_map.hpp"
+#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 
 namespace tensorwrapper::ta_helpers {
 

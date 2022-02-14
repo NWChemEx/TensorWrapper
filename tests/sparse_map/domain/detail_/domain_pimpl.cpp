@@ -4,9 +4,6 @@
 #include <tuple>
 #include <utilities/timer.hpp>
 
-using namespace tensorwrapper::sparse_map;
-using index_types = std::tuple<ElementIndex, TileIndex>;
-
 /* Testing notes:
  *
  * - The DomainPIMPL class contains the internal m_mode_map_ member which needs
@@ -18,12 +15,13 @@ using index_types = std::tuple<ElementIndex, TileIndex>;
  *
  */
 
-TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
+TEST_CASE("DomainPIMPL") {
+    using tensorwrapper::sparse_map::Index;
     using namespace tensorwrapper::sparse_map::detail_;
-    using pimpl_type = DomainPIMPL<TestType>;
+    using pimpl_type = DomainPIMPL;
 
-    TestType e, e0{0}, e00{0, 0}, e01{0, 1}, e1{1}, e10{1, 0}, e11{1, 1};
-    TestType e12{1, 2}, e2{2}, e21{2, 1}, e22{2, 2}, e23{2, 3};
+    Index e, e0{0}, e00{0, 0}, e01{0, 1}, e1{1}, e10{1, 0}, e11{1, 1};
+    Index e12{1, 2}, e2{2}, e21{2, 1}, e22{2, 2}, e23{2, 3};
 
     std::map<std::string, pimpl_type> ps;
     ps["empty"];
@@ -41,30 +39,27 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
     ps["2 rank 2 indices"].insert(e23);
 
     SECTION("Typedefs") {
-        using traits =
-          tensorwrapper::sparse_map::detail_::DomainTraits<Domain<TestType>>;
-
         SECTION("size_type") {
             using pimpl_t = typename pimpl_type::size_type;
-            using corr_t  = typename traits::size_type;
+            using corr_t  = std::size_t;
             STATIC_REQUIRE(std::is_same_v<pimpl_t, corr_t>);
         }
 
         SECTION("value_type") {
             using pimpl_t = typename pimpl_type::value_type;
-            using corr_t  = typename traits::value_type;
+            using corr_t  = Index;
             STATIC_REQUIRE(std::is_same_v<pimpl_t, corr_t>);
         }
 
         SECTION("const_reference") {
             using pimpl_t = typename pimpl_type::const_reference;
-            using corr_t  = typename traits::const_reference;
+            using corr_t  = const Index&;
             STATIC_REQUIRE(std::is_same_v<pimpl_t, corr_t>);
         }
 
         SECTION("extents_type") {
             using pimpl_t = typename pimpl_type::extents_type;
-            using corr_t  = typename traits::extents_type;
+            using corr_t  = std::vector<std::size_t>;
             STATIC_REQUIRE(std::is_same_v<pimpl_t, corr_t>);
         }
 
@@ -77,13 +72,46 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
             SECTION("size") { REQUIRE(p0.size() == 0); }
         }
 
-        SECTION("clone()") {
-            for(const auto& [k, v] : ps) {
-                SECTION(k) {
-                    auto clone = v.clone();
-                    REQUIRE(*clone == v);
-                }
+        SECTION("Copy Ctor") {
+            pimpl_type p0;
+            p0.insert(e0);
+            pimpl_type p1(p0);
+            REQUIRE(p0 == p1);
+            SECTION("Is deep copy") {
+                p0.insert(e1);
+                REQUIRE_THROWS_AS(p1.at(1), std::out_of_range);
             }
+        }
+
+        SECTION("Copy Assignment") {
+            pimpl_type p0, p1;
+            p0.insert(e0);
+            auto pp1 = &(p1 = p0);
+            SECTION("Returns *this") { REQUIRE(pp1 == &p1); }
+            REQUIRE(p0 == p1);
+            SECTION("Is deep copy") {
+                p0.insert(e1);
+                REQUIRE_THROWS_AS(p1.at(1), std::out_of_range);
+            }
+        }
+
+        SECTION("Move Ctor") {
+            pimpl_type p0, p1;
+            p0.insert(e0);
+            p1.insert(e0);
+            pimpl_type p2(std::move(p0));
+            REQUIRE(p1 == p2);
+            REQUIRE_FALSE(p0 == p2);
+        }
+
+        SECTION("Move Assignment") {
+            pimpl_type p0, p1, p2;
+            p0.insert(e0);
+            p2.insert(e0);
+            auto pp1 = &(p1 = std::move(p0));
+            SECTION("Returns *this") { REQUIRE(pp1 == &p1); }
+            REQUIRE(p1 == p2);
+            REQUIRE_FALSE(p0 == p2);
         }
     } // SECTION("Ctors")
 
@@ -115,7 +143,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
                 REQUIRE(p1.count(e2));
             }
             SECTION("Does not have value") {
-                SECTION("Same rank") { REQUIRE_FALSE(p1.count(TestType{3})); }
+                SECTION("Same rank") { REQUIRE_FALSE(p1.count(Index{3})); }
                 SECTION("Other rank") { REQUIRE_FALSE(p1.count(e)); }
             }
         }
@@ -136,9 +164,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
                 REQUIRE(p2.count(e23));
             }
             SECTION("Does not have value") {
-                SECTION("Same rank") {
-                    REQUIRE_FALSE(p2.count(TestType{1, 3}));
-                }
+                SECTION("Same rank") { REQUIRE_FALSE(p2.count(Index{1, 3})); }
                 SECTION("Other rank") { REQUIRE_FALSE(p2.count(e)); }
             }
         }
@@ -211,7 +237,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
 
         SECTION("rank 2 with repeated offset") {
             auto& p = ps.at("2 rank 2 indices");
-            p.insert(TestType{1, 4});
+            p.insert(Index{1, 4});
             std::vector<std::size_t> corr{2, 3};
             REQUIRE(p.result_extents() == corr);
         }
@@ -237,7 +263,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
             SECTION("Good input index") { REQUIRE(p1.result_index(e1) == e0); }
             SECTION("Invalid input index") {
                 SECTION("Out of bounds") {
-                    REQUIRE_THROWS_AS(p1.result_index(TestType(3)),
+                    REQUIRE_THROWS_AS(p1.result_index(Index(3)),
                                       std::out_of_range);
                 }
                 SECTION("Wrong rank") {
@@ -254,7 +280,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
             }
             SECTION("Invalid input index") {
                 SECTION("Out of bounds") {
-                    REQUIRE_THROWS_AS(p1.result_index(TestType(3)),
+                    REQUIRE_THROWS_AS(p1.result_index(Index(3)),
                                       std::out_of_range);
                 }
                 SECTION("Wrong rank") {
@@ -266,7 +292,7 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
         SECTION("1 rank 2 index") {
             const auto& p1 = ps.at("1 rank 2 index");
             SECTION("Good input index") {
-                REQUIRE(p1.result_index(e12) == TestType(0, 0));
+                REQUIRE(p1.result_index(e12) == Index(0, 0));
             }
             SECTION("Invalid input index") {
                 SECTION("Out of bounds") {
@@ -281,12 +307,12 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
         SECTION("2 rank 2 indices") {
             const auto& p1 = ps.at("2 rank 2 indices");
             SECTION("Good input index") {
-                REQUIRE(p1.result_index(e12) == TestType(0, 0));
-                REQUIRE(p1.result_index(e23) == TestType(1, 1));
+                REQUIRE(p1.result_index(e12) == Index(0, 0));
+                REQUIRE(p1.result_index(e23) == Index(1, 1));
             }
             SECTION("Invalid input index") {
                 SECTION("Out of bounds") {
-                    REQUIRE_THROWS_AS(p1.result_index(TestType(3, 3)),
+                    REQUIRE_THROWS_AS(p1.result_index(Index(3, 3)),
                                       std::out_of_range);
                 }
                 SECTION("Wrong rank") {
@@ -297,15 +323,15 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
 
         SECTION("rank 2 repeat offsets") {
             auto& p1 = ps.at("2 rank 2 indices");
-            p1.insert(TestType{1, 3});
+            p1.insert(Index{1, 3});
             SECTION("Good input index") {
-                REQUIRE(p1.result_index(e12) == TestType(0, 0));
-                REQUIRE(p1.result_index(TestType(1, 3)) == TestType(0, 1));
-                REQUIRE(p1.result_index(e23) == TestType(1, 1));
+                REQUIRE(p1.result_index(e12) == Index(0, 0));
+                REQUIRE(p1.result_index(Index(1, 3)) == Index(0, 1));
+                REQUIRE(p1.result_index(e23) == Index(1, 1));
             }
             SECTION("Invalid input index") {
                 SECTION("Out of bounds") {
-                    REQUIRE_THROWS_AS(p1.result_index(TestType(3, 3)),
+                    REQUIRE_THROWS_AS(p1.result_index(Index(3, 3)),
                                       std::out_of_range);
                 }
                 SECTION("Wrong rank") {
@@ -488,13 +514,13 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
 
     SECTION("operator*=") {
         using extents_type = typename pimpl_type::extents_type;
-        TestType e000{0, 0, 0}, e011{0, 1, 1}, e112{1, 1, 2}, e123{1, 2, 3};
-        TestType e100{1, 0, 0}, e111{1, 1, 1}, e121{1, 2, 1}, e212{2, 1, 2};
-        TestType e001{0, 0, 1}, e122{1, 2, 2}, e223{2, 2, 3}, e231{2, 3, 1};
-        TestType e110{1, 1, 0}, e232{2, 3, 2}, e2323{2, 3, 2, 3};
-        TestType e0000{0, 0, 0, 0}, e1212{1, 2, 1, 2}, e1223{1, 2, 2, 3};
-        TestType e0011{0, 0, 1, 1}, e2312{2, 3, 1, 2}, e1100{1, 1, 0, 0};
-        TestType e1111{1, 1, 1, 1};
+        Index e000{0, 0, 0}, e011{0, 1, 1}, e112{1, 1, 2}, e123{1, 2, 3};
+        Index e100{1, 0, 0}, e111{1, 1, 1}, e121{1, 2, 1}, e212{2, 1, 2};
+        Index e001{0, 0, 1}, e122{1, 2, 2}, e223{2, 2, 3}, e231{2, 3, 1};
+        Index e110{1, 1, 0}, e232{2, 3, 2}, e2323{2, 3, 2, 3};
+        Index e0000{0, 0, 0, 0}, e1212{1, 2, 1, 2}, e1223{1, 2, 2, 3};
+        Index e0011{0, 0, 1, 1}, e2312{2, 3, 1, 2}, e1100{1, 1, 0, 0};
+        Index e1111{1, 1, 1, 1};
 
         SECTION("lhs == empty") {
             auto& lhs = ps.at("empty");
@@ -1674,11 +1700,11 @@ TEMPLATE_LIST_TEST_CASE("DomainPIMPL", "", index_types) {
     }
 }
 
-TEMPLATE_LIST_TEST_CASE("DomainPIMPL comparisons", "", index_types) {
-    using DomainPIMPL =
-      tensorwrapper::sparse_map::detail_::DomainPIMPL<TestType>;
+TEST_CASE("DomainPIMPL comparisons") {
+    using tensorwrapper::sparse_map::Index;
+    using DomainPIMPL = tensorwrapper::sparse_map::detail_::DomainPIMPL;
 
-    TestType e1{1}, e12{1, 2}, e2{2};
+    Index e1{1}, e12{1, 2}, e2{2};
 
     SECTION("Same instance") {
         DomainPIMPL p1;
