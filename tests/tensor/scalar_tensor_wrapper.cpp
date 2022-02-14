@@ -267,43 +267,11 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Scalar>", "", scalar_variant) {
         }
     }
 
-    SECTION("print") {
-        std::stringstream ss;
-        auto pss = &(vec.print(ss));
-        SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
-        SECTION("Value") {
-            std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
-            REQUIRE(corr == ss.str());
-        }
-    }
-
-    SECTION("operator<<") {
-        std::stringstream ss;
-        auto pss = &(ss << vec);
-        SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
-        SECTION("Value") {
-            std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
-            REQUIRE(corr == ss.str());
-        }
-    }
-
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
         TWrapper other_vec(vec_data);
         REQUIRE(hash_objects(other_vec) == hash_objects(vec));
         REQUIRE(hash_objects(vec) != hash_objects(mat));
-    }
-
-    SECTION("comparisons") {
-        SECTION("Are same") {
-            TWrapper other_vec(vec_data);
-            REQUIRE(vec == other_vec);
-            REQUIRE_FALSE(vec != other_vec);
-        }
-        SECTION("Different") {
-            REQUIRE_FALSE(vec == mat);
-            REQUIRE(vec != mat);
-        }
     }
 
     /* This bug was found by Jonathan Waldrop. What was happening was that if
