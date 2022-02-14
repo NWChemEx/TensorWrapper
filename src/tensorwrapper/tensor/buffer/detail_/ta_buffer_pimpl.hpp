@@ -36,6 +36,8 @@ public:
     void set_shape(ta_shape_type new_shape);
 
 private:
+    pimpl_pointer default_clone_() const override;
+
     pimpl_pointer clone_() const override;
 
     void scale_(const_annotation_reference my_idx,

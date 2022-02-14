@@ -64,6 +64,11 @@ TABUFFERPIMPL::TABufferPIMPL(default_tensor_type t2wrap) :
   m_tensor_(std::move(t2wrap)) {}
 
 TEMPLATE_PARAMS
+typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::default_clone_() const {
+    return std::unique_ptr<base_type>(new TABufferPIMPL());
+}
+
+TEMPLATE_PARAMS
 typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
     // Can't use make_unique b/c copy ctor is protected
     return std::unique_ptr<base_type>(new TABufferPIMPL(*this));
