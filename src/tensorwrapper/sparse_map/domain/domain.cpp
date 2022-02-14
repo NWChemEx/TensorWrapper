@@ -1,64 +1,201 @@
-#include "detail_/tiled_domain_pimpl.hpp"
+#include "detail_/domain_pimpl.hpp"
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
-#include "tensorwrapper/ta_helpers/get_block_idx.hpp"
-#include <string>
+#include <utilities/printing/print_stl.hpp>
 
 namespace tensorwrapper::sparse_map {
 
-Domain<ElementIndex>::Domain(const Domain<TileIndex>& other) : Domain() {
-    for(const auto& tidx : other) {
-        for(const auto& eidx : other.trange().make_tile_range(tidx)) {
-            insert(ElementIndex(eidx.begin(), eidx.end()));
+//------------------------------------------------------------------------------
+//                               CTors
+//------------------------------------------------------------------------------
+
+Domain::Domain() : m_pimpl_(std::make_unique<pimpl_type>()) {}
+
+Domain::Domain(std::initializer_list<value_type> il) : Domain() {
+    for(auto&& x : il) pimpl_().insert(std::move(x));
+}
+
+Domain::Domain(const Domain& rhs) :
+  m_pimpl_(std::make_unique<pimpl_type>(rhs.pimpl_())) {}
+
+Domain::Domain(Domain&& rhs) noexcept : m_pimpl_(std::move(rhs.m_pimpl_)) {}
+
+Domain& Domain::operator=(const Domain& rhs) {
+    if(this == &rhs) return *this;
+    m_pimpl_ = std::make_unique<pimpl_type>(rhs.pimpl_());
+    return *this;
+}
+
+Domain& Domain::operator=(Domain&& rhs) noexcept {
+    if(this == &rhs) return *this;
+    m_pimpl_ = std::move(rhs.m_pimpl_);
+    return *this;
+}
+
+Domain::~Domain() noexcept = default;
+
+//------------------------------------------------------------------------------
+//                              Accessors
+//------------------------------------------------------------------------------
+
+typename Domain::size_type Domain::rank() const noexcept {
+    return m_pimpl_ ? pimpl_().rank() : 0;
+}
+
+typename Domain::size_type Domain::size() const noexcept {
+    return m_pimpl_ ? pimpl_().size() : 0;
+}
+
+std::vector<typename Domain::size_type> Domain::result_extents() const {
+    return m_pimpl_ ? pimpl_().result_extents() : std::vector<size_type>{};
+}
+
+typename Domain::value_type Domain::result_index(const value_type& old) const {
+    if(empty()) throw std::out_of_range("Domain is empty");
+    return pimpl_().result_index(old);
+}
+
+bool Domain::count(const_reference idx) const noexcept {
+    if(!m_pimpl_) return false;
+    return pimpl_().count(idx);
+}
+
+typename Domain::value_type Domain::operator[](size_type i) const {
+    return pimpl_().at(i);
+}
+
+//------------------------------------------------------------------------------
+//                                  Setters
+//------------------------------------------------------------------------------
+
+void Domain::insert(value_type idx) {
+    if(!m_pimpl_) m_pimpl_ = std::make_unique<pimpl_type>();
+    pimpl_().insert(std::move(idx));
+}
+
+Domain Domain::inject(const std::map<size_type, size_type>& injections) const {
+    using vector_type = typename Index::index_type;
+
+    if(empty()) return *this;
+
+    // The rank of the indices in the resulting Domain
+    const auto out_rank = rank() + injections.size();
+
+    // If we have rank r indices and we are given n injections, we will make a
+    // a rank r + n index, hence all modes in the input must be in the range
+    // [0, n].
+    for(const auto& [k, v] : injections) {
+        if(k > out_rank) {
+            throw std::out_of_range("Mode " + std::to_string(k) +
+                                    "  is not in the range [0, " +
+                                    std::to_string(out_rank) + "]. ");
         }
     }
-}
 
-Domain<TileIndex>::Domain(const tiled_range_type& trange,
-                          std::initializer_list<TileIndex> il) :
-  base_type(il) {
-    set_trange(trange);
-}
+    Domain rv;
 
-Domain<TileIndex>::Domain(const TA::TiledRange& trange,
-                          const Domain<ElementIndex>& d) {
-    set_trange(trange);
-    const auto& erange = trange.elements_range();
-    for(const auto& x : d) {
-        if(!erange.includes(x)) {
-            std::stringstream ss, ss1;
-            ss << x;
-            ss1 << trange;
-            throw std::out_of_range("Initial element index: " + ss.str() +
-                                    " is not in the TiledRange: " + ss1.str());
+    for(const auto& idx : *this) {
+        vector_type new_idx(out_rank, 0);
+        for(std::size_t i = 0, counter = 0; i < out_rank; ++i) {
+            if(injections.count(i))
+                new_idx[i] = injections.at(i);
+            else {
+                new_idx[i] = idx[counter];
+                ++counter;
+            }
         }
-        const auto t_cardinal_index = trange.element_to_tile(x.m_index);
-        const auto tidx = trange.tiles_range().idx(t_cardinal_index);
-        insert(TileIndex(tidx.begin(), tidx.end()));
+        rv.insert(value_type(std::move(new_idx)));
     }
+    return rv;
 }
 
-void Domain<TileIndex>::set_trange(const tiled_range_type& trange) {
-    using pimpl_type = detail_::DomainPIMPL<TileIndex>;
-    using tpimpl_t   = detail_::TiledDomainPIMPL<pimpl_type>;
-    auto ppimpl      = dynamic_cast<tpimpl_t*>(&pimpl_());
+Domain& Domain::operator*=(const Domain& rhs) {
+    if(!rhs.m_pimpl_ || !m_pimpl_) {
+        m_pimpl_ = std::make_unique<pimpl_type>();
+        return *this;
+    }
 
-    // I'm not sure if it's actually possible to fail this check
-    if(ppimpl == nullptr) throw std::runtime_error("PIMPL is incorrect type");
-
-    ppimpl->set_trange(trange);
+    (*m_pimpl_) *= (*rhs.m_pimpl_);
+    return *this;
 }
 
-const TA::TiledRange& Domain<TileIndex>::trange() const {
-    using pimpl_type = detail_::DomainPIMPL<TileIndex>;
-    using tpimpl_t   = detail_::TiledDomainPIMPL<pimpl_type>;
-    auto ppimpl      = dynamic_cast<const tpimpl_t*>(&pimpl_());
-
-    // I'm not sure if it's actually possible to fail this check
-    if(ppimpl == nullptr) throw std::runtime_error("PIMPL is incorrect type");
-    return ppimpl->trange();
+Domain Domain::operator*(const Domain& rhs) const {
+    Domain rv(*this);
+    rv *= rhs;
+    return rv;
 }
 
-template class Domain<ElementIndex>;
-template class Domain<TileIndex>;
+Domain& Domain::operator+=(const Domain& rhs) {
+    if(!m_pimpl_) m_pimpl_ = std::make_unique<pimpl_type>();
+    if(!rhs.m_pimpl_) return *this;
+
+    (*m_pimpl_) += (*rhs.m_pimpl_);
+    return *this;
+}
+
+Domain Domain::operator+(const Domain& rhs) const {
+    Domain rv(*this);
+    rv += rhs;
+    return rv;
+}
+
+Domain& Domain::operator^=(const Domain& rhs) {
+    if(!m_pimpl_ || !rhs.m_pimpl_) {
+        m_pimpl_ = std::make_unique<pimpl_type>();
+        return *this;
+    }
+    (*m_pimpl_) ^= (*rhs.m_pimpl_);
+    return *this;
+}
+
+Domain Domain::operator^(const Domain& rhs) const {
+    Domain rv(*this);
+    rv ^= rhs;
+    return rv;
+}
+
+//------------------------------------------------------------------------------
+//                                Utilities
+//------------------------------------------------------------------------------
+
+bool Domain::operator==(const Domain& rhs) const noexcept {
+    if(!m_pimpl_)
+        return !rhs.m_pimpl_;
+    else if(!rhs.m_pimpl_)
+        return false;
+    return *m_pimpl_ == *rhs.m_pimpl_;
+}
+
+void Domain::hash(tensorwrapper::detail_::Hasher& h) const { h(pimpl_()); }
+
+std::ostream& Domain::print(std::ostream& os) const {
+    os << "{";
+    using utilities::printing::operator<<;
+    auto begin_itr = begin();
+    auto end_itr   = end();
+    if(begin_itr != end_itr) {
+        os << *begin_itr;
+        ++begin_itr;
+    }
+    while(begin_itr != end_itr) {
+        os << ", " << *begin_itr;
+        ++begin_itr;
+    }
+    os << "}";
+    return os;
+}
+
+//------------------------------------------------------------------------------
+//                              Private Methods
+//------------------------------------------------------------------------------
+
+typename Domain::pimpl_type& Domain::pimpl_() {
+    if(m_pimpl_) return *m_pimpl_;
+    throw std::runtime_error("PIMPL not set. Did you move from this instance?");
+}
+
+const typename Domain::pimpl_type& Domain::pimpl_() const {
+    if(m_pimpl_) return *m_pimpl_;
+    throw std::runtime_error("PIMPL not set. Did you move from this instance?");
+}
 
 } // namespace tensorwrapper::sparse_map

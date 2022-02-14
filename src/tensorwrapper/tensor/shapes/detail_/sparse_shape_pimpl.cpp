@@ -1,3 +1,4 @@
+#include "../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
 #include "sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
@@ -14,7 +15,7 @@ using ta_tile_range = SparseShapePIMPL<field::Scalar>::ta_tile_range;
 
 using size_type  = unsigned int;
 using index_type = std::vector<size_type>;
-using tile_index = tensorwrapper::sparse_map::TileIndex;
+using tile_index = tensorwrapper::sparse_map::Index;
 
 namespace {
 
@@ -52,8 +53,8 @@ auto sm_to_tensor_shape(const sm_type& sm, const idx2mode_type& i2m,
     const auto dep_tr = make_tr(dep, tr);
 
     // Make a tile-to-tile SM
-    tensorwrapper::sparse_map::SparseMapET smET(dep_tr, sm);
-    const tensorwrapper::sparse_map::SparseMapTT smTT(ind_tr, std::move(smET));
+    auto smTT =
+      tensorwrapper::sparse_map::detail_::tile_indices(sm, ind_tr, dep_tr);
 
     using float_type = float;
 
@@ -79,7 +80,8 @@ auto sm_to_tot_shape(const sm_type& sm, const idx2mode_type& i2m,
 
     using float_type = float;
     TA::Tensor<float_type> shape_data(tr.tiles_range(), 0.0);
-    tensorwrapper::sparse_map::SparseMapTE smTE(tr, sm);
+    auto smTE =
+      tensorwrapper::sparse_map::detail_::tile_independent_indices(sm, tr);
 
     index_type full_index(nind);
     for(const auto& [ind_idx, _] : smTE) {

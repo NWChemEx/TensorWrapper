@@ -1,6 +1,6 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/sparse_map/domain/detail_/domain_traits.hpp"
+#include "tensorwrapper/sparse_map/index.hpp"
 #include <boost/container/flat_set.hpp>
 #include <memory>
 #include <set>
@@ -14,21 +14,14 @@ void hash_object(const boost::container::flat_set<ElementType>& v,
 }
 } // namespace boost::container
 
-namespace tensorwrapper::sparse_map {
-
-// Forward declare Domain for template meta-programming purposes
-template<typename IndexType>
-class Domain;
-
-namespace detail_ {
+namespace tensorwrapper::sparse_map::detail_ {
 
 /** @brief Class which holds the state of the Domain.
  *
  *  The Domain holds a set of indices. There's a variety of ways that a Domain
  *  instance could actually hold these indices and we leave it up to the PIMPL
  *  to choose how this is done. The DomainPIMPL class assumes that all indices
- *  are explicitly stored and also serves as the common API for the derived
- *  classes which implement more advanced storage strategies.
+ *  are explicitly stored.
  *
  *  @note Once an index has been inserted into a Domain it can only be retrieved
  *        in a read-only fashion (this permits the Domain to be implemented in
@@ -38,30 +31,20 @@ namespace detail_ {
  *        to ensure that it also updates the mode map correctly. See the
  *        `update_mode_map` method for more details.
  */
-template<typename IndexType>
+
 class DomainPIMPL {
-private:
-    /// Type of this instance
-    using my_type = DomainPIMPL<IndexType>;
-
-    /// Type of the Domain this is a PIMPL for
-    using domain_type = Domain<IndexType>;
-
-    /// Type of the traits struct defining the types for the Domain hierarchy
-    using traits_type = DomainTraits<domain_type>;
-
 public:
     /// The type used for offsets and indexing
-    using size_type = typename traits_type::size_type;
+    using size_type = std::size_t;
 
     /// The type used to store an index
-    using value_type = typename traits_type::value_type;
+    using value_type = Index;
 
     /// The type of a read-only reference to an index
-    using const_reference = typename traits_type::const_reference;
+    using const_reference = const value_type&;
 
     /// The type returned by result_extents
-    using extents_type = typename traits_type::extents_type;
+    using extents_type = std::vector<size_type>;
 
     /** @brief Makes an empty Domain
      *
@@ -72,24 +55,14 @@ public:
      */
     DomainPIMPL() = default;
 
-    /// Default polymorphic dtor
-    virtual ~DomainPIMPL() noexcept = default;
+    /// Default copy and move ctors
+    DomainPIMPL(const DomainPIMPL& other)     = default;
+    DomainPIMPL(DomainPIMPL&& other) noexcept = default;
+    DomainPIMPL& operator=(const DomainPIMPL& other) = default;
+    DomainPIMPL& operator=(DomainPIMPL&& other) noexcept = default;
 
-    /** @brief Polymorphic copy constructor.
-     *
-     *  This method can be used to create a copy of the derived class through
-     *  the base class. When copying a DomainPIMPL instance the Domain class
-     *  should go through this member and not the copy ctor/assignment operator.
-     *
-     *  @return A unique_ptr with a deep copy of the derived class.
-     *
-     *  @throw std::bad_alloc if there is insufficient memory to create the
-     *                        copy. Strong throw guarantee.
-     *
-     *  @note Derived classes should override clone_ so that it returns a deep
-     *        copy of the derived class.
-     */
-    std::unique_ptr<my_type> clone() const { return clone_(); }
+    /// Default dtor
+    virtual ~DomainPIMPL() noexcept = default;
 
     /** @brief Determines if the specified index is in the domain or not.
      *
@@ -136,7 +109,7 @@ public:
      *         from this Domain.
      *
      *  This function will compute the extents (in terms of tiles or elements
-     *  depending on `IndexType`) for the tensor that results from deleting all
+     *  depending on `Index`) for the tensor that results from deleting all
      *  elements besides those in this Domain.
      *
      *  @return A vector such that the `i`-th element is the extent of the
@@ -194,11 +167,8 @@ public:
      *                            Strong throw guarantee.
      *  @throw std::bad_alloc if there is insufficient memory to store the
      *                        index. Weak throw guarantee.
-     *
-     *  @note This function is implemented by `insert_`. Derived classes should
-     *        override `insert_` as appropriate.
      */
-    void insert(value_type idx) { insert_(std::move(idx)); }
+    void insert(value_type idx);
 
     /** @brief Makes this instance the Cartesian product of this Domain and
      *         the provided Domain.
@@ -226,7 +196,7 @@ public:
      * @throw std::bad_alloc if there is insufficient memory to store the new
      *                       state. Strong throw guarantee.
      */
-    my_type& operator*=(const my_type& other) { return prod_assign_(other); }
+    DomainPIMPL& operator*=(const DomainPIMPL& other);
 
     /** @brief Sets this Domain to the union of this Domain the provided Domain.
      *
@@ -255,12 +225,8 @@ public:
      *  @throw std::runtime_error if the indices in @p rhs do not have the same
      *                            rank as the indices in this Domain. Strong
      *                            throw guarantee.
-     *
-     *  @note This function is implemented by calling the virtual function
-     *        `union_assign_`. Developers of derived classes should override
-     *        this function so that it behaves correctly for their class.
      */
-    my_type& operator+=(const my_type& other) { return union_assign_(other); }
+    DomainPIMPL& operator+=(const DomainPIMPL& other);
 
     /** @brief Makes this Domain the intersection of this Domain and @p rhs.
      *
@@ -282,7 +248,7 @@ public:
      *  @throw std::bad_alloc if there is insufficient memory to allocate the
      *                        new state. Strong throw guarantee.
      */
-    my_type& operator^=(const my_type& other) { return int_assign_(other); }
+    DomainPIMPL& operator^=(const DomainPIMPL& other);
 
     /** @brief Compares two DomainPIMPL instances for exact equality.
      *
@@ -296,11 +262,8 @@ public:
      *          otherwise.
      *
      *  @throw None No throw guarantee.
-     *
-     *  @note This method is implemented by `equal_`. Derived classes should
-     *        override `equal_` as appropriate.
      */
-    bool operator==(const my_type& rhs) const noexcept { return equal_(rhs); }
+    bool operator==(const DomainPIMPL& rhs) const noexcept;
 
     /** @brief Computes the hash of the Domain.
      *
@@ -310,30 +273,7 @@ public:
      */
     void hash(tensorwrapper::detail_::Hasher& h) const { h(m_domain_); }
 
-protected:
-    DomainPIMPL(const DomainPIMPL& other)     = default;
-    DomainPIMPL(DomainPIMPL&& other) noexcept = default;
-    DomainPIMPL& operator=(const my_type& other) = default;
-    DomainPIMPL& operator=(DomainPIMPL&& other) noexcept = default;
-
-    /// Should be overridden by derived class to make a polymorphic clone
-    virtual std::unique_ptr<my_type> clone_() const;
-
-    /// Implements insert
-    virtual void insert_(value_type idx);
-
-    /// Implements operator*=
-    virtual my_type& prod_assign_(const my_type& other);
-
-    /// Implements operator+=
-    virtual my_type& union_assign_(const my_type& other);
-
-    /// Implements operator^=
-    virtual my_type& int_assign_(const my_type& other);
-
-    /// Implements operator==
-    virtual bool equal_(const my_type& other) const noexcept;
-
+private:
     /** @brief Adds the specified index to the mode_map instance.
      *
      *  The internal mode map member is used to map from the indices in this
@@ -348,7 +288,6 @@ protected:
      */
     void update_mode_map(const_reference idx);
 
-private:
     /// Ensures that @p i is in the range [0, size())
     void bounds_check_(size_type i) const;
 
@@ -359,8 +298,21 @@ private:
     std::vector<std::set<size_type>> m_mode_map_;
 }; // class DomainPIMPL
 
-template<typename IndexType>
-std::ostream& operator<<(std::ostream& os, const DomainPIMPL<IndexType>& p) {
+//------------------------------------------------------------------------------
+//                      Related Free Functions
+//------------------------------------------------------------------------------
+
+/** @brief Adds a string representation of this DomainPIMPL to the provided
+ *         stream.
+ *  @relates Domain
+ *
+ *  @param[in,out] os The stream we are adding this DomainPIMPL to. After this
+ *                    call @p os will contain a string representation of
+ *                    this DomainPIMPL.
+ *  @param[in] d The pimpl to print.
+ *  @return @p os after adding this Domain to it.
+ */
+std::ostream& operator<<(std::ostream& os, const DomainPIMPL& p) {
     os << "{";
     for(std::size_t i = 0; i < p.size(); ++i) {
         os << p.at(i);
@@ -375,7 +327,7 @@ std::ostream& operator<<(std::ostream& os, const DomainPIMPL<IndexType>& p) {
  *  indices, regardless of whether the individual indices are actually
  *  stored in memory.
  *
- *  @tparam IndexType The type of index in the domain.
+ *  @tparam Index The type of index in the domain.
  *
  *  @param[in] lhs The DomainPIMPL on the left side of the operator
  *  @param[in] rhs The DomainPIMPL on the right side of the operator
@@ -384,9 +336,8 @@ std::ostream& operator<<(std::ostream& os, const DomainPIMPL<IndexType>& p) {
  *
  *  @throw None No throw guarantee.
  */
-template<typename IndexType>
-bool operator!=(const DomainPIMPL<IndexType>& lhs,
-                const DomainPIMPL<IndexType>& rhs) {
+
+bool operator!=(const DomainPIMPL& lhs, const DomainPIMPL& rhs) {
     return !(lhs == rhs);
 }
 
@@ -394,29 +345,22 @@ bool operator!=(const DomainPIMPL<IndexType>& lhs,
 // Inline implementations
 //------------------------------------------------------------------------------
 
-/// Macro of DomainPIMPL with template parameters in order to simplify defs
-#define DOMAINPIMPL DomainPIMPL<IndexType>
-
-template<typename IndexType>
-bool DOMAINPIMPL::count(const_reference idx) const noexcept {
+bool DomainPIMPL::count(const_reference idx) const noexcept {
     return m_domain_.count(idx);
 }
 
-template<typename IndexType>
-typename DOMAINPIMPL::size_type DOMAINPIMPL::rank() const noexcept {
+typename DomainPIMPL::size_type DomainPIMPL::rank() const noexcept {
     return m_domain_.empty() ? 0 : m_domain_.begin()->size();
 }
 
-template<typename IndexType>
-std::vector<typename DOMAINPIMPL::size_type> DOMAINPIMPL::result_extents()
+std::vector<typename DomainPIMPL::size_type> DomainPIMPL::result_extents()
   const {
     std::vector<size_type> rv(rank(), 0);
     for(size_type i = 0; i < rank(); ++i) rv[i] = m_mode_map_[i].size();
     return rv;
 }
 
-template<typename IndexType>
-typename DOMAINPIMPL::value_type DOMAINPIMPL::result_index(
+typename DomainPIMPL::value_type DomainPIMPL::result_index(
   const value_type& old) const {
     if(size() == 0 || old.size() != rank())
         throw std::out_of_range("Index is not in domain");
@@ -429,38 +373,22 @@ typename DOMAINPIMPL::value_type DOMAINPIMPL::result_index(
             throw std::out_of_range("Index is not in domain");
         rv[i] = std::distance(offsets.begin(), itr);
     }
-    return IndexType(rv.begin(), rv.end());
+    return Index(rv.begin(), rv.end());
 }
 
-template<typename IndexType>
-typename DOMAINPIMPL::value_type DOMAINPIMPL::at(size_type i) const {
+typename DomainPIMPL::value_type DomainPIMPL::at(size_type i) const {
     bounds_check_(i);
     return *(m_domain_.begin() + i);
 }
 
-template<typename IndexType>
-bool DOMAINPIMPL::equal_(const DomainPIMPL& rhs) const noexcept {
-    if(rank() != rhs.rank()) return false;
-    if(size() != rhs.size()) return false;
-    return m_domain_ == rhs.m_domain_;
-}
-
-template<typename IndexType>
-void DOMAINPIMPL::update_mode_map(const_reference idx) {
+void DomainPIMPL::update_mode_map(const_reference idx) {
     if(m_mode_map_.empty()) {
         std::vector<std::set<size_type>>(idx.size()).swap(m_mode_map_);
     }
     for(std::size_t i = 0; i < idx.size(); ++i) m_mode_map_[i].insert(idx[i]);
 }
 
-template<typename IndexType>
-std::unique_ptr<DOMAINPIMPL> DOMAINPIMPL::clone_() const {
-    auto* temp = new DOMAINPIMPL(*this);
-    return std::unique_ptr<DOMAINPIMPL>(temp);
-}
-
-template<typename IndexType>
-void DOMAINPIMPL::insert_(value_type idx) {
+void DomainPIMPL::insert(value_type idx) {
     if(!m_domain_.empty() && idx.size() != rank()) {
         using namespace std::string_literals;
         throw std::runtime_error("Rank of idx ("s + std::to_string(idx.size()) +
@@ -472,8 +400,7 @@ void DOMAINPIMPL::insert_(value_type idx) {
     m_domain_.insert(idx);
 }
 
-template<typename IndexType>
-DOMAINPIMPL& DOMAINPIMPL::prod_assign_(const my_type& other) {
+DomainPIMPL& DomainPIMPL::operator*=(const DomainPIMPL& other) {
     const bool is_empty = m_domain_.empty() || other.m_domain_.empty();
 
     if(is_empty) {
@@ -501,8 +428,7 @@ DOMAINPIMPL& DOMAINPIMPL::prod_assign_(const my_type& other) {
     return *this;
 }
 
-template<typename IndexType>
-DOMAINPIMPL& DOMAINPIMPL::union_assign_(const my_type& other) {
+DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other) {
     if(other.m_domain_.empty())
         return *this;
     else if(m_domain_.empty())
@@ -516,8 +442,7 @@ DOMAINPIMPL& DOMAINPIMPL::union_assign_(const my_type& other) {
     return *this;
 }
 
-template<typename IndexType>
-DOMAINPIMPL& DOMAINPIMPL::int_assign_(const my_type& other) {
+DomainPIMPL& DomainPIMPL::operator^=(const DomainPIMPL& other) {
     if(this == &other) return *this;
 
     const bool is_empty   = m_domain_.empty() || other.m_domain_.empty();
@@ -538,8 +463,13 @@ DOMAINPIMPL& DOMAINPIMPL::int_assign_(const my_type& other) {
     return *this;
 }
 
-template<typename IndexType>
-void DOMAINPIMPL::bounds_check_(size_type i) const {
+bool DomainPIMPL::operator==(const DomainPIMPL& rhs) const noexcept {
+    if(rank() != rhs.rank()) return false;
+    if(size() != rhs.size()) return false;
+    return m_domain_ == rhs.m_domain_;
+}
+
+void DomainPIMPL::bounds_check_(size_type i) const {
     if(i < size()) return;
     using namespace std::string_literals;
     throw std::out_of_range("i = "s + std::to_string(i) +
@@ -547,7 +477,4 @@ void DOMAINPIMPL::bounds_check_(size_type i) const {
                             std::to_string(size()) + ")."s);
 }
 
-#undef DOMAINPIMPL
-
-} // namespace detail_
-} // namespace tensorwrapper::sparse_map
+} // namespace tensorwrapper::sparse_map::detail_

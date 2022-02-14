@@ -1,13 +1,12 @@
 #pragma once
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
-#include "tensorwrapper/sparse_map/sparse_map/detail_/sparse_map_traits.hpp"
+#include "tensorwrapper/sparse_map/index.hpp"
 #include <memory> // unique_ptr
 #include <utilities/printing/print_stl.hpp>
 
 namespace tensorwrapper::sparse_map {
 
-// Forward declare for template metaprogramming purposes
-template<typename IndIndex, typename DepIndex>
+// Forward declaration
 class SparseMap;
 
 namespace detail_ {
@@ -16,31 +15,17 @@ namespace detail_ {
  *
  *  The SparseMapPIMPL is in charge of holding the actual state of the SparseMap
  *  and performing basic manipulations on it.
- *
- *  @tparam IndIndex The type of the independent indices in the SparseMap
- *  @tparam DepIndex The type of the dependent indices in the SparseMap
  */
-template<typename IndIndex, typename DepIndex>
 class SparseMapPIMPL {
-private:
-    /// Type of an instance of this PIMPL
-    using my_type = SparseMapPIMPL<IndIndex, DepIndex>;
-
-    /// Type of the SparseMap associated with this PIMPL
-    using parent_type = SparseMap<IndIndex, DepIndex>;
-
-    /// Type of the struct providing the types to the SparseMap class hierarchy
-    using traits_type = SparseMapTraits<parent_type>;
-
 public:
     /// Type used for counting and offsets
-    using size_type = typename traits_type::size_type;
+    using size_type = std::size_t;
 
     /// Type of the independent indices stored in this SparseMap
-    using key_type = typename traits_type::key_type;
+    using key_type = Index;
 
     /// Type of the dependent index containing Domains
-    using mapped_type = typename traits_type::mapped_type;
+    using mapped_type = Domain;
 
     /** @brief Constructs a new empty SparseMap.
      *
@@ -51,10 +36,14 @@ public:
      */
     SparseMapPIMPL() = default;
 
+    /// Default ctors
+    SparseMapPIMPL(const SparseMapPIMPL& rhs) = default;
+    SparseMapPIMPL(SparseMapPIMPL&& rhs)      = default;
+    SparseMapPIMPL& operator=(const SparseMapPIMPL& rhs) = default;
+    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs) = default;
+
     /// Default polymorphic dtor
     virtual ~SparseMapPIMPL() = default;
-
-    std::unique_ptr<my_type> clone() const { return clone_(); }
 
     /** @brief Returns the number of independent indices in this SparseMap.
      *
@@ -123,9 +112,9 @@ public:
      *                            the rank of @p value is not equal to
      *                            `dep_rank()`. Strong throw guarantee.
      */
-    void add_to_domain(const key_type& ind, const DepIndex& dep);
+    void add_to_domain(const key_type& ind, const Index& dep);
 
-    /** @brief Returns the @p i-th std::pair<IndIndex, Domain<DepIndex> in the
+    /** @brief Returns the @p i-th std::pair<Index, Domain> in the
      *         SparseMap.
      *
      *  The independent-index-domain pairs are stored in an ordered manner. This
@@ -141,7 +130,7 @@ public:
      */
     auto& at(size_type i);
 
-    /** @brief Returns the @p i-th std::pair<IndIndex, Domain<DepIndex> in the
+    /** @brief Returns the @p i-th std::pair<Index, Domain> in the
      *         SparseMap.
      *
      *  The independent-index-domain pairs are stored in an ordered manner. This
@@ -199,7 +188,7 @@ public:
      * @throw std::bad_alloc if there is not enough memory to store the new
      *                       state. Strong throw guarantee.
      */
-    auto& direct_product_assign(const my_type& rhs) { return dp_assign_(rhs); }
+    auto& direct_product_assign(const SparseMapPIMPL& rhs);
 
     /** @brief Sets this SparseMap to the SparseMap with domains given by the
      *         Cartesian product of the Domains previously in this SparseMap
@@ -220,7 +209,7 @@ public:
      * @throw std::bad_alloc if there is not enough memory to store the new
      *                       state. Strong throw guarantee.
      */
-    my_type& operator*=(const my_type& rhs) { return prod_assign_(rhs); }
+    SparseMapPIMPL& operator*=(const SparseMapPIMPL& rhs);
 
     /** @brief Sets this to the union of this and another map.
      *
@@ -240,7 +229,7 @@ public:
      *                           are not equal to the rank of the independent/
      *                           dependent indices of @p rhs.
      */
-    my_type& operator+=(const my_type& rhs) { return union_assign_(rhs); }
+    SparseMapPIMPL& operator+=(const SparseMapPIMPL& rhs);
 
     /** @brief Makes this the intersection of this SparseMap and another map.
      *
@@ -258,7 +247,7 @@ public:
      * @throw std::bad_alloc if there is insufficient memory to store the new
      *                       state. Strong throw guarantee.
      */
-    my_type& operator^=(const my_type& rhs) { return int_assign_(rhs); }
+    SparseMapPIMPL& operator^=(const SparseMapPIMPL& rhs);
 
     /** @brief Determines if two SparseMaps are identical.
      *
@@ -277,7 +266,7 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    bool operator==(const my_type& rhs) const noexcept { return equal_(rhs); }
+    bool operator==(const SparseMapPIMPL& rhs) const noexcept;
 
     /** @brief Adds a string representation of the SparseMap to the stream.
      *
@@ -295,39 +284,9 @@ public:
      *                   internal hash of @p h will be updated to include this
      *                   SparseMap's state.
      */
-    void hash(tensorwrapper::detail_::Hasher& h) const { hash_(h); }
-
-protected:
-    SparseMapPIMPL(const SparseMapPIMPL& rhs) = default;
-    SparseMapPIMPL(SparseMapPIMPL&& rhs)      = default;
-    SparseMapPIMPL& operator=(const SparseMapPIMPL& rhs) = default;
-    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs) = default;
-
-    /// Should be overridden by derived class to implement add_to_domain
-    virtual void add_to_domain_(const key_type& ind, const DepIndex& dep);
-
-    /// Should be overridden by derived class to implement direct_product_assign
-    virtual my_type& dp_assign_(const my_type& rhs);
-
-    /// Should be overridden by derived class to implement operator*=
-    virtual my_type& prod_assign_(const my_type& rhs);
-
-    /// Should be overridden by derived class to implement operator+=
-    virtual my_type& union_assign_(const my_type& rhs);
-
-    /// Should be overridden by derived class to implement operator^=
-    virtual my_type& int_assign_(const my_type& rhs);
-
-    /// Should be overridden by derived class to implement operator==
-    virtual bool equal_(const my_type& rhs) const noexcept;
-
-    /// Should be overridden by derived class to implement hash
-    virtual void hash_(tensorwrapper::detail_::Hasher& h) const { h(m_sm_); }
+    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_sm_); }
 
 private:
-    /// Should be overridden by the derived class to make a polymorphic copy
-    virtual std::unique_ptr<my_type> clone_() const;
-
     /// Type of the std::map holding the SparseMap's state
     using map_type = std::map<key_type, mapped_type>;
 
@@ -340,9 +299,6 @@ private:
  *
  *  This is a convenience function for calling SparseMapBase::print on a stream.
  *
- *  @tparam IndIndex The type of the independent indices.
- *  @tparam DepIndex The type of the dependent indices.
- *
  *  @param[in,out] os The stream we are adding the string representation to.
  *                   After this call the stream will contain the string
  *                   representation of the SparseMap.
@@ -350,9 +306,7 @@ private:
  *
  *  @return @p os with this SparseMap added to it.
  */
-template<typename IndIndex, typename DepIndex>
-std::ostream& operator<<(std::ostream& os,
-                         const SparseMapPIMPL<IndIndex, DepIndex>& smb) {
+std::ostream& operator<<(std::ostream& os, const SparseMapPIMPL& smb) {
     return smb.print(os);
 }
 
@@ -360,15 +314,9 @@ std::ostream& operator<<(std::ostream& os,
  *  @relates SparseMapPIMPL
  *
  *  Two SparseMaps are the same if they:
- *  - map from the same type of independent/dependent index
- *    - *e.g.* independent indices ar both ElementalIndex and dependent
- *      indices are both TileIndex
  *  - contain the same number of independent-indices
  *  - the set of independent indices is the same, and
  *  - each independent index maps to the same Domain
- *
- *  @tparam IndIndex Type of the independent indices
- *  @tparam DepIndex Type of the dependent indices
  *
  *  @param[in] lhs The SparseMap on the right side of the operator
  *  @param[in] rhs The SparseMap on the left side of the operator
@@ -377,68 +325,24 @@ std::ostream& operator<<(std::ostream& os,
  *
  *  @throw None No throw guarantee.
  */
-template<typename IndIndex, typename DepIndex>
-bool operator!=(const SparseMapPIMPL<IndIndex, DepIndex>& lhs,
-                const SparseMapPIMPL<IndIndex, DepIndex>& rhs) {
+bool operator!=(const SparseMapPIMPL& lhs, const SparseMapPIMPL& rhs) {
     return !(lhs == rhs);
 }
 
 //------------------------------------------------------------------------------
 //                           Inline Implementations
 //------------------------------------------------------------------------------
-#define SMPIMPL SparseMapPIMPL<IndIndex, DepIndex>
-
-template<typename IndIndex, typename DepIndex>
-typename SMPIMPL::size_type SMPIMPL::ind_rank() const noexcept {
+typename SparseMapPIMPL::size_type SparseMapPIMPL::ind_rank() const noexcept {
     return !m_sm_.empty() ? m_sm_.begin()->first.size() : 0;
 }
 
-template<typename IndIndex, typename DepIndex>
-typename SMPIMPL::size_type SMPIMPL::dep_rank() const noexcept {
+typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank() const noexcept {
     for(const auto& [k, v] : m_sm_)
         if(v.rank() > 0) return v.rank();
     return 0; // We get here if it's empty or if all Domains have rank 0
 }
 
-template<typename IndIndex, typename DepIndex>
-void SMPIMPL::add_to_domain(const key_type& ind, const DepIndex& dep) {
-    add_to_domain_(ind, dep);
-}
-
-template<typename IndIndex, typename DepIndex>
-auto& SMPIMPL::at(size_type i) {
-    if(i >= size())
-        throw std::out_of_range("Offset must be in range [0, size())");
-    auto itr = m_sm_.begin();
-    std::advance(itr, i);
-    return *itr;
-}
-
-template<typename IndIndex, typename DepIndex>
-const auto& SMPIMPL::at(size_type i) const {
-    if(i >= size())
-        throw std::out_of_range("Offset must be in range [0, size())");
-    auto itr = m_sm_.begin();
-    std::advance(itr, i);
-    return *itr;
-}
-
-template<typename IndIndex, typename DepIndex>
-const auto& SMPIMPL::at(const key_type& ind) const {
-    if(ind.size() != ind_rank())
-        throw std::runtime_error("Rank of key does not equal ind_rank()");
-    return m_sm_.at(ind);
-}
-
-template<typename IndIndex, typename DepIndex>
-std::ostream& SMPIMPL::print(std::ostream& os) const {
-    using utilities::printing::operator<<;
-    os << m_sm_;
-    return os;
-}
-
-template<typename IndIndex, typename DepIndex>
-void SMPIMPL::add_to_domain_(const key_type& ind, const DepIndex& dep) {
+void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
     if(!m_sm_.empty() && ind_rank() != ind.size())
         throw std::runtime_error("Independent index");
     else if(!m_sm_.empty() && dep_rank() != dep.size())
@@ -447,8 +351,35 @@ void SMPIMPL::add_to_domain_(const key_type& ind, const DepIndex& dep) {
     m_sm_[ind].insert(dep);
 }
 
-template<typename IndIndex, typename DepIndex>
-SMPIMPL& SMPIMPL::dp_assign_(const my_type& rhs) {
+auto& SparseMapPIMPL::at(size_type i) {
+    if(i >= size())
+        throw std::out_of_range("Offset must be in range [0, size())");
+    auto itr = m_sm_.begin();
+    std::advance(itr, i);
+    return *itr;
+}
+
+const auto& SparseMapPIMPL::at(size_type i) const {
+    if(i >= size())
+        throw std::out_of_range("Offset must be in range [0, size())");
+    auto itr = m_sm_.begin();
+    std::advance(itr, i);
+    return *itr;
+}
+
+const auto& SparseMapPIMPL::at(const key_type& ind) const {
+    if(ind.size() != ind_rank())
+        throw std::runtime_error("Rank of key does not equal ind_rank()");
+    return m_sm_.at(ind);
+}
+
+std::ostream& SparseMapPIMPL::print(std::ostream& os) const {
+    using utilities::printing::operator<<;
+    os << m_sm_;
+    return os;
+}
+
+auto& SparseMapPIMPL::direct_product_assign(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty() || rhs.m_sm_.empty()) {
         m_sm_.clear();
         return *this;
@@ -473,8 +404,7 @@ SMPIMPL& SMPIMPL::dp_assign_(const my_type& rhs) {
     return *this;
 }
 
-template<typename IndIndex, typename DepIndex>
-SMPIMPL& SMPIMPL::prod_assign_(const my_type& rhs) {
+SparseMapPIMPL& SparseMapPIMPL::operator*=(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty())
         return *this;
     else if(rhs.m_sm_.empty()) {
@@ -496,8 +426,7 @@ SMPIMPL& SMPIMPL::prod_assign_(const my_type& rhs) {
     return *this;
 }
 
-template<typename IndIndex, typename DepIndex>
-SMPIMPL& SMPIMPL::union_assign_(const my_type& rhs) {
+SparseMapPIMPL& SparseMapPIMPL::operator+=(const SparseMapPIMPL& rhs) {
     if(rhs.m_sm_.empty())
         return *this;
     else if(m_sm_.empty()) {
@@ -514,8 +443,7 @@ SMPIMPL& SMPIMPL::union_assign_(const my_type& rhs) {
     return *this;
 }
 
-template<typename IndIndex, typename DepIndex>
-SMPIMPL& SMPIMPL::int_assign_(const my_type& rhs) {
+SparseMapPIMPL& SparseMapPIMPL::operator^=(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty())
         return *this;
     else if(rhs.m_sm_.empty() || (ind_rank() != rhs.ind_rank())) {
@@ -533,18 +461,9 @@ SMPIMPL& SMPIMPL::int_assign_(const my_type& rhs) {
     return *this;
 }
 
-template<typename IndIndex, typename DepIndex>
-bool SMPIMPL::equal_(const my_type& rhs) const noexcept {
+bool SparseMapPIMPL::operator==(const SparseMapPIMPL& rhs) const noexcept {
     return m_sm_ == rhs.m_sm_;
 }
-
-template<typename IndIndex, typename DepIndex>
-std::unique_ptr<SMPIMPL> SMPIMPL::clone_() const {
-    auto* temp = new my_type(*this);
-    return std::unique_ptr<my_type>(temp);
-}
-
-#undef SMPIMPL
 
 } // namespace detail_
 } // namespace tensorwrapper::sparse_map

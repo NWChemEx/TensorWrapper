@@ -11,7 +11,7 @@ namespace tensorwrapper::ta_helpers {
  *  @return The index of the tile the element belongs to.
  */
 inline auto get_block_idx(const TA::TiledRange& trange,
-                          const sparse_map::ElementIndex& idx) {
+                          const sparse_map::Index& idx) {
     const auto tidx = trange.element_to_tile(idx);
     return trange.tiles_range().idx(tidx);
 }

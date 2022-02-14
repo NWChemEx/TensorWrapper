@@ -20,7 +20,7 @@ namespace tensorwrapper::ta_helpers {
  * @throw None No throw guarantee.
  */
 bool is_tile_lower_bound(const TA::TiledRange& tr,
-                         const sparse_map::ElementIndex& elem) noexcept;
+                         const sparse_map::Index& elem) noexcept;
 
 /** @brief Determines if the provided element is an upper bound of any tile in
  *         the range.
@@ -43,6 +43,6 @@ bool is_tile_lower_bound(const TA::TiledRange& tr,
  *                       throw guarantee.
  */
 bool is_tile_upper_bound(const TA::TiledRange& tr,
-                         const sparse_map::ElementIndex& elem);
+                         const sparse_map::Index& elem);
 
 } // namespace tensorwrapper::ta_helpers

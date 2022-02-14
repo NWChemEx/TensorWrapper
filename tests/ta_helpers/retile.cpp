@@ -2,7 +2,7 @@
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::ta_helpers;
-using ei = tensorwrapper::sparse_map::ElementIndex;
+using ei = tensorwrapper::sparse_map::Index;
 
 TEST_CASE("insert_tile_boundaries(TiledRange,vector)") {
     using vector_t = std::vector<ei>;
