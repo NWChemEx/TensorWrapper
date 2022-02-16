@@ -42,11 +42,10 @@ struct Scalar {};
 /// Represents a field containing tensors
 struct Tensor {};
 
+template<typename FieldType>
+inline constexpr bool is_scalar_field_v = std::is_same_v<FieldType, Scalar>;
 
-template <typename FieldType>
-inline constexpr bool is_scalar_field_v = std::is_same_v<FieldType,Scalar>;
-
-template <typename FieldType>
-inline constexpr bool is_tensor_field_v = std::is_same_v<FieldType,Tensor>;
+template<typename FieldType>
+inline constexpr bool is_tensor_field_v = std::is_same_v<FieldType, Tensor>;
 
 } // namespace tensorwrapper::tensor::field
