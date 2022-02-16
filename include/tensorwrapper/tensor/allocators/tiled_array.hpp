@@ -21,7 +21,7 @@ class TiledArrayAllocator : public Allocator<FieldType> {
 public:
     using allocator_ptr         = typename base_type::allocator_ptr;
     using runtime_reference     = typename base_type::runtime_reference;
-    using scalar_populator_type = typename base_type::scalar_populator_type;
+    using tile_populator_type = typename base_type::tile_populator_type;
     using value_type            = typename base_type::value_type;
     using shape_type            = typename base_type::shape_type;
 
@@ -51,7 +51,7 @@ public:
 private:
     void hash_(tensorwrapper::detail_::Hasher& h) const override;
     allocator_ptr clone_() const override;
-    value_type allocate_(const scalar_populator_type& fxn,
+    value_type allocate_(const tile_populator_type& fxn,
                          const shape_type& shape) const override;
     bool is_equal_(const base_type& rhs) const noexcept override;
 

@@ -1,7 +1,4 @@
-#include "../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
-#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
-#include "tiled_array_sparse_shape.hpp"
-#include "tiled_array_tiling.hpp"
+#include "tiled_array_allocator_helper.hpp"
 
 #define TPARAM template<typename FieldType>
 #define TA_ALLOCATOR TiledArrayAllocator<FieldType>
@@ -16,33 +13,16 @@ TPARAM typename TA_ALLOCATOR::allocator_ptr TA_ALLOCATOR::clone_() const {
 }
 
 TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::allocate_(
-  const scalar_populator_type& fxn, const shape_type& shape) const {
-    // Get TiledRange for the specified tiling
-    auto ta_trange = detail_::make_tiled_range(tiling_, shape);
+  const tile_populator_type& fxn, const shape_type& shape) const {
 
-    // Get the TA Shape
-    // auto ta_shape = detail_::make_sparse_shape<FieldType>(shape, ta_trange);
-#if 1
-
-    // Create TA tensor
     using default_tensor_type = detail_::default_tensor_type<FieldType>;
     default_tensor_type ta_tensor;
     if constexpr(std::is_same_v<FieldType, field::Scalar>) {
-        if(fxn) {
-            auto ta_functor = [&](TA::Tensor<double>& t,
-                                  TA::Range const& range) {
-                t = TA::Tensor<double>(range, 0.0);
-                fxn(range.lobound(), range.upbound(), t.data());
-                return TA::norm(t);
-            };
-            ta_tensor = TA::make_array<default_tensor_type>(
-              this->m_world_, ta_trange, ta_functor);
-        } else {
-            // ta_tensor = default_tensor_type(this->m_world_, ta_trange,
-            // ta_shape );
-        }
+        ta_tensor = detail_::generate_ta_scalar_tensor(this->m_world_, shape,
+                      tiling_, fxn );
     } else {
-        throw std::runtime_error("Haven't worked out ToT population yet...");
+        ta_tensor = detail_::generate_ta_tot_tensor(this->m_world_, shape,
+                      tiling_, fxn );
     }
 
     // Wrap in buffer PIMPL
@@ -51,9 +31,7 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::allocate_(
 
     // Return Buffer pointer
     return value_type(ta_buffer_pimpl.clone());
-#else
-    return value_type();
-#endif
+
 }
 
 TPARAM bool TA_ALLOCATOR::is_equal_(const base_type& other) const noexcept {
