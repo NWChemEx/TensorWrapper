@@ -11,25 +11,24 @@ namespace tensorwrapper::tensor::allocator {
 namespace detail_ {
 
 using tile_index_type = std::vector<size_t>;
-template <typename ScalarType>
-using scalar_populator_type = 
-  std::function<void(tile_index_type,    // lo_bounds 
-		     tile_index_type,    // up_bounds
-		     ScalarType*)>; // row major data
-template <typename ScalarType>
-using tot_populator_type = 
-  std::function<void(tile_index_type,    // outer indices
-                     tile_index_type,    // lo_bounds 
-		     tile_index_type,    // up_bounds
-		     ScalarType*)>; // row major data
+template<typename ScalarType>
+using scalar_populator_type =
+  std::function<void(tile_index_type, // lo_bounds
+                     tile_index_type, // up_bounds
+                     ScalarType*)>;   // row major data
+template<typename ScalarType>
+using tot_populator_type = std::function<void(tile_index_type, // outer indices
+                                              tile_index_type, // lo_bounds
+                                              tile_index_type, // up_bounds
+                                              ScalarType*)>;   // row major data
 
-template <typename FieldType, typename ScalarType>
-using tile_populator_type = std::conditional_t<
-  std::is_same_v<FieldType,field::Scalar>,
-  scalar_populator_type<ScalarType>,
-  tot_populator_type<ScalarType> >;
+template<typename FieldType, typename ScalarType>
+using tile_populator_type =
+  std::conditional_t<std::is_same_v<FieldType, field::Scalar>,
+                     scalar_populator_type<ScalarType>,
+                     tot_populator_type<ScalarType>>;
 
-}
+} // namespace detail_
 
 /** @brief Abstracts away the details of how the TensorWrapper's internal tensor
  *         is formed.
@@ -119,8 +118,8 @@ public:
                          std::vector<size_t>, // up_bounds
                          scalar_type*)>;      // row major data
 #else
-    using tile_populator_type = 
-      detail_::tile_populator_type<FieldType,scalar_type>;
+    using tile_populator_type =
+      detail_::tile_populator_type<FieldType, scalar_type>;
 #endif
 
     /** @brief Creates a new allocator with the optionally specified runtime.

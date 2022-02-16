@@ -30,7 +30,6 @@ private:
     using disable_if_same_field_t = std::enable_if_t<different_fields_v<T>>;
 
 public:
-
     /// Type used to describe the length of each mode
     using typename base_type::extents_type;
 

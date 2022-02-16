@@ -19,11 +19,11 @@ class TiledArrayAllocator : public Allocator<FieldType> {
     using my_type   = TiledArrayAllocator;
 
 public:
-    using allocator_ptr         = typename base_type::allocator_ptr;
-    using runtime_reference     = typename base_type::runtime_reference;
+    using allocator_ptr       = typename base_type::allocator_ptr;
+    using runtime_reference   = typename base_type::runtime_reference;
     using tile_populator_type = typename base_type::tile_populator_type;
-    using value_type            = typename base_type::value_type;
-    using shape_type            = typename base_type::shape_type;
+    using value_type          = typename base_type::value_type;
+    using shape_type          = typename base_type::shape_type;
 
     explicit TiledArrayAllocator(
       ta::Storage storage   = ta::Storage::Core,

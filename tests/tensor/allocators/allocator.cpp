@@ -11,9 +11,10 @@
  */
 
 using namespace tensorwrapper::tensor;
-TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar, field::Tensor) {
-    using field_type  = TestType;
-    auto palloc       = default_allocator<field_type>();
+TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar,
+                   field::Tensor) {
+    using field_type = TestType;
+    auto palloc      = default_allocator<field_type>();
 
     SECTION("Comparisons") {
         const auto prhs =
@@ -31,7 +32,6 @@ TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar, f
         REQUIRE(palloc->is_equal(*copy));
     }
 }
-
 
 TEST_CASE("Allocator<Scalar>") {
     using field_type  = tensorwrapper::tensor::field::Scalar;
@@ -124,9 +124,6 @@ TEST_CASE("Allocator<Scalar>") {
     }
 }
 
-
-
-
 TEST_CASE("Allocator<Tensor>") {
     using field_type  = tensorwrapper::tensor::field::Tensor;
     using buffer_type = tensorwrapper::tensor::buffer::Buffer<field_type>;
@@ -138,9 +135,8 @@ TEST_CASE("Allocator<Tensor>") {
 
     auto&& [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
     buffer_type vec_of_vec(pvov->clone());
-    auto fxn = []( std::vector<size_t> outer, std::vector<size_t> lo,
-		   std::vector<size_t> up, double* data ) {
+    auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
+                  std::vector<size_t> up, double* data) {
 
     };
-
 }
