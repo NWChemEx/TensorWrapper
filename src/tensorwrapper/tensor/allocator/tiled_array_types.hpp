@@ -1,7 +1,7 @@
 #pragma once
-#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 #include "../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
 #include "../buffer/detail_/ta_buffer_pimpl.hpp"
+#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 
 namespace tensorwrapper::tensor::allocator::detail_ {
 
@@ -19,10 +19,10 @@ using tile_index = tensorwrapper::sparse_map::Index;
 using ta_shape_type = TA::SparseShape<float>;
 
 template<typename FieldType>
-using ta_buffer_pimpl_type = 
+using ta_buffer_pimpl_type =
   tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<FieldType>;
 template<typename FieldType>
-using default_tensor_type = 
+using default_tensor_type =
   typename ta_buffer_pimpl_type<FieldType>::default_tensor_type;
 
-}
+} // namespace tensorwrapper::tensor::allocator::detail_

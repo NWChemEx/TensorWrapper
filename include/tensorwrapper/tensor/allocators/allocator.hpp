@@ -1,7 +1,7 @@
 #pragma once
+#include "tensorwrapper/tensor/buffer/buffer.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
-#include "tensorwrapper/tensor/buffer/buffer.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
 #include <memory>
 #include <vector>
@@ -90,10 +90,10 @@ public:
     using scalar_type = double;
 
     /// Type of tensor population functor
-    using scalar_populator_type = std::function<
-      void( std::vector<size_t>, // lo_bounds
-            std::vector<size_t>, // up_bounds
-	    scalar_type*)>;      // row major data
+    using scalar_populator_type =
+      std::function<void(std::vector<size_t>, // lo_bounds
+                         std::vector<size_t>, // up_bounds
+                         scalar_type*)>;      // row major data
 
     /** @brief Creates a new allocator with the optionally specified runtime.
      *
@@ -139,8 +139,8 @@ public:
     /// Standard default dtor
     virtual ~Allocator() noexcept = default;
 
-    value_type allocate(const scalar_populator_type& fxn, 
-      const shape_type& shape) const;
+    value_type allocate(const scalar_populator_type& fxn,
+                        const shape_type& shape) const;
     value_type allocate(const shape_type& shape) const;
 
     /** @brief Creates a tensor initialized with provided initializer list.
@@ -257,8 +257,8 @@ protected:
      */
     virtual allocator_ptr clone_() const = 0;
 
-    virtual value_type allocate_( const scalar_populator_type&, 
-      const shape_type& ) const = 0;
+    virtual value_type allocate_(const scalar_populator_type&,
+                                 const shape_type&) const = 0;
 
     /** @brief Hook for polymorphically comparing two Allocators.
      *
@@ -294,19 +294,17 @@ bool Allocator<FieldType>::is_equal(const Allocator& other) const {
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type 
-Allocator<FieldType>::allocate( const scalar_populator_type& fxn,
-  const shape_type& shape ) const {
+typename Allocator<FieldType>::value_type Allocator<FieldType>::allocate(
+  const scalar_populator_type& fxn, const shape_type& shape) const {
     return allocate_(fxn, shape);
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type 
-Allocator<FieldType>::allocate( const shape_type& shape ) const {
+typename Allocator<FieldType>::value_type Allocator<FieldType>::allocate(
+  const shape_type& shape) const {
     scalar_populator_type fxn;
     return allocate_(fxn, shape);
 }
-
 
 #if 0
 template<typename FieldType>
@@ -349,4 +347,4 @@ void Allocator<FieldType>::hash_(tensorwrapper::detail_::Hasher& h) const {
     // h(m_world_);
 }
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::allocator

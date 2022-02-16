@@ -56,11 +56,11 @@ TENSOR_WRAPPER::TensorWrapper() = default;
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(variant_type v, shape_pointer pshape,
                               allocator_pointer palloc) {
-  throw std::runtime_error("Variant Ctor NYI");
+    throw std::runtime_error("Variant Ctor NYI");
 }
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(variant_type v, allocator_pointer palloc) {
-  throw std::runtime_error("Variant Ctor NYI");
+    throw std::runtime_error("Variant Ctor NYI");
 }
 
 #if 0

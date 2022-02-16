@@ -1,20 +1,18 @@
 #pragma once
 #include "tiled_array_types.hpp"
 
-
 namespace tensorwrapper::tensor::allocator::detail_ {
 
-template <typename T, typename U>
+template<typename T, typename U>
 T downcast(U* ptr) {
     auto dc_ptr = dynamic_cast<T>(ptr);
     if(!ptr) throw std::bad_cast();
     return dc_ptr;
 }
 
-
 // Makes a tiled range for the provided slice
-inline auto make_tiled_range(const idx2mode_type& idx2mode, 
-  const tiled_range_type& tr) {
+inline auto make_tiled_range(const idx2mode_type& idx2mode,
+                             const tiled_range_type& tr) {
     using tr1_vec_type = std::vector<tr1_type>;
     using size_type    = typename tr1_vec_type::size_type;
 
@@ -25,12 +23,9 @@ inline auto make_tiled_range(const idx2mode_type& idx2mode,
     return tiled_range_type(tr1s.begin(), tr1s.end());
 }
 
-
-
-
-
-inline auto scalar_tensor_shape( const sparse_map_type& sm, 
-  const idx2mode_type& i2m, const tiled_range_type& tr ) {
+inline auto scalar_tensor_shape(const sparse_map_type& sm,
+                                const idx2mode_type& i2m,
+                                const tiled_range_type& tr) {
     const auto nind = sm.ind_rank();
     const auto ndep = sm.dep_rank();
     const auto rank = nind + ndep;
@@ -67,10 +62,9 @@ inline auto scalar_tensor_shape( const sparse_map_type& sm,
     return ta_shape_type(shape_data, tr);
 }
 
-template <typename FieldType, typename ShapeType>
-ta_shape_type make_sparse_shape( const ShapeType& shape, 
-  const tiled_range_type& tiled_range ) {
-
+template<typename FieldType, typename ShapeType>
+ta_shape_type make_sparse_shape(const ShapeType& shape,
+                                const tiled_range_type& tiled_range) {
     // Attempt to downcast to SparseShape
     auto sparse_shape_ptr = downcast<const SparseShape<FieldType>*>(&shape);
 
@@ -80,6 +74,4 @@ ta_shape_type make_sparse_shape( const ShapeType& shape,
     return scalar_tensor_shape(sparse_map, idx2mode_map, tiled_range);
 }
 
-
-}
-
+} // namespace tensorwrapper::tensor::allocator::detail_
