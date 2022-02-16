@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include <catch2/catch.hpp>
 
@@ -42,3 +43,4 @@ TEST_CASE("SingleElementTiles") {
         }
     }
 }
+#endif

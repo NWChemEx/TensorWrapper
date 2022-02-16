@@ -7,6 +7,7 @@ namespace tensorwrapper::tensor {
 ScalarTensorWrapper concatenate(const ScalarTensorWrapper& lhs,
                                 const ScalarTensorWrapper& rhs,
                                 std::size_t dim) {
+#if 0
     const auto& C_lhs = lhs.get<TA::TSpArrayD>();
     const auto& C_rhs = rhs.get<TA::TSpArrayD>();
     const auto rank   = C_lhs.trange().rank();
@@ -53,6 +54,10 @@ ScalarTensorWrapper concatenate(const ScalarTensorWrapper& lhs,
     C_out = TA::retile(C_out, new_tr);
 
     return ScalarTensorWrapper(C_out);
+#else
+    throw std::runtime_error("SWT concatenate NYI");
+    return ScalarTensorWrapper();
+#endif
 }
 
 TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
@@ -116,7 +121,12 @@ TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
 ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
     const auto& t_ta = t.get<TA::TSpArrayD>();
 
+#if 0
     return ScalarTensorWrapper(ta_helpers::grab_diagonal(t_ta));
+#else
+    throw std::runtime_error("STW grab_diagonal NYI");
+    return ScalarTensorWrapper();
+#endif
 }
 
 } // namespace tensorwrapper::tensor

@@ -1,3 +1,4 @@
+#if 0
 #include "test_tensor.hpp"
 
 using namespace tensorwrapper::tensor;
@@ -290,3 +291,4 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Scalar>", "", scalar_variant) {
         REQUIRE(slice_of_A == corr);
     }
 }
+#endif

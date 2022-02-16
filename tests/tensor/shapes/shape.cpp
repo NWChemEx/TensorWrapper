@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
@@ -105,3 +106,4 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
         }
     }
 }
+#endif

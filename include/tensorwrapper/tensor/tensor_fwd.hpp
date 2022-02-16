@@ -2,8 +2,10 @@
 
 namespace tensorwrapper::tensor {
 
+namespace allocator {
 template<typename FieldType>
 class Allocator;
+}
 
 template<typename FieldType>
 class TensorWrapper;

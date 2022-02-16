@@ -1,3 +1,4 @@
+#if 0
 #include "../test_tensor.hpp"
 #include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
@@ -456,3 +457,4 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
         }
     }
 }
+#endif

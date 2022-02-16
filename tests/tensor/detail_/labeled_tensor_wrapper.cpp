@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
 
@@ -28,3 +29,4 @@ TEST_CASE("LabeledTensorWrapper") {
         }
     }
 }
+#endif

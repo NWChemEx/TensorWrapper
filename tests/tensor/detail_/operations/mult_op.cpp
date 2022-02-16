@@ -1,3 +1,4 @@
+#if 0
 #include "../../test_tensor.hpp"
 
 using namespace tensorwrapper;
@@ -280,3 +281,4 @@ TEST_CASE("ToT = ToT * ToT") {
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
 }
+#endif

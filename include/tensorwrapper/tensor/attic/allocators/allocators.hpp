@@ -1,6 +1,7 @@
 #pragma once
 #include "tensorwrapper/tensor/allocators/allocator.hpp"
-#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
+#include "tensorwrapper/tensor/allocators/one_big_tile.hpp"
+#include "tensorwrapper/tensor/allocators/single_element_tiles.hpp"
 
 namespace tensorwrapper::tensor {
 
@@ -19,8 +20,8 @@ namespace tensorwrapper::tensor {
  *  @throw std::bad_alloc if allocation fails. Strong throw guarantee.
  */
 template<typename FieldType>
-typename allocator::Allocator<FieldType>::allocator_ptr default_allocator() {
-    return std::make_unique<allocator::TiledArrayAllocator<FieldType>>();
+typename Allocator<FieldType>::allocator_ptr default_allocator() {
+    return std::make_unique<OneBigTile<FieldType>>();
 }
 
 } // namespace tensorwrapper::tensor

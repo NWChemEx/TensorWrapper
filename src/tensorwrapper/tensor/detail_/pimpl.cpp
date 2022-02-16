@@ -246,6 +246,7 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
 
 template<typename FieldType>
 void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
+#if 0
     auto l = [&](auto&& arg) {
         // We have nothing to do if it's not initialized yet
         if(!arg.is_initialized()) return;
@@ -261,10 +262,14 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
         }
     };
     std::visit(l, m_tensor_);
+#else
+    throw std::runtime_error("TW::reallocate_ NYI");
+#endif
 }
 
 template<typename FieldType>
 void PIMPL_TYPE::shuffle_(const extents_type& shape) {
+#if 0
     const auto times_op = std::multiplies<size_t>();
     auto new_volume = std::accumulate(shape.begin(), shape.end(), 1, times_op);
 
@@ -298,6 +303,9 @@ void PIMPL_TYPE::shuffle_(const extents_type& shape) {
         return rv;
     };
     m_tensor_ = std::visit(l, m_tensor_);
+#else
+    throw std::runtime_error("TW:shuffle_ NYI");
+#endif
 }
 
 template<typename FieldType>

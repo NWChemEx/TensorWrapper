@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
 
@@ -78,3 +79,4 @@ TEST_CASE("remove_redundancy(TensorWrapper)") {
 //         REQUIRE(allclose_tot(NRC, corr, 2));
 //     }
 // }
+#endif

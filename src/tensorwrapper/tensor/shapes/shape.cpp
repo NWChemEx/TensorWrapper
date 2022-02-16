@@ -96,10 +96,16 @@ typename SHAPE::pointer_type SHAPE::clone_() const {
 template<typename FieldType>
 typename SHAPE::tensor_type SHAPE::make_tensor_(
   const_allocator_reference p) const {
+#if 0
     assert_pimpl_();
     auto tr     = p.make_tiled_range(m_pimpl_->extents());
     auto& world = p.runtime();
     return tensor_type(std::in_place_index<0>, world, tr);
+#else
+    assert_pimpl_();
+    throw std::runtime_error("Shape::make_tensor_ NYI");
+    return tensor_type();
+#endif
 }
 
 template<typename FieldType>

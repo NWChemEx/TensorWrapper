@@ -134,7 +134,7 @@ public:
     using size_type = std::size_t;
 
     /// Type of an allocator
-    using allocator_type = Allocator<FieldType>;
+    using allocator_type = allocator::Allocator<FieldType>;
 
     /// Type of a pointer to an allocator
     using allocator_pointer = std::unique_ptr<allocator_type>;

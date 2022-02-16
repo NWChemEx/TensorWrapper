@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/creation.hpp"
 #include "tensorwrapper/tensor/tensor_wrapper.hpp"
 #include "test_tensor.hpp"
@@ -60,3 +61,4 @@ TEST_CASE("concatenate(ToT)") {
     TensorOfTensorsWrapper A, B;
     REQUIRE_THROWS_AS(concatenate(A, B, 0), std::runtime_error);
 }
+#endif

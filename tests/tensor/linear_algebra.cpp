@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
 
@@ -44,3 +45,4 @@ TEST_CASE("eigen_solve") {
         SECTION("eigen vectors") { REQUIRE(abs_allclose(evec_corr, evecs)); }
     }
 }
+#endif

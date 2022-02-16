@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
@@ -298,3 +299,4 @@ TEST_CASE("SparseShape<field::Tensor>") {
         REQUIRE_FALSE(b != t);
     }
 }
+#endif

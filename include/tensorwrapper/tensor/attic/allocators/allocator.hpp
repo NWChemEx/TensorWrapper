@@ -1,12 +1,12 @@
 #pragma once
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
-#include "tensorwrapper/tensor/buffer/buffer.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
 #include <memory>
 #include <vector>
 
-namespace tensorwrapper::tensor::allocator {
+namespace tensorwrapper::tensor {
 
 /** @brief Abstracts away the details of how the TensorWrapper's internal tensor
  *         is formed.
@@ -64,9 +64,12 @@ private:
     /// The type of this allocator
     using my_type = Allocator<FieldType>;
 
+    /// The traits class for the backend
+    using backend_traits = backends::TiledArrayTraits<FieldType>;
+
 public:
     /// The type of object this allocator can make
-    using value_type = buffer::Buffer<FieldType>;
+    using value_type = typename backend_traits::variant_type;
 
     /// The base type of an object which models a tensor's shape
     using shape_type = Shape<FieldType>;
@@ -76,6 +79,9 @@ public:
 
     /// Container-of-extents type used to specify the extents of all modes
     using extents_type = typename shape_type::extents_type;
+
+    /// Type used to specify the tilings of the tensor
+    using tiled_range_type = TA::TiledRange;
 
     /// Pointer to the base class of the allocator hierarchy
     using allocator_ptr = std::unique_ptr<my_type>;
@@ -88,12 +94,6 @@ public:
 
     /// Type of the scalars in the tensor
     using scalar_type = double;
-
-    /// Type of tensor population functor
-    using scalar_populator_type = std::function<
-      void( std::vector<size_t>, // lo_bounds
-            std::vector<size_t>, // up_bounds
-	    scalar_type*)>;      // row major data
 
     /** @brief Creates a new allocator with the optionally specified runtime.
      *
@@ -139,9 +139,36 @@ public:
     /// Standard default dtor
     virtual ~Allocator() noexcept = default;
 
-    value_type allocate(const scalar_populator_type& fxn, 
-      const shape_type& shape) const;
-    value_type allocate(const shape_type& shape) const;
+    /** @brief Creates a TiledRange for the given shape.
+     *
+     *  This is the public API for requesting a tiled range for a tensor.
+     *  Exactly how @p shape gets mapped to a tiled range is left up to the
+     *  derived class.
+     *
+     *  @param[in] shape A container such that the i-th element is the extent of
+     *                   the i-th mode of the resulting tensor. Extent lengths
+     *                   are in elements, not tiles.
+     *
+     *  @return The tiled range the TensorWrapper should use to allocate its
+     *          internal tensor.
+     */
+    tiled_range_type make_tiled_range(const extents_type& shape) const;
+
+    /** @brief Creates an unininitialized tensor with the specified shape.
+     *
+     *  This function combines the call to `make_tiled_range` with the
+     *  construction of a tensor. In theory which of the variant alternatives is
+     *  used can be controlled in some manner. At the moment we have hard-coded
+     *  the choice to the first alternative.
+     *
+     *  @param[in] shape A container such that the i-th element is the extent of
+     *                   the i-th mode of the resulting tensor. Extent lengths
+     *                   are in elements, not tiles.
+     *
+     *  @return A variant containing the created tensor. Which of the variant
+     *          choices is initialized is up to the allocator.
+     */
+    value_type new_tensor(const shape_type& shape) const;
 
     /** @brief Creates a tensor initialized with provided initializer list.
      *
@@ -160,10 +187,17 @@ public:
      *                            have the same extent). Strong throw guarantee.
      */
     ///@{
-    value_type allocate(const n_d_initializer_list_t<scalar_type, 1>& il) const;
-    value_type allocate(const n_d_initializer_list_t<scalar_type, 2>& il) const;
-    value_type allocate(const n_d_initializer_list_t<scalar_type, 3>& il) const;
-    value_type allocate(const n_d_initializer_list_t<scalar_type, 4>& il) const;
+    value_type new_tensor(
+      const n_d_initializer_list_t<scalar_type, 1>& il) const;
+
+    value_type new_tensor(
+      const n_d_initializer_list_t<scalar_type, 2>& il) const;
+
+    value_type new_tensor(
+      const n_d_initializer_list_t<scalar_type, 3>& il) const;
+
+    value_type new_tensor(
+      const n_d_initializer_list_t<scalar_type, 4>& il) const;
     ///@}
 
     /** @brief Polymorphically hashes this allocator instance.
@@ -234,6 +268,7 @@ protected:
      */
     virtual void hash_(tensorwrapper::detail_::Hasher& h) const;
 
+private:
     /// Deleted to avoid slicing
     Allocator(Allocator&&) = delete;
 
@@ -257,8 +292,21 @@ protected:
      */
     virtual allocator_ptr clone_() const = 0;
 
-    virtual value_type allocate_( const scalar_populator_type&, 
-      const shape_type& ) const = 0;
+    /** @brief Hook for making a tiled range
+     *
+     *  @param[in] shape The instance provided to make_tiled_range.
+     *
+     *  @return The tiled range instance the derived class maps @p shape to.
+     *          The details depend on the derived class.
+     *
+     *  @throw std::bad_alloc The derived class may throw std::bad_alloc if a
+     *                        problem arises while allocating any intermediate
+     *                        buffers or the final result. If an exception is
+     *                        thrown the derived class is responsible for
+     *                        ensuring that this function obeys a strong throw
+     *                        gurantee.
+     */
+    virtual tiled_range_type make_tr_(const extents_type& shape) const = 0;
 
     /** @brief Hook for polymorphically comparing two Allocators.
      *
@@ -294,21 +342,17 @@ bool Allocator<FieldType>::is_equal(const Allocator& other) const {
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type 
-Allocator<FieldType>::allocate( const scalar_populator_type& fxn,
-  const shape_type& shape ) const {
-    return allocate_(fxn, shape);
+typename Allocator<FieldType>::tiled_range_type
+Allocator<FieldType>::make_tiled_range(const extents_type& shape) const {
+    return make_tr_(shape);
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type 
-Allocator<FieldType>::allocate( const shape_type& shape ) const {
-    scalar_populator_type fxn;
-    return allocate_(fxn, shape);
+typename Allocator<FieldType>::value_type Allocator<FieldType>::new_tensor(
+  const shape_type& shape) const {
+    return shape.make_tensor(*this);
 }
 
-
-#if 0
 template<typename FieldType>
 typename Allocator<FieldType>::value_type Allocator<FieldType>::new_tensor(
   const n_d_initializer_list_t<scalar_type, 1>& il) const {
@@ -336,7 +380,6 @@ typename Allocator<FieldType>::value_type Allocator<FieldType>::new_tensor(
     const auto tr = make_tiled_range(il2extents<scalar_type, 4>(il));
     return value_type(std::in_place_index<0>, m_world_, tr, il);
 }
-#endif
 
 template<typename FieldType>
 bool Allocator<FieldType>::is_equal_(const Allocator& rhs) const noexcept {
@@ -345,7 +388,6 @@ bool Allocator<FieldType>::is_equal_(const Allocator& rhs) const noexcept {
 
 template<typename FieldType>
 void Allocator<FieldType>::hash_(tensorwrapper::detail_::Hasher& h) const {
-    throw std::runtime_error("Hasher NYI");
     // h(m_world_);
 }
 

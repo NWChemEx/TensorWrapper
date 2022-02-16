@@ -1,3 +1,4 @@
+#if 0
 #include "tensorwrapper/tensor/tensor.hpp"
 #include "tensorwrapper/tensor/type_traits/type_traits.hpp"
 #include <catch2/catch.hpp>
@@ -105,3 +106,4 @@ TEST_CASE("mult_variant_t") {
     using type      = mult_variant_t<t_variant, t_variant>;
     STATIC_REQUIRE(std::is_same_v<type, corr_type>);
 }
+#endif

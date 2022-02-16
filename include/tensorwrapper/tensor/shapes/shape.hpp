@@ -56,7 +56,7 @@ public:
     using field_type = FieldType;
 
     /// Base type of an allocator associated with the same tensor
-    using allocator_type = Allocator<field_type>;
+    using allocator_type = allocator::Allocator<field_type>;
 
     /// Read-only reference to an allocator
     using const_allocator_reference = const allocator_type&;

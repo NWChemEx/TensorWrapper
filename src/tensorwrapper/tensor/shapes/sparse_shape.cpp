@@ -82,10 +82,15 @@ template<typename FieldType>
 typename SPARSE_SHAPE::tensor_type SPARSE_SHAPE::make_tensor_(
   const_allocator_reference p) const {
     const auto& the_pimpl = downcast(this->pimpl_());
+#if 0
     auto tr               = p.make_tiled_range(the_pimpl.extents());
     auto& world           = p.runtime();
     auto shape            = the_pimpl.shape(tr);
     return tensor_type(std::in_place_index<0>, world, tr, shape);
+#else
+    throw std::runtime_error("SparseShape::make_tensor_ NYI");
+    return tensor_type();
+#endif
 }
 
 template<typename FieldType>
