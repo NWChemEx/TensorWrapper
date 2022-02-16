@@ -221,6 +221,7 @@ void PIMPL_TYPE::update_shape() {
 
 template<typename FieldType>
 void PIMPL_TYPE::reshape_(const shape_type& other) {
+#if 0
     auto shape = other.extents();
 
     // Short-circuit if shapes are polymorphically equivalent
@@ -242,6 +243,9 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
         std::visit(m, ta_tensor);
     };
     std::visit(l, m_tensor_);
+#else
+    throw std::runtime_error("Reshape NYI");
+#endif
 }
 
 template<typename FieldType>

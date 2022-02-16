@@ -37,9 +37,6 @@ private:
     /// Type of the PIMPL associated with this instance
     using pimpl_type = detail_::ShapePIMPL<FieldType>;
 
-    /// Type of the backend
-    using backend_type = backends::TiledArrayTraits<FieldType>;
-
     /// Determines if @p T is a different field type than @p FieldType
     template<typename T>
     static constexpr bool not_my_field_v = !std::is_same_v<FieldType, T>;
@@ -55,12 +52,6 @@ public:
     /// Type of the field the associated tensor is over
     using field_type = FieldType;
 
-    /// Base type of an allocator associated with the same tensor
-    using allocator_type = allocator::Allocator<field_type>;
-
-    /// Read-only reference to an allocator
-    using const_allocator_reference = const allocator_type&;
-
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
@@ -72,9 +63,6 @@ public:
 
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
-
-    /// How make_tensor returns the resulting tensor
-    using tensor_type = typename backend_type::variant_type;
 
     /** @brief Creates a shape with no extents.
      *
@@ -133,20 +121,6 @@ public:
      *                            throw guarantee.
      */
     const_extents_reference extents() const;
-
-    /** @brief Given an allocator, this function will create a tensor consistent
-     *         with the present Shape instance.
-     *
-     *  The default implementation creates a dense tensor with the specified
-     *  shape. Derived classes may override this behavior, to for example, take
-     *  into account sparsity.
-     *
-     *  @param[in] p The allocator to use for making the tensor.
-     *
-     *  @throw std::runtime_error if this instance does not contain a PIMPL.
-     *                            Strong throw guarantee.
-     */
-    tensor_type make_tensor(const_allocator_reference p) const;
 
     /** @brief Non-polymorphic equality comparison for shapes with the same
      *         field.
@@ -266,9 +240,6 @@ private:
     /// Derived class should override to implement polymorphic deep-copy
     virtual pointer_type clone_() const;
 
-    /// Derived class should override to implement make_tensor
-    virtual tensor_type make_tensor_(const_allocator_reference p) const;
-
     /// Derived class should override to implement is_equal
     virtual bool is_equal_(const Shape<FieldType>& rhs) const noexcept;
 
@@ -301,16 +272,6 @@ private:
 template<typename LHSType, typename RHSType>
 bool operator!=(const Shape<LHSType>& lhs, const Shape<RHSType>& rhs) {
     return !(lhs == rhs);
-}
-
-//------------------------------------------------------------------------------
-//                    Out of Line Inline Implementations
-//------------------------------------------------------------------------------
-
-template<typename FieldType>
-typename Shape<FieldType>::tensor_type Shape<FieldType>::make_tensor(
-  const_allocator_reference p) const {
-    return make_tensor_(p);
 }
 
 extern template class Shape<field::Scalar>;

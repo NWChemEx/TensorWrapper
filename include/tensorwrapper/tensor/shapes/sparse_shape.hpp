@@ -30,11 +30,6 @@ private:
     using disable_if_same_field_t = std::enable_if_t<different_fields_v<T>>;
 
 public:
-    /// Type returned by make_tensor
-    using typename base_type::tensor_type;
-
-    /// Type of an allocator for this tensor type
-    using typename base_type::const_allocator_reference;
 
     /// Type used to describe the length of each mode
     using typename base_type::extents_type;
@@ -165,10 +160,6 @@ protected:
 private:
     /// Overrides to account for SparseShape's state
     virtual pointer_type clone_() const override;
-
-    /// Overrides make_tensor to account for sparsity
-    virtual tensor_type make_tensor_(
-      const_allocator_reference p) const override;
 
     virtual bool is_equal_(const Shape<FieldType>& rhs) const noexcept override;
 };
