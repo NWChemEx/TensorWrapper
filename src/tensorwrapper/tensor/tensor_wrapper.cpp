@@ -33,7 +33,7 @@ auto il_to_tensor(const n_d_initializer_list_t<ElementType, Rank>& il,
     using traits_type      = detail_::FieldTraits<FieldType>;
     using variant_type     = typename traits_type::variant_type;
     using default_tensor_t = std::variant_alternative_t<0, variant_type>;
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         return default_tensor_t(alloc.runtime(), il);
     } else {
         throw std::runtime_error("ToT initializer lists NYI.");

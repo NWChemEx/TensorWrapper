@@ -101,7 +101,7 @@ SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, sparse_map_type sm,
     const auto ndep = m_sm_.dep_rank();
     const auto rank = nind + ndep;
 
-    constexpr bool is_tot = std::is_same_v<FieldType, field::Tensor>;
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     const auto max_rank   = is_tot ? nind : rank;
 
     if(max_rank != this->extents().size())
@@ -120,7 +120,7 @@ SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, sparse_map_type sm,
 template<typename FieldType>
 typename SPARSE_SHAPE_PIMPL::ta_shape_type SPARSE_SHAPE_PIMPL::shape(
   const ta_tile_range& tr) const {
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         return sm_to_tensor_shape(m_sm_, m_i2m_, tr);
     } else {
         return sm_to_tot_shape(m_sm_, m_i2m_, tr);

@@ -24,7 +24,7 @@ using tot_populator_type = std::function<void(tile_index_type, // outer indices
 
 template<typename FieldType, typename ScalarType>
 using tile_populator_type =
-  std::conditional_t<std::is_same_v<FieldType, field::Scalar>,
+  std::conditional_t<field::is_scalar_field_v<FieldType>,
                      scalar_populator_type<ScalarType>,
                      tot_populator_type<ScalarType>>;
 

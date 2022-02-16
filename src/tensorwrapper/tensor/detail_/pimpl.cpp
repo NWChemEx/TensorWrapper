@@ -117,7 +117,7 @@ template<typename FieldType>
 typename PIMPL_TYPE::annotation_type PIMPL_TYPE::make_annotation(
   const annotation_type& letter) const {
     auto r                = rank();
-    constexpr bool is_tot = std::is_same_v<FieldType, field::Tensor>;
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     auto outer_rank       = (is_tot ? outer_rank_() : r);
     annotation_type x;
     if(r == 0) return x;
@@ -258,7 +258,7 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
         // Only retile if the tiled ranges are different
         const auto tr = p.make_tiled_range(extents());
         if(arg.trange() != tr) {
-            if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+            if constexpr(field::is_scalar_field_v<FieldType>) {
                 arg = TA::retile(arg, tr);
             } else {
                 throw std::runtime_error("reallocate for ToT NYI!!!");
@@ -314,7 +314,7 @@ void PIMPL_TYPE::shuffle_(const extents_type& shape) {
 
 template<typename FieldType>
 typename PIMPL_TYPE::rank_type PIMPL_TYPE::inner_rank_() const noexcept {
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         return rank_type{0};
     } else {
         auto l = [](auto&& arg) {

@@ -78,7 +78,7 @@ typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
 
 TEMPLATE_PARAMS
 void TABUFFERPIMPL::retile(ta_trange_type trange) {
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         auto l = [trange{std::move(trange)}](auto&& arg) {
             arg = TA::retile(arg, std::move(trange));
         };
@@ -93,7 +93,7 @@ void TABUFFERPIMPL::set_shape(ta_shape_type new_shape) {
     auto l = [new_shape{std::move(new_shape)}](auto&& t) {
         auto outer_rank                 = t.trange().rank();
         decltype(outer_rank) inner_rank = 0;
-        if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+        if constexpr(field::is_tensor_field_v<FieldType>) {
             if(t.is_initialized()) {
                 const auto& tile0 = t.begin()->get();
                 inner_rank        = tile0[0].range().rank();

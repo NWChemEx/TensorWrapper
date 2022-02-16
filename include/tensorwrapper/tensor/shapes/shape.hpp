@@ -10,7 +10,6 @@ namespace tensorwrapper::tensor {
 namespace detail_ {
 template<typename FieldType>
 class ShapePIMPL;
-
 } // namespace detail_
 
 /** @brief Object describing a tensor's elemental layout.

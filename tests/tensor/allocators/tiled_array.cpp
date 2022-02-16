@@ -3,8 +3,8 @@
 
 using namespace tensorwrapper::tensor;
 
-TEST_CASE("TiledArrayAllocator") {
-    using field_type = tensorwrapper::tensor::field::Scalar;
+TEMPLATE_TEST_CASE("TiledArrayAllocator Generic", "[allocator][ta]", field::Scalar, field::Tensor) {
+    using field_type = TestType;
     using alloc_type = allocator::TiledArrayAllocator<field_type>;
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
@@ -60,3 +60,6 @@ TEST_CASE("TiledArrayAllocator") {
         REQUIRE(copy->is_equal(defaulted));
     }
 }
+
+
+

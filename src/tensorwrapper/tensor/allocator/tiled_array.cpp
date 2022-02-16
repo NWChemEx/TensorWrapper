@@ -16,7 +16,7 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::allocate_(
   const tile_populator_type& fxn, const shape_type& shape) const {
     using default_tensor_type = detail_::default_tensor_type<FieldType>;
     default_tensor_type ta_tensor;
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         ta_tensor = detail_::generate_ta_scalar_tensor(this->m_world_, shape,
                                                        tiling_, fxn);
     } else {
