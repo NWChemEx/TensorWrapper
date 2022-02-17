@@ -17,8 +17,7 @@ TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar,
     auto palloc      = default_allocator<field_type>();
 
     SECTION("Comparisons") {
-        const auto prhs =
-          tensorwrapper::tensor::default_allocator<field_type>();
+        const auto prhs = default_allocator<field_type>();
         REQUIRE(*palloc == *prhs);
         REQUIRE_FALSE(*palloc != *prhs);
 
@@ -34,9 +33,9 @@ TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar,
 }
 
 TEST_CASE("Allocator<Scalar>") {
-    using field_type  = tensorwrapper::tensor::field::Scalar;
-    using buffer_type = tensorwrapper::tensor::buffer::Buffer<field_type>;
-    auto palloc       = tensorwrapper::tensor::default_allocator<field_type>();
+    using field_type  = field::Scalar;
+    using buffer_type = buffer::Buffer<field_type>;
+    auto palloc       = default_allocator<field_type>();
 
     using allocator_type = typename decltype(palloc)::element_type;
     using extents_type   = typename allocator_type::extents_type;
@@ -48,11 +47,6 @@ TEST_CASE("Allocator<Scalar>") {
 
         auto fxn = [](std::vector<size_t> lo, std::vector<size_t> up,
                       double* data) {
-            REQUIRE(lo.size() == 1);
-            REQUIRE(up.size() == 1);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 3);
-            REQUIRE(lo[0] < up[0]);
             size_t extent = up[0] - lo[0];
             for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
         };
@@ -68,14 +62,6 @@ TEST_CASE("Allocator<Scalar>") {
 
         auto fxn = [](std::vector<size_t> lo, std::vector<size_t> up,
                       double* data) {
-            REQUIRE(lo.size() == 2);
-            REQUIRE(up.size() == 2);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 2);
-            REQUIRE(lo[0] < up[0]);
-            REQUIRE(lo[1] >= 0);
-            REQUIRE(up[1] <= 2);
-            REQUIRE(lo[1] < up[1]);
             size_t extent_0 = up[0] - lo[0];
             size_t extent_1 = up[1] - lo[1];
             for(auto i = 0; i < extent_0; ++i)
@@ -95,17 +81,6 @@ TEST_CASE("Allocator<Scalar>") {
 
         auto fxn = [](std::vector<size_t> lo, std::vector<size_t> up,
                       double* data) {
-            REQUIRE(lo.size() == 3);
-            REQUIRE(up.size() == 3);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 2);
-            REQUIRE(lo[0] < up[0]);
-            REQUIRE(lo[1] >= 0);
-            REQUIRE(up[1] <= 2);
-            REQUIRE(lo[1] < up[1]);
-            REQUIRE(lo[2] >= 0);
-            REQUIRE(up[2] <= 2);
-            REQUIRE(lo[2] < up[2]);
             size_t extent_0 = up[0] - lo[0];
             size_t extent_1 = up[1] - lo[1];
             size_t extent_2 = up[2] - lo[2];
@@ -125,9 +100,9 @@ TEST_CASE("Allocator<Scalar>") {
 }
 
 TEST_CASE("Allocator<Tensor>") {
-    using field_type  = tensorwrapper::tensor::field::Tensor;
-    using buffer_type = tensorwrapper::tensor::buffer::Buffer<field_type>;
-    auto palloc       = tensorwrapper::tensor::default_allocator<field_type>();
+    using field_type  = field::Tensor;
+    using buffer_type = buffer::Buffer<field_type>;
+    auto palloc       = default_allocator<field_type>();
 
     using allocator_type = typename decltype(palloc)::element_type;
     using extents_type   = typename allocator_type::extents_type;
