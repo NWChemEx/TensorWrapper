@@ -64,15 +64,15 @@ TEMPLATE_TEST_CASE("TiledArrayAllocator Generic", "[allocator][ta]",
 }
 
 TEST_CASE("TiledArrayAllocator<Scalar>") {
-    using field_type = field::Scalar;
-    using buffer_type = buffer::Buffer<field_type>;
+    using field_type     = field::Scalar;
+    using buffer_type    = buffer::Buffer<field_type>;
     using allocator_type = allocator::TiledArrayAllocator<field_type>;
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
     using allocator::ta::Tiling;
 
-    using extents_type   = typename allocator_type::extents_type;
-    using shape_type     = typename allocator_type::shape_type;
+    using extents_type = typename allocator_type::extents_type;
+    using shape_type   = typename allocator_type::shape_type;
 
     auto&& [pvec, pmat, pt3d] = testing::make_pimpl<field_type>();
     buffer_type vec(pvec->clone());
@@ -89,12 +89,12 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
     SECTION("OneBigTile") {
         allocator_type alloc(Storage::Core, Tiling::OneBigTile);
-        
-	SECTION("allocate(rank 1)") {
+
+        SECTION("allocate(rank 1)") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++; // Count the number of invocations
+                           double* data) {
+                inner_tile_count++; // Count the number of invocations
                 REQUIRE(lo.size() == 1);
                 REQUIRE(up.size() == 1);
                 REQUIRE(lo[0] >= 0);
@@ -104,16 +104,16 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
-	    auto buf = alloc.allocate(fxn, vec_shape);
+            auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-	    REQUIRE(buf == vec);
-	}
+            REQUIRE(buf == vec);
+        }
 
-	SECTION("allocate(rank 2)") {
+        SECTION("allocate(rank 2)") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++; // Count the number of invocations
+                           double* data) {
+                inner_tile_count++; // Count the number of invocations
                 REQUIRE(lo.size() == 2);
                 REQUIRE(up.size() == 2);
                 REQUIRE(lo[0] >= 0);
@@ -126,20 +126,21 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 size_t extent_1 = up[1] - lo[1];
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j) {
-                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                        data[i * extent_1 + j] =
+                          (i + lo[0]) * 2 + (j + lo[1]) + 1;
                     }
             };
 
-	    auto buf = alloc.allocate(fxn, mat_shape);
+            auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-	    REQUIRE(buf == mat);
-	}
+            REQUIRE(buf == mat);
+        }
 
-	SECTION("allocate(rank 3)") {
+        SECTION("allocate(rank 3)") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++;
+                           double* data) {
+                inner_tile_count++;
                 REQUIRE(lo.size() == 3);
                 REQUIRE(up.size() == 3);
                 REQUIRE(lo[0] >= 0);
@@ -158,13 +159,14 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                     for(auto j = 0; j < extent_1; ++j)
                         for(auto k = 0; k < extent_2; ++k) {
                             data[i * extent_1 * extent_2 + j * extent_2 + k] =
-                              (i + lo[0]) * 4 + (j + lo[1]) * 2 + (k + lo[2]) + 1;
+                              (i + lo[0]) * 4 + (j + lo[1]) * 2 + (k + lo[2]) +
+                              1;
                         }
             };
 
-	    auto buf = alloc.allocate(fxn, ten_shape);
+            auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-	    REQUIRE(buf == ten);
-	}
+            REQUIRE(buf == ten);
+        }
     }
 }
