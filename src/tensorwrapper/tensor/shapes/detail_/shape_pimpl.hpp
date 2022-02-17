@@ -50,7 +50,6 @@ public:
     /// Type TA uses for specifying the tile sparsity of a tensor
     using ta_shape = TA::SparseShape<float>;
 
-
 public:
     /** @brief Creates a new ShapePIMPL with the provided extents.
      *
@@ -63,13 +62,14 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    explicit ShapePIMPL(extents_type x = {}, inner_extents_type y = {}) : 
+    explicit ShapePIMPL(extents_type x = {}, inner_extents_type y = {}) :
       m_extents_(std::move(x)), m_inner_extents_(std::move(y)) {
-	if constexpr (field::is_scalar_field_v<FieldType>) m_inner_extents_ = 1;
-	else if constexpr (field::is_tensor_field_v<FieldType>) {
-            if( m_extents_.size() and !m_inner_extents_.size() ) 
-	      throw std::runtime_error("ToT Must Have Inner Dimension");
-	}
+        if constexpr(field::is_scalar_field_v<FieldType>)
+            m_inner_extents_ = 1;
+        else if constexpr(field::is_tensor_field_v<FieldType>) {
+            if(m_extents_.size() and !m_inner_extents_.size())
+                throw std::runtime_error("ToT Must Have Inner Dimension");
+        }
     }
 
     /** @brief Makes a non-polymorphic deep copy of this instance.
@@ -124,8 +124,10 @@ public:
     const extents_type& extents() const { return m_extents_; }
     const inner_extents_type& inner_extents() const { return m_inner_extents_; }
     size_type field_rank() const {
-      if constexpr (field::is_tensor_field_v<FieldType>) return m_inner_extents_.size();
-      else return 0;
+        if constexpr(field::is_tensor_field_v<FieldType>)
+            return m_inner_extents_.size();
+        else
+            return 0;
     }
 
     /** @brief Non-polymorphic comparison.
@@ -181,7 +183,7 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::clone_() const {
 
 template<typename FieldType>
 bool SHAPE_PIMPL::operator==(const ShapePIMPL& rhs) const noexcept {
-    return m_extents_ == rhs.m_extents_ and 
+    return m_extents_ == rhs.m_extents_ and
            m_inner_extents_ == rhs.m_inner_extents_;
 }
 

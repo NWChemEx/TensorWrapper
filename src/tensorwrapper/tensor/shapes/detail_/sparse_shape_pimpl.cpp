@@ -96,7 +96,9 @@ auto sm_to_tot_shape(const sm_type& sm, const idx2mode_type& i2m,
 template<typename FieldType>
 SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, sparse_map_type sm,
                                      idx2mode_type i2m, inner_extents_type y) :
-  m_sm_(std::move(sm)), m_i2m_(std::move(i2m)), base_type(std::move(x),std::move(y)) {
+  m_sm_(std::move(sm)),
+  m_i2m_(std::move(i2m)),
+  base_type(std::move(x), std::move(y)) {
     const auto nind = m_sm_.ind_rank();
     const auto ndep = m_sm_.dep_rank();
     const auto rank = nind + ndep;

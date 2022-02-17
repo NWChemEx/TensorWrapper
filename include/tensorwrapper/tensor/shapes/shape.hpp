@@ -54,17 +54,17 @@ public:
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
-    /// Type used to provide/return extents (outer extents for FieldType == Tensor)
+    /// Type used to provide/return extents (outer extents for FieldType ==
+    /// Tensor)
     using extents_type = std::vector<size_type>;
 
     /// Type of a read-only reference to the (outer) extents
     using const_extents_reference = const extents_type&;
 
     /// Type used to treat inner-extents
-    using inner_extents_type = 
-      std::conditional_t<field::is_scalar_field_v<FieldType>,
-	size_type,
-        std::vector<size_type>>;
+    using inner_extents_type =
+      std::conditional_t<field::is_scalar_field_v<FieldType>, size_type,
+                         std::vector<size_type>>;
 
     /// Type of a read-only reference to the inner
     using const_inner_extents_reference = const inner_extents_type&;

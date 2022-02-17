@@ -70,7 +70,8 @@ public:
      *                            the length of @p extents. Strong throw
      *                            guarantee.
      */
-    SparseShape(extents_type extents, sparse_map_type sm, inner_extents_type inner_extents = {});
+    SparseShape(extents_type extents, sparse_map_type sm,
+                inner_extents_type inner_extents = {});
 
     /** @brief Creates a new SparseShape from extents, a SparseMap, and a
      *         mapping from SparseMap indices to tensor modes.
@@ -99,7 +100,8 @@ public:
      *  @throw std::out_of_range If any element of @p idx2mode is larger than
      *                           the rank of the shape. Strong throw guarantee.
      */
-    SparseShape(extents_type extents, sparse_map_type sm, idx2mode_type i2m, inner_extents_type inner_extents = {});
+    SparseShape(extents_type extents, sparse_map_type sm, idx2mode_type i2m,
+                inner_extents_type inner_extents = {});
 
     /** @brief Non-polymorphic comparison of two SparseShape instances.
      *

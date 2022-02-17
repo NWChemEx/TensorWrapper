@@ -46,7 +46,7 @@ typename SHAPE::const_inner_extents_reference SHAPE::inner_extents() const {
 template<typename FieldType>
 typename SHAPE::size_type SHAPE::field_rank() const {
     // Short circuit for Scalar
-    if constexpr (field::is_scalar_field_v<FieldType>) return 0;
+    if constexpr(field::is_scalar_field_v<FieldType>) return 0;
 
     assert_pimpl_();
     return m_pimpl_->field_rank();
@@ -104,8 +104,9 @@ void SHAPE::assert_pimpl_() const {
 
 template<typename FieldType>
 typename SHAPE::pointer_type SHAPE::clone_() const {
-    if(has_pimpl_()) 
-      return pointer_type(new Shape(pimpl_().extents(),pimpl_().inner_extents()));
+    if(has_pimpl_())
+        return pointer_type(
+          new Shape(pimpl_().extents(), pimpl_().inner_extents()));
     return pointer_type(new Shape());
 }
 

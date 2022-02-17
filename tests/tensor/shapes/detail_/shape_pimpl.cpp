@@ -4,9 +4,9 @@
 using namespace tensorwrapper::tensor;
 
 TEST_CASE("ShapePIMPL<Scalar>") {
-    using field_type   = field::Scalar;
-    using pimpl_type   = detail_::ShapePIMPL<field_type>;
-    using extents_type = typename pimpl_type::extents_type;
+    using field_type         = field::Scalar;
+    using pimpl_type         = detail_::ShapePIMPL<field_type>;
+    using extents_type       = typename pimpl_type::extents_type;
     using inner_extents_type = typename pimpl_type::inner_extents_type;
 
     extents_type scalar_extents;
@@ -22,9 +22,9 @@ TEST_CASE("ShapePIMPL<Scalar>") {
 
     SECTION("Sanity") {
         using size_type = typename pimpl_type::size_type;
-        REQUIRE( std::is_same_v<inner_extents_type,size_type> );
-	REQUIRE( vector.inner_extents() == 1 );
-	REQUIRE( vector.field_rank()    == 0 );
+        REQUIRE(std::is_same_v<inner_extents_type, size_type>);
+        REQUIRE(vector.inner_extents() == 1);
+        REQUIRE(vector.field_rank() == 0);
     }
 
     SECTION("CTors") {
@@ -87,12 +87,10 @@ TEST_CASE("ShapePIMPL<Scalar>") {
     }
 }
 
-
-
 TEST_CASE("ShapePIMPL<Tensor>") {
-    using field_type   = field::Tensor;
-    using pimpl_type   = detail_::ShapePIMPL<field_type>;
-    using extents_type = typename pimpl_type::extents_type;
+    using field_type         = field::Tensor;
+    using pimpl_type         = detail_::ShapePIMPL<field_type>;
+    using extents_type       = typename pimpl_type::extents_type;
     using inner_extents_type = typename pimpl_type::inner_extents_type;
 
     extents_type scalar_extents;
@@ -112,8 +110,8 @@ TEST_CASE("ShapePIMPL<Tensor>") {
     pimpl_type tot(tensor_extents, tensor_extents);
 
     SECTION("Sanity") {
-        REQUIRE( std::is_same_v<extents_type,inner_extents_type> );
-	REQUIRE_THROWS_AS(pimpl_type(vector_extents), std::runtime_error);
+        REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
+        REQUIRE_THROWS_AS(pimpl_type(vector_extents), std::runtime_error);
     }
 
     SECTION("CTors") {
@@ -132,22 +130,23 @@ TEST_CASE("ShapePIMPL<Tensor>") {
             REQUIRE(tom.extents() == tensor_extents);
             REQUIRE(tot.extents() == tensor_extents);
 
-	    REQUIRE(vov.inner_extents() == vector_extents);
-	    REQUIRE(mov.inner_extents() == vector_extents);
-	    REQUIRE(tov.inner_extents() == vector_extents);
+            REQUIRE(vov.inner_extents() == vector_extents);
+            REQUIRE(mov.inner_extents() == vector_extents);
+            REQUIRE(tov.inner_extents() == vector_extents);
 
-	    REQUIRE(vom.inner_extents() == matrix_extents);
-	    REQUIRE(mom.inner_extents() == matrix_extents);
-	    REQUIRE(tom.inner_extents() == matrix_extents);
+            REQUIRE(vom.inner_extents() == matrix_extents);
+            REQUIRE(mom.inner_extents() == matrix_extents);
+            REQUIRE(tom.inner_extents() == matrix_extents);
 
-	    REQUIRE(vot.inner_extents() == tensor_extents);
-	    REQUIRE(mot.inner_extents() == tensor_extents);
-	    REQUIRE(tot.inner_extents() == tensor_extents);
+            REQUIRE(vot.inner_extents() == tensor_extents);
+            REQUIRE(mot.inner_extents() == tensor_extents);
+            REQUIRE(tot.inner_extents() == tensor_extents);
 
             // Make sure object is forwarded correctly (i.e. no copy)
             auto pt = tensor_extents.data();
-	    auto pv = vector_extents.data();
-            pimpl_type tensor2(std::move(tensor_extents),std::move(vector_extents));
+            auto pv = vector_extents.data();
+            pimpl_type tensor2(std::move(tensor_extents),
+                               std::move(vector_extents));
             REQUIRE(tensor2.extents().data() == pt);
             REQUIRE(tensor2.inner_extents().data() == pv);
         }
@@ -168,10 +167,10 @@ TEST_CASE("ShapePIMPL<Tensor>") {
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
 
-	auto test_hash = [&](auto& obj, auto& oe, auto& ie) {
-            const auto hash2 = hash_objects(pimpl_type(oe,ie));
-	    REQUIRE(hash_objects(obj) == hash2);
-	};
+        auto test_hash = [&](auto& obj, auto& oe, auto& ie) {
+            const auto hash2 = hash_objects(pimpl_type(oe, ie));
+            REQUIRE(hash_objects(obj) == hash2);
+        };
         test_hash(vov, vector_extents, vector_extents);
         test_hash(vom, vector_extents, matrix_extents);
         test_hash(vot, vector_extents, tensor_extents);
@@ -182,17 +181,17 @@ TEST_CASE("ShapePIMPL<Tensor>") {
         test_hash(tom, tensor_extents, matrix_extents);
         test_hash(tot, tensor_extents, tensor_extents);
 
-	REQUIRE_FALSE( hash_objects(vov) == hash_objects(mom) ); // both diff
-	REQUIRE_FALSE( hash_objects(vom) == hash_objects(mov) ); // extent swap
+        REQUIRE_FALSE(hash_objects(vov) == hash_objects(mom)); // both diff
+        REQUIRE_FALSE(hash_objects(vom) == hash_objects(mov)); // extent swap
 
-	auto test_hash_false = [&](auto& obj, auto oe, auto ie) {
-            const auto hash2 = hash_objects(pimpl_type(oe,ie));
-	    REQUIRE_FALSE(hash_objects(obj) == hash2);
-	};
+        auto test_hash_false = [&](auto& obj, auto oe, auto ie) {
+            const auto hash2 = hash_objects(pimpl_type(oe, ie));
+            REQUIRE_FALSE(hash_objects(obj) == hash2);
+        };
 
-	test_hash_false( vov, extents_type{5}, vector_extents  );
-	test_hash_false( vov, vector_extents,  extents_type{5} );
-	test_hash_false( vov, extents_type{5}, extents_type{5} );
+        test_hash_false(vov, extents_type{5}, vector_extents);
+        test_hash_false(vov, vector_extents, extents_type{5});
+        test_hash_false(vov, extents_type{5}, extents_type{5});
     }
 
     SECTION("Equality") {
@@ -205,12 +204,10 @@ TEST_CASE("ShapePIMPL<Tensor>") {
         REQUIRE(tov == pimpl_type(tensor_extents, vector_extents));
         REQUIRE(tom == pimpl_type(tensor_extents, matrix_extents));
         REQUIRE(tot == pimpl_type(tensor_extents, tensor_extents));
-        
-	REQUIRE_FALSE(defaulted == vov); // default doesn't equal filled
-	REQUIRE_FALSE(vov == mom); // different ranks
-	REQUIRE_FALSE(vom == mov); // swapped extents
-	REQUIRE_FALSE(vov == pimpl_type(extents_type{5},extents_type{5}));
+
+        REQUIRE_FALSE(defaulted == vov); // default doesn't equal filled
+        REQUIRE_FALSE(vov == mom);       // different ranks
+        REQUIRE_FALSE(vom == mov);       // swapped extents
+        REQUIRE_FALSE(vov == pimpl_type(extents_type{5}, extents_type{5}));
     }
 }
-
-

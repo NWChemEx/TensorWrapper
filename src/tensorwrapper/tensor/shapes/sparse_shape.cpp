@@ -34,14 +34,16 @@ auto make_i2m(std::size_t i) {
 #define SPARSE_SHAPE SparseShape<FieldType>
 
 template<typename FieldType>
-SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm, inner_extents_type inner_extents) :
-  SparseShape(std::move(extents), std::move(sm), make_i2m(extents.size()), std::move(inner_extents)) {}
+SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm,
+                          inner_extents_type inner_extents) :
+  SparseShape(std::move(extents), std::move(sm), make_i2m(extents.size()),
+              std::move(inner_extents)) {}
 
 template<typename FieldType>
 SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm,
                           idx2mode_type i2m, inner_extents_type inner_extents) :
-  base_type(
-    make_pimpl<FieldType>(std::move(extents), std::move(sm), std::move(i2m), std::move(inner_extents))) {}
+  base_type(make_pimpl<FieldType>(std::move(extents), std::move(sm),
+                                  std::move(i2m), std::move(inner_extents))) {}
 
 template<typename FieldType>
 SPARSE_SHAPE::SparseShape(const SparseShape& other) :
