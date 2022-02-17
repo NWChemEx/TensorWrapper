@@ -277,3 +277,195 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 	}
     }
 }
+
+
+
+TEST_CASE("TiledArrayAllocator<Tensor>") {
+    using field_type = field::Tensor;
+    using buffer_type = buffer::Buffer<field_type>;
+    using allocator_type = allocator::TiledArrayAllocator<field_type>;
+
+    using ta_trange_type = TA::TiledRange;
+
+    using allocator::ta::Distribution;
+    using allocator::ta::Storage;
+    using allocator::ta::Tiling;
+
+    using extents_type   = typename allocator_type::extents_type;
+    using shape_type     = typename allocator_type::shape_type;
+
+    auto&& [pvov, pvom, pmov]   = testing::make_pimpl<field_type>();
+
+    extents_type vector_extents = {3};
+    extents_type matrix_extents = {2, 2};
+    shape_type vov_shape(vector_extents, vector_extents);
+    shape_type vom_shape(vector_extents, matrix_extents);
+    shape_type mov_shape(matrix_extents, vector_extents);
+
+    SECTION("OneBigTile") {
+	// Default tiling is OneBigTile
+        buffer_type vov(pvov->clone());
+        buffer_type vom(pvom->clone());
+        buffer_type mov(pmov->clone());
+
+        allocator_type alloc(Storage::Core, Tiling::OneBigTile);
+
+        SECTION("allocate(vov)") {
+            size_t outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(lo.size() == 1);
+                REQUIRE(up.size() == 1);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 3);
+                REQUIRE(lo[0] < up[0]);
+                size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 3);
+                for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
+            };
+
+            auto buf = alloc.allocate(fxn, vov_shape);
+            REQUIRE(outer_tile_count == 3);
+            REQUIRE(buf == vov);
+        }
+
+        SECTION("allocate(vom)") {
+            size_t outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(lo.size() == 2);
+                REQUIRE(up.size() == 2);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 2);
+                REQUIRE(lo[0] < up[0]);
+                REQUIRE(lo[1] >= 0);
+                REQUIRE(up[1] <= 2);
+                REQUIRE(lo[1] < up[1]);
+                size_t extent_0 = up[0] - lo[0];
+                size_t extent_1 = up[1] - lo[1];
+		REQUIRE(extent_0 == 2);
+		REQUIRE(extent_1 == 2);
+                for(auto i = 0; i < extent_0; ++i)
+                    for(auto j = 0; j < extent_1; ++j) {
+                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                    }
+            };
+
+            auto buf = alloc.allocate(fxn, vom_shape);
+            REQUIRE(outer_tile_count == 3);
+            REQUIRE(buf == vom);
+        }
+
+        SECTION("allocate(mov)") {
+            size_t outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 2);
+                REQUIRE(lo.size() == 1);
+                REQUIRE(up.size() == 1);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 3);
+                REQUIRE(lo[0] < up[0]);
+                size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 3);
+                for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
+            };
+
+            auto buf = alloc.allocate(fxn, mov_shape);
+            REQUIRE(outer_tile_count == 4);
+            REQUIRE(buf == mov);
+        }
+    } // OneBigTile
+
+    SECTION("SingleElementTile") {
+    #if 0 // Enable when retile for ToT is implemented
+	// Default tiling is OneBigTile, retile to SingleElementTile
+	ta_trange_type  se_tr_vec{{0,1,2,3}};
+	ta_trange_type  se_tr_mat{{0,1,2},{0,1,2}};
+	pvov->retile(se_tr_vec);
+	pvom->retile(se_tr_vec);
+	pmov->retile(se_tr_mat);
+        buffer_type vov(pvov->clone());
+        buffer_type vom(pvom->clone());
+        buffer_type mov(pmov->clone());
+
+        allocator_type alloc(Storage::Core, Tiling::SingleElementTile);
+
+        SECTION("allocate(vov)") {
+            std::atomic<int> outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(lo.size() == 1);
+                REQUIRE(up.size() == 1);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 3);
+                REQUIRE(lo[0] < up[0]);
+                size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 3);
+                for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
+            };
+
+            auto buf = alloc.allocate(fxn, vov_shape);
+            REQUIRE(outer_tile_count == 3);
+            REQUIRE(buf == vov);
+        }
+
+        SECTION("allocate(vom)") {
+            std::atomic<int> outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(lo.size() == 2);
+                REQUIRE(up.size() == 2);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 2);
+                REQUIRE(lo[0] < up[0]);
+                REQUIRE(lo[1] >= 0);
+                REQUIRE(up[1] <= 2);
+                REQUIRE(lo[1] < up[1]);
+                size_t extent_0 = up[0] - lo[0];
+                size_t extent_1 = up[1] - lo[1];
+		REQUIRE(extent_0 == 2);
+		REQUIRE(extent_1 == 2);
+                for(auto i = 0; i < extent_0; ++i)
+                    for(auto j = 0; j < extent_1; ++j) {
+                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                    }
+            };
+
+            auto buf = alloc.allocate(fxn, vom_shape);
+            REQUIRE(outer_tile_count == 3);
+            REQUIRE(buf == vom);
+        }
+
+        SECTION("allocate(mov)") {
+            std::atomic<int> outer_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+                           std::vector<size_t> up, double* data) {
+                outer_tile_count++;
+                REQUIRE(outer.size() == 2);
+                REQUIRE(lo.size() == 1);
+                REQUIRE(up.size() == 1);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 3);
+                REQUIRE(lo[0] < up[0]);
+                size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 3);
+                for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
+            };
+
+            auto buf = alloc.allocate(fxn, mov_shape);
+            REQUIRE(outer_tile_count == 4);
+            REQUIRE(buf == mov);
+        }
+    #endif
+    } // SingleElementtile
+}

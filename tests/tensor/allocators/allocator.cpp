@@ -117,40 +117,20 @@ TEST_CASE("Allocator<Tensor>") {
 
     SECTION("allocate(vov)") {
         buffer_type vov(pvov->clone());
-        size_t outer_tile_count = 0;
-        auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+        auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
                        std::vector<size_t> up, double* data) {
-            outer_tile_count++;
-            REQUIRE(outer.size() == 1);
-            REQUIRE(lo.size() == 1);
-            REQUIRE(up.size() == 1);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 3);
-            REQUIRE(lo[0] < up[0]);
             size_t extent = up[0] - lo[0];
             for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
         };
 
         auto buf = palloc->allocate(fxn, vov_shape);
-        REQUIRE(outer_tile_count == 3);
         REQUIRE(buf == vov);
     }
 
     SECTION("allocate(vom)") {
         buffer_type vom(pvom->clone());
-        size_t outer_tile_count = 0;
-        auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+        auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
                        std::vector<size_t> up, double* data) {
-            outer_tile_count++;
-            REQUIRE(outer.size() == 1);
-            REQUIRE(lo.size() == 2);
-            REQUIRE(up.size() == 2);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 2);
-            REQUIRE(lo[0] < up[0]);
-            REQUIRE(lo[1] >= 0);
-            REQUIRE(up[1] <= 2);
-            REQUIRE(lo[1] < up[1]);
             size_t extent_0 = up[0] - lo[0];
             size_t extent_1 = up[1] - lo[1];
             for(auto i = 0; i < extent_0; ++i)
@@ -160,28 +140,18 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, vom_shape);
-        REQUIRE(outer_tile_count == 3);
         REQUIRE(buf == vom);
     }
 
     SECTION("allocate(mov)") {
         buffer_type mov(pmov->clone());
-        size_t outer_tile_count = 0;
-        auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
+        auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
                        std::vector<size_t> up, double* data) {
-            outer_tile_count++;
-            REQUIRE(outer.size() == 2);
-            REQUIRE(lo.size() == 1);
-            REQUIRE(up.size() == 1);
-            REQUIRE(lo[0] >= 0);
-            REQUIRE(up[0] <= 3);
-            REQUIRE(lo[0] < up[0]);
             size_t extent = up[0] - lo[0];
             for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
         };
 
         auto buf = palloc->allocate(fxn, mov_shape);
-        REQUIRE(outer_tile_count == 4);
         REQUIRE(buf == mov);
     }
 }
