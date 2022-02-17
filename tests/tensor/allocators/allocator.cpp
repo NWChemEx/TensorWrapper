@@ -118,7 +118,7 @@ TEST_CASE("Allocator<Tensor>") {
     SECTION("allocate(vov)") {
         buffer_type vov(pvov->clone());
         auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
-                       std::vector<size_t> up, double* data) {
+                      std::vector<size_t> up, double* data) {
             size_t extent = up[0] - lo[0];
             for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
         };
@@ -130,7 +130,7 @@ TEST_CASE("Allocator<Tensor>") {
     SECTION("allocate(vom)") {
         buffer_type vom(pvom->clone());
         auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
-                       std::vector<size_t> up, double* data) {
+                      std::vector<size_t> up, double* data) {
             size_t extent_0 = up[0] - lo[0];
             size_t extent_1 = up[1] - lo[1];
             for(auto i = 0; i < extent_0; ++i)
@@ -146,7 +146,7 @@ TEST_CASE("Allocator<Tensor>") {
     SECTION("allocate(mov)") {
         buffer_type mov(pmov->clone());
         auto fxn = [](std::vector<size_t> outer, std::vector<size_t> lo,
-                       std::vector<size_t> up, double* data) {
+                      std::vector<size_t> up, double* data) {
             size_t extent = up[0] - lo[0];
             for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
         };

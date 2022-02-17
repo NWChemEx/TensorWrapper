@@ -88,7 +88,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     shape_type ten_shape(ten_extents);
 
     SECTION("OneBigTile") {
-	// Default tiling is OneBigTile
+        // Default tiling is OneBigTile
         buffer_type vec(pvec->clone());
         buffer_type mat(pmat->clone());
         buffer_type ten(pt3d->clone());
@@ -106,7 +106,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(up[0] <= 3);
                 REQUIRE(lo[0] < up[0]);
                 size_t extent = up[0] - lo[0];
-		REQUIRE(extent == 3);
+                REQUIRE(extent == 3);
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
@@ -130,8 +130,8 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(lo[1] < up[1]);
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
-		REQUIRE(extent_0 == 2);
-		REQUIRE(extent_1 == 2);
+                REQUIRE(extent_0 == 2);
+                REQUIRE(extent_1 == 2);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j) {
                         data[i * extent_1 + j] =
@@ -163,9 +163,9 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
                 size_t extent_2 = up[2] - lo[2];
-		REQUIRE(extent_0 == 2);
-		REQUIRE(extent_1 == 2);
-		REQUIRE(extent_2 == 2);
+                REQUIRE(extent_0 == 2);
+                REQUIRE(extent_1 == 2);
+                REQUIRE(extent_2 == 2);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j)
                         for(auto k = 0; k < extent_2; ++k) {
@@ -182,44 +182,44 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     }
 
     SECTION("SingleElementTile") {
-	// Default tiling is OneBigTile, retile to SingleElementTile
-	ta_trange_type  se_tr_vec{{0,1,2,3}};
-	ta_trange_type  se_tr_mat{{0,1,2},{0,1,2}};
-	ta_trange_type  se_tr_ten{{0,1,2},{0,1,2},{0,1,2}};
-	pvec->retile(se_tr_vec);
-	pmat->retile(se_tr_mat);
-	pt3d->retile(se_tr_ten);
+        // Default tiling is OneBigTile, retile to SingleElementTile
+        ta_trange_type se_tr_vec{{0, 1, 2, 3}};
+        ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
+        ta_trange_type se_tr_ten{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+        pvec->retile(se_tr_vec);
+        pmat->retile(se_tr_mat);
+        pt3d->retile(se_tr_ten);
         buffer_type vec(pvec->clone());
         buffer_type mat(pmat->clone());
         buffer_type ten(pt3d->clone());
 
         allocator_type alloc(Storage::Core, Tiling::SingleElementTile);
-        
-	SECTION("allocate(rank 1)") {
+
+        SECTION("allocate(rank 1)") {
             std::atomic<int> inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++; // Count the number of invocations
+                           double* data) {
+                inner_tile_count++; // Count the number of invocations
                 REQUIRE(lo.size() == 1);
                 REQUIRE(up.size() == 1);
                 REQUIRE(lo[0] >= 0);
                 REQUIRE(up[0] <= 3);
                 REQUIRE(lo[0] < up[0]);
                 size_t extent = up[0] - lo[0];
-		REQUIRE(extent == 1);
+                REQUIRE(extent == 1);
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
-	    auto buf = alloc.allocate(fxn, vec_shape);
+            auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 3); // One Tile For Each Element
-	    REQUIRE(buf == vec);
-	}
+            REQUIRE(buf == vec);
+        }
 
-	SECTION("allocate(rank 2)") {
+        SECTION("allocate(rank 2)") {
             std::atomic<int> inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++; // Count the number of invocations
+                           double* data) {
+                inner_tile_count++; // Count the number of invocations
                 REQUIRE(lo.size() == 2);
                 REQUIRE(up.size() == 2);
                 REQUIRE(lo[0] >= 0);
@@ -230,24 +230,25 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(lo[1] < up[1]);
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
-		REQUIRE(extent_0 == 1);
-		REQUIRE(extent_1 == 1);
+                REQUIRE(extent_0 == 1);
+                REQUIRE(extent_1 == 1);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j) {
-                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                        data[i * extent_1 + j] =
+                          (i + lo[0]) * 2 + (j + lo[1]) + 1;
                     }
             };
 
-	    auto buf = alloc.allocate(fxn, mat_shape);
+            auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 4); // One Tile For Each Element
-	    REQUIRE(buf == mat);
-	}
+            REQUIRE(buf == mat);
+        }
 
-	SECTION("allocate(rank 3)") {
+        SECTION("allocate(rank 3)") {
             std::atomic<int> inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
-                          double* data) {
-		inner_tile_count++;
+                           double* data) {
+                inner_tile_count++;
                 REQUIRE(lo.size() == 3);
                 REQUIRE(up.size() == 3);
                 REQUIRE(lo[0] >= 0);
@@ -262,29 +263,28 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
                 size_t extent_2 = up[2] - lo[2];
-		REQUIRE(extent_0 == 1);
-		REQUIRE(extent_1 == 1);
-		REQUIRE(extent_2 == 1);
+                REQUIRE(extent_0 == 1);
+                REQUIRE(extent_1 == 1);
+                REQUIRE(extent_2 == 1);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j)
                         for(auto k = 0; k < extent_2; ++k) {
                             data[i * extent_1 * extent_2 + j * extent_2 + k] =
-                              (i + lo[0]) * 4 + (j + lo[1]) * 2 + (k + lo[2]) + 1;
+                              (i + lo[0]) * 4 + (j + lo[1]) * 2 + (k + lo[2]) +
+                              1;
                         }
             };
 
-	    auto buf = alloc.allocate(fxn, ten_shape);
+            auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 8); // One Tile For Each Element
-	    REQUIRE(buf == ten);
-	}
+            REQUIRE(buf == ten);
+        }
     }
 }
 
-
-
 TEST_CASE("TiledArrayAllocator<Tensor>") {
-    using field_type = field::Tensor;
-    using buffer_type = buffer::Buffer<field_type>;
+    using field_type     = field::Tensor;
+    using buffer_type    = buffer::Buffer<field_type>;
     using allocator_type = allocator::TiledArrayAllocator<field_type>;
 
     using ta_trange_type = TA::TiledRange;
@@ -293,10 +293,10 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
     using allocator::ta::Storage;
     using allocator::ta::Tiling;
 
-    using extents_type   = typename allocator_type::extents_type;
-    using shape_type     = typename allocator_type::shape_type;
+    using extents_type = typename allocator_type::extents_type;
+    using shape_type   = typename allocator_type::shape_type;
 
-    auto&& [pvov, pvom, pmov]   = testing::make_pimpl<field_type>();
+    auto&& [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
 
     extents_type vector_extents = {3};
     extents_type matrix_extents = {2, 2};
@@ -305,7 +305,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
     shape_type mov_shape(matrix_extents, vector_extents);
 
     SECTION("OneBigTile") {
-	// Default tiling is OneBigTile
+        // Default tiling is OneBigTile
         buffer_type vov(pvov->clone());
         buffer_type vom(pvom->clone());
         buffer_type mov(pmov->clone());
@@ -324,7 +324,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
                 REQUIRE(up[0] <= 3);
                 REQUIRE(lo[0] < up[0]);
                 size_t extent = up[0] - lo[0];
-		REQUIRE(extent == 3);
+                REQUIRE(extent == 3);
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
@@ -349,11 +349,12 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
                 REQUIRE(lo[1] < up[1]);
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
-		REQUIRE(extent_0 == 2);
-		REQUIRE(extent_1 == 2);
+                REQUIRE(extent_0 == 2);
+                REQUIRE(extent_1 == 2);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j) {
-                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                        data[i * extent_1 + j] =
+                          (i + lo[0]) * 2 + (j + lo[1]) + 1;
                     }
             };
 
@@ -374,7 +375,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
                 REQUIRE(up[0] <= 3);
                 REQUIRE(lo[0] < up[0]);
                 size_t extent = up[0] - lo[0];
-		REQUIRE(extent == 3);
+                REQUIRE(extent == 3);
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
@@ -385,7 +386,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
     } // OneBigTile
 
     SECTION("SingleElementTile") {
-    #if 0 // Enable when retile for ToT is implemented
+#if 0 // Enable when retile for ToT is implemented
 	// Default tiling is OneBigTile, retile to SingleElementTile
 	ta_trange_type  se_tr_vec{{0,1,2,3}};
 	ta_trange_type  se_tr_mat{{0,1,2},{0,1,2}};
@@ -468,6 +469,6 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
             REQUIRE(outer_tile_count == 4);
             REQUIRE(buf == mov);
         }
-    #endif
+#endif
     } // SingleElementtile
 }

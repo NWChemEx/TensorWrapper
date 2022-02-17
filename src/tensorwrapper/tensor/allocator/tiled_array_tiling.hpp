@@ -26,14 +26,14 @@ tiled_range_type make_one_big_tile_tiled_range(const ShapeType& shape) {
 
 template<typename ShapeType>
 tiled_range_type make_single_element_tile_tiled_range(const ShapeType& shape) {
-    using size_type = typename ShapeType::size_type;
+    using size_type   = typename ShapeType::size_type;
     using offset_type = typename tr1_type::index1_type;
 
     const auto extents = shape.extents();
     const auto n_modes = extents.size();
     std::vector<tr1_type> tr1s(n_modes);
     for(size_type mode_i = 0; mode_i < n_modes; ++mode_i) {
-        std::vector<offset_type> edges(extents[mode_i]+1);
+        std::vector<offset_type> edges(extents[mode_i] + 1);
         std::iota(edges.begin(), edges.end(), 0);
         tr1s[mode_i] = tr1_type(edges.begin(), edges.end());
     }
