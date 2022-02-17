@@ -133,19 +133,18 @@ TEST_CASE("Allocator<Tensor>") {
     using extents_type   = typename allocator_type::extents_type;
     using shape_type     = typename allocator_type::shape_type;
 
-    auto&& [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
+    auto&& [pvov, pvom, pmov]   = testing::make_pimpl<field_type>();
     extents_type vector_extents = {3};
-    extents_type matrix_extents = {2,2};
-    shape_type vov_shape(vector_extents,vector_extents);
-    shape_type vom_shape(vector_extents,matrix_extents);
-    shape_type mov_shape(matrix_extents,vector_extents);
+    extents_type matrix_extents = {2, 2};
+    shape_type vov_shape(vector_extents, vector_extents);
+    shape_type vom_shape(vector_extents, matrix_extents);
+    shape_type mov_shape(matrix_extents, vector_extents);
 
     SECTION("allocate(vov)") {
         buffer_type vov(pvov->clone());
-	size_t outer_tile_count = 0;
+        size_t outer_tile_count = 0;
         auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
-                      std::vector<size_t> up, double* data) {
-
+                       std::vector<size_t> up, double* data) {
             outer_tile_count++;
             REQUIRE(outer.size() == 1);
             REQUIRE(lo.size() == 1);
@@ -158,16 +157,15 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, vov_shape);
-	REQUIRE(outer_tile_count == 3);
+        REQUIRE(outer_tile_count == 3);
         REQUIRE(buf == vov);
     }
 
     SECTION("allocate(vom)") {
         buffer_type vom(pvom->clone());
-	size_t outer_tile_count = 0;
+        size_t outer_tile_count = 0;
         auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
-                      std::vector<size_t> up, double* data) {
-
+                       std::vector<size_t> up, double* data) {
             outer_tile_count++;
             REQUIRE(outer.size() == 1);
             REQUIRE(lo.size() == 2);
@@ -187,16 +185,15 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, vom_shape);
-	REQUIRE(outer_tile_count == 3);
+        REQUIRE(outer_tile_count == 3);
         REQUIRE(buf == vom);
     }
 
     SECTION("allocate(mov)") {
         buffer_type mov(pmov->clone());
-	size_t outer_tile_count = 0;
+        size_t outer_tile_count = 0;
         auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
-                      std::vector<size_t> up, double* data) {
-
+                       std::vector<size_t> up, double* data) {
             outer_tile_count++;
             REQUIRE(outer.size() == 2);
             REQUIRE(lo.size() == 1);
@@ -209,7 +206,7 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, mov_shape);
-	REQUIRE(outer_tile_count == 4);
+        REQUIRE(outer_tile_count == 4);
         REQUIRE(buf == mov);
     }
 }
