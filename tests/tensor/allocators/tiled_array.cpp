@@ -67,6 +67,9 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     using field_type = field::Scalar;
     using buffer_type = buffer::Buffer<field_type>;
     using allocator_type = allocator::TiledArrayAllocator<field_type>;
+
+    using ta_trange_type = TA::TiledRange;
+
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
     using allocator::ta::Tiling;
@@ -75,9 +78,6 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     using shape_type     = typename allocator_type::shape_type;
 
     auto&& [pvec, pmat, pt3d] = testing::make_pimpl<field_type>();
-    buffer_type vec(pvec->clone());
-    buffer_type mat(pmat->clone());
-    buffer_type ten(pt3d->clone());
 
     extents_type vec_extents{3};
     extents_type mat_extents{2, 2};
@@ -88,6 +88,11 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     shape_type ten_shape(ten_extents);
 
     SECTION("OneBigTile") {
+	// Default tiling is OneBigTile
+        buffer_type vec(pvec->clone());
+        buffer_type mat(pmat->clone());
+        buffer_type ten(pt3d->clone());
+
         allocator_type alloc(Storage::Core, Tiling::OneBigTile);
         
 	SECTION("allocate(rank 1)") {
@@ -101,6 +106,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(up[0] <= 3);
                 REQUIRE(lo[0] < up[0]);
                 size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 3);
                 for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
             };
 
@@ -124,6 +130,8 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(lo[1] < up[1]);
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
+		REQUIRE(extent_0 == 2);
+		REQUIRE(extent_1 == 2);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j) {
                         data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
@@ -154,6 +162,9 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 size_t extent_0 = up[0] - lo[0];
                 size_t extent_1 = up[1] - lo[1];
                 size_t extent_2 = up[2] - lo[2];
+		REQUIRE(extent_0 == 2);
+		REQUIRE(extent_1 == 2);
+		REQUIRE(extent_2 == 2);
                 for(auto i = 0; i < extent_0; ++i)
                     for(auto j = 0; j < extent_1; ++j)
                         for(auto k = 0; k < extent_2; ++k) {
@@ -164,6 +175,104 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
 	    auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
+	    REQUIRE(buf == ten);
+	}
+    }
+
+    SECTION("SingleElementTile") {
+	// Default tiling is OneBigTile, retile to SingleElementTile
+	ta_trange_type  se_tr_vec{{0,1,2,3}};
+	ta_trange_type  se_tr_mat{{0,1,2},{0,1,2}};
+	ta_trange_type  se_tr_ten{{0,1,2},{0,1,2},{0,1,2}};
+	pvec->retile(se_tr_vec);
+	pmat->retile(se_tr_mat);
+	pt3d->retile(se_tr_ten);
+        buffer_type vec(pvec->clone());
+        buffer_type mat(pmat->clone());
+        buffer_type ten(pt3d->clone());
+
+        allocator_type alloc(Storage::Core, Tiling::SingleElementTile);
+        
+	SECTION("allocate(rank 1)") {
+            std::atomic<int> inner_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
+                          double* data) {
+		inner_tile_count++; // Count the number of invocations
+                REQUIRE(lo.size() == 1);
+                REQUIRE(up.size() == 1);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 3);
+                REQUIRE(lo[0] < up[0]);
+                size_t extent = up[0] - lo[0];
+		REQUIRE(extent == 1);
+                for(auto i = 0; i < extent; ++i) { data[i] = i + lo[0] + 1; }
+            };
+
+	    auto buf = alloc.allocate(fxn, vec_shape);
+            REQUIRE(inner_tile_count == 3); // One Tile For Each Element
+	    REQUIRE(buf == vec);
+	}
+
+	SECTION("allocate(rank 2)") {
+            std::atomic<int> inner_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
+                          double* data) {
+		inner_tile_count++; // Count the number of invocations
+                REQUIRE(lo.size() == 2);
+                REQUIRE(up.size() == 2);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 2);
+                REQUIRE(lo[0] < up[0]);
+                REQUIRE(lo[1] >= 0);
+                REQUIRE(up[1] <= 2);
+                REQUIRE(lo[1] < up[1]);
+                size_t extent_0 = up[0] - lo[0];
+                size_t extent_1 = up[1] - lo[1];
+		REQUIRE(extent_0 == 1);
+		REQUIRE(extent_1 == 1);
+                for(auto i = 0; i < extent_0; ++i)
+                    for(auto j = 0; j < extent_1; ++j) {
+                        data[i * extent_1 + j] = (i + lo[0]) * 2 + (j + lo[1]) + 1;
+                    }
+            };
+
+	    auto buf = alloc.allocate(fxn, mat_shape);
+            REQUIRE(inner_tile_count == 4); // One Tile For Each Element
+	    REQUIRE(buf == mat);
+	}
+
+	SECTION("allocate(rank 3)") {
+            std::atomic<int> inner_tile_count = 0;
+            auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
+                          double* data) {
+		inner_tile_count++;
+                REQUIRE(lo.size() == 3);
+                REQUIRE(up.size() == 3);
+                REQUIRE(lo[0] >= 0);
+                REQUIRE(up[0] <= 2);
+                REQUIRE(lo[0] < up[0]);
+                REQUIRE(lo[1] >= 0);
+                REQUIRE(up[1] <= 2);
+                REQUIRE(lo[1] < up[1]);
+                REQUIRE(lo[2] >= 0);
+                REQUIRE(up[2] <= 2);
+                REQUIRE(lo[2] < up[2]);
+                size_t extent_0 = up[0] - lo[0];
+                size_t extent_1 = up[1] - lo[1];
+                size_t extent_2 = up[2] - lo[2];
+		REQUIRE(extent_0 == 1);
+		REQUIRE(extent_1 == 1);
+		REQUIRE(extent_2 == 1);
+                for(auto i = 0; i < extent_0; ++i)
+                    for(auto j = 0; j < extent_1; ++j)
+                        for(auto k = 0; k < extent_2; ++k) {
+                            data[i * extent_1 * extent_2 + j * extent_2 + k] =
+                              (i + lo[0]) * 4 + (j + lo[1]) * 2 + (k + lo[2]) + 1;
+                        }
+            };
+
+	    auto buf = alloc.allocate(fxn, ten_shape);
+            REQUIRE(inner_tile_count == 8); // One Tile For Each Element
 	    REQUIRE(buf == ten);
 	}
     }

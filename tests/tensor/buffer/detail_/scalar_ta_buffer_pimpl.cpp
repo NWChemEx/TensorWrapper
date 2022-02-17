@@ -47,7 +47,7 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
     }
 
     SECTION("retile") {
-        // These may need to use allclose
+        // These may need to use allclose XXX: these should be fine, no ambiguity on copies
         SECTION("vector") {
             trange_type tr{{0, 1, 2, 3}};
             vec.retile(tr);
