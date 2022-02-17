@@ -36,8 +36,13 @@ private:
     using my_type = ShapePIMPL<FieldType>;
 
 public:
-    /// Type used to specify the lengths of each mode
+    /// Type used to specify the lengths of each (outer) mode
     using extents_type = typename parent_type::extents_type;
+
+    // Type used to specify the lengths of each inner mode
+    using inner_extents_type = typename parent_type::inner_extents_type;
+
+    using size_type = typename parent_type::size_type;
 
     /// Type of a pointer to the base of the ShapePIMPL hierarchy
     using pimpl_pointer = typename parent_type::pimpl_pointer;
@@ -45,6 +50,8 @@ public:
     /// Type TA uses for specifying the tile sparsity of a tensor
     using ta_shape = TA::SparseShape<float>;
 
+
+public:
     /** @brief Creates a new ShapePIMPL with the provided extents.
      *
      *
@@ -56,7 +63,14 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    explicit ShapePIMPL(extents_type x = {}) : m_extents_(std::move(x)) {}
+    explicit ShapePIMPL(extents_type x = {}, inner_extents_type y = {}) : 
+      m_extents_(std::move(x)), m_inner_extents_(std::move(y)) {
+	if constexpr (field::is_scalar_field_v<FieldType>) m_inner_extents_ = 1;
+	else if constexpr (field::is_tensor_field_v<FieldType>) {
+            if( m_extents_.size() and !m_inner_extents_.size() ) 
+	      throw std::runtime_error("ToT Must Have Inner Dimension");
+	}
+    }
 
     /** @brief Makes a non-polymorphic deep copy of this instance.
      *
@@ -108,6 +122,11 @@ public:
      *  @throw None No throw gurantee.
      */
     const extents_type& extents() const { return m_extents_; }
+    const inner_extents_type& inner_extents() const { return m_inner_extents_; }
+    size_type field_rank() const {
+      if constexpr (field::is_tensor_field_v<FieldType>) return m_inner_extents_.size();
+      else return 0;
+    }
 
     /** @brief Non-polymorphic comparison.
      *
@@ -141,7 +160,7 @@ public:
 protected:
     /// To be overridden by the derived class to implement hash()
     virtual void hash_(tensorwrapper::detail_::Hasher& h) const {
-        h(m_extents_);
+        h(m_extents_, m_inner_extents_);
     }
 
 private:
@@ -150,6 +169,7 @@ private:
 
     /// The extents of the corresponding tensor
     extents_type m_extents_;
+    inner_extents_type m_inner_extents_;
 };
 
 #define SHAPE_PIMPL ShapePIMPL<FieldType>
@@ -161,7 +181,8 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::clone_() const {
 
 template<typename FieldType>
 bool SHAPE_PIMPL::operator==(const ShapePIMPL& rhs) const noexcept {
-    return m_extents_ == rhs.m_extents_;
+    return m_extents_ == rhs.m_extents_ and 
+           m_inner_extents_ == rhs.m_inner_extents_;
 }
 
 #undef SHAPE_PIMPL

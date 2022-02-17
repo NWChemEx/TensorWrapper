@@ -24,6 +24,7 @@ private:
 public:
     /// Type used to specify the lengths of each mode
     using typename base_type::extents_type;
+    using typename base_type::inner_extents_type;
 
     /// Type of the sparse map
     using sparse_map_type = typename parent_type::sparse_map_type;
@@ -65,7 +66,7 @@ public:
      *  @throw std::out_of_range If any element of @p idx2mode is larger than
      *                           the rank of the shape. Strong throw guarantee.
      */
-    SparseShapePIMPL(extents_type x, sparse_map_type sm, idx2mode_type i2m);
+    SparseShapePIMPL(extents_type x, sparse_map_type sm, idx2mode_type i2m, inner_extents_type y);
 
     /** @brief Makes a deep copy of the provided SparseShapePIMPL instance.
      *

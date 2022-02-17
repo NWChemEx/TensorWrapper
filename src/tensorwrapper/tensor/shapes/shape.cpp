@@ -21,8 +21,8 @@ template<typename FieldType>
 SHAPE::Shape() noexcept = default;
 
 template<typename FieldType>
-SHAPE::Shape(extents_type extents) :
-  Shape(make_pimpl<FieldType>(std::move(extents))) {}
+SHAPE::Shape(extents_type extents, inner_extents_type inner_extents) :
+  Shape(make_pimpl<FieldType>(std::move(extents), std::move(inner_extents))) {}
 
 template<typename FieldType>
 SHAPE::~Shape() noexcept = default;
@@ -35,6 +35,21 @@ template<typename FieldType>
 typename SHAPE::const_extents_reference SHAPE::extents() const {
     assert_pimpl_();
     return m_pimpl_->extents();
+}
+
+template<typename FieldType>
+typename SHAPE::const_inner_extents_reference SHAPE::inner_extents() const {
+    assert_pimpl_();
+    return m_pimpl_->inner_extents();
+}
+
+template<typename FieldType>
+typename SHAPE::size_type SHAPE::field_rank() const {
+    // Short circuit for Scalar
+    if constexpr (field::is_scalar_field_v<FieldType>) return 0;
+
+    assert_pimpl_();
+    return m_pimpl_->field_rank();
 }
 
 //------------------------------------------------------------------------------
@@ -89,7 +104,8 @@ void SHAPE::assert_pimpl_() const {
 
 template<typename FieldType>
 typename SHAPE::pointer_type SHAPE::clone_() const {
-    if(has_pimpl_()) return pointer_type(new Shape(pimpl_().extents()));
+    if(has_pimpl_()) 
+      return pointer_type(new Shape(pimpl_().extents(),pimpl_().inner_extents()));
     return pointer_type(new Shape());
 }
 

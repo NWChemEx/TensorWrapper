@@ -54,11 +54,20 @@ public:
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
-    /// Type used to provide/return extents
+    /// Type used to provide/return extents (outer extents for FieldType == Tensor)
     using extents_type = std::vector<size_type>;
 
-    /// Type of a read-only reference to the extents
+    /// Type of a read-only reference to the (outer) extents
     using const_extents_reference = const extents_type&;
+
+    /// Type used to treat inner-extents
+    using inner_extents_type = 
+      std::conditional_t<field::is_scalar_field_v<FieldType>,
+	size_type,
+        std::vector<size_type>>;
+
+    /// Type of a read-only reference to the inner
+    using const_inner_extents_reference = const inner_extents_type&;
 
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
@@ -88,7 +97,7 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
      *                        throw guarantee.
      */
-    explicit Shape(extents_type extents);
+    explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
 
     /// Defaulted dtor
     virtual ~Shape() noexcept;
@@ -120,6 +129,9 @@ public:
      *                            throw guarantee.
      */
     const_extents_reference extents() const;
+
+    const_inner_extents_reference inner_extents() const;
+    size_type field_rank() const;
 
     /** @brief Non-polymorphic equality comparison for shapes with the same
      *         field.
