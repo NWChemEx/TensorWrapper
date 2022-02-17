@@ -17,7 +17,7 @@ using scalar_populator_type =
                      tile_index_type, // up_bounds
                      ScalarType*)>;   // row major data
 template<typename ScalarType>
-using tot_populator_type = std::function<void(tile_index_type, // outer indices
+using tot_populator_type = std::function<void(tile_index_type, // outer index
                                               tile_index_type, // lo_bounds
                                               tile_index_type, // up_bounds
                                               ScalarType*)>;   // row major data

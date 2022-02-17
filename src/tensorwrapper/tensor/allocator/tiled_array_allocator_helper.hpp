@@ -45,11 +45,27 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     // Generate the TA tensor
     using tensor_type = default_tensor_type<field::Tensor>;
     using tile_type   = TA::Tensor<TA::Tensor<double>>;
+    using inner_tile_type = TA::Tensor<double>;
     using range_type  = TA::Range;
+
+    std::vector<size_t> inner_lobounds, inner_upbounds;
+    {
+        inner_upbounds = shape.inner_extents();
+	inner_lobounds = std::vector<size_t>(inner_upbounds.size(), 0ul);
+    }
+    range_type inner_range( inner_lobounds, inner_upbounds );
+
     if(tot_fxn) {
-        auto ta_functor = [&](tile_type& t, const range_type& range) {
-            std::cout << range << std::endl;
-            return 1.;
+        auto ta_functor = [=,&tot_fxn](tile_type& t, const range_type& range) {
+	    t = tile_type(range, inner_tile_type(inner_range,0.0));
+	    for(auto idx : range) {
+                std::vector<size_t> outer_index(idx.begin(),idx.end());
+                auto& inner_tile = t[idx];
+		tot_fxn( outer_index, inner_lobounds, inner_upbounds, 
+				inner_tile.data() );
+	    }
+
+            return 1.; // XXX: Need to devise a consistent norm here
         };
         return TA::make_array<tensor_type>(world, ta_range, ta_functor);
     } else {
