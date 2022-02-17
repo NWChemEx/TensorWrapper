@@ -1,8 +1,8 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/einsum/einsum.hpp"
-#include "tensorwrapper/ta_helpers/linalg_inner_tensors.hpp"
-#include "tensorwrapper/ta_helpers/slice.hpp"
-#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "einsum/einsum.hpp"
+#include "linalg_inner_tensors.hpp"
+#include "slice.hpp"
+#include "ta_helpers.hpp"
 #include <TiledArray/expressions/contraction_helpers.h>
 
 namespace tensorwrapper::ta_helpers {

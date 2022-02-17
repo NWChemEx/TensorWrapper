@@ -1,7 +1,7 @@
 #pragma once
+#include "../../../ta_helpers/get_block_idx.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
-#include "tensorwrapper/ta_helpers/get_block_idx.hpp"
 #include "tiling_map_index.hpp"
 #include <TiledArray/conversions/make_array.h>
 #include <algorithm>

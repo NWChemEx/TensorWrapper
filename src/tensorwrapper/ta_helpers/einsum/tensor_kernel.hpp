@@ -1,9 +1,10 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/einsum/detail_/detail_.hpp"
-#include "tensorwrapper/ta_helpers/einsum/detail_/index_map.hpp"
-#include "tensorwrapper/ta_helpers/einsum/types.hpp"
+#include "../ta_headers.hpp"
+#include "index_map.hpp"
+#include "index_utils.hpp"
+#include "types.hpp"
 
-namespace tensorwrapper::ta_helpers::einsum::detail_ {
+namespace tensorwrapper::ta_helpers::einsum {
 
 /** @brief Extracts the lower- and upper-bounds out of a series of TiledRange1s
  *
@@ -88,9 +89,9 @@ auto tensor_kernel(const IndexMap& indices,
             auto otile = block_kernel(indices, block_range, ltile, rtile);
             rv.find(oidx).get().add_to(otile);
 
-        } while(!detail_::increment_index(block_idx, block_ranges));
+        } while(!increment_index(block_idx, block_ranges));
     }
     lhs.world().gop.fence();
     return rv;
 }
-} // namespace tensorwrapper::ta_helpers::einsum::detail_
+} // namespace tensorwrapper::ta_helpers::einsum

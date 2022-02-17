@@ -1,8 +1,8 @@
-#include "tensorwrapper/ta_helpers/einsum/detail_/detail_.hpp"
+#include "tensorwrapper/ta_helpers/einsum/index_utils.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::ta_helpers::einsum;
-using tensorwrapper::ta_helpers::einsum::detail_::increment_index;
+using tensorwrapper::ta_helpers::einsum::increment_index;
 
 TEST_CASE("increment_index") {
     SECTION("No indices") {

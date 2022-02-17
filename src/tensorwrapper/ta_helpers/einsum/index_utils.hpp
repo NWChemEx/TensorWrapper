@@ -1,7 +1,7 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/einsum/types.hpp"
+#include "types.hpp"
 
-namespace tensorwrapper::ta_helpers::einsum::detail_ {
+namespace tensorwrapper::ta_helpers::einsum {
 
 /** @brief Splits a string index on `,` characters.
  *
@@ -40,6 +40,21 @@ inline auto initial_index(const types::assoc_range& ranges) {
  *                     but the ending value is just outside the range.
  *  @return `true` if iteration has completed and `false` otherwise.
  */
-bool increment_index(types::assoc_index& idx, const types::assoc_range& ranges);
+inline bool increment_index(types::assoc_index& idx,
+                            const types::assoc_range& ranges) {
+    // Loop over indices looking for one we can increment
+    for(auto&& [idx_str, idx_val] : idx) {
+        auto&& range = ranges.at(idx_str); // Throws if idx_str not in ranges
 
-} // namespace tensorwrapper::ta_helpers::einsum::detail_
+        if(idx_val + 1 < range.second) { // Can increment this index, so do it
+            idx[idx_str] = idx_val + 1;
+            return false; // Not done since we could increment this index
+        } else {          // Can't increment it, so reset it
+            idx[idx_str] = range.first;
+        }
+    }
+
+    return true; // We apparently just reset every index, so we're done
+}
+
+} // namespace tensorwrapper::ta_helpers::einsum

@@ -1,15 +1,26 @@
-#include "tensorwrapper/ta_helpers/submatrix_functions.hpp"
+#pragma once
+#include "ta_headers.hpp"
+#include "tensorwrapper/sparse_map/sparse_map.hpp"
 
 namespace tensorwrapper::ta_helpers {
 
-using size        = std::size_t;
-using block_index = std::initializer_list<size>;
-
+/** @brief Creates a new tensor that from selected tiles of another tensor.
+ *
+ * @tparam T The type of the tile elements in @p full_matrix.
+ *
+ * @param[in] full_matrix The tensor from which the submatrix originates.
+ * @param[in] mask A mask whose values are used to determine which tiles are
+ *                 copied.
+ * @return A new tensor that is a submatrix of the original, potentially with
+ *         some tiles set to zero based on the masking.
+ */
 template<typename T>
-TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> submatrix(
+inline TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> submatrix(
   const TA::DistArray<TA::Tensor<T>, TA::SparsePolicy>& full_matrix,
   const TA::Tensor<float>& mask) {
     // Some typedefs
+    using size        = std::size_t;
+    using block_index = std::initializer_list<size>;
     using bounds_type = std::vector<size>;
     using bool_vec    = std::vector<bool>;
 
@@ -92,10 +103,26 @@ TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> submatrix(
     return submatrix;
 }
 
+/** @brief Expands the non-zero tiles of a tensor into a new tensor with a
+ *         different TiledRange.
+ *
+ * @tparam T The type of the tile elements in @p full_matrix.
+ *
+ * @param[in] submatrix The tensor that is expanded.
+ * @param[in] full_trange The TiledRange of the new tensor
+ * @param[in] mask A mask whose values are used to determine where the
+ *                 submatrix tiles are placed in the new tensor.
+ * @return A new tensor that is a with the given TiledRange and whose tiles
+ *         are either zero or copied from the submatrix.
+ */
 template<typename T>
-TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> expand_submatrix(
+inline TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> expand_submatrix(
   const TA::DistArray<TA::Tensor<T>, TA::SparsePolicy>& submatrix,
   const TA::TiledRange& full_trange, const TA::Tensor<float>& mask) {
+    // Some typedefs
+    using size        = std::size_t;
+    using block_index = std::initializer_list<size>;
+
     // Get dimensions and tile extents
     const auto& dim0  = full_trange.dim(0);
     const auto& dim1  = full_trange.dim(1);
@@ -147,12 +174,5 @@ TA::DistArray<TA::Tensor<T>, TA::SparsePolicy> expand_submatrix(
 
     return full_matrix;
 }
-
-template TA::DistArray<TA::Tensor<double>, TA::SparsePolicy> submatrix(
-  const TA::DistArray<TA::Tensor<double>, TA::SparsePolicy>&,
-  const TA::Tensor<float>&);
-template TA::DistArray<TA::Tensor<double>, TA::SparsePolicy> expand_submatrix(
-  const TA::DistArray<TA::Tensor<double>, TA::SparsePolicy>&,
-  const TA::TiledRange&, const TA::Tensor<float>&);
 
 } // namespace tensorwrapper::ta_helpers

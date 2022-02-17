@@ -1,5 +1,5 @@
-#include "tensorwrapper/ta_helpers/pow.hpp"
-#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "../ta_helpers/pow.hpp"
+#include "../ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/linear_algebra.hpp"
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <TiledArray/math/linalg/cholesky.h>

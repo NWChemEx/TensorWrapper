@@ -1,9 +1,10 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/einsum/detail_/detail_.hpp"
-#include "tensorwrapper/ta_helpers/einsum/detail_/index_map.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
+#include "../ta_headers.hpp"
+#include "index_map.hpp"
+#include "index_utils.hpp"
+#include "types.hpp"
 
-namespace tensorwrapper::ta_helpers::einsum::detail_ {
+namespace tensorwrapper::ta_helpers::einsum {
 
 template<std::size_t... Is>
 auto make_range_(const std::vector<types::range>& ranges,
@@ -49,7 +50,7 @@ template<typename LHSType, typename RHSType>
 auto block_kernel(const IndexMap& indices, const types::assoc_range& ranges,
                   LHSType&& lhs, RHSType&& rhs) {
     std::decay_t<LHSType> result(make_range(indices.select_result(ranges)), 0);
-    auto index = detail_::initial_index(ranges);
+    auto index = initial_index(ranges);
 
     do {
         // Get integral indices for elements of tensors
@@ -63,8 +64,8 @@ auto block_kernel(const IndexMap& indices, const types::assoc_range& ranges,
         // Combine the elements
         result_elem += lelem * relem;
 
-    } while(!detail_::increment_index(index, ranges));
+    } while(!increment_index(index, ranges));
     return result;
 }
 
-} // namespace tensorwrapper::ta_helpers::einsum::detail_
+} // namespace tensorwrapper::ta_helpers::einsum

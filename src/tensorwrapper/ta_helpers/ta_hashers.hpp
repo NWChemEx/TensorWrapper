@@ -1,6 +1,6 @@
 #pragma once
+#include "ta_headers.hpp"
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 #include <madness/world/safempi.h>
 
 namespace TiledArray {
@@ -115,7 +115,7 @@ tensorwrapper::detail_::HashValue get_tile_hash_sum(
     for(auto it = A.begin(); it != A.end(); ++it) {
         auto tile = A.find(it.index()).get();
         myhash    = tensorwrapper::detail_::make_hash(
-          tensorwrapper::detail_::HashType::Hash128, tile);
+             tensorwrapper::detail_::HashType::Hash128, tile);
         for(auto i = 0; i < myhash.size(); i++) { mytotal[i] += myhash[i]; }
     }
     if(madworld.size() > 1 && !A.pmap().get()->is_replicated()) {

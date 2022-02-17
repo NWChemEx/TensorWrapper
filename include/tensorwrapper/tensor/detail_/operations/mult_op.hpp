@@ -1,5 +1,5 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
+#include "../../../../../src/tensorwrapper/ta_helpers/ta_headers.hpp" /// TODO: Remove this
 #include "tensorwrapper/tensor/detail_/op_layer.hpp"
 #include "tensorwrapper/tensor/detail_/operations/mult_kernels.hpp"
 #include "tensorwrapper/tensor/type_traits/type_traits.hpp"

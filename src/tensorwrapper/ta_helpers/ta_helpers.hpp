@@ -1,8 +1,8 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/detail_/reducer.hpp"
-#include "tensorwrapper/ta_helpers/get_block_idx.hpp"
-#include "tensorwrapper/ta_helpers/ta_hashers.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
+#include "get_block_idx.hpp"
+#include "reducer.hpp"
+#include "ta_hashers.hpp"
+#include "ta_headers.hpp"
 
 namespace tensorwrapper::ta_helpers {
 
