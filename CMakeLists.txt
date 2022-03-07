@@ -40,7 +40,7 @@ cpp_find_or_build_dependency(
 cpp_find_or_build_dependency(
     tiledarray
     URL github.com/ValeevGroup/tiledarray
-    VERSION 1b7e2e3da438344a11c848724f3041b2d2b5c30b
+    VERSION 6786a55ea4490e88877511dd952e45fe0d2ac069
     BUILD_TARGET tiledarray
     FIND_TARGET tiledarray
     CMAKE_ARGS TA_BUILD_UNITTEST=OFF
