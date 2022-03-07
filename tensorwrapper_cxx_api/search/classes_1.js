@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['domain_168',['Domain',['../classtensorwrapper_1_1sparse__map_1_1Domain.html',1,'tensorwrapper::sparse_map']]],
-  ['domainpimpl_169',['DomainPIMPL',['../classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html',1,'tensorwrapper::sparse_map::detail_']]]
+  ['buffer_183',['Buffer',['../classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html',1,'tensorwrapper::tensor::buffer']]],
+  ['bufferpimpl_184',['BufferPIMPL',['../classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html',1,'tensorwrapper::tensor::buffer::detail_']]]
 ];

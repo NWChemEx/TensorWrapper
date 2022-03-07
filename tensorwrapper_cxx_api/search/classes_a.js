@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['tensor_203',['Tensor',['../structtensorwrapper_1_1tensor_1_1field_1_1Tensor.html',1,'tensorwrapper::tensor::field']]],
-  ['tensortraits_204',['TensorTraits',['../structtensorwrapper_1_1tensor_1_1TensorTraits.html',1,'tensorwrapper::tensor']]],
-  ['tensortraits_3c_20const_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_205',['TensorTraits&lt; const TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01const_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
-  ['tensortraits_3c_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_206',['TensorTraits&lt; TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
-  ['tensorwrapper_207',['TensorWrapper',['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html',1,'tensorwrapper::tensor']]],
-  ['tensorwrapperpimpl_208',['TensorWrapperPIMPL',['../classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html',1,'tensorwrapper::tensor::detail_']]],
-  ['tiledarraytraits_209',['TiledArrayTraits',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html',1,'tensorwrapper::tensor::backends']]],
-  ['tiledarraytraits_3c_20field_3a_3ascalar_20_3e_210',['TiledArrayTraits&lt; field::Scalar &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Scalar_01_4.html',1,'tensorwrapper::tensor::backends']]],
-  ['tiledarraytraits_3c_20field_3a_3atensor_20_3e_211',['TiledArrayTraits&lt; field::Tensor &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Tensor_01_4.html',1,'tensorwrapper::tensor::backends']]]
+  ['scalar_210',['Scalar',['../structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html',1,'tensorwrapper::tensor::field']]],
+  ['scaleop_211',['ScaleOp',['../classtensorwrapper_1_1tensor_1_1detail___1_1ScaleOp.html',1,'tensorwrapper::tensor::detail_']]],
+  ['shape_212',['Shape',['../classtensorwrapper_1_1tensor_1_1Shape.html',1,'tensorwrapper::tensor']]],
+  ['shapepimpl_213',['ShapePIMPL',['../classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html',1,'tensorwrapper::tensor::detail_']]],
+  ['singleelementtiles_214',['SingleElementTiles',['../classtensorwrapper_1_1tensor_1_1SingleElementTiles.html',1,'tensorwrapper::tensor']]],
+  ['sparsemap_215',['SparseMap',['../classtensorwrapper_1_1sparse__map_1_1SparseMap.html',1,'tensorwrapper::sparse_map']]],
+  ['sparsemappimpl_216',['SparseMapPIMPL',['../classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html',1,'tensorwrapper::sparse_map::detail_']]],
+  ['sparseshape_217',['SparseShape',['../classtensorwrapper_1_1tensor_1_1SparseShape.html',1,'tensorwrapper::tensor']]],
+  ['sparseshapepimpl_218',['SparseShapePIMPL',['../classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html',1,'tensorwrapper::tensor::detail_']]],
+  ['subtop_219',['SubtOp',['../classtensorwrapper_1_1tensor_1_1detail___1_1SubtOp.html',1,'tensorwrapper::tensor::detail_']]]
 ];
