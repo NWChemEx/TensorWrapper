@@ -1,5 +1,6 @@
 #pragma once
-#include <tiledarray.h>
+#include "tensorwrapper/ta_helpers/ta_headers.hpp"
+
 namespace tensorwrapper::ta_helpers::detail_ {
 
 // Makes indices for the contraction of one dimension of an arbitrarily ranked
