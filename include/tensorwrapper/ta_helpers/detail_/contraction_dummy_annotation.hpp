@@ -1,4 +1,5 @@
 #pragma once
+#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 
 namespace tensorwrapper::ta_helpers::detail_ {
 
