@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-#include "tensorwrapper/tensor/shapes/shape.hpp"
+//#include "tensorwrapper/tensor/shapes/shape.hpp"
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -50,10 +50,10 @@ public:
     using pimpl_pointer = std::unique_ptr<pimpl_type>;
 
     /// Type used to model the shape
-    using shape_type = Shape<FieldType>;
+    //using shape_type = Shape<FieldType>;
 
     /// Type of a read-only reference to the shape
-    using const_shape_reference = const shape_type&;
+    //using const_shape_reference = const shape_type&;
 
     /// Type of the object used for hashing
     using hasher_type = tensorwrapper::detail_::Hasher;
@@ -150,6 +150,11 @@ public:
 
     /// Defaulted destructor
     ~Buffer() noexcept;
+
+
+
+    pimpl_type* pimpl() noexcept;
+    const pimpl_type* pimpl() const noexcept;
 
     /** @brief Exchanges the state of this Buffer with that of @p other.
      *
