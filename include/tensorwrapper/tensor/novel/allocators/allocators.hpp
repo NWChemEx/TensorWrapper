@@ -12,7 +12,7 @@ typename Allocator<FieldType>::allocator_ptr ta_allocator(Args&&... args) {
     return std::make_unique<alloc_type>(std::forward<Args>(args)...);
 }
 
-}
+} // namespace allocator
 
 /** @brief Wraps the process of creating a defaulted allocator
  *
@@ -30,8 +30,8 @@ typename Allocator<FieldType>::allocator_ptr ta_allocator(Args&&... args) {
  */
 template<typename FieldType>
 typename allocator::Allocator<FieldType>::allocator_ptr default_allocator() {
-//    return std::make_unique<allocator::TiledArrayAllocator<FieldType>>();
+    //    return std::make_unique<allocator::TiledArrayAllocator<FieldType>>();
     return allocator::ta_allocator<FieldType>();
 }
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

@@ -25,4 +25,4 @@ template<typename FieldType>
 using default_tensor_type =
   typename ta_buffer_pimpl_type<FieldType>::default_tensor_type;
 
-} // namespace tensorwrapper::tensor::allocator::detail_
+} // namespace tensorwrapper::tensor::novel::allocator::detail_

@@ -153,4 +153,4 @@ private:
 extern template class SparseShapePIMPL<field::Scalar>;
 extern template class SparseShapePIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_

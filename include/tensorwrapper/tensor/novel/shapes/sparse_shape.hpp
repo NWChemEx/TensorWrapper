@@ -198,4 +198,4 @@ bool operator!=(const SparseShape<LHSField>& lhs,
 extern template class SparseShape<field::Scalar>;
 extern template class SparseShape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

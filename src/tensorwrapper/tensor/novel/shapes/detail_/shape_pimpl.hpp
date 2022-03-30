@@ -192,4 +192,4 @@ bool SHAPE_PIMPL::operator==(const ShapePIMPL& rhs) const noexcept {
 extern template class ShapePIMPL<field::Scalar>;
 extern template class ShapePIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_

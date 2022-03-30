@@ -74,4 +74,4 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     }
 }
 
-} // namespace tensorwrapper::tensor::allocator::detail_
+} // namespace tensorwrapper::tensor::novel::allocator::detail_

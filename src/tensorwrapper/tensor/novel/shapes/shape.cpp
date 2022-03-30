@@ -120,4 +120,4 @@ bool SHAPE::is_equal_(const Shape<FieldType>& rhs) const noexcept {
 template class Shape<field::Scalar>;
 template class Shape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel
