@@ -1,9 +1,9 @@
-#if 0
-#include "tensorwrapper/tensor/allocators/allocators.hpp"
-#include "tensorwrapper/tensor/shapes/shapes.hpp"
+#include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
+#include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
+using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *
@@ -14,7 +14,7 @@ using namespace tensorwrapper::tensor;
  * - the tensor returned is correct
  * - comparisons
  */
-TEST_CASE("SparseShape<field::Scalar>") {
+TEST_CASE("novel::SparseShape<field::Scalar>") {
     using field_type      = field::Scalar;
     using shape_type      = SparseShape<field_type>;
     using extents_type    = typename shape_type::extents_type;
@@ -72,6 +72,7 @@ TEST_CASE("SparseShape<field::Scalar>") {
         }
     }
 
+#if 0
     SECTION("make_tensor") {
         using ta_tensor = TA::Tensor<float>;
         using ta_shape  = TA::SparseShape<float>;
@@ -101,6 +102,7 @@ TEST_CASE("SparseShape<field::Scalar>") {
             REQUIRE(std::get<0>(tensor).shape() == corr_shape);
         }
     }
+#endif
 
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
@@ -142,8 +144,8 @@ TEST_CASE("SparseShape<field::Scalar>") {
 
         // Different fields
         using other_shape_type = SparseShape<field::Tensor>;
-        REQUIRE_FALSE(m == other_shape_type(matrix_extents, tensor_sm));
-        REQUIRE(m != other_shape_type(matrix_extents, tensor_sm));
+        REQUIRE_FALSE(m == other_shape_type(matrix_extents, {{1}}, tensor_sm));
+        REQUIRE(m != other_shape_type(matrix_extents, {{1}}, tensor_sm));
 
         // Different extents
         REQUIRE_FALSE(m == shape_type(extents_type{5, 5}, matrix_sm));
@@ -166,23 +168,25 @@ TEST_CASE("SparseShape<field::Scalar>") {
     }
 }
 
-TEST_CASE("SparseShape<field::Tensor>") {
-    using field_type      = field::Tensor;
-    using shape_type      = SparseShape<field_type>;
-    using extents_type    = typename shape_type::extents_type;
-    using sparse_map_type = typename shape_type::sparse_map_type;
-    using idx_type        = typename sparse_map_type::key_type;
-    using idx2mode_type   = typename shape_type::idx2mode_type;
+TEST_CASE("novel::SparseShape<field::Tensor>") {
+    using field_type         = field::Tensor;
+    using shape_type         = SparseShape<field_type>;
+    using extents_type       = typename shape_type::extents_type;
+    using inner_extents_type = typename shape_type::inner_extents_type;
+    using sparse_map_type    = typename shape_type::sparse_map_type;
+    using idx_type           = typename sparse_map_type::key_type;
+    using idx2mode_type      = typename shape_type::idx2mode_type;
 
     extents_type extents{3, 4};
+    inner_extents_type inner_extents{50,203};
 
     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
     sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
 
     idx2mode_type i2m{1, 0};
 
-    shape_type t(extents, sm);
-    shape_type tt(extents, sm, i2m);
+    shape_type t(extents, inner_extents, sm);
+    shape_type tt(extents, inner_extents, sm, i2m);
 
     SECTION("CTors") {
         SECTION("No idx2mode") {
@@ -190,12 +194,14 @@ TEST_CASE("SparseShape<field::Tensor>") {
 
             // Make sure there's not an extra copy
             auto pm = extents.data();
-            shape_type m2(std::move(extents), sm);
+	    auto ipm = inner_extents.data();
+            shape_type m2(std::move(extents), std::move(inner_extents), sm);
             REQUIRE(m2.extents().data() == pm);
+            REQUIRE(m2.inner_extents().data() == ipm);
 
             sparse_map_type sm2{{i0, {i0}}, {i1, {i1}}};
             // Throws if sm is inconsistent with extents
-            REQUIRE_THROWS_AS(shape_type(extents, sm2), std::runtime_error);
+            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm2), std::runtime_error);
         }
 
         SECTION("idx2mode") {
@@ -203,20 +209,23 @@ TEST_CASE("SparseShape<field::Tensor>") {
 
             // Make sure there's not an extra copy
             auto pm = extents.data();
-            shape_type m2(std::move(extents), sm, i2m);
+	    auto ipm = inner_extents.data();
+            shape_type m2(std::move(extents), std::move(inner_extents), sm, i2m);
             REQUIRE(m2.extents().data() == pm);
+            REQUIRE(m2.inner_extents().data() == ipm);
 
             // Throws if sm is inconsistent with idx2mode
-            REQUIRE_THROWS_AS(shape_type(extents, sm, idx2mode_type{1, 2, 0}),
+            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm, idx2mode_type{1, 2, 0}),
                               std::runtime_error);
 
             // Throws if an element of idx2mode is out of range
             extents_type i2m2{0, 5};
-            REQUIRE_THROWS_AS(shape_type(extents, sm, i2m2),
+            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm, i2m2),
                               std::runtime_error);
         }
     }
 
+#if 0
     SECTION("make_tensor") {
         using ta_tensor = TA::Tensor<float>;
         using ta_shape  = TA::SparseShape<float>;
@@ -235,6 +244,7 @@ TEST_CASE("SparseShape<field::Tensor>") {
             REQUIRE(std::get<0>(matrix).shape() == corr_shape);
         }
     }
+#endif
 
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
@@ -242,19 +252,19 @@ TEST_CASE("SparseShape<field::Tensor>") {
             auto lhs = hash_objects(t);
 
             SECTION("Same state") {
-                auto rhs = hash_objects(shape_type(extents, sm));
+                auto rhs = hash_objects(shape_type(extents, inner_extents, sm));
                 REQUIRE(lhs == rhs);
             }
 
             SECTION("Different extents") {
                 extents_type other_extents{5, 5};
-                auto rhs = hash_objects(shape_type(other_extents, sm));
+                auto rhs = hash_objects(shape_type(other_extents, inner_extents, sm));
                 REQUIRE(lhs != rhs);
             }
 
             SECTION("Different sparse maps") {
                 sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-                auto rhs = hash_objects(shape_type(extents, sm2));
+                auto rhs = hash_objects(shape_type(extents, inner_extents, sm2));
                 REQUIRE(lhs != rhs);
             }
 
@@ -271,8 +281,8 @@ TEST_CASE("SparseShape<field::Tensor>") {
 
     SECTION("comparisons") {
         // Same
-        REQUIRE(t == shape_type(extents, sm));
-        REQUIRE_FALSE(t != shape_type(extents, sm));
+        REQUIRE(t == shape_type(extents, inner_extents, sm));
+        REQUIRE_FALSE(t != shape_type(extents, inner_extents, sm));
 
         // Different fields
         using other_shape_type = SparseShape<field::Scalar>;
@@ -280,13 +290,13 @@ TEST_CASE("SparseShape<field::Tensor>") {
         REQUIRE(t != other_shape_type(extents_type{3, 4, 5}, sm));
 
         // Different extents
-        REQUIRE_FALSE(t == shape_type(extents_type{5, 5}, sm));
-        REQUIRE(t != shape_type(extents_type{5, 5}, sm));
+        REQUIRE_FALSE(t == shape_type(extents_type{5, 5}, inner_extents, sm));
+        REQUIRE(t != shape_type(extents_type{5, 5}, inner_extents, sm));
 
         // Different sparse maps
         sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-        REQUIRE_FALSE(t == shape_type(extents, sm2));
-        REQUIRE(t != shape_type(extents, sm2));
+        REQUIRE_FALSE(t == shape_type(extents, inner_extents, sm2));
+        REQUIRE(t != shape_type(extents, inner_extents, sm2));
 
         // Different permutation
         REQUIRE_FALSE(t == tt);
@@ -294,9 +304,8 @@ TEST_CASE("SparseShape<field::Tensor>") {
 
         // Base class's operator== is non-polymorphic
         using base_type = Shape<field_type>;
-        base_type b(extents);
+        base_type b(extents,inner_extents);
         REQUIRE(b == t);
         REQUIRE_FALSE(b != t);
     }
 }
-#endif

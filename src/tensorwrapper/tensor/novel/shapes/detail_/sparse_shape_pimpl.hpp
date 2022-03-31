@@ -66,8 +66,11 @@ public:
      *  @throw std::out_of_range If any element of @p idx2mode is larger than
      *                           the rank of the shape. Strong throw guarantee.
      */
-    SparseShapePIMPL(extents_type x, sparse_map_type sm, idx2mode_type i2m,
-                     inner_extents_type y);
+    SparseShapePIMPL(extents_type x, inner_extents_type y, sparse_map_type sm, 
+                     idx2mode_type i2m);
+    inline SparseShapePIMPL(extents_type x, sparse_map_type sm, idx2mode_type i2m) : 
+      SparseShapePIMPL(std::move(x),inner_extents_type{},std::move(sm),
+        std::move(i2m)){};
 
     /** @brief Makes a deep copy of the provided SparseShapePIMPL instance.
      *
