@@ -388,7 +388,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
     SECTION("SingleElementTile") {
 #if 0 // Enable when retile for ToT is implemented
-	// Default tiling is OneBigTile, retile to SingleElementTile
+      // Default tiling is OneBigTile, retile to SingleElementTile
 	ta_trange_type  se_tr_vec{{0,1,2,3}};
 	ta_trange_type  se_tr_mat{{0,1,2},{0,1,2}};
 	pvov->retile(se_tr_vec);

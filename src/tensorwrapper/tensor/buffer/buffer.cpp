@@ -36,9 +36,7 @@ TEMPLATE_PARAMS
 BUFFER::~Buffer() noexcept = default;
 
 TEMPLATE_PARAMS
-typename BUFFER::pimpl_type* BUFFER::pimpl() noexcept {
-    return m_pimpl_.get();
-}
+typename BUFFER::pimpl_type* BUFFER::pimpl() noexcept { return m_pimpl_.get(); }
 
 TEMPLATE_PARAMS
 const typename BUFFER::pimpl_type* BUFFER::pimpl() const noexcept {

@@ -20,7 +20,8 @@ public:
     using pimpl_pointer = typename buffer_type::pimpl_pointer;
 
     /// Type of a read-only reference to the shape
-    //using const_shape_reference = typename buffer_type::const_shape_reference;
+    // using const_shape_reference = typename
+    // buffer_type::const_shape_reference;
 
     /// Type of a mutable hasher reference
     using hasher_reference = typename buffer_type::hasher_reference;

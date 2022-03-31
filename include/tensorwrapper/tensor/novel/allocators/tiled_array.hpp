@@ -64,4 +64,4 @@ private:
 extern template class TiledArrayAllocator<field::Scalar>;
 extern template class TiledArrayAllocator<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::allocator
+} // namespace tensorwrapper::tensor::novel::allocator

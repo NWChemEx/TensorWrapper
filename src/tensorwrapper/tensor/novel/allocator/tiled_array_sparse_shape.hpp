@@ -74,4 +74,4 @@ ta_shape_type make_sparse_shape(const ShapeType& shape,
     return scalar_tensor_shape(sparse_map, idx2mode_map, tiled_range);
 }
 
-} // namespace tensorwrapper::tensor::allocator::detail_
+} // namespace tensorwrapper::tensor::novel::allocator::detail_

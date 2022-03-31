@@ -157,4 +157,4 @@ void SPARSE_SHAPE_PIMPL::hash_(tensorwrapper::detail_::Hasher& h) const {
 template class SparseShapePIMPL<field::Scalar>;
 template class SparseShapePIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_

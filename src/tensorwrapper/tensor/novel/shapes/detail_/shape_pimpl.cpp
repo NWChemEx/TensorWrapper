@@ -5,4 +5,4 @@ namespace tensorwrapper::tensor::novel::detail_ {
 template class ShapePIMPL<field::Scalar>;
 template class ShapePIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_

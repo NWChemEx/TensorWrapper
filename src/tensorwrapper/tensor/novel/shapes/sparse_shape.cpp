@@ -112,4 +112,4 @@ bool SPARSE_SHAPE::is_equal_(const Shape<FieldType>& rhs) const noexcept {
 template class SparseShape<field::Scalar>;
 template class SparseShape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

@@ -287,4 +287,4 @@ bool operator!=(const Shape<LHSType>& lhs, const Shape<RHSType>& rhs) {
 extern template class Shape<field::Scalar>;
 extern template class Shape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

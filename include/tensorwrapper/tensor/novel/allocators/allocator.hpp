@@ -1,9 +1,9 @@
 #pragma once
 #include "tensorwrapper/tensor/buffer/buffer.hpp"
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include <memory>
 #include <vector>
 
@@ -164,7 +164,7 @@ public:
                         const shape_type& shape) const;
     value_type allocate(const shape_type& shape) const;
 
-    value_type reallocate(const value_type& buf, const shape_type& shape) const; 
+    value_type reallocate(const value_type& buf, const shape_type& shape) const;
 
     /** @brief Polymorphically hashes this allocator instance.
      *
@@ -258,8 +258,9 @@ protected:
     virtual allocator_ptr clone_() const = 0;
 
     virtual value_type allocate_(const tile_populator_type&,
-                                 const shape_type&) const = 0;
-    virtual value_type reallocate_(const value_type&, const shape_type&) const = 0;
+                                 const shape_type&) const   = 0;
+    virtual value_type reallocate_(const value_type&,
+                                   const shape_type&) const = 0;
 
     /** @brief Hook for polymorphically comparing two Allocators.
      *
@@ -324,4 +325,4 @@ void Allocator<FieldType>::hash_(tensorwrapper::detail_::Hasher& h) const {
     // h(m_world_);
 }
 
-} // namespace tensorwrapper::tensor::allocator
+} // namespace tensorwrapper::tensor::novel::allocator

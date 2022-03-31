@@ -39,12 +39,14 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::reallocate_(
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
     auto buf_copy_uptr = buf.pimpl()->clone();
-    auto buf_copy_ptr = dynamic_cast<ta_buffer_pimpl_type*>(buf_copy_uptr.get());
-    if( !buf_copy_ptr )
-      throw std::runtime_error("TA Allocator:: Passed Buffer is not TA buffer");
+    auto buf_copy_ptr =
+      dynamic_cast<ta_buffer_pimpl_type*>(buf_copy_uptr.get());
+    if(!buf_copy_ptr)
+        throw std::runtime_error(
+          "TA Allocator:: Passed Buffer is not TA buffer");
 
     // Get new TR, etc
-    auto ta_range = detail_::make_tiled_range( tiling_, shape );
+    auto ta_range = detail_::make_tiled_range(tiling_, shape);
     // TODO Handle possible sparse_map driven shape
 
     // Retile
@@ -66,4 +68,4 @@ TPARAM bool TA_ALLOCATOR::is_equal_(const base_type& other) const noexcept {
 
 template class TiledArrayAllocator<field::Scalar>;
 template class TiledArrayAllocator<field::Tensor>;
-} // namespace tensorwrapper::tensor::allocator
+} // namespace tensorwrapper::tensor::novel::allocator

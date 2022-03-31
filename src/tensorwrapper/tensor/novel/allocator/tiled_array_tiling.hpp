@@ -62,4 +62,4 @@ tiled_range_type make_tiled_range(ta::Tiling tiling, const ShapeType& shape) {
     return tiled_range_type();
 }
 
-} // namespace tensorwrapper::tensor::allocator::detail_
+} // namespace tensorwrapper::tensor::novel::allocator::detail_
