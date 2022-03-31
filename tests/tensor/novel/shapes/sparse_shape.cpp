@@ -178,7 +178,7 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
     using idx2mode_type      = typename shape_type::idx2mode_type;
 
     extents_type extents{3, 4};
-    inner_extents_type inner_extents{50,203};
+    inner_extents_type inner_extents{50, 203};
 
     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
     sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
@@ -193,30 +193,33 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
             REQUIRE(t.extents() == extents);
 
             // Make sure there's not an extra copy
-            auto pm = extents.data();
-	    auto ipm = inner_extents.data();
+            auto pm  = extents.data();
+            auto ipm = inner_extents.data();
             shape_type m2(std::move(extents), std::move(inner_extents), sm);
             REQUIRE(m2.extents().data() == pm);
             REQUIRE(m2.inner_extents().data() == ipm);
 
             sparse_map_type sm2{{i0, {i0}}, {i1, {i1}}};
             // Throws if sm is inconsistent with extents
-            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm2), std::runtime_error);
+            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm2),
+                              std::runtime_error);
         }
 
         SECTION("idx2mode") {
             REQUIRE(tt.extents() == extents);
 
             // Make sure there's not an extra copy
-            auto pm = extents.data();
-	    auto ipm = inner_extents.data();
-            shape_type m2(std::move(extents), std::move(inner_extents), sm, i2m);
+            auto pm  = extents.data();
+            auto ipm = inner_extents.data();
+            shape_type m2(std::move(extents), std::move(inner_extents), sm,
+                          i2m);
             REQUIRE(m2.extents().data() == pm);
             REQUIRE(m2.inner_extents().data() == ipm);
 
             // Throws if sm is inconsistent with idx2mode
-            REQUIRE_THROWS_AS(shape_type(extents, inner_extents, sm, idx2mode_type{1, 2, 0}),
-                              std::runtime_error);
+            REQUIRE_THROWS_AS(
+              shape_type(extents, inner_extents, sm, idx2mode_type{1, 2, 0}),
+              std::runtime_error);
 
             // Throws if an element of idx2mode is out of range
             extents_type i2m2{0, 5};
@@ -258,13 +261,15 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
 
             SECTION("Different extents") {
                 extents_type other_extents{5, 5};
-                auto rhs = hash_objects(shape_type(other_extents, inner_extents, sm));
+                auto rhs =
+                  hash_objects(shape_type(other_extents, inner_extents, sm));
                 REQUIRE(lhs != rhs);
             }
 
             SECTION("Different sparse maps") {
                 sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-                auto rhs = hash_objects(shape_type(extents, inner_extents, sm2));
+                auto rhs =
+                  hash_objects(shape_type(extents, inner_extents, sm2));
                 REQUIRE(lhs != rhs);
             }
 
@@ -304,7 +309,7 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
 
         // Base class's operator== is non-polymorphic
         using base_type = Shape<field_type>;
-        base_type b(extents,inner_extents);
+        base_type b(extents, inner_extents);
         REQUIRE(b == t);
         REQUIRE_FALSE(b != t);
     }

@@ -71,8 +71,8 @@ public:
      *                            guarantee.
      */
     SparseShape(extents_type extents, sparse_map_type sm);
-    SparseShape(extents_type extents, inner_extents_type inner_extents, 
-      sparse_map_type sm);
+    SparseShape(extents_type extents, inner_extents_type inner_extents,
+                sparse_map_type sm);
 
     /** @brief Creates a new SparseShape from extents, a SparseMap, and a
      *         mapping from SparseMap indices to tensor modes.
@@ -102,9 +102,8 @@ public:
      *                           the rank of the shape. Strong throw guarantee.
      */
     SparseShape(extents_type extents, sparse_map_type sm, idx2mode_type i2m);
-    SparseShape(extents_type extents, inner_extents_type inner_extents, 
-      sparse_map_type sm, idx2mode_type i2m);
-
+    SparseShape(extents_type extents, inner_extents_type inner_extents,
+                sparse_map_type sm, idx2mode_type i2m);
 
     /** @brief Non-polymorphic comparison of two SparseShape instances.
      *

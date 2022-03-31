@@ -50,18 +50,19 @@ inline constexpr bool is_tensor_field_v = std::is_same_v<FieldType, Tensor>;
 
 template<typename FieldType, typename U = void>
 struct enable_if_scalar_field {
-    using type = typename std::enable_if<is_scalar_field_v<FieldType>,U>::type;
+    using type = typename std::enable_if<is_scalar_field_v<FieldType>, U>::type;
 };
 
 template<typename FieldType, typename U = void>
 struct enable_if_tensor_field {
-    using type = typename std::enable_if<is_tensor_field_v<FieldType>,U>::type;
+    using type = typename std::enable_if<is_tensor_field_v<FieldType>, U>::type;
 };
 
 template<typename FieldType, typename U = void>
-using enable_if_scalar_field_t = typename enable_if_scalar_field<FieldType,U>::type;
+using enable_if_scalar_field_t =
+  typename enable_if_scalar_field<FieldType, U>::type;
 template<typename FieldType, typename U = void>
-using enable_if_tensor_field_t = typename enable_if_tensor_field<FieldType,U>::type;
-
+using enable_if_tensor_field_t =
+  typename enable_if_tensor_field<FieldType, U>::type;
 
 } // namespace tensorwrapper::tensor::field
