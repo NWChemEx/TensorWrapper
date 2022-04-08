@@ -62,7 +62,8 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
                                                 const range_type& range) {
             t = tile_type(range, inner_tile_type(inner_range, 0.0));
             for(auto idx : range) {
-                if(!shape.is_hard_zero(sparse_map::Index(idx.begin(), idx.end()))) {
+                if(!shape.is_hard_zero(
+                     sparse_map::Index(idx.begin(), idx.end()))) {
                     std::vector<size_t> outer_index(idx.begin(), idx.end());
                     auto& inner_tile = t[idx];
                     tot_fxn(outer_index, inner_lobounds, inner_upbounds,
