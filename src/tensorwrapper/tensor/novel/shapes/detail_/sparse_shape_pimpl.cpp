@@ -142,7 +142,7 @@ bool SPARSE_SHAPE_PIMPL::operator==(
 //------------------------------------------------------------------------------
 //
 template<typename FieldType>
-bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& el) const {
+bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& el) const {
     const auto nind = m_sm_.ind_rank();
     const auto ndep = m_sm_.dep_rank();
     const auto rank = nind + ndep;
@@ -171,7 +171,7 @@ bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& el) const {
 }
 
 template<typename FieldType>
-bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& lo,
+bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
                                  const index_type& hi) const {
     if(lo.size() != hi.size()) throw std::runtime_error("Lo/Hi Inconsistent");
 

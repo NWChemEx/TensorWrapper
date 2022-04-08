@@ -91,13 +91,13 @@ typename SPARSE_SHAPE::const_idx2mode_reference SPARSE_SHAPE::idx2mode_map()
 //------------------------------------------------------------------------------
 
 template<typename FieldType>
-bool SPARSE_SHAPE::is_zero_(const index_type& i) const {
-    return downcast(this->pimpl_()).is_zero(i);
+bool SPARSE_SHAPE::is_hard_zero_(const index_type& i) const {
+    return downcast(this->pimpl_()).is_hard_zero(i);
 }
 
 template<typename FieldType>
-bool SPARSE_SHAPE::is_zero_(const index_type& lo, const index_type& hi) const {
-    return downcast(this->pimpl_()).is_zero(lo, hi);
+bool SPARSE_SHAPE::is_hard_zero_(const index_type& lo, const index_type& hi) const {
+    return downcast(this->pimpl_()).is_hard_zero(lo, hi);
 }
 
 template<typename FieldType>

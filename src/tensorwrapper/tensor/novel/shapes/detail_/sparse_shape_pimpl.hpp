@@ -140,8 +140,8 @@ public:
 
     const auto& idx2mode_map() const noexcept { return m_i2m_; }
 
-    bool is_zero(const index_type&, const index_type&) const;
-    bool is_zero(const index_type&) const;
+    bool is_hard_zero(const index_type&, const index_type&) const;
+    bool is_hard_zero(const index_type&) const;
 
 protected:
     /// Additionally hashes the sparse map and index mapping

@@ -60,23 +60,23 @@ TEST_CASE("Shape<Scalar>") {
         REQUIRE(matrix.extents() == matrix_extents);
     }
 
-    SECTION("is_zero") {
+    SECTION("is_hard_zero") {
         // Everything is non-zero for non-sparse shape
-        REQUIRE_FALSE(vector.is_zero({0}));
-        REQUIRE_FALSE(vector.is_zero({1}));
-        REQUIRE_FALSE(vector.is_zero({2}));
-        REQUIRE_FALSE(vector.is_zero({3}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}));
+        REQUIRE_FALSE(vector.is_hard_zero({1}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}));
+        REQUIRE_FALSE(vector.is_hard_zero({3}));
 
-        REQUIRE_FALSE(vector.is_zero({0}, {1}));
-        REQUIRE_FALSE(vector.is_zero({0}, {2}));
-        REQUIRE_FALSE(vector.is_zero({0}, {4}));
-        REQUIRE_FALSE(vector.is_zero({2}, {2}));
-        REQUIRE_FALSE(vector.is_zero({2}, {4}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {1}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {2}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {4}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}, {2}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}, {4}));
 
-        REQUIRE_FALSE(matrix.is_zero({0, 0}, {3, 5}));
+        REQUIRE_FALSE(matrix.is_hard_zero({0, 0}, {3, 5}));
         for(auto _i = 0; _i < 3; ++_i)
             for(auto _j = 0; _j < 5; ++_j) {
-                REQUIRE_FALSE(matrix.is_zero({_i, _j}));
+                REQUIRE_FALSE(matrix.is_hard_zero({_i, _j}));
             }
     }
 

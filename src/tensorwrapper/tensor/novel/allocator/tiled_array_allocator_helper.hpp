@@ -23,7 +23,7 @@ default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
             const auto up = range.upbound();
             sparse_map::Index lo_idx(lo.begin(), lo.end());
             sparse_map::Index up_idx(up.begin(), up.end());
-            if(shape.is_zero(lo_idx, up_idx)) {
+            if(shape.is_hard_zero(lo_idx, up_idx)) {
                 return 0.; // Handle manual sparisty
             } else {
                 t = tile_type(range, 0.0);    // Create tile;
@@ -62,7 +62,7 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
                                                 const range_type& range) {
             t = tile_type(range, inner_tile_type(inner_range, 0.0));
             for(auto idx : range) {
-                if(!shape.is_zero(sparse_map::Index(idx.begin(), idx.end()))) {
+                if(!shape.is_hard_zero(sparse_map::Index(idx.begin(), idx.end()))) {
                     std::vector<size_t> outer_index(idx.begin(), idx.end());
                     auto& inner_tile = t[idx];
                     tot_fxn(outer_index, inner_lobounds, inner_upbounds,

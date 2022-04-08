@@ -136,9 +136,9 @@ public:
     const_inner_extents_reference inner_extents() const;
     size_type field_rank() const;
 
-    bool is_zero(const index_type& i) const { return is_zero_(i); }
-    bool is_zero(const index_type& lo, const index_type& hi) const {
-        return is_zero_(lo, hi);
+    bool is_hard_zero(const index_type& i) const { return is_hard_zero_(i); }
+    bool is_hard_zero(const index_type& lo, const index_type& hi) const {
+        return is_hard_zero_(lo, hi);
     }
 
     /** @brief Non-polymorphic equality comparison for shapes with the same
@@ -256,9 +256,9 @@ protected:
     bool has_pimpl_() const noexcept;
 
 private:
-    /// Derived class should override to implement is_zero
-    virtual bool is_zero_(const index_type&) const;
-    virtual bool is_zero_(const index_type&, const index_type&) const;
+    /// Derived class should override to implement is_hard_zero
+    virtual bool is_hard_zero_(const index_type&) const;
+    virtual bool is_hard_zero_(const index_type&, const index_type&) const;
 
     /// Derived class should override to implement polymorphic deep-copy
     virtual pointer_type clone_() const;
