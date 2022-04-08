@@ -246,12 +246,24 @@ TEST_CASE("novel::SparseShapePIMPL<field::Scalar>") {
       REQUIRE_THROWS_AS(p.is_zero({1,1},{0}), std::runtime_error);
 
       // Make sure that individual non-zeros are picked up
+      REQUIRE_FALSE(p.is_zero({0,0}));
+      REQUIRE_FALSE(p.is_zero({1,1}));
+      REQUIRE_FALSE(p.is_zero({2,0}));
+      REQUIRE_FALSE(p.is_zero({2,3}));
       REQUIRE_FALSE(p.is_zero({0,0},{3,4}));
       REQUIRE_FALSE(p.is_zero({0,0},{3,1}));
       REQUIRE_FALSE(p.is_zero({0,0},{3,2}));
       REQUIRE_FALSE(p.is_zero({1,2},{3,4}));
 
       // Pick up zero ranges
+      REQUIRE(p.is_zero({0,1}));
+      REQUIRE(p.is_zero({0,2}));
+      REQUIRE(p.is_zero({0,3}));
+      REQUIRE(p.is_zero({1,0}));
+      REQUIRE(p.is_zero({1,2}));
+      REQUIRE(p.is_zero({1,3}));
+      REQUIRE(p.is_zero({2,1}));
+      REQUIRE(p.is_zero({2,2}));
       REQUIRE(p.is_zero({0,2},{1,4}));
       REQUIRE(p.is_zero({2,1},{3,3}));
     }

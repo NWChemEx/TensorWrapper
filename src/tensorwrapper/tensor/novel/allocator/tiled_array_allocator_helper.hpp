@@ -13,18 +13,23 @@ default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
     // Get TiledRange for specified tiling
     auto ta_range = make_tiled_range(tiling, shape);
 
-    // TODO Handle possible sparse_map driven shape
-    // auto ta_shape = make_sparse_shape<field::Scalar>(shape, ta_trange);
-
     // Generate the TA tensor
     using tensor_type = default_tensor_type<field::Scalar>;
     using tile_type   = TA::Tensor<double>;
     using range_type  = TA::Range;
     if(scalar_fxn) {
         auto ta_functor = [&](tile_type& t, const range_type& range) {
-            t = tile_type(range, 0.0); // Create tile;
-            scalar_fxn(range.lobound(), range.upbound(), t.data()); // Populate
-            return TA::norm(t); // Handle numerical sparisty
+            const auto lo = range.lobound();
+	    const auto up = range.upbound();
+	    sparse_map::Index lo_idx(lo.begin(), lo.end());
+	    sparse_map::Index up_idx(up.begin(), up.end());
+	    if(shape.is_zero(lo_idx,up_idx)) {
+               return 0.; // Handle manual sparisty
+	    } else {
+                t = tile_type(range, 0.0); // Create tile;
+                scalar_fxn(lo, up, t.data()); // Populate
+                return TA::norm(t); // Handle numerical sparisty
+            }
         };
         return TA::make_array<tensor_type>(world, ta_range, ta_functor);
     } else {
@@ -38,9 +43,6 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
   TA::World& world, const ShapeType& shape, ta::Tiling tiling, Op&& tot_fxn) {
     // Get TiledRange for specified tiling
     auto ta_range = make_tiled_range(tiling, shape);
-
-    // TODO Handle possible sparse_map driven shape
-    // auto ta_shape = make_sparse_shape<field::Scalar>(shape, ta_trange);
 
     // Generate the TA tensor
     using tensor_type     = default_tensor_type<field::Tensor>;
@@ -56,13 +58,15 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     range_type inner_range(inner_lobounds, inner_upbounds);
 
     if(tot_fxn) {
-        auto ta_functor = [=, &tot_fxn](tile_type& t, const range_type& range) {
+        auto ta_functor = [=, &tot_fxn, &shape](tile_type& t, const range_type& range) {
             t = tile_type(range, inner_tile_type(inner_range, 0.0));
             for(auto idx : range) {
-                std::vector<size_t> outer_index(idx.begin(), idx.end());
-                auto& inner_tile = t[idx];
-                tot_fxn(outer_index, inner_lobounds, inner_upbounds,
-                        inner_tile.data());
+		if( !shape.is_zero(sparse_map::Index(idx.begin(),idx.end())) ) {
+                    std::vector<size_t> outer_index(idx.begin(), idx.end());
+                    auto& inner_tile = t[idx];
+                    tot_fxn(outer_index, inner_lobounds, inner_upbounds,
+                            inner_tile.data());
+		}
             }
 
             return 1.; // XXX: Need to devise a consistent norm here

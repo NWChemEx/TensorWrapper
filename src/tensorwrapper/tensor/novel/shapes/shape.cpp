@@ -80,6 +80,10 @@ bool SHAPE::is_equal(const Shape& rhs) const noexcept {
 //------------------------------------------------------------------------------
 //                      Protected/Private Functions
 //------------------------------------------------------------------------------
+template<typename FieldType>
+bool SHAPE::is_zero_(const index_type& /*i*/) const {
+    return false;
+}
 
 template<typename FieldType>
 bool SHAPE::is_zero_(const index_type& /*lo*/, const index_type& /*hi*/) const {

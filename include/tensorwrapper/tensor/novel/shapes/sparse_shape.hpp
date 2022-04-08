@@ -167,6 +167,7 @@ protected:
 
 private:
     virtual bool is_zero_(const index_type&, const index_type&) const override;
+    virtual bool is_zero_(const index_type&) const override;
 
     /// Overrides to account for SparseShape's state
     virtual pointer_type clone_() const override;
