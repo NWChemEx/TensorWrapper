@@ -82,6 +82,11 @@ bool SHAPE::is_equal(const Shape& rhs) const noexcept {
 //------------------------------------------------------------------------------
 
 template<typename FieldType>
+bool SHAPE::is_zero_(const index_type& /*lo*/, const index_type& /*hi*/) const {
+    return false;
+}
+
+template<typename FieldType>
 SHAPE::Shape(pimpl_pointer pimpl) noexcept : m_pimpl_(std::move(pimpl)) {}
 
 template<typename FieldType>

@@ -26,6 +26,8 @@ public:
     using typename base_type::extents_type;
     using typename base_type::inner_extents_type;
 
+    using index_type = typename parent_type::index_type;
+
     /// Type of the sparse map
     using sparse_map_type = typename parent_type::sparse_map_type;
 
@@ -138,6 +140,7 @@ public:
 
     const auto& idx2mode_map() const noexcept { return m_i2m_; }
 
+    bool is_zero(const index_type&, const index_type&) const;
 protected:
     /// Additionally hashes the sparse map and index mapping
     void hash_(tensorwrapper::detail_::Hasher& h) const override;

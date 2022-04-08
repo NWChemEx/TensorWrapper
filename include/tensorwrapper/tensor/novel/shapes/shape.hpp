@@ -2,6 +2,7 @@
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 //#include "tensorwrapper/tensor/tensor_fwd.hpp"
+#include "tensorwrapper/sparse_map/index.hpp"
 #include <memory>
 #include <vector>
 
@@ -71,6 +72,9 @@ public:
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
 
+    /// Type used for initializer_lists of sizes
+    using index_type = sparse_map::Index;
+
     /** @brief Creates a shape with no extents.
      *
      *  This ctor creates a Shape object with no PIMPL. The resulting object is
@@ -131,6 +135,10 @@ public:
 
     const_inner_extents_reference inner_extents() const;
     size_type field_rank() const;
+
+    bool is_zero(const index_type& lo, const index_type& hi) const {
+        return is_zero_(lo,hi);
+    }
 
     /** @brief Non-polymorphic equality comparison for shapes with the same
      *         field.
@@ -247,6 +255,9 @@ protected:
     bool has_pimpl_() const noexcept;
 
 private:
+    /// Derived class should override to implement is_zero
+    virtual bool is_zero_(const index_type&,const index_type&) const;
+
     /// Derived class should override to implement polymorphic deep-copy
     virtual pointer_type clone_() const;
 

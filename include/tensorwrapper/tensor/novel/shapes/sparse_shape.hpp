@@ -36,6 +36,8 @@ public:
     /// Type use to describe the length of each inner mode
     using typename base_type::inner_extents_type;
 
+    using typename base_type::index_type;
+
     /// Type when this class is returned as a pointer to the base class
     using typename base_type::pointer_type;
 
@@ -164,6 +166,8 @@ protected:
     SparseShape(const SparseShape& other);
 
 private:
+    virtual bool is_zero_(const index_type&, const index_type&) const override;
+
     /// Overrides to account for SparseShape's state
     virtual pointer_type clone_() const override;
 

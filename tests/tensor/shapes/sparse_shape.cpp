@@ -25,7 +25,18 @@ TEST_CASE("SparseShape<field::Scalar>") {
     extents_type tensor_extents{2, 2, 2};
 
     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
+    /**
+     *  M = [x 0 0 0]
+     *      [0 x 0 0]
+     *      [0 0 0 0]
+     */
     sparse_map_type matrix_sm{{i0, {i0}}, {i1, {i1}}};
+    /**
+     *  T(0,0,:) = [x 0]
+     *  T(0,1,:) = [0 0]
+     *  T(1,0,:) = [0 0]
+     *  T(1,1,:) = [0 x]
+     */
     sparse_map_type tensor_sm{{i00, {i0}}, {i11, {i1}}};
 
     idx2mode_type i2m{1, 0};
