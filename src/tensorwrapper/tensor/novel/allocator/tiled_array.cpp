@@ -38,6 +38,7 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::reallocate_(
     using default_tensor_type  = detail_::default_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
+    // TODO: Revisit after #40 is resolved
     auto buf_copy_uptr = buf.pimpl()->clone();
     auto buf_copy_ptr =
       dynamic_cast<ta_buffer_pimpl_type*>(buf_copy_uptr.get());
