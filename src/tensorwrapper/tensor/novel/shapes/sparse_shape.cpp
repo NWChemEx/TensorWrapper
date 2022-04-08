@@ -97,7 +97,7 @@ bool SPARSE_SHAPE::is_zero_(const index_type& i) const {
 
 template<typename FieldType>
 bool SPARSE_SHAPE::is_zero_(const index_type& lo, const index_type& hi) const {
-    return downcast(this->pimpl_()).is_zero(lo,hi);
+    return downcast(this->pimpl_()).is_zero(lo, hi);
 }
 
 template<typename FieldType>

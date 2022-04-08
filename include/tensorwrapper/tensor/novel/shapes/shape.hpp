@@ -140,7 +140,7 @@ public:
         return is_zero_(i);
     }
     bool is_zero(const index_type& lo, const index_type& hi) const {
-        return is_zero_(lo,hi);
+        return is_zero_(lo, hi);
     }
 
     /** @brief Non-polymorphic equality comparison for shapes with the same

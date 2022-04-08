@@ -170,8 +170,9 @@ bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& el) const {
 }
 
 template<typename FieldType>
-bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& lo, const index_type& hi) const {
-    if( lo.size() != hi.size() ) throw std::runtime_error("Lo/Hi Inconsistent");
+bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& lo,
+                                 const index_type& hi) const {
+    if(lo.size() != hi.size()) throw std::runtime_error("Lo/Hi Inconsistent");
 
     const auto nind = m_sm_.ind_rank();
     const auto ndep = m_sm_.dep_rank();
@@ -179,53 +180,51 @@ bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& lo, const index_type& hi) con
 
     constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     const auto max_rank   = is_tot ? nind : rank;
-    if( lo.size() != max_rank ) throw std::runtime_error("Slice Rank Inconsistent");
+    if(lo.size() != max_rank)
+        throw std::runtime_error("Slice Rank Inconsistent");
 
     // Break apart lo/hi into ind/dep indices
-    index_type lo_ind( lo.begin(), lo.begin() + nind );
-    index_type hi_ind( hi.begin(), hi.begin() + nind );
+    index_type lo_ind(lo.begin(), lo.begin() + nind);
+    index_type hi_ind(hi.begin(), hi.begin() + nind);
 
-
-    if constexpr (field::is_scalar_field_v<FieldType>) {
-        index_type lo_dep( lo.begin() + nind, lo.end() );
-        index_type hi_dep( hi.begin() + nind, hi.end() );
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        index_type lo_dep(lo.begin() + nind, lo.end());
+        index_type hi_dep(hi.begin() + nind, hi.end());
 
         // TODO: This is very inefficient, needs to be expressed as a search
-        for( auto [ind_idx, domain] : m_sm_ ) {
+        for(auto [ind_idx, domain] : m_sm_) {
             // Check if independant index is in the slice
-	    bool ind_in_slice = false;
-	    for( int i = 0; i < nind; ++i ) {
-                if( ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
+            bool ind_in_slice = false;
+            for(int i = 0; i < nind; ++i) {
+                if(ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
                     ind_in_slice = true;
-		    break;
-		}
-	    }
+                    break;
+                }
+            }
 
-	    // Check if domain has overlap with slice
-	    if(ind_in_slice) {
-                for( const auto& dep_idx : domain ) {
-	            for( int i = 0; i < ndep; ++i ) {
-                        if( dep_idx[i] >= lo_dep[i] and dep_idx[i] < hi_dep[i] ) {
+            // Check if domain has overlap with slice
+            if(ind_in_slice) {
+                for(const auto& dep_idx : domain) {
+                    for(int i = 0; i < ndep; ++i) {
+                        if(dep_idx[i] >= lo_dep[i] and dep_idx[i] < hi_dep[i]) {
                             return false;
-		        }
-		    }
-		}
-	    }
+                        }
+                    }
+                }
+            }
         }
 
     } else { // ToT
 
         // TODO: This is very inefficient, needs to be expressed as a search
-        for( auto [ind_idx, domain] : m_sm_ ) {
+        for(auto [ind_idx, domain] : m_sm_) {
             // Check if independant index is in the slice
-	    for( int i = 0; i < nind; ++i ) {
-                if( ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
+            for(int i = 0; i < nind; ++i) {
+                if(ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
                     return false;
-		}
-	    }
-
+                }
+            }
         }
-
     }
 
     return true;
