@@ -149,20 +149,21 @@ bool SPARSE_SHAPE_PIMPL::is_zero(const index_type& el) const {
 
     constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     const auto max_rank   = is_tot ? nind : rank;
-    if( el.size() != max_rank ) throw std::runtime_error("Slice Rank Inconsistent");
+    if(el.size() != max_rank)
+        throw std::runtime_error("Slice Rank Inconsistent");
 
     // Break apart lo/hi into ind/dep indices
-    index_type el_ind( el.begin(), el.begin() + nind );
+    index_type el_ind(el.begin(), el.begin() + nind);
 
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        index_type el_dep(el.begin() + nind, el.end());
 
-    if constexpr (field::is_scalar_field_v<FieldType>) {
-        index_type el_dep( el.begin() + nind, el.end() );
-
-	// Find the independent index in sparse map
-	if( m_sm_.count( el_ind ) ) {
+        // Find the independent index in sparse map
+        if(m_sm_.count(el_ind)) {
             const auto& domain = m_sm_[el_ind];
             return !domain.count(el_dep);
-	} else return true;
+        } else
+            return true;
 
     } else { // ToT
         return !m_sm_.count(el_ind);

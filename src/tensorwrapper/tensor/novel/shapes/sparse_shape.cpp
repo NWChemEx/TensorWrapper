@@ -89,7 +89,7 @@ typename SPARSE_SHAPE::const_idx2mode_reference SPARSE_SHAPE::idx2mode_map()
 //------------------------------------------------------------------------------
 //                   Protected/Private Member Functions
 //------------------------------------------------------------------------------
-  
+
 template<typename FieldType>
 bool SPARSE_SHAPE::is_zero_(const index_type& i) const {
     return downcast(this->pimpl_()).is_zero(i);
