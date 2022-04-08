@@ -25,12 +25,14 @@ tiled_range_type make_one_big_tile_tiled_range(const ShapeType& shape) {
 }
 
 /**
- *  Creates a field-generic TA::TiledRange instance for the SingleElementTile tiling
+ *  Creates a field-generic TA::TiledRange instance for the SingleElementTile
+ * tiling
  *
  *  @tparam ShapeType Strong type correponding to shape instance (Field generic)
  *
  *  @param[in] shape The shape of the tensor for which to generate the tiling
- *  @returns   TA::TiledRange corresponding to `shape` in SingleElementTile concept
+ *  @returns   TA::TiledRange corresponding to `shape` in SingleElementTile
+ * concept
  */
 template<typename ShapeType>
 tiled_range_type make_single_element_tile_tiled_range(const ShapeType& shape) {

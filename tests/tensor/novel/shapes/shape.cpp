@@ -61,14 +61,14 @@ TEST_CASE("Shape<Scalar>") {
     }
 
     SECTION("is_zero") {
-	// Everything is non-zero for non-sparse shape
-        REQUIRE_FALSE(vector.is_zero({0},{1}));
-        REQUIRE_FALSE(vector.is_zero({0},{2}));
-        REQUIRE_FALSE(vector.is_zero({0},{4}));
-        REQUIRE_FALSE(vector.is_zero({2},{2}));
-        REQUIRE_FALSE(vector.is_zero({2},{4}));
+        // Everything is non-zero for non-sparse shape
+        REQUIRE_FALSE(vector.is_zero({0}, {1}));
+        REQUIRE_FALSE(vector.is_zero({0}, {2}));
+        REQUIRE_FALSE(vector.is_zero({0}, {4}));
+        REQUIRE_FALSE(vector.is_zero({2}, {2}));
+        REQUIRE_FALSE(vector.is_zero({2}, {4}));
 
-	REQUIRE_FALSE(matrix.is_zero({0,0},{3,5}));
+        REQUIRE_FALSE(matrix.is_zero({0, 0}, {3, 5}));
     }
 
     SECTION("Comparisons") {
