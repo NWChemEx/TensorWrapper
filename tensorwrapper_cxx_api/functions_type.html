@@ -71,6 +71,7 @@ $(function() {
 </li>
 <li>allocator_ptr
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a31609138f6622e829586af041e8291bb">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#a2efb20958c00da48cb846bc28d2f1ae3">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>allocator_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#aa1eedef7272fbc25f807eaeff1c38f1f">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
@@ -103,10 +104,15 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html#a8a39c31fd2f748825c51488b6f30de58">tensorwrapper::tensor::buffer::detail_::BufferPIMPL&lt; FieldType &gt;</a>
 </li>
 <li>const_extents_reference
-: <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a9a15b53597676860a0d749bc43c50a06">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8dda03b50da06532851e0ad089eb9c2c">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a9a15b53597676860a0d749bc43c50a06">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 </li>
 <li>const_idx2mode_reference
-: <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a64d7ec3e01b6851923c8a1f7bdebf3e1">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1SparseShape.html#a9f05dc03c086079830771faad227a0be">tensorwrapper::tensor::novel::SparseShape&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a64d7ec3e01b6851923c8a1f7bdebf3e1">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
+</li>
+<li>const_inner_extents_reference
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#acad076a5c21ac0dc91503dcc1b239fb6">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 </li>
 <li>const_iterator
 : <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#ac6e98f0aaf26b8c32d65c892383fd741">tensorwrapper::sparse_map::Domain</a>
@@ -126,13 +132,12 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#aa5b5fa775aebb1722e154692f57aedbd">tensorwrapper::sparse_map::Domain</a>
 </li>
 <li>const_shape_reference
-: <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a6617b5820d40479e4fcd1e8bf325be39">tensorwrapper::tensor::buffer::Buffer&lt; FieldType &gt;</a>
-, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html#a3ddb36bd341be9f369e38dd786f805a2">tensorwrapper::tensor::buffer::detail_::BufferPIMPL&lt; FieldType &gt;</a>
-, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a86a1f33c7e8ee91bc77a955a4d659e5b">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a86a1f33c7e8ee91bc77a955a4d659e5b">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#af006dcbd20475d6ef5cef2f8ebfde18c">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
 <li>const_sparse_map_reference
-: <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aa1f5ce396be163319189e8ba2e107431">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1SparseShape.html#a32e61ba85d34b28b9dd2e11fa9980e90">tensorwrapper::tensor::novel::SparseShape&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#aa1f5ce396be163319189e8ba2e107431">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
 </li>
 <li>const_variant_type
 : <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html#a72561007194e75d13a84319c2c3c0264">tensorwrapper::tensor::detail_::FieldTraits&lt; FieldType &gt;</a>
@@ -143,12 +148,16 @@ $(function() {
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>extent_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a21e769d44fe7268c99929c807172f057">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#a741b14f47732380297ece9cb1b5081cc">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>extents_type
 : <a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html#a770cbd45200b485c9a32fa9331581c5e">tensorwrapper::sparse_map::detail_::DomainPIMPL</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#abe4e8466789524ed8caec03ccf787c01">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a2770dac60272f990fdd8aacf11feda5a">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#a4a5e2d67510b94ffb1cbc4acdfeb9da6">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1ShapePIMPL.html#af2b4d07a70f3031964001202469c1c1e">tensorwrapper::tensor::novel::detail_::ShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8d70a4dc42d03f659af1b971691af057">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#af446c7a2eac22c3c63d4f8a0bc788ada">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
@@ -158,6 +167,7 @@ $(function() {
 <h3><a id="index_f"></a>- f -</h3><ul>
 <li>field_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#ae3fdceb526b9f1d2e09fb35597d4200f">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a25fb627691cbed6476cbe87aa7386233">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a04bffb4e1a617b7caa4ed41b4ba6c151">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a0b17252d563b1ae1172821d833f8a71c">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
@@ -178,6 +188,8 @@ $(function() {
 <h3><a id="index_i"></a>- i -</h3><ul>
 <li>idx2mode_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a4f77a729fc394a2e4d523c711e1c1621">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1SparseShapePIMPL.html#a30ac05012527cf4a8b289c6b573a6f37">tensorwrapper::tensor::novel::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1SparseShape.html#aba499a33a9419ee7991e1cdda36bf204">tensorwrapper::tensor::novel::SparseShape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#ae4a4d0a944702caf1a5db05516f3a3ca">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
 </li>
 <li>il_type
@@ -186,6 +198,10 @@ $(function() {
 </li>
 <li>index_type
 : <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#a1b5d6d6376c32208e7280c72a5c5bd2f">tensorwrapper::sparse_map::Index</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a88a8d2f888ab6cd1d7ca821cc5feb324">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
+</li>
+<li>inner_extents_type
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a52455e16b49447c471834cc77b5d61af">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 </li>
 </ul>
 
@@ -226,11 +242,14 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html#ade876869e1471fb50270606ee49057cd">tensorwrapper::tensor::buffer::detail_::BufferPIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a71d2edeee5be76fb307d5dfe23896d3b">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1ShapePIMPL.html#ad6df7e75a711980d84f3e1d8924e5873">tensorwrapper::tensor::novel::detail_::ShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aab26baee4630faf4922d32aa2b59b4b9">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a280f251b7852f82c716abea4bfb59a03">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#aa7ff051d90a24d94e2c2cbe6f217ffdc">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
 <li>pointer_type
-: <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a5f422e3bfd5c37724dcd3d328cc3546a">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aef3fa9eca759d12dce7885bbf1327e2e">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a5f422e3bfd5c37724dcd3d328cc3546a">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 </li>
 </ul>
 
@@ -256,9 +275,11 @@ $(function() {
 </li>
 <li>runtime_reference
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a2775740645f496261d6aba1e31e6c62b">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#ae09fe9f995349271dd79f4a6cbe8a4ce">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>runtime_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a16b8676891ba9d54f6dc18b03bc03ab5">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#af80b53c4474fac4ea6f318841d0797c2">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 </ul>
 
@@ -266,6 +287,7 @@ $(function() {
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>scalar_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#ad1b6ef807294557d85ed1f6e82e9ffd3">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#af6e954eb5dea9ed61491ef9f1ccf14d9">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>shape_pointer
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aec27733e10b57b1ff953891c43c3db41">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
@@ -273,8 +295,8 @@ $(function() {
 </li>
 <li>shape_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a169f93d741977e9facdbb553c79f516e">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
-, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ac8b1e3a35ea66b4c883e985750a84784">tensorwrapper::tensor::buffer::Buffer&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#ab1de11e49b8a424d6078fbf03b50e7e1">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#a088631fd3d9382cabf9a1e5ddfde577c">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a5bf7997ee354f45f0e823da93a4894a3">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
 <li>size_type
@@ -284,11 +306,14 @@ $(function() {
 , <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#abd116adbdffb5b1cd0a13798f23b9208">tensorwrapper::sparse_map::Index</a>
 , <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html#a832e1e642093c1fe906e85e1471b5ae1">tensorwrapper::sparse_map::SparseMap</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#acfc55387affe3ec76f72011d34c97abf">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">tensorwrapper::tensor::novel::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#af44543d687e89d35c2ee27ab4b3f3527">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a24a429a44475d4d447914f6c9151a04e">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
 </li>
 <li>sparse_map_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ad2be58c2c6136d3cd8ea1ed2712a8d1a">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1SparseShapePIMPL.html#a793e8ac8c4a6e15b75b72004d3298009">tensorwrapper::tensor::novel::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1SparseShape.html#a6fa224e82e786087ea9b20c801dcb774">tensorwrapper::tensor::novel::SparseShape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a8dfc196e31e63400646ba22caa82f332">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
 </li>
 <li>sparse_pointer
@@ -300,12 +325,15 @@ $(function() {
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>ta_shape
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a5f0d387538facb550e3869c6fc16589c">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1ShapePIMPL.html#a51ed98c31d53fa4a66ce14e97ba6661a">tensorwrapper::tensor::novel::detail_::ShapePIMPL&lt; FieldType &gt;</a>
 </li>
 <li>ta_shape_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#aa1b2c0d01020910b067807610a4ca385">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1SparseShapePIMPL.html#a11cdc7eeeb7cfe19945cb5fc9b08bf9b">tensorwrapper::tensor::novel::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
 </li>
 <li>ta_tile_range
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a1855f6cab6b5f2f0cb92fd65da0c52be">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1detail___1_1SparseShapePIMPL.html#a7e1849dca9de2a32dc01cf50e28d8a6c">tensorwrapper::tensor::novel::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
 </li>
 <li>tensor_tile_type
 : <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Scalar_01_4.html#ab714674c68484b6b0c4165a11f226703">tensorwrapper::tensor::backends::TiledArrayTraits&lt; field::Scalar &gt;</a>
@@ -320,6 +348,9 @@ $(function() {
 </li>
 <li>tensor_wrapper_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1LabeledTensorWrapper.html#a7871a4359b9df47f2e8e86f4feaa2f11">tensorwrapper::tensor::detail_::LabeledTensorWrapper&lt; TensorWrapperType &gt;</a>
+</li>
+<li>tile_populator_type
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#a263ac32bd883c4b4cb1b7fbdb6603aee">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>tiled_range_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a7a932c702bbc60d9f7951c7046aa05c6">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
@@ -340,6 +371,7 @@ $(function() {
 , <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#a611c2b64facc43f48d3e02a6ece3e135">tensorwrapper::sparse_map::Index</a>
 , <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html#a6063a17a28e2234c3c2a992d40cf7191">tensorwrapper::sparse_map::SparseMap</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html#a01dc0e9946d33794869d074c790651e2">tensorwrapper::tensor::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1Allocator.html#ab9b48b90cdaeb1bb842986ad50c0ff1c">tensorwrapper::tensor::novel::allocator::Allocator&lt; FieldType &gt;</a>
 </li>
 <li>variant_type
 : <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Scalar_01_4.html#af10dad00bb4f889c91e91c7c747da5f0">tensorwrapper::tensor::backends::TiledArrayTraits&lt; field::Scalar &gt;</a>

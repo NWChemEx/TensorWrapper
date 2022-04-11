@@ -95,17 +95,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a20c2b895526792a8974a30445f1b67c6">pimpl_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html">pimpl_type</a> &gt;</td></tr>
 <tr class="memdesc:a20c2b895526792a8974a30445f1b67c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the PIMPL. <br /></td></tr>
 <tr class="separator:a20c2b895526792a8974a30445f1b67c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8b1e3a35ea66b4c883e985750a84784"><td class="memItemLeft" align="right" valign="top"><a id="ac8b1e3a35ea66b4c883e985750a84784"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ac8b1e3a35ea66b4c883e985750a84784">shape_type</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; FieldType &gt;</td></tr>
-<tr class="memdesc:ac8b1e3a35ea66b4c883e985750a84784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to model the shape. <br /></td></tr>
-<tr class="separator:ac8b1e3a35ea66b4c883e985750a84784"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6617b5820d40479e4fcd1e8bf325be39"><td class="memItemLeft" align="right" valign="top"><a id="a6617b5820d40479e4fcd1e8bf325be39"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a6617b5820d40479e4fcd1e8bf325be39">const_shape_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ac8b1e3a35ea66b4c883e985750a84784">shape_type</a> &amp;</td></tr>
-<tr class="memdesc:a6617b5820d40479e4fcd1e8bf325be39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the shape. <br /></td></tr>
-<tr class="separator:a6617b5820d40479e4fcd1e8bf325be39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f43fc46adeebc50503f0cd252396ee"><td class="memItemLeft" align="right" valign="top"><a id="ad6f43fc46adeebc50503f0cd252396ee"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> = tensorwrapper::detail_::Hasher</td></tr>
-<tr class="memdesc:ad6f43fc46adeebc50503f0cd252396ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object used for hashing. <br /></td></tr>
+<tr class="memitem:ad6f43fc46adeebc50503f0cd252396ee"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> = tensorwrapper::detail_::Hasher</td></tr>
+<tr class="memdesc:ad6f43fc46adeebc50503f0cd252396ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to model the shape.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">More...</a><br /></td></tr>
 <tr class="separator:ad6f43fc46adeebc50503f0cd252396ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa7b52fe97e129da6ab4a3134059df4d"><td class="memItemLeft" align="right" valign="top"><a id="afa7b52fe97e129da6ab4a3134059df4d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#afa7b52fe97e129da6ab4a3134059df4d">hasher_reference</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> &amp;</td></tr>
@@ -136,6 +127,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a3c890d1d725b2a617b330fb2f4c12765">~Buffer</a> () noexcept</td></tr>
 <tr class="memdesc:a3c890d1d725b2a617b330fb2f4c12765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted destructor. <br /></td></tr>
 <tr class="separator:a3c890d1d725b2a617b330fb2f4c12765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa249bcc37e3bd54592d6082e54186793"><td class="memItemLeft" align="right" valign="top"><a id="aa249bcc37e3bd54592d6082e54186793"></a>
+<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html">pimpl_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pimpl</b> () noexcept</td></tr>
+<tr class="separator:aa249bcc37e3bd54592d6082e54186793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2ff7c675b21a22726b2bf7660c09ad3"><td class="memItemLeft" align="right" valign="top"><a id="ae2ff7c675b21a22726b2bf7660c09ad3"></a>
+const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html">pimpl_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pimpl</b> () const noexcept</td></tr>
+<tr class="separator:ae2ff7c675b21a22726b2bf7660c09ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a302386157fc1044114f301fac8088966"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a302386157fc1044114f301fac8088966">swap</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">Buffer</a> &amp;other) noexcept</td></tr>
 <tr class="memdesc:a302386157fc1044114f301fac8088966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges the state of this <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> with that of <code>other</code>.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a302386157fc1044114f301fac8088966">More...</a><br /></td></tr>
 <tr class="separator:a302386157fc1044114f301fac8088966"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,7 +196,27 @@ class tensorwrapper::tensor::buffer::Buffer&lt; FieldType &gt;</h3>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad6f43fc46adeebc50503f0cd252396ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6f43fc46adeebc50503f0cd252396ee">&#9670;&nbsp;</a></span>hasher_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> =  tensorwrapper::detail_::Hasher</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type used to model the shape. </p>
+<p>Type of a read-only reference to the shape Type of the object used for hashing </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a172d0b07949feb986e70368d46bed8d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a172d0b07949feb986e70368d46bed8d0">&#9670;&nbsp;</a></span>Buffer() <span class="overload">[1/4]</span></h2>
 
