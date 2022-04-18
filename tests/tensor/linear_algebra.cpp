@@ -44,3 +44,28 @@ TEST_CASE("eigen_solve") {
         SECTION("eigen vectors") { REQUIRE(abs_allclose(evec_corr, evecs)); }
     }
 }
+
+TEST_CASE("SVD") {
+    using ivector_il = TA::detail::vector_il<int>;
+    using imatrix_il = TA::detail::matrix_il<int>;
+    using dvector_il = TA::detail::vector_il<double>;
+    using dmatrix_il = TA::detail::matrix_il<double>;
+    using TWrapper   = ScalarTensorWrapper;
+    auto& world      = TA::get_default_world();
+    TA::TSpArrayD data1(world, imatrix_il{ivector_il{1, 2, 3, 8},
+                                          ivector_il{2, 4, 5, 9},
+                                          ivector_il{3, 5, 6, 0}});
+    TWrapper X, Y(data1);
+    X("x,y") = Y("y,x");
+
+    const auto& S0            = SVDValues(X);
+    const auto& [S1, U1]      = SVDLeft(X);
+    const auto& [S2, VT2]     = SVDRight(X);
+    const auto& [S3, U3, VT3] = SVD(X);
+
+    REQUIRE(allclose(S0, S1));
+    REQUIRE(allclose(S0, S2));
+    REQUIRE(allclose(S0, S3));
+    REQUIRE(allclose(U1, U3));
+    REQUIRE(allclose(VT2, VT3));
+}
