@@ -190,6 +190,21 @@ TENSOR_WRAPPER TENSOR_WRAPPER::reshape(shape_pointer shape) const {
 }
 
 template<typename FieldType>
+typename TENSOR_WRAPPER::scalar_value_type TENSOR_WRAPPER::norm() const {
+    return pimpl_().norm();
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::scalar_value_type TENSOR_WRAPPER::sum() const {
+    return pimpl_().sum();
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::scalar_value_type TENSOR_WRAPPER::trace() const {
+    return pimpl_().trace();
+}
+
+template<typename FieldType>
 std::ostream& TENSOR_WRAPPER::print(std::ostream& os) const {
     if(!m_pimpl_) return os;
     return pimpl_().print(os);

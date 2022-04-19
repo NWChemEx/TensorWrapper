@@ -147,6 +147,37 @@ void PIMPL_TYPE::reshape(shape_pointer pshape) {
 }
 
 template<typename FieldType>
+typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::norm() const {
+    auto t_ta      = std::get<0>(m_tensor_);
+    auto dummy_idx = make_annotation("j");
+    return t_ta(dummy_idx).norm().get();
+}
+
+template<typename FieldType>
+typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::sum() const {
+    auto t_ta      = std::get<0>(m_tensor_);
+    auto dummy_idx = make_annotation("j");
+    return t_ta(dummy_idx).sum().get();
+}
+
+template<typename FieldType>
+typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::trace() const {
+    if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+        throw std::runtime_error("Trace not implemented for ToT");
+        return 0.0;
+    } else {
+        auto dims = extents();
+        if((dims.size() != 2) || (dims[0] != dims[1])) {
+            throw std::runtime_error("Trace not defined for non-square matrix");
+            return 0.0;
+        }
+        auto t_ta      = std::get<0>(m_tensor_);
+        auto dummy_idx = make_annotation("j");
+        return t_ta(dummy_idx).trace().get();
+    }
+}
+
+template<typename FieldType>
 typename PIMPL_TYPE::size_type PIMPL_TYPE::size() const {
     auto dims = extents();
     if(dims.empty()) return 0;
