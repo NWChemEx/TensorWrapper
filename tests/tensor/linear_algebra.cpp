@@ -100,8 +100,8 @@ TEST_CASE("SVD") {
 
         // Make transposed vectors.
         TWrapper alt_left_corr, alt_right_corr;
-        alt_right_corr("y,x")  = left_corr("x,y");
-        alt_left_corr("y,x") = right_corr("x,y");
+        alt_right_corr("y,x") = left_corr("x,y");
+        alt_left_corr("y,x")  = right_corr("x,y");
 
         const auto& [S, U, VT] = SVD(X);
         REQUIRE(allclose(S, values_corr));
