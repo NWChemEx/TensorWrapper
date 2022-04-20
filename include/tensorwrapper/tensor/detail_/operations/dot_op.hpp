@@ -25,9 +25,7 @@ double dot(T&& lhs, T&& rhs) {
 
     double rv;
     auto l = [&](auto&& lhs) {
-        auto m = [&](auto&& rhs) {
-            rv = lhs.dot(rhs);
-        };
+        auto m = [&](auto&& rhs) { rv = lhs.dot(rhs); };
         std::visit(m, rhs_variant);
     };
     std::visit(l, lhs_variant);
