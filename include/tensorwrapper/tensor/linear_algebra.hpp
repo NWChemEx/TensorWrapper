@@ -53,4 +53,49 @@ ScalarTensorWrapper cholesky_linv(const ScalarTensorWrapper& M);
  */
 ScalarTensorWrapper hmatrix_pow(const ScalarTensorWrapper& S, double pow);
 
+/** @brief Performs singular value decomposition on matrix @p M and returns the
+ *         singular values.
+ *
+ *  @param[in] M A matrix.
+ *
+ *  @return A vector containing the singular values of the matrix.
+ */
+ScalarTensorWrapper SVDValues(const ScalarTensorWrapper& M);
+
+/** @brief Performs singular value decomposition on matrix @p M and returns the
+ *         singular values and left vectors.
+ *
+ *  @param[in] M A matrix.
+ *
+ *  @return A pair of tensors, such that the first is a vector containing the
+ *          singular values of the matrix, and the second contains the left
+ *          singular vectors.
+ */
+std::pair<ScalarTensorWrapper, ScalarTensorWrapper> SVDLeft(
+  const ScalarTensorWrapper& M);
+
+/** @brief Performs singular value decomposition on matrix @p M and returns the
+ *         singular values and right vectors.
+ *
+ *  @param[in] M A matrix.
+ *
+ *  @return A pair of tensors, such that the first is a vector containing the
+ *          singular values of the matrix, and the second contains the right
+ *          singular vectors.
+ */
+std::pair<ScalarTensorWrapper, ScalarTensorWrapper> SVDRight(
+  const ScalarTensorWrapper& M);
+
+/** @brief Performs singular value decomposition on matrix @p M and returns the
+ *         singular values and vectors.
+ *
+ *  @param[in] M A matrix.
+ *
+ *  @return A tuple of three tensors, such that the first is a vector containing
+ *          the singular values of the matrix, the second contains the left
+ *          singular vectors, and the third contains the right singular vectors.
+ */
+std::tuple<ScalarTensorWrapper, ScalarTensorWrapper, ScalarTensorWrapper> SVD(
+  const ScalarTensorWrapper& M);
+
 } // namespace tensorwrapper::tensor
