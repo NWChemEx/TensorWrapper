@@ -105,37 +105,49 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">size_type</a> = std::size_t</td></tr>
 <tr class="memdesc:aa000f48eaab77d616fc7ac0a7214f0fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indexing and offsets. <br /></td></tr>
 <tr class="separator:aa000f48eaab77d616fc7ac0a7214f0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="memItemLeft" align="right" valign="top"><a id="a88a8d2f888ab6cd1d7ca821cc5feb324"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a88a8d2f888ab6cd1d7ca821cc5feb324">index_type</a> = <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">sparse_map::Index</a></td></tr>
+<tr class="memdesc:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for initializer_lists of sizes. <br /></td></tr>
+<tr class="separator:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d70a4dc42d03f659af1b971691af057"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8d70a4dc42d03f659af1b971691af057">extents_type</a> = std::vector&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">size_type</a> &gt;</td></tr>
 <tr class="separator:a8d70a4dc42d03f659af1b971691af057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dda03b50da06532851e0ad089eb9c2c"><td class="memItemLeft" align="right" valign="top"><a id="a8dda03b50da06532851e0ad089eb9c2c"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8dda03b50da06532851e0ad089eb9c2c">const_extents_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8d70a4dc42d03f659af1b971691af057">extents_type</a> &amp;</td></tr>
 <tr class="memdesc:a8dda03b50da06532851e0ad089eb9c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the (outer) extents. <br /></td></tr>
 <tr class="separator:a8dda03b50da06532851e0ad089eb9c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52455e16b49447c471834cc77b5d61af"><td class="memItemLeft" align="right" valign="top"><a id="a52455e16b49447c471834cc77b5d61af"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a52455e16b49447c471834cc77b5d61af">inner_extents_type</a> = std::conditional_t&lt; field::is_scalar_field_v&lt; FieldType &gt;, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">size_type</a>, std::vector&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">size_type</a> &gt; &gt;</td></tr>
-<tr class="memdesc:a52455e16b49447c471834cc77b5d61af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to treat inner-extents. <br /></td></tr>
-<tr class="separator:a52455e16b49447c471834cc77b5d61af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e7b2dc2cabcfdcd9ea84f3b3a517f5"><td class="memItemLeft" align="right" valign="top"><a id="a29e7b2dc2cabcfdcd9ea84f3b3a517f5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a29e7b2dc2cabcfdcd9ea84f3b3a517f5">inner_extents_type</a> = std::conditional_t&lt; field::is_scalar_field_v&lt; FieldType &gt;, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aa000f48eaab77d616fc7ac0a7214f0fe">size_type</a>, std::map&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a88a8d2f888ab6cd1d7ca821cc5feb324">index_type</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &gt;&gt;</td></tr>
+<tr class="memdesc:a29e7b2dc2cabcfdcd9ea84f3b3a517f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to treat inner-extents. <br /></td></tr>
+<tr class="separator:a29e7b2dc2cabcfdcd9ea84f3b3a517f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acad076a5c21ac0dc91503dcc1b239fb6"><td class="memItemLeft" align="right" valign="top"><a id="acad076a5c21ac0dc91503dcc1b239fb6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#acad076a5c21ac0dc91503dcc1b239fb6">const_inner_extents_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a52455e16b49447c471834cc77b5d61af">inner_extents_type</a> &amp;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#acad076a5c21ac0dc91503dcc1b239fb6">const_inner_extents_reference</a> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a29e7b2dc2cabcfdcd9ea84f3b3a517f5">inner_extents_type</a> &amp;</td></tr>
 <tr class="memdesc:acad076a5c21ac0dc91503dcc1b239fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the inner. <br /></td></tr>
 <tr class="separator:acad076a5c21ac0dc91503dcc1b239fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef3fa9eca759d12dce7885bbf1327e2e"><td class="memItemLeft" align="right" valign="top"><a id="aef3fa9eca759d12dce7885bbf1327e2e"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#aef3fa9eca759d12dce7885bbf1327e2e">pointer_type</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">my_type</a> &gt;</td></tr>
 <tr class="memdesc:aef3fa9eca759d12dce7885bbf1327e2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to this class. <br /></td></tr>
 <tr class="separator:aef3fa9eca759d12dce7885bbf1327e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="memItemLeft" align="right" valign="top"><a id="a88a8d2f888ab6cd1d7ca821cc5feb324"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a88a8d2f888ab6cd1d7ca821cc5feb324">index_type</a> = <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html">sparse_map::Index</a></td></tr>
-<tr class="memdesc:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for initializer_lists of sizes. <br /></td></tr>
-<tr class="separator:a88a8d2f888ab6cd1d7ca821cc5feb324"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5fb076d6cbf5053f31c496e7437cf79"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#ac5fb076d6cbf5053f31c496e7437cf79">Shape</a> () noexcept</td></tr>
 <tr class="memdesc:ac5fb076d6cbf5053f31c496e7437cf79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shape with no extents.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#ac5fb076d6cbf5053f31c496e7437cf79">More...</a><br /></td></tr>
 <tr class="separator:ac5fb076d6cbf5053f31c496e7437cf79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae925e66aecd640707f9eaca6a4e4600e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#ae925e66aecd640707f9eaca6a4e4600e">Shape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8d70a4dc42d03f659af1b971691af057">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a961bcfefb2bd8a16101927e1ad87ea08">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a52455e16b49447c471834cc77b5d61af">inner_extents_type</a> inner_extents={})</td></tr>
+<tr class="memitem:ae925e66aecd640707f9eaca6a4e4600e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#ae925e66aecd640707f9eaca6a4e4600e">Shape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8d70a4dc42d03f659af1b971691af057">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a961bcfefb2bd8a16101927e1ad87ea08">extents</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a29e7b2dc2cabcfdcd9ea84f3b3a517f5">inner_extents_type</a> inner_extents={})</td></tr>
 <tr class="memdesc:ae925e66aecd640707f9eaca6a4e4600e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shape with the provided extents.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#ae925e66aecd640707f9eaca6a4e4600e">More...</a><br /></td></tr>
 <tr class="separator:ae925e66aecd640707f9eaca6a4e4600e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c7f20bf69d624a3d27fbe8954760c50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a5c7f20bf69d624a3d27fbe8954760c50">Shape</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;other)</td></tr>
+<tr class="memdesc:a5c7f20bf69d624a3d27fbe8954760c50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shape by copying another shape.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a5c7f20bf69d624a3d27fbe8954760c50">More...</a><br /></td></tr>
+<tr class="separator:a5c7f20bf69d624a3d27fbe8954760c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f2a5611b21f96c49b275d03b24d93fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a3f2a5611b21f96c49b275d03b24d93fb">Shape</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:a3f2a5611b21f96c49b275d03b24d93fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shape by moving another shape.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a3f2a5611b21f96c49b275d03b24d93fb">More...</a><br /></td></tr>
+<tr class="separator:a3f2a5611b21f96c49b275d03b24d93fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ecaab47cab57cbc1b5b163c7ef1f999"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8ecaab47cab57cbc1b5b163c7ef1f999">operator=</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;other)</td></tr>
+<tr class="memdesc:a8ecaab47cab57cbc1b5b163c7ef1f999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the internal state of another <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance to the current instance.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a8ecaab47cab57cbc1b5b163c7ef1f999">More...</a><br /></td></tr>
+<tr class="separator:a8ecaab47cab57cbc1b5b163c7ef1f999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf156092af8356c787c4240391cb57ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#abf156092af8356c787c4240391cb57ec">operator=</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:abf156092af8356c787c4240391cb57ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the internal state of another <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance to the current instance.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#abf156092af8356c787c4240391cb57ec">More...</a><br /></td></tr>
+<tr class="separator:abf156092af8356c787c4240391cb57ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a97486e78fac08c7468231f77c7a8b6"><td class="memItemLeft" align="right" valign="top"><a id="a1a97486e78fac08c7468231f77c7a8b6"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a1a97486e78fac08c7468231f77c7a8b6">~Shape</a> () noexcept</td></tr>
 <tr class="memdesc:a1a97486e78fac08c7468231f77c7a8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted dtor. <br /></td></tr>
@@ -186,18 +198,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:adefa9c6f5eb9e48ee9c604f18e72a33e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#adefa9c6f5eb9e48ee9c604f18e72a33e">has_pimpl_</a> () const noexcept</td></tr>
 <tr class="memdesc:adefa9c6f5eb9e48ee9c604f18e72a33e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the instance has a PIMPL or not.  <a href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#adefa9c6f5eb9e48ee9c604f18e72a33e">More...</a><br /></td></tr>
 <tr class="separator:adefa9c6f5eb9e48ee9c604f18e72a33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a04d326b23bd73ccb0187a97e96f146e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a04d326b23bd73ccb0187a97e96f146e0">Shape</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;other)=delete</td></tr>
-<tr class="separator:a04d326b23bd73ccb0187a97e96f146e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa9134b15f83302f5376c0c009f0b15a"><td class="memItemLeft" align="right" valign="top"><a id="afa9134b15f83302f5376c0c009f0b15a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Shape</b> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&amp;other) noexcept=delete</td></tr>
-<tr class="separator:afa9134b15f83302f5376c0c009f0b15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2206f3f1547d693175391abef3ca2adb"><td class="memItemLeft" align="right" valign="top"><a id="a2206f3f1547d693175391abef3ca2adb"></a>
-<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;rhs)=delete</td></tr>
-<tr class="separator:a2206f3f1547d693175391abef3ca2adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6242af61e68490dcf72c59054764b195"><td class="memItemLeft" align="right" valign="top"><a id="a6242af61e68490dcf72c59054764b195"></a>
-<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> &amp;&amp;rhs) noexcept=delete</td></tr>
-<tr class="separator:a6242af61e68490dcf72c59054764b195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -245,7 +245,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac5fb076d6cbf5053f31c496e7437cf79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5fb076d6cbf5053f31c496e7437cf79">&#9670;&nbsp;</a></span>Shape() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5fb076d6cbf5053f31c496e7437cf79">&#9670;&nbsp;</a></span>Shape() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +281,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <a id="ae925e66aecd640707f9eaca6a4e4600e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae925e66aecd640707f9eaca6a4e4600e">&#9670;&nbsp;</a></span>Shape() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae925e66aecd640707f9eaca6a4e4600e">&#9670;&nbsp;</a></span>Shape() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +300,7 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a52455e16b49447c471834cc77b5d61af">inner_extents_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html#a29e7b2dc2cabcfdcd9ea84f3b3a517f5">inner_extents_type</a>&#160;</td>
           <td class="paramname"><em>inner_extents</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
@@ -337,8 +337,80 @@ template&lt;typename FieldType &gt; </div>
 
 </div>
 </div>
+<a id="a5c7f20bf69d624a3d27fbe8954760c50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c7f20bf69d624a3d27fbe8954760c50">&#9670;&nbsp;</a></span>Shape() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">tensorwrapper::tensor::novel::Shape</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a shape by copying another shape. </p>
+<p>Copies internal state of passed shape instance to the constructed instance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance from which to create the constructed shape.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the PIMPL. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3f2a5611b21f96c49b275d03b24d93fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f2a5611b21f96c49b275d03b24d93fb">&#9670;&nbsp;</a></span>Shape() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">tensorwrapper::tensor::novel::Shape</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; FieldType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a shape by moving another shape. </p>
+<p>Moves internal state of passed shape instance to the constructed instance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">[in/out]</td><td>other <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance from which to create the constructed shape. Contains default state on return. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a395be1ec8cdc6456be7b459a100fcdc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a395be1ec8cdc6456be7b459a100fcdc9">&#9670;&nbsp;</a></span>Shape() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a395be1ec8cdc6456be7b459a100fcdc9">&#9670;&nbsp;</a></span>Shape() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -377,35 +449,6 @@ template&lt;typename FieldType &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a04d326b23bd73ccb0187a97e96f146e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04d326b23bd73ccb0187a97e96f146e0">&#9670;&nbsp;</a></span>Shape() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">tensorwrapper::tensor::novel::Shape</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; FieldType &gt; &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Deleted to avoid slicing </p>
 
 </div>
 </div>
@@ -604,6 +647,80 @@ template&lt;typename FieldType &gt; </div>
 </div><div class="memdoc">
 
 <p>Polymorphic equality comparison. </p>
+
+</div>
+</div>
+<a id="a8ecaab47cab57cbc1b5b163c7ef1f999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ecaab47cab57cbc1b5b163c7ef1f999">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&amp; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">tensorwrapper::tensor::novel::Shape</a>&lt; FieldType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies the internal state of another <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance to the current instance. </p>
+<p>Replace the internal state of the current <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance with a copy of the internal state of another instance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance which is to be copied. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to current shape instance after copy </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the PIMPL. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abf156092af8356c787c4240391cb57ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf156092af8356c787c4240391cb57ec">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&amp; <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">tensorwrapper::tensor::novel::Shape</a>&lt; FieldType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html">Shape</a>&lt; FieldType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Moves the internal state of another <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance to the current instance. </p>
+<p>Replace the internal state of the current <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance with the internal state of another instance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">[in/out]</td><td>other <a class="el" href="classtensorwrapper_1_1tensor_1_1novel_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance which is to be moved. Contains default state on return. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to current shape instance after move </dd></dl>
 
 </div>
 </div>
