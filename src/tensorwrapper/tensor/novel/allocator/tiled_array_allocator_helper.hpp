@@ -50,7 +50,6 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     using inner_tile_type = TA::Tensor<double>;
     using range_type      = TA::Range;
 
-
     if(tot_fxn) {
         auto ta_functor = [=, &tot_fxn, &shape](tile_type& t,
                                                 const range_type& range) {
@@ -62,14 +61,15 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
                     auto& inner_tile = t[idx];
 
                     // Get inner tile dimension
-                    const auto& inner_extents = shape.inner_extents().at(nwx_outer_idx).extents();
-		    std::vector<size_t> up_bound( inner_extents.begin(), inner_extents.end() );
-		    std::vector<size_t> lo_bound(inner_extents.size(), 0);
-		    range_type inner_range( lo_bound, up_bound );
+                    const auto& inner_extents =
+                      shape.inner_extents().at(nwx_outer_idx).extents();
+                    std::vector<size_t> up_bound(inner_extents.begin(),
+                                                 inner_extents.end());
+                    std::vector<size_t> lo_bound(inner_extents.size(), 0);
+                    range_type inner_range(lo_bound, up_bound);
 
-		    // Create Tile
-		    inner_tile = inner_tile_type(inner_range, 0.);
-
+                    // Create Tile
+                    inner_tile = inner_tile_type(inner_range, 0.);
 
                     tot_fxn(outer_index, lo_bound, up_bound, inner_tile.data());
                 }

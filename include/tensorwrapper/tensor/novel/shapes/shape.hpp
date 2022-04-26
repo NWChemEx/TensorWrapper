@@ -67,7 +67,7 @@ public:
     /// Type used to treat inner-extents
     using inner_extents_type =
       std::conditional_t<field::is_scalar_field_v<FieldType>, size_type,
-                         std::map<index_type,Shape<field::Scalar>>>;
+                         std::map<index_type, Shape<field::Scalar>>>;
 
     /// Type of a read-only reference to the inner
     using const_inner_extents_reference = const inner_extents_type&;
@@ -101,7 +101,6 @@ public:
      *                        throw guarantee.
      */
     explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
-
 
     Shape(const Shape&);
     Shape(Shape&&) noexcept;
@@ -217,7 +216,6 @@ protected:
      *  @throw None No throw guarantee.
      */
     Shape(pimpl_pointer pimpl) noexcept;
-
 
     /** @brief Returns the PIMPL in a read-only state.
      *

@@ -1,6 +1,6 @@
+#include "make_tot_shape.hpp"
 #include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
-#include "make_tot_shape.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
@@ -142,12 +142,15 @@ TEST_CASE("novel::SparseShape<field::Scalar>") {
         // Same
         REQUIRE(m == shape_type(matrix_extents, matrix_sm));
         REQUIRE_FALSE(m != shape_type(matrix_extents, matrix_sm));
-	auto other_inner_map = testing::make_uniform_tot_map(matrix_extents, {{1}});
+        auto other_inner_map =
+          testing::make_uniform_tot_map(matrix_extents, {{1}});
 
         // Different fields
         using other_shape_type = SparseShape<field::Tensor>;
-        REQUIRE_FALSE(m == other_shape_type(matrix_extents, other_inner_map, tensor_sm));
-        REQUIRE(m != other_shape_type(matrix_extents, other_inner_map, tensor_sm));
+        REQUIRE_FALSE(
+          m == other_shape_type(matrix_extents, other_inner_map, tensor_sm));
+        REQUIRE(m !=
+                other_shape_type(matrix_extents, other_inner_map, tensor_sm));
 
         // Different extents
         REQUIRE_FALSE(m == shape_type(extents_type{5, 5}, matrix_sm));
@@ -196,12 +199,12 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
             REQUIRE(t.extents() == extents);
 
             // Make sure there's not an extra copy
-            auto pm  = extents.data();
-            //auto ipm = inner_extents.data();
-	    decltype(inner_map) inner_map_cpy = inner_map;
+            auto pm = extents.data();
+            // auto ipm = inner_extents.data();
+            decltype(inner_map) inner_map_cpy = inner_map;
             shape_type m2(std::move(extents), std::move(inner_map_cpy), sm);
             REQUIRE(m2.extents().data() == pm);
-            //REQUIRE(m2.inner_extents().data() == ipm);
+            // REQUIRE(m2.inner_extents().data() == ipm);
 
             sparse_map_type sm2{{i0, {i0}}, {i1, {i1}}};
             // Throws if sm is inconsistent with extents
@@ -213,12 +216,13 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
             REQUIRE(tt.extents() == extents);
 
             // Make sure there's not an extra copy
-            auto pm  = extents.data();
-            //auto ipm = inner_extents.data();
-	    decltype(inner_map) inner_map_cpy = inner_map;
-            shape_type m2(std::move(extents), std::move(inner_map_cpy), sm, i2m);
+            auto pm = extents.data();
+            // auto ipm = inner_extents.data();
+            decltype(inner_map) inner_map_cpy = inner_map;
+            shape_type m2(std::move(extents), std::move(inner_map_cpy), sm,
+                          i2m);
             REQUIRE(m2.extents().data() == pm);
-            //REQUIRE(m2.inner_extents().data() == ipm);
+            // REQUIRE(m2.inner_extents().data() == ipm);
 
             // Throws if sm is inconsistent with idx2mode
             REQUIRE_THROWS_AS(
@@ -272,8 +276,7 @@ TEST_CASE("novel::SparseShape<field::Tensor>") {
 
             SECTION("Different sparse maps") {
                 sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-                auto rhs =
-                  hash_objects(shape_type(extents, inner_map, sm2));
+                auto rhs = hash_objects(shape_type(extents, inner_map, sm2));
                 REQUIRE(lhs != rhs);
             }
 

@@ -2,8 +2,8 @@
 #include "tensorwrapper/tensor/novel/shapes/detail_/sparse_shape_pimpl.hpp"
 #include <catch2/catch.hpp>
 
-#include "tiled_range_generators.hpp"
 #include "../make_tot_shape.hpp"
+#include "tiled_range_generators.hpp"
 
 using namespace tensorwrapper::tensor;
 using namespace tensorwrapper::tensor::novel;
@@ -354,7 +354,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
         sm_type sm{{i00, {i4}}};
         extents_type extents{2, 3};
         extents_type inner_extents{5, 71};
-	auto inner_map = testing::make_uniform_tot_map(extents,inner_extents);
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
         idx2mode_type i2m{0, 1};
 
         SECTION("Value") {
@@ -387,7 +387,8 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
             sm_type sm{{i0, {i1, i3}}, {i2, {i4}}};
             extents_type extents{3};
             extents_type inner_extents{1};
-	    auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
                 pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
@@ -412,7 +413,8 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
             sm_type sm{{i0, {i10, i01}}, {i2, {i00}}};
             extents_type extents{3};
             extents_type inner_extents{1};
-	    auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
                 pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
@@ -437,12 +439,12 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
             sm_type sm{{i00, {i0, i1}}, {i01, {i0, i2}}, {i11, {i0, i2}}};
             extents_type extents{2, 2};
             extents_type inner_extents{1};
-	    auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
                 SECTION("No permutation") {
-                    pimpl_type p(extents, inner_map, sm,
-                                 idx2mode_type{0, 1});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{0, 1});
 
                     auto tr = testing::single_element_tiles(extents);
                     TA::Tensor<float> corr_data(TA::Range(2, 2),
@@ -452,8 +454,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
                 }
 
                 SECTION("Permutation") {
-                    pimpl_type p(extents, inner_map, sm,
-                                 idx2mode_type{1, 0});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{1, 0});
 
                     auto tr = testing::single_element_tiles(extents);
                     TA::Tensor<float> corr_data(TA::Range(2, 2),
@@ -465,8 +466,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
 
             SECTION("One Big Tile") {
                 SECTION("No permutation") {
-                    pimpl_type p(extents, inner_map, sm,
-                                 idx2mode_type{0, 1});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{0, 1});
 
                     auto tr = testing::one_big_tile(extents);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
@@ -475,8 +475,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
                 }
 
                 SECTION("Permutation") {
-                    pimpl_type p(extents, inner_map, sm,
-                                 idx2mode_type{1, 0});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{1, 0});
 
                     auto tr = testing::one_big_tile(extents);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
@@ -490,7 +489,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
             sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
             extents_type matrix{3};
             extents_type inner_ex{1};
-	    auto inner_map = testing::make_uniform_tot_map(matrix,inner_ex);
+            auto inner_map = testing::make_uniform_tot_map(matrix, inner_ex);
             pimpl_type p(matrix, inner_map, sm, idx2mode_type{0});
             TA::TiledRange tr{{0, 3}, {0, 5}};
             REQUIRE_THROWS_AS(p.shape(tr), std::runtime_error);
@@ -502,17 +501,17 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
         sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
         extents_type matrix{3};
         extents_type inner_ex{1};
-	auto inner_map = testing::make_uniform_tot_map(matrix,inner_ex);
-	decltype(inner_map) inner_map_cpy = inner_map;
-        auto* pmatrix = matrix.data();
-        auto* pinner  = inner_ex.data();
+        auto inner_map = testing::make_uniform_tot_map(matrix, inner_ex);
+        decltype(inner_map) inner_map_cpy = inner_map;
+        auto* pmatrix                     = matrix.data();
+        auto* pinner                      = inner_ex.data();
         pimpl_type p(std::move(matrix), std::move(inner_map), sm,
                      idx2mode_type{0});
 
         REQUIRE(p.extents() == extents_type{3});
         REQUIRE(p.inner_extents() == inner_map_cpy);
         REQUIRE(p.extents().data() == pmatrix);
-        //REQUIRE(p.inner_extents().data() == pinner);
+        // REQUIRE(p.inner_extents().data() == pinner);
     }
 
     SECTION("hash") {
@@ -521,7 +520,7 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
         sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
         extents_type extents{2, 2};
         extents_type inner_ex{3, 41, 73};
-	auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
         idx2mode_type i2m{0, 1};
         auto lhs = hash_objects(pimpl_type(extents, inner_map, sm, i2m));
 
@@ -557,14 +556,15 @@ TEST_CASE("novel::SparseShapePIMPL<field::Tensor>") {
         sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
         extents_type extents{2, 2};
         extents_type inner_ex{61, 73, 58, 40};
-	auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
         idx2mode_type i2m{0, 1};
         pimpl_type lhs(extents, inner_map, sm, i2m);
 
         // Same
         REQUIRE(lhs == pimpl_type(extents, inner_map, sm, i2m));
 
-        REQUIRE_FALSE(lhs == pimpl_type(extents_type{5, 5}, inner_map, sm, i2m));
+        REQUIRE_FALSE(lhs ==
+                      pimpl_type(extents_type{5, 5}, inner_map, sm, i2m));
 
         // Different SM
         sm_type sm2{{i00, {i1}}, {i01, {i0, i2, i4}}, {i11, {i0, i4}}};

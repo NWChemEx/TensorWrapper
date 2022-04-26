@@ -28,23 +28,22 @@ template<typename FieldType>
 SHAPE::~Shape() noexcept = default;
 
 template<typename FieldType>
-SHAPE::Shape(const Shape& other) : 
-  Shape(other.m_pimpl_ ? other.m_pimpl_->clone() : nullptr) { }
+SHAPE::Shape(const Shape& other) :
+  Shape(other.m_pimpl_ ? other.m_pimpl_->clone() : nullptr) {}
 
 template<typename FieldType>
-SHAPE::Shape(Shape&& other) noexcept : 
-  Shape(std::move(other.m_pimpl_)) { }
+SHAPE::Shape(Shape&& other) noexcept : Shape(std::move(other.m_pimpl_)) {}
 
 template<typename FieldType>
 Shape<FieldType>& SHAPE::operator=(const Shape& other) {
-  m_pimpl_ = other.m_pimpl_->clone();
-  return *this;
+    m_pimpl_ = other.m_pimpl_->clone();
+    return *this;
 }
 
 template<typename FieldType>
 Shape<FieldType>& SHAPE::operator=(Shape&& other) noexcept {
-  m_pimpl_ = std::move(other.m_pimpl_->clone());
-  return *this;
+    m_pimpl_ = std::move(other.m_pimpl_->clone());
+    return *this;
 }
 
 //------------------------------------------------------------------------------

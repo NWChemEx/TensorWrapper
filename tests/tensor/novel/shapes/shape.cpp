@@ -1,5 +1,5 @@
-#include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
 #include "make_tot_shape.hpp"
+#include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
@@ -138,12 +138,15 @@ TEST_CASE("Shape<Tensor>") {
     auto vom = testing::make_uniform_tot_shape(vector_extents, matrix_extents);
     auto mom = testing::make_uniform_tot_shape(matrix_extents, matrix_extents);
 
-    auto vov_map = testing::make_uniform_tot_map(vector_extents, vector_extents);
-    auto vom_map = testing::make_uniform_tot_map(vector_extents, matrix_extents);
-    auto mom_map = testing::make_uniform_tot_map(matrix_extents, matrix_extents);
+    auto vov_map =
+      testing::make_uniform_tot_map(vector_extents, vector_extents);
+    auto vom_map =
+      testing::make_uniform_tot_map(vector_extents, matrix_extents);
+    auto mom_map =
+      testing::make_uniform_tot_map(matrix_extents, matrix_extents);
 
     SECTION("Sanity") {
-        //REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
+        // REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
         REQUIRE_THROWS_AS(shape_type(vector_extents), std::runtime_error);
     }
 
@@ -158,13 +161,12 @@ TEST_CASE("Shape<Tensor>") {
             REQUIRE(mom.inner_extents() == mom_map);
 
             // Make sure object is forwarded correctly (i.e. no copy)
-            auto pm = matrix_extents.data();
-            auto pv = vector_extents.data();
-	    inner_extents_type dummy = mom_map;
-            shape_type tensor2(std::move(matrix_extents),
-                               std::move(dummy));
+            auto pm                  = matrix_extents.data();
+            auto pv                  = vector_extents.data();
+            inner_extents_type dummy = mom_map;
+            shape_type tensor2(std::move(matrix_extents), std::move(dummy));
             REQUIRE(tensor2.extents().data() == pm);
-            //REQUIRE(tensor2.inner_extents().data() == pv);
+            // REQUIRE(tensor2.inner_extents().data() == pv);
         }
 
         SECTION("Clone") {
@@ -223,8 +225,7 @@ TEST_CASE("Shape<Tensor>") {
         SECTION("LHS is vector") {
             auto lhs = hash_objects(vov);
 
-            REQUIRE(lhs ==
-                    hash_objects(shape_type(vector_extents, vov_map)));
+            REQUIRE(lhs == hash_objects(shape_type(vector_extents, vov_map)));
             REQUIRE(lhs != hash_objects(vom));
             REQUIRE(lhs != hash_objects(mom));
         }
