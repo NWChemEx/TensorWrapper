@@ -106,7 +106,7 @@ public:
      *
      *  Copies internal state of passed shape instance to the constructed
      *  instance.
-     *  
+     *
      *  @param[in] other Shape instance from which to create the constructed
      *                         shape.
      *
@@ -119,7 +119,7 @@ public:
      *
      *  Moves internal state of passed shape instance to the constructed
      *  instance.
-     *  
+     *
      *  @param[in/out] other Shape instance from which to create the constructed
      *                       shape. Contains default state on return
      */
