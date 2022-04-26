@@ -102,10 +102,53 @@ public:
      */
     explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
 
-    Shape(const Shape&);
-    Shape(Shape&&) noexcept;
-    Shape& operator=(const Shape&);
-    Shape& operator=(Shape&&) noexcept;
+    /** @brief Creates a shape by copying another shape.
+     *
+     *  Copies internal state of passed shape instance to the constructed
+     *  instance.
+     *  
+     *  @param[in] other Shape instance from which to create the constructed
+     *                         shape.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape(const Shape& other);
+
+    /** @brief Creates a shape by moving another shape.
+     *
+     *  Moves internal state of passed shape instance to the constructed
+     *  instance.
+     *  
+     *  @param[in/out] other Shape instance from which to create the constructed
+     *                       shape. Contains default state on return
+     */
+    Shape(Shape&& other) noexcept;
+
+    /** @brief Copies the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  a copy of the internal state of another instance.
+     *
+     *  @param[in] other Shape instance which is to be copied.
+     *  @returns   Reference to current shape instance after copy
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape& operator=(const Shape& other);
+
+    /** @brief Moves the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  the internal state of another instance.
+     *
+     *  @param[in/out] other Shape instance which is to be moved. Contains
+     *                       default state on return.
+     *  @returns   Reference to current shape instance after move
+     */
+    Shape& operator=(Shape&& other) noexcept;
 
     /// Defaulted dtor
     virtual ~Shape() noexcept;
