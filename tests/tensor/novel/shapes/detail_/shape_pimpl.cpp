@@ -129,7 +129,7 @@ TEST_CASE("ShapePIMPL<Tensor>") {
     SECTION("CTors") {
         SECTION("Default") { REQUIRE(defaulted.extents() == scalar_extents); }
 
-        SECTION("Value") {
+        SECTION("Uniform Inner Extents") {
             REQUIRE(vov.extents() == vector_extents);
             REQUIRE(vom.extents() == vector_extents);
             REQUIRE(vot.extents() == vector_extents);
@@ -183,6 +183,20 @@ TEST_CASE("ShapePIMPL<Tensor>") {
                                std::move(_dummy_map));
             REQUIRE(tensor2.extents().data() == pt);
             // REQUIRE(tensor2.inner_extents().data() == pv);
+        }
+
+        SECTION("Non-Uniform Inner Extents") {
+	    extents_type other_extents{5,6};
+	    std::map<Index,Shape<field::Scalar>> inner_map = {
+              {Index{0ul}, Shape<field::Scalar>(vector_extents)},
+	      {Index{1ul}, Shape<field::Scalar>(other_extents)},
+	      {Index{2ul}, Shape<field::Scalar>(vector_extents)}
+	    };
+	    pimpl_type nu_tot_shape(vector_extents,inner_map);
+            REQUIRE(nu_tot_shape.extents() == vector_extents);
+            REQUIRE(nu_tot_shape.inner_extents().at(Index{0ul}).extents() == vector_extents);
+            REQUIRE(nu_tot_shape.inner_extents().at(Index{1ul}).extents() == other_extents);
+            REQUIRE(nu_tot_shape.inner_extents().at(Index{0ul}).extents() == vector_extents);
         }
     }
 
