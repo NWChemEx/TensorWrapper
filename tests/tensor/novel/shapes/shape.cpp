@@ -1,4 +1,5 @@
 #include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
+#include "make_tot_shape.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
@@ -74,8 +75,8 @@ TEST_CASE("Shape<Scalar>") {
         REQUIRE_FALSE(vector.is_hard_zero({2}, {4}));
 
         REQUIRE_FALSE(matrix.is_hard_zero({0, 0}, {3, 5}));
-        for(auto _i = 0; _i < 3; ++_i)
-            for(auto _j = 0; _j < 5; ++_j) {
+        for(auto _i = 0ul; _i < 3; ++_i)
+            for(auto _j = 0ul; _j < 5; ++_j) {
                 REQUIRE_FALSE(matrix.is_hard_zero({_i, _j}));
             }
     }
@@ -133,12 +134,16 @@ TEST_CASE("Shape<Tensor>") {
     extents_type matrix_extents{3, 4};
 
     shape_type defaulted;
-    shape_type vov(vector_extents, vector_extents);
-    shape_type vom(vector_extents, matrix_extents);
-    shape_type mom(matrix_extents, matrix_extents);
+    auto vov = testing::make_uniform_tot_shape(vector_extents, vector_extents);
+    auto vom = testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+    auto mom = testing::make_uniform_tot_shape(matrix_extents, matrix_extents);
+
+    auto vov_map = testing::make_uniform_tot_map(vector_extents, vector_extents);
+    auto vom_map = testing::make_uniform_tot_map(vector_extents, matrix_extents);
+    auto mom_map = testing::make_uniform_tot_map(matrix_extents, matrix_extents);
 
     SECTION("Sanity") {
-        REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
+        //REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
         REQUIRE_THROWS_AS(shape_type(vector_extents), std::runtime_error);
     }
 
@@ -148,17 +153,18 @@ TEST_CASE("Shape<Tensor>") {
             REQUIRE(vom.extents() == vector_extents);
             REQUIRE(mom.extents() == matrix_extents);
 
-            REQUIRE(vov.inner_extents() == vector_extents);
-            REQUIRE(vom.inner_extents() == matrix_extents);
-            REQUIRE(mom.inner_extents() == matrix_extents);
+            REQUIRE(vov.inner_extents() == vov_map);
+            REQUIRE(vom.inner_extents() == vom_map);
+            REQUIRE(mom.inner_extents() == mom_map);
 
             // Make sure object is forwarded correctly (i.e. no copy)
             auto pm = matrix_extents.data();
             auto pv = vector_extents.data();
+	    inner_extents_type dummy = mom_map;
             shape_type tensor2(std::move(matrix_extents),
-                               std::move(vector_extents));
+                               std::move(dummy));
             REQUIRE(tensor2.extents().data() == pm);
-            REQUIRE(tensor2.inner_extents().data() == pv);
+            //REQUIRE(tensor2.inner_extents().data() == pv);
         }
 
         SECTION("Clone") {
@@ -173,9 +179,9 @@ TEST_CASE("Shape<Tensor>") {
         REQUIRE(vov.extents() == vector_extents);
         REQUIRE(vom.extents() == vector_extents);
         REQUIRE(mom.extents() == matrix_extents);
-        REQUIRE(vov.inner_extents() == vector_extents);
-        REQUIRE(vom.inner_extents() == matrix_extents);
-        REQUIRE(mom.inner_extents() == matrix_extents);
+        REQUIRE(vov.inner_extents() == vov_map);
+        REQUIRE(vom.inner_extents() == vom_map);
+        REQUIRE(mom.inner_extents() == mom_map);
     }
 
     SECTION("Comparisons") {
@@ -188,8 +194,8 @@ TEST_CASE("Shape<Tensor>") {
         REQUIRE(defaulted != vom);
 
         // LHS is vector
-        REQUIRE(vov == shape_type(vector_extents, vector_extents));
-        REQUIRE_FALSE(vov != shape_type(vector_extents, vector_extents));
+        REQUIRE(vov == shape_type(vector_extents, vov_map));
+        REQUIRE_FALSE(vov != shape_type(vector_extents, vov_map));
         REQUIRE_FALSE(vov == vom);
         REQUIRE_FALSE(vov == mom);
         REQUIRE(vov != mom);
@@ -218,7 +224,7 @@ TEST_CASE("Shape<Tensor>") {
             auto lhs = hash_objects(vov);
 
             REQUIRE(lhs ==
-                    hash_objects(shape_type(vector_extents, vector_extents)));
+                    hash_objects(shape_type(vector_extents, vov_map)));
             REQUIRE(lhs != hash_objects(vom));
             REQUIRE(lhs != hash_objects(mom));
         }

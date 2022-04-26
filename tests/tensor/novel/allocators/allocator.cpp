@@ -1,4 +1,5 @@
 #include "../../buffer/make_pimpl.hpp"
+#include "../shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
 #include <catch2/catch.hpp>
@@ -100,6 +101,7 @@ TEST_CASE("Allocator<Scalar>") {
     }
 }
 
+
 TEST_CASE("Allocator<Tensor>") {
     using field_type  = field::Tensor;
     using buffer_type = buffer::Buffer<field_type>;
@@ -112,9 +114,9 @@ TEST_CASE("Allocator<Tensor>") {
     auto&& [pvov, pvom, pmov]   = testing::make_pimpl<field_type>();
     extents_type vector_extents = {3};
     extents_type matrix_extents = {2, 2};
-    shape_type vov_shape(vector_extents, vector_extents);
-    shape_type vom_shape(vector_extents, matrix_extents);
-    shape_type mov_shape(matrix_extents, vector_extents);
+    auto vov_shape = testing::make_uniform_tot_shape(vector_extents, vector_extents);
+    auto vom_shape = testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+    auto mov_shape = testing::make_uniform_tot_shape(matrix_extents, vector_extents);
 
     SECTION("allocate(vov)") {
         buffer_type vov(pvov->clone());

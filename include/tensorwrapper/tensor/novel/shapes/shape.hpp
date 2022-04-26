@@ -54,6 +54,9 @@ public:
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
+    /// Type used for initializer_lists of sizes
+    using index_type = sparse_map::Index;
+
     /// Type used to provide/return extents (outer extents for FieldType ==
     /// Tensor)
     using extents_type = std::vector<size_type>;
@@ -64,16 +67,13 @@ public:
     /// Type used to treat inner-extents
     using inner_extents_type =
       std::conditional_t<field::is_scalar_field_v<FieldType>, size_type,
-                         std::vector<size_type>>;
+                         std::map<index_type,Shape<field::Scalar>>>;
 
     /// Type of a read-only reference to the inner
     using const_inner_extents_reference = const inner_extents_type&;
 
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
-
-    /// Type used for initializer_lists of sizes
-    using index_type = sparse_map::Index;
 
     /** @brief Creates a shape with no extents.
      *
@@ -101,6 +101,12 @@ public:
      *                        throw guarantee.
      */
     explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
+
+
+    Shape(const Shape&);
+    Shape(Shape&&) noexcept;
+    Shape& operator=(const Shape&);
+    Shape& operator=(Shape&&) noexcept;
 
     /// Defaulted dtor
     virtual ~Shape() noexcept;
@@ -212,16 +218,6 @@ protected:
      */
     Shape(pimpl_pointer pimpl) noexcept;
 
-    /// Deleted to avoid slicing
-    ///@{
-    Shape(const Shape& other) = delete;
-
-    Shape(Shape&& other) noexcept = delete;
-
-    Shape& operator=(const Shape& rhs) = delete;
-
-    Shape& operator=(Shape&& rhs) noexcept = delete;
-    ///@}
 
     /** @brief Returns the PIMPL in a read-only state.
      *
