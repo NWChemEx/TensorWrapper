@@ -121,7 +121,7 @@ public:
      *  instance.
      *
      *  @param[in/out] other Shape instance from which to create the constructed
-     *                       shape. Contains default state on return
+     *                       shape. Contains default state on return.
      */
     Shape(Shape&& other) noexcept;
 
