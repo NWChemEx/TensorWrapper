@@ -36,4 +36,12 @@ std::vector<double> to_vector(const ScalarTensorWrapper& t);
 void to_contiguous_buffer(const ScalarTensorWrapper& t, double* buffer_begin,
                           const double* buffer_end);
 
+/** @brief Convert a std::vector into a 1D ScalarTensorWrapper
+ *
+ *  @param[in] v The std::vector to wrap.
+ *
+ *  @return A 1D ScalarTensorWrapper wrapping the values of @p v.
+ */
+ScalarTensorWrapper wrap_std_vector(std::vector<double> v);
+
 } // namespace tensorwrapper::tensor

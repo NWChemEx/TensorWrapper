@@ -37,3 +37,20 @@ TEST_CASE("to_vector") {
         REQUIRE(to_vector(t) == corr);
     }
 }
+
+TEST_CASE("Wrap std::vector") {
+    using vector_il  = TA::detail::vector_il<double>;
+    using double_vec = std::vector<double>;
+    using ta_array   = TA::TSpArrayD;
+    using twrapper   = ScalarTensorWrapper;
+
+    auto& world = TA::get_default_world();
+
+    vector_il v_il{1, 2, 3, 4};
+    double_vec v(v_il);
+    twrapper corr_wv(ta_array(world, v_il));
+
+    twrapper wv = wrap_std_vector(double_vec(v_il));
+
+    REQUIRE(wv == corr_wv);
+}
