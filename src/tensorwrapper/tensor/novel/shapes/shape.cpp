@@ -42,7 +42,7 @@ Shape<FieldType>& SHAPE::operator=(const Shape& other) {
 
 template<typename FieldType>
 Shape<FieldType>& SHAPE::operator=(Shape&& other) noexcept {
-    m_pimpl_ = std::move(other.m_pimpl_->clone());
+    m_pimpl_ = std::move(other.m_pimpl_);
     return *this;
 }
 

@@ -53,6 +53,34 @@ TEST_CASE("Shape<Scalar>") {
             auto pv = vector.clone();
             REQUIRE(*pv == vector);
         }
+
+	SECTION("Copy") {
+            shape_type cpy(vector);
+	    REQUIRE(cpy == vector);
+	}
+
+	SECTION("Move") {
+            shape_type cpy(vector);
+	    shape_type mv(std::move(cpy));
+	    REQUIRE(mv == vector);
+	    REQUIRE(cpy == defaulted);
+	}
+    }
+
+    SECTION("Assignment") {
+        shape_type cpy(matrix);
+	REQUIRE(cpy != vector);
+        SECTION("Copy") {
+	    cpy = vector;
+	    REQUIRE(cpy == vector);
+	}
+
+	SECTION("Move") {
+	    shape_type mv(matrix);
+	    mv = std::move(cpy);
+	    REQUIRE(mv == matrix);
+	    REQUIRE(cpy == defaulted);
+	}
     }
 
     SECTION("extents") {
