@@ -1,4 +1,5 @@
 #include "../../buffer/make_pimpl.hpp"
+#include "../shapes/make_tot_shape.hpp"
 #include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
 #include <catch2/catch.hpp>
 
@@ -301,9 +302,12 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
     extents_type vector_extents = {3};
     extents_type matrix_extents = {2, 2};
-    shape_type vov_shape(vector_extents, vector_extents);
-    shape_type vom_shape(vector_extents, matrix_extents);
-    shape_type mov_shape(matrix_extents, vector_extents);
+    auto vov_shape =
+      testing::make_uniform_tot_shape(vector_extents, vector_extents);
+    auto vom_shape =
+      testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+    auto mov_shape =
+      testing::make_uniform_tot_shape(matrix_extents, vector_extents);
 
     SECTION("OneBigTile") {
         // Default tiling is OneBigTile

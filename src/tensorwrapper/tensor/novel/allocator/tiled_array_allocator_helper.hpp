@@ -50,24 +50,28 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     using inner_tile_type = TA::Tensor<double>;
     using range_type      = TA::Range;
 
-    std::vector<size_t> inner_lobounds, inner_upbounds;
-    {
-        inner_upbounds = shape.inner_extents();
-        inner_lobounds = std::vector<size_t>(inner_upbounds.size(), 0ul);
-    }
-    range_type inner_range(inner_lobounds, inner_upbounds);
-
     if(tot_fxn) {
         auto ta_functor = [=, &tot_fxn, &shape](tile_type& t,
                                                 const range_type& range) {
-            t = tile_type(range, inner_tile_type(inner_range, 0.0));
+            t = tile_type(range);
             for(auto idx : range) {
-                if(!shape.is_hard_zero(
-                     sparse_map::Index(idx.begin(), idx.end()))) {
+                auto nwx_outer_idx = sparse_map::Index(idx.begin(), idx.end());
+                if(!shape.is_hard_zero(nwx_outer_idx)) {
                     std::vector<size_t> outer_index(idx.begin(), idx.end());
                     auto& inner_tile = t[idx];
-                    tot_fxn(outer_index, inner_lobounds, inner_upbounds,
-                            inner_tile.data());
+
+                    // Get inner tile dimension
+                    const auto& inner_extents =
+                      shape.inner_extents().at(nwx_outer_idx).extents();
+                    std::vector<size_t> up_bound(inner_extents.begin(),
+                                                 inner_extents.end());
+                    std::vector<size_t> lo_bound(inner_extents.size(), 0);
+                    range_type inner_range(lo_bound, up_bound);
+
+                    // Create Tile
+                    inner_tile = inner_tile_type(inner_range, 0.);
+
+                    tot_fxn(outer_index, lo_bound, up_bound, inner_tile.data());
                 }
             }
 

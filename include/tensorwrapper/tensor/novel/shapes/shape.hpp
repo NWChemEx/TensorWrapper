@@ -54,6 +54,9 @@ public:
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
+    /// Type used for initializer_lists of sizes
+    using index_type = sparse_map::Index;
+
     /// Type used to provide/return extents (outer extents for FieldType ==
     /// Tensor)
     using extents_type = std::vector<size_type>;
@@ -64,16 +67,13 @@ public:
     /// Type used to treat inner-extents
     using inner_extents_type =
       std::conditional_t<field::is_scalar_field_v<FieldType>, size_type,
-                         std::vector<size_type>>;
+                         std::map<index_type, Shape<field::Scalar>>>;
 
     /// Type of a read-only reference to the inner
     using const_inner_extents_reference = const inner_extents_type&;
 
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
-
-    /// Type used for initializer_lists of sizes
-    using index_type = sparse_map::Index;
 
     /** @brief Creates a shape with no extents.
      *
@@ -101,6 +101,54 @@ public:
      *                        throw guarantee.
      */
     explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
+
+    /** @brief Creates a shape by copying another shape.
+     *
+     *  Copies internal state of passed shape instance to the constructed
+     *  instance.
+     *
+     *  @param[in] other Shape instance from which to create the constructed
+     *                         shape.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape(const Shape& other);
+
+    /** @brief Creates a shape by moving another shape.
+     *
+     *  Moves internal state of passed shape instance to the constructed
+     *  instance.
+     *
+     *  @param[in/out] other Shape instance from which to create the constructed
+     *                       shape. Contains default state on return.
+     */
+    Shape(Shape&& other) noexcept;
+
+    /** @brief Copies the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  a copy of the internal state of another instance.
+     *
+     *  @param[in] other Shape instance which is to be copied.
+     *  @returns   Reference to current shape instance after copy
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape& operator=(const Shape& other);
+
+    /** @brief Moves the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  the internal state of another instance.
+     *
+     *  @param[in/out] other Shape instance which is to be moved. Contains
+     *                       default state on return.
+     *  @returns   Reference to current shape instance after move
+     */
+    Shape& operator=(Shape&& other) noexcept;
 
     /// Defaulted dtor
     virtual ~Shape() noexcept;
@@ -211,17 +259,6 @@ protected:
      *  @throw None No throw guarantee.
      */
     Shape(pimpl_pointer pimpl) noexcept;
-
-    /// Deleted to avoid slicing
-    ///@{
-    Shape(const Shape& other) = delete;
-
-    Shape(Shape&& other) noexcept = delete;
-
-    Shape& operator=(const Shape& rhs) = delete;
-
-    Shape& operator=(Shape&& rhs) noexcept = delete;
-    ///@}
 
     /** @brief Returns the PIMPL in a read-only state.
      *
