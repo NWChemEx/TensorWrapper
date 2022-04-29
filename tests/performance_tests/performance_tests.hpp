@@ -2,12 +2,19 @@
  * Functions, types, and includes common to the performance test.
  */
 #pragma once
-#include "tensorwrapper/tensor/tensor.hpp"
+#include "performance_tests.hpp"
 #include "tensorwrapper/ta_helpers/tensor.hpp"
+#include "tensorwrapper/tensor/creation.hpp"
+#include "tensorwrapper/tensor/detail_/operations/add_op.hpp"
+#include "tensorwrapper/tensor/detail_/operations/mult_op.hpp"
+#include "tensorwrapper/tensor/detail_/operations/subt_op.hpp"
+#include "tensorwrapper/tensor/tensor.hpp"
+#include "test_tensor.hpp"
+#include "tiledarray.h"
 #include <catch2/catch.hpp>
-#include <random>
 #include <chrono>
 #include <iostream>
+#include <random>
 
 namespace performance_tests {
 // generate random dummpy tensors
