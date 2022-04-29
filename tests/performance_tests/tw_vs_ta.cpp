@@ -1,7 +1,7 @@
 #include "performance_tests.hpp"
 #include "tensorwrapper/tensor/creation.hpp"
-#include "tensorwrapper/tensor/detail_/operations/mult_op.hpp"
 #include "tensorwrapper/tensor/detail_/operations/add_op.hpp"
+#include "tensorwrapper/tensor/detail_/operations/mult_op.hpp"
 #include "tensorwrapper/tensor/detail_/operations/subt_op.hpp"
 #include "tensorwrapper/tensor/tensor.hpp"
 #include "test_tensor.hpp"
@@ -61,7 +61,7 @@ TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
         // TW session
         auto begin_ta = std::chrono::high_resolution_clock::now();
         tensorwrapper::tensor::detail_::AddOp<std::initializer_list<double>,
-                                               std::initializer_list<double>>
+                                              std::initializer_list<double>>
           res_tw(l1, l2);
         std::cout << 'TiledArray running time: ' << begin_ta.time_since_epoch()
                   << std::endl;
@@ -73,7 +73,7 @@ TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
         TA::TArrayD res_ta;
         // run substraction
         auto begin_ta = std::chrono::high_resolution_clock::now();
-        res_ta("i,j") = lhs_tensor("i,k") -rhs_tensor("k, j");
+        res_ta("i,j") = lhs_tensor("i,k") - rhs_tensor("k, j");
         std::cout << 'TiledArray running time: ' << begin_ta.time_since_epoch()
                   << std::endl;
 
