@@ -4,8 +4,8 @@
 #pragma once
 <<<<<<< HEAD
 #include "performance_tests.hpp"
-#include "tensorwrapper/ta_helpers/tensor.hpp"
-#include "tensorwrapper/tensor/creation.hpp"
+// #include "tensorwrapper/ta_helpers/tensor.hpp"
+// #include "tensorwrapper/tensor/creation.hpp"
 #include "tensorwrapper/tensor/detail_/operations/add_op.hpp"
 #include "tensorwrapper/tensor/detail_/operations/mult_op.hpp"
 #include "tensorwrapper/tensor/detail_/operations/subt_op.hpp"
@@ -13,7 +13,7 @@
 #include "test_tensor.hpp"
 #include "tiledarray.h"
 =======
-#include "tensorwrapper/ta_helpers/tensor.hpp"
+// #include "tensorwrapper/ta_helpers/tensor.hpp"
 #include "tensorwrapper/tensor/tensor.hpp"
 >>>>>>> 57394757e77d2d01e6e8db6c19f121d7b771b38d
 #include <catch2/catch.hpp>
