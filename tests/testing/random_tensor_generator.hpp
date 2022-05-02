@@ -1,5 +1,5 @@
 /*
- * Functions, types, and includes common to the performance test. 
+ * Functions, types, and includes common to the performance test.
  */
 #pragma once
 #include "performance_tests.hpp"
