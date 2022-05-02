@@ -163,6 +163,9 @@ public:
     /// Type used for initializer_lists of sizes
     using il_type = std::initializer_list<size_type>;
 
+    /// Type used for scalar values in the tensor
+    using scalar_value_type = double;
+
     /** @brief Default CTor
      *
      *  The TensorWrapper resulting from this ctor wraps no tensor, and has no
@@ -533,6 +536,27 @@ public:
      * guarantee.
      */
     TensorWrapper reshape(shape_pointer shape) const;
+
+    /** @brief Returns the norm of the wrapped tensor.
+     *
+     *  @return The value of the tensor's norm.
+     */
+    scalar_value_type norm() const;
+
+    /** @brief Returns the sum of the wrapped tensor.
+     *
+     *  @return The value of the sum of the tensor's elements.
+     */
+    scalar_value_type sum() const;
+
+    /** @brief Returns the trace of the wrapped tensor.
+     *
+     *  @return The value of the tensor's trace.
+     *
+     *  @throw std::runtime_error if the tensor is a tensor of tensors or if the
+     *  tensor is not a square matrix.
+     */
+    scalar_value_type trace() const;
 
     /** @brief Used to get the wrapped tensor back.
      *

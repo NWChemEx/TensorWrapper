@@ -229,6 +229,27 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Scalar>", "", scalar_variant) {
         }
     }
 
+    SECTION("norm()") {
+        REQUIRE_THROWS_AS(defaulted.norm(), std::runtime_error);
+        REQUIRE(vec.norm() == Approx(3.74165738).margin(1E-8));
+        REQUIRE(mat.norm() == Approx(5.47722557).margin(1E-8));
+        REQUIRE(t3.norm() == Approx(14.2828568).margin(1E-8));
+    }
+
+    SECTION("sum()") {
+        REQUIRE_THROWS_AS(defaulted.sum(), std::runtime_error);
+        REQUIRE(vec.sum() == 6);
+        REQUIRE(mat.sum() == 10);
+        REQUIRE(t3.sum() == 36);
+    }
+
+    SECTION("trace()") {
+        REQUIRE_THROWS_AS(defaulted.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(vec.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(t3.trace(), std::runtime_error);
+        REQUIRE(mat.trace() == 5);
+    }
+
     SECTION("operator()") {
         // Basically just testing that it compiles, real test happens in
         // labeled_tensor_wrapper.cpp

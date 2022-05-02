@@ -182,6 +182,24 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
         REQUIRE(t.rank() == 3);
     }
 
+    SECTION("norm()") {
+        REQUIRE(v.norm() == Approx(3.74165738).margin(1E-8));
+        REQUIRE(m.norm() == Approx(5.47722557).margin(1E-8));
+        REQUIRE(t.norm() == Approx(14.2828568).margin(1E-8));
+    }
+
+    SECTION("sum()") {
+        REQUIRE(v.sum() == 6);
+        REQUIRE(m.sum() == 10);
+        REQUIRE(t.sum() == 36);
+    }
+
+    SECTION("trace()") {
+        REQUIRE_THROWS_AS(v.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(t.trace(), std::runtime_error);
+        REQUIRE(m.trace() == 5);
+    }
+
     SECTION("reallocate") {
         auto new_alloc = std::make_unique<other_alloc>();
 
