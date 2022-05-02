@@ -1,5 +1,5 @@
 /*
- * Functions, types, and includes common to the performance test.
+ * Functions, types, and includes common to the performance test. 
  */
 #pragma once
 #include "performance_tests.hpp"
@@ -29,7 +29,7 @@ using rand_d = distr(eng)
   auto gen_tensors() {
     auto& world = TA::get_default_world();
     std::map<std::string, TensorType> res;
-    // using std namespace instead of TA
+    // use std namespace instead of TA
     using vector_il = std::initializer_list<double>;
     using matrix_il = std::initializer_list<vector_il<double>>;
     using tensor_il = std::initializer_list<matrix_il<double>>;
@@ -39,10 +39,10 @@ using rand_d = distr(eng)
         res["vector"] = TensorType(world, vector_il{rand_d, rand_d, rand_d});
         res["matrix"] = TensorType(world, matrix_il{vector_il{rand_d, rand_d},
                                                     vector_il{rand_d, rand_d}});
-        res["tensor"] = TensorType(
-          world,
-          tensor_il{matrix_il{vector_il{rand_d, rand_d}, vector_ilrand_d, rand_d}},
-                    matrix_il{
+      res["tensor"] = TensorType(
+        world,
+        tensor_il{matrix_il{vector_il{rand_d, rand_d}, vector_ilrand_d, rand_d}},
+                  matrix_il{
             vector_il{rand_d, rand_d}, vector_il { rand_d, rand_d }}
     });
 }
@@ -52,5 +52,20 @@ else {
     using dvector_il = vector_il;
     using vector_il  = std::initializer_list<inner_tile>;
     using matrix_il  = std::initializer_list<vector_il<inner_tile>>;
+
+    inner_tile v0(TA::Range({2}), {rand_d, rand_d});
+    inner_tile v1(TA::Range({2}), {rand_d, rand_d});
+    inner_tile v2(TA::Range({2}), {rand_d, rand_d});
+    inner_tile v3(TA::Range({2}), {rand_d, rand_d});
+    inner_tile mat0(TA::Range({2, 2}),
+                    dvector_il{rand_d, rand_d, rand_d, rand_d});
+    inner_tile mat1(TA::Range({2, 2}),
+                    dvector_il{rand_d, rand_d, rand_d, rand_d});
+    rv["vector-of-vectors"] = TensorType(world, vector_il{v0, v1});
+    rv["matrix-of-vectors"] =
+      TensorType(world, matrix_il{vector_il{v0, v1}, vector_il{v2, v3}});
+    rv["vector-of-matrices"] = TensorType(world, vector_il{mat0, mat1});
+}
+return rv;
 }
 } // namespace performance_tests

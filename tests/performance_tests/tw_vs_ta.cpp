@@ -1,14 +1,4 @@
 #include "performance_tests.hpp"
-<<<<<<< HEAD
-=======
-#include "tensorwrapper/tensor/creation.hpp"
-#include "tensorwrapper/tensor/detail_/operations/add_op.hpp"
-#include "tensorwrapper/tensor/detail_/operations/mult_op.hpp"
-#include "tensorwrapper/tensor/detail_/operations/subt_op.hpp"
-#include "tensorwrapper/tensor/tensor.hpp"
-#include "test_tensor.hpp"
-#include "tiledarray.h"
->>>>>>> 57394757e77d2d01e6e8db6c19f121d7b771b38d
 
 using namespace performance_tests;
 
@@ -52,24 +42,18 @@ TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
         TA::TArrayD res_ta;
         // TA session
         auto begin_ta = std::chrono::high_resolution_clock::now();
-        res_ta("i,j") = lhs_tensor("i,k") + rhs_tensor("k, j");
+        res_ta("i,j") = lhs_tensor("i,j") + rhs_tensor("i, j");
         std::cout << 'TiledArray running time: ' << begin_ta.time_since_epoch()
                   << std::endl;
 
         // TW session
         tensorwrapper::tensor::detail_::AddOp<std::initializer_list<double>,
                                               std::initializer_list<double>>
-<<<<<<< HEAD
           add_tw;
         auto begin_tw = std::chrono::high_resolution_clock::now();
         auto res_tw   = add_tw.AddOp(l1, l2);
         std::cout << 'TensorWrapper running time: '
                   << begin_tw.time_since_epoch() << std::endl;
-=======
-          res_tw(l1, l2);
-        std::cout << 'TiledArray running time: ' << begin_ta.time_since_epoch()
-                  << std::endl;
->>>>>>> 57394757e77d2d01e6e8db6c19f121d7b771b38d
     }
 
     SECTION("Substract") {
@@ -78,7 +62,7 @@ TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
         TA::TArrayD res_ta;
         // TA session
         auto begin_ta = std::chrono::high_resolution_clock::now();
-        res_ta("i,j") = lhs_tensor("i,k") - rhs_tensor("k, j");
+        res_ta("i,j") = lhs_tensor("i,j") - rhs_tensor("i, j");
         std::cout << 'TiledArray running time: ' << begin_ta.time_since_epoch()
                   << std::endl;
 
