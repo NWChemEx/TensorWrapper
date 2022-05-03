@@ -76,19 +76,19 @@ TEST_CASE("stack_tensors") {
     SECTION("1D to 2D") {
         v_il il1{1.0, 2.0, 3.0};
 
-        SECTION("One vector"){
+        SECTION("One vector") {
             m_il il{il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({v});
             REQUIRE(rv == corr);
         }
-        SECTION("Two vectors"){
+        SECTION("Two vectors") {
             m_il il{il1, il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({v, v});
             REQUIRE(rv == corr);
         }
-        SECTION("Three vectors"){
+        SECTION("Three vectors") {
             m_il il{il1, il1, il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({v, v, v});
@@ -99,19 +99,19 @@ TEST_CASE("stack_tensors") {
     SECTION("2D to 3D") {
         m_il il1{v_il{1.0, 2.0}, v_il{3.0, 4.0}};
 
-        SECTION("One matrix"){
+        SECTION("One matrix") {
             t_il il{il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({m});
             REQUIRE(rv == corr);
         }
-        SECTION("Two matrices"){
+        SECTION("Two matrices") {
             t_il il{il1, il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({m, m});
             REQUIRE(rv == corr);
         }
-        SECTION("Three matrices"){
+        SECTION("Three matrices") {
             t_il il{il1, il1, il1};
             tensor_t corr(TA::TSpArrayD(world, il));
             auto rv = stack_tensors({m, m, m});
