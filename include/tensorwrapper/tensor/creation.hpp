@@ -54,4 +54,17 @@ TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
  */
 ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t);
 
+/** @brief Stacks a group of tensors along a new dimension.
+ *
+ *  This function joins a group of tensors together along a brand new
+ *  dimension. The tensors must all have the same shape in the existing
+ *  dimensions.
+ *
+ *  @param[in] tensors An std::vector of tensors to be stacked together.
+ *
+ *  @throw std::runtime_error if the shapes of the tensors are not compatible
+ *                            for stacking.
+ */
+ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors);
+
 } // namespace tensorwrapper::tensor

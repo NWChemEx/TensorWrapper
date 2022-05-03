@@ -119,4 +119,60 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
     return ScalarTensorWrapper(ta_helpers::grab_diagonal(t_ta));
 }
 
+ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
+    using ta_type   = TA::TSpArrayD;
+    using tile_type = typename ta_type::value_type;
+
+    auto leading_ta   = tensors[0].get<ta_type>();
+    auto slice_trange = leading_ta.trange();
+    auto& world       = leading_ta.world();
+
+    // Prepend the new dimension to the existing ones
+    auto new_dim = ta_helpers::make_1D_trange(tensors.size(), 1);
+    std::vector<TA::TiledRange1> dims{new_dim};
+    for(auto i = 0; i < slice_trange.rank(); ++i) {
+        dims.push_back(slice_trange.dim(i));
+    }
+    TA::TiledRange result_trange(dims);
+
+    // Build up stacked tensor
+    ta_type new_tensor(world, result_trange);
+    for(auto dim = 0; dim < tensors.size(); ++dim) {
+        auto current_ta     = tensors[dim].get<ta_type>();
+        auto current_trange = current_ta.trange();
+
+        // Check that the array has the correct layout
+        if(current_trange != slice_trange)
+            throw std::runtime_error(
+              "Stacking tensors must have the same tiled range");
+
+        // Place the tiles from the current array into their correct location
+        // inside the new array.
+        for(std::size_t i = 0; i < current_ta.size(); ++i) {
+            auto i_range = current_trange.make_tile_range(i);
+            auto index   = ta_helpers::get_block_idx(current_trange, i_range);
+
+            // Extend tile index into new dimension
+            std::vector<long> output_index{static_cast<long>(dim)};
+            for(auto i = 0; i < i_range.rank(); ++i) {
+                output_index.push_back(index[i]);
+            }
+
+            // Get tiledrange of new location
+            auto output_range = result_trange.make_tile_range(output_index);
+
+            // Make and set new tile
+            if(current_ta.is_zero(index)) {
+                tile_type rv_tile(output_range, 0.0);
+                new_tensor.set(output_index, rv_tile);
+            } else {
+                tile_type rv_tile(output_range,
+                                  current_ta.find(index).get().begin());
+                new_tensor.set(output_index, rv_tile);
+            }
+        }
+    }
+    return ScalarTensorWrapper(new_tensor);
+}
+
 } // namespace tensorwrapper::tensor
