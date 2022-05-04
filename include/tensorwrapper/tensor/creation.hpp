@@ -100,7 +100,7 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors);
  *
  *  @throw Whatever TA's array_to_eigen throws.
  */
-Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor);
+Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor);
 
 /** @brief Produce a TensorWrapper from an Eigen Matrix
  *
@@ -110,6 +110,6 @@ Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor);
  *
  *  @throw Whatever TA's eigen_to_array throws.
  */
-ScalarTensorWrapper eigen_to_tensor_wrapper(Eigen::MatrixXd& matrix);
+ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix);
 
 } // namespace tensorwrapper::tensor

@@ -201,11 +201,11 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
     return ScalarTensorWrapper(new_tensor);
 }
 
-Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor) {
+Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor) {
     return TA::array_to_eigen(tensor.get<TA::TSpArrayD>());
 };
 
-ScalarTensorWrapper eigen_to_tensor_wrapper(Eigen::MatrixXd& matrix) {
+ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix) {
     auto& world = TA::get_default_world();
 
     auto cols_tr = ta_helpers::make_1D_trange(matrix.cols(), 1);
