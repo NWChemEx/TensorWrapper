@@ -97,7 +97,7 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors);
  *  @param[in] tensor The tensor to convert to an Eigen Matrix.
  *
  *  @return The Eigen Matrix.
- * 
+ *
  *  @throw Whatever TA's array_to_eigen throws.
  */
 Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor);
@@ -107,7 +107,7 @@ Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor);
  *  @param[in] tensor The Eigen Matric to convert.
  *
  *  @return A TensorWrapper with the elements of the Eigen Matrix.
- * 
+ *
  *  @throw Whatever TA's eigen_to_array throws.
  */
 ScalarTensorWrapper eigen_to_tensor_wrapper(Eigen::MatrixXd& matrix);
