@@ -119,6 +119,32 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
     return ScalarTensorWrapper(ta_helpers::grab_diagonal(t_ta));
 }
 
+ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
+                                            double val) {
+    auto& world = TA::get_default_world();
+
+    std::vector<TA::TiledRange1> dims{};
+    for(auto i : extents) { dims.push_back(ta_helpers::make_1D_trange(i, 1)); }
+    TA::TiledRange trange(dims);
+
+    auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange, val);
+
+    return ScalarTensorWrapper{ta_diag};
+};
+
+ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
+                                            std::vector<double> vals) {
+    auto& world = TA::get_default_world();
+
+    std::vector<TA::TiledRange1> dims{};
+    for(auto i : extents) { dims.push_back(ta_helpers::make_1D_trange(i, 1)); }
+    TA::TiledRange trange(dims);
+
+    auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange,
+                                                     vals.begin(), vals.end());
+    return ScalarTensorWrapper{ta_diag};
+};
+
 ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
     using ta_type   = TA::TSpArrayD;
     using tile_type = typename ta_type::value_type;
@@ -174,5 +200,21 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
     }
     return ScalarTensorWrapper(new_tensor);
 }
+
+Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor) {
+    return TA::array_to_eigen(tensor.get<TA::TSpArrayD>());
+};
+
+ScalarTensorWrapper eigen_to_tensor_wrapper(Eigen::MatrixXd& matrix) {
+    auto& world = TA::get_default_world();
+
+    auto cols_tr = ta_helpers::make_1D_trange(matrix.cols(), 1);
+    auto rows_tr = ta_helpers::make_1D_trange(matrix.rows(), 1);
+    TA::TiledRange trange({cols_tr, rows_tr});
+
+    auto tensor = TA::eigen_to_array<TA::TSpArrayD>(world, trange, matrix);
+
+    return ScalarTensorWrapper{tensor};
+};
 
 } // namespace tensorwrapper::tensor

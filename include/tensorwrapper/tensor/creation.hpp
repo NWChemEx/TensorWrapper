@@ -54,6 +54,31 @@ TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
  */
 ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t);
 
+/** @brief Produces a new TensorWrapper with the given value along its diagonal.
+ *
+ *  @param[in] extents The desired extents of the new tensor.
+ *  @param[in] val The value to place on the diagonal of the tensor.
+ *
+ *  @return A TensorWrapper containing a diagonal tensor.
+ *
+ *  @throw Whatever TA's diagonal_array throws.
+ */
+ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
+                                            double val = 1.0);
+
+/** @brief Produces a new TensorWrapper with the given values along its
+ * diagonal.
+ *
+ *  @param[in] extents The desired extents of the new tensor.
+ *  @param[in] vals The values to place on the diagonal of the tensor.
+ *
+ *  @return A TensorWrapper containing a diagonal tensor.
+ *
+ *  @throw Whatever TA's diagonal_array throws.
+ */
+ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
+                                            std::vector<double> vals);
+
 /** @brief Stacks a group of tensors along a new dimension.
  *
  *  This function joins a group of tensors together along a brand new
@@ -66,5 +91,25 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t);
  *                            for stacking.
  */
 ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors);
+
+/** @brief Produce an Eigen Matrix version of the wrapped tensor.
+ *
+ *  @param[in] tensor The tensor to convert to an Eigen Matrix.
+ *
+ *  @return The Eigen Matrix.
+ * 
+ *  @throw Whatever TA's array_to_eigen throws.
+ */
+Eigen::MatrixXd tensor_wrapper_to_eigen(ScalarTensorWrapper& tensor);
+
+/** @brief Produce a TensorWrapper from an Eigen Matrix
+ *
+ *  @param[in] tensor The Eigen Matric to convert.
+ *
+ *  @return A TensorWrapper with the elements of the Eigen Matrix.
+ * 
+ *  @throw Whatever TA's eigen_to_array throws.
+ */
+ScalarTensorWrapper eigen_to_tensor_wrapper(Eigen::MatrixXd& matrix);
 
 } // namespace tensorwrapper::tensor

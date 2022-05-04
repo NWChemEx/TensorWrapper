@@ -61,6 +61,94 @@ TEST_CASE("concatenate(ToT)") {
     REQUIRE_THROWS_AS(concatenate(A, B, 0), std::runtime_error);
 }
 
+TEST_CASE("diagonal_tensor_wrapper") {
+    using tensor_t = tensorwrapper::tensor::ScalarTensorWrapper;
+    auto& world    = TA::get_default_world();
+
+    using v_il = TA::detail::vector_il<double>;
+    using m_il = TA::detail::matrix_il<double>;
+    using t_il = TA::detail::tensor3_il<double>;
+
+    v_il v1{1.0, 1.0, 1.0};
+    v_il v2{2.0, 2.0, 2.0};
+    v_il v3{2.0, 0.0};
+    v_il v4{0.0, 2.0};
+    v_il v5{0.0, 0.0};
+    v_il v6{1.0, 2.0, 3.0};
+    v_il v7{1.0, 0.0};
+
+    m_il m1{v3, v4};
+    m_il m2{v3, v5};
+    m_il m3{v5, v4};
+    m_il m4{v7, v4};
+    m_il m5{v7, v5};
+    m_il m6{v5, v4};
+    m_il m7{v7, v4, v5};
+
+    t_il t1{m2, m3};
+    t_il t2{m5, m6};
+
+    SECTION("Single Diagonal Value") {
+        SECTION("Default") {
+            std::vector<std::size_t> extents{3};
+            tensor_t corr(TA::TSpArrayD(world, v1));
+            auto rv = diagonal_tensor_wrapper(extents);
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("1D") {
+            std::vector<std::size_t> extents{3};
+            tensor_t corr(TA::TSpArrayD(world, v2));
+            auto rv = diagonal_tensor_wrapper(extents, 2.0);
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("2D") {
+            std::vector<std::size_t> extents{2, 2};
+            tensor_t corr(TA::TSpArrayD(world, m1));
+            auto rv = diagonal_tensor_wrapper(extents, 2);
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("3D") {
+            std::vector<std::size_t> extents{2, 2, 2};
+            tensor_t corr(TA::TSpArrayD(world, t1));
+            auto rv = diagonal_tensor_wrapper(extents, 2);
+            REQUIRE(rv == corr);
+        }
+    }
+
+    SECTION("Multiple Diagonal Values") {
+        SECTION("1D") {
+            std::vector<std::size_t> extents{3};
+            tensor_t corr(TA::TSpArrayD(world, v6));
+            auto rv = diagonal_tensor_wrapper(extents, {1.0, 2.0, 3.0});
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("2D") {
+            std::vector<std::size_t> extents{2, 2};
+            tensor_t corr(TA::TSpArrayD(world, m4));
+            auto rv = diagonal_tensor_wrapper(extents, {1.0, 2.0});
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("3D") {
+            std::vector<std::size_t> extents{2, 2, 2};
+            tensor_t corr(TA::TSpArrayD(world, t2));
+            auto rv = diagonal_tensor_wrapper(extents, {1.0, 2.0});
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("Rectangular") {
+            std::vector<std::size_t> extents{3, 2};
+            tensor_t corr(TA::TSpArrayD(world, m7));
+            auto rv = diagonal_tensor_wrapper(extents, {1.0, 2.0});
+            REQUIRE(rv == corr);
+        }
+    }
+}
+
 TEST_CASE("stack_tensors") {
     using tensor_t = tensorwrapper::tensor::ScalarTensorWrapper;
     auto tensors   = testing::get_tensors<TA::TSpArrayD>();
@@ -121,5 +209,26 @@ TEST_CASE("stack_tensors") {
 
     SECTION("Throws if shapes are not compatible") {
         REQUIRE_THROWS_AS(stack_tensors({v, m}), std::runtime_error);
+    }
+}
+
+TEST_CASE("Eigen conversions") {
+    using tensor_t = tensorwrapper::tensor::ScalarTensorWrapper;
+    tensor_t twrapper(testing::get_tensors<TA::TSpArrayD>().at("matrix"));
+
+    Eigen::MatrixXd eigen_m(2, 2);
+    eigen_m(0, 0) = 1.0;
+    eigen_m(0, 1) = 2.0;
+    eigen_m(1, 0) = 3.0;
+    eigen_m(1, 1) = 4.0;
+
+    SECTION("tensor_wrapper_to_eigen") {
+        auto rv = tensor_wrapper_to_eigen(twrapper);
+        REQUIRE(rv == eigen_m);
+    }
+
+    SECTION("eigen_to_tensor_wrapper") {
+        auto rv = eigen_to_tensor_wrapper(eigen_m);
+        REQUIRE(rv == twrapper);
     }
 }
