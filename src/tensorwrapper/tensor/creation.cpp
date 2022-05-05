@@ -119,30 +119,37 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
     return ScalarTensorWrapper(ta_helpers::grab_diagonal(t_ta));
 }
 
-ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
-                                            double val) {
+ScalarTensorWrapper diagonal_tensor_wrapper(
+  double val, const Allocator<field::Scalar>& allocator,
+  const Shape<field::Scalar>& shape) {
     auto& world = TA::get_default_world();
 
     std::vector<TA::TiledRange1> dims{};
-    for(auto i : extents) { dims.push_back(ta_helpers::make_1D_trange(i, 1)); }
+    for(auto i : shape.extents()) {
+        dims.push_back(ta_helpers::make_1D_trange(i, 1));
+    }
     TA::TiledRange trange(dims);
 
     auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange, val);
 
-    return ScalarTensorWrapper{ta_diag};
+    return ScalarTensorWrapper(ta_diag, shape.clone(), allocator.clone());
 };
 
-ScalarTensorWrapper diagonal_tensor_wrapper(std::vector<std::size_t> extents,
-                                            std::vector<double> vals) {
+ScalarTensorWrapper diagonal_tensor_wrapper(
+  std::vector<double> vals, const Allocator<field::Scalar>& allocator,
+  const Shape<field::Scalar>& shape) {
     auto& world = TA::get_default_world();
 
     std::vector<TA::TiledRange1> dims{};
-    for(auto i : extents) { dims.push_back(ta_helpers::make_1D_trange(i, 1)); }
+    for(auto i : shape.extents()) {
+        dims.push_back(ta_helpers::make_1D_trange(i, 1));
+    }
     TA::TiledRange trange(dims);
 
     auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange,
                                                      vals.begin(), vals.end());
-    return ScalarTensorWrapper{ta_diag};
+
+    return ScalarTensorWrapper(ta_diag, shape.clone(), allocator.clone());
 };
 
 ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
