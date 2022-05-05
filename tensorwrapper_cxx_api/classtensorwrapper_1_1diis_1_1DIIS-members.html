@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: include/tensorwrapper/tensor/conversions.hpp Source File</title>
+<title>tensorwrapper: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,28 +62,24 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_7c3c95e4d293030b4c043e30c0c582e6.html">tensor</a></li>  </ul>
+<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1diis.html">diis</a></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">DIIS</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">conversions.hpp</div>  </div>
+<div class="title">tensorwrapper::diis::DIIS Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/tensor/tensor_wrapper.hpp&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span>tensorwrapper::tensor {</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;std::vector&lt;double&gt; to_vector(<span class="keyword">const</span> ScalarTensorWrapper&amp; t);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> to_contiguous_buffer(<span class="keyword">const</span> ScalarTensorWrapper&amp; t, <span class="keywordtype">double</span>* buffer_begin,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                          <span class="keyword">const</span> <span class="keywordtype">double</span>* buffer_end);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;ScalarTensorWrapper wrap_std_vector(std::vector&lt;double&gt; v);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;} <span class="comment">// namespace tensorwrapper::tensor</span></div>
-</div><!-- fragment --></div><!-- contents -->
+
+<p>This is the complete list of members for <a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a>, including all inherited members.</p>
+<table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#a93aa30122271e86a910647052363ed1c">DIIS</a>(size_type max_vec=5)</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#a465fde797bdc3e54947ae14c879ea486">extrapolate</a>(const tensor_type &amp;X, const tensor_type &amp;E)</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#a0b91ed0e49fbc014604f50995619e603">hash</a>(tensorwrapper::detail_::Hasher &amp;h) const</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#a7cbdeb85272709236e6a93d20fd6b23e">operator==</a>(const DIIS &amp;rhs) const noexcept</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#aa7f243d2f9829f415c226f89b1ad218d">size_type</a> typedef</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html#a08460fa672d95dce24495affc3cdb702">tensor_type</a> typedef</td><td class="entry"><a class="el" href="classtensorwrapper_1_1diis_1_1DIIS.html">tensorwrapper::diis::DIIS</a></td><td class="entry"></td></tr>
+</table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
