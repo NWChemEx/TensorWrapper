@@ -81,10 +81,10 @@ typename PIMPL_TYPE::buffer_reference PIMPL_TYPE::buffer() {
     throw std::runtime_error("Tensor has no buffer!!!!");
 }
 
-#if 0
 template<typename FieldType>
 typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
   const annotation_type& annotation) {
+    auto& m_tensor_ = buffer().variant();
     using new_variant = labeled_variant_t<variant_type>;
     auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
     return std::visit(l, m_tensor_);
@@ -93,11 +93,11 @@ typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
 template<typename FieldType>
 typename PIMPL_TYPE::const_labeled_type PIMPL_TYPE::annotate(
   const annotation_type& annotation) const {
+    auto& m_tensor_ = buffer().variant();
     using new_variant = const_labeled_type;
     auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
     return std::visit(l, m_tensor_);
 }
-#endif
 
 template<typename FieldType>
 typename PIMPL_TYPE::extents_type PIMPL_TYPE::extents() const {
@@ -156,35 +156,16 @@ void PIMPL_TYPE::reshape(shape_pointer pshape) {
 
 template<typename FieldType>
 typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::norm() const {
-    //auto t_ta      = std::get<0>(m_tensor_);
-    //auto dummy_idx = make_annotation("j");
-    //return t_ta(dummy_idx).norm().get();
     return buffer().norm();
 }
 
 template<typename FieldType>
 typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::sum() const {
-    //auto t_ta      = std::get<0>(m_tensor_);
-    //auto dummy_idx = make_annotation("j");
-    //return t_ta(dummy_idx).sum().get();
     return buffer().sum();
 }
 
 template<typename FieldType>
 typename PIMPL_TYPE::scalar_value_type PIMPL_TYPE::trace() const {
-    //if constexpr(std::is_same_v<FieldType, field::Tensor>) {
-    //    throw std::runtime_error("Trace not implemented for ToT");
-    //    return 0.0;
-    //} else {
-    //    auto dims = extents();
-    //    if((dims.size() != 2) || (dims[0] != dims[1])) {
-    //        throw std::runtime_error("Trace not defined for non-square matrix");
-    //        return 0.0;
-    //    }
-    //    auto t_ta      = std::get<0>(m_tensor_);
-    //    auto dummy_idx = make_annotation("j");
-    //    return t_ta(dummy_idx).trace().get();
-    //}
     return buffer().trace();
 }
 
