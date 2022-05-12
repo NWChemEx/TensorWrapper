@@ -61,6 +61,9 @@ public:
     /// Mutable reference to a hasher
     using hasher_reference = hasher_type&;
 
+    /// Type used for scalar values in the tensor
+    using scalar_value_type = double;
+
     /** @brief Defaulted default ctor.
      *
      *  This ctor creates an uninitialized Buffer instance. The resulting
@@ -346,6 +349,40 @@ public:
     void times(const_annotation_reference my_idx,
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
+
+    /** @brief Computes the norm of the underlying tensor
+     *
+     *  NRM = sqrt(T(:) * T(:))
+     *
+     *  @returns norm of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type norm() const;
+
+    /** @brief Computes the element sum of the underlying tensor
+     *
+     *  Recurses into ToT structure if needed
+     *
+     *  SUM = \sum_{ijk...} A(i,j,k,...) 
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type sum() const;
+
+    /** @brief Computes the trace of the underlying tensor
+     *
+     *  Invalid for anything but square matrices (rank-2 scalar tensors)
+     *
+     *  TRACE = \sum_i A(i,i)
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialized or underlying tensor
+     *    is non-scalar or with rank != 2. Strong throw gurantee.
+     */
+    scalar_value_type trace() const;
 
     /** @brief Compares two Buffers for value equality.
      *

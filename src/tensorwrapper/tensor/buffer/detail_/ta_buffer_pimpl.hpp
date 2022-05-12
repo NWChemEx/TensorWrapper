@@ -22,6 +22,8 @@ public:
 
     using typename base_type::hasher_reference;
 
+    using typename base_type::scalar_value_type;
+
     using default_tensor_type =
       typename traits_type::template tensor_type<double>;
 
@@ -66,6 +68,10 @@ private:
                 const_annotation_reference out_idx, base_type& out,
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
+
+    scalar_value_type norm_()  const override;
+    scalar_value_type sum_()   const override;
+    scalar_value_type trace_() const override;
 
     void hash_(hasher_reference h) const override;
 

@@ -111,6 +111,24 @@ void BUFFER::times(const_annotation_reference my_idx,
 }
 
 TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::norm() const {
+    assert_initialized_();
+    return m_pimpl_->norm();
+}
+
+TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::sum() const {
+    assert_initialized_();
+    return m_pimpl_->sum();
+}
+
+TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::trace() const {
+    assert_initialized_();
+    return m_pimpl_->trace();
+}
+
+TEMPLATE_PARAMS
 bool BUFFER::operator==(const Buffer& rhs) const noexcept {
     if(m_pimpl_ && rhs.m_pimpl_) {
         return m_pimpl_->are_equal(*rhs.m_pimpl_);

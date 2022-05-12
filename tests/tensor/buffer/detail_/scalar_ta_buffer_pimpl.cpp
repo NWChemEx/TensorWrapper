@@ -283,6 +283,59 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
         }
     }
 
+    SECTION("norm") {
+        SECTION("vector") {
+            auto ref_norm = vec_ta("i").norm().get();
+	    auto norm = vec.norm();
+	    REQUIRE(norm == ref_norm);
+	}
+
+	SECTION("matrix") {
+            auto ref_norm = mat_ta("i,j").norm().get();
+	    auto norm = mat.norm();
+	    REQUIRE(norm == ref_norm);
+	}
+
+	SECTION("tensor") {
+            auto ref_norm = t3d_ta("i,j,k").norm().get();
+	    auto norm = t3d.norm();
+	    REQUIRE(norm == ref_norm);
+	}
+    }
+
+    SECTION("sum") {
+        SECTION("vector") {
+            auto ref_sum = vec_ta("i").sum().get();
+	    auto sum = vec.sum();
+	    REQUIRE(sum == ref_sum);
+	}
+
+	SECTION("matrix") {
+            auto ref_sum = mat_ta("i,j").sum().get();
+	    auto sum = mat.sum();
+	    REQUIRE(sum == ref_sum);
+	}
+
+	SECTION("tensor") {
+            auto ref_sum = t3d_ta("i,j,k").sum().get();
+	    auto sum = t3d.sum();
+	    REQUIRE(sum == ref_sum);
+	}
+    }
+
+    SECTION("trace") {
+        SECTION("invalid") {
+          REQUIRE_THROWS_AS(vec.trace(), std::runtime_error);
+          REQUIRE_THROWS_AS(t3d.trace(), std::runtime_error);
+	}
+
+	SECTION("matrix") {
+            auto ref_trace = mat_ta("i,j").trace().get();
+	    auto trace = mat.trace();
+	    REQUIRE(trace == ref_trace);
+	}
+    }
+
     SECTION("operator std::string") {
         std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
         REQUIRE(corr == std::string(vec));

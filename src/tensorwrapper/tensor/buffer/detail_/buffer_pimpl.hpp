@@ -26,6 +26,9 @@ public:
     /// Type of a mutable hasher reference
     using hasher_reference = typename buffer_type::hasher_reference;
 
+    /// Type of scalar values
+    using scalar_value_type = typename buffer_type::scalar_value_type;
+
     /// Default constructs the derived class
     pimpl_pointer default_clone() const { return default_clone_(); }
 
@@ -88,6 +91,15 @@ public:
         times_(my_idx, out_idx, out, rhs_idx, rhs);
     }
 
+    /// Implements norm operation
+    inline scalar_value_type norm() const  { return norm_();  }
+
+    /// Implements element sum operation
+    inline scalar_value_type sum()  const  { return sum_();   }
+
+    /// Implements trace operation
+    inline scalar_value_type trace() const { return trace_(); }
+
     void hash(hasher_reference h) const { hash_(h); }
 
     explicit operator std::string() const { return to_str_(); }
@@ -146,6 +158,16 @@ private:
                         const_annotation_reference out_idx, my_type& out,
                         const_annotation_reference rhs_idx,
                         const my_type& rhs) const = 0;
+
+
+    /// To be overridden by derived class to implement norm
+    virtual scalar_value_type norm_()  const = 0;
+
+    /// To be overridden by derived class to implement element sum
+    virtual scalar_value_type sum_()   const = 0;
+
+    /// To be overridden by derived class to implement trace
+    virtual scalar_value_type trace_() const = 0;
 
     /// To be overridden by derived classs to implement hash
     virtual void hash_(hasher_reference h) const = 0;

@@ -288,6 +288,63 @@ TEST_CASE("Buffer<Scalar>") {
         }
     }
 
+    SECTION("norm") {
+        SECTION("vector") {
+            auto ref_norm = pvec->norm();
+	    auto norm     = vec.norm();
+	    REQUIRE(ref_norm == norm);
+	}
+        SECTION("matrix") {
+            auto ref_norm = pmat->norm();
+	    auto norm     = mat.norm();
+	    REQUIRE(ref_norm == norm);
+	}
+        SECTION("tensor") {
+            auto ref_norm = pt3d->norm();
+	    auto norm     = t3d.norm();
+	    REQUIRE(ref_norm == norm);
+	}
+        SECTION("throws if this is not initialized") {
+            using error_t = std::runtime_error;
+	    REQUIRE_THROWS_AS(defaulted.norm(), error_t);
+	}
+    }
+
+    SECTION("sum") {
+        SECTION("vector") {
+            auto ref_sum = pvec->sum();
+	    auto sum     = vec.sum();
+	    REQUIRE(ref_sum == sum);
+	}
+        SECTION("matrix") {
+            auto ref_sum = pmat->sum();
+	    auto sum     = mat.sum();
+	    REQUIRE(ref_sum == sum);
+	}
+        SECTION("tensor") {
+            auto ref_sum = pt3d->sum();
+	    auto sum     = t3d.sum();
+	    REQUIRE(ref_sum == sum);
+	}
+        SECTION("throws if this is not initialized") {
+            using error_t = std::runtime_error;
+	    REQUIRE_THROWS_AS(defaulted.sum(), error_t);
+	}
+    }
+
+    SECTION("trace") {
+        SECTION("invalid") {
+          REQUIRE_THROWS_AS(vec.trace(), std::runtime_error);
+          REQUIRE_THROWS_AS(t3d.trace(), std::runtime_error);
+	  REQUIRE_THROWS_AS(defaulted.trace(), std::runtime_error);
+	}
+	SECTION("matrix") {
+            auto ref_trace = pmat->trace();
+	    auto trace = mat.trace();
+	    REQUIRE(trace == ref_trace);
+	}
+    }
+
     SECTION("print") {
         std::stringstream ss;
         auto pss = &(vec.print(ss));
