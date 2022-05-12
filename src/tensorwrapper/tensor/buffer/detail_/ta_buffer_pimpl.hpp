@@ -80,6 +80,11 @@ private:
     std::string to_str_() const override;
 
     variant_type m_tensor_;
+
+
+    /// XXX These are to be removed
+    inline variant_type& variant_() override { return m_tensor_; }
+    inline const variant_type& variant_() const override { return m_tensor_; }
 };
 
 extern template class TABufferPIMPL<field::Scalar>;

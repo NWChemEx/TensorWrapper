@@ -146,6 +146,24 @@ std::ostream& BUFFER::print(std::ostream& os) const {
     return os << *m_pimpl_;
 }
 
+
+
+
+
+
+//XXX These are to be remove
+TEMPLATE_PARAMS
+typename BUFFER::variant_type& BUFFER::variant() {
+    assert_initialized_();
+    return m_pimpl_->variant();
+}
+
+TEMPLATE_PARAMS
+const typename BUFFER::variant_type& BUFFER::variant() const {
+    assert_initialized_();
+    return m_pimpl_->variant();
+}
+
 // -- Private methods ----------------------------------------------------------
 
 TEMPLATE_PARAMS

@@ -75,6 +75,12 @@ typename PIMPL_TYPE::const_buffer_reference PIMPL_TYPE::buffer() const {
     throw std::runtime_error("Tensor has no buffer!!!!");
 }
 
+template<typename FieldType>
+typename PIMPL_TYPE::buffer_reference PIMPL_TYPE::buffer() {
+    if(m_buffer_) return *m_buffer_;
+    throw std::runtime_error("Tensor has no buffer!!!!");
+}
+
 #if 0
 template<typename FieldType>
 typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
@@ -116,6 +122,19 @@ typename PIMPL_TYPE::annotation_type PIMPL_TYPE::make_annotation(
     }
     x += letter + std::to_string(r - 1);
     return x;
+}
+
+
+/// XXX THESE ARE TO BE REMOVED
+template<typename FieldType>
+typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() {
+    return buffer().variant();
+}
+
+/// XXX THESE ARE TO BE REMOVED
+template<typename FieldType>
+const typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() const {
+    return buffer().variant();
 }
 
 template<typename FieldType>

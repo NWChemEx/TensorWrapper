@@ -40,6 +40,7 @@ public:
     using buffer_type = typename buffer::Buffer<FieldType>;
     using buffer_pointer = std::unique_ptr<buffer_type>;
     using const_buffer_reference = const buffer_type&;
+    using buffer_reference = buffer_type&;
 
     /// Type which results from labeling the possible backend
     using labeled_variant_type = typename field_traits::labeled_variant_type;
@@ -127,6 +128,7 @@ public:
     const_shape_reference shape() const;
 
     const_buffer_reference buffer() const;
+    buffer_reference buffer();
 
     /** @brief Annotates the modes of the wrapped index with
      * the provided labels.
@@ -343,6 +345,8 @@ public:
      */
     bool operator==(const TensorWrapperPIMPL& rhs) const;
 
+    ///XXX These are to be removed
+    ///@{
     /** @brief Returns the variant in a read/write state.
      *
      *  @return The wrapped variant in a modifiable state.
@@ -355,6 +359,7 @@ public:
      * @return The wrapped variant in a read-only state.
      */
     const variant_type& variant() const;
+    ///@}
 
     void update_shape();
 
