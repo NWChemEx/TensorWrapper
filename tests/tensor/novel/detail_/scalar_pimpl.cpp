@@ -183,6 +183,35 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         }
     }
 
+    SECTION("reallocate") {
+        SECTION("vector") {
+            auto v_copy = v.clone();
+	    v_copy->reallocate(oalloc->clone());
+
+	    REQUIRE(v_copy->allocator() == *oalloc    );
+	    REQUIRE(v_copy->buffer()    == v2.buffer());
+	    REQUIRE(v_copy->buffer()    != v.buffer() );
+	}
+
+        SECTION("matrix") {
+            auto m_copy = m.clone();
+	    m_copy->reallocate(oalloc->clone());
+
+	    REQUIRE(m_copy->allocator() == *oalloc    );
+	    REQUIRE(m_copy->buffer()    == m2.buffer());
+	    REQUIRE(m_copy->buffer()    != m.buffer() );
+	}
+
+        SECTION("tensor") {
+            auto t_copy = t.clone();
+	    t_copy->reallocate(oalloc->clone());
+
+	    REQUIRE(t_copy->allocator() == *oalloc    );
+	    REQUIRE(t_copy->buffer()    == t2.buffer());
+	    REQUIRE(t_copy->buffer()    != t.buffer() );
+	}
+    }
+
 #if 0
 
     SECTION("CTors") {
@@ -252,37 +281,6 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
                 REQUIRE(std::get<0>(v3.variant()) == corr);
                 REQUIRE(v3.size() == 3);
             }
-        }
-    }
-    SECTION("reallocate") {
-        auto new_alloc = std::make_unique<other_alloc>();
-
-        SECTION("vector") {
-            auto tr = new_alloc->make_tiled_range(extents_type{3});
-            ta_tensor_type corr(new_alloc->runtime(), tr, {1, 2, 3});
-
-            pimpl_type v3(vector, new_alloc->clone());
-            REQUIRE(v3.allocator() == *alloc);
-            REQUIRE(std::get<0>(v3.variant()) == corr);
-        }
-
-        SECTION("matrix") {
-            auto tr = new_alloc->make_tiled_range(extents_type{2, 2});
-            ta_tensor_type corr(new_alloc->runtime(), tr, {{1, 2}, {3, 4}});
-
-            pimpl_type m3(matrix, new_alloc->clone());
-            REQUIRE(m3.allocator() == *alloc);
-            REQUIRE(std::get<0>(m3.variant()) == corr);
-        }
-
-        SECTION("tensor") {
-            auto tr = new_alloc->make_tiled_range(extents_type{2, 2, 2});
-            ta_tensor_type corr(new_alloc->runtime(), tr,
-                                {{{1, 2}, {3, 4}}, {{5, 6}, {7, 8}}});
-
-            pimpl_type t3(tensor, new_alloc->clone());
-            REQUIRE(t3.allocator() == *alloc);
-            REQUIRE(std::get<0>(t3.variant()) == corr);
         }
     }
 
