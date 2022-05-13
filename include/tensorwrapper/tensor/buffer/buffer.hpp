@@ -29,7 +29,6 @@ private:
     /// Type of the PIMPL
     using pimpl_type = detail_::BufferPIMPL<FieldType>;
 
-
     /// Trait for determining if the fields are the same
     template<typename T>
     static constexpr bool same_field_v = std::is_same_v<FieldType, T>;
@@ -42,7 +41,6 @@ private:
     using my_type = Buffer<FieldType>;
 
 public:
-
     /// XXX: These are to be removed, they are here to expose the variant_type
     /// XXX: Inclusion the FieldTraits breaks novel:: encapsulation
     using backend_traits = tensor::backends::TiledArrayTraits<FieldType>;
@@ -372,7 +370,7 @@ public:
      *
      *  Recurses into ToT structure if needed
      *
-     *  SUM = \sum_{ijk...} A(i,j,k,...) 
+     *  SUM = \sum_{ijk...} A(i,j,k,...)
      *
      *  @returns element sum of underlying tensor
      *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
@@ -387,8 +385,8 @@ public:
      *  TRACE = \sum_i A(i,i)
      *
      *  @returns element sum of underlying tensor
-     *  @throw std::runtime_error if @p rhs is not initialized or underlying tensor
-     *    is non-scalar or with rank != 2. Strong throw gurantee.
+     *  @throw std::runtime_error if @p rhs is not initialized or underlying
+     * tensor is non-scalar or with rank != 2. Strong throw gurantee.
      */
     scalar_value_type trace() const;
 

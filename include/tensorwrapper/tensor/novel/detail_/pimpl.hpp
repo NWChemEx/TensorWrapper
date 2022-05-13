@@ -37,10 +37,10 @@ public:
     using variant_type = typename field_traits::variant_type;
 
     /// Type which holds type-erased tensor instance
-    using buffer_type = typename buffer::Buffer<FieldType>;
-    using buffer_pointer = std::unique_ptr<buffer_type>;
+    using buffer_type            = typename buffer::Buffer<FieldType>;
+    using buffer_pointer         = std::unique_ptr<buffer_type>;
     using const_buffer_reference = const buffer_type&;
-    using buffer_reference = buffer_type&;
+    using buffer_reference       = buffer_type&;
 
     /// Type which results from labeling the possible backend
     using labeled_variant_type = typename field_traits::labeled_variant_type;
@@ -345,7 +345,7 @@ public:
      */
     bool operator==(const TensorWrapperPIMPL& rhs) const;
 
-    ///XXX These are to be removed
+    /// XXX These are to be removed
     ///@{
     /** @brief Returns the variant in a read/write state.
      *

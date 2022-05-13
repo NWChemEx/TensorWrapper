@@ -69,8 +69,8 @@ private:
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
 
-    scalar_value_type norm_()  const override;
-    scalar_value_type sum_()   const override;
+    scalar_value_type norm_() const override;
+    scalar_value_type sum_() const override;
     scalar_value_type trace_() const override;
 
     void hash_(hasher_reference h) const override;
@@ -80,7 +80,6 @@ private:
     std::string to_str_() const override;
 
     variant_type m_tensor_;
-
 
     /// XXX These are to be removed
     inline variant_type& variant_() override { return m_tensor_; }

@@ -1,11 +1,11 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-#include "tensorwrapper/tensor/type_traits/field_traits.hpp"
-#include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
 #include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/novel/detail_/labeled_tensor_wrapper.hpp"
 #include "tensorwrapper/tensor/novel/shapes/shape.hpp"
+#include "tensorwrapper/tensor/type_traits/field_traits.hpp"
+#include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
 
 namespace tensorwrapper::tensor::novel {
 namespace detail_ {
@@ -145,7 +145,6 @@ public:
     /// Type used for describing the shape of the tensor
     using shape_type = Shape<FieldType>;
 
-
     using index_type = typename shape_type::index_type;
 
     /// Type of a pointer to a shape
@@ -218,7 +217,6 @@ public:
     explicit TensorWrapper(
       shape_pointer shape,
       allocator_pointer p = default_allocator<field_type>());
-
 
     TensorWrapper(n_d_initializer_list_t<element_type, 1> il,
                   allocator_pointer p);
@@ -724,4 +722,4 @@ using TensorOfTensorsWrapper = TensorWrapper<field::Tensor>;
 extern template class TensorWrapper<field::Scalar>;
 extern template class TensorWrapper<field::Tensor>;
 
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

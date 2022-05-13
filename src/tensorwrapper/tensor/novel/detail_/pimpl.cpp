@@ -45,16 +45,16 @@ auto make_extents(VariantType&& v) {
 template<typename FieldType>
 PIMPL_TYPE::TensorWrapperPIMPL(buffer_pointer b, shape_pointer s,
                                allocator_pointer p) :
-  m_buffer_(std::move(b)),
-  m_allocator_(std::move(p)),
-  m_shape_(std::move(s)) { }
+  m_buffer_(std::move(b)), m_allocator_(std::move(p)), m_shape_(std::move(s)) {}
 
 template<typename FieldType>
 typename PIMPL_TYPE::pimpl_pointer PIMPL_TYPE::clone() const {
     allocator_pointer new_alloc(m_allocator_ ? m_allocator_->clone() : nullptr);
     shape_pointer new_shape(m_shape_ ? m_shape_->clone() : nullptr);
-    buffer_pointer new_buffer(m_buffer_ ? std::make_unique<buffer_type>(*m_buffer_) : nullptr);
-    return std::make_unique<my_type>( std::move(new_buffer), std::move(new_shape), std::move(new_alloc) );
+    buffer_pointer new_buffer(
+      m_buffer_ ? std::make_unique<buffer_type>(*m_buffer_) : nullptr);
+    return std::make_unique<my_type>(
+      std::move(new_buffer), std::move(new_shape), std::move(new_alloc));
 }
 
 template<typename FieldType>
@@ -84,7 +84,7 @@ typename PIMPL_TYPE::buffer_reference PIMPL_TYPE::buffer() {
 template<typename FieldType>
 typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
   const annotation_type& annotation) {
-    auto& m_tensor_ = buffer().variant();
+    auto& m_tensor_   = buffer().variant();
     using new_variant = labeled_variant_t<variant_type>;
     auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
     return std::visit(l, m_tensor_);
@@ -93,7 +93,7 @@ typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
 template<typename FieldType>
 typename PIMPL_TYPE::const_labeled_type PIMPL_TYPE::annotate(
   const annotation_type& annotation) const {
-    auto& m_tensor_ = buffer().variant();
+    auto& m_tensor_   = buffer().variant();
     using new_variant = const_labeled_type;
     auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
     return std::visit(l, m_tensor_);
@@ -103,7 +103,7 @@ template<typename FieldType>
 typename PIMPL_TYPE::extents_type PIMPL_TYPE::extents() const {
     if(m_shape_) {
         auto ex = m_shape_->extents();
-	if( ex != extents_type{} ) return ex;
+        if(ex != extents_type{}) return ex;
     }
     return extents_type{};
 }
@@ -123,7 +123,6 @@ typename PIMPL_TYPE::annotation_type PIMPL_TYPE::make_annotation(
     x += letter + std::to_string(r - 1);
     return x;
 }
-
 
 /// XXX THESE ARE TO BE REMOVED
 template<typename FieldType>
@@ -226,10 +225,11 @@ bool PIMPL_TYPE::operator==(const TensorWrapperPIMPL& rhs) const {
     } else if(!m_allocator_ != !rhs.m_allocator_)
         return false;
 
-    // Compare buffers 
+    // Compare buffers
     if(m_buffer_ && rhs.m_buffer_) {
         return *m_buffer_ == *rhs.m_buffer_;
-    } else return m_buffer_ == rhs.m_buffer_;
+    } else
+        return m_buffer_ == rhs.m_buffer_;
 }
 
 template<typename FieldType>
@@ -295,8 +295,8 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
     };
     std::visit(l, m_tensor_);
 #else
-    if( m_allocator_ and m_shape_ ) {
-        auto tmp = p.reallocate(*m_buffer_, *m_shape_);
+    if(m_allocator_ and m_shape_) {
+        auto tmp  = p.reallocate(*m_buffer_, *m_shape_);
         m_buffer_ = std::make_unique<buffer_type>(std::move(tmp));
     }
 #endif
@@ -344,11 +344,12 @@ void PIMPL_TYPE::shuffle_(const extents_type& shape) {
 }
 
 template<typename FieldType>
-typename PIMPL_TYPE::rank_type PIMPL_TYPE::inner_rank_(index_type idx) 
-  const {
-  if constexpr(field::is_tensor_field_v<FieldType>)
-    return m_shape_ ? m_shape_->inner_extents().at(idx).extents().size() : 0;
-  else return 0;
+typename PIMPL_TYPE::rank_type PIMPL_TYPE::inner_rank_(index_type idx) const {
+    if constexpr(field::is_tensor_field_v<FieldType>)
+        return m_shape_ ? m_shape_->inner_extents().at(idx).extents().size() :
+                          0;
+    else
+        return 0;
 }
 
 template<typename FieldType>
@@ -361,4 +362,4 @@ typename PIMPL_TYPE::rank_type PIMPL_TYPE::outer_rank_() const noexcept {
 template class TensorWrapperPIMPL<field::Scalar>;
 template class TensorWrapperPIMPL<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_

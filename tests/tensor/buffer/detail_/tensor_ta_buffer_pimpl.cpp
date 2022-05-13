@@ -270,47 +270,47 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
     SECTION("norm") {
         SECTION("vov") {
             auto ref_norm = vov_ta("i;j").norm().get();
-	    auto norm = vov.norm();
-	    REQUIRE(ref_norm == norm);
-	}
+            auto norm     = vov.norm();
+            REQUIRE(ref_norm == norm);
+        }
 
         SECTION("vom") {
             auto ref_norm = vom_ta("i;j,k").norm().get();
-	    auto norm = vom.norm();
-	    REQUIRE(ref_norm == norm);
-	}
+            auto norm     = vom.norm();
+            REQUIRE(ref_norm == norm);
+        }
 
         SECTION("mov") {
             auto ref_norm = mov_ta("i,j;k").norm().get();
-	    auto norm = mov.norm();
-	    REQUIRE(ref_norm == norm);
-	}
+            auto norm     = mov.norm();
+            REQUIRE(ref_norm == norm);
+        }
     }
 
     SECTION("sum") {
         SECTION("vov") {
             auto ref_sum = vov_ta("i;j").sum().get();
-	    auto sum = vov.sum();
-	    REQUIRE(ref_sum == sum);
-	}
+            auto sum     = vov.sum();
+            REQUIRE(ref_sum == sum);
+        }
 
         SECTION("vom") {
             auto ref_sum = vom_ta("i;j,k").sum().get();
-	    auto sum = vom.sum();
-	    REQUIRE(ref_sum == sum);
-	}
+            auto sum     = vom.sum();
+            REQUIRE(ref_sum == sum);
+        }
 
         SECTION("mov") {
             auto ref_sum = mov_ta("i,j;k").sum().get();
-	    auto sum = mov.sum();
-	    REQUIRE(ref_sum == sum);
-	}
+            auto sum     = mov.sum();
+            REQUIRE(ref_sum == sum);
+        }
     }
 
     SECTION("trace") {
-       REQUIRE_THROWS_AS( vov.trace(), std::runtime_error );
-       REQUIRE_THROWS_AS( vom.trace(), std::runtime_error );
-       REQUIRE_THROWS_AS( mov.trace(), std::runtime_error );
+        REQUIRE_THROWS_AS(vov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(vom.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
     }
 
     SECTION("operator std::string") {

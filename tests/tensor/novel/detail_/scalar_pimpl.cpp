@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 //#include "../../test_tensor.hpp"
-#include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 #include "../../buffer/make_pimpl.hpp"
+#include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 
 using namespace tensorwrapper::tensor;
 using namespace tensorwrapper::tensor::novel;
@@ -18,7 +18,7 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
     using field_type     = field::Scalar;
     using pimpl_type     = novel::detail_::TensorWrapperPIMPL<field_type>;
     using buffer_type    = typename pimpl_type::buffer_type;
-    using buffer_pointer    = typename pimpl_type::buffer_pointer;
+    using buffer_pointer = typename pimpl_type::buffer_pointer;
     using variant_type   = typename pimpl_type::variant_type;
     using ta_tensor_type = std::variant_alternative_t<0, variant_type>;
     using shape_type     = typename pimpl_type::shape_type;
@@ -31,15 +31,15 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
 
     auto palloc = novel::default_allocator<field_type>();
     auto oalloc = novel::allocator::ta_allocator<field_type>(
-        Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
 
     buffer_pointer vec_buffer_obt, mat_buffer_obt, t3d_buffer_obt;
     buffer_pointer vec_buffer_set, mat_buffer_set, t3d_buffer_set;
     {
         auto [pv, pm, pt] = testing::make_pimpl<field_type>();
-	vec_buffer_obt = std::make_unique<buffer_type>(pv->clone());
-	mat_buffer_obt = std::make_unique<buffer_type>(pm->clone());
-	t3d_buffer_obt = std::make_unique<buffer_type>(pt->clone());
+        vec_buffer_obt    = std::make_unique<buffer_type>(pv->clone());
+        mat_buffer_obt    = std::make_unique<buffer_type>(pm->clone());
+        t3d_buffer_obt    = std::make_unique<buffer_type>(pt->clone());
 
         ta_trange_type se_tr_vec{{0, 1, 2, 3}};
         ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
@@ -47,59 +47,65 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         pv->retile(se_tr_vec);
         pm->retile(se_tr_mat);
         pt->retile(se_tr_ten);
-	vec_buffer_set = std::make_unique<buffer_type>(std::move(pv));
-	mat_buffer_set = std::make_unique<buffer_type>(std::move(pm));
-	t3d_buffer_set = std::make_unique<buffer_type>(std::move(pt));
+        vec_buffer_set = std::make_unique<buffer_type>(std::move(pv));
+        mat_buffer_set = std::make_unique<buffer_type>(std::move(pm));
+        t3d_buffer_set = std::make_unique<buffer_type>(std::move(pt));
     }
 
     auto v_shape = std::make_unique<shape_type>(extents_type{3});
     auto m_shape = std::make_unique<shape_type>(extents_type{2, 2});
     auto t_shape = std::make_unique<shape_type>(extents_type{2, 2, 2});
 
-    auto from_buffer = [](auto&& b){
-        return std::make_unique<buffer_type>( b->pimpl()->clone() );
+    auto from_buffer = [](auto&& b) {
+        return std::make_unique<buffer_type>(b->pimpl()->clone());
     };
 
-    pimpl_type v(from_buffer(vec_buffer_obt), v_shape->clone(), palloc->clone());
-    pimpl_type m(from_buffer(mat_buffer_obt), m_shape->clone(), palloc->clone());
-    pimpl_type t(from_buffer(t3d_buffer_obt), t_shape->clone(), palloc->clone());
+    pimpl_type v(from_buffer(vec_buffer_obt), v_shape->clone(),
+                 palloc->clone());
+    pimpl_type m(from_buffer(mat_buffer_obt), m_shape->clone(),
+                 palloc->clone());
+    pimpl_type t(from_buffer(t3d_buffer_obt), t_shape->clone(),
+                 palloc->clone());
 
-    pimpl_type v2(from_buffer(vec_buffer_set), v_shape->clone(), oalloc->clone());
-    pimpl_type m2(from_buffer(mat_buffer_set), m_shape->clone(), oalloc->clone());
-    pimpl_type t2(from_buffer(t3d_buffer_set), t_shape->clone(), oalloc->clone());
+    pimpl_type v2(from_buffer(vec_buffer_set), v_shape->clone(),
+                  oalloc->clone());
+    pimpl_type m2(from_buffer(mat_buffer_set), m_shape->clone(),
+                  oalloc->clone());
+    pimpl_type t2(from_buffer(t3d_buffer_set), t_shape->clone(),
+                  oalloc->clone());
 
     SECTION("CTors") {
-	SECTION("From Components") {
-            REQUIRE( v.allocator() == *palloc         );
-	    REQUIRE( v.shape()     == *v_shape        );
-	    REQUIRE( v.buffer()    == *vec_buffer_obt );
-	    REQUIRE( v.size()      == 3               );
+        SECTION("From Components") {
+            REQUIRE(v.allocator() == *palloc);
+            REQUIRE(v.shape() == *v_shape);
+            REQUIRE(v.buffer() == *vec_buffer_obt);
+            REQUIRE(v.size() == 3);
 
-            REQUIRE( m.allocator() == *palloc         );
-	    REQUIRE( m.shape()     == *m_shape        );
-	    REQUIRE( m.buffer()    == *mat_buffer_obt );
-	    REQUIRE( m.size()      == 4               );
+            REQUIRE(m.allocator() == *palloc);
+            REQUIRE(m.shape() == *m_shape);
+            REQUIRE(m.buffer() == *mat_buffer_obt);
+            REQUIRE(m.size() == 4);
 
-            REQUIRE( t.allocator() == *palloc         );
-	    REQUIRE( t.shape()     == *t_shape        );
-	    REQUIRE( t.buffer()    == *t3d_buffer_obt );
-	    REQUIRE( t.size()      == 8               );
+            REQUIRE(t.allocator() == *palloc);
+            REQUIRE(t.shape() == *t_shape);
+            REQUIRE(t.buffer() == *t3d_buffer_obt);
+            REQUIRE(t.size() == 8);
 
-            REQUIRE( v2.allocator() == *oalloc         );
-	    REQUIRE( v2.shape()     == *v_shape        );
-	    REQUIRE( v2.buffer()    == *vec_buffer_set );
-	    REQUIRE( v2.size()      == 3               );
+            REQUIRE(v2.allocator() == *oalloc);
+            REQUIRE(v2.shape() == *v_shape);
+            REQUIRE(v2.buffer() == *vec_buffer_set);
+            REQUIRE(v2.size() == 3);
 
-            REQUIRE( m2.allocator() == *oalloc         );
-	    REQUIRE( m2.shape()     == *m_shape        );
-	    REQUIRE( m2.buffer()    == *mat_buffer_set );
-	    REQUIRE( m2.size()      == 4               );
+            REQUIRE(m2.allocator() == *oalloc);
+            REQUIRE(m2.shape() == *m_shape);
+            REQUIRE(m2.buffer() == *mat_buffer_set);
+            REQUIRE(m2.size() == 4);
 
-            REQUIRE( t2.allocator() == *oalloc         );
-	    REQUIRE( t2.shape()     == *t_shape        );
-	    REQUIRE( t2.buffer()    == *t3d_buffer_set );
-	    REQUIRE( t2.size()      == 8               );
-	}
+            REQUIRE(t2.allocator() == *oalloc);
+            REQUIRE(t2.shape() == *t_shape);
+            REQUIRE(t2.buffer() == *t3d_buffer_set);
+            REQUIRE(t2.size() == 8);
+        }
 
         SECTION("clone") {
             auto v_copy = v.clone();
@@ -176,7 +182,6 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
             REQUIRE(corr == ss.str());
         }
     }
-
 
 #if 0
 

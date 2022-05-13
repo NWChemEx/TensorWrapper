@@ -95,10 +95,10 @@ public:
     }
 
     /// Implements norm operation
-    inline scalar_value_type norm() const  { return norm_();  }
+    inline scalar_value_type norm() const { return norm_(); }
 
     /// Implements element sum operation
-    inline scalar_value_type sum()  const  { return sum_();   }
+    inline scalar_value_type sum() const { return sum_(); }
 
     /// Implements trace operation
     inline scalar_value_type trace() const { return trace_(); }
@@ -166,12 +166,11 @@ private:
                         const_annotation_reference rhs_idx,
                         const my_type& rhs) const = 0;
 
-
     /// To be overridden by derived class to implement norm
-    virtual scalar_value_type norm_()  const = 0;
+    virtual scalar_value_type norm_() const = 0;
 
     /// To be overridden by derived class to implement element sum
-    virtual scalar_value_type sum_()   const = 0;
+    virtual scalar_value_type sum_() const = 0;
 
     /// To be overridden by derived class to implement trace
     virtual scalar_value_type trace_() const = 0;
@@ -186,7 +185,7 @@ private:
     virtual std::string to_str_() const = 0;
 
     /// XXX These are to be removed
-    virtual variant_type& variant_() = 0;
+    virtual variant_type& variant_()             = 0;
     virtual const variant_type& variant_() const = 0;
 };
 

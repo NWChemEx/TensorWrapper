@@ -146,12 +146,7 @@ std::ostream& BUFFER::print(std::ostream& os) const {
     return os << *m_pimpl_;
 }
 
-
-
-
-
-
-//XXX These are to be remove
+// XXX These are to be remove
 TEMPLATE_PARAMS
 typename BUFFER::variant_type& BUFFER::variant() {
     assert_initialized_();

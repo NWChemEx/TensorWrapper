@@ -23,8 +23,8 @@ namespace tensorwrapper::tensor::novel::detail_ {
  *  @tparam TensorWrapperType The type of the TensorWrapper being annotated.
  */
 template<typename TensorWrapperType>
-class LabeledTensorWrapper
-  : public tensorwrapper::tensor::detail_::OpLayer<LabeledTensorWrapper<TensorWrapperType>> {
+class LabeledTensorWrapper : public tensorwrapper::tensor::detail_::OpLayer<
+                               LabeledTensorWrapper<TensorWrapperType>> {
 public:
     /// Type used for annotation
     using annotation_type = std::string;
@@ -110,4 +110,4 @@ auto LABELED_TENSOR_WRAPPER::variant(LabeledTensorWrapper<ResultType>&) const {
 
 #undef LABELED_TENSOR_WRAPPER
 
-} // namespace tensorwrapper::tensor::detail_
+} // namespace tensorwrapper::tensor::novel::detail_
