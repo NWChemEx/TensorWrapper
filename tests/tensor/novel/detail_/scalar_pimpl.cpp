@@ -212,6 +212,78 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         }
     }
 
+    SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
+
+        auto lhs = hash_objects(m);
+
+        SECTION("Same") {
+            pimpl_type rhs(from_buffer(mat_buffer_obt), m_shape->clone(), 
+                palloc->clone());
+            REQUIRE(lhs == hash_objects(rhs));
+        }
+
+        SECTION("Different values") {
+	    auto rhs_buffer = from_buffer(mat_buffer_obt);
+	    mat_buffer_obt->scale("i,j","i,j",*rhs_buffer,4.2);
+            
+            pimpl_type rhs(from_buffer(rhs_buffer), m_shape->clone(), 
+			    palloc->clone());
+            REQUIRE(lhs != hash_objects(rhs));
+        }
+
+        SECTION("Different shape") {
+            using sparse_shape    = SparseShape<field_type>;
+            using sparse_map_type = typename sparse_shape::sparse_map_type;
+            using index_type      = typename sparse_map_type::key_type;
+
+            index_type i0{0}, i1{1};
+            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
+            auto new_shape =
+              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
+
+            pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(), 
+		palloc->clone());
+            REQUIRE(lhs != hash_objects(rhs));
+        }
+    }
+
+    SECTION("operator==") {
+        SECTION("Same") {
+            pimpl_type rhs(from_buffer(mat_buffer_obt), m_shape->clone(), palloc->clone());
+            REQUIRE(m == rhs);
+        }
+
+        SECTION("Different values") {
+	    auto rhs_buffer = from_buffer(mat_buffer_obt);
+	    mat_buffer_obt->scale("i,j","i,j",*rhs_buffer,4.2);
+            
+            pimpl_type rhs(from_buffer(rhs_buffer), m_shape->clone(), 
+			    palloc->clone());
+            REQUIRE_FALSE(m == rhs);
+        }
+
+        SECTION("Different Allocator") {
+            REQUIRE_FALSE(m == m2);
+	}
+
+        SECTION("Different shape") {
+            using sparse_shape    = SparseShape<field_type>;
+            using sparse_map_type = typename sparse_shape::sparse_map_type;
+            using index_type      = typename sparse_map_type::key_type;
+
+            index_type i0{0}, i1{1};
+            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
+            auto new_shape =
+              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
+
+            pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(), 
+		palloc->clone());
+	    REQUIRE( m.buffer() == rhs.buffer() ); // Sanity check
+            REQUIRE_FALSE(m == rhs);
+        }
+    }
+
 #if 0
 
     SECTION("CTors") {
@@ -425,69 +497,6 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
             pimpl_type corr(corr_data, p->clone());
             auto slice = v.slice({0ul}, {2ul}, std::move(p));
             REQUIRE(*slice == corr);
-        }
-    }
-
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        auto lhs = hash_objects(m2);
-
-        SECTION("Same") {
-            pimpl_type rhs(matrix, m_shape->clone(), alloc->clone());
-            REQUIRE(lhs == hash_objects(rhs));
-        }
-
-        SECTION("Different values") {
-            auto tr = alloc->make_tiled_range(extents_type{2, 2});
-            ta_tensor_type rhs_data(alloc->runtime(), tr,
-                                    {{2.0, 3.0}, {4.0, 5.0}});
-            pimpl_type rhs(rhs_data, m_shape->clone(), alloc->clone());
-            REQUIRE(lhs != hash_objects(rhs));
-        }
-
-        SECTION("Different shape") {
-            using sparse_shape    = SparseShape<field_type>;
-            using sparse_map_type = typename sparse_shape::sparse_map_type;
-            using index_type      = typename sparse_map_type::key_type;
-
-            index_type i0{0}, i1{1};
-            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-            auto new_shape =
-              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
-
-            pimpl_type rhs(matrix, new_shape->clone(), alloc->clone());
-            REQUIRE(lhs != hash_objects(rhs));
-        }
-    }
-
-    SECTION("operator==") {
-        SECTION("Same") {
-            pimpl_type rhs(matrix, m_shape->clone(), alloc->clone());
-            REQUIRE(m2 == rhs);
-        }
-
-        SECTION("Different values") {
-            auto tr = alloc->make_tiled_range(extents_type{2, 2});
-            ta_tensor_type rhs_data(alloc->runtime(), tr,
-                                    {{2.0, 3.0}, {4.0, 5.0}});
-            pimpl_type rhs(rhs_data, m_shape->clone(), alloc->clone());
-            REQUIRE_FALSE(m2 == rhs);
-        }
-
-        SECTION("Different shape") {
-            using sparse_shape    = SparseShape<field_type>;
-            using sparse_map_type = typename sparse_shape::sparse_map_type;
-            using index_type      = typename sparse_map_type::key_type;
-
-            index_type i0{0}, i1{1};
-            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-            auto new_shape =
-              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
-
-            pimpl_type rhs(matrix, new_shape->clone(), alloc->clone());
-            REQUIRE_FALSE(m2 == rhs);
         }
     }
 #endif
