@@ -186,30 +186,30 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
     SECTION("reallocate") {
         SECTION("vector") {
             auto v_copy = v.clone();
-	    v_copy->reallocate(oalloc->clone());
+            v_copy->reallocate(oalloc->clone());
 
-	    REQUIRE(v_copy->allocator() == *oalloc    );
-	    REQUIRE(v_copy->buffer()    == v2.buffer());
-	    REQUIRE(v_copy->buffer()    != v.buffer() );
-	}
+            REQUIRE(v_copy->allocator() == *oalloc);
+            REQUIRE(v_copy->buffer() == v2.buffer());
+            REQUIRE(v_copy->buffer() != v.buffer());
+        }
 
         SECTION("matrix") {
             auto m_copy = m.clone();
-	    m_copy->reallocate(oalloc->clone());
+            m_copy->reallocate(oalloc->clone());
 
-	    REQUIRE(m_copy->allocator() == *oalloc    );
-	    REQUIRE(m_copy->buffer()    == m2.buffer());
-	    REQUIRE(m_copy->buffer()    != m.buffer() );
-	}
+            REQUIRE(m_copy->allocator() == *oalloc);
+            REQUIRE(m_copy->buffer() == m2.buffer());
+            REQUIRE(m_copy->buffer() != m.buffer());
+        }
 
         SECTION("tensor") {
             auto t_copy = t.clone();
-	    t_copy->reallocate(oalloc->clone());
+            t_copy->reallocate(oalloc->clone());
 
-	    REQUIRE(t_copy->allocator() == *oalloc    );
-	    REQUIRE(t_copy->buffer()    == t2.buffer());
-	    REQUIRE(t_copy->buffer()    != t.buffer() );
-	}
+            REQUIRE(t_copy->allocator() == *oalloc);
+            REQUIRE(t_copy->buffer() == t2.buffer());
+            REQUIRE(t_copy->buffer() != t.buffer());
+        }
     }
 
 #if 0
