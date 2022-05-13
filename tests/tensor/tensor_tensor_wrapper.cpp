@@ -86,6 +86,24 @@ TEMPLATE_LIST_TEST_CASE("TensorWrapper<Tensor>", "", tot_variant) {
         REQUIRE(vom.rank() == 3);
     }
 
+    SECTION("norm()") {
+        REQUIRE(vov.norm() == Approx(5.47722557).margin(1E-8));
+        REQUIRE(mov.norm() == Approx(14.2828568).margin(1E-8));
+        REQUIRE(vom.norm() == Approx(14.2828568).margin(1E-8));
+    }
+
+    SECTION("sum()") {
+        REQUIRE(vov.sum() == 10);
+        REQUIRE(mov.sum() == 36);
+        REQUIRE(vom.sum() == 36);
+    }
+
+    SECTION("trace()") {
+        REQUIRE_THROWS_AS(vov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(vom.trace(), std::runtime_error);
+    }
+
     SECTION("operator()") {
         // Basically just testing that it compiles, real test happens in
         // labeled_tensor_wrapper.cpp

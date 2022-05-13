@@ -74,6 +74,9 @@ public:
     /// Type used for initializer lists of sizes
     using il_type = typename parent_type::il_type;
 
+    /// Type used for scalar values in the tensor
+    using scalar_value_type = typename parent_type::scalar_value_type;
+
     /** @brief Creates a new PIMPL by using the provided allocator and wrapping
      *         the provided tensor.
      *
@@ -261,6 +264,27 @@ public:
      * guarantee.
      */
     void reshape(shape_pointer shape);
+
+    /** @brief Returns the norm of the wrapped tensor.
+     *
+     *  @return The value of the tensor's norm.
+     */
+    scalar_value_type norm() const;
+
+    /** @brief Returns the sum of the wrapped tensor.
+     *
+     *  @return The value of the sum of the tensor's elements.
+     */
+    scalar_value_type sum() const;
+
+    /** @brief Returns the trace of the wrapped tensor.
+     *
+     *  @return The value of the tensor's trace.
+     *
+     *  @throw std::runtime_error if the tensor is a tensor of tensors or if the
+     *  tensor is not a square matrix.
+     */
+    scalar_value_type trace() const;
 
     /** @brief Returns the number of elements in this tensor.
      *

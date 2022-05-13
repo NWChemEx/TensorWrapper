@@ -36,6 +36,14 @@ TEMPLATE_PARAMS
 BUFFER::~Buffer() noexcept = default;
 
 TEMPLATE_PARAMS
+typename BUFFER::pimpl_type* BUFFER::pimpl() noexcept { return m_pimpl_.get(); }
+
+TEMPLATE_PARAMS
+const typename BUFFER::pimpl_type* BUFFER::pimpl() const noexcept {
+    return m_pimpl_.get();
+}
+
+TEMPLATE_PARAMS
 void BUFFER::swap(Buffer& rhs) noexcept { std::swap(m_pimpl_, rhs.m_pimpl_); }
 
 TEMPLATE_PARAMS
