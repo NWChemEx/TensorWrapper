@@ -1,6 +1,5 @@
 #pragma once
 #include "../../../../../src/tensorwrapper/ta_helpers/einsum/einsum.hpp" /// TODO: Remove this
-#include "../../../../../src/tensorwrapper/ta_helpers/ta_headers.hpp" /// TODO: Remove this
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/type_traits/labeled_variant.hpp"
 #include "tensorwrapper/tensor/type_traits/variant_type.hpp"
