@@ -42,6 +42,5 @@ TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
 
         std::cout << "Time taken by operation(TW): " << duration_tw.count()
                   << " microseconds" << std::endl;
-
     }
 }
