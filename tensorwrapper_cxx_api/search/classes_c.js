@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['tabufferpimpl_236',['TABufferPIMPL',['../classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1TABufferPIMPL.html',1,'tensorwrapper::tensor::buffer::detail_']]],
-  ['tensor_237',['Tensor',['../structtensorwrapper_1_1tensor_1_1field_1_1Tensor.html',1,'tensorwrapper::tensor::field']]],
-  ['tensortraits_238',['TensorTraits',['../structtensorwrapper_1_1tensor_1_1TensorTraits.html',1,'tensorwrapper::tensor']]],
-  ['tensortraits_3c_20const_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_239',['TensorTraits&lt; const TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01const_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
-  ['tensortraits_3c_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_240',['TensorTraits&lt; TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
-  ['tensorwrapper_241',['TensorWrapper',['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html',1,'tensorwrapper::tensor']]],
-  ['tensorwrapperpimpl_242',['TensorWrapperPIMPL',['../classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html',1,'tensorwrapper::tensor::detail_']]],
-  ['tiledarrayallocator_243',['TiledArrayAllocator',['../classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1TiledArrayAllocator.html',1,'tensorwrapper::tensor::novel::allocator']]],
-  ['tiledarraytraits_244',['TiledArrayTraits',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html',1,'tensorwrapper::tensor::backends']]],
-  ['tiledarraytraits_3c_20field_3a_3ascalar_20_3e_245',['TiledArrayTraits&lt; field::Scalar &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Scalar_01_4.html',1,'tensorwrapper::tensor::backends']]],
-  ['tiledarraytraits_3c_20field_3a_3atensor_20_3e_246',['TiledArrayTraits&lt; field::Tensor &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Tensor_01_4.html',1,'tensorwrapper::tensor::backends']]]
+  ['tabufferpimpl_267',['TABufferPIMPL',['../classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1TABufferPIMPL.html',1,'tensorwrapper::tensor::buffer::detail_']]],
+  ['tensor_268',['Tensor',['../structtensorwrapper_1_1tensor_1_1field_1_1Tensor.html',1,'tensorwrapper::tensor::field']]],
+  ['tensortraits_269',['TensorTraits',['../structtensorwrapper_1_1tensor_1_1TensorTraits.html',1,'tensorwrapper::tensor']]],
+  ['tensortraits_3c_20const_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_270',['TensorTraits&lt; const TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01const_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
+  ['tensortraits_3c_20ta_3a_3adistarray_3c_20tiletype_2c_20policytype_20_3e_20_3e_271',['TensorTraits&lt; TA::DistArray&lt; TileType, PolicyType &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1TensorTraits_3_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html',1,'tensorwrapper::tensor']]],
+  ['tensorwrapper_272',['TensorWrapper',['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html',1,'tensorwrapper::tensor']]],
+  ['tensorwrapperpimpl_273',['TensorWrapperPIMPL',['../classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html',1,'tensorwrapper::tensor::detail_']]],
+  ['tiledarrayallocator_274',['TiledArrayAllocator',['../classtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1TiledArrayAllocator.html',1,'tensorwrapper::tensor::novel::allocator']]],
+  ['tiledarraytraits_275',['TiledArrayTraits',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html',1,'tensorwrapper::tensor::backends']]],
+  ['tiledarraytraits_3c_20field_3a_3ascalar_20_3e_276',['TiledArrayTraits&lt; field::Scalar &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Scalar_01_4.html',1,'tensorwrapper::tensor::backends']]],
+  ['tiledarraytraits_3c_20field_3a_3atensor_20_3e_277',['TiledArrayTraits&lt; field::Tensor &gt;',['../structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits_3_01field_1_1Tensor_01_4.html',1,'tensorwrapper::tensor::backends']]]
 ];

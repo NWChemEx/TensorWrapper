@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: include/tensorwrapper/ta_helpers/get_block_idx.hpp Source File</title>
+<title>tensorwrapper: src/tensorwrapper/ta_helpers/get_block_idx.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_860cfce0cb58986fa21fb4b339920826.html">ta_helpers</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a3ef7787234d276598f190de2d036010.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_902669d61f473db762228a13089a4098.html">ta_helpers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,8 +71,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/sparse_map/index.hpp&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/ta_helpers/ta_headers.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;ta_headers.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/sparse_map/index.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>tensorwrapper::ta_helpers {</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
@@ -82,25 +82,25 @@ $(function() {
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">return</span> trange.tiles_range().idx(tidx);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::TiledRange&amp; trange,</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                          <span class="keyword">const</span> TA::Range&amp; range) {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> tidx = trange.element_to_tile(range.lobound());</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> trange.tiles_range().idx(tidx);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TileType, <span class="keyword">typename</span> PolicyType&gt;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::DistArray&lt;TileType, PolicyType&gt;&amp; t,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                   <span class="keyword">const</span> TA::Range&amp; range) {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">return</span> get_block_idx(t.trange(), range);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">inline</span> <span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::TiledRange&amp; trange,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                          <span class="keyword">const</span> TA::Range&amp; range) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> tidx = trange.element_to_tile(range.lobound());</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">return</span> trange.tiles_range().idx(tidx);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TileType, <span class="keyword">typename</span> PolicyType&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::DistArray&lt;TileType, PolicyType&gt;&amp; t,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                   <span class="keyword">const</span> TileType&amp; tile) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> get_block_idx(t, tile.range());</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <span class="comment">// namespace tensorwrapper::ta_helpers</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TileType, <span class="keyword">typename</span> PolicyType&gt;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::DistArray&lt;TileType, PolicyType&gt;&amp; t,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                   <span class="keyword">const</span> TA::Range&amp; range) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> get_block_idx(t.trange(), range);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TileType, <span class="keyword">typename</span> PolicyType&gt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">auto</span> get_block_idx(<span class="keyword">const</span> TA::DistArray&lt;TileType, PolicyType&gt;&amp; t,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                   <span class="keyword">const</span> TileType&amp; tile) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> get_block_idx(t, tile.range());</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace tensorwrapper::ta_helpers</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

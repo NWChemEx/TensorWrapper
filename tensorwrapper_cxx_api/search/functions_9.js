@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['new_5ftensor_299',['new_tensor',['../classtensorwrapper_1_1tensor_1_1Allocator.html#a1d0ea9f3a34e87d1a01aa5e99a9b6d2a',1,'tensorwrapper::tensor::Allocator::new_tensor(const shape_type &amp;shape) const'],['../classtensorwrapper_1_1tensor_1_1Allocator.html#aaba7cf990ef7d7c66eb8ff6bec39c010',1,'tensorwrapper::tensor::Allocator::new_tensor(const n_d_initializer_list_t&lt; scalar_type, 1 &gt; &amp;il) const']]]
+  ['make_5fannotation_338',['make_annotation',['../classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a1b8a8d6299770f744f4d9ffd01185f2b',1,'tensorwrapper::tensor::TensorWrapper']]],
+  ['make_5ftensor_339',['make_tensor',['../classtensorwrapper_1_1tensor_1_1Shape.html#aa145956fa8d37b4cb2109562fb32d4d4',1,'tensorwrapper::tensor::Shape']]],
+  ['make_5ftiled_5frange_340',['make_tiled_range',['../classtensorwrapper_1_1tensor_1_1Allocator.html#a3ff12621be8d3a33c7359864a0499343',1,'tensorwrapper::tensor::Allocator']]],
+  ['multop_341',['MultOp',['../classtensorwrapper_1_1tensor_1_1detail___1_1MultOp.html#ae949d3b537caae6cb52c79eb2d784585',1,'tensorwrapper::tensor::detail_::MultOp']]]
 ];
