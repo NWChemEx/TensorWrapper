@@ -1,6 +1,6 @@
 #pragma once
+#include "ta_headers.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 
 namespace tensorwrapper::ta_helpers {
 
@@ -16,12 +16,28 @@ inline auto get_block_idx(const TA::TiledRange& trange,
     return trange.tiles_range().idx(tidx);
 }
 
+/** @brief Gets the tile index associated with a tile range
+ *
+ *  @param[in] trange The TiledRange the element index is taken from.
+ *  @param[in] range The tile range.
+ *  @return An std::vector containing the index of the tile.
+ */
 inline auto get_block_idx(const TA::TiledRange& trange,
                           const TA::Range& range) {
     const auto tidx = trange.element_to_tile(range.lobound());
     return trange.tiles_range().idx(tidx);
 }
 
+/** @brief Gets the tile index associated with a tile range
+ *
+ *  @tparam TileType Type of the tiles in the distributed array. Assumed to
+ *                   satisfy TA's concept of a Tile.
+ *  @tparam PolicyType Type of the tensor's sparsity policy.
+ *
+ *  @param[in] t The DistArray where the tiles are.
+ *  @param[in] range The range.
+ *  @return An std::vector containing the index of the tile.
+ */
 template<typename TileType, typename PolicyType>
 auto get_block_idx(const TA::DistArray<TileType, PolicyType>& t,
                    const TA::Range& range) {

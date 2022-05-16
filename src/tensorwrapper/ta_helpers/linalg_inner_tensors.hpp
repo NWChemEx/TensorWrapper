@@ -1,6 +1,6 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/get_block_idx.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
+#include "get_block_idx.hpp"
+#include "ta_headers.hpp"
 #include <TiledArray/math/linalg/cholesky.h>
 #include <TiledArray/math/linalg/heig.h>
 

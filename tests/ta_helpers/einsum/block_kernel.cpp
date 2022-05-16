@@ -2,7 +2,7 @@
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include <catch2/catch.hpp>
 
-using namespace tensorwrapper::ta_helpers::einsum::detail_;
+using namespace tensorwrapper::ta_helpers::einsum;
 using ranges_type = tensorwrapper::ta_helpers::einsum::types::assoc_range;
 
 TEST_CASE("block_kernel") {

@@ -3,6 +3,7 @@
 #include "tensorwrapper/tensor/novel/allocators/tiled_array.hpp"
 #include "tiled_array_sparse_shape.hpp"
 #include "tiled_array_tiling.hpp"
+#include <TiledArray/conversions/make_array.h>
 
 namespace tensorwrapper::tensor::novel::allocator::detail_ {
 

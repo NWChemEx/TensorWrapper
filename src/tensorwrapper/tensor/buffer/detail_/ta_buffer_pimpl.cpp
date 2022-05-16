@@ -1,6 +1,6 @@
 #include "ta_buffer_pimpl.hpp"
 
-#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "../../../ta_helpers/ta_helpers.hpp"
 
 #define TEMPLATE_PARAMS template<typename FieldType>
 #define TABUFFERPIMPL TABufferPIMPL<FieldType>

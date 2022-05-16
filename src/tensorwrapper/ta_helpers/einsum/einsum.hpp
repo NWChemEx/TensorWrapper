@@ -1,7 +1,7 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/einsum/detail_/block_kernel.hpp"
-#include "tensorwrapper/ta_helpers/einsum/detail_/tensor_kernel.hpp"
-#include "tensorwrapper/ta_helpers/einsum/types.hpp"
+#include "block_kernel.hpp"
+#include "tensor_kernel.hpp"
+#include "types.hpp"
 
 namespace tensorwrapper::ta_helpers::einsum {
 
@@ -19,7 +19,7 @@ auto einsum(const types::index& result_idx, const types::index& lhs_idx,
             const TA::DistArray<TileType, PolicyType>& lhs,
             const TA::DistArray<TileType, PolicyType>& rhs) {
     // Figure out what sort of operation the user wants
-    detail_::IndexMap im(result_idx, lhs_idx, rhs_idx);
+    IndexMap im(result_idx, lhs_idx, rhs_idx);
 
     // Figure out the TiledRange1 instances for each index
     std::map<types::index, TA::TiledRange1> ranges;
@@ -28,9 +28,8 @@ auto einsum(const types::index& result_idx, const types::index& lhs_idx,
 
     // This lambda is the block kernel for the tensor kernel (there's probably a
     // way to pass block_kernel directly, but I gave up...)
-    auto l = [](const detail_::IndexMap& indices,
-                const types::assoc_range& ranges, const TileType& lhs,
-                const TileType& rhs) {
+    auto l = [](const IndexMap& indices, const types::assoc_range& ranges,
+                const TileType& lhs, const TileType& rhs) {
         return block_kernel(indices, ranges, lhs, rhs);
     };
 
