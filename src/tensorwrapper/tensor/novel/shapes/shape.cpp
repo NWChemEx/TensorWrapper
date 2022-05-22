@@ -96,6 +96,12 @@ bool SHAPE::is_equal(const Shape& rhs) const noexcept {
     return false;
 }
 
+template<typename FieldType>
+typename SHAPE::pointer_type SHAPE::slice_(const index_type& lo, const index_type& hi) const {
+    assert_pimpl_();
+    return pointer_type( new Shape(m_pimpl_->slice(lo, hi)) );
+}
+
 //------------------------------------------------------------------------------
 //                      Protected/Private Functions
 //------------------------------------------------------------------------------

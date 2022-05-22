@@ -230,6 +230,32 @@ bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
 
     return true;
 }
+
+template<typename FieldType>
+typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::slice_(const index_type& _lo, const index_type& _hi) const {
+    // Get base impl (modifies extents, etc)
+    auto _base_ptr = base_type::slice_(_lo, _hi);
+
+
+    // Break bounds into dep/indep components
+    index_type lo_ind( _lo.begin(), _lo.begin() + m_sm_.dep_rank() );
+    index_type hi_ind( _hi.begin(), _hi.begin() + m_sm_.dep_rank() );
+    index_type lo_dep( _lo.begin() + m_sm_.dep_rank(), _lo.end() );
+    index_type hi_dep( _hi.begin() + m_sm_.dep_rank(), _hi.end() );
+
+    // Creat modified sparse maps  
+    sparse_map_type new_sm;
+    for( const auto& [ind, domain] : m_sm_ ) 
+    if( ind >= lo_ind and ind < hi_ind ) { 
+        for( const auto& dep : domain ) 
+        if( dep >= lo_dep and dep < hi_dep ) {
+            new_sm.add_to_domain( ind, dep );
+        }
+    }
+
+    return pimpl_pointer(new my_type( _base_ptr->extents(), _base_ptr->inner_extents(), new_sm, m_i2m_) );
+}
+
 template<typename FieldType>
 typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::clone_() const {
     return pimpl_pointer(new my_type(*this));

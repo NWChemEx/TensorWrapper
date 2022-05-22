@@ -53,6 +53,37 @@ TEST_CASE("ShapePIMPL<Scalar>") {
         REQUIRE(*tensor.clone() == tensor);
     }
 
+    SECTION("slice()") {
+        SECTION("valid") {
+            auto vector_slice = vector.slice({1},{3});
+	    auto matrix_slice = matrix.slice({0,0},{3,3});
+	    auto tensor_slice = tensor.slice({0,1,3},{3,2,4});
+
+	    pimpl_type corr_vector_slice({2});
+	    pimpl_type corr_matrix_slice({3,3});
+	    pimpl_type corr_tensor_slice({3,1,1});
+
+	    REQUIRE(*vector_slice == corr_vector_slice);
+	    REQUIRE(*matrix_slice == corr_matrix_slice);
+	    REQUIRE(*tensor_slice == corr_tensor_slice);
+        }
+
+	SECTION("wrong bounds rank") {
+            REQUIRE_THROWS_AS( vector.slice({0},{0,1}), std::runtime_error );
+            REQUIRE_THROWS_AS( vector.slice({0,1},{1}), std::runtime_error );
+            REQUIRE_THROWS_AS( vector.slice({0,1},{0,1}), std::runtime_error );
+	}
+
+	SECTION("hi < lo") {
+            REQUIRE_THROWS_AS(vector.slice({1},{0}), std::runtime_error);
+	}
+
+	SECTION("out of bounds") {
+            REQUIRE_THROWS_AS(vector.slice({0},{4}), std::runtime_error);
+            REQUIRE_THROWS_AS(vector.slice({3},{5}), std::runtime_error);
+	}
+    }
+
     SECTION("extents() const") {
         REQUIRE(defaulted.extents() == scalar_extents);
         REQUIRE(scalar.extents() == scalar_extents);

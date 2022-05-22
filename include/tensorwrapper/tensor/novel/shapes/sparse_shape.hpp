@@ -170,6 +170,8 @@ private:
                                const index_type&) const override;
     virtual bool is_hard_zero_(const index_type&) const override;
 
+    virtual pointer_type slice_(const index_type&, const index_type&) const override;
+
     /// Overrides to account for SparseShape's state
     virtual pointer_type clone_() const override;
 
