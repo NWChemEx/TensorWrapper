@@ -134,7 +134,7 @@ public:
 
     pimpl_pointer slice(const index_type& lo, const index_type& hi) const {
         return slice_(lo, hi);
-    } 
+    }
 
     /** @brief Non-polymorphic comparison.
      *
@@ -190,15 +190,20 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::clone_() const {
 }
 
 template<typename FieldType>
-typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(const index_type& _lo, const index_type& _hi) const {
-    if(_lo.size() != m_extents_.size()) throw std::runtime_error("Lo bounds do not match extents");
-    if(_hi.size() != m_extents_.size()) throw std::runtime_error("Hi bounds do not match extents");
+typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(
+  const index_type& _lo, const index_type& _hi) const {
+    if(_lo.size() != m_extents_.size())
+        throw std::runtime_error("Lo bounds do not match extents");
+    if(_hi.size() != m_extents_.size())
+        throw std::runtime_error("Hi bounds do not match extents");
 
     extents_type new_extents(m_extents_.size());
-    for( auto i = 0ul; i < m_extents_.size(); ++i) {
-	if( _lo[i] < 0 or _lo[i] >= m_extents_[i] ) throw std::runtime_error("Invalid lo bound");
-        if( _hi[i] > m_extents_[i] ) throw std::runtime_error("Invalid hi bound");
-	if( _lo[i] > _hi[i] ) throw std::runtime_error("Lo must be smaller than Hi");
+    for(auto i = 0ul; i < m_extents_.size(); ++i) {
+        if(_lo[i] < 0 or _lo[i] >= m_extents_[i])
+            throw std::runtime_error("Invalid lo bound");
+        if(_hi[i] > m_extents_[i]) throw std::runtime_error("Invalid hi bound");
+        if(_lo[i] > _hi[i])
+            throw std::runtime_error("Lo must be smaller than Hi");
         new_extents[i] = _hi[i] - _lo[i];
     }
     return pimpl_pointer(new my_type(new_extents, m_inner_extents_));

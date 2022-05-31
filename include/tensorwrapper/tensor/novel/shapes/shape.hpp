@@ -190,7 +190,7 @@ public:
     }
 
     pointer_type slice(const index_type& lo, const index_type& hi) const {
-        return slice_(lo, hi);	    
+        return slice_(lo, hi);
     };
 
     /** @brief Non-polymorphic equality comparison for shapes with the same

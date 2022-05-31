@@ -220,7 +220,6 @@ inline bool operator>=(const Index& lhs, const Index& rhs) {
     return !(lhs < rhs);
 }
 
-
 /** @brief Compares an Index instance to a vector.
  *  @relates Index
  *

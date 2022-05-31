@@ -102,11 +102,13 @@ bool SPARSE_SHAPE::is_hard_zero_(const index_type& lo,
 }
 
 template<typename FieldType>
-typename SPARSE_SHAPE::pointer_type SPARSE_SHAPE::slice_(const index_type& lo, const index_type& hi) const {
+typename SPARSE_SHAPE::pointer_type SPARSE_SHAPE::slice_(
+  const index_type& lo, const index_type& hi) const {
     auto pimpl_ptr = downcast(this->pimpl_()).slice(lo, hi);
 
-    return pointer_type( new SparseShape(pimpl_ptr->extents(), pimpl_ptr->inner_extents(), 
-			    downcast(*pimpl_ptr).sparse_map(), downcast(*pimpl_ptr).idx2mode_map()) );
+    return pointer_type(new SparseShape(
+      pimpl_ptr->extents(), pimpl_ptr->inner_extents(),
+      downcast(*pimpl_ptr).sparse_map(), downcast(*pimpl_ptr).idx2mode_map()));
 }
 
 template<typename FieldType>

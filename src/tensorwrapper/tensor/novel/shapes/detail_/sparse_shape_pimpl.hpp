@@ -151,7 +151,8 @@ private:
     /// Makes a polymorphic deep copy of this PIMPL
     virtual pimpl_pointer clone_() const override;
 
-    virtual pimpl_pointer slice_(const index_type&, const index_type&) const override;
+    virtual pimpl_pointer slice_(const index_type&,
+                                 const index_type&) const override;
 
     /// The SparseMap object describing which elements are zero
     sparse_map_type m_sm_;

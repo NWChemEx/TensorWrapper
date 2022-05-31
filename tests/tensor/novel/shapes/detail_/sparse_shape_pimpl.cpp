@@ -290,11 +290,12 @@ TEST_CASE("novel::SparseShapePIMPL<field::Scalar>") {
 
         // M_sl = [x 0]
         //        [0 x]
-	sm_type sm_slice_corr{{i0, {i0}}, {i1, {i1}}, {i2, {i0}}};
-	extents_type extents_slice_corr{3, 2};
-	auto slice = p.slice({0,0}, {3,2});
-	REQUIRE( slice->extents() == extents_slice_corr );
-	REQUIRE( dynamic_cast<pimpl_type*>(slice.get())->sparse_map() == sm_slice_corr );
+        sm_type sm_slice_corr{{i0, {i0}}, {i1, {i1}}, {i2, {i0}}};
+        extents_type extents_slice_corr{3, 2};
+        auto slice = p.slice({0, 0}, {3, 2});
+        REQUIRE(slice->extents() == extents_slice_corr);
+        REQUIRE(dynamic_cast<pimpl_type*>(slice.get())->sparse_map() ==
+                sm_slice_corr);
     }
 
     SECTION("hash") {
