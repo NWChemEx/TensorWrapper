@@ -280,6 +280,23 @@ TEST_CASE("novel::SparseShapePIMPL<field::Scalar>") {
         REQUIRE(p.extents().data() == pmatrix);
     }
 
+    SECTION("slice()") {
+        // M = [x 0 0 0]
+        //     [0 x 0 0]
+        //     [x 0 0 x]
+        sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
+        extents_type extents{3, 4};
+        pimpl_type p(extents, sm, idx2mode_type{0, 1});
+
+        // M_sl = [x 0]
+        //        [0 x]
+	sm_type sm_slice_corr{{i0, {i0}}, {i1, {i1}}, {i2, {i0}}};
+	extents_type extents_slice_corr{3, 2};
+	auto slice = p.slice({0,0}, {3,2});
+	REQUIRE( slice->extents() == extents_slice_corr );
+	REQUIRE( dynamic_cast<pimpl_type*>(slice.get())->sparse_map() == sm_slice_corr );
+    }
+
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
 
