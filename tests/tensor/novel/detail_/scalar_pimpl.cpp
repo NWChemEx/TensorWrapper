@@ -1,9 +1,9 @@
 #include <catch2/catch.hpp>
 //#include "../../test_tensor.hpp"
 #include "../../buffer/make_pimpl.hpp"
-#include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 #include "tensorwrapper/ta_helpers/slice.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 
 namespace ta_helpers = tensorwrapper::ta_helpers;
 using namespace tensorwrapper::tensor;
@@ -288,36 +288,41 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
 
     SECTION("slice()") {
         SECTION("Vector") {
-	    auto slice_corr = std::visit([](auto&& arg) {
-                return ta_helpers::slice(arg, {0}, {2});
-            }, v.variant());
-	    auto slice = v.slice({0ul}, {2ul}, palloc->clone());
-	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
-	    REQUIRE(slice->shape() == *v_shape->slice({0},{2}));
-	    REQUIRE(slice->allocator() == *palloc);
+            auto slice_corr = std::visit(
+              [](auto&& arg) { return ta_helpers::slice(arg, {0}, {2}); },
+              v.variant());
+            auto slice = v.slice({0ul}, {2ul}, palloc->clone());
+            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+            REQUIRE(slice->shape() == *v_shape->slice({0}, {2}));
+            REQUIRE(slice->allocator() == *palloc);
         }
 
         SECTION("Matrix") {
-	    auto slice_corr = std::visit([](auto&& arg) {
-                return ta_helpers::slice(arg, {0,1}, {1,2});
-            }, m.variant());
-	    auto slice = m.slice({0ul,1ul}, {1ul,2ul}, palloc->clone());
-	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
-	    REQUIRE(slice->shape() == *m_shape->slice({0,1},{1,2}));
-	    REQUIRE(slice->allocator() == *palloc);
+            auto slice_corr = std::visit(
+              [](auto&& arg) {
+                  return ta_helpers::slice(arg, {0, 1}, {1, 2});
+              },
+              m.variant());
+            auto slice = m.slice({0ul, 1ul}, {1ul, 2ul}, palloc->clone());
+            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+            REQUIRE(slice->shape() == *m_shape->slice({0, 1}, {1, 2}));
+            REQUIRE(slice->allocator() == *palloc);
         }
 
         SECTION("Tensor") {
-	    auto slice_corr = std::visit([](auto&& arg) {
-                return ta_helpers::slice(arg, {0,0,1}, {2,2,2});
-            }, t.variant());
-	    auto slice = t.slice({0ul,0ul,1ul}, {2ul,2ul,2ul}, palloc->clone());
-	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
-	    REQUIRE(slice->shape() == *t_shape->slice({0,0,1},{2,2,2}));
-	    REQUIRE(slice->allocator() == *palloc);
+            auto slice_corr = std::visit(
+              [](auto&& arg) {
+                  return ta_helpers::slice(arg, {0, 0, 1}, {2, 2, 2});
+              },
+              t.variant());
+            auto slice =
+              t.slice({0ul, 0ul, 1ul}, {2ul, 2ul, 2ul}, palloc->clone());
+            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+            REQUIRE(slice->shape() == *t_shape->slice({0, 0, 1}, {2, 2, 2}));
+            REQUIRE(slice->allocator() == *palloc);
         }
-        //SECTION("Different allocator") {
-	// TODO
+        // SECTION("Different allocator") {
+        // TODO
         //}
     }
 #if 0
