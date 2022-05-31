@@ -2,7 +2,10 @@
 //#include "../../test_tensor.hpp"
 #include "../../buffer/make_pimpl.hpp"
 #include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
+#include "tensorwrapper/ta_helpers/slice.hpp"
+#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 
+namespace ta_helpers = tensorwrapper::ta_helpers;
 using namespace tensorwrapper::tensor;
 using namespace tensorwrapper::tensor::novel;
 
@@ -283,8 +286,41 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         }
     }
 
-#if 0
+    SECTION("slice()") {
+        SECTION("Vector") {
+	    auto slice_corr = std::visit([](auto&& arg) {
+                return ta_helpers::slice(arg, {0}, {2});
+            }, v.variant());
+	    auto slice = v.slice({0ul}, {2ul}, palloc->clone());
+	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+	    REQUIRE(slice->shape() == *v_shape->slice({0},{2}));
+	    REQUIRE(slice->allocator() == *palloc);
+        }
 
+        SECTION("Matrix") {
+	    auto slice_corr = std::visit([](auto&& arg) {
+                return ta_helpers::slice(arg, {0,1}, {1,2});
+            }, m.variant());
+	    auto slice = m.slice({0ul,1ul}, {1ul,2ul}, palloc->clone());
+	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+	    REQUIRE(slice->shape() == *m_shape->slice({0,1},{1,2}));
+	    REQUIRE(slice->allocator() == *palloc);
+        }
+
+        SECTION("Tensor") {
+	    auto slice_corr = std::visit([](auto&& arg) {
+                return ta_helpers::slice(arg, {0,0,1}, {2,2,2});
+            }, t.variant());
+	    auto slice = t.slice({0ul,0ul,1ul}, {2ul,2ul,2ul}, palloc->clone());
+	    REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+	    REQUIRE(slice->shape() == *t_shape->slice({0,0,1},{2,2,2}));
+	    REQUIRE(slice->allocator() == *palloc);
+        }
+        //SECTION("Different allocator") {
+	// TODO
+        //}
+    }
+#if 0
     SECTION("CTors") {
         SECTION("No Shape") {
             // Just checking that it's triggered, reallocate looks at more
@@ -461,41 +497,6 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
                     REQUIRE(m3.size() == 8);
                 }
             }
-        }
-    }
-
-    SECTION("slice()") {
-        auto& world = alloc->runtime();
-        SECTION("Vector") {
-            auto tr = alloc->make_tiled_range(extents_type{2});
-            ta_tensor_type corr_data{world, tr, {1.0, 2.0}};
-            pimpl_type corr(corr_data, alloc->clone());
-            auto slice = v.slice({0ul}, {2ul}, alloc->clone());
-            REQUIRE(*slice == corr);
-        }
-        SECTION("Matrix") {
-            auto tr = alloc->make_tiled_range(extents_type{1, 1});
-            ta_tensor_type corr_data{world, tr, {{2.0}}};
-            pimpl_type corr(corr_data, alloc->clone());
-            auto slice = m.slice({0ul, 1ul}, {1ul, 2ul}, alloc->clone());
-            REQUIRE(*slice == corr);
-        }
-        SECTION("Tensor") {
-            auto tr = alloc->make_tiled_range(extents_type{2, 2, 1});
-            ta_tensor_type corr_data{
-              world, tr, {{{2.0}, {4.0}}, {{6.0}, {8.0}}}};
-            pimpl_type corr(corr_data, alloc->clone());
-            auto slice =
-              t.slice({0ul, 0ul, 1ul}, {2ul, 2ul, 2ul}, alloc->clone());
-            REQUIRE(*slice == corr);
-        }
-        SECTION("Different allocator") {
-            auto p  = std::make_unique<other_alloc>(world);
-            auto tr = p->make_tiled_range(extents_type{2});
-            ta_tensor_type corr_data{world, tr, {1.0, 2.0}};
-            pimpl_type corr(corr_data, p->clone());
-            auto slice = v.slice({0ul}, {2ul}, std::move(p));
-            REQUIRE(*slice == corr);
         }
     }
 #endif
