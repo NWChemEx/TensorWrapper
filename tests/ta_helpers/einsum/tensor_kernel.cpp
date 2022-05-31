@@ -3,7 +3,6 @@
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::ta_helpers::einsum;
-using namespace tensorwrapper::ta_helpers::einsum::detail_;
 
 TEST_CASE("get_block_ranges") {
     using block_map_t = std::map<types::index, TA::TiledRange1>;

@@ -1,6 +1,7 @@
 #pragma once
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
+#include <TiledArray/dist_array.h>
+#include <TiledArray/tensor.h>
 #include <variant>
 
 /** @file tiled_array.hpp

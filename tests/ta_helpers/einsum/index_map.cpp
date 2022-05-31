@@ -1,8 +1,8 @@
-#include "tensorwrapper/ta_helpers/einsum/detail_/index_map.hpp"
+#include "tensorwrapper/ta_helpers/einsum/index_map.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::ta_helpers::einsum;
-using tensorwrapper::ta_helpers::einsum::detail_::IndexMap;
+using tensorwrapper::ta_helpers::einsum::IndexMap;
 
 /* We know splitting strings works from parse_index test so we only need to make
  * sure that the inputs are correctly fed through parse_index and saved

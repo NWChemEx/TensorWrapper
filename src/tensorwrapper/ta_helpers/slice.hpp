@@ -1,9 +1,9 @@
 #pragma once
+#include "get_block_idx.hpp"
+#include "is_tile_bound.hpp"
+#include "retile.hpp"
+#include "ta_headers.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
-#include "tensorwrapper/ta_helpers/get_block_idx.hpp"
-#include "tensorwrapper/ta_helpers/is_tile_bound.hpp"
-#include "tensorwrapper/ta_helpers/retile.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 #include <algorithm> // count
 #include <utilities/iter_tools.hpp>
 

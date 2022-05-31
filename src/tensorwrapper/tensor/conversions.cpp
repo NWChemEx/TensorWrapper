@@ -1,4 +1,4 @@
-#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "../ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/conversions.hpp"
 
 namespace tensorwrapper::tensor {

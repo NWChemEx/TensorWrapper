@@ -1,9 +1,9 @@
-#include "tensorwrapper/ta_helpers/einsum/detail_/detail_.hpp"
+#include "index_utils.hpp"
 #include <algorithm> // For replace
 #include <iterator>  // For istream_iterator
 #include <sstream>   // For istringstream
 
-namespace tensorwrapper::ta_helpers::einsum::detail_ {
+namespace tensorwrapper::ta_helpers::einsum {
 
 types::index_set parse_index(std::string idx) {
     // 1. Remove all existing spaces
@@ -20,4 +20,4 @@ types::index_set parse_index(std::string idx) {
     return types::index_set(iss_itr(iss), iss_itr{});
 }
 
-} // namespace tensorwrapper::ta_helpers::einsum::detail_
+} // namespace tensorwrapper::ta_helpers::einsum

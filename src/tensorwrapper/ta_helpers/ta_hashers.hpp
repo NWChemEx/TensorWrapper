@@ -1,6 +1,6 @@
 #pragma once
+#include "ta_headers.hpp"
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/ta_helpers/ta_headers.hpp"
 #include <madness/world/safempi.h>
 
 namespace TiledArray {
