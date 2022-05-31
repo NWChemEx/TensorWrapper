@@ -70,8 +70,10 @@ typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::default_clone_() const {
 
 TEMPLATE_PARAMS
 typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
+    auto ta_clone = 
+      std::visit([](auto&& arg){ return TA::clone(arg); }, m_tensor_);
     // Can't use make_unique b/c copy ctor is protected
-    return std::unique_ptr<base_type>(new TABufferPIMPL(*this));
+    return std::unique_ptr<base_type>(new TABufferPIMPL(std::move(ta_clone)));
 }
 
 // -- Setters ------------------------------------------------------------------

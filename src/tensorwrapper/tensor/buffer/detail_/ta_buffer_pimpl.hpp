@@ -31,7 +31,7 @@ public:
 
     using ta_trange_type = TA::TiledRange;
 
-    TABufferPIMPL(default_tensor_type t2wrap = {});
+    explicit TABufferPIMPL(default_tensor_type t2wrap = {});
 
     void retile(ta_trange_type trange);
 
