@@ -2,6 +2,12 @@
 #include "buffer_pimpl.hpp"
 #include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 
+/// Forward declare the Conversion class
+namespace tensorwrapper::tensor::conversion {
+template<typename ToType>
+struct Conversion;
+}
+
 namespace tensorwrapper::tensor::buffer::detail_ {
 
 template<typename FieldType>
@@ -74,6 +80,10 @@ private:
     std::string to_str_() const override;
 
     variant_type m_tensor_;
+
+    /// Conversion needs access to stored tensor
+    template<typename T>
+    friend struct tensorwrapper::tensor::conversion::Conversion;
 };
 
 extern template class TABufferPIMPL<field::Scalar>;
