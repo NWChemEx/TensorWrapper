@@ -320,6 +320,106 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
 	// TODO
         //}
     }
+
+    SECTION("reshape") {
+#if 0
+        SECTION("Literal reshape") {
+            SECTION("vector") {
+                extents_type four{3, 1};
+                auto new_shape = std::make_unique<shape_type>(four);
+                auto tr        = alloc->make_tiled_range(four);
+                ta_tensor_type corr(alloc->runtime(), tr, {{1}, {2}, {3}});
+
+                pimpl_type m3(vector, new_shape->clone(), alloc->clone());
+                REQUIRE(m3.allocator() == *alloc);
+                REQUIRE(m3.shape() == *new_shape);
+                REQUIRE(std::get<0>(m3.variant()) == corr);
+                REQUIRE(m3.size() == 3);
+            }
+
+            SECTION("matrix") {
+                extents_type four{4};
+                auto new_shape = std::make_unique<shape_type>(four);
+                auto tr        = alloc->make_tiled_range(four);
+                ta_tensor_type corr(alloc->runtime(), tr, {1, 2, 3, 4});
+
+                pimpl_type m3(matrix, new_shape->clone(), alloc->clone());
+                REQUIRE(m3.allocator() == *alloc);
+                REQUIRE(m3.shape() == *new_shape);
+                REQUIRE(std::get<0>(m3.variant()) == corr);
+                REQUIRE(m3.size() == 4);
+            }
+
+            SECTION("tensor") {
+                extents_type four{8};
+                auto new_shape = std::make_unique<shape_type>(four);
+                auto tr        = alloc->make_tiled_range(four);
+                ta_tensor_type corr(alloc->runtime(), tr,
+                                    {1, 2, 3, 4, 5, 6, 7, 8});
+
+                pimpl_type m3(tensor, new_shape->clone(), alloc->clone());
+                REQUIRE(m3.allocator() == *alloc);
+                REQUIRE(m3.shape() == *new_shape);
+                REQUIRE(std::get<0>(m3.variant()) == corr);
+                REQUIRE(m3.size() == 8);
+            }
+        }
+#endif
+
+        SECTION("Apply sparsity") {
+            using sparse_shape    = SparseShape<field_type>;
+            using sparse_map_type = typename sparse_shape::sparse_map_type;
+            using index_type      = typename sparse_map_type::key_type;
+
+            auto new_alloc = oalloc->clone();
+            index_type i0{0}, i00{0, 0}, i1{1}, i11{1, 1}, i10{1, 0};
+
+            // Can't apply to vector (need an independent and a dependent index)
+
+            SECTION("matrix") {
+		// [x 0]
+		// [x 0]
+                sparse_map_type sm{{i0, {i0}}, {i1, {i0}}};
+                auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2}, sm);
+
+                auto m3 = m2.clone();
+		m3->reshape(new_shape->clone());
+
+                REQUIRE(m3->allocator() == *new_alloc);
+                REQUIRE(m3->shape() == *new_shape);
+                REQUIRE(m3->sum() == Approx(4.0));
+                REQUIRE(m3->size() == 4);
+            }
+
+	    SECTION("tensor") {
+                SECTION("Rank 1 ind, rank 2 dependent") {
+                    sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
+                    auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2,2}, sm);
+
+                    auto t3 = t2.clone();
+		    t3->reshape(new_shape->clone());
+
+                    REQUIRE(t3->allocator() == *new_alloc);
+                    REQUIRE(t3->shape() == *new_shape);
+                    REQUIRE(t3->sum() == Approx(6.0));
+                    REQUIRE(t3->size() == 8);
+		}
+                SECTION("Rank 2 ind, rank 1 dependent") {
+                    sparse_map_type sm{{i00, {i0}}, {i10, {i0}}};
+                    auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2,2}, sm);
+
+                    auto t3 = t2.clone();
+		    t3->reshape(new_shape->clone());
+
+                    REQUIRE(t3->allocator() == *new_alloc);
+                    REQUIRE(t3->shape() == *new_shape);
+                    REQUIRE(t3->sum() == Approx(6.0));
+                    REQUIRE(t3->size() == 8);
+		}
+	    }
+
+        }
+    }
 #if 0
     SECTION("CTors") {
         SECTION("No Shape") {
@@ -431,71 +531,6 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
                 REQUIRE(m3.shape() == *new_shape);
                 REQUIRE(std::get<0>(m3.variant()) == corr);
                 REQUIRE(m3.size() == 8);
-            }
-        }
-
-        SECTION("Apply sparsity") {
-            using single_tiles    = SingleElementTiles<field_type>;
-            using sparse_shape    = SparseShape<field_type>;
-            using sparse_map_type = typename sparse_shape::sparse_map_type;
-            using index_type      = typename sparse_map_type::key_type;
-
-            auto new_alloc = std::make_unique<single_tiles>();
-            index_type i0{0}, i00{0, 0}, i1{1}, i11{1, 1};
-            auto& world = new_alloc->runtime();
-
-            // Can't apply to vector (need an independent and a dependent index)
-
-            SECTION("matrix") {
-                extents_type two{2, 2};
-                auto tr = new_alloc->make_tiled_range(two);
-
-                variant_type input{ta_tensor_type(world, tr, {{1, 2}, {3, 4}})};
-                ta_tensor_type corr(world, tr, {{1, 0}, {3, 0}});
-
-                sparse_map_type sm{{i0, {i0}}, {i1, {i0}}};
-                auto new_shape = std::make_unique<sparse_shape>(two, sm);
-
-                pimpl_type m3(input, new_shape->clone(), new_alloc->clone());
-                REQUIRE(m3.allocator() == *new_alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 4);
-            }
-
-            SECTION("tensor") {
-                extents_type two{2, 2, 2};
-                auto tr = new_alloc->make_tiled_range(two);
-                variant_type input{ta_tensor_type(
-                  world, tr, {{{1, 2}, {3, 4}}, {{5, 6}, {7, 8}}})};
-
-                SECTION("Rank 1 ind, rank 2 dependent") {
-                    ta_tensor_type corr(world, tr,
-                                        {{{1, 0}, {0, 0}}, {{5, 0}, {0, 0}}});
-                    sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
-                    auto new_shape = std::make_unique<sparse_shape>(two, sm);
-
-                    pimpl_type m3(input, new_shape->clone(),
-                                  new_alloc->clone());
-                    REQUIRE(m3.allocator() == *new_alloc);
-                    REQUIRE(m3.shape() == *new_shape);
-                    REQUIRE(std::get<0>(m3.variant()) == corr);
-                    REQUIRE(m3.size() == 8);
-                }
-
-                SECTION("Rank 2 ind, rank 1 dependent") {
-                    ta_tensor_type corr(world, tr,
-                                        {{{1, 0}, {0, 0}}, {{0, 0}, {0, 8}}});
-                    sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
-                    auto new_shape = std::make_unique<sparse_shape>(two, sm);
-
-                    pimpl_type m3(input, new_shape->clone(),
-                                  new_alloc->clone());
-                    REQUIRE(m3.allocator() == *new_alloc);
-                    REQUIRE(m3.shape() == *new_shape);
-                    REQUIRE(std::get<0>(m3.variant()) == corr);
-                    REQUIRE(m3.size() == 8);
-                }
             }
         }
     }

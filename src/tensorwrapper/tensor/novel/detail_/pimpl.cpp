@@ -3,6 +3,7 @@
 #include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 
 #include "../../buffer/detail_/ta_buffer_pimpl.hpp"
+#include "../shapes/detail_/sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::novel::detail_ {
 #if 0
@@ -42,17 +43,27 @@ auto make_extents(VariantType&& v) {
 #endif
 
 namespace {
+
+// TODO: This should live in Buffer, but can't until new TW
+// infrastructure replaces old
 template <typename FieldType>
 void reshape_helper( buffer::Buffer<FieldType>& buffer, 
   const Shape<FieldType>& shape ) {
 
-  using ta_pimpl_type = 
-    tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<FieldType>;
-  auto* ta_pimpl = dynamic_cast<ta_pimpl_type*>(buffer.pimpl());
-  if( ! ta_pimpl ) throw std::runtime_error("Reshape only implemented for TA Backends");
-
-
-
+    auto l = [&](auto&& old_tensor) {
+        TA::foreach_inplace( old_tensor, [&](auto&& tile) {
+            const auto range = tile.range();
+	    const auto lo    = range.lobound();
+	    const auto up    = range.upbound();
+            sparse_map::Index lo_idx(lo.begin(), lo.end());
+            sparse_map::Index up_idx(up.begin(), up.end());
+	    if(shape.is_hard_zero(lo_idx, up_idx)) {
+	        tile.scale_to(0.);
+            }
+	    return TA::norm(tile);
+        });
+    };
+    std::visit(l, buffer.variant() );
 }
 
 ///XXX This should be replaced with Buffer::slice
@@ -319,19 +330,14 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
     };
     std::visit(l, m_tensor_);
 #else
-
     // Short-circuit if shapes are polymorphically equivalent
     if(m_shape_->is_equal(other)) return;
 
     // If the extents aren't the same we're shuffling elements around
-    //if(m_shape_->extents() != other.extents()) shuffle_(shape);
+    if(m_shape_->extents() != other.extents()) shuffle_(other.extents());
 
     // Apply sparsity
-    // TODO: This should live in Buffer, but can't until new TW
-    // infrastructure replaces old
     reshape_helper( *m_buffer_, other );
-
-    throw std::runtime_error("Reshape NYI");
 #endif
 }
 
