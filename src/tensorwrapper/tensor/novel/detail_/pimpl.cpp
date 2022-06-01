@@ -357,8 +357,7 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
     std::visit(l, m_tensor_);
 #else
     if(m_allocator_ and m_shape_) {
-        auto tmp  = p.reallocate(*m_buffer_, *m_shape_);
-        m_buffer_ = std::make_unique<buffer_type>(std::move(tmp));
+        m_buffer_ = p.reallocate(*m_buffer_, *m_shape_);
     }
 #endif
 }

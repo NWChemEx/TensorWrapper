@@ -90,6 +90,7 @@ private:
 public:
     /// The type of object this allocator can make
     using value_type = buffer::Buffer<FieldType>;
+    using value_pointer = std::unique_ptr<value_type>;
 
     /// The base type of an object which models a tensor's shape
     using shape_type = Shape<FieldType>;
@@ -160,11 +161,11 @@ public:
     /// Standard default dtor
     virtual ~Allocator() noexcept = default;
 
-    value_type allocate(const tile_populator_type& fxn,
-                        const shape_type& shape) const;
-    value_type allocate(const shape_type& shape) const;
+    value_pointer allocate(const tile_populator_type& fxn,
+                           const shape_type& shape) const;
+    value_pointer allocate(const shape_type& shape) const;
 
-    value_type reallocate(const value_type& buf, const shape_type& shape) const;
+    value_pointer reallocate(const value_type& buf, const shape_type& shape) const;
 
     /** @brief Polymorphically hashes this allocator instance.
      *
@@ -257,9 +258,9 @@ protected:
      */
     virtual allocator_ptr clone_() const = 0;
 
-    virtual value_type allocate_(const tile_populator_type&,
+    virtual value_pointer allocate_(const tile_populator_type&,
                                  const shape_type&) const   = 0;
-    virtual value_type reallocate_(const value_type&,
+    virtual value_pointer reallocate_(const value_type&,
                                    const shape_type&) const = 0;
 
     /** @brief Hook for polymorphically comparing two Allocators.
@@ -296,20 +297,20 @@ bool Allocator<FieldType>::is_equal(const Allocator& other) const {
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type Allocator<FieldType>::allocate(
+typename Allocator<FieldType>::value_pointer Allocator<FieldType>::allocate(
   const tile_populator_type& fxn, const shape_type& shape) const {
     return allocate_(fxn, shape);
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type Allocator<FieldType>::allocate(
+typename Allocator<FieldType>::value_pointer Allocator<FieldType>::allocate(
   const shape_type& shape) const {
     tile_populator_type fxn;
     return allocate_(fxn, shape);
 }
 
 template<typename FieldType>
-typename Allocator<FieldType>::value_type Allocator<FieldType>::reallocate(
+typename Allocator<FieldType>::value_pointer Allocator<FieldType>::reallocate(
   const value_type& buffer, const shape_type& shape) const {
     return reallocate_(buffer, shape);
 }

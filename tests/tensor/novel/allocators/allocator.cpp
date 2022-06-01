@@ -56,7 +56,7 @@ TEST_CASE("Allocator<Scalar>") {
         extents_type vec_extents{3};
         shape_type vec_shape(vec_extents);
         auto buf = palloc->allocate(fxn, vec_shape);
-        REQUIRE(buf == vec);
+        REQUIRE(*buf == vec);
     }
 
     SECTION("allocate(rank 2 tensor)") {
@@ -75,7 +75,7 @@ TEST_CASE("Allocator<Scalar>") {
         extents_type mat_extents{2, 2};
         shape_type mat_shape(mat_extents);
         auto buf = palloc->allocate(fxn, mat_shape);
-        REQUIRE(buf == mat);
+        REQUIRE(*buf == mat);
     }
 
     SECTION("allocate(rank 3 tensor)") {
@@ -97,7 +97,7 @@ TEST_CASE("Allocator<Scalar>") {
         extents_type ten_extents{2, 2, 2};
         shape_type ten_shape(ten_extents);
         auto buf = palloc->allocate(fxn, ten_shape);
-        REQUIRE(buf == ten3);
+        REQUIRE(*buf == ten3);
     }
 }
 
@@ -129,7 +129,7 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, vov_shape);
-        REQUIRE(buf == vov);
+        REQUIRE(*buf == vov);
     }
 
     SECTION("allocate(vom)") {
@@ -145,7 +145,7 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, vom_shape);
-        REQUIRE(buf == vom);
+        REQUIRE(*buf == vom);
     }
 
     SECTION("allocate(mov)") {
@@ -157,6 +157,6 @@ TEST_CASE("Allocator<Tensor>") {
         };
 
         auto buf = palloc->allocate(fxn, mov_shape);
-        REQUIRE(buf == mov);
+        REQUIRE(*buf == mov);
     }
 }

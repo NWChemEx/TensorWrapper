@@ -56,6 +56,10 @@ template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(pimpl_pointer p) noexcept :
   m_pimpl_(std::move(p)) {}
 
+template<typename FieldType>
+TENSOR_WRAPPER::TensorWrapper(const tile_populator_type& fxn, shape_pointer s, allocator_pointer a) :
+  TensorWrapper( std::make_unique<pimpl_type>(a->allocate( fxn, *s), std::move(s), std::move(a)) ) {}
+
 #if 0
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(allocator_pointer p) :

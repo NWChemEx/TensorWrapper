@@ -114,7 +114,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == vec);
+            REQUIRE(*buf == vec);
         }
 
         SECTION("allocate(rank 2)") {
@@ -143,7 +143,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == mat);
+            REQUIRE(*buf == mat);
         }
 
         SECTION("allocate(rank 3)") {
@@ -179,7 +179,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == ten);
+            REQUIRE(*buf == ten);
         }
     }
 
@@ -214,7 +214,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 3); // One Tile For Each Element
-            REQUIRE(buf == vec);
+            REQUIRE(*buf == vec);
         }
 
         SECTION("allocate(rank 2)") {
@@ -243,7 +243,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 4); // One Tile For Each Element
-            REQUIRE(buf == mat);
+            REQUIRE(*buf == mat);
         }
 
         SECTION("allocate(rank 3)") {
@@ -279,7 +279,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 8); // One Tile For Each Element
-            REQUIRE(buf == ten);
+            REQUIRE(*buf == ten);
         }
     }
 }
@@ -335,7 +335,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vov_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vov);
+            REQUIRE(*buf == vov);
         }
 
         SECTION("allocate(vom)") {
@@ -365,7 +365,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vom_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vom);
+            REQUIRE(*buf == vom);
         }
 
         SECTION("allocate(mov)") {
@@ -386,7 +386,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, mov_shape);
             REQUIRE(outer_tile_count == 4);
-            REQUIRE(buf == mov);
+            REQUIRE(*buf == mov);
         }
     } // OneBigTile
 
@@ -422,7 +422,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vov_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vov);
+            REQUIRE(*buf == vov);
         }
 
         SECTION("allocate(vom)") {
@@ -451,7 +451,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vom_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vom);
+            REQUIRE(*buf == vom);
         }
 
         SECTION("allocate(mov)") {
@@ -472,7 +472,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, mov_shape);
             REQUIRE(outer_tile_count == 4);
-            REQUIRE(buf == mov);
+            REQUIRE(*buf == mov);
         }
 #endif
     } // SingleElementtile

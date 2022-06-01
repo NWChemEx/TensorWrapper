@@ -23,6 +23,7 @@ public:
     using runtime_reference   = typename base_type::runtime_reference;
     using tile_populator_type = typename base_type::tile_populator_type;
     using value_type          = typename base_type::value_type;
+    using value_pointer       = typename base_type::value_pointer;
     using shape_type          = typename base_type::shape_type;
 
     explicit TiledArrayAllocator(
@@ -51,9 +52,9 @@ public:
 private:
     void hash_(tensorwrapper::detail_::Hasher& h) const override;
     allocator_ptr clone_() const override;
-    value_type allocate_(const tile_populator_type& fxn,
+    value_pointer allocate_(const tile_populator_type& fxn,
                          const shape_type& shape) const override;
-    value_type reallocate_(const value_type&, const shape_type&) const override;
+    value_pointer reallocate_(const value_type&, const shape_type&) const override;
     bool is_equal_(const base_type& rhs) const noexcept override;
 
     ta::Storage storage_;

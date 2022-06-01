@@ -12,7 +12,7 @@ TPARAM typename TA_ALLOCATOR::allocator_ptr TA_ALLOCATOR::clone_() const {
     return allocator_ptr(new my_type(*this));
 }
 
-TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::allocate_(
+TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
   const tile_populator_type& fxn, const shape_type& shape) const {
     using default_tensor_type  = detail_::default_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
@@ -27,13 +27,13 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::allocate_(
     }
 
     // Wrap in buffer PIMPL
-    ta_buffer_pimpl_type ta_buffer_pimpl(ta_tensor);
+    //ta_buffer_pimpl_type ta_buffer_pimpl(ta_tensor);
 
     // Return Buffer pointer
-    return value_type(ta_buffer_pimpl.clone());
+    return std::make_unique<value_type>(std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
 }
 
-TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::reallocate_(
+TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::reallocate_(
   const value_type& buf, const shape_type& shape) const {
     using default_tensor_type  = detail_::default_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
@@ -54,7 +54,7 @@ TPARAM typename TA_ALLOCATOR::value_type TA_ALLOCATOR::reallocate_(
     buf_copy_ptr->retile(ta_range);
 
     // Create a new buffer
-    return value_type(std::move(buf_copy_uptr));
+    return std::make_unique<value_type>(std::move(buf_copy_uptr));
 }
 
 TPARAM bool TA_ALLOCATOR::is_equal_(const base_type& other) const noexcept {

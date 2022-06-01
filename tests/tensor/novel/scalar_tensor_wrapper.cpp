@@ -35,11 +35,20 @@ TEST_CASE("TensorWrapper<Scalar>") {
     auto& t3d = ref_tensors["tensor"];
     TWrapper defaulted;
 
+    auto vec_shape = std::make_unique<shape_type>(extents_type{3});
+
     SECTION("CTors") {
         SECTION("Default") {
             REQUIRE(defaulted.rank() == 0);
             REQUIRE(defaulted.extents() == extents_type{});
             REQUIRE(defaulted.size() == 0);
+        }
+        SECTION("From Tile Lambda") {
+            auto l = []( const auto& lo, const auto& up, auto* data ) {
+                for( auto i = lo[0]; i < up[0]; ++i ) data[i] = i+1;
+            };
+            TWrapper tw( l, vec_shape->clone(), default_alloc->clone() );
+            REQUIRE(tw == vec);
         }
         SECTION("Copy") {
             TWrapper copied(vec);
