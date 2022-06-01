@@ -274,31 +274,6 @@ TEST_CASE("TensorWrapper<Scalar>") {
         }
     }
 
-    SECTION("reshape()") {
-        SECTION("Incorrect shape") {
-            auto p = std::make_unique<shape_type>(extents_type{2, 3});
-            REQUIRE_THROWS_AS(vec.reshape(std::move(p)), std::runtime_error);
-        }
-        SECTION("Vector to matrix") {
-            auto p = std::make_unique<shape_type>(extents_type{1, 3});
-            TWrapper corr(t_type(world, {{1.0, 2.0, 3.0}}));
-            auto rv = vec.reshape(std::move(p));
-            REQUIRE(rv == corr);
-        }
-        SECTION("Matrix to vector") {
-            auto p = std::make_unique<shape_type>(extents_type{4});
-            TWrapper corr(t_type(world, {1.0, 2.0, 3.0, 4.0}));
-            auto rv = mat.reshape(std::move(p));
-            REQUIRE(rv == corr);
-        }
-        SECTION("tensor to matrix") {
-            TWrapper corr(
-              t_type(world, {{1.0, 2.0, 3.0, 4.0}, {5.0, 6.0, 7.0, 8.0}}));
-            auto p  = std::make_unique<shape_type>(extents_type{2, 4});
-            auto rv = t3.reshape(std::move(p));
-            REQUIRE(rv == corr);
-        }
-    }
     SECTION("get()") {
         using tensorwrapper::ta_helpers::allclose;
         SECTION("Vector") { REQUIRE(allclose(vec.get<t_type>(), vec_data)); }
@@ -321,6 +296,9 @@ TEST_CASE("TensorWrapper<Scalar>") {
         }
     }
 
+#endif
+
+#if 0
     /* This bug was found by Jonathan Waldrop. What was happening was that if
        you default constructed a TensorWrapper instance A, A has no
        allocator. When you then assigned to A (from a filled instance B), A
@@ -333,8 +311,9 @@ TEST_CASE("TensorWrapper<Scalar>") {
         TWrapper A;
         A("i,j")        = mat("i,j");
         auto slice_of_A = A.slice({0ul, 1ul}, {1ul, 2ul});
-        TWrapper corr(t_type(world, {{2.0}}));
-        REQUIRE(slice_of_A == corr);
+        auto slice_of_M = mat.slice({0ul, 1ul}, {1ul, 2ul});
+        //TWrapper corr(t_type(world, {{2.0}}));
+        REQUIRE(slice_of_A == slice_of_M);
     }
 #endif
 }
