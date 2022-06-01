@@ -63,14 +63,15 @@ void reshape_helper( buffer::Buffer<FieldType>& buffer,
     std::visit(l, buffer.variant() );
 }
 
-///XXX This should be replaced with Buffer::slice
-template <typename FieldType>
-auto slice_helper( buffer::Buffer<FieldType>& buffer,
-  const sparse_map::Index& low, const sparse_map::Index& high){
-    using ta_pimpl_type = 
+/// XXX This should be replaced with Buffer::slice
+template<typename FieldType>
+auto slice_helper(buffer::Buffer<FieldType>& buffer,
+                  const sparse_map::Index& low, const sparse_map::Index& high) {
+    using ta_pimpl_type =
       tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<FieldType>;
     auto* ta_pimpl = dynamic_cast<ta_pimpl_type*>(buffer.pimpl());
-    if( ! ta_pimpl ) throw std::runtime_error("Slice only implemented for TA Backends");
+    if(!ta_pimpl)
+        throw std::runtime_error("Slice only implemented for TA Backends");
 
     auto l = [=](auto&& arg) {
         using clean_t         = std::decay_t<decltype(arg)>;
@@ -84,12 +85,11 @@ auto slice_helper( buffer::Buffer<FieldType>& buffer,
         return rv;
     };
 
-    auto slice_pimpl = std::make_unique<ta_pimpl_type>(
-      std::visit(l, buffer.variant()) );
+    auto slice_pimpl =
+      std::make_unique<ta_pimpl_type>(std::visit(l, buffer.variant()));
 
     return std::make_unique<buffer::Buffer<FieldType>>(std::move(slice_pimpl));
 }
-
 }
 
 // Macro to avoid retyping the full type of the PIMPL
@@ -248,11 +248,12 @@ typename PIMPL_TYPE::pimpl_pointer PIMPL_TYPE::slice(
 
     return std::make_unique<my_type>(std::visit(l, m_tensor_), std::move(p));
 #else
-    //throw std::runtime_error("TWPIMPL::slice NYI");
-    //return nullptr;
-    if( !p or !m_allocator_->is_equal(*p) )
+    // throw std::runtime_error("TWPIMPL::slice NYI");
+    // return nullptr;
+    if(!p or !m_allocator_->is_equal(*p))
         throw std::runtime_error("slice + reallocate NYI");
-    return std::make_unique<my_type>( slice_helper(*m_buffer_,lo,hi), m_shape_->slice(lo,hi), std::move(p));
+    return std::make_unique<my_type>(slice_helper(*m_buffer_, lo, hi),
+                                     m_shape_->slice(lo, hi), std::move(p));
 #endif
 }
 
@@ -335,7 +336,7 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
     if(m_shape_->extents() != other.extents()) shuffle_(other);
 
     // Apply sparsity
-    reshape_helper( *m_buffer_, other );
+    reshape_helper(*m_buffer_, other);
 #endif
 }
 
