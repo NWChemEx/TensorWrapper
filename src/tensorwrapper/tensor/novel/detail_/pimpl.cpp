@@ -6,7 +6,6 @@
 #include "../shapes/detail_/sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::novel::detail_ {
-#if 0
 namespace {
 
 // TODO: This is basically tensorwrapper::tensor::to_vector copy/pasted, need to
@@ -23,6 +22,7 @@ auto to_vector_from_pimpl(const TensorWrapperPIMPL<field::Scalar>& t) {
     return rv;
 }
 
+#if 0
 template<typename VariantType>
 auto make_extents(VariantType&& v) {
     using extents_type = TensorWrapperPIMPL<field::Scalar>::extents_type;
@@ -39,10 +39,7 @@ auto make_extents(VariantType&& v) {
     return std::visit(l, std::forward<VariantType>(v));
 }
 
-} // namespace
 #endif
-
-namespace {
 
 // TODO: This should live in Buffer, but can't until new TW
 // infrastructure replaces old
@@ -92,6 +89,7 @@ auto slice_helper( buffer::Buffer<FieldType>& buffer,
 
     return std::make_unique<buffer::Buffer<FieldType>>(std::move(slice_pimpl));
 }
+
 }
 
 // Macro to avoid retyping the full type of the PIMPL
@@ -334,7 +332,7 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
     if(m_shape_->is_equal(other)) return;
 
     // If the extents aren't the same we're shuffling elements around
-    if(m_shape_->extents() != other.extents()) shuffle_(other.extents());
+    if(m_shape_->extents() != other.extents()) shuffle_(other);
 
     // Apply sparsity
     reshape_helper( *m_buffer_, other );
@@ -368,10 +366,10 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
 }
 
 template<typename FieldType>
-void PIMPL_TYPE::shuffle_(const extents_type& shape) {
-#if 0
+void PIMPL_TYPE::shuffle_(const shape_type& shape) {
     const auto times_op = std::multiplies<size_t>();
-    auto new_volume = std::accumulate(shape.begin(), shape.end(), 1, times_op);
+    auto extents = shape.extents();
+    auto new_volume = std::accumulate(extents.begin(), extents.end(), 1, times_op);
 
     if(new_volume != size()) {
         std::string msg =
@@ -381,6 +379,7 @@ void PIMPL_TYPE::shuffle_(const extents_type& shape) {
         throw std::runtime_error(msg);
     }
 
+#if 0
     auto tr = m_allocator_->make_tiled_range(shape);
 
     // TODO: Use a distribution aware algorithm

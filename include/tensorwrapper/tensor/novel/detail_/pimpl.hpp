@@ -371,7 +371,7 @@ private:
     void reallocate_(const_allocator_reference other);
 
     /// Routine used by reshape_ when the rank has changed
-    void shuffle_(const extents_type& other);
+    void shuffle_(const shape_type& other);
 
     /** @brief Returns the inner rank of the tensor.
      *
