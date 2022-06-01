@@ -135,6 +135,7 @@ public:
 
     /// Type of an allocator
     using allocator_type = allocator::Allocator<FieldType>;
+    using buffer_type    = buffer::Buffer<FieldType>;
 
     /// Type of a pointer to an allocator
     using allocator_pointer = std::unique_ptr<allocator_type>;
@@ -179,6 +180,8 @@ public:
      */
     TensorWrapper();
 
+    TensorWrapper(pimpl_pointer p) noexcept;
+#if 0
     /** @brief Creates a TensorWrapper which will use the provided allocator to
      *         create its state.
      *
@@ -226,6 +229,7 @@ public:
                   allocator_pointer p);
     TensorWrapper(n_d_initializer_list_t<element_type, 4> il,
                   allocator_pointer p);
+#endif
 
     /** @brief Makes a copy of another TensorWrapper
      *
