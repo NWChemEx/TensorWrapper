@@ -401,23 +401,25 @@ void PIMPL_TYPE::shuffle_(const shape_type& shape) {
     };
     m_tensor_ = std::visit(l, m_tensor_);
 #else
-    if constexpr (field::is_scalar_field_v<FieldType>) {
-        auto data = to_vector_from_pimpl(*this);
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        auto data   = to_vector_from_pimpl(*this);
         size_t rank = shape.extents().size();
         std::vector<size_t> stride_data(rank);
         {
             size_t _vol = 1;
-            for( int d = rank - 1; d >= 0; d-- ) {
+            for(int d = rank - 1; d >= 0; d--) {
                 stride_data[d] = _vol;
                 _vol *= shape.extents()[d];
             }
         }
         m_buffer_ = m_allocator_->allocate(
-            [=,d=std::move(data),s=std::move(stride_data)](auto idx) -> double {
-                size_t ordinal = 0;
-                for( int i = 0; i < rank; ++i ) ordinal += s[i]*idx[i];
-                return d[ordinal];
-            }, shape);
+          [=, d = std::move(data),
+           s = std::move(stride_data)](auto idx) -> double {
+              size_t ordinal = 0;
+              for(int i = 0; i < rank; ++i) ordinal += s[i] * idx[i];
+              return d[ordinal];
+          },
+          shape);
     } else {
         throw std::runtime_error("TW:shuffle_ for ToT NYI");
     }

@@ -57,12 +57,16 @@ TENSOR_WRAPPER::TensorWrapper(pimpl_pointer p) noexcept :
   m_pimpl_(std::move(p)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(const tile_populator_type& fxn, shape_pointer s, allocator_pointer a) :
-  TensorWrapper( std::make_unique<pimpl_type>(a->allocate( fxn, *s), std::move(s), std::move(a)) ) {}
+TENSOR_WRAPPER::TensorWrapper(const tile_populator_type& fxn, shape_pointer s,
+                              allocator_pointer a) :
+  TensorWrapper(std::make_unique<pimpl_type>(a->allocate(fxn, *s), std::move(s),
+                                             std::move(a))) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(const element_populator_type& fxn, shape_pointer s, allocator_pointer a) :
-  TensorWrapper( std::make_unique<pimpl_type>(a->allocate( fxn, *s), std::move(s), std::move(a)) ) {}
+TENSOR_WRAPPER::TensorWrapper(const element_populator_type& fxn,
+                              shape_pointer s, allocator_pointer a) :
+  TensorWrapper(std::make_unique<pimpl_type>(a->allocate(fxn, *s), std::move(s),
+                                             std::move(a))) {}
 
 #if 0
 template<typename FieldType>
@@ -270,8 +274,8 @@ typename TENSOR_WRAPPER::const_labeled_type TENSOR_WRAPPER::annotate_(
 
 template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl_() {
-    if( !m_pimpl_) throw std::runtime_error("No TW PIMPL");
-    //if(!m_pimpl_)
+    if(!m_pimpl_) throw std::runtime_error("No TW PIMPL");
+    // if(!m_pimpl_)
     //    m_pimpl_ = std::make_unique<pimpl_type>(
     //      variant_type{}, default_allocator<field_type>());
     return *m_pimpl_;
@@ -291,7 +295,7 @@ void TENSOR_WRAPPER::update_shape_() {
 
 #undef TENSOR_WRAPPER
 
-//template TensorWrapper<field::Tensor>::TensorWrapper<field::Scalar, void>(
+// template TensorWrapper<field::Tensor>::TensorWrapper<field::Scalar, void>(
 //  const TensorWrapper<field::Scalar>&,
 //  typename TensorWrapper<field::Tensor>::sparse_pointer,
 //  typename TensorWrapper<field::Tensor>::allocator_pointer);
@@ -299,4 +303,4 @@ void TENSOR_WRAPPER::update_shape_() {
 template class TensorWrapper<field::Scalar>;
 template class TensorWrapper<field::Tensor>;
 #endif
-} // namespace tensorwrapper::tensor
+} // namespace tensorwrapper::tensor::novel

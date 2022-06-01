@@ -22,13 +22,13 @@ TEST_CASE("TensorWrapper<Scalar>") {
     using allocator::ta::Tiling;
 
     auto default_alloc = default_allocator<field_type>();
-    auto other_alloc = novel::allocator::ta_allocator<field_type>(
+    auto other_alloc   = novel::allocator::ta_allocator<field_type>(
       Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
 
     auto ref_tensors = testing::get_tensors<field_type>();
-    auto& vec = ref_tensors["vector"];
-    auto& mat = ref_tensors["matrix"];
-    auto& t3d = ref_tensors["tensor"];
+    auto& vec        = ref_tensors["vector"];
+    auto& mat        = ref_tensors["matrix"];
+    auto& t3d        = ref_tensors["tensor"];
     TWrapper defaulted;
 
     auto vec_shape = std::make_unique<shape_type>(extents_type{3});
@@ -40,10 +40,10 @@ TEST_CASE("TensorWrapper<Scalar>") {
             REQUIRE(defaulted.size() == 0);
         }
         SECTION("From Tile Lambda") {
-            auto l = []( const auto& lo, const auto& up, auto* data ) {
-                for( auto i = lo[0]; i < up[0]; ++i ) data[i] = i+1;
+            auto l = [](const auto& lo, const auto& up, auto* data) {
+                for(auto i = lo[0]; i < up[0]; ++i) data[i] = i + 1;
             };
-            TWrapper tw( l, vec_shape->clone(), default_alloc->clone() );
+            TWrapper tw(l, vec_shape->clone(), default_alloc->clone());
             REQUIRE(tw == vec);
         }
         SECTION("Copy") {
@@ -86,7 +86,7 @@ TEST_CASE("TensorWrapper<Scalar>") {
         SECTION("Non-default") {
             auto v_copy = vec.pimpl().clone();
             v_copy->reallocate(new_p->clone());
-            TWrapper corr( std::move(v_copy) );
+            TWrapper corr(std::move(v_copy));
             vec.reallocate(std::move(new_p));
             REQUIRE(vec == corr);
             REQUIRE(&vec.allocator() == pa);
@@ -94,10 +94,10 @@ TEST_CASE("TensorWrapper<Scalar>") {
     }
 
     SECTION("slice()") {
-        auto v_slice = vec.pimpl().slice({0ul},{2ul}, default_alloc->clone());
-        TWrapper corr( std::move(v_slice) );
-        auto tw_slice = vec.slice({0ul},{2ul}, default_alloc->clone());
-        REQUIRE( tw_slice == corr );
+        auto v_slice = vec.pimpl().slice({0ul}, {2ul}, default_alloc->clone());
+        TWrapper corr(std::move(v_slice));
+        auto tw_slice = vec.slice({0ul}, {2ul}, default_alloc->clone());
+        REQUIRE(tw_slice == corr);
     }
 
     SECTION("reshape()") {
@@ -106,10 +106,10 @@ TEST_CASE("TensorWrapper<Scalar>") {
             REQUIRE_THROWS_AS(vec.reshape(std::move(p)), std::runtime_error);
         }
         SECTION("Vector to matrix") {
-            auto p = std::make_unique<shape_type>(extents_type{1, 3});
+            auto p     = std::make_unique<shape_type>(extents_type{1, 3});
             auto v_cpy = vec.pimpl().clone();
             v_cpy->reshape(p->clone());
-            TWrapper corr( std::move(v_cpy) );
+            TWrapper corr(std::move(v_cpy));
             auto new_v = vec.reshape(p->clone());
             REQUIRE(new_v == corr);
         }
@@ -148,7 +148,6 @@ TEST_CASE("TensorWrapper<Scalar>") {
         REQUIRE(mat.shape() == shape_type(mat.extents()));
         REQUIRE(t3d.shape() == shape_type(t3d.extents()));
     }
-
 
     SECTION("norm()") {
         REQUIRE_THROWS_AS(defaulted.norm(), std::runtime_error);
@@ -193,7 +192,6 @@ TEST_CASE("TensorWrapper<Scalar>") {
         REQUIRE(hash_objects(other_vec) == hash_objects(vec));
         REQUIRE(hash_objects(vec) != hash_objects(mat));
     }
-
 
 #if 0
     TWrapper defaulted;

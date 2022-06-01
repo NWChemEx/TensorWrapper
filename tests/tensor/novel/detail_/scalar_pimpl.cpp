@@ -330,40 +330,41 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         SECTION("Literal reshape") {
             auto& world = TA::get_default_world();
             SECTION("vector") {
-                extents_type new_ex{3,1};
+                extents_type new_ex{3, 1};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
-                auto cpy = v.clone();
+                auto cpy       = v.clone();
                 cpy->reshape(new_shape->clone());
                 REQUIRE(cpy->allocator().is_equal(*palloc));
                 REQUIRE(cpy->shape() == *new_shape);
-                REQUIRE(cpy->size() == 3 );
-                ta_trange_type tr{{0,3},{0,1}};
+                REQUIRE(cpy->size() == 3);
+                ta_trange_type tr{{0, 3}, {0, 1}};
                 ta_tensor_type corr(world, tr, {{1}, {2}, {3}});
-                REQUIRE( std::get<0>(cpy->variant()) == corr );
+                REQUIRE(std::get<0>(cpy->variant()) == corr);
             }
             SECTION("matrix") {
                 extents_type new_ex{4};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
-                auto cpy = m.clone();
+                auto cpy       = m.clone();
                 cpy->reshape(new_shape->clone());
                 REQUIRE(cpy->allocator().is_equal(*palloc));
                 REQUIRE(cpy->shape() == *new_shape);
-                REQUIRE(cpy->size() == 4 );
-                ta_trange_type tr{{0,4}};
-                ta_tensor_type corr(world, tr, {1,2,3,4});
-                REQUIRE( std::get<0>(cpy->variant()) == corr );
+                REQUIRE(cpy->size() == 4);
+                ta_trange_type tr{{0, 4}};
+                ta_tensor_type corr(world, tr, {1, 2, 3, 4});
+                REQUIRE(std::get<0>(cpy->variant()) == corr);
             }
             SECTION("tensor") {
-                extents_type new_ex{4,2};
+                extents_type new_ex{4, 2};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
-                auto cpy = t.clone();
+                auto cpy       = t.clone();
                 cpy->reshape(new_shape->clone());
                 REQUIRE(cpy->allocator().is_equal(*palloc));
                 REQUIRE(cpy->shape() == *new_shape);
-                REQUIRE(cpy->size() == 8 );
-                ta_trange_type tr{{0,4},{0,2}};
-                ta_tensor_type corr(world, tr, {{1,2},{3,4},{5,6},{7,8}});
-                REQUIRE( std::get<0>(cpy->variant()) == corr );
+                REQUIRE(cpy->size() == 8);
+                ta_trange_type tr{{0, 4}, {0, 2}};
+                ta_tensor_type corr(world, tr,
+                                    {{1, 2}, {3, 4}, {5, 6}, {7, 8}});
+                REQUIRE(std::get<0>(cpy->variant()) == corr);
             }
         }
 

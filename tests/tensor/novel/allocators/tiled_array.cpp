@@ -119,7 +119,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
         SECTION("allocate(rank 1) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](std::vector<size_t> idx) -> double {
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
                 element_count++; // Count the number of invocations
                 REQUIRE(idx.size() == 1);
                 REQUIRE(idx[0] >= 0);
@@ -128,7 +128,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
             };
 
             auto buf = alloc.allocate(fxn, vec_shape);
-            REQUIRE(element_count == 3); 
+            REQUIRE(element_count == 3);
             REQUIRE(*buf == vec);
         }
 
@@ -163,7 +163,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
         SECTION("allocate(rank 2) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](std::vector<size_t> idx) -> double {
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
                 element_count++; // Count the number of invocations
                 REQUIRE(idx.size() == 2);
                 REQUIRE(idx[0] >= 0);
@@ -216,7 +216,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
         SECTION("allocate(rank 3) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](std::vector<size_t> idx) -> double {
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
                 element_count++;
                 REQUIRE(idx.size() == 3);
                 REQUIRE(idx[0] >= 0);
@@ -225,7 +225,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
                 REQUIRE(idx[1] < 2);
                 REQUIRE(idx[2] >= 0);
                 REQUIRE(idx[2] < 2);
-                return 4*idx[0] + 2*idx[1] + idx[2] + 1;
+                return 4 * idx[0] + 2 * idx[1] + idx[2] + 1;
             };
 
             auto buf = alloc.allocate(fxn, ten_shape);
@@ -391,7 +391,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
         SECTION("allocate(vov) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](auto outer, auto idx) -> double {
+            auto fxn             = [&](auto outer, auto idx) -> double {
                 element_count++;
                 REQUIRE(outer.size() == 1);
                 REQUIRE(idx.size() == 1);
@@ -437,10 +437,9 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
             REQUIRE(*buf == vom);
         }
 
-
         SECTION("allocate(vom) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](auto outer, auto idx) -> double {
+            auto fxn             = [&](auto outer, auto idx) -> double {
                 element_count++;
                 REQUIRE(outer.size() == 1);
                 REQUIRE(outer[0] >= 0);
@@ -481,7 +480,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
         SECTION("allocate(mov) - scalar op") {
             size_t element_count = 0;
-            auto fxn = [&](auto outer, auto idx) -> double {
+            auto fxn             = [&](auto outer, auto idx) -> double {
                 element_count++;
                 REQUIRE(outer.size() == 2);
                 REQUIRE(idx.size() == 1);

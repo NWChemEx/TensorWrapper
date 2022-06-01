@@ -27,7 +27,8 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     }
 
     // Return Buffer pointer
-    return std::make_unique<value_type>(std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
+    return std::make_unique<value_type>(
+      std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
 }
 
 TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
@@ -45,7 +46,8 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     }
 
     // Return Buffer pointer
-    return std::make_unique<value_type>(std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
+    return std::make_unique<value_type>(
+      std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
 }
 
 TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::reallocate_(

@@ -38,7 +38,6 @@ private:
     /// Read-only reference to the PIMPL
     using const_pimpl_reference = const pimpl_type&;
 
-
     /// Type of the field traits
     using field_traits = tensorwrapper::tensor::detail_::FieldTraits<FieldType>;
 
@@ -141,10 +140,11 @@ public:
     using size_type = std::size_t;
 
     /// Type of an allocator
-    using allocator_type = allocator::Allocator<FieldType>;
-    using buffer_type    = buffer::Buffer<FieldType>;
+    using allocator_type      = allocator::Allocator<FieldType>;
+    using buffer_type         = buffer::Buffer<FieldType>;
     using tile_populator_type = typename allocator_type::tile_populator_type;
-    using element_populator_type = typename allocator_type::element_populator_type;
+    using element_populator_type =
+      typename allocator_type::element_populator_type;
 
     /// Type of a pointer to an allocator
     using allocator_pointer = std::unique_ptr<allocator_type>;
@@ -191,10 +191,10 @@ public:
 
     explicit TensorWrapper(pimpl_pointer p) noexcept;
 
-    TensorWrapper(const tile_populator_type& fxn, shape_pointer shape, 
-      allocator_pointer alloc);
-    TensorWrapper(const element_populator_type& fxn, shape_pointer shape, 
-      allocator_pointer alloc);
+    TensorWrapper(const tile_populator_type& fxn, shape_pointer shape,
+                  allocator_pointer alloc);
+    TensorWrapper(const element_populator_type& fxn, shape_pointer shape,
+                  allocator_pointer alloc);
 
 #if 0
     /** @brief Creates a TensorWrapper which will use the provided allocator to
@@ -626,6 +626,7 @@ public:
 
     inline pimpl_reference pimpl() { return pimpl_(); }
     inline const_pimpl_reference pimpl() const { return pimpl_(); }
+
 protected:
     /// Allows tensors over other fields to interact with this tensor
     template<typename OtherField>

@@ -18,7 +18,7 @@ using scalar_tile_populator_type =
                      tile_index_type, // up_bounds
                      ScalarType*)>;   // row major data
 template<typename ScalarType>
-using tot_tile_populator_type = 
+using tot_tile_populator_type =
   std::function<void(tile_index_type, // outer index
                      tile_index_type, // lo_bounds
                      tile_index_type, // up_bounds
@@ -35,7 +35,7 @@ using scalar_element_populator_type =
   std::function<ScalarType(tile_index_type)>;
 
 template<typename ScalarType>
-using tot_element_populator_type = 
+using tot_element_populator_type =
   std::function<ScalarType(tile_index_type,   // outer idx
                            tile_index_type)>; // inner idx
 
@@ -105,7 +105,7 @@ private:
 
 public:
     /// The type of object this allocator can make
-    using value_type = buffer::Buffer<FieldType>;
+    using value_type    = buffer::Buffer<FieldType>;
     using value_pointer = std::unique_ptr<value_type>;
 
     /// The base type of an object which models a tensor's shape
@@ -185,7 +185,8 @@ public:
                            const shape_type& shape) const;
     value_pointer allocate(const shape_type& shape) const;
 
-    value_pointer reallocate(const value_type& buf, const shape_type& shape) const;
+    value_pointer reallocate(const value_type& buf,
+                             const shape_type& shape) const;
 
     /** @brief Polymorphically hashes this allocator instance.
      *
@@ -279,11 +280,11 @@ protected:
     virtual allocator_ptr clone_() const = 0;
 
     virtual value_pointer allocate_(const tile_populator_type&,
-                                 const shape_type&) const   = 0;
+                                    const shape_type&) const   = 0;
     virtual value_pointer allocate_(const element_populator_type&,
-                                 const shape_type&) const   = 0;
+                                    const shape_type&) const   = 0;
     virtual value_pointer reallocate_(const value_type&,
-                                   const shape_type&) const = 0;
+                                      const shape_type&) const = 0;
 
     /** @brief Hook for polymorphically comparing two Allocators.
      *

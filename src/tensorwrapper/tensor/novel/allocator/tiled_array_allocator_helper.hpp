@@ -9,18 +9,21 @@ namespace tensorwrapper::tensor::novel::allocator::detail_ {
 
 template<typename Op>
 struct is_scalar_tile_fxn {
-  static constexpr bool value = std::is_invocable_v<Op, std::vector<size_t>, std::vector<size_t>, double*>;
+    static constexpr bool value =
+      std::is_invocable_v<Op, std::vector<size_t>, std::vector<size_t>,
+                          double*>;
 };
 template<typename Op>
 struct is_tot_tile_fxn {
-  static constexpr bool value = std::is_invocable_v<Op, std::vector<size_t>, std::vector<size_t>, std::vector<size_t>, double*>;
+    static constexpr bool value =
+      std::is_invocable_v<Op, std::vector<size_t>, std::vector<size_t>,
+                          std::vector<size_t>, double*>;
 };
 
 template<typename Op>
 inline constexpr bool is_scalar_tile_fxn_v = is_scalar_tile_fxn<Op>::value;
 template<typename Op>
 inline constexpr bool is_tot_tile_fxn_v = is_tot_tile_fxn<Op>::value;
-
 
 template<typename ShapeType, typename Op>
 default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
@@ -42,17 +45,17 @@ default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
             if(shape.is_hard_zero(lo_idx, up_idx)) {
                 return 0.; // Handle manual sparisty
             } else {
-                t = tile_type(range, 0.0);    // Create tile;
+                t = tile_type(range, 0.0); // Create tile;
                 // Populate
-                if constexpr (is_scalar_tile_fxn_v<Op>) {
-                    scalar_fxn(lo, up, t.data()); 
+                if constexpr(is_scalar_tile_fxn_v<Op>) {
+                    scalar_fxn(lo, up, t.data());
                 } else {
                     for(const auto& idx : range) {
                         std::vector<size_t> _idx(idx.begin(), idx.end());
                         t[idx] = scalar_fxn(_idx);
                     }
                 }
-                return TA::norm(t);           // Handle numerical sparisty
+                return TA::norm(t); // Handle numerical sparisty
             }
         };
         return TA::make_array<tensor_type>(world, ta_range, ta_functor);
@@ -95,10 +98,11 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
                     // Create Tile
                     inner_tile = inner_tile_type(inner_range, 0.);
 
-                    if constexpr (is_tot_tile_fxn_v<Op>) {
-                        tot_fxn(outer_index, lo_bound, up_bound, inner_tile.data());
+                    if constexpr(is_tot_tile_fxn_v<Op>) {
+                        tot_fxn(outer_index, lo_bound, up_bound,
+                                inner_tile.data());
                     } else {
-                        for( const auto& idx : inner_range ) {
+                        for(const auto& idx : inner_range) {
                             std::vector<size_t> _idx(idx.begin(), idx.end());
                             inner_tile[idx] = tot_fxn(outer_index, _idx);
                         }
