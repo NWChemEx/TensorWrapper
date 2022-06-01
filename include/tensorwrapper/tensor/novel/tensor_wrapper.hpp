@@ -32,6 +32,13 @@ private:
     /// Type of the pimpl
     using pimpl_type = detail_::TensorWrapperPIMPL<FieldType>;
 
+    /// Type of a modifiable reference to the PIMPL
+    using pimpl_reference = pimpl_type&;
+
+    /// Read-only reference to the PIMPL
+    using const_pimpl_reference = const pimpl_type&;
+
+
     /// Type of the field traits
     using field_traits = tensorwrapper::tensor::detail_::FieldTraits<FieldType>;
 
@@ -614,6 +621,8 @@ public:
         return false;
     }
 
+    inline pimpl_reference pimpl() { return pimpl_(); }
+    inline const_pimpl_reference pimpl() const { return pimpl_(); }
 protected:
     /// Allows tensors over other fields to interact with this tensor
     template<typename OtherField>
@@ -627,12 +636,6 @@ protected:
 
     friend labeled_tensor_type;
     friend const_labeled_tensor_type;
-
-    /// Type of a modifiable reference to the PIMPL
-    using pimpl_reference = pimpl_type&;
-
-    /// Read-only reference to the PIMPL
-    using const_pimpl_reference = const pimpl_type&;
 
     /// Type which results from annotating the modifiable tensor in the PIMPL
     using labeled_variant_type = typename field_traits::labeled_variant_type;

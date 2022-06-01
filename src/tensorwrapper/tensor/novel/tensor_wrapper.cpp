@@ -266,6 +266,7 @@ typename TENSOR_WRAPPER::const_labeled_type TENSOR_WRAPPER::annotate_(
 
 template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl_() {
+    if( !m_pimpl_) throw std::runtime_error("No TW PIMPL");
     //if(!m_pimpl_)
     //    m_pimpl_ = std::make_unique<pimpl_type>(
     //      variant_type{}, default_allocator<field_type>());

@@ -16,19 +16,15 @@ TEST_CASE("TensorWrapper<Scalar>") {
     using TWrapper     = novel::TensorWrapper<field_type>;
     using shape_type   = typename TWrapper::shape_type;
     using extents_type = typename TWrapper::extents_type;
-#if 0
-    using t_type       = TestType;
 
-    // Assumed different type than the one returned by default_allocator
-    using other_alloc = SingleElementTiles<field_type>;
-
-    auto ta_tensors = testing::get_tensors<t_type>();
-    t_type vec_data = ta_tensors.at("vector");
-    t_type mat_data = ta_tensors.at("matrix");
-    t_type t3_data  = ta_tensors.at("tensor");
-#endif
+    using allocator::ta::Distribution;
+    using allocator::ta::Storage;
+    using allocator::ta::Tiling;
 
     auto default_alloc = default_allocator<field_type>();
+    auto other_alloc = novel::allocator::ta_allocator<field_type>(
+      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+
     auto ref_tensors = testing::get_tensors<field_type>();
     auto& vec = ref_tensors["vector"];
     auto& mat = ref_tensors["matrix"];
@@ -80,6 +76,20 @@ TEST_CASE("TensorWrapper<Scalar>") {
             REQUIRE(moved.rank() == 1);
             REQUIRE(moved.extents() == extents_type{3});
             REQUIRE(&moved.allocator() == pa);
+        }
+    }
+
+    SECTION("reallocate") {
+        auto new_p     = other_alloc->clone();
+        const auto* pa = new_p.get();
+
+        SECTION("Non-default") {
+            auto v_copy = vec.pimpl().clone();
+            v_copy->reallocate(new_p->clone());
+            TWrapper corr( std::move(v_copy) );
+            vec.reallocate(std::move(new_p));
+            REQUIRE(vec == corr);
+            REQUIRE(&vec.allocator() == pa);
         }
     }
 
@@ -230,13 +240,6 @@ TEST_CASE("TensorWrapper<Scalar>") {
         SECTION("Default") {
             defaulted.reallocate(std::move(new_p));
             REQUIRE(&defaulted.allocator() == pa);
-        }
-
-        SECTION("Non-default") {
-            TWrapper corr(vec_data, new_p->clone());
-            vec.reallocate(std::move(new_p));
-            REQUIRE(vec == corr);
-            REQUIRE(&vec.allocator() == pa);
         }
     }
 
