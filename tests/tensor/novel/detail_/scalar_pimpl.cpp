@@ -327,49 +327,45 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
     }
 
     SECTION("reshape") {
-#if 0
         SECTION("Literal reshape") {
+            auto& world = TA::get_default_world();
             SECTION("vector") {
-                extents_type four{3, 1};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {{1}, {2}, {3}});
-
-                pimpl_type m3(vector, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 3);
+                extents_type new_ex{3,1};
+                auto new_shape = std::make_unique<shape_type>(new_ex);
+                auto cpy = v.clone();
+                cpy->reshape(new_shape->clone());
+                REQUIRE(cpy->allocator().is_equal(*palloc));
+                REQUIRE(cpy->shape() == *new_shape);
+                REQUIRE(cpy->size() == 3 );
+                ta_trange_type tr{{0,3},{0,1}};
+                ta_tensor_type corr(world, tr, {{1}, {2}, {3}});
+                REQUIRE( std::get<0>(cpy->variant()) == corr );
             }
-
             SECTION("matrix") {
-                extents_type four{4};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {1, 2, 3, 4});
-
-                pimpl_type m3(matrix, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 4);
+                extents_type new_ex{4};
+                auto new_shape = std::make_unique<shape_type>(new_ex);
+                auto cpy = m.clone();
+                cpy->reshape(new_shape->clone());
+                REQUIRE(cpy->allocator().is_equal(*palloc));
+                REQUIRE(cpy->shape() == *new_shape);
+                REQUIRE(cpy->size() == 4 );
+                ta_trange_type tr{{0,4}};
+                ta_tensor_type corr(world, tr, {1,2,3,4});
+                REQUIRE( std::get<0>(cpy->variant()) == corr );
             }
-
             SECTION("tensor") {
-                extents_type four{8};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr,
-                                    {1, 2, 3, 4, 5, 6, 7, 8});
-
-                pimpl_type m3(tensor, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 8);
+                extents_type new_ex{4,2};
+                auto new_shape = std::make_unique<shape_type>(new_ex);
+                auto cpy = t.clone();
+                cpy->reshape(new_shape->clone());
+                REQUIRE(cpy->allocator().is_equal(*palloc));
+                REQUIRE(cpy->shape() == *new_shape);
+                REQUIRE(cpy->size() == 8 );
+                ta_trange_type tr{{0,4},{0,2}};
+                ta_tensor_type corr(world, tr, {{1,2},{3,4},{5,6},{7,8}});
+                REQUIRE( std::get<0>(cpy->variant()) == corr );
             }
         }
-#endif
 
         SECTION("Apply sparsity") {
             using sparse_shape    = SparseShape<field_type>;
@@ -498,48 +494,5 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
         }
     }
 
-    SECTION("reshape") {
-        SECTION("Literal reshape") {
-            SECTION("vector") {
-                extents_type four{3, 1};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {{1}, {2}, {3}});
-
-                pimpl_type m3(vector, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 3);
-            }
-
-            SECTION("matrix") {
-                extents_type four{4};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {1, 2, 3, 4});
-
-                pimpl_type m3(matrix, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 4);
-            }
-
-            SECTION("tensor") {
-                extents_type four{8};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr,
-                                    {1, 2, 3, 4, 5, 6, 7, 8});
-
-                pimpl_type m3(tensor, new_shape->clone(), alloc->clone());
-                REQUIRE(m3.allocator() == *alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 8);
-            }
-        }
-    }
 #endif
 }

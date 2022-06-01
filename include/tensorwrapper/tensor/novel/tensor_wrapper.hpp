@@ -144,6 +144,7 @@ public:
     using allocator_type = allocator::Allocator<FieldType>;
     using buffer_type    = buffer::Buffer<FieldType>;
     using tile_populator_type = typename allocator_type::tile_populator_type;
+    using element_populator_type = typename allocator_type::element_populator_type;
 
     /// Type of a pointer to an allocator
     using allocator_pointer = std::unique_ptr<allocator_type>;
@@ -191,6 +192,8 @@ public:
     explicit TensorWrapper(pimpl_pointer p) noexcept;
 
     TensorWrapper(const tile_populator_type& fxn, shape_pointer shape, 
+      allocator_pointer alloc);
+    TensorWrapper(const element_populator_type& fxn, shape_pointer shape, 
       allocator_pointer alloc);
 
 #if 0
