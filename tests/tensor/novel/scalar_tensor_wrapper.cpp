@@ -105,12 +105,14 @@ TEST_CASE("TensorWrapper<Scalar>") {
             auto p = std::make_unique<shape_type>(extents_type{2, 3});
             REQUIRE_THROWS_AS(vec.reshape(std::move(p)), std::runtime_error);
         }
-        //SECTION("Vector to matrix") {
-        //    auto p = std::make_unique<shape_type>(extents_type{1, 3});
-        //    TWrapper corr(t_type(world, {{1.0, 2.0, 3.0}}));
-        //    auto rv = vec.reshape(std::move(p));
-        //    REQUIRE(rv == corr);
-        //}
+        SECTION("Vector to matrix") {
+            auto p = std::make_unique<shape_type>(extents_type{1, 3});
+            auto v_cpy = vec.pimpl().clone();
+            v_cpy->reshape(p->clone());
+            TWrapper corr( std::move(v_cpy) );
+            auto new_v = vec.reshape(p->clone());
+            REQUIRE(new_v == corr);
+        }
     }
 
     SECTION("allocator") {
