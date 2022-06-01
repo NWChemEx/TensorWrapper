@@ -93,6 +93,26 @@ TEST_CASE("TensorWrapper<Scalar>") {
         }
     }
 
+    SECTION("slice()") {
+        auto v_slice = vec.pimpl().slice({0ul},{2ul}, default_alloc->clone());
+        TWrapper corr( std::move(v_slice) );
+        auto tw_slice = vec.slice({0ul},{2ul}, default_alloc->clone());
+        REQUIRE( tw_slice == corr );
+    }
+
+    SECTION("reshape()") {
+        SECTION("Incorrect shape") {
+            auto p = std::make_unique<shape_type>(extents_type{2, 3});
+            REQUIRE_THROWS_AS(vec.reshape(std::move(p)), std::runtime_error);
+        }
+        //SECTION("Vector to matrix") {
+        //    auto p = std::make_unique<shape_type>(extents_type{1, 3});
+        //    TWrapper corr(t_type(world, {{1.0, 2.0, 3.0}}));
+        //    auto rv = vec.reshape(std::move(p));
+        //    REQUIRE(rv == corr);
+        //}
+    }
+
     SECTION("allocator") {
         REQUIRE_THROWS_AS(defaulted.allocator(), std::runtime_error);
         REQUIRE(vec.allocator().is_equal(*default_alloc));
@@ -244,21 +264,6 @@ TEST_CASE("TensorWrapper<Scalar>") {
     }
 
     SECTION("slice()") {
-        SECTION("Vector") {
-            TWrapper corr(t_type(world, {1.0, 2.0}));
-            auto slice = vec.slice({0ul}, {2ul});
-            REQUIRE(slice == corr);
-        }
-        SECTION("Matrix") {
-            TWrapper corr(t_type(world, {{2.0}}));
-            auto slice = mat.slice({0ul, 1ul}, {1ul, 2ul});
-            REQUIRE(slice == corr);
-        }
-        SECTION("Tensor") {
-            TWrapper corr(t_type(world, {{{2.0}, {4.0}}, {{6.0}, {8.0}}}));
-            auto slice = t3.slice({0ul, 0ul, 1ul}, {2ul, 2ul, 2ul});
-            REQUIRE(slice == corr);
-        }
         SECTION("Different allocator") {
             auto p = std::make_unique<other_alloc>(world);
             TWrapper corr(t_type(world, {1.0, 2.0}), p->clone());
