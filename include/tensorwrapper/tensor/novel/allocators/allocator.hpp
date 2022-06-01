@@ -13,21 +13,37 @@ namespace detail_ {
 
 using tile_index_type = std::vector<size_t>;
 template<typename ScalarType>
-using scalar_populator_type =
+using scalar_tile_populator_type =
   std::function<void(tile_index_type, // lo_bounds
                      tile_index_type, // up_bounds
                      ScalarType*)>;   // row major data
 template<typename ScalarType>
-using tot_populator_type = std::function<void(tile_index_type, // outer index
-                                              tile_index_type, // lo_bounds
-                                              tile_index_type, // up_bounds
-                                              ScalarType*)>;   // row major data
+using tot_tile_populator_type = 
+  std::function<void(tile_index_type, // outer index
+                     tile_index_type, // lo_bounds
+                     tile_index_type, // up_bounds
+                     ScalarType*)>;   // row major data
 
 template<typename FieldType, typename ScalarType>
 using tile_populator_type =
   std::conditional_t<field::is_scalar_field_v<FieldType>,
-                     scalar_populator_type<ScalarType>,
-                     tot_populator_type<ScalarType>>;
+                     scalar_tile_populator_type<ScalarType>,
+                     tot_tile_populator_type<ScalarType>>;
+
+template<typename ScalarType>
+using scalar_element_populator_type =
+  std::function<ScalarType(tile_index_type)>;
+
+template<typename ScalarType>
+using tot_element_populator_type = 
+  std::function<ScalarType(tile_index_type,   // outer idx
+                           tile_index_type)>; // inner idx
+
+template<typename FieldType, typename ScalarType>
+using element_populator_type =
+  std::conditional_t<field::is_scalar_field_v<FieldType>,
+                     scalar_element_populator_type<ScalarType>,
+                     tot_element_populator_type<ScalarType>>;
 
 } // namespace detail_
 
@@ -116,6 +132,8 @@ public:
     /// Type of tensor population functor
     using tile_populator_type =
       detail_::tile_populator_type<FieldType, scalar_type>;
+    using element_populator_type =
+      detail_::element_populator_type<FieldType, scalar_type>;
 
     /** @brief Creates a new allocator with the optionally specified runtime.
      *
@@ -162,6 +180,8 @@ public:
     virtual ~Allocator() noexcept = default;
 
     value_pointer allocate(const tile_populator_type& fxn,
+                           const shape_type& shape) const;
+    value_pointer allocate(const element_populator_type& fxn,
                            const shape_type& shape) const;
     value_pointer allocate(const shape_type& shape) const;
 
@@ -260,6 +280,8 @@ protected:
 
     virtual value_pointer allocate_(const tile_populator_type&,
                                  const shape_type&) const   = 0;
+    virtual value_pointer allocate_(const element_populator_type&,
+                                 const shape_type&) const   = 0;
     virtual value_pointer reallocate_(const value_type&,
                                    const shape_type&) const = 0;
 
@@ -299,6 +321,12 @@ bool Allocator<FieldType>::is_equal(const Allocator& other) const {
 template<typename FieldType>
 typename Allocator<FieldType>::value_pointer Allocator<FieldType>::allocate(
   const tile_populator_type& fxn, const shape_type& shape) const {
+    return allocate_(fxn, shape);
+}
+
+template<typename FieldType>
+typename Allocator<FieldType>::value_pointer Allocator<FieldType>::allocate(
+  const element_populator_type& fxn, const shape_type& shape) const {
     return allocate_(fxn, shape);
 }
 

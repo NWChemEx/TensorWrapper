@@ -26,8 +26,23 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
           detail_::generate_ta_tot_tensor(this->m_world_, shape, tiling_, fxn);
     }
 
-    // Wrap in buffer PIMPL
-    //ta_buffer_pimpl_type ta_buffer_pimpl(ta_tensor);
+    // Return Buffer pointer
+    return std::make_unique<value_type>(std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
+}
+
+TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
+  const element_populator_type& fxn, const shape_type& shape) const {
+    using default_tensor_type  = detail_::default_tensor_type<FieldType>;
+    using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
+
+    default_tensor_type ta_tensor;
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        ta_tensor = detail_::generate_ta_scalar_tensor(this->m_world_, shape,
+                                                       tiling_, fxn);
+    } else {
+        ta_tensor =
+          detail_::generate_ta_tot_tensor(this->m_world_, shape, tiling_, fxn);
+    }
 
     // Return Buffer pointer
     return std::make_unique<value_type>(std::make_unique<ta_buffer_pimpl_type>(ta_tensor));
