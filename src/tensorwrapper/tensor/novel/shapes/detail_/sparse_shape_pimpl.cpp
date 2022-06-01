@@ -175,14 +175,14 @@ bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
                                       const index_type& hi) const {
     if(lo.size() != hi.size()) throw std::runtime_error("Lo/Hi Inconsistent");
 
-    for( auto i = 0ul; i < lo.size(); ++i ) {
-        if( lo[i] >= hi[i] ) throw std::runtime_error("Lo must be < Hi");
+    for(auto i = 0ul; i < lo.size(); ++i) {
+        if(lo[i] >= hi[i]) throw std::runtime_error("Lo must be < Hi");
     }
 
     const auto nind = m_sm_.ind_rank();
     const auto ndep = m_sm_.dep_rank();
     const auto rank = nind + ndep;
-    //std::cout << "IND = " << nind << " DEP = " << ndep << std::endl;
+    // std::cout << "IND = " << nind << " DEP = " << ndep << std::endl;
 
     constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     const auto max_rank   = is_tot ? nind : rank;
@@ -196,14 +196,14 @@ bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
     if constexpr(field::is_scalar_field_v<FieldType>) {
         index_type lo_dep(lo.begin() + nind, lo.end());
         index_type hi_dep(hi.begin() + nind, hi.end());
-	//std::cout << "lo " << lo_ind << ", " << lo_dep << std::endl;
-	//std::cout << "hi " << hi_ind << ", " << hi_dep << std::endl;
+        // std::cout << "lo " << lo_ind << ", " << lo_dep << std::endl;
+        // std::cout << "hi " << hi_ind << ", " << hi_dep << std::endl;
 
         // TODO: This is very inefficient, needs to be expressed as a search
         for(auto [ind_idx, domain] : m_sm_) {
-# if 0
+#if 0
             // Check if independant index is in the slice
-            #if 0
+#if 0
             bool ind_in_slice = false;
             for(int i = 0; i < nind; ++i) {
                 if(ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
@@ -211,39 +211,42 @@ bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
                     break;
                 }
             }
-            #else
+#else
 	    auto ind_in_slice = ind_idx >= lo_ind and ind_idx < hi_ind;
-            #endif
+#endif
 	    std::cout << std::boolalpha;
 	    std::cout << "  IND CHECK " << ind_idx << " " << ind_in_slice << std::endl;
 
             // Check if domain has overlap with slice
             if(ind_in_slice) {
                 for(const auto& dep_idx : domain) {
-                    #if 0
+#if 0
                     for(int i = 0; i < ndep; ++i) {
                         if(dep_idx[i] >= lo_dep[i] and dep_idx[i] < hi_dep[i]) {
                             return false;
                         }
                     }
-                    #else
+#else
 		    std::cout << "    D " << dep_idx << std::endl;
 		    if( dep_idx >= lo_dep and dep_idx < hi_dep ) return false;
-                    #endif
+#endif
                 }
             }
 #else
-	for( const auto& dep_idx : domain ) {
-           index_type full_idx; full_idx.m_index.resize(rank);
-	   std::copy( ind_idx.begin(), ind_idx.end(), full_idx.begin() );
-	   std::copy( dep_idx.begin(), dep_idx.end(), full_idx.begin() + nind );
-	   bool point_in_slice = true;
-	   for( auto i = 0; i < rank; ++i ) {
-               point_in_slice = point_in_slice and (
-                 full_idx[i] >= lo[i] and full_idx[i] < hi[i] );
-	   }
-	   if( point_in_slice ) return false;
-	}
+            for(const auto& dep_idx : domain) {
+                index_type full_idx;
+                full_idx.m_index.resize(rank);
+                std::copy(ind_idx.begin(), ind_idx.end(), full_idx.begin());
+                std::copy(dep_idx.begin(), dep_idx.end(),
+                          full_idx.begin() + nind);
+                bool point_in_slice = true;
+                for(auto i = 0; i < rank; ++i) {
+                    point_in_slice =
+                      point_in_slice and
+                      (full_idx[i] >= lo[i] and full_idx[i] < hi[i]);
+                }
+                if(point_in_slice) return false;
+            }
 #endif
         }
 

@@ -43,24 +43,21 @@ auto make_extents(VariantType&& v) {
 
 // TODO: This should live in Buffer, but can't until new TW
 // infrastructure replaces old
-template <typename FieldType>
-void reshape_helper( buffer::Buffer<FieldType>& buffer, 
-  const Shape<FieldType>& shape ) {
-
+template<typename FieldType>
+void reshape_helper(buffer::Buffer<FieldType>& buffer,
+                    const Shape<FieldType>& shape) {
     auto l = [&](auto&& old_tensor) {
-        TA::foreach_inplace( old_tensor, [&](auto&& tile) {
+        TA::foreach_inplace(old_tensor, [&](auto&& tile) {
             const auto range = tile.range();
-	    const auto lo    = range.lobound();
-	    const auto up    = range.upbound();
+            const auto lo    = range.lobound();
+            const auto up    = range.upbound();
             sparse_map::Index lo_idx(lo.begin(), lo.end());
             sparse_map::Index up_idx(up.begin(), up.end());
-	    if(shape.is_hard_zero(lo_idx, up_idx)) {
-	        tile.scale_to(0.);
-            }
-	    return TA::norm(tile);
+            if(shape.is_hard_zero(lo_idx, up_idx)) { tile.scale_to(0.); }
+            return TA::norm(tile);
         });
     };
-    std::visit(l, buffer.variant() );
+    std::visit(l, buffer.variant());
 }
 
 /// XXX This should be replaced with Buffer::slice
@@ -90,7 +87,7 @@ auto slice_helper(buffer::Buffer<FieldType>& buffer,
 
     return std::make_unique<buffer::Buffer<FieldType>>(std::move(slice_pimpl));
 }
-}
+} // namespace
 
 // Macro to avoid retyping the full type of the PIMPL
 #define PIMPL_TYPE TensorWrapperPIMPL<FieldType>
@@ -369,8 +366,9 @@ void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
 template<typename FieldType>
 void PIMPL_TYPE::shuffle_(const shape_type& shape) {
     const auto times_op = std::multiplies<size_t>();
-    auto extents = shape.extents();
-    auto new_volume = std::accumulate(extents.begin(), extents.end(), 1, times_op);
+    auto extents        = shape.extents();
+    auto new_volume =
+      std::accumulate(extents.begin(), extents.end(), 1, times_op);
 
     if(new_volume != size()) {
         std::string msg =

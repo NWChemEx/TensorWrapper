@@ -382,13 +382,14 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
             // Can't apply to vector (need an independent and a dependent index)
 
             SECTION("matrix") {
-		// [x 0]
-		// [x 0]
+                // [x 0]
+                // [x 0]
                 sparse_map_type sm{{i0, {i0}}, {i1, {i0}}};
-                auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2}, sm);
+                auto new_shape =
+                  std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
 
                 auto m3 = m2.clone();
-		m3->reshape(new_shape->clone());
+                m3->reshape(new_shape->clone());
 
                 REQUIRE(m3->allocator() == *new_alloc);
                 REQUIRE(m3->shape() == *new_shape);
@@ -396,33 +397,34 @@ TEST_CASE("novel::TensorWrapperPIMPL<Scalar>") {
                 REQUIRE(m3->size() == 4);
             }
 
-	    SECTION("tensor") {
+            SECTION("tensor") {
                 SECTION("Rank 1 ind, rank 2 dependent") {
                     sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
-                    auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2,2}, sm);
+                    auto new_shape =
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2}, sm);
 
                     auto t3 = t2.clone();
-		    t3->reshape(new_shape->clone());
+                    t3->reshape(new_shape->clone());
 
                     REQUIRE(t3->allocator() == *new_alloc);
                     REQUIRE(t3->shape() == *new_shape);
                     REQUIRE(t3->sum() == Approx(6.0));
                     REQUIRE(t3->size() == 8);
-		}
+                }
                 SECTION("Rank 2 ind, rank 1 dependent") {
                     sparse_map_type sm{{i00, {i0}}, {i10, {i0}}};
-                    auto new_shape = std::make_unique<sparse_shape>(extents_type{2,2,2}, sm);
+                    auto new_shape =
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2}, sm);
 
                     auto t3 = t2.clone();
-		    t3->reshape(new_shape->clone());
+                    t3->reshape(new_shape->clone());
 
                     REQUIRE(t3->allocator() == *new_alloc);
                     REQUIRE(t3->shape() == *new_shape);
                     REQUIRE(t3->sum() == Approx(6.0));
                     REQUIRE(t3->size() == 8);
-		}
-	    }
-
+                }
+            }
         }
     }
 #if 0
