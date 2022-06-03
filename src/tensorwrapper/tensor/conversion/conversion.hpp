@@ -41,10 +41,10 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
     /** @brief Checks if this Conversion instance can convert @p B.
      *
      *  @tparam FieldType The type of value in the Buffer
-     * 
+     *
      *  @param B The buffer we want to convert
-     * 
-     *  @return True if convertable, false 
+     *
+     *  @return True if convertable, false
      */
     template<typename FieldType>
     bool can_convert(buffer_t<FieldType>& B) {
@@ -60,9 +60,9 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
     /** @brief Return the tensor wrapped in @p B as a TA DistArray.
      *
      *  @tparam FieldType The type of value in the Buffer
-     * 
+     *
      *  @param B The buffer we want to convert
-     * 
+     *
      *  @return The wrapped TA DistArray
      */
     template<typename FieldType>
