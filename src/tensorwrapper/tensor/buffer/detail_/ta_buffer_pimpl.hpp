@@ -3,7 +3,7 @@
 #include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 
 /// Forward declare the Conversion class
-namespace tensorwrapper::tensor::conversion {
+namespace tensorwrapper::tensor {
 template<typename ToType>
 struct Conversion;
 }
@@ -83,7 +83,7 @@ private:
 
     /// Conversion needs access to stored tensor
     template<typename T>
-    friend struct tensorwrapper::tensor::conversion::Conversion;
+    friend struct tensorwrapper::tensor::Conversion;
 };
 
 extern template class TABufferPIMPL<field::Scalar>;

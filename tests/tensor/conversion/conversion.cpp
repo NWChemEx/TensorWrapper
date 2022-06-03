@@ -1,63 +1,60 @@
-#include "../buffer/make_pimpl.hpp"
-#include "../test_tensor.hpp"
+#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/conversion/conversion.hpp"
+#include <catch2/catch.hpp>
 
-using namespace tensorwrapper::tensor;
+/// TA Types
+template<typename TileType>
+using distarray_t = TA::DistArray<TileType, TA::SparsePolicy>;
+using tat_t       = distarray_t<TA::Tensor<double>>;
+using tot_t       = distarray_t<TA::Tensor<TA::Tensor<double>>>;
+using tile_t      = typename tot_t::value_type;
+using inner_t     = typename tile_t::value_type;
 
-using scalar_type = field::Scalar;
-using tensor_type = field::Tensor;
+/// Conversion Types
+using s_conversion_t = tensorwrapper::tensor::Conversion<tat_t>;
+using t_conversion_t = tensorwrapper::tensor::Conversion<tot_t>;
 
-template<typename FieldType>
-using buffer_type = buffer::Buffer<FieldType>;
+/// Field Types
+using s_t = tensorwrapper::tensor::field::Scalar;
+using t_t = tensorwrapper::tensor::field::Tensor;
 
-template<typename FieldType>
-using pimpl_type = buffer::detail_::TABufferPIMPL<FieldType>;
+/// Buffer Types
+using s_buffer_t   = tensorwrapper::tensor::buffer::Buffer<s_t>;
+using t_buffer_t   = tensorwrapper::tensor::buffer::Buffer<t_t>;
+using s_tabuffer_t = tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<s_t>;
+using t_tabuffer_t = tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<t_t>;
 
-using ta_scalar_type = TA::DistArray<TA::Tensor<double>, TA::SparsePolicy>;
-
-using ta_tot_type =
-  TA::DistArray<TA::Tensor<TA::Tensor<double>>, TA::SparsePolicy>;
-
-using scalar_convert_type = conversion::Conversion<ta_scalar_type>;
-
-using tot_convert_type = conversion::Conversion<ta_tot_type>;
+using tensorwrapper::ta_helpers::allclose;
+using tensorwrapper::ta_helpers::allclose_tot;
 
 TEST_CASE("Conversion") {
-    auto&& [pvec, pmat, pt3d] = testing::make_pimpl<scalar_type>();
-    buffer_type<scalar_type> vec(pvec->clone());
-    buffer_type<scalar_type> mat(pmat->clone());
-    buffer_type<scalar_type> t3d(pt3d->clone());
+    /// Make the tensors to wrap
+    auto& world = TA::get_default_world();
+    inner_t v0(TA::Range{3}, {1.0, 2.0, 3.0});
+    tat_t corr_mat(world, {{1.0, 2.0}, {3.0, 4.0}});
+    tot_t corr_vov(world, {v0, v0, v0});
 
-    auto&& [pvov, pvom, pmov] = testing::make_pimpl<tensor_type>();
-    buffer_type<tensor_type> vov(pvov->clone());
-    buffer_type<tensor_type> vom(pvom->clone());
-    buffer_type<tensor_type> mov(pmov->clone());
+    /// Make buffers wrapping the tensors
+    auto s_tabuffer = std::make_unique<s_tabuffer_t>(corr_mat);
+    auto t_tabuffer = std::make_unique<t_tabuffer_t>(corr_vov);
+    s_buffer_t s_buffer(s_tabuffer->clone());
+    t_buffer_t t_buffer(t_tabuffer->clone());
 
-    scalar_convert_type convert_scalar;
-    tot_convert_type convert_tot;
+    /// Instances of conversion
+    s_conversion_t s_conversion;
+    t_conversion_t t_conversion;
 
-    {
-        auto test = convert_scalar.convert(vec);
-        std::cout << test << std::endl;
+    SECTION("convert") {
+        /// Scalar check
+        REQUIRE(allclose(s_conversion.convert(s_buffer), corr_mat));
+        /// ToT check
+        REQUIRE(allclose_tot(t_conversion.convert(t_buffer), corr_vov, 1));
     }
-    {
-        auto test = convert_scalar.convert(mat);
-        std::cout << test << std::endl;
-    }
-    {
-        auto test = convert_scalar.convert(t3d);
-        std::cout << test << std::endl;
-    }
-    {
-        auto test = convert_tot.convert(vov);
-        std::cout << test << std::endl;
-    }
-    {
-        auto test = convert_tot.convert(vom);
-        std::cout << test << std::endl;
-    }
-    {
-        auto test = convert_tot.convert(mov);
-        std::cout << test << std::endl;
+
+    SECTION("can_convert") {
+        REQUIRE(s_conversion.can_convert(s_buffer));
+        REQUIRE(t_conversion.can_convert(t_buffer));
+        REQUIRE_FALSE(s_conversion.can_convert(t_buffer));
+        REQUIRE_FALSE(t_conversion.can_convert(s_buffer));
     }
 }
