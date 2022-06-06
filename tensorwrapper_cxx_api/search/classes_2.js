@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['diis_229',['DIIS',['../classtensorwrapper_1_1diis_1_1DIIS.html',1,'tensorwrapper::diis']]],
-  ['domain_230',['Domain',['../classtensorwrapper_1_1sparse__map_1_1Domain.html',1,'tensorwrapper::sparse_map']]],
-  ['domainpimpl_231',['DomainPIMPL',['../classtensorwrapper_1_1sparse__map_1_1detail___1_1DomainPIMPL.html',1,'tensorwrapper::sparse_map::detail_']]]
+  ['conversion_237',['Conversion',['../structtensorwrapper_1_1tensor_1_1Conversion.html',1,'tensorwrapper::tensor']]],
+  ['conversion_3c_20ta_3a_3adistarray_3c_20tiletype_2c_20ta_3a_3asparsepolicy_20_3e_20_3e_238',['Conversion&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;',['../structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html',1,'tensorwrapper::tensor']]]
 ];
