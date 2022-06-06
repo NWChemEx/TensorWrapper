@@ -87,15 +87,13 @@ private:
 
     variant_type m_tensor_;
 
-            
     /// XXX These are to be removed
     inline variant_type& variant_() override { return m_tensor_; }
     inline const variant_type& variant_() const override { return m_tensor_; }
-       
+
     /// Conversion needs access to stored tensor
     template<typename T>
     friend struct tensorwrapper::tensor::Conversion;
-              
 };
 
 extern template class TABufferPIMPL<field::Scalar>;
