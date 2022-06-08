@@ -1,3 +1,4 @@
+#pragma once
 #include "tensorwrapper/tensor/novel/shapes/shapes.hpp"
 namespace testing {
 

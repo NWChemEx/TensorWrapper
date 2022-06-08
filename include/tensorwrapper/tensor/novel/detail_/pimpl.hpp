@@ -381,7 +381,7 @@ private:
      *
      *  @return The number of inner modes.
      */
-    rank_type inner_rank_(index_type) const;
+    rank_type inner_rank_() const;
 
     /** @brief Returns the outer rank of the tensor.
      *

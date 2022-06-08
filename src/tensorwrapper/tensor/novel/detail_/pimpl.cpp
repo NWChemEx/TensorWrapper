@@ -188,7 +188,7 @@ const typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() const {
 
 template<typename FieldType>
 typename PIMPL_TYPE::rank_type PIMPL_TYPE::rank() const {
-    return outer_rank_() + inner_rank_(index_type{});
+    return outer_rank_() + inner_rank_();
 }
 
 template<typename FieldType>
@@ -428,12 +428,13 @@ void PIMPL_TYPE::shuffle_(const shape_type& shape) {
 }
 
 template<typename FieldType>
-typename PIMPL_TYPE::rank_type PIMPL_TYPE::inner_rank_(index_type idx) const {
-    if constexpr(field::is_tensor_field_v<FieldType>)
-        return m_shape_ ? m_shape_->inner_extents().at(idx).extents().size() :
-                          0;
-    else
-        return 0;
+typename PIMPL_TYPE::rank_type PIMPL_TYPE::inner_rank_() const {
+    if constexpr(field::is_tensor_field_v<FieldType>) {
+        if( !m_shape_ ) return 0;
+        if( !m_shape_->inner_extents().size() ) return 0;
+        auto& [idx, inner_shape] = *m_shape_->inner_extents().begin();
+        return inner_shape.extents().size();
+    } else return 0;
 }
 
 template<typename FieldType>
