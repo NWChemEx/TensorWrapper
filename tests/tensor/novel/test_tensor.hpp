@@ -46,7 +46,6 @@ auto get_tensors() {
         rv["matrix"] = tensor_type(std::move(mat_p));
         rv["tensor"] = tensor_type(std::move(t3d_p));
     } else {
-    
         auto [vov_bp, vom_bp, mov_bp] =
           make_pimpl<FieldType>(); // Create Buffers
 
@@ -55,7 +54,7 @@ auto get_tensors() {
         auto mov_b = std::make_unique<buffer_type>(mov_bp->clone());
 
         extents_type vector_extents{3};
-        extents_type matrix_extents{2,2};
+        extents_type matrix_extents{2, 2};
 
         auto vov_shape =
           testing::make_uniform_tot_shape(vector_extents, vector_extents);
@@ -63,8 +62,8 @@ auto get_tensors() {
           testing::make_uniform_tot_shape(vector_extents, matrix_extents);
         auto mov_shape =
           testing::make_uniform_tot_shape(matrix_extents, vector_extents);
-        auto palloc    = default_allocator<FieldType>();
-        
+        auto palloc = default_allocator<FieldType>();
+
         auto vov_p = std::make_unique<pimpl_type>(
           std::move(vov_b), vov_shape.clone(), palloc->clone());
         auto vom_p = std::make_unique<pimpl_type>(

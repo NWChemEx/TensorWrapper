@@ -39,26 +39,26 @@ TEST_CASE("novel::TensorWrapperPIMPL<Tensor>") {
 
     buffer_pointer vov_buffer_obt, vom_buffer_obt, mov_buffer_obt;
     // TODO: Test SET
-    //buffer_pointer vov_buffer_set, vom_buffer_set, mov_buffer_set;
+    // buffer_pointer vov_buffer_set, vom_buffer_set, mov_buffer_set;
     {
         auto [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
-        vov_buffer_obt    = std::make_unique<buffer_type>(pvov->clone());
-        vom_buffer_obt    = std::make_unique<buffer_type>(pvom->clone());
-        mov_buffer_obt    = std::make_unique<buffer_type>(pmov->clone());
+        vov_buffer_obt          = std::make_unique<buffer_type>(pvov->clone());
+        vom_buffer_obt          = std::make_unique<buffer_type>(pvom->clone());
+        mov_buffer_obt          = std::make_unique<buffer_type>(pmov->clone());
 
         // TODO: Test SET
-        //ta_trange_type se_tr_vec{{0, 1, 2, 3}};
-        //ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
-        //ta_trange_type se_tr_ten{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
-        //pv->retile(se_tr_vec);
-        //pm->retile(se_tr_mat);
-        //pt->retile(se_tr_ten);
-        //vec_buffer_set = std::make_unique<buffer_type>(std::move(pv));
-        //mat_buffer_set = std::make_unique<buffer_type>(std::move(pm));
-        //t3d_buffer_set = std::make_unique<buffer_type>(std::move(pt));
+        // ta_trange_type se_tr_vec{{0, 1, 2, 3}};
+        // ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
+        // ta_trange_type se_tr_ten{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+        // pv->retile(se_tr_vec);
+        // pm->retile(se_tr_mat);
+        // pt->retile(se_tr_ten);
+        // vec_buffer_set = std::make_unique<buffer_type>(std::move(pv));
+        // mat_buffer_set = std::make_unique<buffer_type>(std::move(pm));
+        // t3d_buffer_set = std::make_unique<buffer_type>(std::move(pt));
     }
 
-    extents_type vector_extents{3}, matrix_extents{2,2};
+    extents_type vector_extents{3}, matrix_extents{2, 2};
     auto vov_shape =
       testing::make_uniform_tot_shape(vector_extents, vector_extents);
     auto vom_shape =
@@ -71,18 +71,18 @@ TEST_CASE("novel::TensorWrapperPIMPL<Tensor>") {
     };
 
     pimpl_type vov(from_buffer(vov_buffer_obt), vov_shape.clone(),
-                 palloc->clone());
+                   palloc->clone());
     pimpl_type vom(from_buffer(vom_buffer_obt), vom_shape.clone(),
-                 palloc->clone());
+                   palloc->clone());
     pimpl_type mov(from_buffer(mov_buffer_obt), mov_shape.clone(),
-                 palloc->clone());
+                   palloc->clone());
 
     // TODO: Test SET
-    //pimpl_type vov2(from_buffer(vov_buffer_set), vov_shape->clone(),
+    // pimpl_type vov2(from_buffer(vov_buffer_set), vov_shape->clone(),
     //             oalloc->clone());
-    //pimpl_type vom2(from_buffer(vom_buffer_set), vom_shape->clone(),
+    // pimpl_type vom2(from_buffer(vom_buffer_set), vom_shape->clone(),
     //             oalloc->clone());
-    //pimpl_type mov2(from_buffer(mov_buffer_set), mov_shape->clone(),
+    // pimpl_type mov2(from_buffer(mov_buffer_set), mov_shape->clone(),
     //             oalloc->clone());
 
     SECTION("CTors") {
@@ -227,29 +227,26 @@ TEST_CASE("novel::TensorWrapperPIMPL<Tensor>") {
                            palloc->clone());
             REQUIRE(lhs != hash_objects(rhs));
         }
-     
+
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;
             using index_type      = typename sparse_map_type::key_type;
 
-            index_type i0{0}, i1{1}, i2{2}, i00{0,0}, i10{1,0}, i01{0,1}, i11{1,1};
+            index_type i0{0}, i1{1}, i2{2}, i00{0, 0}, i10{1, 0}, i01{0, 1},
+              i11{1, 1};
 
-            sparse_map_type sm{
-              {i0, {i00, i01, i10, i11}}, 
-              {i1, {i00, i01, i10, i11}}, 
-              {i2, {i00, i01, i10, i11}}
-            }; 
-            auto new_shape =
-              std::make_unique<sparse_shape>(vom.extents(), 
-                vom.shape().inner_extents(), sm);
+            sparse_map_type sm{{i0, {i00, i01, i10, i11}},
+                               {i1, {i00, i01, i10, i11}},
+                               {i2, {i00, i01, i10, i11}}};
+            auto new_shape = std::make_unique<sparse_shape>(
+              vom.extents(), vom.shape().inner_extents(), sm);
 
             pimpl_type rhs(from_buffer(vom_buffer_obt), new_shape->clone(),
                            palloc->clone());
-             
+
             REQUIRE(lhs != hash_objects(rhs));
         }
-      
     }
 
     SECTION("operator==") {
@@ -267,26 +264,24 @@ TEST_CASE("novel::TensorWrapperPIMPL<Tensor>") {
                            palloc->clone());
             REQUIRE_FALSE(vom == rhs);
         }
-     
+
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;
             using index_type      = typename sparse_map_type::key_type;
 
-            index_type i0{0}, i1{1}, i2{2}, i00{0,0}, i10{1,0}, i01{0,1}, i11{1,1};
+            index_type i0{0}, i1{1}, i2{2}, i00{0, 0}, i10{1, 0}, i01{0, 1},
+              i11{1, 1};
 
-            sparse_map_type sm{
-              {i0, {i00, i01, i10, i11}}, 
-              {i1, {i00, i01, i10, i11}}, 
-              {i2, {i00, i01, i10, i11}}
-            }; 
-            auto new_shape =
-              std::make_unique<sparse_shape>(vom.extents(), 
-                vom.shape().inner_extents(), sm);
+            sparse_map_type sm{{i0, {i00, i01, i10, i11}},
+                               {i1, {i00, i01, i10, i11}},
+                               {i2, {i00, i01, i10, i11}}};
+            auto new_shape = std::make_unique<sparse_shape>(
+              vom.extents(), vom.shape().inner_extents(), sm);
 
             pimpl_type rhs(from_buffer(vom_buffer_obt), new_shape->clone(),
                            palloc->clone());
-             
+
             REQUIRE_FALSE(vom == rhs);
         }
     }

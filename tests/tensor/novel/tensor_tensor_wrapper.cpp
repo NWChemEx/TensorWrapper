@@ -31,14 +31,13 @@ TEST_CASE("TensorWrapper<Tensor>") {
     auto& mov        = ref_tensors["matrix-of-vectors"];
     TWrapper defaulted;
 
-    extents_type vector_extents{3}, matrix_extents{2,2};
+    extents_type vector_extents{3}, matrix_extents{2, 2};
     auto vov_shape =
       testing::make_uniform_tot_shape(vector_extents, vector_extents);
     auto vom_shape =
       testing::make_uniform_tot_shape(vector_extents, matrix_extents);
     auto mov_shape =
       testing::make_uniform_tot_shape(matrix_extents, vector_extents);
-
 
     SECTION("CTors") {
         SECTION("Default") {
@@ -48,7 +47,7 @@ TEST_CASE("TensorWrapper<Tensor>") {
         }
         SECTION("From Tile Lambda") {
             auto l = [](auto outer, auto inner) -> double {
-              return inner[0] + 1;
+                return inner[0] + 1;
             };
             TWrapper tw(l, vov_shape.clone(), default_alloc->clone());
             REQUIRE(tw == vov);
@@ -57,7 +56,8 @@ TEST_CASE("TensorWrapper<Tensor>") {
             TWrapper copied(vom);
             REQUIRE(copied.rank() == 3);
             REQUIRE(copied.extents() == vector_extents);
-            REQUIRE(copied.shape().inner_extents() == vom_shape.inner_extents());
+            REQUIRE(copied.shape().inner_extents() ==
+                    vom_shape.inner_extents());
             REQUIRE(copied.allocator().is_equal(vom.allocator()));
         }
         SECTION("Move") {
@@ -74,7 +74,8 @@ TEST_CASE("TensorWrapper<Tensor>") {
             REQUIRE(pcopied == &copied);
             REQUIRE(copied.rank() == 2);
             REQUIRE(copied.extents() == extents_type{3});
-            REQUIRE(copied.shape().inner_extents() == vov_shape.inner_extents());
+            REQUIRE(copied.shape().inner_extents() ==
+                    vov_shape.inner_extents());
             REQUIRE(copied.allocator().is_equal(vov.allocator()));
         }
         SECTION("Move assignment") {
@@ -251,7 +252,6 @@ TEST_CASE("TensorWrapper<Tensor>") {
         REQUIRE_NOTHROW(std::as_const(mov)("i,j;k"));
         REQUIRE_NOTHROW(std::as_const(vom)("i;j,k"));
     }
-
 
 #if 0
     SECTION("shape()") {
