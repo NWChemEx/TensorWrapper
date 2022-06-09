@@ -3,6 +3,7 @@
  */
 #pragma once
 #include "../buffer/make_pimpl.hpp"
+#include "shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
 #include "tensorwrapper/tensor/novel/tensor.hpp"
@@ -45,24 +46,35 @@ auto get_tensors() {
         rv["matrix"] = tensor_type(std::move(mat_p));
         rv["tensor"] = tensor_type(std::move(t3d_p));
     } else {
-#if 0
-        using outer_tile = typename TensorType::value_type;
-        using inner_tile = typename outer_tile::value_type;
-        using dvector_il = TA::detail::vector_il<double>;
-        using vector_il  = TA::detail::vector_il<inner_tile>;
-        using matrix_il  = TA::detail::matrix_il<inner_tile>;
+    
+        auto [vov_bp, vom_bp, mov_bp] =
+          make_pimpl<FieldType>(); // Create Buffers
 
-        inner_tile v0(TA::Range({2}), {1.0, 2.0});
-        inner_tile v1(TA::Range({2}), {3.0, 4.0});
-        inner_tile v2(TA::Range({2}), {5.0, 6.0});
-        inner_tile v3(TA::Range({2}), {7.0, 8.0});
-        inner_tile mat0(TA::Range({2, 2}), dvector_il{1.0, 2.0, 3.0, 4.0});
-        inner_tile mat1(TA::Range({2, 2}), dvector_il{5.0, 6.0, 7.0, 8.0});
-        rv["vector-of-vectors"] = TensorType(world, vector_il{v0, v1});
-        rv["matrix-of-vectors"] =
-          TensorType(world, matrix_il{vector_il{v0, v1}, vector_il{v2, v3}});
-        rv["vector-of-matrices"] = TensorType(world, vector_il{mat0, mat1});
-#endif
+        auto vov_b = std::make_unique<buffer_type>(vov_bp->clone());
+        auto vom_b = std::make_unique<buffer_type>(vom_bp->clone());
+        auto mov_b = std::make_unique<buffer_type>(mov_bp->clone());
+
+        extents_type vector_extents{3};
+        extents_type matrix_extents{2,2};
+
+        auto vov_shape =
+          testing::make_uniform_tot_shape(vector_extents, vector_extents);
+        auto vom_shape =
+          testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+        auto mov_shape =
+          testing::make_uniform_tot_shape(matrix_extents, vector_extents);
+        auto palloc    = default_allocator<FieldType>();
+        
+        auto vov_p = std::make_unique<pimpl_type>(
+          std::move(vov_b), vov_shape.clone(), palloc->clone());
+        auto vom_p = std::make_unique<pimpl_type>(
+          std::move(vom_b), vom_shape.clone(), palloc->clone());
+        auto mov_p = std::make_unique<pimpl_type>(
+          std::move(mov_b), mov_shape.clone(), palloc->clone());
+
+        rv["vector-of-vectors"]  = tensor_type(std::move(vov_p));
+        rv["vector-of-matrices"] = tensor_type(std::move(vom_p));
+        rv["matrix-of-vectors"]  = tensor_type(std::move(mov_p));
     }
     return rv;
 }

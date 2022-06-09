@@ -2,7 +2,6 @@
 //#include "../../test_tensor.hpp"
 #include "../../buffer/make_pimpl.hpp"
 #include "../shapes/make_tot_shape.hpp"
-#include "../shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/slice.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/novel/detail_/pimpl.hpp"
