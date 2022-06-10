@@ -42,7 +42,7 @@ private:
 
 public:
     /// XXX: These are to be removed, they are here to expose the variant_type
-    /// XXX: Inclusion the FieldTraits breaks novel:: encapsulation
+    /// XXX: Inclusion the FieldTraits breaks  encapsulation
     using backend_traits = tensor::backends::TiledArrayTraits<FieldType>;
     using variant_type   = typename backend_traits::variant_type;
 

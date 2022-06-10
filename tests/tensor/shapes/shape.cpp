@@ -1,8 +1,9 @@
-#include "tensorwrapper/tensor/allocators/allocators.hpp"
-#include "tensorwrapper/tensor/shapes/shapes.hpp"
+#include "make_tot_shape.hpp"
+#include "tensorwrapper/tensorshapes/shapes.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
+using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *
@@ -16,16 +17,12 @@ using namespace tensorwrapper::tensor;
  *
  */
 
-using fields = std::tuple<field::Scalar, field::Tensor>;
-
-TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
-    using field_type           = TestType;
-    constexpr bool is_scalar_v = std::is_same_v<field_type, field::Scalar>;
-    using other_field =
-      std::conditional_t<is_scalar_v, field::Tensor, field::Scalar>;
-    using shape_type   = Shape<field_type>;
-    using extents_type = typename shape_type::extents_type;
-    using tensor_type  = typename shape_type::tensor_type;
+TEST_CASE("Shape<Scalar>") {
+    using field_type         = field::Scalar;
+    using other_field        = field::Tensor;
+    using shape_type         = Shape<field_type>;
+    using extents_type       = typename shape_type::extents_type;
+    using inner_extents_type = typename shape_type::inner_extents_type;
 
     extents_type vector_extents{4};
     extents_type matrix_extents{3, 5};
@@ -33,6 +30,13 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
     shape_type defaulted;
     shape_type vector(vector_extents);
     shape_type matrix(matrix_extents);
+
+    SECTION("Sanity") {
+        using size_type = typename shape_type::size_type;
+        REQUIRE(std::is_same_v<inner_extents_type, size_type>);
+        REQUIRE(vector.inner_extents() == 1);
+        REQUIRE(vector.field_rank() == 0);
+    }
 
     SECTION("CTors") {
         SECTION("Value") {
@@ -49,6 +53,34 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
             auto pv = vector.clone();
             REQUIRE(*pv == vector);
         }
+
+        SECTION("Copy") {
+            shape_type cpy(vector);
+            REQUIRE(cpy == vector);
+        }
+
+        SECTION("Move") {
+            shape_type cpy(vector);
+            shape_type mv(std::move(cpy));
+            REQUIRE(mv == vector);
+            REQUIRE(cpy == defaulted);
+        }
+    }
+
+    SECTION("Assignment") {
+        shape_type cpy(matrix);
+        REQUIRE(cpy != vector);
+        SECTION("Copy") {
+            cpy = vector;
+            REQUIRE(cpy == vector);
+        }
+
+        SECTION("Move") {
+            shape_type mv(matrix);
+            mv = std::move(cpy);
+            REQUIRE(mv == matrix);
+            REQUIRE(cpy == defaulted);
+        }
     }
 
     SECTION("extents") {
@@ -57,11 +89,24 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
         REQUIRE(matrix.extents() == matrix_extents);
     }
 
-    SECTION("make_tensor") {
-        auto a   = default_allocator<field_type>();
-        auto t   = vector.make_tensor(*a);
-        auto& t0 = std::get<0>(t);
-        REQUIRE(t0.trange() == a->make_tiled_range(vector.extents()));
+    SECTION("is_hard_zero") {
+        // Everything is non-zero for non-sparse shape
+        REQUIRE_FALSE(vector.is_hard_zero({0}));
+        REQUIRE_FALSE(vector.is_hard_zero({1}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}));
+        REQUIRE_FALSE(vector.is_hard_zero({3}));
+
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {1}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {2}));
+        REQUIRE_FALSE(vector.is_hard_zero({0}, {4}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}, {2}));
+        REQUIRE_FALSE(vector.is_hard_zero({2}, {4}));
+
+        REQUIRE_FALSE(matrix.is_hard_zero({0, 0}, {3, 5}));
+        for(auto _i = 0ul; _i < 3; ++_i)
+            for(auto _j = 0ul; _j < 5; ++_j) {
+                REQUIRE_FALSE(matrix.is_hard_zero({_i, _j}));
+            }
     }
 
     SECTION("Comparisons") {
@@ -102,6 +147,115 @@ TEMPLATE_LIST_TEST_CASE("Shape", "", fields) {
 
             REQUIRE(lhs == hash_objects(shape_type(vector_extents)));
             REQUIRE(lhs != hash_objects(matrix));
+        }
+    }
+}
+
+TEST_CASE("Shape<Tensor>") {
+    using field_type         = field::Tensor;
+    using other_field        = field::Scalar;
+    using shape_type         = Shape<field_type>;
+    using extents_type       = typename shape_type::extents_type;
+    using inner_extents_type = typename shape_type::inner_extents_type;
+
+    extents_type vector_extents{3};
+    extents_type matrix_extents{3, 4};
+
+    shape_type defaulted;
+    auto vov = testing::make_uniform_tot_shape(vector_extents, vector_extents);
+    auto vom = testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+    auto mom = testing::make_uniform_tot_shape(matrix_extents, matrix_extents);
+
+    auto vov_map =
+      testing::make_uniform_tot_map(vector_extents, vector_extents);
+    auto vom_map =
+      testing::make_uniform_tot_map(vector_extents, matrix_extents);
+    auto mom_map =
+      testing::make_uniform_tot_map(matrix_extents, matrix_extents);
+
+    SECTION("Sanity") {
+        // REQUIRE(std::is_same_v<extents_type, inner_extents_type>);
+        REQUIRE_THROWS_AS(shape_type(vector_extents), std::runtime_error);
+    }
+
+    SECTION("CTors") {
+        SECTION("Value") {
+            REQUIRE(vov.extents() == vector_extents);
+            REQUIRE(vom.extents() == vector_extents);
+            REQUIRE(mom.extents() == matrix_extents);
+
+            REQUIRE(vov.inner_extents() == vov_map);
+            REQUIRE(vom.inner_extents() == vom_map);
+            REQUIRE(mom.inner_extents() == mom_map);
+
+            // Make sure object is forwarded correctly (i.e. no copy)
+            auto pm                  = matrix_extents.data();
+            auto pv                  = vector_extents.data();
+            inner_extents_type dummy = mom_map;
+            shape_type tensor2(std::move(matrix_extents), std::move(dummy));
+            REQUIRE(tensor2.extents().data() == pm);
+            // REQUIRE(tensor2.inner_extents().data() == pv);
+        }
+
+        SECTION("Clone") {
+            auto pvov = vov.clone();
+            REQUIRE(*pvov == vov);
+        }
+    }
+
+    SECTION("extents") {
+        REQUIRE_THROWS_AS(defaulted.extents(), std::runtime_error);
+        REQUIRE_THROWS_AS(defaulted.inner_extents(), std::runtime_error);
+        REQUIRE(vov.extents() == vector_extents);
+        REQUIRE(vom.extents() == vector_extents);
+        REQUIRE(mom.extents() == matrix_extents);
+        REQUIRE(vov.inner_extents() == vov_map);
+        REQUIRE(vom.inner_extents() == vom_map);
+        REQUIRE(mom.inner_extents() == mom_map);
+    }
+
+    SECTION("Comparisons") {
+        // LHS is defaulted
+        REQUIRE(defaulted == shape_type{});
+        REQUIRE_FALSE(defaulted != shape_type{});
+        REQUIRE_FALSE(defaulted == vov);
+        REQUIRE(defaulted != vov);
+        REQUIRE_FALSE(defaulted == vom);
+        REQUIRE(defaulted != vom);
+
+        // LHS is vector
+        REQUIRE(vov == shape_type(vector_extents, vov_map));
+        REQUIRE_FALSE(vov != shape_type(vector_extents, vov_map));
+        REQUIRE_FALSE(vov == vom);
+        REQUIRE_FALSE(vov == mom);
+        REQUIRE(vov != mom);
+        REQUIRE(vom != mom);
+
+        // Different Fields
+        REQUIRE(defaulted != Shape<other_field>{});
+        REQUIRE_FALSE(defaulted == Shape<other_field>{});
+    }
+
+    SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
+
+        SECTION("LHS is defaulted") {
+            auto lhs = hash_objects(defaulted);
+
+            REQUIRE(lhs == hash_objects(shape_type{}));
+            REQUIRE(lhs != hash_objects(vov));
+            REQUIRE(lhs != hash_objects(vom));
+            REQUIRE(lhs != hash_objects(mom));
+            // TODO: enable when hashing properly accounts for types
+            // REQUIRE(lhs != hash_objects(Shape<other_field>{}));
+        }
+
+        SECTION("LHS is vector") {
+            auto lhs = hash_objects(vov);
+
+            REQUIRE(lhs == hash_objects(shape_type(vector_extents, vov_map)));
+            REQUIRE(lhs != hash_objects(vom));
+            REQUIRE(lhs != hash_objects(mom));
         }
     }
 }

@@ -1,8 +1,12 @@
-#include "tensorwrapper/tensor/allocators/allocators.hpp"
-#include "tensorwrapper/tensor/shapes/detail_/sparse_shape_pimpl.hpp"
+#include "tensorwrapper/tensorallocators/allocators.hpp"
+#include "tensorwrapper/tensorshapes/detail_/sparse_shape_pimpl.hpp"
 #include <catch2/catch.hpp>
 
+#include "../make_tot_shape.hpp"
+#include "tiled_range_generators.hpp"
+
 using namespace tensorwrapper::tensor;
+using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *
@@ -74,13 +78,11 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
             sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
-
                 SECTION("No permutation") {
                     extents_type matrix{3, 5};
                     pimpl_type p(matrix, sm, idx2mode_type{0, 1});
 
-                    auto tr = t.make_tiled_range(matrix);
+                    auto tr = testing::single_element_tiles(matrix);
                     TA::Tensor<float> corr_data(TA::Range(3, 5),
                                                 {0.0, fmax, 0.0, fmax, 0.0,
                                                  fmax, 0.0, fmax, 0.0, fmax,
@@ -93,7 +95,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
                     extents_type matrix{5, 3};
                     pimpl_type p(matrix, sm, idx2mode_type{1, 0});
 
-                    auto tr = t.make_tiled_range(matrix);
+                    auto tr = testing::single_element_tiles(matrix);
                     TA::Tensor<float> corr_data(TA::Range(5, 3),
                                                 {0.0, fmax, fmax, fmax, 0.0,
                                                  0.0, 0.0, fmax, 0.0, fmax, 0.0,
@@ -104,13 +106,11 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
-
                 SECTION("No permutation") {
                     extents_type matrix{3, 5};
                     pimpl_type p(matrix, sm, idx2mode_type{0, 1});
 
-                    auto tr = t.make_tiled_range(matrix);
+                    auto tr = testing::one_big_tile(matrix);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
                     ta_shape_type corr(corr_data, tr);
                     REQUIRE(corr == p.shape(tr));
@@ -120,7 +120,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
                     extents_type matrix{5, 3};
                     pimpl_type p(matrix, sm, idx2mode_type{1, 0});
 
-                    auto tr = t.make_tiled_range(matrix);
+                    auto tr = testing::one_big_tile(matrix);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
                     ta_shape_type corr(corr_data, tr);
                     REQUIRE(corr == p.shape(tr));
@@ -134,8 +134,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
               {i0, {i01, i10}}, {i1, {i00, i11}}, {i2, {i00, i01, i10}}};
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
-                auto tr = t.make_tiled_range(extents);
+                auto tr = testing::single_element_tiles(extents);
 
                 SECTION("No permutation") {
                     pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
@@ -159,8 +158,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
-                auto tr = t.make_tiled_range(extents);
+                auto tr = testing::one_big_tile(extents);
 
                 SECTION("No permutation") {
                     pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
@@ -184,8 +182,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
               {i00, {i0, i2}}, {i01, {i1}}, {i10, {i1}}, {i11, {i1, i2}}};
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
-                auto tr = t.make_tiled_range(extents);
+                auto tr = testing::single_element_tiles(extents);
 
                 SECTION("No permutation") {
                     pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
@@ -210,8 +207,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
-                auto tr = t.make_tiled_range(extents);
+                auto tr = testing::one_big_tile(extents);
 
                 SECTION("No permutation") {
                     pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
@@ -238,6 +234,88 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
         }
     }
 
+    SECTION("is_hard_zero") {
+        SECTION("matrix") {
+            // M = [x 0 0 0]
+            //     [0 x 0 0]
+            //     [x 0 0 x]
+            sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
+            extents_type extents{3, 4};
+            pimpl_type p(extents, sm, idx2mode_type{0, 1});
+
+            // Invalid slice inputs
+            REQUIRE_THROWS_AS(p.is_hard_zero({0}, {1, 1}), std::runtime_error);
+            REQUIRE_THROWS_AS(p.is_hard_zero({1, 1}, {0}), std::runtime_error);
+
+            // Make sure that individual non-zeros are picked up
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}));
+            REQUIRE_FALSE(p.is_hard_zero({1, 1}));
+            REQUIRE_FALSE(p.is_hard_zero({2, 0}));
+            REQUIRE_FALSE(p.is_hard_zero({2, 3}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 4}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 1}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 2}));
+            REQUIRE_FALSE(p.is_hard_zero({1, 2}, {3, 4}));
+
+            // Pick up zero ranges
+            REQUIRE(p.is_hard_zero({0, 1}));
+            REQUIRE(p.is_hard_zero({0, 2}));
+            REQUIRE(p.is_hard_zero({0, 3}));
+            REQUIRE(p.is_hard_zero({1, 0}));
+            REQUIRE(p.is_hard_zero({1, 2}));
+            REQUIRE(p.is_hard_zero({1, 3}));
+            REQUIRE(p.is_hard_zero({2, 1}));
+            REQUIRE(p.is_hard_zero({2, 2}));
+            REQUIRE(p.is_hard_zero({0, 2}, {1, 4}));
+            REQUIRE(p.is_hard_zero({2, 1}, {3, 3}));
+        }
+
+        SECTION("tensor") {
+            SECTION("Rank 1 ind; rank 2 dependent") {
+                sm_type sm{{i0, {i00}}, {i1, {i00}}};
+                extents_type extents{2, 2, 2};
+                pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}));
+
+                REQUIRE(p.is_hard_zero({0, 0, 1}));
+                REQUIRE(p.is_hard_zero({0, 1, 0}));
+                REQUIRE(p.is_hard_zero({0, 1, 1}));
+                REQUIRE(p.is_hard_zero({1, 0, 1}));
+                REQUIRE(p.is_hard_zero({1, 1, 0}));
+                REQUIRE(p.is_hard_zero({1, 1, 1}));
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {1, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}, {2, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {2, 1, 1}));
+
+                REQUIRE(p.is_hard_zero({0, 1, 0}, {2, 2, 2}));
+            }
+            SECTION("Rank 2 ind, rank 1 dependent") {
+                sm_type sm{{i00, {i0}}, {i10, {i0}}};
+                extents_type extents{2, 2, 2};
+                pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}));
+
+                REQUIRE(p.is_hard_zero({0, 0, 1}));
+                REQUIRE(p.is_hard_zero({0, 1, 0}));
+                REQUIRE(p.is_hard_zero({0, 1, 1}));
+                REQUIRE(p.is_hard_zero({1, 0, 1}));
+                REQUIRE(p.is_hard_zero({1, 1, 0}));
+                REQUIRE(p.is_hard_zero({1, 1, 1}));
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {1, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}, {2, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {2, 1, 1}));
+
+                REQUIRE(p.is_hard_zero({0, 1, 0}, {2, 2, 2}));
+            }
+        }
+    }
+
     // Checks that extents get forwarded to the base class correctly
     SECTION("extents") {
         sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
@@ -247,6 +325,24 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
 
         REQUIRE(p.extents() == extents_type{3, 5});
         REQUIRE(p.extents().data() == pmatrix);
+    }
+
+    SECTION("slice()") {
+        // M = [x 0 0 0]
+        //     [0 x 0 0]
+        //     [x 0 0 x]
+        sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
+        extents_type extents{3, 4};
+        pimpl_type p(extents, sm, idx2mode_type{0, 1});
+
+        // M_sl = [x 0]
+        //        [0 x]
+        sm_type sm_slice_corr{{i0, {i0}}, {i1, {i1}}, {i2, {i0}}};
+        extents_type extents_slice_corr{3, 2};
+        auto slice = p.slice({0, 0}, {3, 2});
+        REQUIRE(slice->extents() == extents_slice_corr);
+        REQUIRE(dynamic_cast<pimpl_type*>(slice.get())->sparse_map() ==
+                sm_slice_corr);
     }
 
     SECTION("hash") {
@@ -304,13 +400,14 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
 }
 
 TEST_CASE("SparseShapePIMPL<field::Tensor>") {
-    using field_type    = field::Tensor;
-    using pimpl_type    = detail_::SparseShapePIMPL<field_type>;
-    using extents_type  = typename pimpl_type::extents_type;
-    using sm_type       = typename pimpl_type::sparse_map_type;
-    using el_index      = typename sm_type::key_type;
-    using idx2mode_type = typename pimpl_type::idx2mode_type;
-    using ta_shape_type = typename pimpl_type::ta_shape_type;
+    using field_type         = field::Tensor;
+    using pimpl_type         = detail_::SparseShapePIMPL<field_type>;
+    using extents_type       = typename pimpl_type::extents_type;
+    using inner_extents_type = typename pimpl_type::extents_type;
+    using sm_type            = typename pimpl_type::sparse_map_type;
+    using el_index           = typename sm_type::key_type;
+    using idx2mode_type      = typename pimpl_type::idx2mode_type;
+    using ta_shape_type      = typename pimpl_type::ta_shape_type;
 
     // This is the non-zero value which gets put in the TA shape
     auto fmax = std::numeric_limits<float>::max();
@@ -321,27 +418,29 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
     SECTION("CTors") {
         sm_type sm{{i00, {i4}}};
         extents_type extents{2, 3};
+        extents_type inner_extents{5, 71};
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
         idx2mode_type i2m{0, 1};
 
         SECTION("Value") {
             // Extents rank doesn't match SM
             extents_type bad_extents{2};
-            REQUIRE_THROWS_AS(pimpl_type(bad_extents, sm, i2m),
+            REQUIRE_THROWS_AS(pimpl_type(bad_extents, inner_map, sm, i2m),
                               std::runtime_error);
 
             // i2m rank doesn't match SM (and thus extents)
             idx2mode_type bad_i2m{0};
-            REQUIRE_THROWS_AS(pimpl_type(extents, sm, bad_i2m),
+            REQUIRE_THROWS_AS(pimpl_type(extents, inner_map, sm, bad_i2m),
                               std::runtime_error);
 
             // rank in i2m is out of bounds
             idx2mode_type bad_i2m2{0, 2};
-            REQUIRE_THROWS_AS(pimpl_type(extents, sm, bad_i2m2),
+            REQUIRE_THROWS_AS(pimpl_type(extents, inner_map, sm, bad_i2m2),
                               std::out_of_range);
         }
 
         SECTION("copy") {
-            pimpl_type p0(extents, sm, i2m);
+            pimpl_type p0(extents, inner_map, sm, i2m);
             pimpl_type p1(p0);
 
             REQUIRE(p0 == p1);
@@ -351,24 +450,24 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
     SECTION("shape()") {
         SECTION("Rank 2 Shapes") {
             sm_type sm{{i0, {i1, i3}}, {i2, {i4}}};
+            extents_type extents{3};
+            extents_type inner_extents{1};
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
+                pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
 
-                pimpl_type p(extents_type{3}, sm, idx2mode_type{0});
-
-                auto tr = t.make_tiled_range(extents_type{3});
+                auto tr = testing::single_element_tiles(extents);
                 TA::Tensor<float> corr_data(TA::Range(3), {fmax, 0.0, fmax});
                 ta_shape_type corr(corr_data, tr);
                 REQUIRE(corr == p.shape(tr));
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
+                pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
 
-                pimpl_type p(extents_type{3}, sm, idx2mode_type{0});
-
-                auto tr = t.make_tiled_range(extents_type{3});
+                auto tr = testing::one_big_tile(extents);
                 TA::Tensor<float> corr_data(TA::Range(1), {fmax});
                 ta_shape_type corr(corr_data, tr);
                 REQUIRE(corr == p.shape(tr));
@@ -377,24 +476,24 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
 
         SECTION("Rank 1-2 Shapes") {
             sm_type sm{{i0, {i10, i01}}, {i2, {i00}}};
+            extents_type extents{3};
+            extents_type inner_extents{1};
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
+                pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
 
-                pimpl_type p(extents_type{3}, sm, idx2mode_type{0});
-
-                auto tr = t.make_tiled_range(extents_type{3});
+                auto tr = testing::single_element_tiles(extents);
                 TA::Tensor<float> corr_data(TA::Range(3), {fmax, 0.0, fmax});
                 ta_shape_type corr(corr_data, tr);
                 REQUIRE(corr == p.shape(tr));
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
+                pimpl_type p(extents, inner_map, sm, idx2mode_type{0});
 
-                pimpl_type p(extents_type{3}, sm, idx2mode_type{0});
-
-                auto tr = t.make_tiled_range(extents_type{3});
+                auto tr = testing::one_big_tile(extents);
                 TA::Tensor<float> corr_data(TA::Range(1), {fmax});
                 ta_shape_type corr(corr_data, tr);
                 REQUIRE(corr == p.shape(tr));
@@ -403,14 +502,16 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
 
         SECTION("Rank 2-1 Shapes") {
             sm_type sm{{i00, {i0, i1}}, {i01, {i0, i2}}, {i11, {i0, i2}}};
+            extents_type extents{2, 2};
+            extents_type inner_extents{1};
+            auto inner_map =
+              testing::make_uniform_tot_map(extents, inner_extents);
 
             SECTION("Single Element Tiles") {
-                SingleElementTiles<field_type> t;
-
                 SECTION("No permutation") {
-                    pimpl_type p(extents_type{2, 2}, sm, idx2mode_type{0, 1});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{0, 1});
 
-                    auto tr = t.make_tiled_range(extents_type{2, 2});
+                    auto tr = testing::single_element_tiles(extents);
                     TA::Tensor<float> corr_data(TA::Range(2, 2),
                                                 {fmax, fmax, 0.0, fmax});
                     ta_shape_type corr(corr_data, tr);
@@ -418,9 +519,9 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
                 }
 
                 SECTION("Permutation") {
-                    pimpl_type p(extents_type{2, 2}, sm, idx2mode_type{1, 0});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{1, 0});
 
-                    auto tr = t.make_tiled_range(extents_type{2, 2});
+                    auto tr = testing::single_element_tiles(extents);
                     TA::Tensor<float> corr_data(TA::Range(2, 2),
                                                 {fmax, 0.0, fmax, fmax});
                     ta_shape_type corr(corr_data, tr);
@@ -429,21 +530,19 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
             }
 
             SECTION("One Big Tile") {
-                OneBigTile<field_type> t;
-
                 SECTION("No permutation") {
-                    pimpl_type p(extents_type{2, 2}, sm, idx2mode_type{0, 1});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{0, 1});
 
-                    auto tr = t.make_tiled_range(extents_type{2, 2});
+                    auto tr = testing::one_big_tile(extents);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
                     ta_shape_type corr(corr_data, tr);
                     REQUIRE(corr == p.shape(tr));
                 }
 
                 SECTION("Permutation") {
-                    pimpl_type p(extents_type{2, 2}, sm, idx2mode_type{1, 0});
+                    pimpl_type p(extents, inner_map, sm, idx2mode_type{1, 0});
 
-                    auto tr = t.make_tiled_range(extents_type{2, 2});
+                    auto tr = testing::one_big_tile(extents);
                     TA::Tensor<float> corr_data(TA::Range(1, 1), {fmax});
                     ta_shape_type corr(corr_data, tr);
                     REQUIRE(corr == p.shape(tr));
@@ -454,7 +553,9 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
         SECTION("Throws if tiled range is inconsistent") {
             sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
             extents_type matrix{3};
-            pimpl_type p(matrix, sm, idx2mode_type{0});
+            extents_type inner_ex{1};
+            auto inner_map = testing::make_uniform_tot_map(matrix, inner_ex);
+            pimpl_type p(matrix, inner_map, sm, idx2mode_type{0});
             TA::TiledRange tr{{0, 3}, {0, 5}};
             REQUIRE_THROWS_AS(p.shape(tr), std::runtime_error);
         }
@@ -464,11 +565,18 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
     SECTION("extents") {
         sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
         extents_type matrix{3};
-        auto* pmatrix = matrix.data();
-        pimpl_type p(std::move(matrix), sm, idx2mode_type{0});
+        extents_type inner_ex{1};
+        auto inner_map = testing::make_uniform_tot_map(matrix, inner_ex);
+        decltype(inner_map) inner_map_cpy = inner_map;
+        auto* pmatrix                     = matrix.data();
+        auto* pinner                      = inner_ex.data();
+        pimpl_type p(std::move(matrix), std::move(inner_map), sm,
+                     idx2mode_type{0});
 
         REQUIRE(p.extents() == extents_type{3});
+        REQUIRE(p.inner_extents() == inner_map_cpy);
         REQUIRE(p.extents().data() == pmatrix);
+        // REQUIRE(p.inner_extents().data() == pinner);
     }
 
     SECTION("hash") {
@@ -476,32 +584,35 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
 
         sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
         extents_type extents{2, 2};
+        extents_type inner_ex{3, 41, 73};
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
         idx2mode_type i2m{0, 1};
-        auto lhs = hash_objects(pimpl_type(extents, sm, i2m));
+        auto lhs = hash_objects(pimpl_type(extents, inner_map, sm, i2m));
 
         // Same
-        REQUIRE(lhs == hash_objects(pimpl_type(extents, sm, i2m)));
+        REQUIRE(lhs == hash_objects(pimpl_type(extents, inner_map, sm, i2m)));
 
         SECTION("Different extents") {
             extents_type mat2{5, 5};
-            auto rhs = hash_objects(pimpl_type(mat2, sm, i2m));
+            auto rhs = hash_objects(pimpl_type(mat2, inner_map, sm, i2m));
             REQUIRE(lhs != rhs);
         }
 
         SECTION("Different sm") {
             sm_type sm2{{i00, {i1}}, {i01, {i0, i2, i4}}, {i11, {i0, i4}}};
-            auto rhs = hash_objects(pimpl_type(extents, sm2, i2m));
+            auto rhs = hash_objects(pimpl_type(extents, inner_map, sm2, i2m));
             REQUIRE(lhs != rhs);
         }
 
         SECTION("Different permutation") {
             idx2mode_type i2m2{1, 0};
-            auto rhs = hash_objects(pimpl_type(extents, sm, i2m2));
+            auto rhs = hash_objects(pimpl_type(extents, inner_map, sm, i2m2));
             REQUIRE(lhs != rhs);
         }
 
         SECTION("Different most derived classes") {
-            auto rhs = hash_objects(detail_::ShapePIMPL<field_type>(extents));
+            auto rhs =
+              hash_objects(detail_::ShapePIMPL<field_type>(extents, inner_map));
             REQUIRE(lhs != rhs);
         }
     }
@@ -509,19 +620,23 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
     SECTION("comparisons") {
         sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
         extents_type extents{2, 2};
+        extents_type inner_ex{61, 73, 58, 40};
+        auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
         idx2mode_type i2m{0, 1};
-        pimpl_type lhs(extents, sm, i2m);
+        pimpl_type lhs(extents, inner_map, sm, i2m);
 
         // Same
-        REQUIRE(lhs == pimpl_type(extents, sm, i2m));
+        REQUIRE(lhs == pimpl_type(extents, inner_map, sm, i2m));
 
-        REQUIRE_FALSE(lhs == pimpl_type(extents_type{5, 5}, sm, i2m));
+        REQUIRE_FALSE(lhs ==
+                      pimpl_type(extents_type{5, 5}, inner_map, sm, i2m));
 
         // Different SM
         sm_type sm2{{i00, {i1}}, {i01, {i0, i2, i4}}, {i11, {i0, i4}}};
-        REQUIRE_FALSE(lhs == pimpl_type(extents, sm2, i2m));
+        REQUIRE_FALSE(lhs == pimpl_type(extents, inner_map, sm2, i2m));
 
         // Different permutation
-        REQUIRE_FALSE(lhs == pimpl_type(extents, sm, idx2mode_type{1, 0}));
+        REQUIRE_FALSE(lhs ==
+                      pimpl_type(extents, inner_map, sm, idx2mode_type{1, 0}));
     }
 }

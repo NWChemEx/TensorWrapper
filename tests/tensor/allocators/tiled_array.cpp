@@ -1,6 +1,6 @@
 #include "../../buffer/make_pimpl.hpp"
 #include "../shapes/make_tot_shape.hpp"
-#include "tensorwrapper/tensor/novel/allocators/allocators.hpp"
+#include "tensorwrapper/tensorallocators/allocators.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;

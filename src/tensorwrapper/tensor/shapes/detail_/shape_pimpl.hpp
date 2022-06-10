@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/allocators/allocator.hpp"
-#include "tensorwrapper/tensor/shapes/shape.hpp"
+#include "tensorwrapper/tensorallocators/allocator.hpp"
+#include "tensorwrapper/tensorshapes/shape.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
 
@@ -36,8 +36,13 @@ private:
     using my_type = ShapePIMPL<FieldType>;
 
 public:
-    /// Type used to specify the lengths of each mode
+    /// Type used to specify the lengths of each (outer) mode
     using extents_type = typename parent_type::extents_type;
+
+    // Type used to specify the lengths of each inner mode
+    using inner_extents_type = typename parent_type::inner_extents_type;
+
+    using size_type = typename parent_type::size_type;
 
     /// Type of a pointer to the base of the ShapePIMPL hierarchy
     using pimpl_pointer = typename parent_type::pimpl_pointer;
@@ -45,6 +50,9 @@ public:
     /// Type TA uses for specifying the tile sparsity of a tensor
     using ta_shape = TA::SparseShape<float>;
 
+    using index_type = typename parent_type::index_type;
+
+public:
     /** @brief Creates a new ShapePIMPL with the provided extents.
      *
      *
@@ -56,7 +64,15 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    explicit ShapePIMPL(extents_type x = {}) : m_extents_(std::move(x)) {}
+    explicit ShapePIMPL(extents_type x = {}, inner_extents_type y = {}) :
+      m_extents_(std::move(x)), m_inner_extents_(std::move(y)) {
+        if constexpr(field::is_scalar_field_v<FieldType>)
+            m_inner_extents_ = 1;
+        else if constexpr(field::is_tensor_field_v<FieldType>) {
+            if(m_extents_.size() and !m_inner_extents_.size())
+                throw std::runtime_error("ToT Must Have Inner Dimension");
+        }
+    }
 
     /** @brief Makes a non-polymorphic deep copy of this instance.
      *
@@ -77,9 +93,9 @@ public:
 
     /// Deleted to avoid slicing
     ///@{
-    ShapePIMPL(ShapePIMPL&& other) = delete;
+    ShapePIMPL(ShapePIMPL&& other)               = delete;
     ShapePIMPL& operator=(const ShapePIMPL& rhs) = delete;
-    ShapePIMPL& operator=(ShapePIMPL&& rhs) = delete;
+    ShapePIMPL& operator=(ShapePIMPL&& rhs)      = delete;
     ///@}
 
     /// Default dtor
@@ -108,6 +124,17 @@ public:
      *  @throw None No throw gurantee.
      */
     const extents_type& extents() const { return m_extents_; }
+    const inner_extents_type& inner_extents() const { return m_inner_extents_; }
+    size_type field_rank() const {
+        if constexpr(field::is_tensor_field_v<FieldType>)
+            return m_inner_extents_.size();
+        else
+            return 0;
+    }
+
+    pimpl_pointer slice(const index_type& lo, const index_type& hi) const {
+        return slice_(lo, hi);
+    }
 
     /** @brief Non-polymorphic comparison.
      *
@@ -141,8 +168,10 @@ public:
 protected:
     /// To be overridden by the derived class to implement hash()
     virtual void hash_(tensorwrapper::detail_::Hasher& h) const {
-        h(m_extents_);
+        h(m_extents_, m_inner_extents_);
     }
+
+    virtual pimpl_pointer slice_(const index_type&, const index_type&) const;
 
 private:
     /// To be overridden by the derived class to implement clone()
@@ -150,6 +179,7 @@ private:
 
     /// The extents of the corresponding tensor
     extents_type m_extents_;
+    inner_extents_type m_inner_extents_;
 };
 
 #define SHAPE_PIMPL ShapePIMPL<FieldType>
@@ -160,8 +190,29 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::clone_() const {
 }
 
 template<typename FieldType>
+typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(
+  const index_type& _lo, const index_type& _hi) const {
+    if(_lo.size() != m_extents_.size())
+        throw std::runtime_error("Lo bounds do not match extents");
+    if(_hi.size() != m_extents_.size())
+        throw std::runtime_error("Hi bounds do not match extents");
+
+    extents_type new_extents(m_extents_.size());
+    for(auto i = 0ul; i < m_extents_.size(); ++i) {
+        if(_lo[i] < 0 or _lo[i] >= m_extents_[i])
+            throw std::runtime_error("Invalid lo bound");
+        if(_hi[i] > m_extents_[i]) throw std::runtime_error("Invalid hi bound");
+        if(_lo[i] > _hi[i])
+            throw std::runtime_error("Lo must be smaller than Hi");
+        new_extents[i] = _hi[i] - _lo[i];
+    }
+    return pimpl_pointer(new my_type(new_extents, m_inner_extents_));
+}
+
+template<typename FieldType>
 bool SHAPE_PIMPL::operator==(const ShapePIMPL& rhs) const noexcept {
-    return m_extents_ == rhs.m_extents_;
+    return m_extents_ == rhs.m_extents_ and
+           m_inner_extents_ == rhs.m_inner_extents_;
 }
 
 #undef SHAPE_PIMPL

@@ -1,4 +1,4 @@
-#include "../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
+#include "../../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
 #include "sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
@@ -94,14 +94,16 @@ auto sm_to_tot_shape(const sm_type& sm, const idx2mode_type& i2m,
 } // namespace
 
 template<typename FieldType>
-SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, sparse_map_type sm,
-                                     idx2mode_type i2m) :
-  m_sm_(std::move(sm)), m_i2m_(std::move(i2m)), base_type(std::move(x)) {
+SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, inner_extents_type y,
+                                     sparse_map_type sm, idx2mode_type i2m) :
+  m_sm_(std::move(sm)),
+  m_i2m_(std::move(i2m)),
+  base_type(std::move(x), std::move(y)) {
     const auto nind = m_sm_.ind_rank();
     const auto ndep = m_sm_.dep_rank();
     const auto rank = nind + ndep;
 
-    constexpr bool is_tot = std::is_same_v<FieldType, field::Tensor>;
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
     const auto max_rank   = is_tot ? nind : rank;
 
     if(max_rank != this->extents().size())
@@ -120,7 +122,7 @@ SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, sparse_map_type sm,
 template<typename FieldType>
 typename SPARSE_SHAPE_PIMPL::ta_shape_type SPARSE_SHAPE_PIMPL::shape(
   const ta_tile_range& tr) const {
-    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+    if constexpr(field::is_scalar_field_v<FieldType>) {
         return sm_to_tensor_shape(m_sm_, m_i2m_, tr);
     } else {
         return sm_to_tot_shape(m_sm_, m_i2m_, tr);
@@ -138,6 +140,157 @@ bool SPARSE_SHAPE_PIMPL::operator==(
 //------------------------------------------------------------------------------
 //                    Protected/Private Member Functions
 //------------------------------------------------------------------------------
+//
+template<typename FieldType>
+bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& el) const {
+    const auto nind = m_sm_.ind_rank();
+    const auto ndep = m_sm_.dep_rank();
+    const auto rank = nind + ndep;
+
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
+    const auto max_rank   = is_tot ? nind : rank;
+    if(el.size() != max_rank)
+        throw std::runtime_error("Slice Rank Inconsistent");
+
+    // Break apart lo/hi into ind/dep indices
+    index_type el_ind(el.begin(), el.begin() + nind);
+
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        index_type el_dep(el.begin() + nind, el.end());
+
+        // Find the independent index in sparse map
+        if(m_sm_.count(el_ind)) {
+            const auto& domain = m_sm_[el_ind];
+            return !domain.count(el_dep);
+        } else
+            return true;
+
+    } else { // ToT
+        return !m_sm_.count(el_ind);
+    }
+}
+
+template<typename FieldType>
+bool SPARSE_SHAPE_PIMPL::is_hard_zero(const index_type& lo,
+                                      const index_type& hi) const {
+    if(lo.size() != hi.size()) throw std::runtime_error("Lo/Hi Inconsistent");
+
+    for(auto i = 0ul; i < lo.size(); ++i) {
+        if(lo[i] >= hi[i]) throw std::runtime_error("Lo must be < Hi");
+    }
+
+    const auto nind = m_sm_.ind_rank();
+    const auto ndep = m_sm_.dep_rank();
+    const auto rank = nind + ndep;
+    // std::cout << "IND = " << nind << " DEP = " << ndep << std::endl;
+
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
+    const auto max_rank   = is_tot ? nind : rank;
+    if(lo.size() != max_rank)
+        throw std::runtime_error("Slice Rank Inconsistent");
+
+    // Break apart lo/hi into ind/dep indices
+    index_type lo_ind(lo.begin(), lo.begin() + nind);
+    index_type hi_ind(hi.begin(), hi.begin() + nind);
+
+    if constexpr(field::is_scalar_field_v<FieldType>) {
+        index_type lo_dep(lo.begin() + nind, lo.end());
+        index_type hi_dep(hi.begin() + nind, hi.end());
+        // std::cout << "lo " << lo_ind << ", " << lo_dep << std::endl;
+        // std::cout << "hi " << hi_ind << ", " << hi_dep << std::endl;
+
+        // TODO: This is very inefficient, needs to be expressed as a search
+        for(auto [ind_idx, domain] : m_sm_) {
+#if 0
+            // Check if independant index is in the slice
+#if 0
+            bool ind_in_slice = false;
+            for(int i = 0; i < nind; ++i) {
+                if(ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
+                    ind_in_slice = true;
+                    break;
+                }
+            }
+#else
+	    auto ind_in_slice = ind_idx >= lo_ind and ind_idx < hi_ind;
+#endif
+	    std::cout << std::boolalpha;
+	    std::cout << "  IND CHECK " << ind_idx << " " << ind_in_slice << std::endl;
+
+            // Check if domain has overlap with slice
+            if(ind_in_slice) {
+                for(const auto& dep_idx : domain) {
+#if 0
+                    for(int i = 0; i < ndep; ++i) {
+                        if(dep_idx[i] >= lo_dep[i] and dep_idx[i] < hi_dep[i]) {
+                            return false;
+                        }
+                    }
+#else
+		    std::cout << "    D " << dep_idx << std::endl;
+		    if( dep_idx >= lo_dep and dep_idx < hi_dep ) return false;
+#endif
+                }
+            }
+#else
+            for(const auto& dep_idx : domain) {
+                index_type full_idx;
+                full_idx.m_index.resize(rank);
+                std::copy(ind_idx.begin(), ind_idx.end(), full_idx.begin());
+                std::copy(dep_idx.begin(), dep_idx.end(),
+                          full_idx.begin() + nind);
+                bool point_in_slice = true;
+                for(auto i = 0; i < rank; ++i) {
+                    point_in_slice =
+                      point_in_slice and
+                      (full_idx[i] >= lo[i] and full_idx[i] < hi[i]);
+                }
+                if(point_in_slice) return false;
+            }
+#endif
+        }
+
+    } else { // ToT
+
+        // TODO: This is very inefficient, needs to be expressed as a search
+        for(auto [ind_idx, domain] : m_sm_) {
+            // Check if independant index is in the slice
+            for(int i = 0; i < nind; ++i) {
+                if(ind_idx[i] >= lo_ind[i] and ind_idx[i] < hi_ind[i]) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+template<typename FieldType>
+typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::slice_(
+  const index_type& _lo, const index_type& _hi) const {
+    // Get base impl (modifies extents, etc)
+    auto _base_ptr = base_type::slice_(_lo, _hi);
+
+    // Break bounds into dep/indep components
+    index_type lo_ind(_lo.begin(), _lo.begin() + m_sm_.dep_rank());
+    index_type hi_ind(_hi.begin(), _hi.begin() + m_sm_.dep_rank());
+    index_type lo_dep(_lo.begin() + m_sm_.dep_rank(), _lo.end());
+    index_type hi_dep(_hi.begin() + m_sm_.dep_rank(), _hi.end());
+
+    // Creat modified sparse maps
+    sparse_map_type new_sm;
+    for(const auto& [ind, domain] : m_sm_)
+        if(ind >= lo_ind and ind < hi_ind) {
+            for(const auto& dep : domain)
+                if(dep >= lo_dep and dep < hi_dep) {
+                    new_sm.add_to_domain(ind, dep);
+                }
+        }
+
+    return pimpl_pointer(new my_type(
+      _base_ptr->extents(), _base_ptr->inner_extents(), new_sm, m_i2m_));
+}
 
 template<typename FieldType>
 typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::clone_() const {

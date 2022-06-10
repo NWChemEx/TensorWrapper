@@ -1,3 +1,3 @@
 #pragma once
-#include "tensorwrapper/tensor/shapes/shape.hpp"
-#include "tensorwrapper/tensor/shapes/sparse_shape.hpp"
+#include "tensorwrapper/tensorshapes/shape.hpp"
+#include "tensorwrapper/tensorshapes/sparse_shape.hpp"
