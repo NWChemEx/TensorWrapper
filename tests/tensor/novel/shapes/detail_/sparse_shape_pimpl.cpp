@@ -235,38 +235,85 @@ TEST_CASE("novel::SparseShapePIMPL<field::Scalar>") {
     }
 
     SECTION("is_hard_zero") {
-        // M = [x 0 0 0]
-        //     [0 x 0 0]
-        //     [x 0 0 x]
-        sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
-        extents_type extents{3, 4};
-        pimpl_type p(extents, sm, idx2mode_type{0, 1});
+        SECTION("matrix") {
+            // M = [x 0 0 0]
+            //     [0 x 0 0]
+            //     [x 0 0 x]
+            sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
+            extents_type extents{3, 4};
+            pimpl_type p(extents, sm, idx2mode_type{0, 1});
 
-        // Invalid slice inputs
-        REQUIRE_THROWS_AS(p.is_hard_zero({0}, {1, 1}), std::runtime_error);
-        REQUIRE_THROWS_AS(p.is_hard_zero({1, 1}, {0}), std::runtime_error);
+            // Invalid slice inputs
+            REQUIRE_THROWS_AS(p.is_hard_zero({0}, {1, 1}), std::runtime_error);
+            REQUIRE_THROWS_AS(p.is_hard_zero({1, 1}, {0}), std::runtime_error);
 
-        // Make sure that individual non-zeros are picked up
-        REQUIRE_FALSE(p.is_hard_zero({0, 0}));
-        REQUIRE_FALSE(p.is_hard_zero({1, 1}));
-        REQUIRE_FALSE(p.is_hard_zero({2, 0}));
-        REQUIRE_FALSE(p.is_hard_zero({2, 3}));
-        REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 4}));
-        REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 1}));
-        REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 2}));
-        REQUIRE_FALSE(p.is_hard_zero({1, 2}, {3, 4}));
+            // Make sure that individual non-zeros are picked up
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}));
+            REQUIRE_FALSE(p.is_hard_zero({1, 1}));
+            REQUIRE_FALSE(p.is_hard_zero({2, 0}));
+            REQUIRE_FALSE(p.is_hard_zero({2, 3}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 4}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 1}));
+            REQUIRE_FALSE(p.is_hard_zero({0, 0}, {3, 2}));
+            REQUIRE_FALSE(p.is_hard_zero({1, 2}, {3, 4}));
 
-        // Pick up zero ranges
-        REQUIRE(p.is_hard_zero({0, 1}));
-        REQUIRE(p.is_hard_zero({0, 2}));
-        REQUIRE(p.is_hard_zero({0, 3}));
-        REQUIRE(p.is_hard_zero({1, 0}));
-        REQUIRE(p.is_hard_zero({1, 2}));
-        REQUIRE(p.is_hard_zero({1, 3}));
-        REQUIRE(p.is_hard_zero({2, 1}));
-        REQUIRE(p.is_hard_zero({2, 2}));
-        REQUIRE(p.is_hard_zero({0, 2}, {1, 4}));
-        REQUIRE(p.is_hard_zero({2, 1}, {3, 3}));
+            // Pick up zero ranges
+            REQUIRE(p.is_hard_zero({0, 1}));
+            REQUIRE(p.is_hard_zero({0, 2}));
+            REQUIRE(p.is_hard_zero({0, 3}));
+            REQUIRE(p.is_hard_zero({1, 0}));
+            REQUIRE(p.is_hard_zero({1, 2}));
+            REQUIRE(p.is_hard_zero({1, 3}));
+            REQUIRE(p.is_hard_zero({2, 1}));
+            REQUIRE(p.is_hard_zero({2, 2}));
+            REQUIRE(p.is_hard_zero({0, 2}, {1, 4}));
+            REQUIRE(p.is_hard_zero({2, 1}, {3, 3}));
+        }
+
+        SECTION("tensor") {
+            SECTION("Rank 1 ind; rank 2 dependent") {
+                sm_type sm{{i0, {i00}}, {i1, {i00}}};
+                extents_type extents{2, 2, 2};
+                pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}));
+
+                REQUIRE(p.is_hard_zero({0, 0, 1}));
+                REQUIRE(p.is_hard_zero({0, 1, 0}));
+                REQUIRE(p.is_hard_zero({0, 1, 1}));
+                REQUIRE(p.is_hard_zero({1, 0, 1}));
+                REQUIRE(p.is_hard_zero({1, 1, 0}));
+                REQUIRE(p.is_hard_zero({1, 1, 1}));
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {1, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}, {2, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {2, 1, 1}));
+
+                REQUIRE(p.is_hard_zero({0, 1, 0}, {2, 2, 2}));
+            }
+            SECTION("Rank 2 ind, rank 1 dependent") {
+                sm_type sm{{i00, {i0}}, {i10, {i0}}};
+                extents_type extents{2, 2, 2};
+                pimpl_type p(extents, sm, idx2mode_type{0, 1, 2});
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}));
+
+                REQUIRE(p.is_hard_zero({0, 0, 1}));
+                REQUIRE(p.is_hard_zero({0, 1, 0}));
+                REQUIRE(p.is_hard_zero({0, 1, 1}));
+                REQUIRE(p.is_hard_zero({1, 0, 1}));
+                REQUIRE(p.is_hard_zero({1, 1, 0}));
+                REQUIRE(p.is_hard_zero({1, 1, 1}));
+
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {1, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({1, 0, 0}, {2, 1, 1}));
+                REQUIRE_FALSE(p.is_hard_zero({0, 0, 0}, {2, 1, 1}));
+
+                REQUIRE(p.is_hard_zero({0, 1, 0}, {2, 2, 2}));
+            }
+        }
     }
 
     // Checks that extents get forwarded to the base class correctly
@@ -278,6 +325,24 @@ TEST_CASE("novel::SparseShapePIMPL<field::Scalar>") {
 
         REQUIRE(p.extents() == extents_type{3, 5});
         REQUIRE(p.extents().data() == pmatrix);
+    }
+
+    SECTION("slice()") {
+        // M = [x 0 0 0]
+        //     [0 x 0 0]
+        //     [x 0 0 x]
+        sm_type sm{{i0, {i0}}, {i1, {i1}}, {i2, {i0, i3}}};
+        extents_type extents{3, 4};
+        pimpl_type p(extents, sm, idx2mode_type{0, 1});
+
+        // M_sl = [x 0]
+        //        [0 x]
+        sm_type sm_slice_corr{{i0, {i0}}, {i1, {i1}}, {i2, {i0}}};
+        extents_type extents_slice_corr{3, 2};
+        auto slice = p.slice({0, 0}, {3, 2});
+        REQUIRE(slice->extents() == extents_slice_corr);
+        REQUIRE(dynamic_cast<pimpl_type*>(slice.get())->sparse_map() ==
+                sm_slice_corr);
     }
 
     SECTION("hash") {

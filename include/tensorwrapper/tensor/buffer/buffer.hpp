@@ -2,6 +2,7 @@
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 //#include "tensorwrapper/tensor/shapes/shape.hpp"
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -40,6 +41,11 @@ private:
     using my_type = Buffer<FieldType>;
 
 public:
+    /// XXX: These are to be removed, they are here to expose the variant_type
+    /// XXX: Inclusion the FieldTraits breaks novel:: encapsulation
+    using backend_traits = tensor::backends::TiledArrayTraits<FieldType>;
+    using variant_type   = typename backend_traits::variant_type;
+
     /// Type used for indices in einstein/index-based operations
     using annotation_type = std::string;
 
@@ -60,6 +66,9 @@ public:
 
     /// Mutable reference to a hasher
     using hasher_reference = hasher_type&;
+
+    /// Type used for scalar values in the tensor
+    using scalar_value_type = double;
 
     /** @brief Defaulted default ctor.
      *
@@ -347,6 +356,40 @@ public:
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
 
+    /** @brief Computes the norm of the underlying tensor
+     *
+     *  NRM = sqrt(T(:) * T(:))
+     *
+     *  @returns norm of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type norm() const;
+
+    /** @brief Computes the element sum of the underlying tensor
+     *
+     *  Recurses into ToT structure if needed
+     *
+     *  SUM = \sum_{ijk...} A(i,j,k,...)
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type sum() const;
+
+    /** @brief Computes the trace of the underlying tensor
+     *
+     *  Invalid for anything but square matrices (rank-2 scalar tensors)
+     *
+     *  TRACE = \sum_i A(i,i)
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialized or underlying
+     * tensor is non-scalar or with rank != 2. Strong throw gurantee.
+     */
+    scalar_value_type trace() const;
+
     /** @brief Compares two Buffers for value equality.
      *
      *  Two Buffers are considered equal if they:
@@ -421,6 +464,10 @@ public:
      *                                state.
      */
     std::ostream& print(std::ostream& os) const;
+
+    /// XXX: These are to be removed
+    variant_type& variant();
+    const variant_type& variant() const;
 
 private:
     /// Asserts the PIMPL is initialized, throwing std::runtime_error if not

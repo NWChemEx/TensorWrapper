@@ -262,6 +262,56 @@ TEST_CASE("Buffer<Tensor>") {
         }
     }
 
+    SECTION("norm") {
+        SECTION("vov") {
+            auto ref_norm = pvov->norm();
+            auto norm     = vov.norm();
+            REQUIRE(ref_norm == norm);
+        }
+        SECTION("vom") {
+            auto ref_norm = pvom->norm();
+            auto norm     = vom.norm();
+            REQUIRE(ref_norm == norm);
+        }
+        SECTION("mov") {
+            auto ref_norm = pmov->norm();
+            auto norm     = mov.norm();
+            REQUIRE(ref_norm == norm);
+        }
+        SECTION("throws if this is not initialized") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(defaulted.norm(), error_t);
+        }
+    }
+
+    SECTION("sum") {
+        SECTION("vov") {
+            auto ref_sum = pvov->sum();
+            auto sum     = vov.sum();
+            REQUIRE(ref_sum == sum);
+        }
+        SECTION("vom") {
+            auto ref_sum = pvom->sum();
+            auto sum     = vom.sum();
+            REQUIRE(ref_sum == sum);
+        }
+        SECTION("mov") {
+            auto ref_sum = pmov->sum();
+            auto sum     = mov.sum();
+            REQUIRE(ref_sum == sum);
+        }
+        SECTION("throws if this is not initialized") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(defaulted.sum(), error_t);
+        }
+    }
+    SECTION("trace") {
+        REQUIRE_THROWS_AS(vov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(vom.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(defaulted.trace(), std::runtime_error);
+    }
+
     SECTION("print") {
         std::stringstream ss;
         auto pss = &(vov.print(ss));

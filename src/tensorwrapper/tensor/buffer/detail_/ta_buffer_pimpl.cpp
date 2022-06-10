@@ -70,8 +70,10 @@ typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::default_clone_() const {
 
 TEMPLATE_PARAMS
 typename TABUFFERPIMPL::pimpl_pointer TABUFFERPIMPL::clone_() const {
+    auto ta_clone =
+      std::visit([](auto&& arg) { return TA::clone(arg); }, m_tensor_);
     // Can't use make_unique b/c copy ctor is protected
-    return std::unique_ptr<base_type>(new TABufferPIMPL(*this));
+    return std::unique_ptr<base_type>(new TABufferPIMPL(std::move(ta_clone)));
 }
 
 // -- Setters ------------------------------------------------------------------
@@ -103,6 +105,67 @@ void TABUFFERPIMPL::set_shape(ta_shape_type new_shape) {
         t(idx)   = t(idx).set_shape(std::move(new_shape));
     };
     std::visit(l, m_tensor_);
+}
+
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::norm_() const {
+    return std::visit(
+      [=](auto&& t) {
+          auto outer_rank                 = t.trange().rank();
+          decltype(outer_rank) inner_rank = 0;
+          if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+              if(t.is_initialized()) {
+                  const auto& tile0 = t.begin()->get();
+                  inner_rank        = tile0[0].range().rank();
+              }
+          }
+          auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
+
+          return t(idx).norm().get();
+      },
+      m_tensor_);
+}
+
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::sum_() const {
+    return std::visit(
+      [=](auto&& t) {
+          auto outer_rank                 = t.trange().rank();
+          decltype(outer_rank) inner_rank = 0;
+          if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+              if(t.is_initialized()) {
+                  const auto& tile0 = t.begin()->get();
+                  inner_rank        = tile0[0].range().rank();
+              }
+          }
+          auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
+
+          return t(idx).sum().get();
+      },
+      m_tensor_);
+}
+
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::trace_() const {
+    if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+        throw std::runtime_error("Trace not implemented for ToT");
+        return 0.0;
+    } else {
+        return std::visit(
+          [=](auto&& t) {
+              auto trange = t.trange();
+              auto rank   = t.trange().rank();
+              if(rank != 2 or (trange.dim(0) != trange.dim(1))) {
+                  throw std::runtime_error(
+                    "Trace not defined for non-square matrix");
+                  return 0.0;
+              }
+              auto idx = TA::detail::dummy_annotation(2, 0);
+
+              return t(idx).trace().get();
+          },
+          m_tensor_);
+    }
 }
 
 // -- Utilities ----------------------------------------------------------------

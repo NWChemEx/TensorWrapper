@@ -111,6 +111,24 @@ void BUFFER::times(const_annotation_reference my_idx,
 }
 
 TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::norm() const {
+    assert_initialized_();
+    return m_pimpl_->norm();
+}
+
+TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::sum() const {
+    assert_initialized_();
+    return m_pimpl_->sum();
+}
+
+TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::trace() const {
+    assert_initialized_();
+    return m_pimpl_->trace();
+}
+
+TEMPLATE_PARAMS
 bool BUFFER::operator==(const Buffer& rhs) const noexcept {
     if(m_pimpl_ && rhs.m_pimpl_) {
         return m_pimpl_->are_equal(*rhs.m_pimpl_);
@@ -126,6 +144,19 @@ TEMPLATE_PARAMS
 std::ostream& BUFFER::print(std::ostream& os) const {
     if(!is_initialized()) return os;
     return os << *m_pimpl_;
+}
+
+// XXX These are to be remove
+TEMPLATE_PARAMS
+typename BUFFER::variant_type& BUFFER::variant() {
+    assert_initialized_();
+    return m_pimpl_->variant();
+}
+
+TEMPLATE_PARAMS
+const typename BUFFER::variant_type& BUFFER::variant() const {
+    assert_initialized_();
+    return m_pimpl_->variant();
 }
 
 // -- Private methods ----------------------------------------------------------

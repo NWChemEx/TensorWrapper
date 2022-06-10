@@ -97,7 +97,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
         allocator_type alloc(Storage::Core, Tiling::OneBigTile);
 
-        SECTION("allocate(rank 1)") {
+        SECTION("allocate(rank 1) - tile op") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
                            double* data) {
@@ -114,10 +114,25 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == vec);
+            REQUIRE(*buf == vec);
         }
 
-        SECTION("allocate(rank 2)") {
+        SECTION("allocate(rank 1) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
+                element_count++; // Count the number of invocations
+                REQUIRE(idx.size() == 1);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 3);
+                return idx[0] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, vec_shape);
+            REQUIRE(element_count == 3);
+            REQUIRE(*buf == vec);
+        }
+
+        SECTION("allocate(rank 2) - tile op") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
                            double* data) {
@@ -143,10 +158,27 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == mat);
+            REQUIRE(*buf == mat);
         }
 
-        SECTION("allocate(rank 3)") {
+        SECTION("allocate(rank 2) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
+                element_count++; // Count the number of invocations
+                REQUIRE(idx.size() == 2);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 2);
+                REQUIRE(idx[1] >= 0);
+                REQUIRE(idx[1] < 2);
+                return 2 * idx[0] + idx[1] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, mat_shape);
+            REQUIRE(element_count == 4);
+            REQUIRE(*buf == mat);
+        }
+
+        SECTION("allocate(rank 3) - tile op") {
             size_t inner_tile_count = 0;
             auto fxn = [&](std::vector<size_t> lo, std::vector<size_t> up,
                            double* data) {
@@ -179,7 +211,26 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 1); // OneBigTile has only 1 tile
-            REQUIRE(buf == ten);
+            REQUIRE(*buf == ten);
+        }
+
+        SECTION("allocate(rank 3) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](std::vector<size_t> idx) -> double {
+                element_count++;
+                REQUIRE(idx.size() == 3);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 2);
+                REQUIRE(idx[1] >= 0);
+                REQUIRE(idx[1] < 2);
+                REQUIRE(idx[2] >= 0);
+                REQUIRE(idx[2] < 2);
+                return 4 * idx[0] + 2 * idx[1] + idx[2] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, ten_shape);
+            REQUIRE(element_count == 8);
+            REQUIRE(*buf == ten);
         }
     }
 
@@ -214,7 +265,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, vec_shape);
             REQUIRE(inner_tile_count == 3); // One Tile For Each Element
-            REQUIRE(buf == vec);
+            REQUIRE(*buf == vec);
         }
 
         SECTION("allocate(rank 2)") {
@@ -243,7 +294,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, mat_shape);
             REQUIRE(inner_tile_count == 4); // One Tile For Each Element
-            REQUIRE(buf == mat);
+            REQUIRE(*buf == mat);
         }
 
         SECTION("allocate(rank 3)") {
@@ -279,7 +330,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
             auto buf = alloc.allocate(fxn, ten_shape);
             REQUIRE(inner_tile_count == 8); // One Tile For Each Element
-            REQUIRE(buf == ten);
+            REQUIRE(*buf == ten);
         }
     }
 }
@@ -317,7 +368,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
         allocator_type alloc(Storage::Core, Tiling::OneBigTile);
 
-        SECTION("allocate(vov)") {
+        SECTION("allocate(vov) - tile op") {
             size_t outer_tile_count = 0;
             auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
                            std::vector<size_t> up, double* data) {
@@ -335,10 +386,28 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vov_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vov);
+            REQUIRE(*buf == vov);
         }
 
-        SECTION("allocate(vom)") {
+        SECTION("allocate(vov) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](auto outer, auto idx) -> double {
+                element_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(idx.size() == 1);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 3);
+                REQUIRE(outer[0] >= 0);
+                REQUIRE(outer[0] < 3);
+                return idx[0] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, vov_shape);
+            REQUIRE(element_count == 9);
+            REQUIRE(*buf == vov);
+        }
+
+        SECTION("allocate(vom) - tile op") {
             size_t outer_tile_count = 0;
             auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
                            std::vector<size_t> up, double* data) {
@@ -365,10 +434,30 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vom_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vom);
+            REQUIRE(*buf == vom);
         }
 
-        SECTION("allocate(mov)") {
+        SECTION("allocate(vom) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](auto outer, auto idx) -> double {
+                element_count++;
+                REQUIRE(outer.size() == 1);
+                REQUIRE(outer[0] >= 0);
+                REQUIRE(outer[0] < 3);
+                REQUIRE(idx.size() == 2);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 2);
+                REQUIRE(idx[1] >= 0);
+                REQUIRE(idx[1] < 2);
+                return 2 * idx[0] + idx[1] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, vom_shape);
+            REQUIRE(element_count == 12);
+            REQUIRE(*buf == vom);
+        }
+
+        SECTION("allocate(mov) - tile op") {
             size_t outer_tile_count = 0;
             auto fxn = [&](std::vector<size_t> outer, std::vector<size_t> lo,
                            std::vector<size_t> up, double* data) {
@@ -386,7 +475,27 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, mov_shape);
             REQUIRE(outer_tile_count == 4);
-            REQUIRE(buf == mov);
+            REQUIRE(*buf == mov);
+        }
+
+        SECTION("allocate(mov) - scalar op") {
+            size_t element_count = 0;
+            auto fxn             = [&](auto outer, auto idx) -> double {
+                element_count++;
+                REQUIRE(outer.size() == 2);
+                REQUIRE(idx.size() == 1);
+                REQUIRE(idx[0] >= 0);
+                REQUIRE(idx[0] < 3);
+                REQUIRE(outer[0] >= 0);
+                REQUIRE(outer[0] < 2);
+                REQUIRE(outer[1] >= 0);
+                REQUIRE(outer[1] < 2);
+                return idx[0] + 1;
+            };
+
+            auto buf = alloc.allocate(fxn, mov_shape);
+            REQUIRE(element_count == 12);
+            REQUIRE(*buf == mov);
         }
     } // OneBigTile
 
@@ -422,7 +531,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vov_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vov);
+            REQUIRE(*buf == vov);
         }
 
         SECTION("allocate(vom)") {
@@ -451,7 +560,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, vom_shape);
             REQUIRE(outer_tile_count == 3);
-            REQUIRE(buf == vom);
+            REQUIRE(*buf == vom);
         }
 
         SECTION("allocate(mov)") {
@@ -472,7 +581,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
             auto buf = alloc.allocate(fxn, mov_shape);
             REQUIRE(outer_tile_count == 4);
-            REQUIRE(buf == mov);
+            REQUIRE(*buf == mov);
         }
 #endif
     } // SingleElementtile

@@ -50,6 +50,8 @@ public:
     /// Type TA uses for specifying the tile sparsity of a tensor
     using ta_shape = TA::SparseShape<float>;
 
+    using index_type = typename parent_type::index_type;
+
 public:
     /** @brief Creates a new ShapePIMPL with the provided extents.
      *
@@ -130,6 +132,10 @@ public:
             return 0;
     }
 
+    pimpl_pointer slice(const index_type& lo, const index_type& hi) const {
+        return slice_(lo, hi);
+    }
+
     /** @brief Non-polymorphic comparison.
      *
      *  This operator is used to compare a ShapePIMPL instance to another
@@ -165,6 +171,8 @@ protected:
         h(m_extents_, m_inner_extents_);
     }
 
+    virtual pimpl_pointer slice_(const index_type&, const index_type&) const;
+
 private:
     /// To be overridden by the derived class to implement clone()
     virtual pimpl_pointer clone_() const;
@@ -179,6 +187,26 @@ private:
 template<typename FieldType>
 typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::clone_() const {
     return pimpl_pointer(new my_type(*this));
+}
+
+template<typename FieldType>
+typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(
+  const index_type& _lo, const index_type& _hi) const {
+    if(_lo.size() != m_extents_.size())
+        throw std::runtime_error("Lo bounds do not match extents");
+    if(_hi.size() != m_extents_.size())
+        throw std::runtime_error("Hi bounds do not match extents");
+
+    extents_type new_extents(m_extents_.size());
+    for(auto i = 0ul; i < m_extents_.size(); ++i) {
+        if(_lo[i] < 0 or _lo[i] >= m_extents_[i])
+            throw std::runtime_error("Invalid lo bound");
+        if(_hi[i] > m_extents_[i]) throw std::runtime_error("Invalid hi bound");
+        if(_lo[i] > _hi[i])
+            throw std::runtime_error("Lo must be smaller than Hi");
+        new_extents[i] = _hi[i] - _lo[i];
+    }
+    return pimpl_pointer(new my_type(new_extents, m_inner_extents_));
 }
 
 template<typename FieldType>
