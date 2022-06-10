@@ -1,4 +1,4 @@
-#include "../../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
+#include "../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
 #include "sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::detail_ {

@@ -6,5 +6,5 @@
 //#include "tensorwrapper/tensor/fields.hpp"
 //#include "tensorwrapper/tensor/linear_algebra.hpp"
 //#include "tensorwrapper/tensor/remove_redundancy.hpp"
-#include "tensorwrapper/tensortensor_wrapper.hpp"
+#include "tensorwrapper/tensor/tensor_wrapper.hpp"
 //#include <variant>

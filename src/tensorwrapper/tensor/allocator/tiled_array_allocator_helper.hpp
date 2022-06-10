@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
-#include "tensorwrapper/tensorallocators/tiled_array.hpp"
+#include "../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
+#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 #include "tiled_array_sparse_shape.hpp"
 #include "tiled_array_tiling.hpp"
 #include <TiledArray/conversions/make_array.h>

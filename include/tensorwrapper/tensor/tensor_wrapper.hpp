@@ -1,13 +1,12 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
+#include "tensorwrapper/tensor/allocators/allocators.hpp"
+#include "tensorwrapper/tensor/detail_/labeled_tensor_wrapper.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/type_traits/field_traits.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
-#include "tensorwrapper/tensorallocators/allocators.hpp"
-#include "tensorwrapper/tensordetail_/labeled_tensor_wrapper.hpp"
-#include "tensorwrapper/tensorshapes/shape.hpp"
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 namespace detail_ {
 
 template<typename FieldType>
@@ -738,4 +737,4 @@ using TensorOfTensorsWrapper = TensorWrapper<field::Tensor>;
 extern template class TensorWrapper<field::Scalar>;
 extern template class TensorWrapper<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor

@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/sparse_map/sparse_map.hpp"
-#include "tensorwrapper/tensorshapes/shape.hpp"
+#include "tensorwrapper/tensor/shapes/shape.hpp"
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 
 /** @brief Describes a tensor's shape when there's sparsity.
  *
@@ -209,4 +209,4 @@ bool operator!=(const SparseShape<LHSField>& lhs,
 extern template class SparseShape<field::Scalar>;
 extern template class SparseShape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor

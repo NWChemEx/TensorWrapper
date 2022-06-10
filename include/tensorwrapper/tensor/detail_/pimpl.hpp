@@ -1,5 +1,5 @@
 #pragma once
-#include "tensorwrapper/tensortensor_wrapper.hpp"
+#include "tensorwrapper/tensor/tensor_wrapper.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
 

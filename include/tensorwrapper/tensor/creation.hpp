@@ -64,7 +64,7 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t);
  *  @throw Whatever TA's diagonal_array throws.
  */
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  double val, const Allocator<field::Scalar>& allocator,
+  double val, const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape);
 
 /** @brief Produces a new TensorWrapper with the given values along its
@@ -78,7 +78,8 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
  *  @throw Whatever TA's diagonal_array throws.
  */
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  std::vector<double> vals, const Allocator<field::Scalar>& allocator,
+  std::vector<double> vals,
+  const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape);
 
 /** @brief Stacks a group of tensors along a new dimension.

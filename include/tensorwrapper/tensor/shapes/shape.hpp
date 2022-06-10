@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 namespace detail_ {
 template<typename FieldType>
 class ShapePIMPL;
@@ -343,4 +343,4 @@ bool operator!=(const Shape<LHSType>& lhs, const Shape<RHSType>& rhs) {
 extern template class Shape<field::Scalar>;
 extern template class Shape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor

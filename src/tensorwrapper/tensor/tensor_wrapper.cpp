@@ -1,7 +1,6 @@
-//#include "../sparse_map/sparse_map/detail_/from_sparse_map.hpp"
-#include "tensorwrapper/tensordetail_/pimpl.hpp"
+#include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 #if 1
 
 #if 0
@@ -303,4 +302,4 @@ void TENSOR_WRAPPER::update_shape_() {
 template class TensorWrapper<field::Scalar>;
 template class TensorWrapper<field::Tensor>;
 #endif
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor

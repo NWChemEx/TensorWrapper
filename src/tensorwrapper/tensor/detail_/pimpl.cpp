@@ -1,8 +1,8 @@
-#include "../../../ta_helpers/slice.hpp"
-#include "../../../ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensordetail_/pimpl.hpp"
+#include "../../ta_helpers/slice.hpp"
+#include "../../ta_helpers/ta_helpers.hpp"
+#include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
-#include "../../buffer/detail_/ta_buffer_pimpl.hpp"
+#include "../buffer/detail_/ta_buffer_pimpl.hpp"
 #include "../shapes/detail_/sparse_shape_pimpl.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
