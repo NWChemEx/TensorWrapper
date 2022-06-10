@@ -1,10 +1,9 @@
-#include "../../buffer/make_pimpl.hpp"
+#include "../buffer/make_pimpl.hpp"
 #include "../shapes/make_tot_shape.hpp"
-#include "tensorwrapper/tensorallocators/allocators.hpp"
+#include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
 
 TEMPLATE_TEST_CASE("TiledArrayAllocator Generic", "[allocator][ta]",
                    field::Scalar, field::Tensor) {

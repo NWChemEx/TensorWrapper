@@ -1,6 +1,6 @@
 #include "detail_/sparse_shape_pimpl.hpp"
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 
 template<typename T>
 using pimpl_type = detail_::SparseShapePIMPL<T>;
@@ -133,4 +133,4 @@ bool SPARSE_SHAPE::is_equal_(const Shape<FieldType>& rhs) const noexcept {
 template class SparseShape<field::Scalar>;
 template class SparseShape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor

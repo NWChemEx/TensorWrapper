@@ -1,12 +1,11 @@
-#include "tensorwrapper/tensorallocators/allocators.hpp"
-#include "tensorwrapper/tensorshapes/detail_/sparse_shape_pimpl.hpp"
+#include "tensorwrapper/tensor/allocators/allocators.hpp"
+#include "tensorwrapper/tensor/shapes/detail_/sparse_shape_pimpl.hpp"
 #include <catch2/catch.hpp>
 
 #include "../make_tot_shape.hpp"
 #include "tiled_range_generators.hpp"
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *

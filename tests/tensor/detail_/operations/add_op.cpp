@@ -1,4 +1,5 @@
 #include "../../test_tensor.hpp"
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
 
@@ -22,14 +23,14 @@ TEMPLATE_LIST_TEST_CASE("AddOp", "", scalar_variant) {
                        matrix_il{vector_il{5.0, 6.0}, vector_il{7.0, 8.0}}});
 
     // Declare non-const wrappers
-    TWrapper vec(ta_vec);
-    TWrapper mat(ta_matrix);
-    TWrapper t3(ta_tensor);
+    auto vec = detail_::ta_to_tw(ta_vec);
+    auto mat = detail_::ta_to_tw(ta_matrix);
+    auto t3  = detail_::ta_to_tw(ta_tensor);
 
     // Declare const wrappers
-    const TWrapper const_vec(ta_vec);
-    const TWrapper const_mat(ta_matrix);
-    const TWrapper const_t3(ta_tensor);
+    const auto const_vec = detail_::ta_to_tw(ta_vec);
+    const auto const_mat = detail_::ta_to_tw(ta_matrix);
+    const auto const_t3  = detail_::ta_to_tw(ta_tensor);
 
     // Get LabeledTensorWrappers
     auto lvec       = vec("i");
@@ -39,7 +40,7 @@ TEMPLATE_LIST_TEST_CASE("AddOp", "", scalar_variant) {
     auto lt3        = t3("i,j,k");
     auto const_lt3  = const_t3("i,j,k");
 
-    TWrapper result(t_type{});
+    TWrapper result = detail_::ta_to_tw(t_type{});
     SECTION("operator+") {
         SECTION("operator+(other labeled tensor)") {
             SECTION("vector") {

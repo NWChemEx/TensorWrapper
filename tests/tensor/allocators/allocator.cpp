@@ -1,7 +1,7 @@
-#include "../../buffer/make_pimpl.hpp"
+#include "../buffer/make_pimpl.hpp"
 #include "../shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensorallocators/allocators.hpp"
+#include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include <catch2/catch.hpp>
 
 /* Testing Strategy:
@@ -12,7 +12,7 @@
  */
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
+
 TEMPLATE_TEST_CASE("Allocator Generic", "[allocator][generic]", field::Scalar,
                    field::Tensor) {
     using field_type = TestType;

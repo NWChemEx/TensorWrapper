@@ -2,11 +2,11 @@
  * the tensor component of Libtensorwrapper.
  */
 #pragma once
-#include "../buffer/make_pimpl.hpp"
+#include "buffer/make_pimpl.hpp"
 #include "shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensordetail_/pimpl.hpp"
-#include "tensorwrapper/tensortensor.hpp"
+#include "tensorwrapper/tensor/detail_/pimpl.hpp"
+#include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
 #include <utilities/type_traits/variant/cat.hpp>
 
@@ -15,7 +15,6 @@ namespace testing {
 /// Function which generates some dummy tensors for a given type
 template<typename FieldType>
 auto get_tensors() {
-    using namespace tensorwrapper::tensor::novel;
     using namespace tensorwrapper::tensor;
     using tensor_type  = TensorWrapper<FieldType>;
     using pimpl_type   = detail_::TensorWrapperPIMPL<FieldType>;

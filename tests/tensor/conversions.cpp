@@ -1,5 +1,6 @@
 #include "tensorwrapper/tensor/tensor.hpp"
 #include "test_tensor.hpp"
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
 
@@ -8,19 +9,19 @@ TEST_CASE("to_vector") {
     auto tensors      = testing::get_tensors<TA::TSpArrayD>();
 
     SECTION("vector") {
-        const tensor_type t(tensors.at("vector"));
+        const auto t = detail_::ta_to_tw(tensors.at("vector"));
         std::vector<double> corr{1.0, 2.0, 3.0};
         REQUIRE(to_vector(t) == corr);
     }
 
     SECTION("matrix") {
-        const tensor_type t(tensors.at("matrix"));
+        const auto t = detail_::ta_to_tw(tensors.at("matrix"));
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0};
         REQUIRE(to_vector(t) == corr);
     }
 
     SECTION("tensor") {
-        const tensor_type t(tensors.at("tensor"));
+        const auto t = detail_::ta_to_tw(tensors.at("tensor"));
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
         REQUIRE(to_vector(t) == corr);
     }
@@ -32,7 +33,7 @@ TEST_CASE("to_vector") {
         using field_t          = field::Scalar;
         using single_element_t = SingleElementTiles<field_t>;
         auto palloc            = std::make_unique<single_element_t>();
-        tensor_type t(tensors.at("matrix"), std::move(palloc));
+        auto t = detail_::ta_to_tw(tensors.at("matrix"), std::move(palloc));
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0};
         REQUIRE(to_vector(t) == corr);
     }
@@ -48,7 +49,7 @@ TEST_CASE("Wrap std::vector") {
 
     vector_il v_il{1, 2, 3, 4};
     double_vec v(v_il);
-    twrapper corr_wv(ta_array(world, v_il));
+    auto corr_wv = detail_::ta_to_tw(ta_array(world, v_il));
 
     twrapper wv = wrap_std_vector(double_vec(v_il));
 

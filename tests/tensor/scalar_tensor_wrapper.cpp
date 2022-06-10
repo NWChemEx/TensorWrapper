@@ -1,7 +1,6 @@
 #include "test_tensor.hpp"
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *

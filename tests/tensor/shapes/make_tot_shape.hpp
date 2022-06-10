@@ -1,5 +1,5 @@
 #pragma once
-#include "tensorwrapper/tensorshapes/shapes.hpp"
+#include "tensorwrapper/tensor/shapes/shapes.hpp"
 namespace testing {
 
 namespace detail {
@@ -18,7 +18,6 @@ inline auto global_to_local(size_t idx, const std::vector<size_t>& dims) {
 inline auto make_uniform_tot_map(const std::vector<size_t>& outer_extents,
                                  const std::vector<size_t>& inner_extents) {
     using namespace tensorwrapper::sparse_map;
-    using namespace tensorwrapper::tensor::novel;
     using namespace tensorwrapper::tensor;
     Shape<field::Scalar> inner_shape(inner_extents);
     std::map<Index, Shape<field::Scalar>> inner_map;

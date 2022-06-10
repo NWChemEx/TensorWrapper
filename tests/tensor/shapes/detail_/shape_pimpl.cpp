@@ -1,15 +1,14 @@
 #include "../make_tot_shape.hpp"
-#include "tensorwrapper/tensorshapes/detail_/shape_pimpl.hpp"
+#include "tensorwrapper/tensor/shapes/detail_/shape_pimpl.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
 using namespace tensorwrapper::sparse_map;
 
 TEST_CASE("ShapePIMPL<Scalar>") {
-    using field_type         = field::Scalar;
-    using pimpl_type         = detail_::ShapePIMPL<field_type>;
-    using extents_type       = typename pimpl_type::extents_type;
+    using field_type   = field::Scalar;
+    using pimpl_type   = tensorwrapper::tensor::detail_::ShapePIMPL<field_type>;
+    using extents_type = typename pimpl_type::extents_type;
     using inner_extents_type = typename pimpl_type::inner_extents_type;
 
     extents_type scalar_extents;
@@ -122,9 +121,9 @@ TEST_CASE("ShapePIMPL<Scalar>") {
 }
 
 TEST_CASE("ShapePIMPL<Tensor>") {
-    using field_type         = field::Tensor;
-    using pimpl_type         = detail_::ShapePIMPL<field_type>;
-    using extents_type       = typename pimpl_type::extents_type;
+    using field_type   = field::Tensor;
+    using pimpl_type   = tensorwrapper::tensor::detail_::ShapePIMPL<field_type>;
+    using extents_type = typename pimpl_type::extents_type;
     using inner_extents_type = typename pimpl_type::inner_extents_type;
 
     extents_type scalar_extents;

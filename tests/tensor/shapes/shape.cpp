@@ -1,9 +1,8 @@
 #include "make_tot_shape.hpp"
-#include "tensorwrapper/tensorshapes/shapes.hpp"
+#include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
 
 using namespace tensorwrapper::tensor;
-using namespace tensorwrapper::tensor::novel;
 
 /* Testing Strategy:
  *

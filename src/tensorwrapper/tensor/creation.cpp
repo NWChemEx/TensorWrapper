@@ -1,6 +1,8 @@
 #include "../ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensor/creation.hpp"
+#include "buffer/detail_/ta_buffer_pimpl.hpp"
+#include "detail_/ta_to_tw.hpp"
 #include <TiledArray/conversions/retile.h>
+#include <tensorwrapper/tensor/creation.hpp>
 
 namespace tensorwrapper::tensor {
 
@@ -51,8 +53,7 @@ ScalarTensorWrapper concatenate(const ScalarTensorWrapper& lhs,
     out_tr1[dim] = new_tr1;
     TA::TiledRange new_tr(out_tr1.begin(), out_tr1.end());
     C_out = TA::retile(C_out, new_tr);
-
-    return ScalarTensorWrapper(C_out);
+    return detail_::ta_to_tw(C_out);
 }
 
 TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
@@ -115,12 +116,11 @@ TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
 
 ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
     const auto& t_ta = t.get<TA::TSpArrayD>();
-
-    return ScalarTensorWrapper(ta_helpers::grab_diagonal(t_ta));
+    return detail_::ta_to_tw(ta_helpers::grab_diagonal(t_ta));
 }
 
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  double val, const Allocator<field::Scalar>& allocator,
+  double val, const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape) {
     auto& world = TA::get_default_world();
 
@@ -132,11 +132,12 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
 
     auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange, val);
 
-    return ScalarTensorWrapper(ta_diag, shape.clone(), allocator.clone());
+    return detail_::ta_to_tw(ta_diag); // shape.clone(), allocator.clone());
 };
 
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  std::vector<double> vals, const Allocator<field::Scalar>& allocator,
+  std::vector<double> vals,
+  const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape) {
     auto& world = TA::get_default_world();
 
@@ -149,7 +150,7 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
     auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange,
                                                      vals.begin(), vals.end());
 
-    return ScalarTensorWrapper(ta_diag, shape.clone(), allocator.clone());
+    return detail_::ta_to_tw(ta_diag); //, shape.clone(), allocator.clone());
 };
 
 ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
@@ -205,7 +206,8 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
             }
         }
     }
-    return ScalarTensorWrapper(new_tensor);
+
+    return detail_::ta_to_tw(new_tensor);
 }
 
 Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor) {
@@ -221,7 +223,7 @@ ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix) {
 
     auto tensor = TA::eigen_to_array<TA::TSpArrayD>(world, trange, matrix);
 
-    return ScalarTensorWrapper{tensor};
+    return detail_::ta_to_tw(tensor);
 };
 
 } // namespace tensorwrapper::tensor

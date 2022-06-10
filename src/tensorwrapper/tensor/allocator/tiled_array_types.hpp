@@ -1,7 +1,7 @@
 #pragma once
-#include "../../buffer/detail_/ta_buffer_pimpl.hpp"
 #include "../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
-#include "tensorwrapper/tensorallocators/tiled_array.hpp"
+#include "../buffer/detail_/ta_buffer_pimpl.hpp"
+#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 
 namespace tensorwrapper::tensor::allocator::detail_ {
 

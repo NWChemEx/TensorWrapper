@@ -1,6 +1,6 @@
 #include "detail_/shape_pimpl.hpp"
 
-namespace tensorwrapper::tensor::novel {
+namespace tensorwrapper::tensor {
 namespace {
 
 template<typename FieldType, typename... Args>
@@ -156,4 +156,4 @@ bool SHAPE::is_equal_(const Shape<FieldType>& rhs) const noexcept {
 template class Shape<field::Scalar>;
 template class Shape<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel
+} // namespace tensorwrapper::tensor
