@@ -69,7 +69,7 @@ TEST_CASE("SVD") {
     auto left_corr   = detail_::ta_to_tw(TA::TSpArrayD(world, svd_left));
     auto right_corr  = detail_::ta_to_tw(TA::TSpArrayD(world, svd_right));
     auto X           = detail_::ta_to_tw(TA::TSpArrayD(
-                world, imatrix_il{ivector_il{1, 2, 3, 4}, ivector_il{5, 6, 7, 8}}));
+      world, imatrix_il{ivector_il{1, 2, 3, 4}, ivector_il{5, 6, 7, 8}}));
 
     SECTION("Values") {
         const auto& S = SVDValues(X);
