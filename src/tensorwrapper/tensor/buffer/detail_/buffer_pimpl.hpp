@@ -32,6 +32,9 @@ public:
     /// Type of scalar values
     using scalar_value_type = typename buffer_type::scalar_value_type;
 
+    /// Type of extents
+    using extents_type = typename buffer_type::extents_type;
+
     /// Default constructs the derived class
     pimpl_pointer default_clone() const { return default_clone_(); }
 
@@ -102,6 +105,9 @@ public:
 
     /// Implements trace operation
     inline scalar_value_type trace() const { return trace_(); }
+
+    /// Implements making extents
+    inline extents_type make_extents() const { return make_extents_(); }
 
     void hash(hasher_reference h) const { hash_(h); }
 
@@ -174,6 +180,9 @@ private:
 
     /// To be overridden by derived class to implement trace
     virtual scalar_value_type trace_() const = 0;
+
+    /// To be overridden by derived class to implement make_extents
+    virtual extents_type make_extents_() const = 0;
 
     /// To be overridden by derived classs to implement hash
     virtual void hash_(hasher_reference h) const = 0;

@@ -168,6 +168,21 @@ typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::trace_() const {
     }
 }
 
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::extents_type TABUFFERPIMPL::make_extents_() const {
+    using size_type = typename extents_type::size_type;
+
+    auto l = [=](auto&& t) {
+        if(!t.is_initialized()) return extents_type{};
+        const auto& tr = t.trange();
+        extents_type rv(tr.rank());
+        const auto& erange = tr.elements_range().extent();
+        for(size_type i = 0; i < rv.size(); ++i) rv[i] = erange[i];
+        return rv;
+    };
+    return std::visit(l, m_tensor_);
+}
+
 // -- Utilities ----------------------------------------------------------------
 
 TEMPLATE_PARAMS
