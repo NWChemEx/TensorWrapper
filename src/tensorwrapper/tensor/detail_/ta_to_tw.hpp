@@ -12,6 +12,8 @@ auto ta_to_tw(T&& t) {
     static_assert(field::is_scalar_field_v<FieldType>,
                   "Only scalar fields are presently implemented");
 
+    if(!t.is_initialized()) return TensorWrapper<FieldType>();
+
     // Step 0: Make shape
     using shape_type   = Shape<FieldType>;
     using extents_type = typename shape_type::extents_type;

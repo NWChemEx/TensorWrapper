@@ -623,7 +623,7 @@ public:
         return false;
     }
 
-    inline pimpl_reference pimpl() { return pimpl_(); }
+    pimpl_reference pimpl();
     inline const_pimpl_reference pimpl() const { return pimpl_(); }
 
 protected:
