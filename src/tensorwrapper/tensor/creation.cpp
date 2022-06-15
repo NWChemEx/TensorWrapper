@@ -126,7 +126,7 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
 
     std::vector<TA::TiledRange1> dims{};
     for(auto i : shape.extents()) {
-        dims.push_back(ta_helpers::make_1D_trange(i, 1));
+        dims.push_back(ta_helpers::make_1D_trange(i, i));
     }
     TA::TiledRange trange(dims);
 
@@ -136,14 +136,14 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
 };
 
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  std::vector<double> vals,
+  const std::vector<double>& vals,
   const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape) {
     auto& world = TA::get_default_world();
 
     std::vector<TA::TiledRange1> dims{};
     for(auto i : shape.extents()) {
-        dims.push_back(ta_helpers::make_1D_trange(i, 1));
+        dims.push_back(ta_helpers::make_1D_trange(i, i));
     }
     TA::TiledRange trange(dims);
 
@@ -163,14 +163,14 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
 
     // Prepend the new dimension to the existing ones
     auto new_dim = ta_helpers::make_1D_trange(tensors.size(), 1);
-    std::vector<TA::TiledRange1> dims{new_dim};
+    std::vector<TA::TiledRange1> intermediate_dims{new_dim};
     for(auto i = 0; i < slice_trange.rank(); ++i) {
-        dims.push_back(slice_trange.dim(i));
+        intermediate_dims.push_back(slice_trange.dim(i));
     }
-    TA::TiledRange result_trange(dims);
+    TA::TiledRange intermediate_trange(intermediate_dims);
 
     // Build up stacked tensor
-    ta_type new_tensor(world, result_trange);
+    ta_type new_tensor(world, intermediate_trange);
     for(auto dim = 0; dim < tensors.size(); ++dim) {
         auto current_ta     = tensors[dim].get<ta_type>();
         auto current_trange = current_ta.trange();
@@ -193,7 +193,8 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
             }
 
             // Get tiledrange of new location
-            auto output_range = result_trange.make_tile_range(output_index);
+            auto output_range =
+              intermediate_trange.make_tile_range(output_index);
 
             // Make and set new tile
             if(current_ta.is_zero(index)) {
@@ -207,6 +208,17 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
         }
     }
 
+    /// Retile into default OneBigTile arrangement
+    /// Probably shouldn't have to do this.
+    /// TODO: Remove at some point?
+    auto dim1 = ta_helpers::make_1D_trange(tensors.size(), tensors.size());
+    std::vector<TA::TiledRange1> final_dims{dim1};
+    for(auto i : slice_trange.elements_range().extent()) {
+        final_dims.push_back(ta_helpers::make_1D_trange(i, i));
+    }
+    TA::TiledRange final_trange(final_dims);
+    new_tensor = TA::retile(new_tensor, final_trange);
+
     return detail_::ta_to_tw(new_tensor);
 }
 
@@ -217,8 +229,8 @@ Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor) {
 ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix) {
     auto& world = TA::get_default_world();
 
-    auto cols_tr = ta_helpers::make_1D_trange(matrix.cols(), 1);
-    auto rows_tr = ta_helpers::make_1D_trange(matrix.rows(), 1);
+    auto cols_tr = ta_helpers::make_1D_trange(matrix.cols(), matrix.cols());
+    auto rows_tr = ta_helpers::make_1D_trange(matrix.rows(), matrix.cols());
     TA::TiledRange trange({cols_tr, rows_tr});
 
     auto tensor = TA::eigen_to_array<TA::TSpArrayD>(world, trange, matrix);
