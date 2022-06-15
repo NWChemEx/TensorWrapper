@@ -269,7 +269,8 @@ bool PIMPL_TYPE::operator==(const TensorWrapperPIMPL& rhs) const {
 
 template<typename FieldType>
 void PIMPL_TYPE::update_shape() {
-    auto new_shape = std::make_unique<shape_type>(m_buffer_->make_extents());
+    auto new_shape = std::make_unique<shape_type>(
+      m_buffer_->make_extents(), m_buffer_->make_inner_extents());
     if(m_shape_ && extents() == new_shape->extents()) return;
     m_shape_.swap(new_shape);
 }

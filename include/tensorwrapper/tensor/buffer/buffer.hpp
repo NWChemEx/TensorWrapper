@@ -61,6 +61,9 @@ public:
     /// Type used for returning the extents
     using extents_type = typename shape_type::extents_type;
 
+    /// Type used for returning inner extents
+    using inner_extents_type = typename shape_type::inner_extents_type;
+
     /// Type of the object used for hashing
     using hasher_type = tensorwrapper::detail_::Hasher;
 
@@ -391,6 +394,8 @@ public:
     scalar_value_type trace() const;
 
     extents_type make_extents() const;
+
+    inner_extents_type make_inner_extents() const;
 
     /** @brief Compares two Buffers for value equality.
      *

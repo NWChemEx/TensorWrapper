@@ -135,6 +135,12 @@ typename BUFFER::extents_type BUFFER::make_extents() const {
 }
 
 TEMPLATE_PARAMS
+typename BUFFER::inner_extents_type BUFFER::make_inner_extents() const {
+    assert_initialized_();
+    return m_pimpl_->make_inner_extents();
+}
+
+TEMPLATE_PARAMS
 bool BUFFER::operator==(const Buffer& rhs) const noexcept {
     if(m_pimpl_ && rhs.m_pimpl_) {
         return m_pimpl_->are_equal(*rhs.m_pimpl_);
