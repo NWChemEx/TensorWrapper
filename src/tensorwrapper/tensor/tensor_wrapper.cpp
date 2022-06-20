@@ -282,12 +282,20 @@ typename TENSOR_WRAPPER::const_labeled_type TENSOR_WRAPPER::annotate_(
 template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl_() {
     if(!m_pimpl_) {
-        using ta_pimpl_type = buffer::detail_::TABufferPIMPL<FieldType>;
+        using ta_pimpl_type  = buffer::detail_::TABufferPIMPL<FieldType>;
+        using inner_ext_type = typename shape_type::inner_extents_type;
+
+        /// Inner extents can't just be defaulted for ToT cases
+        inner_ext_type inner_ext{};
+        if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+            /// Pseudo-default value
+            inner_ext[index_type{0}] = Shape<field::Scalar>(extents_type{0});
+        }
 
         auto pt  = std::make_unique<ta_pimpl_type>();
         m_pimpl_ = std::make_unique<pimpl_type>(
           std::make_unique<buffer_type>(std::move(pt)),
-          std::make_unique<shape_type>(extents_type{0}),
+          std::make_unique<shape_type>(extents_type{0}, inner_ext),
           default_allocator<field_type>());
     }
     return *m_pimpl_;
