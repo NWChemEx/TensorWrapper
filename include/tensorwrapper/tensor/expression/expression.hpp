@@ -21,29 +21,13 @@ public:
     Expression(labeled_tensor t);
     Expression(labeled_tot tot);
 
-    Expression operator+(Expression rhs) const;
-    Expression operator*(Expression rhs) const;
-
-    label_types output_labels(const label_type& lhs) const;
-    tensor_type eval(const labeled_tensor& lhs) const;
-    tot_type eval(const labled_tot& lhs) const;
+    labeled_tensor eval(const labeled_tensor& result) const;
+    labeled_tot eval(const labled_tot& result) const;
 
 private:
     explicit Expression(pimpl_pointer p);
 
     pimpl_pointer m_pimpl_;
 };
-
-// template<typename FieldType>
-// Expression operator+(const LabeledTensor<FieldType>& lhs,
-//                      const LabeledTensor<FieldType>& rhs) {
-//     return Expression(lhs) + Expression(rhs);
-// }
-
-// template<typename LHSFieldType, typename RHSFieldType>
-// Expression operator*(const LabeledTensor<LHSFieldType>& lhs,
-//                      const LabeledTensor<RHSFieldType>& rhs) {
-//     return Expression(lhs) * Expression(rhs);
-// }
 
 } // namespace tensorwrapper::tensor::expression

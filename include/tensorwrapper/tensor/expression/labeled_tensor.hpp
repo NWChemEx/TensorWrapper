@@ -26,7 +26,7 @@ public:
     LabeledTensor& operator=(const LabeledTensor& rhs);
     LabeledTensor& operator=(const Expression& rhs);
 
-    Term operator+(const LabeledTensor& rhs);
+    Expression operator+(const LabeledTensor& rhs);
 
     const auto& tensor() const { return m_tensor_; }
     const auto& labels() const { return m_labels_; }

@@ -623,6 +623,9 @@ public:
         return false;
     }
 
+    auto& buffer() { return pimpl().buffer(); }
+    const auto& buffer() const { return pimpl().buffer(); }
+
     inline pimpl_reference pimpl() { return pimpl_(); }
     inline const_pimpl_reference pimpl() const { return pimpl_(); }
 
