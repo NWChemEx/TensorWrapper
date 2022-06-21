@@ -12,6 +12,8 @@ auto ta_to_tw(T&& t) {
     static_assert(field::is_scalar_field_v<FieldType>,
                   "Only scalar fields are presently implemented");
 
+    if(!t.is_initialized()) return TensorWrapper<FieldType>();
+
     // Step 0: Make shape
     using shape_type   = Shape<FieldType>;
     using extents_type = typename shape_type::extents_type;
@@ -31,7 +33,7 @@ auto ta_to_tw(T&& t) {
     using buffer_type = buffer::Buffer<FieldType>;
     auto pbuffer      = std::make_unique<buffer_type>(std::move(pt));
 
-    // Step 4: Move buffer, shape, and allocator int TensorWrapperPIMPL
+    // Step 4: Move buffer, shape, and allocator into TensorWrapperPIMPL
     using pimpl_type = TensorWrapperPIMPL<FieldType>;
     auto ppimpl      = std::make_unique<pimpl_type>(
       std::move(pbuffer), std::move(pshape), std::move(palloc));

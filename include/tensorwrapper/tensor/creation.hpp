@@ -78,7 +78,7 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
  *  @throw Whatever TA's diagonal_array throws.
  */
 ScalarTensorWrapper diagonal_tensor_wrapper(
-  std::vector<double> vals,
+  const std::vector<double>& vals,
   const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape);
 

@@ -120,11 +120,14 @@ TEST_CASE("diagonal_tensor_wrapper") {
     }
 
     SECTION("Multiple Diagonal Values") {
+        std::vector<double> two_vals = {1.0, 2.0};
+        std::vector<double> three_vals = {1.0, 2.0, 3.0};
+
         SECTION("1D") {
             extents_t extents{3};
             shape_t shape{extents};
             auto corr = detail_::ta_to_tw(TA::TSpArrayD(world, v5));
-            auto rv   = diagonal_tensor_wrapper({1.0, 2.0, 3.0}, *p, shape);
+            auto rv   = diagonal_tensor_wrapper(three_vals, *p, shape);
             REQUIRE(rv == corr);
         }
 
@@ -132,7 +135,7 @@ TEST_CASE("diagonal_tensor_wrapper") {
             extents_t extents{2, 2};
             shape_t shape{extents};
             auto corr = detail_::ta_to_tw(TA::TSpArrayD(world, m4));
-            auto rv   = diagonal_tensor_wrapper({1.0, 2.0}, *p, shape);
+            auto rv   = diagonal_tensor_wrapper(two_vals, *p, shape);
             REQUIRE(rv == corr);
         }
 
@@ -140,7 +143,7 @@ TEST_CASE("diagonal_tensor_wrapper") {
             extents_t extents{2, 2, 2};
             shape_t shape{extents};
             auto corr = detail_::ta_to_tw(TA::TSpArrayD(world, t2));
-            auto rv   = diagonal_tensor_wrapper({1.0, 2.0}, *p, shape);
+            auto rv   = diagonal_tensor_wrapper(two_vals, *p, shape);
             REQUIRE(rv == corr);
         }
 
@@ -148,7 +151,7 @@ TEST_CASE("diagonal_tensor_wrapper") {
             extents_t extents{3, 2};
             shape_t shape{extents};
             auto corr = detail_::ta_to_tw(TA::TSpArrayD(world, m7));
-            auto rv   = diagonal_tensor_wrapper({1.0, 2.0}, *p, shape);
+            auto rv   = diagonal_tensor_wrapper(two_vals, *p, shape);
             REQUIRE(rv == corr);
         }
     }

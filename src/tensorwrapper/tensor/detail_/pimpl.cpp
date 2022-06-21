@@ -22,25 +22,6 @@ auto to_vector_from_pimpl(const TensorWrapperPIMPL<field::Scalar>& t) {
     return rv;
 }
 
-#if 0
-template<typename VariantType>
-auto make_extents(VariantType&& v) {
-    using extents_type = TensorWrapperPIMPL<field::Scalar>::extents_type;
-    using size_type    = typename extents_type::size_type;
-
-    auto l = [=](auto&& t) {
-        if(!t.is_initialized()) return extents_type{};
-        const auto& tr = t.trange();
-        extents_type rv(tr.rank());
-        const auto& erange = tr.elements_range().extent();
-        for(size_type i = 0; i < rv.size(); ++i) rv[i] = erange[i];
-        return rv;
-    };
-    return std::visit(l, std::forward<VariantType>(v));
-}
-
-#endif
-
 // TODO: This should live in Buffer, but can't until new TW
 // infrastructure replaces old
 template<typename FieldType>
@@ -288,13 +269,10 @@ bool PIMPL_TYPE::operator==(const TensorWrapperPIMPL& rhs) const {
 
 template<typename FieldType>
 void PIMPL_TYPE::update_shape() {
-#if 0
-    auto new_shape = std::make_unique<shape_type>(make_extents(m_tensor_));
+    auto new_shape = std::make_unique<shape_type>(
+      m_buffer_->make_extents(), m_buffer_->make_inner_extents());
     if(m_shape_ && extents() == new_shape->extents()) return;
     m_shape_.swap(new_shape);
-#else
-    throw std::runtime_error("TWPIMPL::update_shape NYI");
-#endif
 }
 
 //------------------------------------------------------------------------------

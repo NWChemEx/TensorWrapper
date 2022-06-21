@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-//#include "tensorwrapper/tensor/shapes/shape.hpp"
+#include "tensorwrapper/tensor/shapes/shape.hpp"
 #include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include <memory>
 #include <string>
@@ -56,10 +56,13 @@ public:
     using pimpl_pointer = std::unique_ptr<pimpl_type>;
 
     /// Type used to model the shape
-    // using shape_type = Shape<FieldType>;
+    using shape_type = Shape<FieldType>;
 
-    /// Type of a read-only reference to the shape
-    // using const_shape_reference = const shape_type&;
+    /// Type used for returning the extents
+    using extents_type = typename shape_type::extents_type;
+
+    /// Type used for returning inner extents
+    using inner_extents_type = typename shape_type::inner_extents_type;
 
     /// Type of the object used for hashing
     using hasher_type = tensorwrapper::detail_::Hasher;
@@ -389,6 +392,10 @@ public:
      * tensor is non-scalar or with rank != 2. Strong throw gurantee.
      */
     scalar_value_type trace() const;
+
+    extents_type make_extents() const;
+
+    inner_extents_type make_inner_extents() const;
 
     /** @brief Compares two Buffers for value equality.
      *

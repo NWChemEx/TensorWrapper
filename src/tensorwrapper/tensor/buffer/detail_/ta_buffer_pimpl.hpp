@@ -30,6 +30,10 @@ public:
 
     using typename base_type::scalar_value_type;
 
+    using typename base_type::extents_type;
+
+    using typename base_type::inner_extents_type;
+
     using default_tensor_type =
       typename traits_type::template tensor_type<double>;
 
@@ -78,6 +82,8 @@ private:
     scalar_value_type norm_() const override;
     scalar_value_type sum_() const override;
     scalar_value_type trace_() const override;
+    extents_type make_extents_() const override;
+    inner_extents_type make_inner_extents_() const override;
 
     void hash_(hasher_reference h) const override;
 

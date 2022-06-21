@@ -225,7 +225,7 @@ auto reduce_elementwise(const TA::DistArray<TileType, PolicyType>& lhs,
       std::forward<AddOp>(add_op), std::forward<TimesOp>(times_op), init);
 
     const auto idx =
-      TA::detail::dummy_annotation(lhs.range().rank(), inner_rank);
+      TA::detail::dummy_annotation(lhs.tiles_range().rank(), inner_rank);
 
     return lhs(idx).reduce(rhs(idx), std::move(r));
 }
@@ -314,7 +314,8 @@ bool allclose(T&& actual, U&& ref, const bool abs_comp = false,
     constexpr bool is_tot = TA::detail::is_tensor_of_tensor_v<tile_type>;
 
     // Get a dummy string label (something like "i0, i1, i2, ...")
-    auto idx = TA::detail::dummy_annotation(actual.range().rank(), inner_rank);
+    auto idx =
+      TA::detail::dummy_annotation(actual.tiles_range().rank(), inner_rank);
 
     // Compute A - B, call result AmB
     tensor_type AmB;
