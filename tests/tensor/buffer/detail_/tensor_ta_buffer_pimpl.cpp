@@ -313,6 +313,14 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
         REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
     }
 
+    SECTION("make_extents") {
+        buffer_type defaulted;
+        REQUIRE(defaulted.make_extents() == std::vector<std::size_t>{});
+        REQUIRE(vov.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(vom.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(mov.make_extents() == std::vector<std::size_t>{2, 2});
+    }
+
     SECTION("operator std::string") {
         std::string corr = "0: [ [0], [3] ) {\n"
                            "  [0]:[ [0], [3] ) { 1 2 3 }\n"

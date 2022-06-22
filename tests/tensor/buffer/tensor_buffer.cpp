@@ -312,6 +312,17 @@ TEST_CASE("Buffer<Tensor>") {
         REQUIRE_THROWS_AS(defaulted.trace(), std::runtime_error);
     }
 
+    SECTION("make_extents") {
+        SECTION("defaulted") {
+            REQUIRE_THROWS_AS(defaulted.make_extents(), std::runtime_error);
+        }
+        SECTION("with value") {
+            REQUIRE(vov.make_extents() == std::vector<std::size_t>{3});
+            REQUIRE(vom.make_extents() == std::vector<std::size_t>{3});
+            REQUIRE(mov.make_extents() == std::vector<std::size_t>{2, 2});
+        }
+    }
+
     SECTION("print") {
         std::stringstream ss;
         auto pss = &(vov.print(ss));

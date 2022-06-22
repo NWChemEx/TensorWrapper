@@ -336,6 +336,14 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
         }
     }
 
+    SECTION("make_extents") {
+        buffer_type defaulted;
+        REQUIRE(defaulted.make_extents() == std::vector<std::size_t>{});
+        REQUIRE(vec.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(mat.make_extents() == std::vector<std::size_t>{2, 2});
+        REQUIRE(t3d.make_extents() == std::vector<std::size_t>{2, 2, 2});
+    }
+
     SECTION("operator std::string") {
         std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
         REQUIRE(corr == std::string(vec));
