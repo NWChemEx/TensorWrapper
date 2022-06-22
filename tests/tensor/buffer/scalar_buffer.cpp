@@ -356,6 +356,18 @@ TEST_CASE("Buffer<Scalar>") {
         }
     }
 
+    SECTION("make_inner_extents") {
+        SECTION("defaulted") {
+            REQUIRE_THROWS_AS(defaulted.make_inner_extents(),
+                              std::runtime_error);
+        }
+        SECTION("with value") {
+            REQUIRE(vec.make_inner_extents() == 1);
+            REQUIRE(mat.make_inner_extents() == 1);
+            REQUIRE(t3d.make_inner_extents() == 1);
+        }
+    }
+
     SECTION("print") {
         std::stringstream ss;
         auto pss = &(vec.print(ss));
