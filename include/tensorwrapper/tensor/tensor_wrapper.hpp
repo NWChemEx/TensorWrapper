@@ -234,16 +234,24 @@ public:
     explicit TensorWrapper(
       shape_pointer shape,
       allocator_pointer p = default_allocator<field_type>());
-
-    TensorWrapper(n_d_initializer_list_t<element_type, 1> il,
-                  allocator_pointer p);
-    TensorWrapper(n_d_initializer_list_t<element_type, 2> il,
-                  allocator_pointer p);
-    TensorWrapper(n_d_initializer_list_t<element_type, 3> il,
-                  allocator_pointer p);
-    TensorWrapper(n_d_initializer_list_t<element_type, 4> il,
-                  allocator_pointer p);
 #endif
+
+    /** @brief Creates a TensorWrapper which wraps a tensor whose values are
+     *  defined by an initializer list.
+     *
+     *  These ctors can be used to create a new tensor whose contents are 
+     *  defined by the initializer list input. The rank of the list determines
+     *  the rank of the wrapped tensor
+     *
+     *  @param[in] il The initializer list used to create the underlying tensor.
+     *
+     *  @throw ??? Throws if allocating the underlying tensor throws. Same throw
+     *             guarantee.
+     */
+    TensorWrapper(n_d_initializer_list_t<double, 1> il);
+    TensorWrapper(n_d_initializer_list_t<double, 2> il);
+    TensorWrapper(n_d_initializer_list_t<double, 3> il);
+    TensorWrapper(n_d_initializer_list_t<double, 4> il);
 
     /** @brief Makes a copy of another TensorWrapper
      *

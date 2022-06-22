@@ -76,6 +76,17 @@ TEST_CASE("TensorWrapper<Scalar>") {
             REQUIRE(moved.extents() == extents_type{3});
             REQUIRE(&moved.allocator() == pa);
         }
+
+        SECTION("Initializer Lists") {
+            TWrapper vec_from_il({1.0, 2.0, 3.0});
+            TWrapper mat_from_il({{1.0, 2.0}, {3.0, 4.0}});
+            TWrapper t3d_from_il(
+              {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}});
+            
+            REQUIRE(vec_from_il == vec);
+            REQUIRE(mat_from_il == mat);
+            REQUIRE(t3d_from_il == t3d);
+        }
     }
 
     SECTION("reallocate") {

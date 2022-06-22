@@ -87,6 +87,10 @@ TEST_CASE("TensorWrapper<Tensor>") {
             REQUIRE(moved.shape().inner_extents() == vov_shape.inner_extents());
             REQUIRE(&moved.allocator() == pa);
         }
+
+        SECTION("Initializer Lists") {
+            REQUIRE_THROWS_AS(TWrapper({1.0, 2.0, 3.0}), std::runtime_error);
+        }
     }
 
 #if 0
