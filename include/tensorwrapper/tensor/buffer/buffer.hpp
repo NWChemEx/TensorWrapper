@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include <memory>
 #include <string>
 #include <type_traits>

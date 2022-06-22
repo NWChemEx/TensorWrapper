@@ -239,7 +239,7 @@ public:
     /** @brief Creates a TensorWrapper which wraps a tensor whose values are
      *  defined by an initializer list.
      *
-     *  These ctors can be used to create a new tensor whose contents are 
+     *  These ctors can be used to create a new tensor whose contents are
      *  defined by the initializer list input. The rank of the list determines
      *  the rank of the wrapped tensor
      *
