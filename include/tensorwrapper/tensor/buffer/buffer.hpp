@@ -403,7 +403,7 @@ public:
     /** @brief Returns the inner extents of the wrapped tensor
      *
      *  @returns If @p FieldType is Scalar, the return value is simply 1. If
-     *           @p FieldType is Tensor, the return is a map of element 
+     *           @p FieldType is Tensor, the return is a map of element
      *           coordinates to their corresponding Shapes.
      *  @throw std::runtime_error if @p rhs is not initialized.
      */
