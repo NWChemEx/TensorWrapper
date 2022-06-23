@@ -27,4 +27,4 @@ typename Equation<FieldType>::tensor_wrapper_type eval() {
     return m_rhs_.eval(m_result_);
 }
 
-} // namespace tensorwrapper::tensor::expression
+} // namespace tensorwrapper::tensor::expressions
