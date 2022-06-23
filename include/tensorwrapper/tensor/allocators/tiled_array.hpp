@@ -1,7 +1,7 @@
 #pragma once
-#include "tensorwrapper/tensor/novel/allocators/allocator.hpp"
+#include "tensorwrapper/tensor/allocators/allocator.hpp"
 
-namespace tensorwrapper::tensor::novel::allocator {
+namespace tensorwrapper::tensor::allocator {
 
 namespace ta {
 
@@ -69,4 +69,4 @@ private:
 extern template class TiledArrayAllocator<field::Scalar>;
 extern template class TiledArrayAllocator<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::novel::allocator
+} // namespace tensorwrapper::tensor::allocator

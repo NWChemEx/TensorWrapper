@@ -21,11 +21,30 @@ template<typename FieldType>
 SHAPE::Shape() noexcept = default;
 
 template<typename FieldType>
-SHAPE::Shape(extents_type extents) :
-  Shape(make_pimpl<FieldType>(std::move(extents))) {}
+SHAPE::Shape(extents_type extents, inner_extents_type inner_extents) :
+  Shape(make_pimpl<FieldType>(std::move(extents), std::move(inner_extents))) {}
 
 template<typename FieldType>
 SHAPE::~Shape() noexcept = default;
+
+template<typename FieldType>
+SHAPE::Shape(const Shape& other) :
+  Shape(other.m_pimpl_ ? other.m_pimpl_->clone() : nullptr) {}
+
+template<typename FieldType>
+SHAPE::Shape(Shape&& other) noexcept : Shape(std::move(other.m_pimpl_)) {}
+
+template<typename FieldType>
+Shape<FieldType>& SHAPE::operator=(const Shape& other) {
+    m_pimpl_ = other.m_pimpl_->clone();
+    return *this;
+}
+
+template<typename FieldType>
+Shape<FieldType>& SHAPE::operator=(Shape&& other) noexcept {
+    m_pimpl_ = std::move(other.m_pimpl_);
+    return *this;
+}
 
 //------------------------------------------------------------------------------
 //                               Accessors
@@ -35,6 +54,21 @@ template<typename FieldType>
 typename SHAPE::const_extents_reference SHAPE::extents() const {
     assert_pimpl_();
     return m_pimpl_->extents();
+}
+
+template<typename FieldType>
+typename SHAPE::const_inner_extents_reference SHAPE::inner_extents() const {
+    assert_pimpl_();
+    return m_pimpl_->inner_extents();
+}
+
+template<typename FieldType>
+typename SHAPE::size_type SHAPE::field_rank() const {
+    // Short circuit for Scalar
+    if constexpr(field::is_scalar_field_v<FieldType>) return 0;
+
+    assert_pimpl_();
+    return m_pimpl_->field_rank();
 }
 
 //------------------------------------------------------------------------------
@@ -62,9 +96,26 @@ bool SHAPE::is_equal(const Shape& rhs) const noexcept {
     return false;
 }
 
+template<typename FieldType>
+typename SHAPE::pointer_type SHAPE::slice_(const index_type& lo,
+                                           const index_type& hi) const {
+    assert_pimpl_();
+    return pointer_type(new Shape(m_pimpl_->slice(lo, hi)));
+}
+
 //------------------------------------------------------------------------------
 //                      Protected/Private Functions
 //------------------------------------------------------------------------------
+template<typename FieldType>
+bool SHAPE::is_hard_zero_(const index_type& /*i*/) const {
+    return false;
+}
+
+template<typename FieldType>
+bool SHAPE::is_hard_zero_(const index_type& /*lo*/,
+                          const index_type& /*hi*/) const {
+    return false;
+}
 
 template<typename FieldType>
 SHAPE::Shape(pimpl_pointer pimpl) noexcept : m_pimpl_(std::move(pimpl)) {}
@@ -89,17 +140,10 @@ void SHAPE::assert_pimpl_() const {
 
 template<typename FieldType>
 typename SHAPE::pointer_type SHAPE::clone_() const {
-    if(has_pimpl_()) return pointer_type(new Shape(pimpl_().extents()));
+    if(has_pimpl_())
+        return pointer_type(
+          new Shape(pimpl_().extents(), pimpl_().inner_extents()));
     return pointer_type(new Shape());
-}
-
-template<typename FieldType>
-typename SHAPE::tensor_type SHAPE::make_tensor_(
-  const_allocator_reference p) const {
-    assert_pimpl_();
-    auto tr     = p.make_tiled_range(m_pimpl_->extents());
-    auto& world = p.runtime();
-    return tensor_type(std::in_place_index<0>, world, tr);
 }
 
 template<typename FieldType>

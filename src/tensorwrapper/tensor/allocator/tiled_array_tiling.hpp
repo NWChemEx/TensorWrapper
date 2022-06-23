@@ -1,7 +1,7 @@
 #pragma once
 #include "tiled_array_types.hpp"
 
-namespace tensorwrapper::tensor::novel::allocator::detail_ {
+namespace tensorwrapper::tensor::allocator::detail_ {
 
 /**
  *  Creates a field-generic TA::TiledRange instance for the OneBigTile tiling
@@ -72,4 +72,4 @@ tiled_range_type make_tiled_range(ta::Tiling tiling, const ShapeType& shape) {
     return tiled_range_type();
 }
 
-} // namespace tensorwrapper::tensor::novel::allocator::detail_
+} // namespace tensorwrapper::tensor::allocator::detail_

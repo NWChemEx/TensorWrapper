@@ -1,4 +1,5 @@
 #include "../ta_helpers/ta_helpers.hpp"
+#include "detail_/ta_to_tw.hpp"
 #include "tensorwrapper/tensor/conversions.hpp"
 
 namespace tensorwrapper::tensor {
@@ -40,8 +41,7 @@ ScalarTensorWrapper wrap_std_vector(std::vector<double> v) {
 
     auto& world = TA::get_default_world();
     auto tr1    = make_1D_trange(v.size(), v.size());
-
-    return ScalarTensorWrapper(array_from_vec(v, tr1, world));
+    return detail_::ta_to_tw(array_from_vec(v, tr1, world));
 }
 
 } // namespace tensorwrapper::tensor

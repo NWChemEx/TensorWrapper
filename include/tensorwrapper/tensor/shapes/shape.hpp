@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-#include "tensorwrapper/tensor/tensor_fwd.hpp"
+//#include "tensorwrapper/tensor/tensor_fwd.hpp"
+#include "tensorwrapper/sparse_map/index.hpp"
 #include <memory>
 #include <vector>
 
@@ -10,7 +10,6 @@ namespace tensorwrapper::tensor {
 namespace detail_ {
 template<typename FieldType>
 class ShapePIMPL;
-
 } // namespace detail_
 
 /** @brief Object describing a tensor's elemental layout.
@@ -37,9 +36,6 @@ private:
     /// Type of the PIMPL associated with this instance
     using pimpl_type = detail_::ShapePIMPL<FieldType>;
 
-    /// Type of the backend
-    using backend_type = backends::TiledArrayTraits<FieldType>;
-
     /// Determines if @p T is a different field type than @p FieldType
     template<typename T>
     static constexpr bool not_my_field_v = !std::is_same_v<FieldType, T>;
@@ -55,26 +51,29 @@ public:
     /// Type of the field the associated tensor is over
     using field_type = FieldType;
 
-    /// Base type of an allocator associated with the same tensor
-    using allocator_type = Allocator<field_type>;
-
-    /// Read-only reference to an allocator
-    using const_allocator_reference = const allocator_type&;
-
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
-    /// Type used to provide/return extents
+    /// Type used for initializer_lists of sizes
+    using index_type = sparse_map::Index;
+
+    /// Type used to provide/return extents (outer extents for FieldType ==
+    /// Tensor)
     using extents_type = std::vector<size_type>;
 
-    /// Type of a read-only reference to the extents
+    /// Type of a read-only reference to the (outer) extents
     using const_extents_reference = const extents_type&;
+
+    /// Type used to treat inner-extents
+    using inner_extents_type =
+      std::conditional_t<field::is_scalar_field_v<FieldType>, size_type,
+                         std::map<index_type, Shape<field::Scalar>>>;
+
+    /// Type of a read-only reference to the inner
+    using const_inner_extents_reference = const inner_extents_type&;
 
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
-
-    /// How make_tensor returns the resulting tensor
-    using tensor_type = typename backend_type::variant_type;
 
     /** @brief Creates a shape with no extents.
      *
@@ -101,7 +100,55 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
      *                        throw guarantee.
      */
-    explicit Shape(extents_type extents);
+    explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
+
+    /** @brief Creates a shape by copying another shape.
+     *
+     *  Copies internal state of passed shape instance to the constructed
+     *  instance.
+     *
+     *  @param[in] other Shape instance from which to create the constructed
+     *                         shape.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape(const Shape& other);
+
+    /** @brief Creates a shape by moving another shape.
+     *
+     *  Moves internal state of passed shape instance to the constructed
+     *  instance.
+     *
+     *  @param[in/out] other Shape instance from which to create the constructed
+     *                       shape. Contains default state on return.
+     */
+    Shape(Shape&& other) noexcept;
+
+    /** @brief Copies the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  a copy of the internal state of another instance.
+     *
+     *  @param[in] other Shape instance which is to be copied.
+     *  @returns   Reference to current shape instance after copy
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    Shape& operator=(const Shape& other);
+
+    /** @brief Moves the internal state of another Shape instance to the
+     *         current instance.
+     *
+     *  Replace the internal state of the current Shape instance with
+     *  the internal state of another instance.
+     *
+     *  @param[in/out] other Shape instance which is to be moved. Contains
+     *                       default state on return.
+     *  @returns   Reference to current shape instance after move
+     */
+    Shape& operator=(Shape&& other) noexcept;
 
     /// Defaulted dtor
     virtual ~Shape() noexcept;
@@ -134,19 +181,17 @@ public:
      */
     const_extents_reference extents() const;
 
-    /** @brief Given an allocator, this function will create a tensor consistent
-     *         with the present Shape instance.
-     *
-     *  The default implementation creates a dense tensor with the specified
-     *  shape. Derived classes may override this behavior, to for example, take
-     *  into account sparsity.
-     *
-     *  @param[in] p The allocator to use for making the tensor.
-     *
-     *  @throw std::runtime_error if this instance does not contain a PIMPL.
-     *                            Strong throw guarantee.
-     */
-    tensor_type make_tensor(const_allocator_reference p) const;
+    const_inner_extents_reference inner_extents() const;
+    size_type field_rank() const;
+
+    bool is_hard_zero(const index_type& i) const { return is_hard_zero_(i); }
+    bool is_hard_zero(const index_type& lo, const index_type& hi) const {
+        return is_hard_zero_(lo, hi);
+    }
+
+    pointer_type slice(const index_type& lo, const index_type& hi) const {
+        return slice_(lo, hi);
+    };
 
     /** @brief Non-polymorphic equality comparison for shapes with the same
      *         field.
@@ -219,17 +264,6 @@ protected:
      */
     Shape(pimpl_pointer pimpl) noexcept;
 
-    /// Deleted to avoid slicing
-    ///@{
-    Shape(const Shape& other) = delete;
-
-    Shape(Shape&& other) noexcept = delete;
-
-    Shape& operator=(const Shape& rhs) = delete;
-
-    Shape& operator=(Shape&& rhs) noexcept = delete;
-    ///@}
-
     /** @brief Returns the PIMPL in a read-only state.
      *
      *  This function will assert that the instance has a PIMPL (throwing if it
@@ -263,11 +297,14 @@ protected:
     bool has_pimpl_() const noexcept;
 
 private:
+    /// Derived class should override to implement is_hard_zero
+    virtual bool is_hard_zero_(const index_type&) const;
+    virtual bool is_hard_zero_(const index_type&, const index_type&) const;
+
+    virtual pointer_type slice_(const index_type&, const index_type&) const;
+
     /// Derived class should override to implement polymorphic deep-copy
     virtual pointer_type clone_() const;
-
-    /// Derived class should override to implement make_tensor
-    virtual tensor_type make_tensor_(const_allocator_reference p) const;
 
     /// Derived class should override to implement is_equal
     virtual bool is_equal_(const Shape<FieldType>& rhs) const noexcept;
@@ -301,16 +338,6 @@ private:
 template<typename LHSType, typename RHSType>
 bool operator!=(const Shape<LHSType>& lhs, const Shape<RHSType>& rhs) {
     return !(lhs == rhs);
-}
-
-//------------------------------------------------------------------------------
-//                    Out of Line Inline Implementations
-//------------------------------------------------------------------------------
-
-template<typename FieldType>
-typename Shape<FieldType>::tensor_type Shape<FieldType>::make_tensor(
-  const_allocator_reference p) const {
-    return make_tensor_(p);
 }
 
 extern template class Shape<field::Scalar>;

@@ -1,11 +1,11 @@
 #pragma once
-#include "../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
-#include "tensorwrapper/tensor/novel/allocators/tiled_array.hpp"
+#include "../../sparse_map/sparse_map/detail_/tiling_map_index.hpp"
+#include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 #include "tiled_array_sparse_shape.hpp"
 #include "tiled_array_tiling.hpp"
 #include <TiledArray/conversions/make_array.h>
 
-namespace tensorwrapper::tensor::novel::allocator::detail_ {
+namespace tensorwrapper::tensor::allocator::detail_ {
 
 template<typename Op>
 struct is_scalar_tile_fxn {
@@ -119,4 +119,4 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     }
 }
 
-} // namespace tensorwrapper::tensor::novel::allocator::detail_
+} // namespace tensorwrapper::tensor::allocator::detail_

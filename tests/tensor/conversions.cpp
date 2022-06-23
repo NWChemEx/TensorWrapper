@@ -1,26 +1,27 @@
 #include "tensorwrapper/tensor/tensor.hpp"
 #include "test_tensor.hpp"
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
 
 TEST_CASE("to_vector") {
     using tensor_type = tensorwrapper::tensor::ScalarTensorWrapper;
-    auto tensors      = testing::get_tensors<TA::TSpArrayD>();
+    auto tensors      = testing::get_tensors<field::Scalar>();
 
     SECTION("vector") {
-        const tensor_type t(tensors.at("vector"));
+        const auto t = tensors.at("vector");
         std::vector<double> corr{1.0, 2.0, 3.0};
         REQUIRE(to_vector(t) == corr);
     }
 
     SECTION("matrix") {
-        const tensor_type t(tensors.at("matrix"));
+        const auto t = tensors.at("matrix");
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0};
         REQUIRE(to_vector(t) == corr);
     }
 
     SECTION("tensor") {
-        const tensor_type t(tensors.at("tensor"));
+        const auto t = tensors.at("tensor");
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
         REQUIRE(to_vector(t) == corr);
     }
@@ -29,10 +30,13 @@ TEST_CASE("to_vector") {
     // flattened offset when the tensor had more than one tile. This test
     // ensures that bug doesn't come back
     SECTION("More than one tile") {
-        using field_t          = field::Scalar;
-        using single_element_t = SingleElementTiles<field_t>;
-        auto palloc            = std::make_unique<single_element_t>();
-        tensor_type t(tensors.at("matrix"), std::move(palloc));
+        using field_t = field::Scalar;
+        using alloc_t = allocator::TiledArrayAllocator<field_t>;
+        auto storage  = allocator::ta::Storage::Core;
+        auto tiling   = allocator::ta::Tiling::SingleElementTile;
+        auto palloc   = std::make_unique<alloc_t>(storage, tiling);
+        auto t        = tensors.at("matrix");
+        t.reallocate(std::move(palloc));
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0};
         REQUIRE(to_vector(t) == corr);
     }
@@ -48,7 +52,7 @@ TEST_CASE("Wrap std::vector") {
 
     vector_il v_il{1, 2, 3, 4};
     double_vec v(v_il);
-    twrapper corr_wv(ta_array(world, v_il));
+    auto corr_wv = detail_::ta_to_tw(ta_array(world, v_il));
 
     twrapper wv = wrap_std_vector(double_vec(v_il));
 

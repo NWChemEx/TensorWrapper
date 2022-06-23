@@ -2,7 +2,7 @@
 
 #define TPARAM template<typename FieldType>
 #define TA_ALLOCATOR TiledArrayAllocator<FieldType>
-namespace tensorwrapper::tensor::novel::allocator {
+namespace tensorwrapper::tensor::allocator {
 
 TPARAM void TA_ALLOCATOR::hash_(tensorwrapper::detail_::Hasher& h) const {
     h(storage_, tiling_, dist_);
@@ -86,4 +86,4 @@ TPARAM bool TA_ALLOCATOR::is_equal_(const base_type& other) const noexcept {
 
 template class TiledArrayAllocator<field::Scalar>;
 template class TiledArrayAllocator<field::Tensor>;
-} // namespace tensorwrapper::tensor::novel::allocator
+} // namespace tensorwrapper::tensor::allocator

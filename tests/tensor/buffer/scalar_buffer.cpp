@@ -345,6 +345,29 @@ TEST_CASE("Buffer<Scalar>") {
         }
     }
 
+    SECTION("make_extents") {
+        SECTION("defaulted") {
+            REQUIRE_THROWS_AS(defaulted.make_extents(), std::runtime_error);
+        }
+        SECTION("with value") {
+            REQUIRE(vec.make_extents() == std::vector<std::size_t>{3});
+            REQUIRE(mat.make_extents() == std::vector<std::size_t>{2, 2});
+            REQUIRE(t3d.make_extents() == std::vector<std::size_t>{2, 2, 2});
+        }
+    }
+
+    SECTION("make_inner_extents") {
+        SECTION("defaulted") {
+            REQUIRE_THROWS_AS(defaulted.make_inner_extents(),
+                              std::runtime_error);
+        }
+        SECTION("with value") {
+            REQUIRE(vec.make_inner_extents() == 1);
+            REQUIRE(mat.make_inner_extents() == 1);
+            REQUIRE(t3d.make_inner_extents() == 1);
+        }
+    }
+
     SECTION("print") {
         std::stringstream ss;
         auto pss = &(vec.print(ss));

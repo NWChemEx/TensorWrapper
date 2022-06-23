@@ -2,6 +2,7 @@
 #include <tensorwrapper/detail_/hashing.hpp>
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/tensor/allclose.hpp>
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 #include <tensorwrapper/tensor/tensor_wrapper.hpp>
 
 using diis_type   = tensorwrapper::diis::DIIS;
@@ -33,12 +34,13 @@ TEST_CASE("DIIS") {
     auto& world = TA::get_default_world();
 
     // Inputs and expected values for extrapolation
-    tensor_type input1(ta_type(world, i1));
-    tensor_type input2(ta_type(world, i2));
-    tensor_type input3(ta_type(world, i3));
-    tensor_type corr_output1(ta_type(world, i1));
-    tensor_type corr_output2(ta_type(world, o2));
-    tensor_type corr_output3(ta_type(world, o3));
+    using tensorwrapper::tensor::detail_::ta_to_tw;
+    auto input1       = ta_to_tw(ta_type(world, i1));
+    auto input2       = ta_to_tw(ta_type(world, i2));
+    auto input3       = ta_to_tw(ta_type(world, i3));
+    auto corr_output1 = ta_to_tw(ta_type(world, i1));
+    auto corr_output2 = ta_to_tw(ta_type(world, o2));
+    auto corr_output3 = ta_to_tw(ta_type(world, o3));
 
     // Different DIIS instances
     auto diis_default = diis_type();

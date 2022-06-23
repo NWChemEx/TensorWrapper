@@ -1,13 +1,12 @@
 #include "../../test_tensor.hpp"
+#include <tensorwrapper/tensor/conversion/conversion.hpp>
 
 using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
-using scalar_traits  = backends::TiledArrayTraits<field::Scalar>;
-using scalar_variant = typename scalar_traits::variant_type;
-using scalar_tensor  = typename scalar_traits::tensor_type<double>;
-using tot_traits     = backends::TiledArrayTraits<field::Tensor>;
-using tot_variant    = typename tot_traits::variant_type;
-using tot_tensor     = typename tot_traits::tensor_type<double>;
+using scalar_tensor = field::Scalar;
+using tot_tensor    = field::Tensor;
+using ta_tot_tensor =
+  TA::DistArray<TA::Tensor<TA::Tensor<double>>, TA::SparsePolicy>;
 
 /* Testing Notes:
  *
@@ -25,7 +24,7 @@ using tot_tensor     = typename tot_traits::tensor_type<double>;
  * be used to get the correct result.
  */
 TEST_CASE("Tensor = Tensor * Tensor") {
-    using result_t       = scalar_tensor;
+    using result_t       = TA::TSpArrayD;
     using lhs_t          = scalar_tensor;
     using rhs_t          = scalar_tensor;
     using tensor_wrapper = ScalarTensorWrapper;
@@ -35,12 +34,16 @@ TEST_CASE("Tensor = Tensor * Tensor") {
 
     auto& world = TA::get_default_world();
     result_t corr;
-    corr("i,j") = lhs("i") * rhs("j");
+
+    to_ta_distarrayd_t converter;
+    auto lhs_ta = converter.convert(lhs.pimpl().buffer());
+    auto rhs_ta = converter.convert(rhs.pimpl().buffer());
+    corr("i,j") = lhs_ta("i") * rhs_ta("j");
 
     SECTION("all non-const") {
         tensor_wrapper wrapped_lhs(lhs);
         tensor_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i,j") = wrapped_lhs("i") * wrapped_rhs("j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -48,7 +51,7 @@ TEST_CASE("Tensor = Tensor * Tensor") {
     SECTION("LHS is const") {
         const tensor_wrapper wrapped_lhs(lhs);
         tensor_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i,j") = wrapped_lhs("i") * wrapped_rhs("j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -56,7 +59,7 @@ TEST_CASE("Tensor = Tensor * Tensor") {
     SECTION("RHS is const") {
         tensor_wrapper wrapped_lhs(lhs);
         const tensor_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i,j") = wrapped_lhs("i") * wrapped_rhs("j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -64,7 +67,7 @@ TEST_CASE("Tensor = Tensor * Tensor") {
     SECTION("All are const") {
         const tensor_wrapper wrapped_lhs(lhs);
         const tensor_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i,j") = wrapped_lhs("i") * wrapped_rhs("j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -74,7 +77,7 @@ TEST_CASE("Tensor = Tensor * Tensor") {
         auto rhs2 = testing::get_tensors<rhs_t>().at("matrix");
         const tensor_wrapper wrapped_lhs(lhs2);
         const tensor_wrapper wrapped_rhs(rhs2);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i") = wrapped_lhs("i,mu") * wrapped_rhs("mu,i");
         TA::TSpArrayD corr(world, {7, 22});
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
@@ -82,7 +85,7 @@ TEST_CASE("Tensor = Tensor * Tensor") {
 }
 
 TEST_CASE("Tensor = ToT * ToT") {
-    using result_t       = scalar_tensor;
+    using result_t       = TA::TSpArrayD;
     using lhs_t          = tot_tensor;
     using rhs_t          = tot_tensor;
     using tensor_wrapper = ScalarTensorWrapper;
@@ -93,12 +96,15 @@ TEST_CASE("Tensor = ToT * ToT") {
 
     auto& world = TA::get_default_world();
     result_t corr;
-    TA::expressions::einsum(corr("i"), lhs("i;j"), rhs("i;j"));
+    to_ta_totd_t converter;
+    auto lhs_ta = converter.convert(lhs.pimpl().buffer());
+    auto rhs_ta = converter.convert(rhs.pimpl().buffer());
+    TA::expressions::einsum(corr("i"), lhs_ta("i;j"), rhs_ta("i;j"));
 
     SECTION("all non-const") {
         tot_wrapper wrapped_lhs(lhs);
         tot_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i") = wrapped_lhs("i;j") * wrapped_rhs("i;j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -106,7 +112,7 @@ TEST_CASE("Tensor = ToT * ToT") {
     SECTION("LHS is const") {
         const tot_wrapper wrapped_lhs(lhs);
         tot_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i") = wrapped_lhs("i;j") * wrapped_rhs("i;j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -114,7 +120,7 @@ TEST_CASE("Tensor = ToT * ToT") {
     SECTION("RHS is const") {
         tot_wrapper wrapped_lhs(lhs);
         const tot_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i") = wrapped_lhs("i;j") * wrapped_rhs("i;j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
@@ -122,14 +128,14 @@ TEST_CASE("Tensor = ToT * ToT") {
     SECTION("All are const") {
         const tot_wrapper wrapped_lhs(lhs);
         const tot_wrapper wrapped_rhs(rhs);
-        tensor_wrapper result(result_t{});
+        tensor_wrapper result;
         result("i") = wrapped_lhs("i;j") * wrapped_rhs("i;j");
         REQUIRE(ta_helpers::allclose(result.get<result_t>(), corr));
     }
 }
 
 TEST_CASE("ToT = Tensor * ToT") {
-    using result_t         = tot_tensor;
+    using result_t         = ta_tot_tensor;
     using lhs_t            = scalar_tensor;
     using rhs_t            = tot_tensor;
     using wrapped_result_t = TensorOfTensorsWrapper;
@@ -144,12 +150,16 @@ TEST_CASE("ToT = Tensor * ToT") {
 
     auto& world = TA::get_default_world();
     result_t corr;
-    TA::expressions::einsum(corr(result_idx), lhs(lhs_idx), rhs(rhs_idx));
+    to_ta_distarrayd_t t_converter;
+    to_ta_totd_t tot_converter;
+    auto lhs_ta = t_converter.convert(lhs.pimpl().buffer());
+    auto rhs_ta = tot_converter.convert(rhs.pimpl().buffer());
+    TA::expressions::einsum(corr(result_idx), lhs_ta(lhs_idx), rhs_ta(rhs_idx));
 
     SECTION("all non-const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -157,7 +167,7 @@ TEST_CASE("ToT = Tensor * ToT") {
     SECTION("LHS is const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -165,7 +175,7 @@ TEST_CASE("ToT = Tensor * ToT") {
     SECTION("RHS is const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -173,14 +183,14 @@ TEST_CASE("ToT = Tensor * ToT") {
     SECTION("all const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
 }
 
 TEST_CASE("ToT = ToT * Tensor") {
-    using result_t         = tot_tensor;
+    using result_t         = ta_tot_tensor;
     using lhs_t            = tot_tensor;
     using rhs_t            = scalar_tensor;
     using wrapped_result_t = TensorOfTensorsWrapper;
@@ -195,12 +205,16 @@ TEST_CASE("ToT = ToT * Tensor") {
 
     auto& world = TA::get_default_world();
     result_t corr;
-    TA::expressions::einsum(corr(result_idx), rhs(rhs_idx), lhs(lhs_idx));
+    to_ta_distarrayd_t t_converter;
+    to_ta_totd_t tot_converter;
+    auto lhs_ta = tot_converter.convert(lhs.pimpl().buffer());
+    auto rhs_ta = t_converter.convert(rhs.pimpl().buffer());
+    TA::expressions::einsum(corr(result_idx), rhs_ta(rhs_idx), lhs_ta(lhs_idx));
 
     SECTION("all non-const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -208,7 +222,7 @@ TEST_CASE("ToT = ToT * Tensor") {
     SECTION("LHS const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -216,7 +230,7 @@ TEST_CASE("ToT = ToT * Tensor") {
     SECTION("RHS const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -224,14 +238,14 @@ TEST_CASE("ToT = ToT * Tensor") {
     SECTION("all const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
 }
 
 TEST_CASE("ToT = ToT * ToT") {
-    using result_t         = tot_tensor;
+    using result_t         = ta_tot_tensor;
     using lhs_t            = tot_tensor;
     using rhs_t            = tot_tensor;
     using wrapped_result_t = TensorOfTensorsWrapper;
@@ -246,12 +260,15 @@ TEST_CASE("ToT = ToT * ToT") {
 
     auto& world = TA::get_default_world();
     result_t corr;
-    TA::expressions::einsum(corr(result_idx), lhs(lhs_idx), rhs(rhs_idx));
+    to_ta_totd_t tot_converter;
+    auto lhs_ta = tot_converter.convert(lhs.pimpl().buffer());
+    auto rhs_ta = tot_converter.convert(rhs.pimpl().buffer());
+    TA::expressions::einsum(corr(result_idx), lhs_ta(lhs_idx), rhs_ta(rhs_idx));
 
     SECTION("all non-const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -259,7 +276,7 @@ TEST_CASE("ToT = ToT * ToT") {
     SECTION("LHS const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -267,7 +284,7 @@ TEST_CASE("ToT = ToT * ToT") {
     SECTION("RHS const") {
         wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }
@@ -275,7 +292,7 @@ TEST_CASE("ToT = ToT * ToT") {
     SECTION("all const") {
         const wrapped_lhs_t wrapped_lhs(lhs);
         const wrapped_rhs_t wrapped_rhs(rhs);
-        wrapped_result_t result(result_t{});
+        wrapped_result_t result;
         result(result_idx) = wrapped_lhs(lhs_idx) * wrapped_rhs(rhs_idx);
         REQUIRE(ta_helpers::allclose_tot(result.get<result_t>(), corr, 1));
     }

@@ -168,7 +168,61 @@ typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::trace_() const {
     }
 }
 
-// -- Utilities ----------------------------------------------------------------
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::extents_type TABUFFERPIMPL::make_extents_() const {
+    using size_type = typename extents_type::size_type;
+
+    auto l = [=](auto&& t) {
+        if(!t.is_initialized()) return extents_type{};
+        const auto& tr = t.trange();
+        extents_type rv(tr.rank());
+        const auto& erange = tr.elements_range().extent();
+        for(size_type i = 0; i < rv.size(); ++i) rv[i] = erange[i];
+        return rv;
+    };
+    return std::visit(l, m_tensor_);
+}
+
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::inner_extents_type TABUFFERPIMPL::make_inner_extents_()
+  const {
+    if constexpr(std::is_same_v<FieldType, field::Scalar>)
+        /// ScalarTensorWrapper has no inner extents.
+        return 1;
+    else if constexpr(std::is_same_v<FieldType, field::Tensor>) {
+        /// Shape inner_extents_type = std::map<index_type, Shape<field::Scalar>
+        using index_type = typename inner_extents_type::key_type;
+        using shape_type = typename inner_extents_type::mapped_type;
+
+        auto l = [=](auto&& t) {
+            inner_extents_type rv{};
+            if(!t.is_initialized()) return rv;
+            for(const auto& tile : t) {
+                auto inner_tile = tile.get();
+                for(auto i = 0; i < inner_tile.size(); ++i) {
+                    /// Inner tensor info
+                    auto idx_i    = inner_tile.range().idx(i);
+                    auto& range_i = inner_tile[i].range();
+
+                    /// Make Index and Shape for map
+                    index_type idx(idx_i.begin(), idx_i.end());
+                    extents_type extents_i(range_i.rank());
+                    for(auto i = 0; i < extents_i.size(); ++i)
+                        extents_i[i] = range_i.upbound(i);
+                    shape_type inner_shape(extents_i);
+
+                    /// Add to map
+                    rv[idx] = inner_shape;
+                }
+            }
+            return rv;
+        };
+        return std::visit(l, m_tensor_);
+    }
+}
+
+// -- Utilities
+// ----------------------------------------------------------------
 
 TEMPLATE_PARAMS
 void TABUFFERPIMPL::hash_(hasher_reference h) const {
@@ -197,7 +251,8 @@ std::string TABUFFERPIMPL::to_str_() const {
     return std::visit(l, m_tensor_);
 }
 
-// -- Math Ops -----------------------------------------------------------------
+// -- Math Ops
+// -----------------------------------------------------------------
 
 TEMPLATE_PARAMS
 void TABUFFERPIMPL::scale_(const_annotation_reference my_idx,

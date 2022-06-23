@@ -146,7 +146,7 @@ void hash_object(const TA::DistArray<TensorType, PolicyType>& A,
     const char* mytype = "TA::DistArray";
     h(mytype);
     if(A.is_initialized()) {
-        h(A.range());
+        h(A.tiles_range());
         h(get_tile_hash_sum(A));
     }
 }
