@@ -61,4 +61,4 @@ inline bool Labeled::is_tot_() const {
     return std::holds_alternative<labeled_tot>(m_tensor_);
 }
 
-} // namespace tensorwrapper::tensor::expression::detail_
+} // namespace tensorwrapper::tensor::expressions::detail_
