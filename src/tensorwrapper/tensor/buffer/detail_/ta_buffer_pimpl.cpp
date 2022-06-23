@@ -196,6 +196,7 @@ typename TABUFFERPIMPL::inner_extents_type TABUFFERPIMPL::make_inner_extents_()
 
         auto l = [=](auto&& t) {
             inner_extents_type rv{};
+            if(!t.is_initialized()) return rv;
             for(const auto& tile : t) {
                 auto inner_tile = tile.get();
                 for(auto i = 0; i < inner_tile.size(); ++i) {

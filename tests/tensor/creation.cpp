@@ -120,7 +120,7 @@ TEST_CASE("diagonal_tensor_wrapper") {
     }
 
     SECTION("Multiple Diagonal Values") {
-        std::vector<double> two_vals = {1.0, 2.0};
+        std::vector<double> two_vals   = {1.0, 2.0};
         std::vector<double> three_vals = {1.0, 2.0, 3.0};
 
         SECTION("1D") {

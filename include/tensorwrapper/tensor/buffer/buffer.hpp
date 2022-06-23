@@ -404,8 +404,20 @@ public:
      */
     scalar_value_type trace() const;
 
+    /** @brief Returns the extents of the wrapped tensor
+     *
+     *  @returns A list of extents per rank of wrapped tensor
+     *  @throw std::runtime_error if @p rhs is not initialized.
+     */
     extents_type make_extents() const;
 
+    /** @brief Returns the inner extents of the wrapped tensor
+     *
+     *  @returns If @p FieldType is Scalar, the return value is simply 1. If
+     *           @p FieldType is Tensor, the return is a map of element
+     *           coordinates to their corresponding Shapes.
+     *  @throw std::runtime_error if @p rhs is not initialized.
+     */
     inner_extents_type make_inner_extents() const;
 
     /** @brief Compares two Buffers for value equality.
