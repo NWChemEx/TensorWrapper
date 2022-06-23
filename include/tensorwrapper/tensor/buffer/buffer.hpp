@@ -1,8 +1,8 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -358,6 +358,17 @@ public:
     void times(const_annotation_reference my_idx,
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
+
+    /** @brief Computes the dot product of the current buffer with @p rhs.
+     *
+     *  @throw std::runtime_error if the present buffer is not initialized.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if @p rhs is not initialized. Strong throw
+     *                            guarantee.
+     */
+    scalar_value_type dot(const_annotation_reference my_idx,
+                          const_annotation_reference rhs_idx,
+                          const my_type& rhs) const;
 
     /** @brief Computes the norm of the underlying tensor
      *

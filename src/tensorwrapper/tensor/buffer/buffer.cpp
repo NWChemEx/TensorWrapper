@@ -111,6 +111,15 @@ void BUFFER::times(const_annotation_reference my_idx,
 }
 
 TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::dot(
+  const_annotation_reference my_idx, const_annotation_reference rhs_idx,
+  const my_type& rhs) const {
+    assert_initialized_();
+    rhs.assert_initialized_();
+    return m_pimpl_->dot(my_idx, rhs_idx, *rhs.m_pimpl_);
+}
+
+TEMPLATE_PARAMS
 typename BUFFER::scalar_value_type BUFFER::norm() const {
     assert_initialized_();
     return m_pimpl_->norm();

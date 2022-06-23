@@ -79,6 +79,10 @@ private:
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
 
+    scalar_value_type dot_(const_annotation_reference my_idx,
+                           const_annotation_reference rhs_idx,
+                           const base_type& rhs) const override;
+
     scalar_value_type norm_() const override;
     scalar_value_type sum_() const override;
     scalar_value_type trace_() const override;

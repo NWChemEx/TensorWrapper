@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tensorwrapper::tensor::expression {
+namespace tensorwrapper::tensor::expressions {
 
 template<typename FieldType>
 class Equation {

@@ -320,6 +320,18 @@ void TABUFFERPIMPL::times_(const_annotation_reference my_idx,
     triple_call(out_tensor, m_tensor_, rhs_tensor, l);
 }
 
+TEMPLATE_PARAMS
+typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::dot_(
+  const_annotation_reference my_idx, const_annotation_reference rhs_idx,
+  const base_type& rhs) const {
+    const auto& rhs_tensor = downcast(rhs).m_tensor_;
+
+    auto l = [&](auto&& lhs_in, auto&& rhs_in) {
+        return lhs_in(my_idx).dot(rhs_in(rhs_idx));
+    };
+    return double_call_w_return(m_tensor_, rhs_tensor, l);
+}
+
 template class TABufferPIMPL<field::Scalar>;
 template class TABufferPIMPL<field::Tensor>;
 

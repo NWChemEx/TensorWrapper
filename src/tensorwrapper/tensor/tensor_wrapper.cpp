@@ -42,7 +42,6 @@ auto il_to_tensor(const n_d_initializer_list_t<ElementType, Rank>& il,
 
 } // namespace
 #endif
-
 // Macro to avoid typing the full type of the TensorWrapper
 #define TENSOR_WRAPPER TensorWrapper<FieldType>
 
@@ -251,6 +250,16 @@ template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl() {
     if(!m_pimpl_) throw std::runtime_error("No TW PIMPL");
     return *m_pimpl_;
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::buffer_reference TENSOR_WRAPPER::buffer() {
+    return pimpl_().buffer();
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::const_buffer_reference TENSOR_WRAPPER::buffer() const {
+    return pimpl_().buffer();
 }
 
 //------------------------------------------------------------------------------
