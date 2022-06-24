@@ -36,11 +36,10 @@ public:
     using pimpl_pointer          = std::unique_ptr<pimpl_type>;
 
     explicit LabeledTensor(pimpl_pointer p = nullptr) noexcept;
+    LabeledTensor(const_label_reference labels, tensor_reference tensor);
     LabeledTensor(const_label_reference labels, const_tensor_reference tensor);
     LabeledTensor(const LabeledTensor& other);
-    LabeledTensor(LabeledTensor&& other) noexcept;
-    LabeledTensor& operator=(const LabeledTensor& rhs);
-    LabeledTensor& operator=(LabeledTensor&& rhs) noexcept;
+    // LabeledTensor(LabeledTensor&& other) noexcept;
     ~LabeledTensor() noexcept;
 
     void swap(LabeledTensor& other) noexcept;
@@ -50,11 +49,14 @@ public:
     const_tensor_reference tensor() const;
     const_label_reference labels() const;
 
+    LabeledTensor& operator=(const LabeledTensor& rhs);
     LabeledTensor& operator=(const Expression& rhs);
     Expression operator+(const LabeledTensor& rhs) const;
     Expression operator*(double rhs) const;
 
 private:
+    // LabeledTensor& operator=(LabeledTensor&&) = delete;
+
     pimpl_type& pimpl_();
     const pimpl_type& pimpl_() const;
     pimpl_pointer m_pimpl_;

@@ -24,6 +24,9 @@ protected:
     labeled_tot& eval_(labeled_tot& lhs) const override;
 
 private:
+    template<std::size_t I, typename T>
+    T& eval_common_(T& result) const;
+
     bool is_tensor_() const;
     bool is_tot_() const;
     std::variant<labeled_tensor, labeled_tot> m_tensor_;
@@ -37,20 +40,29 @@ inline typename Labeled::labeled_tensor& Labeled::eval_(
   labeled_tensor& result) const {
     if(is_tot_())
         throw std::runtime_error("Error not sure how to convert ToT to tensor");
-    const auto& t = std::get<0>(m_tensor_);
-    if(t.labels() != result.labels())
-        throw std::runtime_error("Permutation NYI");
-    return result = t;
+    return eval_common_<0>(result);
 }
 
 inline typename Labeled::labeled_tot& Labeled::eval_(
   labeled_tot& result) const {
     if(is_tensor_())
         throw std::runtime_error("Error not sure how to convert tensor to ToT");
-    const auto& t = std::get<1>(m_tensor_);
-    if(t.labels() != result.labels())
-        throw std::runtime_error("Permutation NYI");
-    return result = t;
+    return eval_common_<1>(result);
+}
+
+template<std::size_t Index, typename T>
+T& Labeled::eval_common_(T& result) const {
+    const auto& rhs        = std::get<Index>(m_tensor_);
+    const auto& rhs_labels = rhs.labels();
+    const auto& lhs_labels = result.labels();
+
+    if(rhs_labels != lhs_labels) {
+        const auto& rhs_buffer = rhs.tensor().buffer();
+        auto& lhs_buffer       = result.tensor().buffer();
+
+        rhs_buffer.permute(rhs_labels, lhs_labels, lhs_buffer);
+    }
+    return result;
 }
 
 inline bool Labeled::is_tensor_() const {

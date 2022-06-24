@@ -255,6 +255,15 @@ std::string TABUFFERPIMPL::to_str_() const {
 // -----------------------------------------------------------------
 
 TEMPLATE_PARAMS
+void TABUFFERPIMPL::permute_(const_annotation_reference my_idx,
+                             const_annotation_reference out_idx,
+                             base_type& out) const {
+    auto& out_tensor = downcast(out).m_tensor_;
+    auto l = [&](auto&& out, auto&& rhs) { out(out_idx) = rhs(my_idx); };
+    double_call(out_tensor, m_tensor_, l);
+}
+
+TEMPLATE_PARAMS
 void TABUFFERPIMPL::scale_(const_annotation_reference my_idx,
                            const_annotation_reference out_idx, base_type& out,
                            double rhs) const {

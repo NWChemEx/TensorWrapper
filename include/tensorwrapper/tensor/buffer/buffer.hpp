@@ -188,6 +188,9 @@ public:
      */
     bool is_initialized() const noexcept;
 
+    void permute(const_annotation_reference my_idx,
+                 const_annotation_reference out_idx, my_type& out) const;
+
     /** @brief Scales (and optionally permutes) a tensor
      *
      *  This function scales a tensor using einstein notation. This means that

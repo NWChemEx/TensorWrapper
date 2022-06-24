@@ -32,8 +32,8 @@ public:
 
 protected:
     pimpl_pointer clone_() const override;
-    // labeled_tensor& eval_(labeled_tensor& result) const override;
-    // labeled_tot& eval_(labeled_tot& result) const override;
+    labeled_tensor& eval_(labeled_tensor& result) const override;
+    labeled_tot& eval_(labeled_tot& result) const override;
 
     LHSType m_lhs_;
     RHSType m_rhs_;
@@ -56,17 +56,16 @@ typename BINARY::pimpl_pointer BINARY::clone_() const {
     return std::make_unique<DerivedType>(*dcast);
 }
 
-// TPARAMS
-// typename BINARY::labeled_tensor& BINARY::eval_(labeled_tensor& result) const
-// {
-//     return downcast_().eval_common(result);
-// }
+TPARAMS
+inline typename BINARY::labeled_tensor& BINARY::eval_(
+  labeled_tensor& result) const {
+    return downcast_().eval_common(result);
+}
 
-// TPARAMS
-// inline typename BINARY::labeled_tot& BINARY::eval_(labeled_tot& result) const
-// {
-//     return downcast_().eval_common(result);
-// }
+TPARAMS
+inline typename BINARY::labeled_tot& BINARY::eval_(labeled_tot& result) const {
+    return downcast_().eval_common(result);
+}
 
 TPARAMS
 const DerivedType& BINARY::downcast_() const {

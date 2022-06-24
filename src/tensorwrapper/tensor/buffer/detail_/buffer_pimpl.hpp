@@ -46,6 +46,11 @@ public:
 
     virtual ~BufferPIMPL() noexcept = default;
 
+    void permute(const_annotation_reference my_idx,
+                 const_annotation_reference out_idx, my_type& out) const {
+        permute_(my_idx, out_idx, out);
+    }
+
     /** @brief Implements operator*(double)
      *
      */
@@ -139,11 +144,11 @@ protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
     /// still be accesible to derived classes who need them for implementations
     ///@{
-    BufferPIMPL() noexcept          = default;
-    BufferPIMPL(const BufferPIMPL&) = default;
-    BufferPIMPL(BufferPIMPL&&)      = default;
+    BufferPIMPL() noexcept                     = default;
+    BufferPIMPL(const BufferPIMPL&)            = default;
+    BufferPIMPL(BufferPIMPL&&)                 = default;
     BufferPIMPL& operator=(const BufferPIMPL&) = default;
-    BufferPIMPL& operator=(BufferPIMPL&&) = default;
+    BufferPIMPL& operator=(BufferPIMPL&&)      = default;
     ///@}
 
 private:
@@ -152,6 +157,11 @@ private:
 
     /// To be overridden by derived class to implement clone
     virtual pimpl_pointer clone_() const = 0;
+
+    /// To be overridden by derived class to implement permute
+    virtual void permute_(const_annotation_reference my_idx,
+                          const_annotation_reference out_idx,
+                          my_type& out) const = 0;
 
     /// To be overridden by derived class to implement operator*(double)
     virtual void scale_(const_annotation_reference my_idx,

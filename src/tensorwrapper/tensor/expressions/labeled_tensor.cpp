@@ -1,22 +1,6 @@
 #include "detail_/labeled.hpp"
-#include <tensorwrapper/tensor/expressions/labeled_tensor.hpp>
-#include <tensorwrapper/tensor/tensor_wrapper.hpp>
-
+#include "detail_/labeled_tensor_pimpl.hpp"
 namespace tensorwrapper::tensor::expressions {
-namespace detail_ {
-
-template<typename FieldType>
-struct LabeledTensorPIMPL {
-    using my_type     = LabeledTensorPIMPL<FieldType>;
-    using parent_type = LabeledTensor<FieldType>;
-
-    auto clone() const { return std::make_unique<my_type>(*this); }
-
-    typename parent_type::label_type m_labels;
-    typename parent_type::tensor_type m_tensor;
-};
-
-} // namespace detail_
 
 #define TPARAMS template<typename FieldType>
 #define LABELED_TENSOR LabeledTensor<FieldType>
@@ -31,34 +15,27 @@ LABELED_TENSOR::LabeledTensor(pimpl_pointer p) noexcept :
 
 TPARAMS
 LABELED_TENSOR::LabeledTensor(const_label_reference labels,
+                              tensor_reference tensor) :
+  LabeledTensor(std::make_unique<pimpl_type>(labels, tensor)) {}
+
+TPARAMS
+LABELED_TENSOR::LabeledTensor(const_label_reference labels,
                               const_tensor_reference tensor) :
-  LabeledTensor(std::make_unique<pimpl_type>(pimpl_type{labels, tensor})) {}
+  LabeledTensor(std::make_unique<pimpl_type>(labels, tensor)) {}
 
 TPARAMS
-LABELED_TENSOR::LabeledTensor(const LabeledTensor& rhs) :
-  m_pimpl_(rhs.m_pimpl_ ? rhs.m_pimpl_->clone() : nullptr) {}
+LABELED_TENSOR::LabeledTensor(const LabeledTensor& other) :
+  LabeledTensor(other.m_pimpl_ ? other.m_pimpl_->clone() : nullptr) {}
 
-TPARAMS
-LABELED_TENSOR::LabeledTensor(LabeledTensor&& rhs) noexcept = default;
-
-TPARAMS
-LABELED_TENSOR& LABELED_TENSOR::operator=(const LabeledTensor& rhs) {
-    if(this != &rhs) LABELED_TENSOR(rhs).swap(*this);
-    return *this;
-}
-
-TPARAMS
-LABELED_TENSOR& LABELED_TENSOR::operator=(LabeledTensor&& rhs) noexcept {
-    if(this != &rhs) m_pimpl_ = std::move(rhs.m_pimpl_);
-    return *this;
-}
+// TPARAMS
+// LABELED_TENSOR::LabeledTensor(LabeledTensor&& other) noexcept = default;
 
 TPARAMS
 LABELED_TENSOR::~LabeledTensor() noexcept = default;
 
 TPARAMS
 void LABELED_TENSOR::swap(LabeledTensor& other) noexcept {
-    m_pimpl_.swap(other.m_pimpl_);
+    if(this != &other) m_pimpl_.swap(other.m_pimpl_);
 }
 
 TPARAMS
@@ -68,22 +45,30 @@ Expression LABELED_TENSOR::expression() const {
 
 TPARAMS
 typename LABELED_TENSOR::tensor_reference LABELED_TENSOR::tensor() {
-    return pimpl_().m_tensor;
+    return pimpl_().tensor();
 }
 
 TPARAMS
 typename LABELED_TENSOR::const_tensor_reference LABELED_TENSOR::tensor() const {
-    return pimpl_().m_tensor;
+    return pimpl_().tensor();
 }
 
 TPARAMS
 typename LABELED_TENSOR::const_label_reference LABELED_TENSOR::labels() const {
-    return pimpl_().m_labels;
+    return pimpl_().labels();
+}
+
+TPARAMS
+LABELED_TENSOR& LABELED_TENSOR::operator=(const LabeledTensor& rhs) {
+    return operator=(rhs.expression());
 }
 
 TPARAMS
 LABELED_TENSOR& LABELED_TENSOR::operator=(const Expression& rhs) {
-    return *this = std::move(rhs.eval(*this));
+    auto& rv = rhs.eval(*this);
+    if(&rv != this)
+        throw std::runtime_error("Expected to get result back by reference");
+    return *this;
 }
 
 TPARAMS

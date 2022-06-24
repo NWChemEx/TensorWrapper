@@ -52,6 +52,14 @@ bool BUFFER::is_initialized() const noexcept {
 }
 
 TEMPLATE_PARAMS
+void BUFFER::permute(const_annotation_reference my_idx,
+                     const_annotation_reference out_idx, my_type& out) const {
+    assert_initialized_();
+    if(!out.is_initialized()) default_initialize_(out);
+    m_pimpl_->permute(my_idx, out_idx, *out.m_pimpl_);
+}
+
+TEMPLATE_PARAMS
 void BUFFER::scale(const_annotation_reference my_idx,
                    const_annotation_reference out_idx, my_type& out,
                    double rhs) const {
