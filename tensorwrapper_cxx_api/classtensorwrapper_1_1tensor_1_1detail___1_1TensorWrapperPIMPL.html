@@ -78,7 +78,7 @@ $(function() {
 <p>Holds the state of a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>.  
  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="detail___2pimpl_8hpp_source.html">pimpl.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="pimpl_8hpp_source.html">pimpl.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -94,6 +94,19 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html#af043806b6a9973b38584261f7f1dcb87">field_traits::variant_type</a></td></tr>
 <tr class="memdesc:abe9315665671aff0118497fa50e57e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which wraps all of the possible backend tensors. <br /></td></tr>
 <tr class="separator:abe9315665671aff0118497fa50e57e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5538a8dae827d8f2fded916e59e74829"><td class="memItemLeft" align="right" valign="top"><a id="a5538a8dae827d8f2fded916e59e74829"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">buffer::Buffer</a>&lt; FieldType &gt;</td></tr>
+<tr class="memdesc:a5538a8dae827d8f2fded916e59e74829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which holds type-erased tensor instance. <br /></td></tr>
+<tr class="separator:a5538a8dae827d8f2fded916e59e74829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77e252da6219c3f1384d0e46eeb6bd7"><td class="memItemLeft" align="right" valign="top"><a id="af77e252da6219c3f1384d0e46eeb6bd7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &gt;</td></tr>
+<tr class="separator:af77e252da6219c3f1384d0e46eeb6bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2f992c1dece26ed528fd313622f702"><td class="memItemLeft" align="right" valign="top"><a id="a9f2f992c1dece26ed528fd313622f702"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_reference</b> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &amp;</td></tr>
+<tr class="separator:a9f2f992c1dece26ed528fd313622f702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb36f3c601699de1a8d84d3ba1307338"><td class="memItemLeft" align="right" valign="top"><a id="abb36f3c601699de1a8d84d3ba1307338"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_reference</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &amp;</td></tr>
+<tr class="separator:abb36f3c601699de1a8d84d3ba1307338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0be1692320b58c33e61e2d316f54d164"><td class="memItemLeft" align="right" valign="top"><a id="a0be1692320b58c33e61e2d316f54d164"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a0be1692320b58c33e61e2d316f54d164">labeled_variant_type</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html#a814f688bec486ce8bb12ab3cd30b2165">field_traits::labeled_variant_type</a></td></tr>
 <tr class="memdesc:a0be1692320b58c33e61e2d316f54d164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which results from labeling the possible backend. <br /></td></tr>
@@ -138,6 +151,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#acfc55387affe3ec76f72011d34c97abf">size_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a24a429a44475d4d447914f6c9151a04e">parent_type::size_type</a></td></tr>
 <tr class="memdesc:acfc55387affe3ec76f72011d34c97abf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indexing and offsets. <br /></td></tr>
 <tr class="separator:acfc55387affe3ec76f72011d34c97abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ca8053e5420f372c5c4292d9f35c95"><td class="memItemLeft" align="right" valign="top"><a id="a58ca8053e5420f372c5c4292d9f35c95"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a58ca8053e5420f372c5c4292d9f35c95">index_type</a> = typename parent_type::index_type</td></tr>
+<tr class="memdesc:a58ca8053e5420f372c5c4292d9f35c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indexing. <br /></td></tr>
+<tr class="separator:a58ca8053e5420f372c5c4292d9f35c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00ab86208c2ea98dde7fa0df8cde91f3"><td class="memItemLeft" align="right" valign="top"><a id="a00ab86208c2ea98dde7fa0df8cde91f3"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a00ab86208c2ea98dde7fa0df8cde91f3">il_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a55da51f5dbbcfd3afe8a75de94aab810">parent_type::il_type</a></td></tr>
 <tr class="memdesc:a00ab86208c2ea98dde7fa0df8cde91f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for initializer lists of sizes. <br /></td></tr>
@@ -149,12 +166,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7fa4731ceba5a733d9570074f429a931"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a7fa4731ceba5a733d9570074f429a931">TensorWrapperPIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a> v, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aba79d43b5ac9179c6603179d29a026a7">allocator_pointer</a> p)</td></tr>
-<tr class="memdesc:a7fa4731ceba5a733d9570074f429a931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new PIMPL by using the provided allocator and wrapping the provided tensor.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a7fa4731ceba5a733d9570074f429a931">More...</a><br /></td></tr>
-<tr class="separator:a7fa4731ceba5a733d9570074f429a931"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7c535573be2feaecb857ed0299a8268"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#ab7c535573be2feaecb857ed0299a8268">TensorWrapperPIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a> v, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aec27733e10b57b1ff953891c43c3db41">shape_pointer</a> s, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aba79d43b5ac9179c6603179d29a026a7">allocator_pointer</a> p)</td></tr>
-<tr class="memdesc:ab7c535573be2feaecb857ed0299a8268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new PIMPL which wraps the provided tensor and allocator.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#ab7c535573be2feaecb857ed0299a8268">More...</a><br /></td></tr>
-<tr class="separator:ab7c535573be2feaecb857ed0299a8268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94ca11f78c574249985a5afc033e278b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a94ca11f78c574249985a5afc033e278b">TensorWrapperPIMPL</a> (buffer_pointer b, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aec27733e10b57b1ff953891c43c3db41">shape_pointer</a> s, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aba79d43b5ac9179c6603179d29a026a7">allocator_pointer</a> p)</td></tr>
+<tr class="memdesc:a94ca11f78c574249985a5afc033e278b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new PIMPL which wraps the provided tensor and allocator.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a94ca11f78c574249985a5afc033e278b">More...</a><br /></td></tr>
+<tr class="separator:a94ca11f78c574249985a5afc033e278b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68e37838a3199ea568cc4c3cbcf51b46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a71d2edeee5be76fb307d5dfe23896d3b">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a68e37838a3199ea568cc4c3cbcf51b46">clone</a> () const</td></tr>
 <tr class="memdesc:a68e37838a3199ea568cc4c3cbcf51b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a deep-copy of the current PIMPL.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a68e37838a3199ea568cc4c3cbcf51b46">More...</a><br /></td></tr>
 <tr class="separator:a68e37838a3199ea568cc4c3cbcf51b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +178,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afdcc37d20fda377a81a753297ae31b8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a86a1f33c7e8ee91bc77a955a4d659e5b">const_shape_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#afdcc37d20fda377a81a753297ae31b8e">shape</a> () const</td></tr>
 <tr class="memdesc:afdcc37d20fda377a81a753297ae31b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shape in a read-only state.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#afdcc37d20fda377a81a753297ae31b8e">More...</a><br /></td></tr>
 <tr class="separator:afdcc37d20fda377a81a753297ae31b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78722466b02aec7e73a51553a447c802"><td class="memItemLeft" align="right" valign="top"><a id="a78722466b02aec7e73a51553a447c802"></a>
+const_buffer_reference&#160;</td><td class="memItemRight" valign="bottom"><b>buffer</b> () const</td></tr>
+<tr class="separator:a78722466b02aec7e73a51553a447c802"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60cebfc07d85e2054e7fdd2d8c944726"><td class="memItemLeft" align="right" valign="top"><a id="a60cebfc07d85e2054e7fdd2d8c944726"></a>
+buffer_reference&#160;</td><td class="memItemRight" valign="bottom"><b>buffer</b> ()</td></tr>
+<tr class="separator:a60cebfc07d85e2054e7fdd2d8c944726"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c49f0e08b9e906cee6da616d7d1c571"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a0be1692320b58c33e61e2d316f54d164">labeled_variant_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a7c49f0e08b9e906cee6da616d7d1c571">annotate</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a862f2fe01bff968f5ce192a3e312c312">annotation_type</a> &amp;annotation)</td></tr>
 <tr class="memdesc:a7c49f0e08b9e906cee6da616d7d1c571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Annotates the modes of the wrapped index with the provided labels.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a7c49f0e08b9e906cee6da616d7d1c571">More...</a><br /></td></tr>
 <tr class="separator:a7c49f0e08b9e906cee6da616d7d1c571"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,8 +204,8 @@ class tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7fa4731ceba5a733d9570074f429a931"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fa4731ceba5a733d9570074f429a931">&#9670;&nbsp;</a></span>TensorWrapperPIMPL() <span class="overload">[1/2]</span></h2>
+<a id="a94ca11f78c574249985a5afc033e278b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94ca11f78c574249985a5afc033e278b">&#9670;&nbsp;</a></span>TensorWrapperPIMPL()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,54 +215,8 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html">tensorwrapper::tensor::detail_::TensorWrapperPIMPL</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html">TensorWrapperPIMPL</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a>&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#aba79d43b5ac9179c6603179d29a026a7">allocator_pointer</a>&#160;</td>
-          <td class="paramname"><em>p</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a new PIMPL by using the provided allocator and wrapping the provided tensor. </p>
-<p>Given a wrapped tensor, this ctor will create a shape object consistent with that tensor and will reallocate the tensor if the tiling is not consistent with the provided allocator.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>The wrapped tensor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The allocator to use in the <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if FieldType == Tensor and a reallocation is necessary. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab7c535573be2feaecb857ed0299a8268"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7c535573be2feaecb857ed0299a8268">&#9670;&nbsp;</a></span>TensorWrapperPIMPL() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html">tensorwrapper::tensor::detail_::TensorWrapperPIMPL</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html">TensorWrapperPIMPL</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a>&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
+          <td class="paramtype">buffer_pointer&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -267,7 +241,7 @@ template&lt;typename FieldType &gt; </div>
 <p>Creates a new PIMPL which wraps the provided tensor and allocator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>A variant which wraps the tensor </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">b</td><td>A buffer which wraps the tensor </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The shape of the tensor </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>The allocator to use for tiling, distribution, etc. </td></tr>
   </table>
@@ -419,7 +393,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/tensorwrapper/tensor/detail_/<a class="el" href="detail___2pimpl_8hpp_source.html">pimpl.hpp</a></li>
+<li>include/tensorwrapper/tensor/detail_/<a class="el" href="pimpl_8hpp_source.html">pimpl.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

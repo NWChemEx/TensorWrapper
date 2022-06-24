@@ -100,8 +100,21 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a20c2b895526792a8974a30445f1b67c6">pimpl_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html">pimpl_type</a> &gt;</td></tr>
 <tr class="memdesc:a20c2b895526792a8974a30445f1b67c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the PIMPL. <br /></td></tr>
 <tr class="separator:a20c2b895526792a8974a30445f1b67c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f43fc46adeebc50503f0cd252396ee"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> = tensorwrapper::detail_::Hasher</td></tr>
-<tr class="memdesc:ad6f43fc46adeebc50503f0cd252396ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to model the shape.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">More...</a><br /></td></tr>
+<tr class="memitem:ac8b1e3a35ea66b4c883e985750a84784"><td class="memItemLeft" align="right" valign="top"><a id="ac8b1e3a35ea66b4c883e985750a84784"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ac8b1e3a35ea66b4c883e985750a84784">shape_type</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; FieldType &gt;</td></tr>
+<tr class="memdesc:ac8b1e3a35ea66b4c883e985750a84784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to model the shape. <br /></td></tr>
+<tr class="separator:ac8b1e3a35ea66b4c883e985750a84784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5638d0fb92179ba3d29399f116e862f0"><td class="memItemLeft" align="right" valign="top"><a id="a5638d0fb92179ba3d29399f116e862f0"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a5638d0fb92179ba3d29399f116e862f0">extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">shape_type::extents_type</a></td></tr>
+<tr class="memdesc:a5638d0fb92179ba3d29399f116e862f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for returning the extents. <br /></td></tr>
+<tr class="separator:a5638d0fb92179ba3d29399f116e862f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be79e4221bc90269d99c93dd13b5982"><td class="memItemLeft" align="right" valign="top"><a id="a3be79e4221bc90269d99c93dd13b5982"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a3be79e4221bc90269d99c93dd13b5982">inner_extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ac005ffdadbc624c71e084aa30452357b">shape_type::inner_extents_type</a></td></tr>
+<tr class="memdesc:a3be79e4221bc90269d99c93dd13b5982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for returning inner extents. <br /></td></tr>
+<tr class="separator:a3be79e4221bc90269d99c93dd13b5982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6f43fc46adeebc50503f0cd252396ee"><td class="memItemLeft" align="right" valign="top"><a id="ad6f43fc46adeebc50503f0cd252396ee"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> = tensorwrapper::detail_::Hasher</td></tr>
+<tr class="memdesc:ad6f43fc46adeebc50503f0cd252396ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object used for hashing. <br /></td></tr>
 <tr class="separator:ad6f43fc46adeebc50503f0cd252396ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa7b52fe97e129da6ab4a3134059df4d"><td class="memItemLeft" align="right" valign="top"><a id="afa7b52fe97e129da6ab4a3134059df4d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#afa7b52fe97e129da6ab4a3134059df4d">hasher_reference</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> &amp;</td></tr>
@@ -175,6 +188,12 @@ const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1
 <tr class="memitem:aec04914af672bcf61d99dad57fabda49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a120e17d41aeb62e7a12f7b1b9993ca25">scalar_value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#aec04914af672bcf61d99dad57fabda49">trace</a> () const</td></tr>
 <tr class="memdesc:aec04914af672bcf61d99dad57fabda49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the trace of the underlying tensor.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#aec04914af672bcf61d99dad57fabda49">More...</a><br /></td></tr>
 <tr class="separator:aec04914af672bcf61d99dad57fabda49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b216e88c5c95ee71d517df0f36025b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a5638d0fb92179ba3d29399f116e862f0">extents_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a0b216e88c5c95ee71d517df0f36025b4">make_extents</a> () const</td></tr>
+<tr class="memdesc:a0b216e88c5c95ee71d517df0f36025b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the extents of the wrapped tensor.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a0b216e88c5c95ee71d517df0f36025b4">More...</a><br /></td></tr>
+<tr class="separator:a0b216e88c5c95ee71d517df0f36025b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6c7e2b72438fea374f226c2c997f16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a3be79e4221bc90269d99c93dd13b5982">inner_extents_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a9f6c7e2b72438fea374f226c2c997f16">make_inner_extents</a> () const</td></tr>
+<tr class="memdesc:a9f6c7e2b72438fea374f226c2c997f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the inner extents of the wrapped tensor.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a9f6c7e2b72438fea374f226c2c997f16">More...</a><br /></td></tr>
+<tr class="separator:a9f6c7e2b72438fea374f226c2c997f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc67ec57f0a3c807a68bd524724f2dee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#acc67ec57f0a3c807a68bd524724f2dee">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">Buffer</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:acc67ec57f0a3c807a68bd524724f2dee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two Buffers for value equality.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#acc67ec57f0a3c807a68bd524724f2dee">More...</a><br /></td></tr>
 <tr class="separator:acc67ec57f0a3c807a68bd524724f2dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,26 +254,7 @@ template&lt;typename FieldType &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>XXX: These are to be removed, they are here to expose the variant_type XXX: Inclusion the FieldTraits breaks novel:: encapsulation </p>
-
-</div>
-</div>
-<a id="ad6f43fc46adeebc50503f0cd252396ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6f43fc46adeebc50503f0cd252396ee">&#9670;&nbsp;</a></span>hasher_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ad6f43fc46adeebc50503f0cd252396ee">hasher_type</a> =  tensorwrapper::detail_::Hasher</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Type used to model the shape. </p>
-<p>Type of a read-only reference to the shape Type of the object used for hashing </p>
+<p>XXX: These are to be removed, they are here to expose the variant_type XXX: Inclusion the FieldTraits breaks encapsulation </p>
 
 </div>
 </div>
@@ -322,7 +322,7 @@ template&lt;typename FieldType &gt; </div>
 </div><div class="memdoc">
 
 <p>PIMPL Ctor. </p>
-<p>Generally speaking <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instances are created by <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> instances. The allocator instances are implemented in the source and have access to the backend specific PIMPLs (e.g. TABufferPIMPL). Thus what will usually happen is that the allocator makes a backend specific PIMPL and then uses that PIMPL to initialize a <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instance via this ctor.</p>
+<p>Generally speaking <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instances are created by <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a> instances. The allocator instances are implemented in the source and have access to the backend specific PIMPLs (e.g. TABufferPIMPL). Thus what will usually happen is that the allocator makes a backend specific PIMPL and then uses that PIMPL to initialize a <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instance via this ctor.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pimpl</td><td>An initialized backend specific PIMPL, passed via the base class.</td></tr>
@@ -661,6 +661,62 @@ template&lt;typename FieldType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw gurantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0b216e88c5c95ee71d517df0f36025b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b216e88c5c95ee71d517df0f36025b4">&#9670;&nbsp;</a></span>make_extents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a5638d0fb92179ba3d29399f116e862f0">extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::make_extents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the extents of the wrapped tensor. </p>
+<dl class="section return"><dt>Returns</dt><dd>A list of extents per rank of wrapped tensor </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>rhs</code> is not initialized. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9f6c7e2b72438fea374f226c2c997f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6c7e2b72438fea374f226c2c997f16">&#9670;&nbsp;</a></span>make_inner_extents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a3be79e4221bc90269d99c93dd13b5982">inner_extents_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::make_inner_extents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the inner extents of the wrapped tensor. </p>
+<dl class="section return"><dt>Returns</dt><dd>If <code>FieldType</code> is Scalar, the return value is simply 1. If <code>FieldType</code> is Tensor, the return is a map of element coordinates to their corresponding Shapes. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>rhs</code> is not initialized. </td></tr>
   </table>
   </dd>
 </dl>

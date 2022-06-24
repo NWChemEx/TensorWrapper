@@ -176,7 +176,7 @@ $(function() {
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;      std::forward&lt;AddOp&gt;(add_op), std::forward&lt;TimesOp&gt;(times_op), init);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> idx =</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      TA::detail::dummy_annotation(lhs.range().rank(), inner_rank);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      TA::detail::dummy_annotation(lhs.tiles_range().rank(), inner_rank);</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">return</span> lhs(idx).reduce(rhs(idx), std::move(r));</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
@@ -223,101 +223,102 @@ $(function() {
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    constexpr <span class="keywordtype">bool</span> is_tot = TA::detail::is_tensor_of_tensor_v&lt;tile_type&gt;;</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="comment">// Get a dummy string label (something like &quot;i0, i1, i2, ...&quot;)</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">auto</span> idx = TA::detail::dummy_annotation(actual.range().rank(), inner_rank);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// Compute A - B, call result AmB</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    tensor_type AmB;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="keywordflow">if</span>(abs_comp) {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="comment">// TODO: There probably is some way to do this without forming the</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="comment">// intermediate tensors</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keyword">auto</span> abs_lambda = [](<span class="keyword">const</span> scalar_type&amp; val) { <span class="keywordflow">return</span> std::fabs(val); };</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keyword">auto</span> abs_actual = apply_elementwise(actual, abs_lambda);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keyword">auto</span> abs_ref    = apply_elementwise(ref, abs_lambda);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        AmB(idx)        = abs_actual(idx) - abs_ref(idx);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        AmB(idx) = actual(idx) - ref(idx);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keyword">auto</span> times_op = [=](scalar_type lhs, scalar_type rhs) {</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">return</span> std::fabs(lhs) &lt;= atol + rtol * std::fabs(rhs);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    };</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    std::logical_and&lt;bool&gt; add_op;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">if</span> constexpr(!is_tot) {</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> reduce_elementwise(AmB, ref, add_op, times_op, <span class="keyword">true</span>).get();</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keyword">using</span> inner_type = <span class="keyword">typename</span> tile_type::value_type;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keyword">auto</span> inner_times = [=](<span class="keywordtype">bool</span>&amp; result, <span class="keyword">const</span> scalar_type&amp; first,</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                               <span class="keyword">const</span> scalar_type&amp; second) {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;            result = times_op(first, second);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        };</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keyword">auto</span> outer_times = [=](inner_type lhs, inner_type rhs) {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            <span class="keywordflow">return</span> lhs.reduce(rhs, inner_times, add_op, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        };</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <span class="keywordflow">return</span> reduce_elementwise(AmB, ref, add_op, outer_times, <span class="keyword">true</span>,</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                                  inner_rank)</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;          .get();</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    }</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;}</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U,</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;         <span class="keyword">typename</span> V = <span class="keyword">typename</span> std::decay_t&lt;T&gt;::scalar_type&gt;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="keywordtype">bool</span> allclose_tot(T&amp;&amp; actual, U&amp;&amp; ref, std::size_t inner_rank = 0,</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                  <span class="keyword">const</span> <span class="keywordtype">bool</span> abs_comp = <span class="keyword">false</span>, V&amp;&amp; rtol = 1.0E-5,</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                  V&amp;&amp; atol = 1.0E-8) {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordflow">return</span> allclose(std::forward&lt;T&gt;(actual), std::forward&lt;U&gt;(ref), abs_comp,</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                    rtol, atol, inner_rank);</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;}</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">//------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">// TiledRange1 Creation</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">//------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="keyword">inline</span> TA::TiledRange1 make_1D_trange(std::size_t length, std::size_t tilesize,</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;                                      std::size_t init_offset = 0) {</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    std::vector&lt;std::size_t&gt; bounds;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keywordflow">for</span>(std::size_t i = init_offset; i &lt; length; i += tilesize)</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        bounds.push_back(i);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    bounds.push_back(length);</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="keywordflow">return</span> TA::TiledRange1{bounds.begin(), bounds.end()};</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;}</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;} <span class="comment">// namespace tensorwrapper::ta_helpers</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="keyword">namespace </span>TiledArray {</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> LHSTileType, <span class="keyword">typename</span> LHSPolicyType, <span class="keyword">typename</span> RHSTileType,</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;         <span class="keyword">typename</span> RHSPolicyType&gt;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> TA::DistArray&lt;LHSTileType, LHSPolicyType&gt;&amp; lhs,</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;                <span class="keyword">const</span> TA::DistArray&lt;RHSTileType, RHSPolicyType&gt;&amp; rhs) {</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keywordflow">if</span> constexpr(!std::is_same_v&lt;decltype(lhs), decltype(rhs)&gt;)</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        return false;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    else {</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        <span class="keywordflow">if</span>(lhs.is_initialized() != rhs.is_initialized()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keywordflow">if</span>(!lhs.is_initialized()) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">if</span>(lhs.trange() != rhs.trange()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keyword">using</span> scalar_type = <span class="keyword">typename</span> LHSTileType::scalar_type;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keyword">using namespace </span>tensorwrapper::ta_helpers;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        std::logical_and&lt;bool&gt; add_op;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        std::equal_to&lt;scalar_type&gt; times_op;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        <span class="keywordflow">if</span> constexpr(!TA::detail::is_tensor_of_tensor_v&lt;LHSTileType&gt;) {</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            <span class="keywordflow">return</span> reduce_elementwise(lhs, rhs, add_op, times_op, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;            <span class="keywordflow">return</span> reduce_tot_elementwise(lhs, rhs, add_op, times_op, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        }</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;}</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> LHSTileType, <span class="keyword">typename</span> LHSPolicyType, <span class="keyword">typename</span> RHSTileType,</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;         <span class="keyword">typename</span> RHSPolicyType&gt;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> TA::DistArray&lt;LHSTileType, LHSPolicyType&gt;&amp; lhs,</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                <span class="keyword">const</span> TA::DistArray&lt;RHSTileType, RHSPolicyType&gt;&amp; rhs) {</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="keywordflow">return</span> !(lhs == rhs);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;}</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160; </div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;} <span class="comment">// namespace TiledArray</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">auto</span> idx =</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      TA::detail::dummy_annotation(actual.tiles_range().rank(), inner_rank);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="comment">// Compute A - B, call result AmB</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    tensor_type AmB;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">if</span>(abs_comp) {</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="comment">// TODO: There probably is some way to do this without forming the</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="comment">// intermediate tensors</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keyword">auto</span> abs_lambda = [](<span class="keyword">const</span> scalar_type&amp; val) { <span class="keywordflow">return</span> std::fabs(val); };</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keyword">auto</span> abs_actual = apply_elementwise(actual, abs_lambda);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        <span class="keyword">auto</span> abs_ref    = apply_elementwise(ref, abs_lambda);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        AmB(idx)        = abs_actual(idx) - abs_ref(idx);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        AmB(idx) = actual(idx) - ref(idx);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    }</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keyword">auto</span> times_op = [=](scalar_type lhs, scalar_type rhs) {</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordflow">return</span> std::fabs(lhs) &lt;= atol + rtol * std::fabs(rhs);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    };</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    std::logical_and&lt;bool&gt; add_op;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordflow">if</span> constexpr(!is_tot) {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">return</span> reduce_elementwise(AmB, ref, add_op, times_op, <span class="keyword">true</span>).get();</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keyword">using</span> inner_type = <span class="keyword">typename</span> tile_type::value_type;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keyword">auto</span> inner_times = [=](<span class="keywordtype">bool</span>&amp; result, <span class="keyword">const</span> scalar_type&amp; first,</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                               <span class="keyword">const</span> scalar_type&amp; second) {</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;            result = times_op(first, second);</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        };</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="keyword">auto</span> outer_times = [=](inner_type lhs, inner_type rhs) {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;            <span class="keywordflow">return</span> lhs.reduce(rhs, inner_times, add_op, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        };</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keywordflow">return</span> reduce_elementwise(AmB, ref, add_op, outer_times, <span class="keyword">true</span>,</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;                                  inner_rank)</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;          .get();</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;}</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U,</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;         <span class="keyword">typename</span> V = <span class="keyword">typename</span> std::decay_t&lt;T&gt;::scalar_type&gt;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="keywordtype">bool</span> allclose_tot(T&amp;&amp; actual, U&amp;&amp; ref, std::size_t inner_rank = 0,</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;                  <span class="keyword">const</span> <span class="keywordtype">bool</span> abs_comp = <span class="keyword">false</span>, V&amp;&amp; rtol = 1.0E-5,</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                  V&amp;&amp; atol = 1.0E-8) {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keywordflow">return</span> allclose(std::forward&lt;T&gt;(actual), std::forward&lt;U&gt;(ref), abs_comp,</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;                    rtol, atol, inner_rank);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;}</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">//------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">// TiledRange1 Creation</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">//------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">inline</span> TA::TiledRange1 make_1D_trange(std::size_t length, std::size_t tilesize,</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                                      std::size_t init_offset = 0) {</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    std::vector&lt;std::size_t&gt; bounds;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keywordflow">for</span>(std::size_t i = init_offset; i &lt; length; i += tilesize)</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        bounds.push_back(i);</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    bounds.push_back(length);</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keywordflow">return</span> TA::TiledRange1{bounds.begin(), bounds.end()};</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;}</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;} <span class="comment">// namespace tensorwrapper::ta_helpers</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="keyword">namespace </span>TiledArray {</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> LHSTileType, <span class="keyword">typename</span> LHSPolicyType, <span class="keyword">typename</span> RHSTileType,</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;         <span class="keyword">typename</span> RHSPolicyType&gt;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> TA::DistArray&lt;LHSTileType, LHSPolicyType&gt;&amp; lhs,</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;                <span class="keyword">const</span> TA::DistArray&lt;RHSTileType, RHSPolicyType&gt;&amp; rhs) {</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keywordflow">if</span> constexpr(!std::is_same_v&lt;decltype(lhs), decltype(rhs)&gt;)</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        return false;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    else {</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keywordflow">if</span>(lhs.is_initialized() != rhs.is_initialized()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">if</span>(!lhs.is_initialized()) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <span class="keywordflow">if</span>(lhs.trange() != rhs.trange()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keyword">using</span> scalar_type = <span class="keyword">typename</span> LHSTileType::scalar_type;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        <span class="keyword">using namespace </span>tensorwrapper::ta_helpers;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        std::logical_and&lt;bool&gt; add_op;</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        std::equal_to&lt;scalar_type&gt; times_op;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keywordflow">if</span> constexpr(!TA::detail::is_tensor_of_tensor_v&lt;LHSTileType&gt;) {</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;            <span class="keywordflow">return</span> reduce_elementwise(lhs, rhs, add_op, times_op, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;            <span class="keywordflow">return</span> reduce_tot_elementwise(lhs, rhs, add_op, times_op, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        }</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    }</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;}</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> LHSTileType, <span class="keyword">typename</span> LHSPolicyType, <span class="keyword">typename</span> RHSTileType,</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;         <span class="keyword">typename</span> RHSPolicyType&gt;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> TA::DistArray&lt;LHSTileType, LHSPolicyType&gt;&amp; lhs,</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;                <span class="keyword">const</span> TA::DistArray&lt;RHSTileType, RHSPolicyType&gt;&amp; rhs) {</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keywordflow">return</span> !(lhs == rhs);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;}</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;} <span class="comment">// namespace TiledArray</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

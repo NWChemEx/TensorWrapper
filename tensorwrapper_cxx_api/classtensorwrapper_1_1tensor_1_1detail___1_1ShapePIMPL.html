@@ -79,7 +79,7 @@ $(function() {
 <p>Base class for PIMPLs in the <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> hierachy.  
  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="shapes_2detail___2shape__pimpl_8hpp_source.html">shape_pimpl.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="shape__pimpl_8hpp_source.html">shape_pimpl.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;:</div>
 <div class="dyncontent">
@@ -94,8 +94,14 @@ Inheritance diagram for tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType
 Public Types</h2></td></tr>
 <tr class="memitem:ade313f8122c2bcaa522a8f20c281735d"><td class="memItemLeft" align="right" valign="top"><a id="ade313f8122c2bcaa522a8f20c281735d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">parent_type::extents_type</a></td></tr>
-<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each mode. <br /></td></tr>
+<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each (outer) mode. <br /></td></tr>
 <tr class="separator:ade313f8122c2bcaa522a8f20c281735d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a36cfbd67db2f2a2e9d25550c5fb390"><td class="memItemLeft" align="right" valign="top"><a id="a6a36cfbd67db2f2a2e9d25550c5fb390"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>inner_extents_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ac005ffdadbc624c71e084aa30452357b">parent_type::inner_extents_type</a></td></tr>
+<tr class="separator:a6a36cfbd67db2f2a2e9d25550c5fb390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0bfa6364f471abae73d653775ce1d10"><td class="memItemLeft" align="right" valign="top"><a id="af0bfa6364f471abae73d653775ce1d10"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#af44543d687e89d35c2ee27ab4b3f3527">parent_type::size_type</a></td></tr>
+<tr class="separator:af0bfa6364f471abae73d653775ce1d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85daea3cdc35012dc8a7d31d13efce7f"><td class="memItemLeft" align="right" valign="top"><a id="a85daea3cdc35012dc8a7d31d13efce7f"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a280f251b7852f82c716abea4bfb59a03">parent_type::pimpl_pointer</a></td></tr>
 <tr class="memdesc:a85daea3cdc35012dc8a7d31d13efce7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the base of the <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> hierarchy. <br /></td></tr>
@@ -104,12 +110,15 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a5f0d387538facb550e3869c6fc16589c">ta_shape</a> = TA::SparseShape&lt; float &gt;</td></tr>
 <tr class="memdesc:a5f0d387538facb550e3869c6fc16589c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type TA uses for specifying the tile sparsity of a tensor. <br /></td></tr>
 <tr class="separator:a5f0d387538facb550e3869c6fc16589c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b88ea1ed4fe46c55bacc562708cfe2"><td class="memItemLeft" align="right" valign="top"><a id="ae3b88ea1ed4fe46c55bacc562708cfe2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>index_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#abae02a3a8889d68f6f574bcfeb3ebd3d">parent_type::index_type</a></td></tr>
+<tr class="separator:ae3b88ea1ed4fe46c55bacc562708cfe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1330911b1560df52d4020c810689094a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a1330911b1560df52d4020c810689094a">ShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x={})</td></tr>
-<tr class="memdesc:a1330911b1560df52d4020c810689094a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> with the provided extents.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a1330911b1560df52d4020c810689094a">More...</a><br /></td></tr>
-<tr class="separator:a1330911b1560df52d4020c810689094a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c9b961354ac0151cbfd52ea0af09f77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a0c9b961354ac0151cbfd52ea0af09f77">ShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x={}, inner_extents_type y={})</td></tr>
+<tr class="memdesc:a0c9b961354ac0151cbfd52ea0af09f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> with the provided extents.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a0c9b961354ac0151cbfd52ea0af09f77">More...</a><br /></td></tr>
+<tr class="separator:a0c9b961354ac0151cbfd52ea0af09f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01683fbe15f16e51f2ea0cc401e52b82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a01683fbe15f16e51f2ea0cc401e52b82">ShapePIMPL</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;other)=default</td></tr>
 <tr class="memdesc:a01683fbe15f16e51f2ea0cc401e52b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a non-polymorphic deep copy of this instance.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a01683fbe15f16e51f2ea0cc401e52b82">More...</a><br /></td></tr>
 <tr class="separator:a01683fbe15f16e51f2ea0cc401e52b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +132,15 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:ad53517273e6abcdc4ddb513223ad22ca"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ad53517273e6abcdc4ddb513223ad22ca">extents</a> () const</td></tr>
 <tr class="memdesc:ad53517273e6abcdc4ddb513223ad22ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lengths of each mode of the tensor.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ad53517273e6abcdc4ddb513223ad22ca">More...</a><br /></td></tr>
 <tr class="separator:ad53517273e6abcdc4ddb513223ad22ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4e43a4abee7c5d987f660e93f15345"><td class="memItemLeft" align="right" valign="top"><a id="adb4e43a4abee7c5d987f660e93f15345"></a>
+const inner_extents_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>inner_extents</b> () const</td></tr>
+<tr class="separator:adb4e43a4abee7c5d987f660e93f15345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6914b09bcc18faca0a15324e1dac87"><td class="memItemLeft" align="right" valign="top"><a id="acd6914b09bcc18faca0a15324e1dac87"></a>
+size_type&#160;</td><td class="memItemRight" valign="bottom"><b>field_rank</b> () const</td></tr>
+<tr class="separator:acd6914b09bcc18faca0a15324e1dac87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5cf57ca4d5d454b94037fa7810dc7b"><td class="memItemLeft" align="right" valign="top"><a id="a3f5cf57ca4d5d454b94037fa7810dc7b"></a>
+<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slice</b> (const index_type &amp;lo, const index_type &amp;hi) const</td></tr>
+<tr class="separator:a3f5cf57ca4d5d454b94037fa7810dc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcece865810a1ea6397121e7edc0e8ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:adcece865810a1ea6397121e7edc0e8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-polymorphic comparison.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">More...</a><br /></td></tr>
 <tr class="separator:adcece865810a1ea6397121e7edc0e8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +163,9 @@ Protected Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a5b42743a2d18d36d6cbbda7c497b6261">hash_</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
 <tr class="memdesc:a5b42743a2d18d36d6cbbda7c497b6261"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be overridden by the derived class to implement <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a3367d3d8f8643cd7ef1a401df06fc27d" title="Polymorphic hash operation.">hash()</a> <br /></td></tr>
 <tr class="separator:a5b42743a2d18d36d6cbbda7c497b6261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef62684be309d70adf843bf2de58a347"><td class="memItemLeft" align="right" valign="top"><a id="aef62684be309d70adf843bf2de58a347"></a>
+virtual <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slice_</b> (const index_type &amp;, const index_type &amp;) const</td></tr>
+<tr class="separator:aef62684be309d70adf843bf2de58a347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename FieldType&gt;<br />
@@ -165,8 +186,8 @@ class tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1330911b1560df52d4020c810689094a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1330911b1560df52d4020c810689094a">&#9670;&nbsp;</a></span>ShapePIMPL() <span class="overload">[1/3]</span></h2>
+<a id="a0c9b961354ac0151cbfd52ea0af09f77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c9b961354ac0151cbfd52ea0af09f77">&#9670;&nbsp;</a></span>ShapePIMPL() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,8 +201,18 @@ template&lt;typename FieldType &gt; </div>
           <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">tensorwrapper::tensor::detail_::ShapePIMPL</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a>&#160;</td>
-          <td class="paramname"><em>x</em> = <code>{}</code></td><td>)</td>
+          <td class="paramname"><em>x</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">inner_extents_type&#160;</td>
+          <td class="paramname"><em>y</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -437,7 +468,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/tensorwrapper/tensor/shapes/detail_/<a class="el" href="shapes_2detail___2shape__pimpl_8hpp_source.html">shape_pimpl.hpp</a></li>
+<li>src/tensorwrapper/tensor/shapes/detail_/<a class="el" href="shape__pimpl_8hpp_source.html">shape_pimpl.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -81,7 +81,6 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstracts away the details of how the <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>'s internal tensor is formed.  <a href="classtensorwrapper_1_1tensor_1_1Allocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">Conversion</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.  <a href="structtensorwrapper_1_1tensor_1_1Conversion.html#details">More...</a><br /></td></tr>
@@ -95,14 +94,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1NDInitializerListTraits_3_01T_00_010ul_01_4.html">NDInitializerListTraits&lt; T, 0ul &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structtensorwrapper_1_1tensor_1_1NDInitializerListTraits.html" title="Traits class for an N -dimensional initializer list of type T.">NDInitializerListTraits</a> for a rank 0 tensor.  <a href="structtensorwrapper_1_1tensor_1_1NDInitializerListTraits_3_01T_00_010ul_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1OneBigTile.html">OneBigTile</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> which puts all the elements in one big tile.  <a href="classtensorwrapper_1_1tensor_1_1OneBigTile.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object describing a tensor's elemental layout.  <a href="classtensorwrapper_1_1tensor_1_1Shape.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SingleElementTiles.html">SingleElementTiles</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An allocator where every tile is a single element.  <a href="classtensorwrapper_1_1tensor_1_1SingleElementTiles.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html">SparseShape</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a tensor's shape when there's sparsity.  <a href="classtensorwrapper_1_1tensor_1_1SparseShape.html#details">More...</a><br /></td></tr>
@@ -131,6 +124,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>ta_tot_type</b> = <a
 <tr class="memitem:aabc0724f027b166d635687a169a115e8"><td class="memItemLeft" align="right" valign="top"><a id="aabc0724f027b166d635687a169a115e8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>tensor</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a></td></tr>
 <tr class="separator:aabc0724f027b166d635687a169a115e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2a29043f0a7f38284ddc8b4a640273"><td class="memItemLeft" align="right" valign="top"><a id="a3a2a29043f0a7f38284ddc8b4a640273"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a3a2a29043f0a7f38284ddc8b4a640273">to_ta_distarrayd_t</a> = <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">Conversion</a>&lt; TA::TSpArrayD &gt;</td></tr>
+<tr class="memdesc:a3a2a29043f0a7f38284ddc8b4a640273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef of a <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> instance which can make TA::TSpArrayD instances. <br /></td></tr>
+<tr class="separator:a3a2a29043f0a7f38284ddc8b4a640273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a4307f697cd82a85935ac09435b88e"><td class="memItemLeft" align="right" valign="top"><a id="af4a4307f697cd82a85935ac09435b88e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>to_ta_totd_t</b> = <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">Conversion</a>&lt; TA::DistArray&lt; TA::Tensor&lt; TA::Tensor&lt; double &gt; &gt;, TA::SparsePolicy &gt; &gt;</td></tr>
+<tr class="separator:af4a4307f697cd82a85935ac09435b88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adefd997b2582509f675e571d8736e334"><td class="memItemLeft" align="right" valign="top"><a id="adefd997b2582509f675e571d8736e334"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>TWrapper</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a></td></tr>
 <tr class="separator:adefd997b2582509f675e571d8736e334"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,12 +214,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad017e1a20eaf2b0f4c8514f01efeb9fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ad017e1a20eaf2b0f4c8514f01efeb9fb">grab_diagonal</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &amp;t)</td></tr>
 <tr class="memdesc:ad017e1a20eaf2b0f4c8514f01efeb9fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grabs the diagonal of a matrix and returns it as a vector.  <a href="namespacetensorwrapper_1_1tensor.html#ad017e1a20eaf2b0f4c8514f01efeb9fb">More...</a><br /></td></tr>
 <tr class="separator:ad017e1a20eaf2b0f4c8514f01efeb9fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57619cbf160f98bb1531bdfb627fd77a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a57619cbf160f98bb1531bdfb627fd77a">diagonal_tensor_wrapper</a> (double val, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
-<tr class="memdesc:a57619cbf160f98bb1531bdfb627fd77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given value along its diagonal.  <a href="namespacetensorwrapper_1_1tensor.html#a57619cbf160f98bb1531bdfb627fd77a">More...</a><br /></td></tr>
-<tr class="separator:a57619cbf160f98bb1531bdfb627fd77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5d2d9e0172f0a3e9c31828c2031ab53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ab5d2d9e0172f0a3e9c31828c2031ab53">diagonal_tensor_wrapper</a> (std::vector&lt; double &gt; vals, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
-<tr class="memdesc:ab5d2d9e0172f0a3e9c31828c2031ab53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values along its diagonal.  <a href="namespacetensorwrapper_1_1tensor.html#ab5d2d9e0172f0a3e9c31828c2031ab53">More...</a><br /></td></tr>
-<tr class="separator:ab5d2d9e0172f0a3e9c31828c2031ab53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3157b114d40afe2393e4bf822102c8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ae3157b114d40afe2393e4bf822102c8e">diagonal_tensor_wrapper</a> (double val, const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
+<tr class="memdesc:ae3157b114d40afe2393e4bf822102c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given value along its diagonal.  <a href="namespacetensorwrapper_1_1tensor.html#ae3157b114d40afe2393e4bf822102c8e">More...</a><br /></td></tr>
+<tr class="separator:ae3157b114d40afe2393e4bf822102c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69d0da70c6354b99fd756f3e26f63941"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a69d0da70c6354b99fd756f3e26f63941">diagonal_tensor_wrapper</a> (const std::vector&lt; double &gt; &amp;vals, const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
+<tr class="memdesc:a69d0da70c6354b99fd756f3e26f63941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values along its diagonal.  <a href="namespacetensorwrapper_1_1tensor.html#a69d0da70c6354b99fd756f3e26f63941">More...</a><br /></td></tr>
+<tr class="separator:a69d0da70c6354b99fd756f3e26f63941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a913cacafad15e2d225d25d97d6f1a0b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a913cacafad15e2d225d25d97d6f1a0b2">stack_tensors</a> (std::vector&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &gt; tensors)</td></tr>
 <tr class="memdesc:a913cacafad15e2d225d25d97d6f1a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks a group of tensors along a new dimension.  <a href="namespacetensorwrapper_1_1tensor.html#a913cacafad15e2d225d25d97d6f1a0b2">More...</a><br /></td></tr>
 <tr class="separator:a913cacafad15e2d225d25d97d6f1a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,14 +260,16 @@ template&lt;TA::SVD::Vectors Vecs&gt; </td></tr>
 <tr class="memitem:a6511dd66dfcabf1a3c60fb58fefcad94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a6511dd66dfcabf1a3c60fb58fefcad94">remove_redundancy</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &amp;C, const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &amp;S, double thresh=1.0E-8)</td></tr>
 <tr class="memdesc:a6511dd66dfcabf1a3c60fb58fefcad94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elminates linear dependencies in the provided transformation.  <a href="namespacetensorwrapper_1_1tensor.html#a6511dd66dfcabf1a3c60fb58fefcad94">More...</a><br /></td></tr>
 <tr class="separator:a6511dd66dfcabf1a3c60fb58fefcad94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57bd4f276c4eab843690fb4c75ccfd47"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
-<tr class="memitem:a57bd4f276c4eab843690fb4c75ccfd47"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt; FieldType &gt;::allocator_ptr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a57bd4f276c4eab843690fb4c75ccfd47">default_allocator</a> ()</td></tr>
-<tr class="memdesc:a57bd4f276c4eab843690fb4c75ccfd47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the process of creating a defaulted allocator.  <a href="namespacetensorwrapper_1_1tensor.html#a57bd4f276c4eab843690fb4c75ccfd47">More...</a><br /></td></tr>
-<tr class="separator:a57bd4f276c4eab843690fb4c75ccfd47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a950a17f112faa0f6fb26a4070c1e9757"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a950a17f112faa0f6fb26a4070c1e9757"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; FieldType &gt;::allocator_ptr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a950a17f112faa0f6fb26a4070c1e9757">default_allocator</a> ()</td></tr>
+<tr class="memdesc:a950a17f112faa0f6fb26a4070c1e9757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the process of creating a defaulted allocator.  <a href="namespacetensorwrapper_1_1tensor.html#a950a17f112faa0f6fb26a4070c1e9757">More...</a><br /></td></tr>
+<tr class="separator:a950a17f112faa0f6fb26a4070c1e9757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Forward declare the <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> class. </p>
-<p>TODO: Remove this. </p>
+<p>TODO: Remove this.</p>
+<p>Used in pimpl_ for default value.</p>
+<p>Used for initializer list construction </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="a082bf5bdce3f92c475065107fae62e4a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a082bf5bdce3f92c475065107fae62e4a">&#9670;&nbsp;</a></span>add_expr_t</h2>
@@ -757,8 +759,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a57bd4f276c4eab843690fb4c75ccfd47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57bd4f276c4eab843690fb4c75ccfd47">&#9670;&nbsp;</a></span>default_allocator()</h2>
+<a id="a950a17f112faa0f6fb26a4070c1e9757"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a950a17f112faa0f6fb26a4070c1e9757">&#9670;&nbsp;</a></span>default_allocator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -766,7 +768,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename FieldType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt;FieldType&gt;::allocator_ptr tensorwrapper::tensor::default_allocator </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt;FieldType&gt;::allocator_ptr tensorwrapper::tensor::default_allocator </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -792,8 +794,8 @@ template&lt;typename FieldType &gt; </div>
 
 </div>
 </div>
-<a id="a57619cbf160f98bb1531bdfb627fd77a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57619cbf160f98bb1531bdfb627fd77a">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[1/2]</span></h2>
+<a id="a69d0da70c6354b99fd756f3e26f63941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69d0da70c6354b99fd756f3e26f63941">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -801,63 +803,13 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> tensorwrapper::tensor::diagonal_tensor_wrapper </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>val</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>allocator</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>shape</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given value along its diagonal. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">extents</td><td>The desired extents of the new tensor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>The value to place on the diagonal of the tensor.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor.</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">Whatever</td><td>TA's diagonal_array throws. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab5d2d9e0172f0a3e9c31828c2031ab53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5d2d9e0172f0a3e9c31828c2031ab53">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> tensorwrapper::tensor::diagonal_tensor_wrapper </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
           <td class="paramname"><em>vals</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>allocator</em>, </td>
         </tr>
         <tr>
@@ -879,6 +831,56 @@ template&lt;typename FieldType &gt; </div>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">extents</td><td>The desired extents of the new tensor. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">vals</td><td>The values to place on the diagonal of the tensor.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">Whatever</td><td>TA's diagonal_array throws. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae3157b114d40afe2393e4bf822102c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3157b114d40afe2393e4bf822102c8e">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> tensorwrapper::tensor::diagonal_tensor_wrapper </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given value along its diagonal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">extents</td><td>The desired extents of the new tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>The value to place on the diagonal of the tensor.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1132,6 +1134,7 @@ template&lt;typename FieldType &gt; </div>
   </table>
   </dd>
 </dl>
+<p>Retile into default OneBigTile arrangement Probably shouldn't have to do this. TODO: Remove at some point?</p>
 
 </div>
 </div>

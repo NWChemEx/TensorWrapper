@@ -79,7 +79,7 @@ $(function() {
 <p>Implements <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html" title="Describes a tensor&#39;s shape when there&#39;s sparsity.">SparseShape</a> class.  
  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="shapes_2detail___2sparse__shape__pimpl_8hpp_source.html">sparse_shape_pimpl.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="sparse__shape__pimpl_8hpp_source.html">sparse_shape_pimpl.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;:</div>
 <div class="dyncontent">
@@ -92,6 +92,9 @@ Inheritance diagram for tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; Fie
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a9afa7b98d6a8d83b7f958dbe51a03d5e"><td class="memItemLeft" align="right" valign="top"><a id="a9afa7b98d6a8d83b7f958dbe51a03d5e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>index_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#abae02a3a8889d68f6f574bcfeb3ebd3d">parent_type::index_type</a></td></tr>
+<tr class="separator:a9afa7b98d6a8d83b7f958dbe51a03d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2be58c2c6136d3cd8ea1ed2712a8d1a"><td class="memItemLeft" align="right" valign="top"><a id="ad2be58c2c6136d3cd8ea1ed2712a8d1a"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ad2be58c2c6136d3cd8ea1ed2712a8d1a">sparse_map_type</a> = typename parent_type::sparse_map_type</td></tr>
 <tr class="memdesc:ad2be58c2c6136d3cd8ea1ed2712a8d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the sparse map. <br /></td></tr>
@@ -108,8 +111,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:a4f77a729fc394a2e4d523c711e1c1621"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade313f8122c2bcaa522a8f20c281735d"><td class="memItemLeft" align="right" valign="top"><a id="ade313f8122c2bcaa522a8f20c281735d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">parent_type::extents_type</a></td></tr>
-<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each mode. <br /></td></tr>
+<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each (outer) mode. <br /></td></tr>
 <tr class="separator:ade313f8122c2bcaa522a8f20c281735d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a36cfbd67db2f2a2e9d25550c5fb390"><td class="memItemLeft" align="right" valign="top"><a id="a6a36cfbd67db2f2a2e9d25550c5fb390"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>inner_extents_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ac005ffdadbc624c71e084aa30452357b">parent_type::inner_extents_type</a></td></tr>
+<tr class="separator:a6a36cfbd67db2f2a2e9d25550c5fb390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85daea3cdc35012dc8a7d31d13efce7f"><td class="memItemLeft" align="right" valign="top"><a id="a85daea3cdc35012dc8a7d31d13efce7f"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a280f251b7852f82c716abea4bfb59a03">parent_type::pimpl_pointer</a></td></tr>
 <tr class="memdesc:a85daea3cdc35012dc8a7d31d13efce7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the base of the <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> hierarchy. <br /></td></tr>
@@ -117,8 +123,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="inherit_header pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a></td></tr>
 <tr class="memitem:ade313f8122c2bcaa522a8f20c281735d inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="ade313f8122c2bcaa522a8f20c281735d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">parent_type::extents_type</a></td></tr>
-<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each mode. <br /></td></tr>
+<tr class="memdesc:ade313f8122c2bcaa522a8f20c281735d inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the lengths of each (outer) mode. <br /></td></tr>
 <tr class="separator:ade313f8122c2bcaa522a8f20c281735d inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a36cfbd67db2f2a2e9d25550c5fb390 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="a6a36cfbd67db2f2a2e9d25550c5fb390"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>inner_extents_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ac005ffdadbc624c71e084aa30452357b">parent_type::inner_extents_type</a></td></tr>
+<tr class="separator:a6a36cfbd67db2f2a2e9d25550c5fb390 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0bfa6364f471abae73d653775ce1d10 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="af0bfa6364f471abae73d653775ce1d10"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#af44543d687e89d35c2ee27ab4b3f3527">parent_type::size_type</a></td></tr>
+<tr class="separator:af0bfa6364f471abae73d653775ce1d10 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85daea3cdc35012dc8a7d31d13efce7f inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="a85daea3cdc35012dc8a7d31d13efce7f"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a280f251b7852f82c716abea4bfb59a03">parent_type::pimpl_pointer</a></td></tr>
 <tr class="memdesc:a85daea3cdc35012dc8a7d31d13efce7f inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the base of the <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> hierarchy. <br /></td></tr>
@@ -127,11 +139,17 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a5f0d387538facb550e3869c6fc16589c">ta_shape</a> = TA::SparseShape&lt; float &gt;</td></tr>
 <tr class="memdesc:a5f0d387538facb550e3869c6fc16589c inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type TA uses for specifying the tile sparsity of a tensor. <br /></td></tr>
 <tr class="separator:a5f0d387538facb550e3869c6fc16589c inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b88ea1ed4fe46c55bacc562708cfe2 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="ae3b88ea1ed4fe46c55bacc562708cfe2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>index_type</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#abae02a3a8889d68f6f574bcfeb3ebd3d">parent_type::index_type</a></td></tr>
+<tr class="separator:ae3b88ea1ed4fe46c55bacc562708cfe2 inherit pub_types_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa60502a5edca3ead8a7a202a93da9fe4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#aa60502a5edca3ead8a7a202a93da9fe4">SparseShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ad2be58c2c6136d3cd8ea1ed2712a8d1a">sparse_map_type</a> sm, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a4f77a729fc394a2e4d523c711e1c1621">idx2mode_type</a> i2m)</td></tr>
-<tr class="memdesc:aa60502a5edca3ead8a7a202a93da9fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html" title="Implements SparseShape class.">SparseShapePIMPL</a> with the provided state.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#aa60502a5edca3ead8a7a202a93da9fe4">More...</a><br /></td></tr>
+<tr class="memitem:a0a0d51f0564f2d997b5e9462a712a42b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a0a0d51f0564f2d997b5e9462a712a42b">SparseShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x, inner_extents_type y, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ad2be58c2c6136d3cd8ea1ed2712a8d1a">sparse_map_type</a> sm, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a4f77a729fc394a2e4d523c711e1c1621">idx2mode_type</a> i2m)</td></tr>
+<tr class="memdesc:a0a0d51f0564f2d997b5e9462a712a42b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html" title="Implements SparseShape class.">SparseShapePIMPL</a> with the provided state.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a0a0d51f0564f2d997b5e9462a712a42b">More...</a><br /></td></tr>
+<tr class="separator:a0a0d51f0564f2d997b5e9462a712a42b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa60502a5edca3ead8a7a202a93da9fe4"><td class="memItemLeft" align="right" valign="top"><a id="aa60502a5edca3ead8a7a202a93da9fe4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SparseShapePIMPL</b> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ad2be58c2c6136d3cd8ea1ed2712a8d1a">sparse_map_type</a> sm, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a4f77a729fc394a2e4d523c711e1c1621">idx2mode_type</a> i2m)</td></tr>
 <tr class="separator:aa60502a5edca3ead8a7a202a93da9fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae58f9f2e44396293c010c08af78271ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ae58f9f2e44396293c010c08af78271ff">SparseShapePIMPL</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html">SparseShapePIMPL</a> &amp;other)=default</td></tr>
 <tr class="memdesc:ae58f9f2e44396293c010c08af78271ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a deep copy of the provided <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html" title="Implements SparseShape class.">SparseShapePIMPL</a> instance.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ae58f9f2e44396293c010c08af78271ff">More...</a><br /></td></tr>
@@ -148,10 +166,16 @@ const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sparse_ma
 <tr class="memitem:a037607c00efe95b51f2f9444b50ef49a"><td class="memItemLeft" align="right" valign="top"><a id="a037607c00efe95b51f2f9444b50ef49a"></a>
 const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>idx2mode_map</b> () const noexcept</td></tr>
 <tr class="separator:a037607c00efe95b51f2f9444b50ef49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8dd32eb896bf75acd47a910e1d54b96"><td class="memItemLeft" align="right" valign="top"><a id="ac8dd32eb896bf75acd47a910e1d54b96"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_hard_zero</b> (const index_type &amp;, const index_type &amp;) const</td></tr>
+<tr class="separator:ac8dd32eb896bf75acd47a910e1d54b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa79eea0d31fa5101206c6057dfda0445"><td class="memItemLeft" align="right" valign="top"><a id="aa79eea0d31fa5101206c6057dfda0445"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_hard_zero</b> (const index_type &amp;) const</td></tr>
+<tr class="separator:aa79eea0d31fa5101206c6057dfda0445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a></td></tr>
-<tr class="memitem:a1330911b1560df52d4020c810689094a inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a1330911b1560df52d4020c810689094a">ShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x={})</td></tr>
-<tr class="memdesc:a1330911b1560df52d4020c810689094a inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> with the provided extents.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a1330911b1560df52d4020c810689094a">More...</a><br /></td></tr>
-<tr class="separator:a1330911b1560df52d4020c810689094a inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c9b961354ac0151cbfd52ea0af09f77 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a0c9b961354ac0151cbfd52ea0af09f77">ShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> x={}, inner_extents_type y={})</td></tr>
+<tr class="memdesc:a0c9b961354ac0151cbfd52ea0af09f77 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html" title="Base class for PIMPLs in the Shape hierachy.">ShapePIMPL</a> with the provided extents.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a0c9b961354ac0151cbfd52ea0af09f77">More...</a><br /></td></tr>
+<tr class="separator:a0c9b961354ac0151cbfd52ea0af09f77 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01683fbe15f16e51f2ea0cc401e52b82 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a01683fbe15f16e51f2ea0cc401e52b82">ShapePIMPL</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;other)=default</td></tr>
 <tr class="memdesc:a01683fbe15f16e51f2ea0cc401e52b82 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a non-polymorphic deep copy of this instance.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a01683fbe15f16e51f2ea0cc401e52b82">More...</a><br /></td></tr>
 <tr class="separator:a01683fbe15f16e51f2ea0cc401e52b82 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,6 +189,15 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:ad53517273e6abcdc4ddb513223ad22ca inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ad53517273e6abcdc4ddb513223ad22ca">extents</a> () const</td></tr>
 <tr class="memdesc:ad53517273e6abcdc4ddb513223ad22ca inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lengths of each mode of the tensor.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ad53517273e6abcdc4ddb513223ad22ca">More...</a><br /></td></tr>
 <tr class="separator:ad53517273e6abcdc4ddb513223ad22ca inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4e43a4abee7c5d987f660e93f15345 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="adb4e43a4abee7c5d987f660e93f15345"></a>
+const inner_extents_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>inner_extents</b> () const</td></tr>
+<tr class="separator:adb4e43a4abee7c5d987f660e93f15345 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6914b09bcc18faca0a15324e1dac87 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="acd6914b09bcc18faca0a15324e1dac87"></a>
+size_type&#160;</td><td class="memItemRight" valign="bottom"><b>field_rank</b> () const</td></tr>
+<tr class="separator:acd6914b09bcc18faca0a15324e1dac87 inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5cf57ca4d5d454b94037fa7810dc7b inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top"><a id="a3f5cf57ca4d5d454b94037fa7810dc7b"></a>
+<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slice</b> (const index_type &amp;lo, const index_type &amp;hi) const</td></tr>
+<tr class="separator:a3f5cf57ca4d5d454b94037fa7810dc7b inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcece865810a1ea6397121e7edc0e8ab inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:adcece865810a1ea6397121e7edc0e8ab inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-polymorphic comparison.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">More...</a><br /></td></tr>
 <tr class="separator:adcece865810a1ea6397121e7edc0e8ab inherit pub_methods_classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,8 +250,8 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa60502a5edca3ead8a7a202a93da9fe4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa60502a5edca3ead8a7a202a93da9fe4">&#9670;&nbsp;</a></span>SparseShapePIMPL() <span class="overload">[1/2]</span></h2>
+<a id="a0a0d51f0564f2d997b5e9462a712a42b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a0d51f0564f2d997b5e9462a712a42b">&#9670;&nbsp;</a></span>SparseShapePIMPL() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,6 +263,12 @@ template&lt;typename FieldType &gt; </div>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ade313f8122c2bcaa522a8f20c281735d">extents_type</a>&#160;</td>
           <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">inner_extents_type&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -392,7 +431,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/tensorwrapper/tensor/shapes/detail_/<a class="el" href="shapes_2detail___2sparse__shape__pimpl_8hpp_source.html">sparse_shape_pimpl.hpp</a></li>
+<li>src/tensorwrapper/tensor/shapes/detail_/<a class="el" href="sparse__shape__pimpl_8hpp_source.html">sparse_shape_pimpl.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

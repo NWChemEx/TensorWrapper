@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: src/tensorwrapper/tensor/novel/allocator/tiled_array_allocator_helper.hpp Source File</title>
+<title>tensorwrapper: src/tensorwrapper/tensor/allocator/tiled_array_allocator_helper.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a3ef7787234d276598f190de2d036010.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_fed4bdc40aaa0dda36bfd9f4578476c1.html">tensor</a></li><li class="navelem"><a class="el" href="dir_c5118c0697d8b9d9c93956f0a463926c.html">novel</a></li><li class="navelem"><a class="el" href="dir_44953a2042c84c0f88319a78f58de5c1.html">allocator</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a3ef7787234d276598f190de2d036010.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_fed4bdc40aaa0dda36bfd9f4578476c1.html">tensor</a></li><li class="navelem"><a class="el" href="dir_94926ff8a4e23f249e4acfb5034eb49c.html">allocator</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,31 +71,31 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../../../sparse_map/sparse_map/detail_/tiling_map_index.hpp&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/tensor/novel/allocators/tiled_array.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../../sparse_map/sparse_map/detail_/tiling_map_index.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;tensorwrapper/tensor/allocators/tiled_array.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;tiled_array_sparse_shape.hpp&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;tiled_array_tiling.hpp&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;TiledArray/conversions/make_array.h&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>tensorwrapper::tensor::novel::allocator::detail_ {</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>tensorwrapper::tensor::allocator::detail_ {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">   11</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">is_scalar_tile_fxn</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">   11</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">is_scalar_tile_fxn</a> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value =</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;      std::is_invocable_v&lt;Op, std::vector&lt;size_t&gt;, std::vector&lt;size_t&gt;,</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;                          <span class="keywordtype">double</span>*&gt;;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">   17</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">is_tot_tile_fxn</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">   17</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">is_tot_tile_fxn</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value =</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      std::is_invocable_v&lt;Op, std::vector&lt;size_t&gt;, std::vector&lt;size_t&gt;,</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                          std::vector&lt;size_t&gt;, <span class="keywordtype">double</span>*&gt;;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_scalar_tile_fxn_v = <a class="code" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">is_scalar_tile_fxn&lt;Op&gt;::value</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_scalar_tile_fxn_v = <a class="code" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">is_scalar_tile_fxn&lt;Op&gt;::value</a>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_tot_tile_fxn_v = <a class="code" href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">is_tot_tile_fxn&lt;Op&gt;::value</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_tot_tile_fxn_v = <a class="code" href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">is_tot_tile_fxn&lt;Op&gt;::value</a>;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ShapeType, <span class="keyword">typename</span> Op&gt;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;default_tensor_type&lt;field::Scalar&gt; generate_ta_scalar_tensor(</div>
@@ -191,11 +191,11 @@ $(function() {
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;} <span class="comment">// namespace tensorwrapper::tensor::novel::allocator::detail_</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;} <span class="comment">// namespace tensorwrapper::tensor::allocator::detail_</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__tot__tile__fxn_html"><div class="ttname"><a href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">tensorwrapper::tensor::novel::allocator::detail_::is_tot_tile_fxn</a></div><div class="ttdef"><b>Definition:</b> tiled_array_allocator_helper.hpp:17</div></div>
-<div class="ttc" id="astructtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__scalar__tile__fxn_html"><div class="ttname"><a href="structtensorwrapper_1_1tensor_1_1novel_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">tensorwrapper::tensor::novel::allocator::detail_::is_scalar_tile_fxn</a></div><div class="ttdef"><b>Definition:</b> tiled_array_allocator_helper.hpp:11</div></div>
+<div class="ttc" id="astructtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__tot__tile__fxn_html"><div class="ttname"><a href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__tot__tile__fxn.html">tensorwrapper::tensor::allocator::detail_::is_tot_tile_fxn</a></div><div class="ttdef"><b>Definition:</b> tiled_array_allocator_helper.hpp:17</div></div>
 <div class="ttc" id="astructtensorwrapper_1_1sparse__map_1_1Index_html"><div class="ttname"><a href="structtensorwrapper_1_1sparse__map_1_1Index.html">tensorwrapper::sparse_map::Index</a></div><div class="ttdoc">Thin wrapper class around a multi-rank index.</div><div class="ttdef"><b>Definition:</b> index.hpp:21</div></div>
+<div class="ttc" id="astructtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__scalar__tile__fxn_html"><div class="ttname"><a href="structtensorwrapper_1_1tensor_1_1allocator_1_1detail___1_1is__scalar__tile__fxn.html">tensorwrapper::tensor::allocator::detail_::is_scalar_tile_fxn</a></div><div class="ttdef"><b>Definition:</b> tiled_array_allocator_helper.hpp:11</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
