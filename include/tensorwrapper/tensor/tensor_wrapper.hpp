@@ -2,7 +2,7 @@
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/allocators/allocators.hpp"
 #include "tensorwrapper/tensor/buffer/buffer.hpp"
-#include "tensorwrapper/tensor/expressions/labeled_tensor.hpp"
+#include "tensorwrapper/tensor/expressions/labeled_view.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/type_traits/field_traits.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
@@ -115,7 +115,7 @@ public:
     using field_type = FieldType;
 
     /// Type resulting from annotating this tensor
-    using labeled_tensor_type = expressions::LabeledTensor<field_type>;
+    using labeled_tensor_type = expressions::LabeledView<field_type>;
 
     using const_labeled_tensor_type = const labeled_tensor_type;
 
@@ -129,6 +129,8 @@ public:
     using allocator_type = allocator::Allocator<FieldType>;
 
     using buffer_type = buffer::Buffer<FieldType>;
+
+    using buffer_pointer = std::unique_ptr<buffer_type>;
 
     using buffer_reference = buffer_type&;
 
@@ -188,7 +190,6 @@ public:
     TensorWrapper(const element_populator_type& fxn, shape_pointer shape,
                   allocator_pointer alloc);
 
-#if 0
     /** @brief Creates a TensorWrapper which will use the provided allocator to
      *         create its state.
      *
@@ -227,7 +228,9 @@ public:
     explicit TensorWrapper(
       shape_pointer shape,
       allocator_pointer p = default_allocator<field_type>());
-#endif
+
+    TensorWrapper(buffer_pointer buffer, shape_pointer shape,
+                  allocator_pointer alloc);
 
     /** @brief Creates a TensorWrapper which wraps a tensor whose values are
      *  defined by an initializer list.
@@ -310,6 +313,8 @@ public:
 
     /// Default nothrow dtor
     ~TensorWrapper() noexcept;
+
+    void swap(TensorWrapper& other) noexcept;
 
     /** @brief Returns the allocator in a read-only state.
      *
@@ -648,7 +653,7 @@ protected:
     using const_labeled_type =
       typename field_traits::const_labeled_variant_type;
 
-    /// Hook for LabeledTensorWrapper to get the labeled tensors
+    /// Hook for LabeledViewWrapper to get the labeled tensors
     ///@{
     labeled_variant_type annotate_(const annotation_type& annotation);
 
@@ -659,7 +664,7 @@ protected:
 
     /** @brief Returns the wrapped variant.
      *
-     *  This function is used by LabeledTensorWrapper to get
+     *  This function is used by LabeledViewWrapper to get
      * the variant. In general users of the TensorWrapper class
      * shouldn't be working with the variant, which is why the
      * function is not part of the public API.
@@ -672,7 +677,7 @@ protected:
 
     /** @brief Returns the wrapped variant.
      *
-     *  This function is used by LabeledTensorWrapper to get
+     *  This function is used by LabeledViewWrapper to get
      * the variant. In general users of the TensorWrapper class
      * shouldn't be working with the variant, which is why the
      * function is not part of the public API.

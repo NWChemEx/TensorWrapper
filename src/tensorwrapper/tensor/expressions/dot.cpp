@@ -3,8 +3,8 @@
 
 namespace tensorwrapper::tensor::expressions {
 
-double dot(const LabeledTensor<field::Scalar>& lhs,
-           const LabeledTensor<field::Scalar>& rhs) {
+double dot(const LabeledView<field::Scalar>& lhs,
+           const LabeledView<field::Scalar>& rhs) {
     const auto& llabels = lhs.labels();
     const auto& rlabels = rhs.labels();
     const auto& lbuffer = lhs.tensor().buffer();

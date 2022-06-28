@@ -5,11 +5,11 @@
 
 namespace tensorwrapper::tensor::expressions::detail_ {
 
+template<typename FieldType>
 class ExpressionPIMPL {
 public:
-    using expression_type = Expression;
+    using expression_type = Expression<FieldType>;
     using labeled_tensor  = typename expression_type::labeled_tensor;
-    using labeled_tot     = typename expression_type::labeled_tot;
     using pimpl_pointer   = typename expression_type::pimpl_pointer;
 
     ExpressionPIMPL() noexcept          = default;
@@ -18,7 +18,6 @@ public:
     pimpl_pointer clone() const { return clone_(); }
 
     labeled_tensor& eval(labeled_tensor& lhs) const { return eval_(lhs); }
-    labeled_tot& eval(labeled_tot& lhs) const { return eval_(lhs); }
 
 protected:
     ExpressionPIMPL(const ExpressionPIMPL& other) = default;
@@ -26,7 +25,6 @@ protected:
 
     virtual pimpl_pointer clone_() const                     = 0;
     virtual labeled_tensor& eval_(labeled_tensor& lhs) const = 0;
-    virtual labeled_tot& eval_(labeled_tot& lhs) const       = 0;
 
 private:
     ExpressionPIMPL& operator=(const ExpressionPIMPL& other) = delete;

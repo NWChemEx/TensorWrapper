@@ -4,17 +4,22 @@
 
 namespace tensorwrapper::tensor::expressions {
 namespace detail_ {
+template<typename FieldType>
 class ExpressionPIMPL;
 }
 template<typename FieldType>
-class LabeledTensor;
+class LabeledView;
 
+template<typename FieldType>
 class Expression {
 public:
-    using labeled_tensor = LabeledTensor<field::Scalar>;
-    using labeled_tot    = LabeledTensor<field::Tensor>;
-    using pimpl_type     = detail_::ExpressionPIMPL;
-    using pimpl_pointer  = std::unique_ptr<pimpl_type>;
+    using labeled_tensor    = LabeledView<FieldType>;
+    using tensor_type       = typename labeled_tensor::tensor_type;
+    using shape_pointer     = typename tensor_type::shape_pointer;
+    using allocator_pointer = typename tensor_type::allocator_pointer;
+
+    using pimpl_type    = detail_::ExpressionPIMPL<FieldType>;
+    using pimpl_pointer = std::unique_ptr<pimpl_type>;
 
     explicit Expression(pimpl_pointer p = nullptr) noexcept;
 
@@ -25,12 +30,11 @@ public:
     /// Default no-throw dtor
     ~Expression() noexcept;
 
-    Expression operator+(const Expression& rhs) const;
-    Expression operator*(double rhs) const;
-    Expression operator*(const Expression& rhs) const;
+    // Expression operator+(const Expression& rhs) const;
+    // Expression operator*(double rhs) const;
+    // Expression operator*(const Expression& rhs) const;
 
     labeled_tensor& eval(labeled_tensor& result) const;
-    labeled_tot& eval(labeled_tot& result) const;
 
 private:
     using const_pimpl_reference = const pimpl_type&;
@@ -39,5 +43,8 @@ private:
 
     pimpl_pointer m_pimpl_;
 };
+
+extern template class Expression<field::Scalar>;
+extern template class Expression<field::Tensor>;
 
 } // namespace tensorwrapper::tensor::expressions
