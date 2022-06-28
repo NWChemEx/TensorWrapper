@@ -47,7 +47,7 @@ TPARAMS
 LABELED_VIEW& LABELED_VIEW::operator=(const Expression<FieldType>& rhs) {
     tensor_type rv(rhs.shape(*this), rhs.allocator(*this));
 
-      auto& rv = rhs.eval(*this);
+    auto& rv = rhs.eval(*this);
     if(&rv != this)
         throw std::runtime_error("Expected to get result back by reference");
     return *this;
