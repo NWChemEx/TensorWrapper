@@ -144,11 +144,11 @@ protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
     /// still be accesible to derived classes who need them for implementations
     ///@{
-    BufferPIMPL() noexcept                     = default;
-    BufferPIMPL(const BufferPIMPL&)            = default;
-    BufferPIMPL(BufferPIMPL&&)                 = default;
+    BufferPIMPL() noexcept          = default;
+    BufferPIMPL(const BufferPIMPL&) = default;
+    BufferPIMPL(BufferPIMPL&&)      = default;
     BufferPIMPL& operator=(const BufferPIMPL&) = default;
-    BufferPIMPL& operator=(BufferPIMPL&&)      = default;
+    BufferPIMPL& operator=(BufferPIMPL&&) = default;
     ///@}
 
 private:
