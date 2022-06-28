@@ -150,6 +150,14 @@ bool BUFFER::operator==(const Buffer& rhs) const noexcept {
 }
 
 TEMPLATE_PARAMS
+bool BUFFER::are_approximately_equal(const Buffer& rhs) const noexcept {
+  return m_pimpl_->are_equal(*rhs.m_pimpl_);
+
+  // shape and allocator attributes?
+}
+
+
+TEMPLATE_PARAMS
 void BUFFER::hash(hasher_reference h) const { h(m_pimpl_); }
 
 TEMPLATE_PARAMS

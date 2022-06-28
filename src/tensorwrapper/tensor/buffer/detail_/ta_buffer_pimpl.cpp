@@ -251,6 +251,19 @@ std::string TABUFFERPIMPL::to_str_() const {
     return std::visit(l, m_tensor_);
 }
 
+TEMPLATE_PARAMS
+bool TABUFFERPIMPL::are_approximately_equal_(const base_type& rhs) const noexcept {
+     auto ptr = dynamic_cast<const my_type*>(&rhs);
+     if(ptr == nullptr) return false;
+     //auto l = [&](auto&& out, auto&& lhs) { return lhs == rhs; };
+     //return  double_call_w_return(m_tensor_, ptr->m_tensor_, l);
+
+     return (m_tensor_ == ptr->m_tensor_);
+    // return (m_tensor_ == ptr->m_tensor_) && (m_tensor_.shape() == ptr->m_tensor_.shape()
+    //         && (m_tensor_.allocator() == ptr->m_tensor_.allocator());
+}
+
+
 // -- Math Ops
 // -----------------------------------------------------------------
 

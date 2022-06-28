@@ -453,6 +453,19 @@ public:
         return false;
     }
 
+    /** @brief Compares two buffers for closeness
+     *
+     * @param[in] rhs The buffer to compare to.
+     *
+     * @return True if buffers have elements that are sufficiently 
+     * close and the same shape and allocator attributes, 
+     *         False otherwise
+     *
+     * This may eventually supplant the == function(?)         
+     */
+
+     bool are_approximately_equal(const Buffer& rhs) const noexcept;
+
     /** @brief Hashes the present buffer.
      *
      *

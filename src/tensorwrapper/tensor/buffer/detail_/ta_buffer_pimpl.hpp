@@ -89,6 +89,8 @@ private:
 
     bool are_equal_(const base_type& rhs) const noexcept override;
 
+    bool are_approximately_equal_(const base_type& rhs) const noexcept override;
+
     std::string to_str_() const override;
 
     variant_type m_tensor_;

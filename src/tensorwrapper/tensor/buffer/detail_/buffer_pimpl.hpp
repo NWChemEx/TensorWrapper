@@ -125,6 +125,11 @@ public:
         return are_equal_(rhs) && rhs.are_equal_(*this);
     }
 
+    bool are_approximately_equal(const my_type& rhs) const noexcept {
+        return are_approximately_equal_(rhs) && rhs.are_approximately_equal_(*this);
+    }
+
+
     /// XXX These are to be removed
     inline variant_type& variant() { return variant_(); }
     inline const variant_type& variant() const { return variant(); }
