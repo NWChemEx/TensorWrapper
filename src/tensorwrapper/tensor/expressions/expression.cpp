@@ -21,22 +21,23 @@ EXPRESSION::Expression(Expression&& other) noexcept = default;
 TPARAMS
 EXPRESSION::~Expression() noexcept = default;
 
-/*
-EXPRESSION Expression::operator+(const Expression& rhs) const {
-    auto pimpl = std::make_unique<detail_::Add>(*this, rhs);
+TPARAMS
+EXPRESSION EXPRESSION::operator+(const Expression& rhs) const {
+    auto pimpl = std::make_unique<detail_::Add<FieldType>>(*this, rhs);
     return Expression(std::move(pimpl));
 }
 
-Expression Expression::operator*(double rhs) const {
-    auto pimpl = std::make_unique<detail_::Scale>(*this, rhs);
+TPARAMS
+EXPRESSION EXPRESSION::operator*(double rhs) const {
+    auto pimpl = std::make_unique<detail_::Scale<FieldType>>(*this, rhs);
     return Expression(std::move(pimpl));
 }
 
-Expression Expression::operator*(const Expression& rhs) const {
+TPARAMS
+EXPRESSION EXPRESSION::operator*(const Expression& rhs) const {
     throw std::runtime_error("NYI");
     return rhs;
 }
-*/
 
 TPARAMS
 typename EXPRESSION::labeled_tensor& EXPRESSION::eval(

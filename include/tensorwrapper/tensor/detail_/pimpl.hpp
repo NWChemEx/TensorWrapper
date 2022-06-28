@@ -37,7 +37,7 @@ public:
     using variant_type = typename field_traits::variant_type;
 
     /// Type which holds type-erased tensor instance
-    using buffer_type            = typename parent_type::buffer;
+    using buffer_type            = typename parent_type::buffer_type;
     using buffer_pointer         = typename parent_type::buffer_pointer;
     using const_buffer_reference = typename parent_type::const_buffer_reference;
     using buffer_reference       = typename parent_type::buffer_reference;

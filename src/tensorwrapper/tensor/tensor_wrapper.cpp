@@ -75,17 +75,19 @@ TENSOR_WRAPPER::TensorWrapper(const element_populator_type& fxn,
                                              std::move(a))) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(buffer_pointer buffer, shape_pointer shape,
+TENSOR_WRAPPER::TensorWrapper(buffer_type buffer, shape_pointer shape,
                               allocator_pointer alloc) :
-  TensorWrapper(std::make_unique<pimpl_type>(buffer, shape, alloc)) {}
+  TensorWrapper(std::make_unique<pimpl_type>(
+    std::make_unique<buffer_type>(std::move(buffer)), std::move(shape),
+    std::move(alloc))) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(allocator_pointer p) :
-  TensorWrapper(nullptr, nullptr, std::move(p)) {}
+  TensorWrapper(buffer_type{}, shape_pointer{}, std::move(p)) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(shape_pointer shape, allocator_pointer p) :
-  TensorWrapper(nullptr, std::move(shape), std::move(p)) {}
+  TensorWrapper(buffer_type{}, std::move(shape), std::move(p)) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 1> il) :

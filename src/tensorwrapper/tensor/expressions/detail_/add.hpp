@@ -1,42 +1,58 @@
-// #pragma once
-// #include "binary.hpp"
-// #include <tensorwrapper/tensor/tensor_wrapper.hpp>
+#pragma once
+#include "pimpl.hpp"
+#include <tensorwrapper/tensor/tensor_wrapper.hpp>
 
-// namespace tensorwrapper::tensor::expressions::detail_ {
+namespace tensorwrapper::tensor::expressions::detail_ {
 
-// class Add : public Binary<Add, Expression, Expression> {
-// private:
-//     using base_type = Binary<Add, Expression, Expression>;
+template<typename FieldType>
+class Add : public ExpressionPIMPL<FieldType> {
+private:
+    using my_type   = Add<FieldType>;
+    using base_type = ExpressionPIMPL<FieldType>;
 
-// public:
-//     using typename base_type::expression_type;
-//     using typename base_type::labeled_tensor;
-//     using typename base_type::labeled_tot;
-//     using typename base_type::pimpl_pointer;
+public:
+    using typename base_type::expression_type;
+    using typename base_type::labeled_tensor;
+    using typename base_type::pimpl_pointer;
 
-//     using base_type::Binary;
+    Add(expression_type lhs, expression_type rhs);
 
-//     template<typename T>
-//     T& eval_common(T& result) const;
-// };
+protected:
+    pimpl_pointer clone_() const override;
+    labeled_tensor& eval_(labeled_tensor& lhs) const override;
 
-// template<typename T>
-// T& Add::eval_common(T& result) const {
-//     T temp_l(result), temp_r(result);
-//     temp_l = m_lhs_.eval(temp_l);
-//     temp_r = m_rhs_.eval(temp_r);
+private:
+    expression_type m_lhs_;
+    expression_type m_rhs_;
+};
 
-//     const auto& result_labels = result.labels();
-//     const auto& l_labels      = temp_l.labels();
-//     const auto& r_labels      = temp_r.labels();
+template<typename FieldType>
+Add<FieldType>::Add(expression_type lhs, expression_type rhs) :
+  m_lhs_(std::move(lhs)), m_rhs_(std::move(rhs)) {}
 
-//     auto& result_buffer = result.tensor().buffer();
-//     const auto& lbuffer = temp_l.tensor().buffer();
-//     const auto& rbuffer = temp_r.tensor().buffer();
+template<typename FieldType>
+typename Add<FieldType>::pimpl_pointer Add<FieldType>::clone_() const {
+    return std::make_unique<my_type>(*this);
+}
 
-//     lbuffer.add(l_labels, result_labels, result_buffer, r_labels, rbuffer);
+template<typename FieldType>
+typename Add<FieldType>::labeled_tensor& Add<FieldType>::eval_(
+  labeled_tensor& result) const {
+    labeled_tensor temp_l(result), temp_r(result);
+    temp_l = m_lhs_.eval(temp_l);
+    temp_r = m_rhs_.eval(temp_r);
 
-//     return result;
-// }
+    const auto& result_labels = result.labels();
+    const auto& l_labels      = temp_l.labels();
+    const auto& r_labels      = temp_r.labels();
 
-// } // namespace tensorwrapper::tensor::expressions::detail_
+    auto& result_buffer = result.tensor().buffer();
+    const auto& lbuffer = temp_l.tensor().buffer();
+    const auto& rbuffer = temp_r.tensor().buffer();
+
+    lbuffer.add(l_labels, result_labels, result_buffer, r_labels, rbuffer);
+
+    return result;
+}
+
+} // namespace tensorwrapper::tensor::expressions::detail_

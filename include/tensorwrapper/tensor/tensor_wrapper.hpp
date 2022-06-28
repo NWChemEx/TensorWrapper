@@ -229,7 +229,7 @@ public:
       shape_pointer shape,
       allocator_pointer p = default_allocator<field_type>());
 
-    TensorWrapper(buffer_pointer buffer, shape_pointer shape,
+    TensorWrapper(buffer_type buffer, shape_pointer shape,
                   allocator_pointer alloc);
 
     /** @brief Creates a TensorWrapper which wraps a tensor whose values are

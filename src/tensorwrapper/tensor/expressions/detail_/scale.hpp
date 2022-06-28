@@ -4,14 +4,14 @@
 
 namespace tensorwrapper::tensor::expressions::detail_ {
 
-class Scale : public ExpressionPIMPL {
+template<typename FieldType>
+class Scale : public ExpressionPIMPL<FieldType> {
 private:
-    using base_type = ExpressionPIMPL;
+    using base_type = ExpressionPIMPL<FieldType>;
 
 public:
     using expression_type = typename base_type::expression_type;
     using labeled_tensor  = typename base_type::labeled_tensor;
-    using labeled_tot     = typename base_type::labeled_tot;
     using pimpl_pointer   = typename base_type::pimpl_pointer;
 
     Scale(expression_type lhs, double rhs);
@@ -20,35 +20,25 @@ public:
 protected:
     pimpl_pointer clone_() const override;
     labeled_tensor& eval_(labeled_tensor& result) const override;
-    labeled_tot& eval_(labeled_tot& result) const override;
 
 private:
-    template<typename T>
-    T& eval_common_(T& result) const;
-
     expression_type m_lhs_;
     double m_rhs_;
 };
 
-inline Scale::Scale(expression_type lhs, double rhs) :
+template<typename FieldType>
+Scale<FieldType>::Scale(expression_type lhs, double rhs) :
   m_lhs_(std::move(lhs)), m_rhs_(rhs) {}
 
-inline typename Scale::pimpl_pointer Scale::clone_() const {
+template<typename FieldType>
+typename Scale<FieldType>::pimpl_pointer Scale<FieldType>::clone_() const {
     return std::make_unique<Scale>(*this);
 }
 
-inline typename Scale::labeled_tensor& Scale::eval_(
+template<typename FieldType>
+typename Scale<FieldType>::labeled_tensor& Scale<FieldType>::eval_(
   labeled_tensor& result) const {
-    return eval_common_(result);
-}
-
-inline typename Scale::labeled_tot& Scale::eval_(labeled_tot& result) const {
-    return eval_common_(result);
-}
-
-template<typename T>
-T& Scale::eval_common_(T& result) const {
-    T temp(result);
+    labeled_tensor temp(result);
     temp = m_lhs_.eval(temp);
 
     const auto& rlabels = temp.labels();

@@ -62,6 +62,10 @@ public:
     /// Type of a read-only reference to the tensor's labels
     using const_label_reference = const label_type&;
 
+    using expression_type = Expression<FieldType>;
+
+    using const_expression_reference = const expression_type&;
+
     LabeledView(label_type labels, tensor_reference tensor) noexcept;
     LabeledView(label_type labels, const_tensor_reference tensor) noexcept;
 
@@ -89,7 +93,7 @@ public:
      *  Expression instance. This method wraps the process of wrapping the
      *  current LabeledView instance in an Expression instance.
      */
-    Expression<FieldType> expression() const;
+    expression_type expression() const;
     tensor_reference tensor();
     const_tensor_reference tensor() const;
     const_label_reference labels() const { return m_labels_; }
@@ -99,9 +103,9 @@ public:
      *  @warning In general this is NOT just copy assignment.
      */
     LabeledView& operator=(const LabeledView& rhs);
-    LabeledView& operator=(const Expression& rhs);
-    // Expression<FieldType> operator+(const LabeledView& rhs) const;
-    // Expression<FieldType> operator*(double rhs) const;
+    LabeledView& operator=(const_expression_reference rhs);
+    expression_type operator+(const LabeledView& rhs) const;
+    expression_type operator*(double rhs) const;
 
 private:
     using internal_reference       = std::reference_wrapper<tensor_type>;

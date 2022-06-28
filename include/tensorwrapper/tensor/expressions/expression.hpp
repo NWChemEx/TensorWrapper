@@ -13,10 +13,7 @@ class LabeledView;
 template<typename FieldType>
 class Expression {
 public:
-    using labeled_tensor    = LabeledView<FieldType>;
-    using tensor_type       = typename labeled_tensor::tensor_type;
-    using shape_pointer     = typename tensor_type::shape_pointer;
-    using allocator_pointer = typename tensor_type::allocator_pointer;
+    using labeled_tensor = LabeledView<FieldType>;
 
     using pimpl_type    = detail_::ExpressionPIMPL<FieldType>;
     using pimpl_pointer = std::unique_ptr<pimpl_type>;
@@ -30,9 +27,9 @@ public:
     /// Default no-throw dtor
     ~Expression() noexcept;
 
-    // Expression operator+(const Expression& rhs) const;
-    // Expression operator*(double rhs) const;
-    // Expression operator*(const Expression& rhs) const;
+    Expression operator+(const Expression& rhs) const;
+    Expression operator*(double rhs) const;
+    Expression operator*(const Expression& rhs) const;
 
     labeled_tensor& eval(labeled_tensor& result) const;
 
