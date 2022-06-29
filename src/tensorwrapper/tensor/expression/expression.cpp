@@ -47,13 +47,13 @@ typename EXPRESSION::labeled_tensor& EXPRESSION::eval(
 
 TPARAMS
 bool EXPRESSION::operator==(const Expression& rhs) const noexcept {
-  if(m_pimpl_ && rhs.m_pimpl_) return m_pimpl_->are_equal(*rhs.m_pimpl_);
-  return static_cast<bool>(m_pimpl_) == static_cast<bool>(rhs.m_pimpl_);
+    if(m_pimpl_ && rhs.m_pimpl_) return m_pimpl_->are_equal(*rhs.m_pimpl_);
+    return static_cast<bool>(m_pimpl_) == static_cast<bool>(rhs.m_pimpl_);
 }
 
 TPARAMS
 bool EXPRESSION::operator!=(const Expression& rhs) const noexcept {
-  return !(*this == rhs);
+    return !(*this == rhs);
 }
 
 TPARAMS
