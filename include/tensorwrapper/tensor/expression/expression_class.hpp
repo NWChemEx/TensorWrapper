@@ -2,7 +2,7 @@
 #include <memory>
 #include <tensorwrapper/tensor/fields.hpp>
 
-namespace tensorwrapper::tensor::expressions {
+namespace tensorwrapper::tensor::expression {
 namespace detail_ {
 template<typename FieldType>
 class ExpressionPIMPL;
@@ -33,6 +33,9 @@ public:
 
     labeled_tensor& eval(labeled_tensor& result) const;
 
+    bool operator==(const Expression& rhs) const noexcept;
+    bool operator!=(const Expression& rhs) const noexcept;
+
 private:
     using const_pimpl_reference = const pimpl_type&;
 
@@ -44,4 +47,4 @@ private:
 extern template class Expression<field::Scalar>;
 extern template class Expression<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::expressions
+} // namespace tensorwrapper::tensor::expression

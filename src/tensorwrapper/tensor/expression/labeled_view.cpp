@@ -1,7 +1,7 @@
 #include "detail_/labeled.hpp"
 #include <tensorwrapper/tensor/allocators/allocators.hpp>
-#include <tensorwrapper/tensor/expressions/labeled_view.hpp>
-namespace tensorwrapper::tensor::expressions {
+#include <tensorwrapper/tensor/expression/labeled_view.hpp>
+namespace tensorwrapper::tensor::expression {
 
 #define TPARAMS template<typename FieldType>
 #define LABELED_VIEW LabeledView<FieldType>
@@ -46,6 +46,9 @@ LABELED_VIEW& LABELED_VIEW::operator=(const LabeledView& rhs) {
 
 TPARAMS
 LABELED_VIEW& LABELED_VIEW::operator=(const_expression_reference rhs) {
+    if(!m_tensor_)
+        throw std::runtime_error("Can not assign to a read-only tensor");
+
     // TODO: shape and alloc should come from rhs and used to initialize
     //       the shape and allocator for this instance (unless the user provides
     //       the shape and/or the allocator)
@@ -81,10 +84,36 @@ typename LABELED_VIEW::expression_type LABELED_VIEW::operator*(
     return expression() * rhs;
 }
 
+TPARAMS
+bool LABELED_VIEW::operator==(const LabeledView& rhs) const noexcept {
+    // Check if they both have or both don't have a read/write tensor
+    if(static_cast<bool>(m_tensor_) != static_cast<bool>(rhs.m_tensor_))
+        return false;
+
+    // Check if they both have or both don't have a read-only tensor
+    if(static_cast<bool>(m_ctensor_) != static_cast<bool>(rhs.m_ctensor_))
+        return false;
+
+    // Make sure *this has a tensor (if not they both don't have one)
+    if(!(m_tensor_ || m_ctensor_)) return true;
+
+    // These won't throw because they both have tensors
+    const auto* ptensor     = &tensor();
+    const auto* rhs_ptensor = &rhs.tensor();
+
+    // Now compare addresses of tensors and labels
+    return std::tie(ptensor, m_labels_) == std::tie(rhs_ptensor, rhs.m_labels_);
+}
+
+TPARAMS
+bool LABELED_VIEW::operator!=(const LabeledView& rhs) const noexcept {
+    return !(*this == rhs);
+}
+
 #undef LABELED_VIEW
 #undef TPARAMS
 
 template class LabeledView<field::Scalar>;
 template class LabeledView<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::expressions
+} // namespace tensorwrapper::tensor::expression

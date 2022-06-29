@@ -1,9 +1,9 @@
 #include "detail_/add.hpp"
 #include "detail_/labeled.hpp"
 #include "detail_/scale.hpp"
-#include <tensorwrapper/tensor/expressions/expression.hpp>
+#include <tensorwrapper/tensor/expression/expression_class.hpp>
 
-namespace tensorwrapper::tensor::expressions {
+namespace tensorwrapper::tensor::expression {
 
 #define TPARAMS template<typename FieldType>
 #define EXPRESSION Expression<FieldType>
@@ -46,6 +46,17 @@ typename EXPRESSION::labeled_tensor& EXPRESSION::eval(
 }
 
 TPARAMS
+bool EXPRESSION::operator==(const Expression& rhs) const noexcept {
+  if(m_pimpl_ && rhs.m_pimpl_) return m_pimpl_->are_equal(*rhs.m_pimpl_);
+  return static_cast<bool>(m_pimpl_) == static_cast<bool>(rhs.m_pimpl_);
+}
+
+TPARAMS
+bool EXPRESSION::operator!=(const Expression& rhs) const noexcept {
+  return !(*this == rhs);
+}
+
+TPARAMS
 typename EXPRESSION::const_pimpl_reference EXPRESSION::pimpl_() const {
     if(m_pimpl_) return *m_pimpl_;
     throw std::runtime_error("Expression does not contain a PIMPL!!! Was it "
@@ -58,4 +69,4 @@ typename EXPRESSION::const_pimpl_reference EXPRESSION::pimpl_() const {
 template class Expression<field::Scalar>;
 template class Expression<field::Tensor>;
 
-} // namespace tensorwrapper::tensor::expressions
+} // namespace tensorwrapper::tensor::expression

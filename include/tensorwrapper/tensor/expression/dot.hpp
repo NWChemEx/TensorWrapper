@@ -1,7 +1,7 @@
 #pragma once
-#include <tensorwrapper/tensor/expressions/labeled_view.hpp>
+#include <tensorwrapper/tensor/expression/labeled_view.hpp>
 
-namespace tensorwrapper::tensor::expressions {
+namespace tensorwrapper::tensor::expression {
 
 double dot(const LabeledView<field::Scalar>& lhs,
            const LabeledView<field::Scalar>& rhs);

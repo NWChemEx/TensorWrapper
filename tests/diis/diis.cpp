@@ -74,6 +74,8 @@ TEST_CASE("DIIS") {
 
         using tensorwrapper::tensor::allclose;
         REQUIRE(allclose(output1, corr_output1));
+        std::cout << output2 << std::endl;
+        std::cout << corr_output2 << std::endl;
         REQUIRE(allclose(output2, corr_output2));
         REQUIRE(allclose(output3, corr_output3));
     }

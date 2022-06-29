@@ -1,7 +1,7 @@
-#include <tensorwrapper/tensor/expressions/dot.hpp>
+#include <tensorwrapper/tensor/expression/dot.hpp>
 #include <tensorwrapper/tensor/tensor_wrapper.hpp>
 
-namespace tensorwrapper::tensor::expressions {
+namespace tensorwrapper::tensor::expression {
 
 double dot(const LabeledView<field::Scalar>& lhs,
            const LabeledView<field::Scalar>& rhs) {
@@ -13,4 +13,4 @@ double dot(const LabeledView<field::Scalar>& lhs,
     return lbuffer.dot(llabels, rlabels, rbuffer);
 }
 
-} // namespace tensorwrapper::tensor::expressions
+} // namespace tensorwrapper::tensor::expression
