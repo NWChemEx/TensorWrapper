@@ -61,8 +61,7 @@ const DerivedType& NNARY::downcast_() const {
 #undef TPARAMS
 
 template<typename FieldType, typename DerivedType>
-using LabeledBase = NNary<FieldType, DerivedType,
-                          typename ExpressionPIMPL<FieldType>::labeled_tensor>;
+using LabeledBase = NNary<FieldType, DerivedType, LabeledView<FieldType>>;
 
 template<typename FieldType, typename DerivedType>
 using Binary =

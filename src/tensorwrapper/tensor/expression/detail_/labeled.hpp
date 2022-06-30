@@ -11,32 +11,43 @@ private:
     using base_type = LabeledBase<FieldType, my_type>;
 
 public:
-    using typename base_type::labeled_tensor;
+    using typename base_type::const_allocator_reference;
+    using typename base_type::const_label_reference;
+    using typename base_type::const_shape_reference;
+    using typename base_type::tensor_type;
 
     using base_type::NNary;
 
 protected:
-    labeled_tensor& eval_(labeled_tensor& lhs) const override;
+    tensor_type tensor_(const_label_reference labels,
+                        const_shape_reference shape,
+                        const_allocator_reference alloc) const override;
 
 private:
     const auto& tensor() const { return this->template arg<0>(); }
 };
 
 template<typename FieldType>
-typename Labeled<FieldType>::labeled_tensor& Labeled<FieldType>::eval_(
-  labeled_tensor& result) const {
-    const auto& rhs_labels = tensor().labels();
-    const auto& lhs_labels = result.labels();
-    const auto& rhs_buffer = tensor().tensor().buffer();
-    auto& lhs_buffer       = result.tensor().buffer();
+typename Labeled<FieldType>::tensor_type Labeled<FieldType>::tensor_(
+  const_label_reference labels, const_shape_reference shape,
+  const_allocator_reference alloc) const {
+    // Input is b, we're doing b = a
 
-    if(rhs_labels != lhs_labels) {
-        rhs_buffer.permute(rhs_labels, lhs_labels, lhs_buffer);
+    const auto& a_labels = tensor().labels();
+    const auto& a_tensor = tensor().tensor();
+    const auto& a_buffer = a_tensor.buffer();
+
+    tensor_type b(shape.clone(), alloc.clone());
+    const auto& b_labels = labels;
+    auto& b_buffer       = b.buffer();
+
+    if(b_labels != a_labels) {
+        a_buffer.permute(a_labels, b_labels, b_buffer);
     } else {
-        lhs_buffer = rhs_buffer;
+        b_buffer = a_buffer;
     }
 
-    return result;
+    return b;
 }
 
 } // namespace tensorwrapper::tensor::expression::detail_

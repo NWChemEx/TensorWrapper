@@ -11,29 +11,38 @@ private:
     using base_type = ScaleBase<FieldType, my_type, double>;
 
 public:
-    using labeled_tensor = typename base_type::labeled_tensor;
+    using typename base_type::const_allocator_reference;
+    using typename base_type::const_label_reference;
+    using typename base_type::const_shape_reference;
+    using typename base_type::tensor_type;
 
     using base_type::NNary;
 
 protected:
-    labeled_tensor& eval_(labeled_tensor& result) const override;
+    tensor_type tensor_(const_label_reference labels,
+                        const_shape_reference shape,
+                        const_allocator_reference alloc) const override;
 };
 
 template<typename FieldType>
-typename Scale<FieldType>::labeled_tensor& Scale<FieldType>::eval_(
-  labeled_tensor& result) const {
-    labeled_tensor temp(result);
-    temp = this->template arg<0>().eval(temp);
+typename Scale<FieldType>::tensor_type Scale<FieldType>::tensor_(
+  const_label_reference labels, const_shape_reference shape,
+  const_allocator_reference alloc) const {
+    // We're doing c = a * b (b is the scalar)
 
-    const auto& rlabels = temp.labels();
-    const auto& llabels = result.labels();
+    auto a = this->template arg<0>().tensor(labels, shape, alloc);
+    auto b = this->template arg<1>();
+    tensor_type c(shape.clone(), alloc.clone());
 
-    auto& rbuffer = temp.tensor().buffer();
-    auto& lbuffer = result.tensor().buffer();
+    const auto& a_labels = labels;
+    const auto& c_labels = labels;
 
-    rbuffer.scale(rlabels, llabels, lbuffer, this->template arg<1>());
+    auto& a_buffer = a.buffer();
+    auto& c_buffer = c.buffer();
 
-    return result;
+    a_buffer.scale(a_labels, c_labels, c_buffer, b);
+
+    return c;
 }
 
 } // namespace tensorwrapper::tensor::expression::detail_

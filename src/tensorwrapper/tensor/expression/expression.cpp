@@ -1,6 +1,7 @@
 #include "detail_/add.hpp"
 #include "detail_/labeled.hpp"
 #include "detail_/scale.hpp"
+#include "detail_/subtract.hpp"
 #include <tensorwrapper/tensor/expression/expression_class.hpp>
 
 namespace tensorwrapper::tensor::expression {
@@ -28,6 +29,12 @@ EXPRESSION EXPRESSION::operator+(const Expression& rhs) const {
 }
 
 TPARAMS
+EXPRESSION EXPRESSION::operator-(const Expression& rhs) const {
+    auto pimpl = std::make_unique<detail_::Subtract<FieldType>>(*this, rhs);
+    return Expression(std::move(pimpl));
+}
+
+TPARAMS
 EXPRESSION EXPRESSION::operator*(double rhs) const {
     auto pimpl = std::make_unique<detail_::Scale<FieldType>>(*this, rhs);
     return Expression(std::move(pimpl));
@@ -40,20 +47,21 @@ EXPRESSION EXPRESSION::operator*(const Expression& rhs) const {
 }
 
 TPARAMS
-typename EXPRESSION::labeled_tensor& EXPRESSION::eval(
-  labeled_tensor& result) const {
-    return pimpl_().eval(result);
+typename EXPRESSION::tensor_type EXPRESSION::tensor(
+  const_label_reference labels, const_shape_reference shape,
+  const_allocator_reference alloc) const {
+    return pimpl_().tensor(labels, shape, alloc);
 }
 
 TPARAMS
 bool EXPRESSION::operator==(const Expression& rhs) const noexcept {
-  if(m_pimpl_ && rhs.m_pimpl_) return m_pimpl_->are_equal(*rhs.m_pimpl_);
-  return static_cast<bool>(m_pimpl_) == static_cast<bool>(rhs.m_pimpl_);
+    if(m_pimpl_ && rhs.m_pimpl_) return m_pimpl_->are_equal(*rhs.m_pimpl_);
+    return static_cast<bool>(m_pimpl_) == static_cast<bool>(rhs.m_pimpl_);
 }
 
 TPARAMS
 bool EXPRESSION::operator!=(const Expression& rhs) const noexcept {
-  return !(*this == rhs);
+    return !(*this == rhs);
 }
 
 TPARAMS

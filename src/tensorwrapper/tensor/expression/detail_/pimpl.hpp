@@ -7,17 +7,26 @@ namespace tensorwrapper::tensor::expression::detail_ {
 
 template<typename FieldType>
 class ExpressionPIMPL {
+private:
+    using pt = Expression<FieldType>;
+
 public:
-    using expression_type = Expression<FieldType>;
-    using labeled_tensor  = typename expression_type::labeled_tensor;
-    using pimpl_pointer   = typename expression_type::pimpl_pointer;
+    using const_label_reference     = typename pt::const_label_reference;
+    using const_allocator_reference = typename pt::const_allocator_reference;
+    using const_shape_reference     = typename pt::const_shape_reference;
+    using tensor_type               = typename pt::tensor_type;
+    using pimpl_pointer             = typename pt::pimpl_pointer;
 
     ExpressionPIMPL() noexcept          = default;
     virtual ~ExpressionPIMPL() noexcept = default;
 
     pimpl_pointer clone() const { return clone_(); }
 
-    labeled_tensor& eval(labeled_tensor& lhs) const { return eval_(lhs); }
+    tensor_type tensor(const_label_reference labels,
+                       const_shape_reference shape,
+                       const_allocator_reference alloc) const {
+        return tensor_(labels, shape, alloc);
+    }
 
     bool are_equal(const ExpressionPIMPL& rhs) const noexcept {
         return are_equal_(rhs) && rhs.are_equal_(*this);
@@ -28,7 +37,9 @@ protected:
     ExpressionPIMPL(ExpressionPIMPL&& other)      = default;
 
     virtual pimpl_pointer clone_() const                               = 0;
-    virtual labeled_tensor& eval_(labeled_tensor& lhs) const           = 0;
+    virtual tensor_type tensor_(const_label_reference labels,
+                                const_shape_reference shape,
+                                const_allocator_reference alloc) const = 0;
     virtual bool are_equal_(const ExpressionPIMPL& rhs) const noexcept = 0;
 
 private:

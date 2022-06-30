@@ -4,19 +4,19 @@
 
 namespace tensorwrapper::tensor::expression::detail_ {
 
-/** @brief Implements addition of two expressions
+/** @brief Implements subtraction of two expressions
  *
  *  This class holds two expressions, referred to as `a` and `b`, and computes
- *  `a + b` when evaluated.
+ *  `a - b` when evaluated.
  *
  *  @tparam FieldType A strong type representing the mathematical field from
  *                    which the tensors' elements are drawn.
  */
 template<typename FieldType>
-class Add : public Binary<FieldType, Add<FieldType>> {
+class Subtract : public Binary<FieldType, Subtract<FieldType>> {
 private:
     /// Type of this class
-    using my_type = Add<FieldType>;
+    using my_type = Subtract<FieldType>;
 
     /// Type of the base class
     using base_type = Binary<FieldType, my_type>;
@@ -38,7 +38,7 @@ public:
     using base_type::NNary;
 
 protected:
-    /** @brief Implements tensor by calling Buffer::add
+    /** @brief Implements tensor by calling Buffer::subtract
      *
      *  @param[in] lhs A labeled tensor containing the details
      */
@@ -48,7 +48,7 @@ protected:
 };
 
 template<typename FieldType>
-typename Add<FieldType>::tensor_type Add<FieldType>::tensor_(
+typename Subtract<FieldType>::tensor_type Subtract<FieldType>::tensor_(
   const_label_reference labels, const_shape_reference shape,
   const_allocator_reference alloc) const {
     // TODO This is going to transpose a and b if they don't match c, we'd
@@ -66,7 +66,7 @@ typename Add<FieldType>::tensor_type Add<FieldType>::tensor_(
     const auto& a_buffer = a.buffer();
     const auto& b_buffer = b.buffer();
 
-    a_buffer.add(a_labels, c_labels, c_buffer, b_labels, b_buffer);
+    a_buffer.subtract(a_labels, c_labels, c_buffer, b_labels, b_buffer);
 
     return c;
 }

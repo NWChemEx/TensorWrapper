@@ -7,7 +7,7 @@ namespace tensorwrapper::tensor::expression {
 #define LABELED_VIEW LabeledView<FieldType>
 
 // -----------------------------------------------------------------------------
-// -- ctors, assignment operators, and dtor
+// -- Ctors, assignment operators, and dtor
 // -----------------------------------------------------------------------------
 
 TPARAMS
@@ -17,6 +17,10 @@ LABELED_VIEW::LabeledView(label_type labels, tensor_reference tensor) noexcept :
 TPARAMS LABELED_VIEW::LabeledView(label_type labels,
                                   const_tensor_reference tensor) noexcept :
   m_labels_(std::move(labels)), m_tensor_(), m_ctensor_(std::cref(tensor)) {}
+
+// -----------------------------------------------------------------------------
+// -- Accessors
+// -----------------------------------------------------------------------------
 
 TPARAMS
 typename LABELED_VIEW::expression_type LABELED_VIEW::expression() const {
@@ -39,6 +43,10 @@ typename LABELED_VIEW::const_tensor_reference LABELED_VIEW::tensor() const {
     throw std::runtime_error("Not holding a tensor");
 }
 
+// -----------------------------------------------------------------------------
+// -- Assignment operations
+// -----------------------------------------------------------------------------
+
 TPARAMS
 LABELED_VIEW& LABELED_VIEW::operator=(const LabeledView& rhs) {
     return operator=(rhs.expression());
@@ -56,21 +64,27 @@ LABELED_VIEW& LABELED_VIEW::operator=(const_expression_reference rhs) {
     // auto alloc = rhs.allocator();
     // auto shape = rhs.shape(*this);
     // TensorWrapper(std::move(shape), std::move(alloc)).swap(*m_tensor_);
-    // Now call eval to fill in buffer
-    rhs.eval(*this);
+    // Now call tensor to make it
+    // return rhs.tensor(labels(), tensor().shape(), tensor().allocator());
 
-    // As a hack we fill in the buffer first and then use the buffer to create
-    // the shape. We just assume the default allocator for now
+    // As a hack we use the default allocator and an empty shape to get the
+    // correct buffer. We then use the buffer to get the correct shape
+
     using shape_type = typename tensor_type::shape_type;
+    auto alloc       = default_allocator<FieldType>();
+    auto temp        = rhs.tensor(labels(), shape_type(), *alloc);
 
-    auto& buffer = tensor().buffer();
+    auto& buffer = temp.buffer();
     auto shape   = std::make_unique<shape_type>(buffer.make_extents());
-    auto alloc   = default_allocator<FieldType>();
 
-    TensorWrapper(std::move(buffer), std::move(shape), std::move(alloc))
-      .swap(*m_tensor_);
+    tensor() =
+      TensorWrapper(std::move(buffer), std::move(shape), std::move(alloc));
     return *this;
 }
+
+// -----------------------------------------------------------------------------
+// -- Math operations
+// -----------------------------------------------------------------------------
 
 TPARAMS
 typename LABELED_VIEW::expression_type LABELED_VIEW::operator+(
@@ -79,10 +93,20 @@ typename LABELED_VIEW::expression_type LABELED_VIEW::operator+(
 }
 
 TPARAMS
+typename LABELED_VIEW::expression_type LABELED_VIEW::operator-(
+  const LabeledView& rhs) const {
+    return expression() - rhs.expression();
+}
+
+TPARAMS
 typename LABELED_VIEW::expression_type LABELED_VIEW::operator*(
   double rhs) const {
     return expression() * rhs;
 }
+
+// -----------------------------------------------------------------------------
+// -- Utility
+// -----------------------------------------------------------------------------
 
 TPARAMS
 bool LABELED_VIEW::operator==(const LabeledView& rhs) const noexcept {

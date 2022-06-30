@@ -65,6 +65,10 @@ public:
     /// Read-only reference to object in the expression layer
     using const_expression_reference = const expression_type&;
 
+    // -------------------------------------------------------------------------
+    // -- Ctors and dtor
+    // -------------------------------------------------------------------------
+
     /** @brief Annotates a read/write view of a tensor.
      *
      *  This ctor creates a labeled view of @p tensor. Since @p tensor need not
@@ -133,6 +137,10 @@ public:
     /// Default no-throw dtor (N.B. the aliased tensor is NOT cleaned-up)
     ~LabeledView() noexcept = default;
 
+    // -------------------------------------------------------------------------
+    // -- Accessors
+    // -------------------------------------------------------------------------
+
     /** @brief Wraps this LabeledView in an Expression class.
      *
      *  The expression layer describes how pieces of tensor equations are
@@ -183,6 +191,10 @@ public:
      *  @throw None No throw guarantee.
      */
     const_label_reference labels() const { return m_labels_; }
+
+    // -------------------------------------------------------------------------
+    // -- Assignment operations
+    // -------------------------------------------------------------------------
 
     /** @brief Overwrites the contents by transforming @p rhs
      *
@@ -247,8 +259,38 @@ public:
      */
     LabeledView& operator=(const_expression_reference rhs);
 
+    // -------------------------------------------------------------------------
+    // -- Math operations
+    // -------------------------------------------------------------------------
+
+    /** @brief Creates an expression that sums *this and @p rhs
+     *
+     *  @return an Expression instance which, when evaluated, will return the
+     *          result of summing *this and @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the state for the
+     *                        returned object. Strong throw guarantee.
+     */
     expression_type operator+(const LabeledView& rhs) const;
+
+    expression_type operator-(const LabeledView& rhs) const;
+
+    /** @brief Creates an expression that creates a scaled version of *this
+     *
+     *
+     *  @param[in] rhs The scalar to scale *this by.
+     *
+     *  @return An Expression instance which, when evaluated, will result in
+     *          the product of *this and @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the Expression.
+     *                        Strong throw guarantee.
+     */
     expression_type operator*(double rhs) const;
+
+    // -------------------------------------------------------------------------
+    // -- Utility
+    // -------------------------------------------------------------------------
 
     /** @brief Determines if two labeledView instances are value equal
      *
