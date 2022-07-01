@@ -36,12 +36,17 @@ struct ExpressionTestPIMPL
     using typename base_type::const_allocator_reference;
     using typename base_type::const_label_reference;
     using typename base_type::const_shape_reference;
+    using typename base_type::label_type;
     using typename base_type::tensor_type;
 
     /* This should be initialized with the tensor whose operator=(Expression)
      * method is being called.
      */
     ExpressionTestPIMPL(labeled_tensor* pt) : m_ptensor(pt) {}
+
+    label_type labels_(const_label_reference labels) const override {
+        return labels;
+    }
 
     tensor_type tensor_(const_label_reference labels,
                         const_shape_reference shape,

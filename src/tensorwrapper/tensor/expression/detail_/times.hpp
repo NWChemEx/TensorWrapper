@@ -4,19 +4,19 @@
 
 namespace tensorwrapper::tensor::expression::detail_ {
 
-/** @brief Implements addition of two expressions
+/** @brief Implements multiplication of two expressions
  *
  *  This class holds two expressions, referred to as `a` and `b`, and computes
- *  `a + b` when evaluated.
+ *  `a * b` when evaluated.
  *
  *  @tparam FieldType A strong type representing the mathematical field from
  *                    which the tensors' elements are drawn.
  */
 template<typename FieldType>
-class Add : public Binary<FieldType, Add<FieldType>> {
+class Times : public Binary<FieldType, Times<FieldType>> {
 private:
     /// Type of this class
-    using my_type = Add<FieldType>;
+    using my_type = Times<FieldType>;
 
     /// Type of the base class
     using base_type = Binary<FieldType, my_type>;
@@ -44,17 +44,17 @@ protected:
         return lhs_labels;
     }
 
-    /** @brief Implements tensor by calling Buffer::add
+    /** @brief Implements tensor by calling Buffer::times
      *
      *  @param[in] lhs A labeled tensor containing the details
      */
-    tensor_type tensor_(const_label_reference lhs_labels,
+    tensor_type tensor_(const_label_reference labels,
                         const_shape_reference shape,
                         const_allocator_reference alloc) const override;
 };
 
 template<typename FieldType>
-typename Add<FieldType>::tensor_type Add<FieldType>::tensor_(
+typename Times<FieldType>::tensor_type Times<FieldType>::tensor_(
   const_label_reference lhs_labels, const_shape_reference shape,
   const_allocator_reference alloc) const {
     const auto& exp_a = this->template arg<0>();
@@ -66,13 +66,12 @@ typename Add<FieldType>::tensor_type Add<FieldType>::tensor_(
 
     auto a = exp_a.tensor(a_labels, shape, alloc);
     auto b = exp_b.tensor(b_labels, shape, alloc);
-
     tensor_type c(shape.clone(), alloc.clone());
     auto& c_buffer       = c.buffer();
     const auto& a_buffer = a.buffer();
     const auto& b_buffer = b.buffer();
 
-    a_buffer.add(a_labels, c_labels, c_buffer, b_labels, b_buffer);
+    a_buffer.times(a_labels, c_labels, c_buffer, b_labels, b_buffer);
 
     return c;
 }

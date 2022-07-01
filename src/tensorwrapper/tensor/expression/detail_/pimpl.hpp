@@ -11,6 +11,7 @@ private:
     using pt = Expression<FieldType>;
 
 public:
+    using label_type                = typename pt::label_type;
     using const_label_reference     = typename pt::const_label_reference;
     using const_allocator_reference = typename pt::const_allocator_reference;
     using const_shape_reference     = typename pt::const_shape_reference;
@@ -21,6 +22,10 @@ public:
     virtual ~ExpressionPIMPL() noexcept = default;
 
     pimpl_pointer clone() const { return clone_(); }
+
+    label_type labels(const_label_reference lhs_labels) const {
+        return labels_(lhs_labels);
+    }
 
     tensor_type tensor(const_label_reference labels,
                        const_shape_reference shape,
@@ -37,6 +42,7 @@ protected:
     ExpressionPIMPL(ExpressionPIMPL&& other)      = default;
 
     virtual pimpl_pointer clone_() const                               = 0;
+    virtual label_type labels_(const_label_reference lhs_labels) const = 0;
     virtual tensor_type tensor_(const_label_reference labels,
                                 const_shape_reference shape,
                                 const_allocator_reference alloc) const = 0;

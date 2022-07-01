@@ -11,14 +11,19 @@ private:
     using base_type = LabeledBase<FieldType, my_type>;
 
 public:
-    using typename base_type::const_allocator_reference;
+    using typename base_type::label_type;
     using typename base_type::const_label_reference;
+    using typename base_type::const_allocator_reference;
     using typename base_type::const_shape_reference;
     using typename base_type::tensor_type;
 
     using base_type::NNary;
 
 protected:
+    label_type labels_(const_label_reference) const override {
+        return tensor().labels();
+    }
+
     tensor_type tensor_(const_label_reference labels,
                         const_shape_reference shape,
                         const_allocator_reference alloc) const override;

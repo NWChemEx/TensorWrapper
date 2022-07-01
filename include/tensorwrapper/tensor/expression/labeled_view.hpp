@@ -273,7 +273,34 @@ public:
      */
     expression_type operator+(const LabeledView& rhs) const;
 
+    /** @brief Creates an expression that subtracts @p rhs from *this.
+     *
+     *  @param[in] rhs The LabeledView being subtracted from *this.
+     *
+     *  @return an Expression instance, which when evaluated, will return the
+     *          result of subtracting @p rhs from *this
+     *
+     *  @throw std::bad_alloc if there is a problem allocationg the state for
+     *                        the returned object. Str
+     */
     expression_type operator-(const LabeledView& rhs) const;
+
+    /** @brief Creates an expression that multiplies *this by  @p rhs
+     *
+     *  This operation will multiply *this by @p rhs. Whether this is an
+     *  element-wise multiplication, a contraction, or a combination of both is
+     *  ultimately determined by the labels on *this, the labels on @p rhs, and
+     *  the labels on the tensor the expression is assigned to.
+     *
+     *  @param[in] rhs The LabeledView being multiplied with *this.
+     *
+     *  @return an Expression instance, which when evaluated, will return the
+     *          result of subtracting @p rhs from *this
+     *
+     *  @throw std::bad_alloc if there is a problem allocationg the state for
+     *                        the returned object. Str
+     */
+    expression_type operator*(const LabeledView& rhs) const;
 
     /** @brief Creates an expression that creates a scaled version of *this
      *

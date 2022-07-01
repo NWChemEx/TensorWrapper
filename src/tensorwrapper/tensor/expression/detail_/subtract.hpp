@@ -22,6 +22,8 @@ private:
     using base_type = Binary<FieldType, my_type>;
 
 public:
+    using typename base_type::label_type;
+
     /// Type of labeled views compatible with this expression. Ultimately
     /// set by the FieldTraits<FieldType>::const_label_reference
     using typename base_type::const_label_reference;
@@ -38,28 +40,32 @@ public:
     using base_type::NNary;
 
 protected:
+    label_type labels_(const_label_reference lhs_labels) const override {
+        return lhs_labels;
+    }
+
     /** @brief Implements tensor by calling Buffer::subtract
      *
      *  @param[in] lhs A labeled tensor containing the details
      */
-    tensor_type tensor_(const_label_reference labels,
+    tensor_type tensor_(const_label_reference lhs_labels,
                         const_shape_reference shape,
                         const_allocator_reference alloc) const override;
 };
 
 template<typename FieldType>
 typename Subtract<FieldType>::tensor_type Subtract<FieldType>::tensor_(
-  const_label_reference labels, const_shape_reference shape,
+  const_label_reference lhs_labels, const_shape_reference shape,
   const_allocator_reference alloc) const {
-    // TODO This is going to transpose a and b if they don't match c, we'd
-    //      rather it happen as part of the call to buffer.
+    const auto& exp_a = this->template arg<0>();
+    const auto& exp_b = this->template arg<1>();
 
-    const auto& a_labels = labels;
-    const auto& b_labels = labels;
-    const auto& c_labels = labels;
+    const auto a_labels  = exp_a.labels(lhs_labels);
+    const auto b_labels  = exp_b.labels(lhs_labels);
+    const auto& c_labels = lhs_labels;
 
-    auto a = this->template arg<0>().tensor(c_labels, shape, alloc);
-    auto b = this->template arg<1>().tensor(c_labels, shape, alloc);
+    auto a = exp_a.tensor(a_labels, shape, alloc);
+    auto b = exp_b.tensor(b_labels, shape, alloc);
 
     tensor_type c(shape.clone(), alloc.clone());
     auto& c_buffer       = c.buffer();

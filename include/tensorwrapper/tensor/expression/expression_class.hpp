@@ -16,6 +16,7 @@ private:
     using ft = field::FieldTraits<FieldType>;
 
 public:
+    using label_type                = typename ft::label_type;
     using const_label_reference     = typename ft::const_label_reference;
     using tensor_type               = typename ft::tensor_type;
     using const_allocator_reference = typename ft::const_allocator_reference;
@@ -37,6 +38,12 @@ public:
     Expression operator-(const Expression& rhs) const;
     Expression operator*(double rhs) const;
     Expression operator*(const Expression& rhs) const;
+
+    /** @brief Given the labels of the tensor to assign the expression to, this
+     *         method returns the labels of the expression.
+     *
+     */
+    label_type labels(const_label_reference lhs_labels) const;
 
     tensor_type tensor(const_label_reference labels,
                        const_shape_reference shape,

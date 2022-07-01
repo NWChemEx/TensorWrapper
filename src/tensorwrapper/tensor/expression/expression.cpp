@@ -2,6 +2,7 @@
 #include "detail_/labeled.hpp"
 #include "detail_/scale.hpp"
 #include "detail_/subtract.hpp"
+#include "detail_/times.hpp"
 #include <tensorwrapper/tensor/expression/expression_class.hpp>
 
 namespace tensorwrapper::tensor::expression {
@@ -42,8 +43,14 @@ EXPRESSION EXPRESSION::operator*(double rhs) const {
 
 TPARAMS
 EXPRESSION EXPRESSION::operator*(const Expression& rhs) const {
-    throw std::runtime_error("NYI");
-    return rhs;
+    auto pimpl = std::make_unique<detail_::Times<FieldType>>(*this, rhs);
+    return Expression(std::move(pimpl));
+}
+
+TPARAMS
+typename EXPRESSION::label_type EXPRESSION::labels(
+  const_label_reference lhs_labels) const {
+    return pimpl_().labels(lhs_labels);
 }
 
 TPARAMS

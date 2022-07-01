@@ -100,6 +100,12 @@ typename LABELED_VIEW::expression_type LABELED_VIEW::operator-(
 
 TPARAMS
 typename LABELED_VIEW::expression_type LABELED_VIEW::operator*(
+  const LabeledView& rhs) const {
+    return expression() * rhs.expression();
+}
+
+TPARAMS
+typename LABELED_VIEW::expression_type LABELED_VIEW::operator*(
   double rhs) const {
     return expression() * rhs;
 }
