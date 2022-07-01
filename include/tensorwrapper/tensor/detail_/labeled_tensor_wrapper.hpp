@@ -23,8 +23,8 @@ namespace tensorwrapper::tensor::detail_ {
  *  @tparam TensorWrapperType The type of the TensorWrapper being annotated.
  */
 template<typename TensorWrapperType>
-class LabeledTensorWrapper
-  : public OpLayer<LabeledTensorWrapper<TensorWrapperType>> {
+class LabeledTensorWrapper : public tensorwrapper::tensor::detail_::OpLayer<
+                               LabeledTensorWrapper<TensorWrapperType>> {
 public:
     /// Type used for annotation
     using annotation_type = std::string;

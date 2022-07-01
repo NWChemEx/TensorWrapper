@@ -1,6 +1,12 @@
-#include "../test_tensor.hpp"
+#include <catch2/catch.hpp>
+//#include "../../test_tensor.hpp"
+#include "../buffer/make_pimpl.hpp"
+#include "../shapes/make_tot_shape.hpp"
+#include "tensorwrapper/ta_helpers/slice.hpp"
+#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
+namespace ta_helpers = tensorwrapper::ta_helpers;
 using namespace tensorwrapper::tensor;
 
 /* Testing Strategy:
@@ -14,187 +20,98 @@ using namespace tensorwrapper::tensor;
 TEST_CASE("TensorWrapperPIMPL<Tensor>") {
     using field_type     = field::Tensor;
     using pimpl_type     = detail_::TensorWrapperPIMPL<field_type>;
+    using buffer_type    = typename pimpl_type::buffer_type;
+    using buffer_pointer = typename pimpl_type::buffer_pointer;
     using variant_type   = typename pimpl_type::variant_type;
     using ta_tensor_type = std::variant_alternative_t<0, variant_type>;
     using shape_type     = typename pimpl_type::shape_type;
     using extents_type   = typename pimpl_type::extents_type;
+    using ta_trange_type = TA::TiledRange;
 
-    using outer_tile = typename ta_tensor_type::value_type;
-    using inner_tile = typename outer_tile::value_type;
+    using allocator::ta::Distribution;
+    using allocator::ta::Storage;
+    using allocator::ta::Tiling;
 
-    inner_tile v0(TA::Range({2}), {1.0, 2.0});
-    inner_tile v1(TA::Range({2}), {3.0, 4.0});
-    inner_tile v2(TA::Range({2}), {5.0, 6.0});
-    inner_tile v3(TA::Range({2}), {7.0, 8.0});
-    inner_tile mat0(TA::Range({2, 2}), {1.0, 2.0, 3.0, 4.0});
-    inner_tile mat1(TA::Range({2, 2}), {5.0, 6.0, 7.0, 8.0});
+    auto palloc = default_allocator<field_type>();
+    auto oalloc = allocator::ta_allocator<field_type>(
+      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
 
-    using default_alloc = OneBigTile<field_type>;
-    using other_alloc   = SingleElementTiles<field_type>;
+    buffer_pointer vov_buffer_obt, vom_buffer_obt, mov_buffer_obt;
+    // TODO: Test SET
+    // buffer_pointer vov_buffer_set, vom_buffer_set, mov_buffer_set;
+    {
+        auto [pvov, pvom, pmov] = testing::make_pimpl<field_type>();
+        vov_buffer_obt          = std::make_unique<buffer_type>(pvov->clone());
+        vom_buffer_obt          = std::make_unique<buffer_type>(pvom->clone());
+        mov_buffer_obt          = std::make_unique<buffer_type>(pmov->clone());
 
-    auto alloc   = std::make_unique<default_alloc>();
-    auto tensors = testing::get_tensors<ta_tensor_type>();
+        // TODO: Test SET
+        // ta_trange_type se_tr_vec{{0, 1, 2, 3}};
+        // ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
+        // ta_trange_type se_tr_ten{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+        // pv->retile(se_tr_vec);
+        // pm->retile(se_tr_mat);
+        // pt->retile(se_tr_ten);
+        // vec_buffer_set = std::make_unique<buffer_type>(std::move(pv));
+        // mat_buffer_set = std::make_unique<buffer_type>(std::move(pm));
+        // t3d_buffer_set = std::make_unique<buffer_type>(std::move(pt));
+    }
 
-    variant_type vov_data{tensors.at("vector-of-vectors")};
-    variant_type mov_data{tensors.at("matrix-of-vectors")};
-    variant_type vom_data{tensors.at("vector-of-matrices")};
+    extents_type vector_extents{3}, matrix_extents{2, 2};
+    auto vov_shape =
+      testing::make_uniform_tot_shape(vector_extents, vector_extents);
+    auto vom_shape =
+      testing::make_uniform_tot_shape(vector_extents, matrix_extents);
+    auto mov_shape =
+      testing::make_uniform_tot_shape(matrix_extents, vector_extents);
 
-    pimpl_type vov(vov_data, alloc->clone());
-    pimpl_type mov(mov_data, alloc->clone());
-    pimpl_type vom(vom_data, alloc->clone());
+    auto from_buffer = [](auto&& b) {
+        return std::make_unique<buffer_type>(b->pimpl()->clone());
+    };
 
-    auto vov_shape = std::make_unique<shape_type>(extents_type{2});
-    auto mov_shape = std::make_unique<shape_type>(extents_type{2, 2});
-    auto vom_shape = std::make_unique<shape_type>(extents_type{2});
+    pimpl_type vov(from_buffer(vov_buffer_obt), vov_shape.clone(),
+                   palloc->clone());
+    pimpl_type vom(from_buffer(vom_buffer_obt), vom_shape.clone(),
+                   palloc->clone());
+    pimpl_type mov(from_buffer(mov_buffer_obt), mov_shape.clone(),
+                   palloc->clone());
 
-    pimpl_type vov2(vov_data, vov_shape->clone(), alloc->clone());
-    pimpl_type mov2(mov_data, mov_shape->clone(), alloc->clone());
-    pimpl_type vom2(vom_data, vom_shape->clone(), alloc->clone());
+    // TODO: Test SET
+    // pimpl_type vov2(from_buffer(vov_buffer_set), vov_shape->clone(),
+    //             oalloc->clone());
+    // pimpl_type vom2(from_buffer(vom_buffer_set), vom_shape->clone(),
+    //             oalloc->clone());
+    // pimpl_type mov2(from_buffer(mov_buffer_set), mov_shape->clone(),
+    //             oalloc->clone());
 
     SECTION("CTors") {
-        SECTION("No Shape") {
-            REQUIRE(vov.allocator() == *alloc);
-            REQUIRE(vov.shape() == *vov_shape);
-            REQUIRE(std::get<0>(vov.variant()) ==
-                    tensors.at("vector-of-vectors"));
-            REQUIRE(vov.size() == 2);
+        SECTION("From Components") {
+            REQUIRE(vov.allocator() == *palloc);
+            REQUIRE(vov.shape() == vov_shape);
+            REQUIRE(vov.buffer() == *vov_buffer_obt);
+            REQUIRE(vov.size() == 3);
 
-            REQUIRE(mov.allocator() == *alloc);
-            REQUIRE(mov.shape() == *mov_shape);
-            REQUIRE(std::get<0>(mov.variant()) ==
-                    tensors.at("matrix-of-vectors"));
+            REQUIRE(vom.allocator() == *palloc);
+            REQUIRE(vom.shape() == vom_shape);
+            REQUIRE(vom.buffer() == *vom_buffer_obt);
+            REQUIRE(vom.size() == 3);
+
+            REQUIRE(mov.allocator() == *palloc);
+            REQUIRE(mov.shape() == mov_shape);
+            REQUIRE(mov.buffer() == *mov_buffer_obt);
             REQUIRE(mov.size() == 4);
-
-            REQUIRE(vom.allocator() == *alloc);
-            REQUIRE(vom.shape() == *vom_shape);
-            REQUIRE(std::get<0>(vom.variant()) ==
-                    tensors.at("vector-of-matrices"));
-            REQUIRE(vom.size() == 2);
-
-            // Just checking that it's triggered, reallocate looks at more
-            // edge-cases
-            SECTION("Reallocates if necessary") {
-                auto new_alloc = std::make_unique<other_alloc>();
-                auto tr        = new_alloc->make_tiled_range(extents_type{2});
-                auto& world    = new_alloc->runtime();
-
-                REQUIRE_THROWS_AS(pimpl_type(vov_data, new_alloc->clone()),
-                                  std::runtime_error);
-
-                // ta_tensor_type corr{world, tr, {1, 2, 3}
-                // REQUIRE(v3.allocator() == *alloc);
-                // REQUIRE(std::get<0>(v3.variant()) == corr);
-                // REQUIRE(v3.size() == 3);
-            }
-        }
-
-        SECTION("With shape") {
-            REQUIRE(vov2.allocator() == *alloc);
-            REQUIRE(vov2.shape() == *vov_shape);
-            REQUIRE(std::get<0>(vov2.variant()) ==
-                    tensors.at("vector-of-vectors"));
-            REQUIRE(vov2.size() == 2);
-
-            REQUIRE(mov2.allocator() == *alloc);
-            REQUIRE(mov2.shape() == *mov_shape);
-            REQUIRE(std::get<0>(mov2.variant()) ==
-                    tensors.at("matrix-of-vectors"));
-            REQUIRE(mov2.size() == 4);
-
-            REQUIRE(vom2.allocator() == *alloc);
-            REQUIRE(vom2.shape() == *vom_shape);
-            REQUIRE(std::get<0>(vom2.variant()) ==
-                    tensors.at("vector-of-matrices"));
-            REQUIRE(vom2.size() == 2);
-
-            // Just want to check that the following are triggered,
-            // reshape/reallocate will check more in depth
-            SECTION("Reshapes if necessary") {
-                extents_type four{4};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {v0, v1, v2, v3});
-
-                REQUIRE_THROWS_AS(
-                  pimpl_type(mov_data, new_shape->clone(), alloc->clone()),
-                  std::runtime_error);
-
-                // REQUIRE(m3.allocator() == *alloc);
-                // REQUIRE(m3.shape() == *new_shape);
-                // REQUIRE(std::get<0>(m3.variant()) == corr);
-                // REQUIRE(m3.size() == 4);
-            }
-
-            SECTION("Applies sparsity if needed") {
-                using single_tiles    = SingleElementTiles<field_type>;
-                using sparse_shape    = SparseShape<field_type>;
-                using sparse_map_type = typename sparse_shape::sparse_map_type;
-                using index_type      = typename sparse_map_type::key_type;
-
-                auto new_alloc = std::make_unique<single_tiles>();
-                extents_type two{2};
-                auto tr     = new_alloc->make_tiled_range(two);
-                auto& world = new_alloc->runtime();
-
-                inner_tile empty;
-                variant_type input{ta_tensor_type(world, tr, {v0, v1})};
-                ta_tensor_type corr(world, tr, {v0, empty});
-
-                index_type i0{0}, i1{1};
-                sparse_map_type sm{{i0, {i0}}};
-                auto new_shape = std::make_unique<sparse_shape>(two, sm);
-
-                pimpl_type m3(input, new_shape->clone(), new_alloc->clone());
-                REQUIRE(m3.allocator() == *new_alloc);
-                REQUIRE(m3.shape() == *new_shape);
-                REQUIRE(std::get<0>(m3.variant()) == corr);
-                REQUIRE(m3.size() == 2);
-            }
-
-            SECTION("Reallocates if necessary") {
-                auto new_alloc = std::make_unique<other_alloc>();
-                auto tr        = new_alloc->make_tiled_range(extents_type{2});
-                auto& world    = new_alloc->runtime();
-
-                REQUIRE_THROWS_AS(
-                  pimpl_type(vov_data, vov_shape->clone(), new_alloc->clone()),
-                  std::runtime_error);
-
-                // ta_tensor_type corr{world, tr, {1, 2, 3}
-                // REQUIRE(v3.allocator() == *alloc);
-                // REQUIRE(std::get<0>(v3.variant()) == corr);
-                // REQUIRE(v3.size() == 3);
-            }
         }
 
         SECTION("clone") {
-            auto v_copy = vov.clone();
-            REQUIRE(*v_copy == vov);
+            auto vov_copy = vov.clone();
+            REQUIRE(*vov_copy == vov);
             // Make sure we didn't just alias
-            REQUIRE(&v_copy->allocator() != &vov.allocator());
-            REQUIRE(&v_copy->shape() != &vov.shape());
+            REQUIRE(&vov_copy->allocator() != &vov.allocator());
+            REQUIRE(&vov_copy->shape() != &vov.shape());
 
-            REQUIRE(*(mov.clone()) == mov);
             REQUIRE(*(vom.clone()) == vom);
+            REQUIRE(*(mov.clone()) == mov);
         }
-    }
-
-    SECTION("allocator") {
-        REQUIRE(vov.allocator() == *alloc);
-        REQUIRE(mov.allocator() == *alloc);
-        REQUIRE(vom.allocator() == *alloc);
-    }
-
-    SECTION("shape") {
-        REQUIRE(vov.shape() == *vov_shape);
-        REQUIRE(mov.shape() == *mov_shape);
-        REQUIRE(vom.shape() == *vom_shape);
-    }
-
-    SECTION("extents") {
-        REQUIRE(vov.extents() == extents_type{2});
-        REQUIRE(mov.extents() == extents_type{2, 2});
-        REQUIRE(vom.extents() == extents_type{2});
     }
 
     SECTION("make_annotation") {
@@ -210,165 +127,21 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
     }
 
     SECTION("norm()") {
-        REQUIRE(vov.norm() == Approx(5.47722557).margin(1E-8));
-        REQUIRE(mov.norm() == Approx(14.2828568).margin(1E-8));
-        REQUIRE(vom.norm() == Approx(14.2828568).margin(1E-8));
+        REQUIRE(vov.norm() == Approx(6.4807406984).margin(1E-8));
+        REQUIRE(mov.norm() == Approx(7.4833147735).margin(1E-8));
+        REQUIRE(vom.norm() == Approx(9.4868329805).margin(1E-8));
     }
 
     SECTION("sum()") {
-        REQUIRE(vov.sum() == 10);
-        REQUIRE(mov.sum() == 36);
-        REQUIRE(vom.sum() == 36);
+        REQUIRE(vov.sum() == 18);
+        REQUIRE(mov.sum() == 24);
+        REQUIRE(vom.sum() == 30);
     }
 
     SECTION("trace()") {
         REQUIRE_THROWS_AS(vov.trace(), std::runtime_error);
         REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
         REQUIRE_THROWS_AS(vom.trace(), std::runtime_error);
-    }
-
-    SECTION("reallocate") {
-        auto new_alloc = std::make_unique<other_alloc>();
-        auto& world    = new_alloc->runtime();
-        using except_t = std::runtime_error;
-
-        SECTION("vector-of-vectors") {
-            auto tr = new_alloc->make_tiled_range(extents_type{2});
-            REQUIRE_THROWS_AS(vov.reallocate(std::move(new_alloc)), except_t);
-        }
-
-        SECTION("matrix-of-vectors") {
-            auto tr = new_alloc->make_tiled_range(extents_type{2, 2});
-            REQUIRE_THROWS_AS(mov.reallocate(std::move(new_alloc)), except_t);
-        }
-
-        SECTION("vector-of-matrices") {
-            auto tr = new_alloc->make_tiled_range(extents_type{2});
-            REQUIRE_THROWS_AS(vom.reallocate(std::move(new_alloc)), except_t);
-        }
-    }
-
-    SECTION("reshape") {
-        SECTION("Literal reshape") {
-            using except_t = std::runtime_error;
-
-            SECTION("vector-of-vectors") {
-                extents_type extents{2, 1};
-                auto new_shape = std::make_unique<shape_type>(extents);
-                auto tr        = alloc->make_tiled_range(extents);
-                ta_tensor_type corr(alloc->runtime(), tr, {{v0}, {v1}});
-
-                REQUIRE_THROWS_AS(vov.reshape(new_shape->clone()), except_t);
-            }
-
-            SECTION("matrix-of-vectors") {
-                extents_type four{4};
-                auto new_shape = std::make_unique<shape_type>(four);
-                auto tr        = alloc->make_tiled_range(four);
-                ta_tensor_type corr(alloc->runtime(), tr, {v0, v1, v2, v3});
-
-                REQUIRE_THROWS_AS(mov.reshape(new_shape->clone()), except_t);
-            }
-
-            SECTION("vector-of-matrices") {
-                extents_type extents{2, 1};
-                auto new_shape = std::make_unique<shape_type>(extents);
-                auto tr        = alloc->make_tiled_range(extents);
-                ta_tensor_type corr(alloc->runtime(), tr, {{mat0}, {mat1}});
-
-                REQUIRE_THROWS_AS(vom.reshape(new_shape->clone()), except_t);
-            }
-        }
-
-        SECTION("Apply sparsity") {
-            using single_tiles    = SingleElementTiles<field_type>;
-            using sparse_shape    = SparseShape<field_type>;
-            using sparse_map_type = typename sparse_shape::sparse_map_type;
-            using index_type      = typename sparse_map_type::key_type;
-
-            auto new_alloc = std::make_unique<single_tiles>();
-            auto& world    = new_alloc->runtime();
-
-            index_type i0{0}, i00{0, 0}, i1{1}, i11{1, 1};
-            inner_tile empty;
-
-            SECTION("vector-of-vectors") {
-                extents_type extents{2};
-                sparse_map_type sm{{i0, {i0}}};
-                auto new_shape = std::make_unique<sparse_shape>(extents, sm);
-                auto tr        = new_alloc->make_tiled_range(extents);
-                variant_type input{ta_tensor_type(world, tr, {v0, v1})};
-                pimpl_type vov2(input, new_alloc->clone());
-                ta_tensor_type corr(world, tr, {v0, empty});
-                vov2.reshape(new_shape->clone());
-                REQUIRE(vov2.shape() == *new_shape);
-                REQUIRE(std::get<0>(vov2.variant()) == corr);
-                REQUIRE(vov2.size() == 2);
-            }
-
-            SECTION("matrix-of-vectors") {
-                extents_type extents{2, 2};
-                sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
-                auto new_shape = std::make_unique<sparse_shape>(extents, sm);
-                auto tr        = new_alloc->make_tiled_range(extents);
-                variant_type input{
-                  ta_tensor_type(world, tr, {{v0, v1}, {v0, v1}})};
-                pimpl_type mov2(input, new_alloc->clone());
-                ta_tensor_type corr(world, tr, {{v0, empty}, {empty, v1}});
-                mov2.reshape(new_shape->clone());
-                REQUIRE(mov2.shape() == *new_shape);
-                REQUIRE(std::get<0>(mov2.variant()) == corr);
-                REQUIRE(mov2.size() == 4);
-            }
-
-            SECTION("vector-of-matrices") {
-                extents_type extents{2};
-                sparse_map_type sm{{i0, {i00}}};
-                auto new_shape = std::make_unique<sparse_shape>(extents, sm);
-                auto tr        = new_alloc->make_tiled_range(extents);
-
-                variant_type input{ta_tensor_type(world, tr, {mat0, mat1})};
-                pimpl_type vom2(input, new_alloc->clone());
-                ta_tensor_type corr(world, tr, {mat0, empty});
-                vom2.reshape(new_shape->clone());
-                REQUIRE(vom2.shape() == *new_shape);
-                REQUIRE(std::get<0>(vom2.variant()) == corr);
-                REQUIRE(vom2.size() == 2);
-            }
-        }
-    }
-
-    SECTION("size") {
-        REQUIRE(vov.size() == 2);
-        REQUIRE(mov.size() == 4);
-        REQUIRE(vom.size() == 2);
-    }
-
-    SECTION("slice()") {
-        auto& world    = alloc->runtime();
-        using except_t = std::runtime_error;
-
-        SECTION("vector-of-vectors") {
-            auto tr = alloc->make_tiled_range(extents_type{1});
-            ta_tensor_type corr_data{world, tr, {v1}};
-            pimpl_type corr(corr_data, alloc->clone());
-            REQUIRE_THROWS_AS(vov.slice({0}, {1}, alloc->clone()), except_t);
-        }
-
-        SECTION("matrix-of-vectors") {
-            auto tr = alloc->make_tiled_range(extents_type{1, 1});
-            ta_tensor_type corr_data{world, tr, {{v1}}};
-            pimpl_type corr(corr_data, alloc->clone());
-            REQUIRE_THROWS_AS(vov.slice({0, 1}, {1, 2}, alloc->clone()),
-                              except_t);
-        }
-
-        SECTION("vector-of-matrices") {
-            auto tr = alloc->make_tiled_range(extents_type{1});
-            ta_tensor_type corr_data{world, tr, {mat0}};
-            pimpl_type corr(corr_data, alloc->clone());
-            REQUIRE_THROWS_AS(vov.slice({0}, {1}, alloc->clone()), except_t);
-        }
     }
 
     SECTION("print") {
@@ -380,9 +153,10 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             // Returns ss for chaining
             REQUIRE(pss == &ss);
 
-            std::string corr = "0: [ [0], [2] ) {\n"
-                               "  [0]:[ [0], [2] ) { 1 2 }\n"
-                               "  [1]:[ [0], [2] ) { 3 4 }\n"
+            std::string corr = "0: [ [0], [3] ) {\n"
+                               "  [0]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [1]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [2]:[ [0], [3] ) { 1 2 3 }\n"
                                "}\n";
             REQUIRE(corr == ss.str());
         }
@@ -394,10 +168,10 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             REQUIRE(pss == &ss);
 
             std::string corr = "0: [ [0,0], [2,2] ) {\n"
-                               "  [0,0]:[ [0], [2] ) { 1 2 }\n"
-                               "  [0,1]:[ [0], [2] ) { 3 4 }\n"
-                               "  [1,0]:[ [0], [2] ) { 5 6 }\n"
-                               "  [1,1]:[ [0], [2] ) { 7 8 }\n"
+                               "  [0,0]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [0,1]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [1,0]:[ [0], [3] ) { 1 2 3 }\n"
+                               "  [1,1]:[ [0], [3] ) { 1 2 3 }\n"
                                "}\n";
             REQUIRE(corr == ss.str());
         }
@@ -408,28 +182,48 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             // Returns ss for chaining
             REQUIRE(pss == &ss);
 
-            std::string corr = "0: [ [0], [2] ) {\n"
+            std::string corr = "0: [ [0], [3] ) {\n"
                                "  [0]:[ [0,0], [2,2] ) { 1 2 3 4 }\n"
-                               "  [1]:[ [0,0], [2,2] ) { 5 6 7 8 }\n"
+                               "  [1]:[ [0,0], [2,2] ) { 1 2 3 4 }\n"
+                               "  [2]:[ [0,0], [2,2] ) { 1 2 3 4 }\n"
                                "}\n";
             REQUIRE(corr == ss.str());
+        }
+    }
+
+    SECTION("reallocate") {
+        using except_t = std::runtime_error;
+
+        SECTION("vector-of-vectors") {
+            REQUIRE_THROWS_AS(vov.reallocate(oalloc->clone()), except_t);
+        }
+
+        SECTION("matrix-of-vectors") {
+            REQUIRE_THROWS_AS(mov.reallocate(oalloc->clone()), except_t);
+        }
+
+        SECTION("vector-of-matrices") {
+            REQUIRE_THROWS_AS(vom.reallocate(oalloc->clone()), except_t);
         }
     }
 
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
 
-        auto lhs = hash_objects(vov2);
+        auto lhs = hash_objects(vom);
 
         SECTION("Same") {
-            pimpl_type rhs(vov_data, vov_shape->clone(), alloc->clone());
+            pimpl_type rhs(from_buffer(vom_buffer_obt), vom_shape.clone(),
+                           palloc->clone());
             REQUIRE(lhs == hash_objects(rhs));
         }
 
-        SECTION("Different values") {
-            auto tr = alloc->make_tiled_range(extents_type{2});
-            ta_tensor_type rhs_data(alloc->runtime(), tr, {v0, v0});
-            pimpl_type rhs(rhs_data, vov_shape->clone(), alloc->clone());
+        SECTION("Different Values") {
+            auto rhs_buffer = from_buffer(vom_buffer_obt);
+            vom_buffer_obt->scale("i;j,k", "i;j,k", *rhs_buffer, 4.2);
+
+            pimpl_type rhs(from_buffer(rhs_buffer), vom_shape.clone(),
+                           palloc->clone());
             REQUIRE(lhs != hash_objects(rhs));
         }
 
@@ -438,26 +232,36 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             using sparse_map_type = typename sparse_shape::sparse_map_type;
             using index_type      = typename sparse_map_type::key_type;
 
-            index_type i0{0}, i1{1};
-            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-            extents_type two{2};
-            auto new_shape = std::make_unique<sparse_shape>(two, sm);
-            pimpl_type rhs(vov_data, new_shape->clone(), alloc->clone());
+            index_type i0{0}, i1{1}, i2{2}, i00{0, 0}, i10{1, 0}, i01{0, 1},
+              i11{1, 1};
+
+            sparse_map_type sm{{i0, {i00, i01, i10, i11}},
+                               {i1, {i00, i01, i10, i11}},
+                               {i2, {i00, i01, i10, i11}}};
+            auto new_shape = std::make_unique<sparse_shape>(
+              vom.extents(), vom.shape().inner_extents(), sm);
+
+            pimpl_type rhs(from_buffer(vom_buffer_obt), new_shape->clone(),
+                           palloc->clone());
+
             REQUIRE(lhs != hash_objects(rhs));
         }
     }
 
     SECTION("operator==") {
         SECTION("Same") {
-            pimpl_type rhs(vov_data, vov_shape->clone(), alloc->clone());
-            REQUIRE(vov2 == rhs);
+            pimpl_type rhs(from_buffer(vom_buffer_obt), vom_shape.clone(),
+                           palloc->clone());
+            REQUIRE(vom == rhs);
         }
 
-        SECTION("Different values") {
-            auto tr = alloc->make_tiled_range(extents_type{2});
-            ta_tensor_type rhs_data(alloc->runtime(), tr, {v0, v0});
-            pimpl_type rhs(rhs_data, vov_shape->clone(), alloc->clone());
-            REQUIRE_FALSE(vov2 == rhs);
+        SECTION("Different Values") {
+            auto rhs_buffer = from_buffer(vom_buffer_obt);
+            vom_buffer_obt->scale("i;j,k", "i;j,k", *rhs_buffer, 4.2);
+
+            pimpl_type rhs(from_buffer(rhs_buffer), vom_shape.clone(),
+                           palloc->clone());
+            REQUIRE_FALSE(vom == rhs);
         }
 
         SECTION("Different shape") {
@@ -465,12 +269,19 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
             using sparse_map_type = typename sparse_shape::sparse_map_type;
             using index_type      = typename sparse_map_type::key_type;
 
-            index_type i0{0}, i1{1};
-            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-            extents_type two{2};
-            auto new_shape = std::make_unique<sparse_shape>(two, sm);
-            pimpl_type rhs(vov_data, new_shape->clone(), alloc->clone());
-            REQUIRE_FALSE(vov2 == rhs);
+            index_type i0{0}, i1{1}, i2{2}, i00{0, 0}, i10{1, 0}, i01{0, 1},
+              i11{1, 1};
+
+            sparse_map_type sm{{i0, {i00, i01, i10, i11}},
+                               {i1, {i00, i01, i10, i11}},
+                               {i2, {i00, i01, i10, i11}}};
+            auto new_shape = std::make_unique<sparse_shape>(
+              vom.extents(), vom.shape().inner_extents(), sm);
+
+            pimpl_type rhs(from_buffer(vom_buffer_obt), new_shape->clone(),
+                           palloc->clone());
+
+            REQUIRE_FALSE(vom == rhs);
         }
     }
 }

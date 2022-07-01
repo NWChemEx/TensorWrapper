@@ -1,5 +1,6 @@
-#include "tensorwrapper/ta_helpers/pow.hpp"
-#include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "../ta_helpers/pow.hpp"
+#include "../ta_helpers/ta_helpers.hpp"
+#include "detail_/ta_to_tw.hpp"
 #include "tensorwrapper/tensor/linear_algebra.hpp"
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <TiledArray/math/linalg/cholesky.h>
@@ -18,8 +19,9 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X) {
     auto [eval_vec, evecs] = TA::math::linalg::heig(x);
     const auto& tr1        = evecs.trange().dim(0);
     auto evals = ta_helpers::array_from_vec(eval_vec, tr1, evecs.world());
-    TWrapper EVals(std::move(evals));
-    TWrapper EVecs(std::move(evecs));
+
+    auto EVals = detail_::ta_to_tw(std::move(evals));
+    auto EVecs = detail_::ta_to_tw(std::move(evecs));
     return std::make_pair(EVals, EVecs);
 }
 
@@ -33,26 +35,23 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
     auto [eval_vec, evecs] = TA::math::linalg::heig(x, s);
     const auto& tr1        = evecs.trange().dim(0);
     auto evals = ta_helpers::array_from_vec(eval_vec, tr1, evecs.world());
-    TWrapper EVals(std::move(evals));
-    TWrapper EVecs(std::move(evecs));
+    auto EVals = detail_::ta_to_tw(std::move(evals));
+    auto EVecs = detail_::ta_to_tw(std::move(evecs));
     return std::make_pair(EVals, EVecs);
 }
 
 TWrapper cholesky_linv(const TWrapper& M) {
-    using tensor_type = ta_tensor_type;
+    const auto& m = M.get<ta_tensor_type>();
+    auto linv     = TA::math::linalg::cholesky_linv(m);
 
-    const auto& m = M.get<tensor_type>();
-
-    auto linv = TA::math::linalg::cholesky_linv(m);
-    TWrapper Linv(std::move(linv));
-
-    return Linv;
+    return detail_::ta_to_tw(std::move(linv));
 }
 
 TWrapper hmatrix_pow(const TWrapper& S, double pow) {
     const auto s = S.get<ta_tensor_type>();
     auto s_out   = tensorwrapper::ta_helpers::hmatrix_pow(s, pow);
-    return TWrapper(s_out);
+
+    return detail_::ta_to_tw(s_out);
 }
 
 template<TA::SVD::Vectors Vecs>
@@ -77,7 +76,7 @@ auto SVD_(const TWrapper& M) {
         // No vectors, so the result is just the value vector
         // Convert to an array, wrap, and return
         auto s = ta_helpers::array_from_vec(svd_results, tr_k, m.world());
-        return TWrapper(std::move(s));
+        return detail_::ta_to_tw(std::move(s));
     } else {
         // Grab values and first vector
         auto s_vec = std::get<0>(svd_results);
@@ -87,13 +86,13 @@ auto SVD_(const TWrapper& M) {
         auto s = ta_helpers::array_from_vec(s_vec, tr_k, m.world());
 
         // Wrap values and vector
-        TWrapper S(std::move(s));
-        TWrapper V1(std::move(v1));
+        auto S  = detail_::ta_to_tw(std::move(s));
+        auto V1 = detail_::ta_to_tw(std::move(v1));
 
         // Determine if there is another vector, then return
         if constexpr(both_vecs) {
             auto v2 = std::get<2>(svd_results);
-            TWrapper V2(std::move(v2));
+            auto V2 = detail_::ta_to_tw(std::move(v2));
             return std::make_tuple(S, V1, V2);
         } else {
             return std::make_pair(S, V1);

@@ -24,7 +24,7 @@ private:
     using parent_type = TensorWrapper<FieldType>;
 
     /// Traits class used to get types associated with the field
-    using field_traits = FieldTraits<FieldType>;
+    using field_traits = tensorwrapper::tensor::detail_::FieldTraits<FieldType>;
 
 public:
     /// Type used to annotate the tensor (i.e. type of the dummy indices)
@@ -35,6 +35,12 @@ public:
 
     /// Type which wraps all of the possible backend tensors
     using variant_type = typename field_traits::variant_type;
+
+    /// Type which holds type-erased tensor instance
+    using buffer_type            = typename buffer::Buffer<FieldType>;
+    using buffer_pointer         = std::unique_ptr<buffer_type>;
+    using const_buffer_reference = const buffer_type&;
+    using buffer_reference       = buffer_type&;
 
     /// Type which results from labeling the possible backend
     using labeled_variant_type = typename field_traits::labeled_variant_type;
@@ -71,35 +77,22 @@ public:
     /// Type used for indexing and offsets
     using size_type = typename parent_type::size_type;
 
+    /// Type used for indexing
+    using index_type = typename parent_type::index_type;
+
     /// Type used for initializer lists of sizes
     using il_type = typename parent_type::il_type;
 
     /// Type used for scalar values in the tensor
     using scalar_value_type = typename parent_type::scalar_value_type;
 
-    /** @brief Creates a new PIMPL by using the provided allocator and wrapping
-     *         the provided tensor.
-     *
-     *  Given a wrapped tensor, this ctor will create a shape object consistent
-     *  with that tensor and will reallocate the tensor if the tiling is not
-     *  consistent with the provided allocator.
-     *
-     *
-     *  @param[in] v The wrapped tensor.
-     *  @param[in] p The allocator to use in the TensorWrapper
-     *
-     *  @throws std::runtime_error if FieldType == Tensor and a reallocation is
-     *                             necessary.
-     */
-    TensorWrapperPIMPL(variant_type v, allocator_pointer p);
-
     /** @brief Creates a new PIMPL which wraps the provided tensor and allocator
      *
-     *  @param[in] v A variant which wraps the tensor
+     *  @param[in] b A buffer which wraps the tensor
      *  @param[in] s The shape of the tensor
      *  @param[in] p The allocator to use for tiling, distribution, etc.
      */
-    TensorWrapperPIMPL(variant_type v, shape_pointer s, allocator_pointer p);
+    TensorWrapperPIMPL(buffer_pointer b, shape_pointer s, allocator_pointer p);
 
     /** @brief Makes a deep-copy of the current PIMPL
      *
@@ -133,6 +126,9 @@ public:
      *  @throw std::runtime_error if the instance does not have one.
      */
     const_shape_reference shape() const;
+
+    const_buffer_reference buffer() const;
+    buffer_reference buffer();
 
     /** @brief Annotates the modes of the wrapped index with
      * the provided labels.
@@ -349,18 +345,21 @@ public:
      */
     bool operator==(const TensorWrapperPIMPL& rhs) const;
 
+    /// XXX These are to be removed
+    ///@{
     /** @brief Returns the variant in a read/write state.
      *
      *  @return The wrapped variant in a modifiable state.
      */
-    auto& variant() { return m_tensor_; }
+    variant_type& variant();
 
     /** @brief Returns the variant in a read-only state.
      *
      *
      * @return The wrapped variant in a read-only state.
      */
-    const auto& variant() const { return m_tensor_; }
+    const variant_type& variant() const;
+    ///@}
 
     void update_shape();
 
@@ -372,7 +371,7 @@ private:
     void reallocate_(const_allocator_reference other);
 
     /// Routine used by reshape_ when the rank has changed
-    void shuffle_(const extents_type& other);
+    void shuffle_(const shape_type& other);
 
     /** @brief Returns the inner rank of the tensor.
      *
@@ -382,7 +381,7 @@ private:
      *
      *  @return The number of inner modes.
      */
-    rank_type inner_rank_() const noexcept;
+    rank_type inner_rank_() const;
 
     /** @brief Returns the outer rank of the tensor.
      *
@@ -397,7 +396,7 @@ private:
     rank_type outer_rank_() const noexcept;
 
     /// The actual tensor
-    variant_type m_tensor_;
+    buffer_pointer m_buffer_;
 
     /// The allocator for the tensor, stored in a type-erased state
     allocator_pointer m_allocator_;

@@ -2,6 +2,12 @@
 #include "buffer_pimpl.hpp"
 #include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 
+/// Forward declare the Conversion class
+namespace tensorwrapper::tensor {
+template<typename ToType>
+struct Conversion;
+}
+
 namespace tensorwrapper::tensor::buffer::detail_ {
 
 template<typename FieldType>
@@ -22,6 +28,12 @@ public:
 
     using typename base_type::hasher_reference;
 
+    using typename base_type::scalar_value_type;
+
+    using typename base_type::extents_type;
+
+    using typename base_type::inner_extents_type;
+
     using default_tensor_type =
       typename traits_type::template tensor_type<double>;
 
@@ -29,7 +41,7 @@ public:
 
     using ta_trange_type = TA::TiledRange;
 
-    TABufferPIMPL(default_tensor_type t2wrap = {});
+    explicit TABufferPIMPL(default_tensor_type t2wrap = {});
 
     void retile(ta_trange_type trange);
 
@@ -67,6 +79,12 @@ private:
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
 
+    scalar_value_type norm_() const override;
+    scalar_value_type sum_() const override;
+    scalar_value_type trace_() const override;
+    extents_type make_extents_() const override;
+    inner_extents_type make_inner_extents_() const override;
+
     void hash_(hasher_reference h) const override;
 
     bool are_equal_(const base_type& rhs) const noexcept override;
@@ -74,6 +92,14 @@ private:
     std::string to_str_() const override;
 
     variant_type m_tensor_;
+
+    /// XXX These are to be removed
+    inline variant_type& variant_() override { return m_tensor_; }
+    inline const variant_type& variant_() const override { return m_tensor_; }
+
+    /// Conversion needs access to stored tensor
+    template<typename T>
+    friend struct tensorwrapper::tensor::Conversion;
 };
 
 extern template class TABufferPIMPL<field::Scalar>;

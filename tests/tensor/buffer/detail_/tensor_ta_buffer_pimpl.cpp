@@ -30,12 +30,12 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
     tensor_type vom_ta(world, {m0, m0, m0});
     tensor_type mov_ta(world, {{v0, v0}, {v0, v0}});
 
+    buffer_type defaulted;
     buffer_type vov(vov_ta);
     buffer_type vom(vom_ta);
     buffer_type mov(mov_ta);
 
     SECTION("default_clone()") {
-        buffer_type defaulted;
         REQUIRE(vov.default_clone()->are_equal(defaulted));
     }
 
@@ -264,6 +264,92 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
             mov.times("i,j;k", "i,j;k", out, "i,j;k", rhs);
             out_ta("i,j;k") = mov_ta("i,j;k") * rhs_ta("i,j;k");
             REQUIRE(out.are_equal(buffer_type(out_ta)));
+        }
+    }
+
+    SECTION("norm") {
+        SECTION("vov") {
+            auto ref_norm = vov_ta("i;j").norm().get();
+            auto norm     = vov.norm();
+            REQUIRE(ref_norm == norm);
+        }
+
+        SECTION("vom") {
+            auto ref_norm = vom_ta("i;j,k").norm().get();
+            auto norm     = vom.norm();
+            REQUIRE(ref_norm == norm);
+        }
+
+        SECTION("mov") {
+            auto ref_norm = mov_ta("i,j;k").norm().get();
+            auto norm     = mov.norm();
+            REQUIRE(ref_norm == norm);
+        }
+    }
+
+    SECTION("sum") {
+        SECTION("vov") {
+            auto ref_sum = vov_ta("i;j").sum().get();
+            auto sum     = vov.sum();
+            REQUIRE(ref_sum == sum);
+        }
+
+        SECTION("vom") {
+            auto ref_sum = vom_ta("i;j,k").sum().get();
+            auto sum     = vom.sum();
+            REQUIRE(ref_sum == sum);
+        }
+
+        SECTION("mov") {
+            auto ref_sum = mov_ta("i,j;k").sum().get();
+            auto sum     = mov.sum();
+            REQUIRE(ref_sum == sum);
+        }
+    }
+
+    SECTION("trace") {
+        REQUIRE_THROWS_AS(vov.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(vom.trace(), std::runtime_error);
+        REQUIRE_THROWS_AS(mov.trace(), std::runtime_error);
+    }
+
+    SECTION("make_extents") {
+        REQUIRE(defaulted.make_extents() == std::vector<std::size_t>{});
+        REQUIRE(vov.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(vom.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(mov.make_extents() == std::vector<std::size_t>{2, 2});
+    }
+
+    SECTION("make_inner_extents") {
+        using extents_t   = typename buffer_type::extents_type;
+        using inner_ext_t = typename buffer_type::inner_extents_type;
+        using index_t     = typename inner_ext_t::key_type;
+        using shape_t     = typename inner_ext_t::mapped_type;
+
+        shape_t v_shape{extents_t{3}}, m_shape{extents_t{2, 2}};
+        inner_ext_t inner_exts;
+
+        SECTION("defaulted") {
+            REQUIRE(defaulted.make_inner_extents() == inner_exts);
+        }
+        SECTION("vector-of-vectors") {
+            inner_exts[index_t{0}] = v_shape;
+            inner_exts[index_t{1}] = v_shape;
+            inner_exts[index_t{2}] = v_shape;
+            REQUIRE(vov.make_inner_extents() == inner_exts);
+        }
+        SECTION("vector-of-vectors") {
+            inner_exts[index_t{0}] = m_shape;
+            inner_exts[index_t{1}] = m_shape;
+            inner_exts[index_t{2}] = m_shape;
+            REQUIRE(vom.make_inner_extents() == inner_exts);
+        }
+        SECTION("vector-of-vectors") {
+            inner_exts[index_t{0, 0}] = v_shape;
+            inner_exts[index_t{0, 1}] = v_shape;
+            inner_exts[index_t{1, 0}] = v_shape;
+            inner_exts[index_t{1, 1}] = v_shape;
+            REQUIRE(mov.make_inner_extents() == inner_exts);
         }
     }
 

@@ -26,12 +26,12 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
     tensor_type t3d_ta(world,
                        {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}});
 
+    buffer_type defaulted;
     buffer_type vec(vec_ta);
     buffer_type mat(mat_ta);
     buffer_type t3d(t3d_ta);
 
     SECTION("default_clone()") {
-        buffer_type defaulted;
         REQUIRE(vec.default_clone()->are_equal(defaulted));
     }
 
@@ -281,6 +281,73 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
             out_ta("i,j,k") = t3d_ta("i,j,k") * rhs_ta("i,j,k");
             REQUIRE(out.are_equal(buffer_type(out_ta)));
         }
+    }
+
+    SECTION("norm") {
+        SECTION("vector") {
+            auto ref_norm = vec_ta("i").norm().get();
+            auto norm     = vec.norm();
+            REQUIRE(norm == ref_norm);
+        }
+
+        SECTION("matrix") {
+            auto ref_norm = mat_ta("i,j").norm().get();
+            auto norm     = mat.norm();
+            REQUIRE(norm == ref_norm);
+        }
+
+        SECTION("tensor") {
+            auto ref_norm = t3d_ta("i,j,k").norm().get();
+            auto norm     = t3d.norm();
+            REQUIRE(norm == ref_norm);
+        }
+    }
+
+    SECTION("sum") {
+        SECTION("vector") {
+            auto ref_sum = vec_ta("i").sum().get();
+            auto sum     = vec.sum();
+            REQUIRE(sum == ref_sum);
+        }
+
+        SECTION("matrix") {
+            auto ref_sum = mat_ta("i,j").sum().get();
+            auto sum     = mat.sum();
+            REQUIRE(sum == ref_sum);
+        }
+
+        SECTION("tensor") {
+            auto ref_sum = t3d_ta("i,j,k").sum().get();
+            auto sum     = t3d.sum();
+            REQUIRE(sum == ref_sum);
+        }
+    }
+
+    SECTION("trace") {
+        SECTION("invalid") {
+            REQUIRE_THROWS_AS(vec.trace(), std::runtime_error);
+            REQUIRE_THROWS_AS(t3d.trace(), std::runtime_error);
+        }
+
+        SECTION("matrix") {
+            auto ref_trace = mat_ta("i,j").trace().get();
+            auto trace     = mat.trace();
+            REQUIRE(trace == ref_trace);
+        }
+    }
+
+    SECTION("make_extents") {
+        REQUIRE(defaulted.make_extents() == std::vector<std::size_t>{});
+        REQUIRE(vec.make_extents() == std::vector<std::size_t>{3});
+        REQUIRE(mat.make_extents() == std::vector<std::size_t>{2, 2});
+        REQUIRE(t3d.make_extents() == std::vector<std::size_t>{2, 2, 2});
+    }
+
+    SECTION("make_inner_extents") {
+        REQUIRE(defaulted.make_inner_extents() == 1);
+        REQUIRE(vec.make_inner_extents() == 1);
+        REQUIRE(mat.make_inner_extents() == 1);
+        REQUIRE(t3d.make_inner_extents() == 1);
     }
 
     SECTION("operator std::string") {

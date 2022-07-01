@@ -7,10 +7,13 @@ namespace tensorwrapper::tensor::detail_ {
 /** @brief Calculates the dot product of two tensors.
  *
  *  @note TA doesn't support dot product between ToT and non-ToT tensors,
- *        so both expressions have to be the same type at the moment.
+ *        so both expressions should be the same type.
  *
  *  @tparam T the expression type of the inputs.
+ *  @tparam U the expression type of the inputs.
  *  @tparam <anonymous> Used to disable this overload if T is not part of
+ *                      the expression layer.
+ *  @tparam <anonymous> Used to disable this overload if U is not part of
  *                      the expression layer.
  *
  *  @param[in] lhs The expression on the left side of the dot.
@@ -18,8 +21,10 @@ namespace tensorwrapper::tensor::detail_ {
  *
  *  @return The value of the dot product.
  */
-template<typename T, typename = enable_if_expression_t<std::decay_t<T>>>
-double dot(T&& lhs, T&& rhs) {
+template<typename T, typename U,
+         typename = enable_if_expression_t<std::decay_t<T>>,
+         typename = enable_if_expression_t<std::decay_t<U>>>
+double dot(T&& lhs, U&& rhs) {
     auto lhs_variant = lhs.variant(lhs);
     auto rhs_variant = rhs.variant(rhs);
 
