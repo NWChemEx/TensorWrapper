@@ -1,3 +1,5 @@
+#include "../ta_helpers/ta_helpers.hpp"
+#include "detail_/ta_to_tw.hpp"
 #include "tensorwrapper/tensor/conversions.hpp"
 
 namespace tensorwrapper::tensor {
@@ -31,6 +33,15 @@ std::vector<double> to_vector(const ScalarTensorWrapper& t) {
     std::vector<double> rv(t.size(), 0.0);
     to_contiguous_buffer(t, rv.data(), rv.data() + rv.size());
     return rv;
+}
+
+ScalarTensorWrapper wrap_std_vector(std::vector<double> v) {
+    using tensorwrapper::ta_helpers::array_from_vec;
+    using tensorwrapper::ta_helpers::make_1D_trange;
+
+    auto& world = TA::get_default_world();
+    auto tr1    = make_1D_trange(v.size(), v.size());
+    return detail_::ta_to_tw(array_from_vec(v, tr1, world));
 }
 
 } // namespace tensorwrapper::tensor

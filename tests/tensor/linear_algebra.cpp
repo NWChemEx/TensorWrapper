@@ -1,5 +1,6 @@
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
 
@@ -37,10 +38,10 @@ TEST_CASE("eigen_solve") {
     TA::TSpArrayD data(world,
                        imatrix_il{ivector_il{1, 2, 3}, ivector_il{2, 4, 5},
                                   ivector_il{3, 5, 6}});
-    TWrapper X(data);
+    auto X = detail_::ta_to_tw(data);
 
-    TWrapper eval_corr(TA::TSpArrayD(world, eval_data));
-    TWrapper evec_corr(TA::TSpArrayD(world, evec_data));
+    auto eval_corr = detail_::ta_to_tw(TA::TSpArrayD(world, eval_data));
+    auto evec_corr = detail_::ta_to_tw(TA::TSpArrayD(world, evec_data));
 
     SECTION("No overlap matrix") {
         const auto& [evals, evecs] = eigen_solve(X);
@@ -51,7 +52,7 @@ TEST_CASE("eigen_solve") {
         TA::TSpArrayD ovp(world, dmatrix_il{dvector_il{1.0, 0.0, 0.0},
                                             dvector_il{0.0, 1.0, 0.0},
                                             dvector_il{0.0, 0.0, 1.0}});
-        TWrapper S(ovp);
+        auto S                     = detail_::ta_to_tw(ovp);
         const auto& [evals, evecs] = eigen_solve(X, S);
         SECTION("eigen values") { REQUIRE(allclose(eval_corr, evals)); }
         SECTION("eigen vectors") { REQUIRE(abs_allclose(evec_corr, evecs)); }
@@ -64,10 +65,10 @@ TEST_CASE("SVD") {
     using TWrapper   = ScalarTensorWrapper;
     auto& world      = TA::get_default_world();
 
-    TWrapper values_corr(TA::TSpArrayD(world, svd_values));
-    TWrapper left_corr(TA::TSpArrayD(world, svd_left));
-    TWrapper right_corr(TA::TSpArrayD(world, svd_right));
-    TWrapper X(TA::TSpArrayD(
+    auto values_corr = detail_::ta_to_tw(TA::TSpArrayD(world, svd_values));
+    auto left_corr   = detail_::ta_to_tw(TA::TSpArrayD(world, svd_left));
+    auto right_corr  = detail_::ta_to_tw(TA::TSpArrayD(world, svd_right));
+    auto X           = detail_::ta_to_tw(TA::TSpArrayD(
       world, imatrix_il{ivector_il{1, 2, 3, 4}, ivector_il{5, 6, 7, 8}}));
 
     SECTION("Values") {

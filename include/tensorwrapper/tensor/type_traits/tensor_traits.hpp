@@ -1,5 +1,6 @@
 #pragma once
 #include <TiledArray/dist_array.h>
+
 namespace tensorwrapper::tensor {
 
 /** @brief Primary template for determining the types associated with a tensor

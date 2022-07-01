@@ -11,6 +11,9 @@ private:
     /// Type of the Buffer this PIMPL implements
     using buffer_type = Buffer<FieldType>;
 
+    /// XXX: This is to be removed
+    using variant_type = typename buffer_type::variant_type;
+
 public:
     /// Type of a read-only reference to an annotation
     using const_annotation_reference =
@@ -25,6 +28,15 @@ public:
 
     /// Type of a mutable hasher reference
     using hasher_reference = typename buffer_type::hasher_reference;
+
+    /// Type of scalar values
+    using scalar_value_type = typename buffer_type::scalar_value_type;
+
+    /// Type of extents
+    using extents_type = typename buffer_type::extents_type;
+
+    /// Type of extents
+    using inner_extents_type = typename buffer_type::inner_extents_type;
 
     /// Default constructs the derived class
     pimpl_pointer default_clone() const { return default_clone_(); }
@@ -88,6 +100,23 @@ public:
         times_(my_idx, out_idx, out, rhs_idx, rhs);
     }
 
+    /// Implements norm operation
+    inline scalar_value_type norm() const { return norm_(); }
+
+    /// Implements element sum operation
+    inline scalar_value_type sum() const { return sum_(); }
+
+    /// Implements trace operation
+    inline scalar_value_type trace() const { return trace_(); }
+
+    /// Implements making extents
+    inline extents_type make_extents() const { return make_extents_(); }
+
+    /// Implements making extents
+    inline inner_extents_type make_inner_extents() const {
+        return make_inner_extents_();
+    }
+
     void hash(hasher_reference h) const { hash_(h); }
 
     explicit operator std::string() const { return to_str_(); }
@@ -95,6 +124,10 @@ public:
     bool are_equal(const my_type& rhs) const noexcept {
         return are_equal_(rhs) && rhs.are_equal_(*this);
     }
+
+    /// XXX These are to be removed
+    inline variant_type& variant() { return variant_(); }
+    inline const variant_type& variant() const { return variant(); }
 
 protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
@@ -147,6 +180,21 @@ private:
                         const_annotation_reference rhs_idx,
                         const my_type& rhs) const = 0;
 
+    /// To be overridden by derived class to implement norm
+    virtual scalar_value_type norm_() const = 0;
+
+    /// To be overridden by derived class to implement element sum
+    virtual scalar_value_type sum_() const = 0;
+
+    /// To be overridden by derived class to implement trace
+    virtual scalar_value_type trace_() const = 0;
+
+    /// To be overridden by derived class to implement make_extents
+    virtual extents_type make_extents_() const = 0;
+
+    /// To be overridden by derived class to implement make_inner_extents
+    virtual inner_extents_type make_inner_extents_() const = 0;
+
     /// To be overridden by derived classs to implement hash
     virtual void hash_(hasher_reference h) const = 0;
 
@@ -155,6 +203,10 @@ private:
 
     /// To be overriden by derived class to implement printing
     virtual std::string to_str_() const = 0;
+
+    /// XXX These are to be removed
+    virtual variant_type& variant_()             = 0;
+    virtual const variant_type& variant_() const = 0;
 };
 
 template<typename FieldType>

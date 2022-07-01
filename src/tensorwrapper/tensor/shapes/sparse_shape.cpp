@@ -33,15 +33,32 @@ auto make_i2m(std::size_t i) {
 
 #define SPARSE_SHAPE SparseShape<FieldType>
 
+// Base impl
 template<typename FieldType>
-SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm) :
-  SparseShape(std::move(extents), std::move(sm), make_i2m(extents.size())) {}
+SPARSE_SHAPE::SparseShape(extents_type extents,
+                          inner_extents_type inner_extents, sparse_map_type sm,
+                          idx2mode_type i2m) :
+  base_type(make_pimpl<FieldType>(std::move(extents), std::move(inner_extents),
+                                  std::move(sm), std::move(i2m))) {}
+// Default I2M
+template<typename FieldType>
+SPARSE_SHAPE::SparseShape(extents_type extents,
+                          inner_extents_type inner_extents,
+                          sparse_map_type sm) :
+  SparseShape(std::move(extents), std::move(inner_extents), std::move(sm),
+              make_i2m(extents.size())) {}
 
+// Default Inner Extents
 template<typename FieldType>
 SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm,
                           idx2mode_type i2m) :
-  base_type(
-    make_pimpl<FieldType>(std::move(extents), std::move(sm), std::move(i2m))) {}
+  SparseShape(std::move(extents), inner_extents_type{}, std::move(sm),
+              std::move(i2m)) {}
+
+// Default Inner Extents + I2M
+template<typename FieldType>
+SPARSE_SHAPE::SparseShape(extents_type extents, sparse_map_type sm) :
+  SparseShape(std::move(extents), inner_extents_type{}, std::move(sm)) {}
 
 template<typename FieldType>
 SPARSE_SHAPE::SparseShape(const SparseShape& other) :
@@ -74,18 +91,29 @@ typename SPARSE_SHAPE::const_idx2mode_reference SPARSE_SHAPE::idx2mode_map()
 //------------------------------------------------------------------------------
 
 template<typename FieldType>
-typename SPARSE_SHAPE::pointer_type SPARSE_SHAPE::clone_() const {
-    return pointer_type(new SparseShape(*this));
+bool SPARSE_SHAPE::is_hard_zero_(const index_type& i) const {
+    return downcast(this->pimpl_()).is_hard_zero(i);
 }
 
 template<typename FieldType>
-typename SPARSE_SHAPE::tensor_type SPARSE_SHAPE::make_tensor_(
-  const_allocator_reference p) const {
-    const auto& the_pimpl = downcast(this->pimpl_());
-    auto tr               = p.make_tiled_range(the_pimpl.extents());
-    auto& world           = p.runtime();
-    auto shape            = the_pimpl.shape(tr);
-    return tensor_type(std::in_place_index<0>, world, tr, shape);
+bool SPARSE_SHAPE::is_hard_zero_(const index_type& lo,
+                                 const index_type& hi) const {
+    return downcast(this->pimpl_()).is_hard_zero(lo, hi);
+}
+
+template<typename FieldType>
+typename SPARSE_SHAPE::pointer_type SPARSE_SHAPE::slice_(
+  const index_type& lo, const index_type& hi) const {
+    auto pimpl_ptr = downcast(this->pimpl_()).slice(lo, hi);
+
+    return pointer_type(new SparseShape(
+      pimpl_ptr->extents(), pimpl_ptr->inner_extents(),
+      downcast(*pimpl_ptr).sparse_map(), downcast(*pimpl_ptr).idx2mode_map()));
+}
+
+template<typename FieldType>
+typename SPARSE_SHAPE::pointer_type SPARSE_SHAPE::clone_() const {
+    return pointer_type(new SparseShape(*this));
 }
 
 template<typename FieldType>

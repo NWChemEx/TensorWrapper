@@ -30,14 +30,13 @@ private:
     using disable_if_same_field_t = std::enable_if_t<different_fields_v<T>>;
 
 public:
-    /// Type returned by make_tensor
-    using typename base_type::tensor_type;
-
-    /// Type of an allocator for this tensor type
-    using typename base_type::const_allocator_reference;
-
-    /// Type used to describe the length of each mode
+    /// Type used to describe the length of each (outer) mode
     using typename base_type::extents_type;
+
+    /// Type use to describe the length of each inner mode
+    using typename base_type::inner_extents_type;
+
+    using typename base_type::index_type;
 
     /// Type when this class is returned as a pointer to the base class
     using typename base_type::pointer_type;
@@ -74,6 +73,8 @@ public:
      *                            guarantee.
      */
     SparseShape(extents_type extents, sparse_map_type sm);
+    SparseShape(extents_type extents, inner_extents_type inner_extents,
+                sparse_map_type sm);
 
     /** @brief Creates a new SparseShape from extents, a SparseMap, and a
      *         mapping from SparseMap indices to tensor modes.
@@ -103,6 +104,8 @@ public:
      *                           the rank of the shape. Strong throw guarantee.
      */
     SparseShape(extents_type extents, sparse_map_type sm, idx2mode_type i2m);
+    SparseShape(extents_type extents, inner_extents_type inner_extents,
+                sparse_map_type sm, idx2mode_type i2m);
 
     /** @brief Non-polymorphic comparison of two SparseShape instances.
      *
@@ -163,12 +166,15 @@ protected:
     SparseShape(const SparseShape& other);
 
 private:
+    virtual bool is_hard_zero_(const index_type&,
+                               const index_type&) const override;
+    virtual bool is_hard_zero_(const index_type&) const override;
+
+    virtual pointer_type slice_(const index_type&,
+                                const index_type&) const override;
+
     /// Overrides to account for SparseShape's state
     virtual pointer_type clone_() const override;
-
-    /// Overrides make_tensor to account for sparsity
-    virtual tensor_type make_tensor_(
-      const_allocator_reference p) const override;
 
     virtual bool is_equal_(const Shape<FieldType>& rhs) const noexcept override;
 };

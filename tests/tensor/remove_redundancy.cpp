@@ -1,5 +1,6 @@
 #include "tensorwrapper/tensor/tensor.hpp"
 #include <catch2/catch.hpp>
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
 
@@ -29,20 +30,21 @@ constexpr matrix_il NRC_1_corr_data{vector_il{-0.8093539841320377},
 } // namespace
 
 TEST_CASE("remove_redundancy(TensorWrapper)") {
-    auto& world = TA::get_default_world();
-    tensor_type CTilde_corr(ta_type(world, redundant_PAOs_corr));
-    tensor_type STilde_corr(ta_type(world, redundant_PAO_overlap_corr));
+    auto& world      = TA::get_default_world();
+    auto CTilde_corr = detail_::ta_to_tw(ta_type(world, redundant_PAOs_corr));
+    auto STilde_corr =
+      detail_::ta_to_tw(ta_type(world, redundant_PAO_overlap_corr));
 
     SECTION("No redundancy") {
-        auto NRC = remove_redundancy(CTilde_corr, STilde_corr);
-        tensor_type NRC_corr(ta_type(world, NRC_corr_data));
+        auto NRC      = remove_redundancy(CTilde_corr, STilde_corr);
+        auto NRC_corr = detail_::ta_to_tw(ta_type(world, NRC_corr_data));
         REQUIRE(allclose(NRC, NRC_corr));
     }
 
     SECTION("One redundancy") {
         auto NRC = remove_redundancy(CTilde_corr, STilde_corr, 0.1);
         // Note this differs from NRC_corr_data by the first column being 0
-        tensor_type NRC_corr(ta_type(world, NRC_1_corr_data));
+        auto NRC_corr = detail_::ta_to_tw(ta_type(world, NRC_1_corr_data));
         REQUIRE(allclose(NRC, NRC_corr));
     }
 }

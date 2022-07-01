@@ -24,6 +24,9 @@ private:
 public:
     /// Type used to specify the lengths of each mode
     using typename base_type::extents_type;
+    using typename base_type::inner_extents_type;
+
+    using index_type = typename parent_type::index_type;
 
     /// Type of the sparse map
     using sparse_map_type = typename parent_type::sparse_map_type;
@@ -65,7 +68,12 @@ public:
      *  @throw std::out_of_range If any element of @p idx2mode is larger than
      *                           the rank of the shape. Strong throw guarantee.
      */
-    SparseShapePIMPL(extents_type x, sparse_map_type sm, idx2mode_type i2m);
+    SparseShapePIMPL(extents_type x, inner_extents_type y, sparse_map_type sm,
+                     idx2mode_type i2m);
+    inline SparseShapePIMPL(extents_type x, sparse_map_type sm,
+                            idx2mode_type i2m) :
+      SparseShapePIMPL(std::move(x), inner_extents_type{}, std::move(sm),
+                       std::move(i2m)){};
 
     /** @brief Makes a deep copy of the provided SparseShapePIMPL instance.
      *
@@ -132,6 +140,9 @@ public:
 
     const auto& idx2mode_map() const noexcept { return m_i2m_; }
 
+    bool is_hard_zero(const index_type&, const index_type&) const;
+    bool is_hard_zero(const index_type&) const;
+
 protected:
     /// Additionally hashes the sparse map and index mapping
     void hash_(tensorwrapper::detail_::Hasher& h) const override;
@@ -139,6 +150,9 @@ protected:
 private:
     /// Makes a polymorphic deep copy of this PIMPL
     virtual pimpl_pointer clone_() const override;
+
+    virtual pimpl_pointer slice_(const index_type&,
+                                 const index_type&) const override;
 
     /// The SparseMap object describing which elements are zero
     sparse_map_type m_sm_;

@@ -1,7 +1,8 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
+#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-//#include "tensorwrapper/tensor/shapes/shape.hpp"
+#include "tensorwrapper/tensor/shapes/shape.hpp"
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -40,6 +41,11 @@ private:
     using my_type = Buffer<FieldType>;
 
 public:
+    /// XXX: These are to be removed, they are here to expose the variant_type
+    /// XXX: Inclusion the FieldTraits breaks  encapsulation
+    using backend_traits = tensor::backends::TiledArrayTraits<FieldType>;
+    using variant_type   = typename backend_traits::variant_type;
+
     /// Type used for indices in einstein/index-based operations
     using annotation_type = std::string;
 
@@ -50,16 +56,22 @@ public:
     using pimpl_pointer = std::unique_ptr<pimpl_type>;
 
     /// Type used to model the shape
-    // using shape_type = Shape<FieldType>;
+    using shape_type = Shape<FieldType>;
 
-    /// Type of a read-only reference to the shape
-    // using const_shape_reference = const shape_type&;
+    /// Type used for returning the extents
+    using extents_type = typename shape_type::extents_type;
+
+    /// Type used for returning inner extents
+    using inner_extents_type = typename shape_type::inner_extents_type;
 
     /// Type of the object used for hashing
     using hasher_type = tensorwrapper::detail_::Hasher;
 
     /// Mutable reference to a hasher
     using hasher_reference = hasher_type&;
+
+    /// Type used for scalar values in the tensor
+    using scalar_value_type = double;
 
     /** @brief Defaulted default ctor.
      *
@@ -347,6 +359,56 @@ public:
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
 
+    /** @brief Computes the norm of the underlying tensor
+     *
+     *  NRM = sqrt(T(:) * T(:))
+     *
+     *  @returns norm of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type norm() const;
+
+    /** @brief Computes the element sum of the underlying tensor
+     *
+     *  Recurses into ToT structure if needed
+     *
+     *  SUM = \sum_{ijk...} A(i,j,k,...)
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialize. Strong throw
+     *                            gurantee.
+     */
+    scalar_value_type sum() const;
+
+    /** @brief Computes the trace of the underlying tensor
+     *
+     *  Invalid for anything but square matrices (rank-2 scalar tensors)
+     *
+     *  TRACE = \sum_i A(i,i)
+     *
+     *  @returns element sum of underlying tensor
+     *  @throw std::runtime_error if @p rhs is not initialized or underlying
+     * tensor is non-scalar or with rank != 2. Strong throw gurantee.
+     */
+    scalar_value_type trace() const;
+
+    /** @brief Returns the extents of the wrapped tensor
+     *
+     *  @returns A list of extents per rank of wrapped tensor
+     *  @throw std::runtime_error if @p rhs is not initialized.
+     */
+    extents_type make_extents() const;
+
+    /** @brief Returns the inner extents of the wrapped tensor
+     *
+     *  @returns If @p FieldType is Scalar, the return value is simply 1. If
+     *           @p FieldType is Tensor, the return is a map of element
+     *           coordinates to their corresponding Shapes.
+     *  @throw std::runtime_error if @p rhs is not initialized.
+     */
+    inner_extents_type make_inner_extents() const;
+
     /** @brief Compares two Buffers for value equality.
      *
      *  Two Buffers are considered equal if they:
@@ -421,6 +483,10 @@ public:
      *                                state.
      */
     std::ostream& print(std::ostream& os) const;
+
+    /// XXX: These are to be removed
+    variant_type& variant();
+    const variant_type& variant() const;
 
 private:
     /// Asserts the PIMPL is initialized, throwing std::runtime_error if not
