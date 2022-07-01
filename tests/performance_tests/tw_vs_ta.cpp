@@ -35,8 +35,6 @@ TEST_CASE("TA_vs_TW") {
     auto rhs_tw = ta_to_tw(rhs_ta);
 
     using tensorwrapper::tensor::allclose;
-    // REQUIRE(allclose(lhs_ta, lhs_tw));
-    // REQUIRE(allclose(rhs_ta, rhs_tw));
 
     ta_type res_ta;
     tw_type res_tw;
