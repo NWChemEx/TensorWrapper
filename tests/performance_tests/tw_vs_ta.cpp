@@ -1,46 +1,74 @@
-// #include "tensorwrapper/tensor/tensor.hpp"
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#include "mkl_service.h"
+#include "tensorwrapper/tensor/creation.hpp"
 #include <catch2/catch.hpp>
-#include <chrono>
 #include <iostream>
 #include <tiledarray.h>
-using namespace std::chrono;
+#include <vector>
 #include "../tensor/test_tensor.hpp"
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
-using scalar_traits  = backends::TiledArrayTraits<field::Scalar>;
-using scalar_variant = typename scalar_traits::variant_type;
-using scalar_tensor  = typename scalar_traits::tensor_type<double>;
 
-TEST_CASE("Performance test: TensorWrapper v.s. TiledArray") {
-    SECTION("mult") {
-        auto lhs = testing::get_tensors<scalar_tensor>().at("vector");
-        auto rhs = testing::get_tensors<scalar_tensor>().at("vector");
-        // madness::initialized();
-        auto& world = TA::get_default_world();
-        scalar_tensor res_ta;
-        world.gop.fence();
-        auto start_ta = high_resolution_clock::now();
-        res_ta("i,j") = lhs("i") * rhs("j");
-        world.gop.fence();
-        auto stop_ta     = high_resolution_clock::now();
-        auto duration_ta = duration_cast<microseconds>(stop_ta - start_ta);
 
-        std::cout << "performance test:" << std::endl;
-        std::cout << "Time taken by operation(TA): " << duration_ta.count()
-                  << " microseconds" << std::endl;
+TEST_CASE("TA_vs_TW") {
+    const int kmatsize = 100;
+    auto& world        = TA::get_default_world();
+    using ta_type      = TA::TSpArrayD;
+    using tw_type      = ScalarTensorWrapper;
+    using tensorwrapper::tensor::detail_::ta_to_tw;
 
-        ScalarTensorWrapper wrapped_lhs(lhs);
-        ScalarTensorWrapper wrapped_rhs(rhs);
-        ScalarTensorWrapper result(scalar_tensor{});
-        world.gop.fence();
-        auto start_tw  = high_resolution_clock::now();
-        result("i, j") = wrapped_lhs("i") * wrapped_rhs("j");
-        world.gop.fence();
-        auto stop_tw     = high_resolution_clock::now();
-        auto duration_tw = duration_cast<microseconds>(stop_tw - start_tw);
+    // generate some random tensors
+    std::vector<std::size_t> tile_boundaries;
+    for(std::size_t i = 0; i <= kmatsize; i += 1) tile_boundaries.push_back(i);
+    std::vector<TA::TiledRange1> ranges(
+      2, TA::TiledRange1(tile_boundaries.begin(), tile_boundaries.end()));
+    TA::TiledRange trange(ranges.begin(), ranges.end());
 
-        std::cout << "Time taken by operation(TW): " << duration_tw.count()
-                  << " microseconds" << std::endl;
-    }
+    ta_type lhs_ta(world, trange);
+    ta_type rhs_ta(world, trange);
+    lhs_ta.fill(0.5);
+    rhs_ta.fill(0.5);
+
+    auto lhs_tw = ta_to_tw(lhs_ta);
+    auto rhs_tw = ta_to_tw(rhs_ta);
+
+    using tensorwrapper::tensor::allclose;
+    // REQUIRE(allclose(lhs_ta, lhs_tw));
+    // REQUIRE(allclose(rhs_ta, rhs_tw));
+
+    ta_type res_ta;
+    tw_type res_tw;
+
+    REQUIRE(ta_helpers::allclose(lhs_tw.get<ta_type>(), lhs_ta));
+    REQUIRE(ta_helpers::allclose(rhs_tw.get<ta_type>(), rhs_ta));
+
+    // start benchmark
+    std::cout << "Performamce Test with matrix of size " << lhs_ta.size()
+              << ": \n";
+
+    BENCHMARK("TiledArray_mult") {
+        // mkl_set_num_threads(1);
+        world.gop.fence();
+        return res_ta("i,j") = lhs_ta("i, k") * rhs_ta("k, j");
+    };
+
+    BENCHMARK("TensorWrapper_mult") {
+        // mkl_set_num_threads(1);
+        world.gop.fence();
+        return res_tw("i,j") = lhs_tw("i, k") * rhs_tw("k, j");
+    };
+
+    BENCHMARK("TiledArray_add") {
+        // mkl_set_num_threads(1);
+        world.gop.fence();
+        return res_ta("i,j") = lhs_ta("i, j") + rhs_ta("i, j");
+    };
+
+    BENCHMARK("TensorWrapper_add") {
+        // mkl_set_num_threads(1);
+        world.gop.fence();
+        return res_tw("i,j") = lhs_tw("i, j") + rhs_tw("i, j");
+    };
 }
