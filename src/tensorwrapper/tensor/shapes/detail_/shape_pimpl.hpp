@@ -1,6 +1,6 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/allocators/allocator_class.hpp"
+#include "tensorwrapper/tensor/allocator/allocator_class.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 
 namespace tensorwrapper::tensor::detail_ {

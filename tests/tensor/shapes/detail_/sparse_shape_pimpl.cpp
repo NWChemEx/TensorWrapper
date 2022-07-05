@@ -1,4 +1,4 @@
-#include "tensorwrapper/tensor/allocators/allocator.hpp"
+#include "tensorwrapper/tensor/allocator/allocator.hpp"
 #include "tensorwrapper/tensor/shapes/detail_/sparse_shape_pimpl.hpp"
 #include <catch2/catch.hpp>
 
