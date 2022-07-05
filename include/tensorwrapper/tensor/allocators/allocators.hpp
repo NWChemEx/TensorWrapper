@@ -1,5 +1,5 @@
 #pragma once
-#include "tensorwrapper/tensor/allocators/allocator.hpp"
+#include "tensorwrapper/tensor/allocators/allocator_class.hpp"
 #include "tensorwrapper/tensor/allocators/tiled_array.hpp"
 
 namespace tensorwrapper::tensor {
