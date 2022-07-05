@@ -1,5 +1,5 @@
 #include "make_tot_shape.hpp"
-#include "tensorwrapper/tensor/allocators/allocators.hpp"
+#include "tensorwrapper/tensor/allocators/allocator.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include <catch2/catch.hpp>
 
