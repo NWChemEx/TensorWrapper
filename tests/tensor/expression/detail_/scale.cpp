@@ -5,10 +5,10 @@ using namespace tensorwrapper::tensor;
 
 /* Testing Strategy
  *
- * - For classes derived from NNary we only need to test that eval_ is
+ * - For classes derived from NNary we need to test that labels_ and tensor_ are
  *   implemented correctly (ctor, clone_, and are_equal_ are tested in
  *   nnary.cpp)
- * - These calls ultimately call Buffer::scale, which is already known to work.
+ * - tensor_ ultimately call Buffer::scale, which is already known to work.
  *   Hence we only need to check that the labels and the tensors correctly get
  *   mapped to that call. The easiest way to test this is to evaluate the
  *   operation with different tensors and label combinations and ensure we get
@@ -24,7 +24,9 @@ TEST_CASE("Scale<field::Scalar>") {
 
     auto ab = a("i,j") * b;
 
-    SECTION("eval_") {
+    SECTION("labels_") { REQUIRE(ab.labels("i,j") == "i,j"); }
+
+    SECTION("tensor_") {
         SECTION("c = a * b") {
             // C starts empty so we know the buffers get mapped correctly
             tensor_type c, corr{{2.0, 4.0}, {6.0, 8.0}};

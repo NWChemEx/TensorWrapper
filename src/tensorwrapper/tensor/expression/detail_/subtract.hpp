@@ -22,14 +22,20 @@ private:
     using base_type = Binary<FieldType, my_type>;
 
 public:
+    /// Type used to label tensor modes. Ultimately set by the value of
+    /// FieldTraits<FieldType>::label_type
     using typename base_type::label_type;
 
     /// Type of labeled views compatible with this expression. Ultimately
-    /// set by the FieldTraits<FieldType>::const_label_reference
+    /// set by FieldTraits<FieldType>::const_label_reference
     using typename base_type::const_label_reference;
 
+    /// Type of a read-only reference to an Allocator. Ultimately set by
+    /// FieldTraits<FieldType>::const_allocator_reference
     using typename base_type::const_allocator_reference;
 
+    /// Type of a read-only reference to a Shape. Ultimately set by
+    /// FieldTraits<FieldType>::const_shape_reference
     using typename base_type::const_shape_reference;
 
     /// Type of the tensor which results from evaluating this expression.
@@ -40,13 +46,16 @@ public:
     using base_type::NNary;
 
 protected:
+    /// Implements labels() by returning @p lhs_labels
     label_type labels_(const_label_reference lhs_labels) const override {
         return lhs_labels;
     }
 
-    /** @brief Implements tensor by calling Buffer::subtract
+    /** @brief Implements tensor() by calling Buffer::subtract
      *
-     *  @param[in] lhs A labeled tensor containing the details
+     *  @param[in] lhs_labels The labels for the output tensor
+     *  @param[in] shape The shape of the output tensor
+     *  @param[in] alloc The allocator of the output tensor
      */
     tensor_type tensor_(const_label_reference lhs_labels,
                         const_shape_reference shape,

@@ -5,12 +5,12 @@ using namespace tensorwrapper::tensor;
 
 /* Testing Strategy
  *
- * - For classes derived from NNary we only need to test that tensor_ is
+ * - For classes derived from NNary we need to test that labels_ and tensor_ are
  *   implemented correctly (ctor, clone_, and are_equal_ are tested in
  *   nnary.cpp)
- * - These calls ultimately call Buffer::subtract, which is already known to
- * work. Hence we only need to check that the labels and the tensors correctly
- * get mapped to that call. The easiest way to test this is to evaluate the
+ * - tensor_ ultimately call Buffer::subtract, which is already known to
+ *   work. Hence we only need to check that the labels and the tensors correctly
+ *   get mapped to that call. The easiest way to test this is to evaluate the
  *   operation with different tensors and label combinations and ensure we get
  *   the correct answer.
  */
@@ -24,6 +24,11 @@ TEST_CASE("Subtract<field::Scalar>") {
 
     auto amb  = a("i,j") - b("i,j");
     auto ambt = a("i,j") - b("j,i");
+
+    SECTION("labels_") {
+        REQUIRE(amb.labels("i,j") == "i,j");
+        REQUIRE(ambt.labels("j,i") == "j,i");
+    }
 
     SECTION("tensor_") {
         SECTION("c = a - b") {

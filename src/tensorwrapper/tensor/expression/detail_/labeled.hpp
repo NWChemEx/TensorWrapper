@@ -4,32 +4,71 @@
 
 namespace tensorwrapper::tensor::expression::detail_ {
 
+/** @brief Wraps an end-point for the expression layer
+ *
+ *  The inputs to the expression layer are labeled tensors. The Labeled class
+ *  allows us to wrap these labeled tensors in Expression objects. This class
+ *  also handles transposing outside of other expressions.
+ *
+ *  @tparam FieldType A strong type signaling whether the tensor is filled with
+ *                    scalars or tensors. Expected to be either field::Scalar or
+ *                    field::Tensor.
+ *
+ */
 template<typename FieldType>
 class Labeled : public LabeledBase<FieldType, Labeled<FieldType>> {
 private:
-    using my_type   = Labeled<FieldType>;
+    /// Type of *this
+    using my_type = Labeled<FieldType>;
+
+    /// Type of the base class
     using base_type = LabeledBase<FieldType, my_type>;
 
 public:
-    using typename base_type::label_type;
-    using typename base_type::const_label_reference;
+    /// Type of a read-only reference to an Allocator. Ultimately resolves to
+    /// FieldTraits<FieldType>::const_allocator_reference
     using typename base_type::const_allocator_reference;
+
+    /// Type of a read-only reference to the labels. Ultimately resolves to
+    /// FieldTraits<FieldType>::const_label_reference
+    using typename base_type::const_label_reference;
+
+    /// Type of a read-only reference to the Shape. Ultimately resolves to
+    /// FieldTraits<FieldType>::const_shape_reference
     using typename base_type::const_shape_reference;
+
+    /// Type of the labels. Resolves to FieldTraits<FieldType>::label_type
+    using typename base_type::label_type;
+
+    /// Type of the tensor returned by tensor(). Ultimately resolves to
+    /// FieldTraits<FieldType>::tensor_type
     using typename base_type::tensor_type;
 
+    /// Re-uses the base class's ctors
     using base_type::NNary;
 
 protected:
+    /// Implements labels() by returning the labels on the wrapped tensor
     label_type labels_(const_label_reference) const override {
-        return tensor().labels();
+        return this->template arg<0>().labels();
     }
 
+    /** @brief Returns the wrapped tensor (possibly transposing)
+     *
+     *  This function returns the wrapped tensor. If @p lhs_labels are the same
+     *  as the labels on the wrapped tensor, then this operation is a no-op. If
+     *  the labels are a permutation then the result will be transposed.
+     *
+     *  @param[in] lhs_labels The labels for the output tensor
+     *  @param[in] shape The shape of the output tensor
+     *  @param[in] alloc The allocator for the output tensor
+     *
+     *  @return The wrapped tensor, permuted if @p lhs_labels are a permutation
+     *          of the wrapped tensor's labels.
+     */
     tensor_type tensor_(const_label_reference labels,
                         const_shape_reference shape,
                         const_allocator_reference alloc) const override;
-
-private:
-    const auto& tensor() const { return this->template arg<0>(); }
 };
 
 template<typename FieldType>
@@ -37,9 +76,10 @@ typename Labeled<FieldType>::tensor_type Labeled<FieldType>::tensor_(
   const_label_reference labels, const_shape_reference shape,
   const_allocator_reference alloc) const {
     // Input is b, we're doing b = a
+    const auto& a_exp = this->template arg<0>();
 
-    const auto& a_labels = tensor().labels();
-    const auto& a_tensor = tensor().tensor();
+    const auto& a_labels = a_exp.labels();
+    const auto& a_tensor = a_exp.tensor();
     const auto& a_buffer = a_tensor.buffer();
 
     tensor_type b(shape.clone(), alloc.clone());

@@ -192,6 +192,28 @@ TEST_CASE("LabeledView<field::Scalar>") {
         REQUIRE(corr_lcv == exp_lcv);
     }
 
+    SECTION("operator-(LabeledView)") {
+        // that the expression actually works is tested in subtract.cpp
+        auto corr_lv = lv.expression() - lv.expression();
+        auto exp_lv  = lv - lv;
+        REQUIRE(corr_lv == exp_lv);
+
+        auto corr_lcv = lcv.expression() - lcv.expression();
+        auto exp_lcv  = lcv - lcv;
+        REQUIRE(corr_lcv == exp_lcv);
+    }
+
+    SECTION("operator*(LabeledView") {
+        // that the expression actualy works is tested in times.cpp
+        auto corr_lv = lv.expression() * lv.expression();
+        auto exp_lv  = lv * lv;
+        REQUIRE(corr_lv == exp_lv);
+
+        auto corr_lcv = lcv.expression() * lcv.expression();
+        auto exp_lcv  = lcv * lcv;
+        REQUIRE(corr_lcv == exp_lcv);
+    }
+
     SECTION("operator*(double)") {
         // that the expression actually works is tested in scale.cpp
         auto corr_lv = lv.expression() * 3.14;

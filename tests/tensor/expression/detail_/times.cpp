@@ -5,10 +5,10 @@ using namespace tensorwrapper::tensor;
 
 /* Testing Strategy
  *
- * - For classes derived from NNary we only need to test that tensor_ is
+ * - For classes derived from NNary we need to test that labels_ and tensor_ are
  *   implemented correctly (ctor, clone_, and are_equal_ are tested in
  *   nnary.cpp)
- * - These calls ultimately call Buffer::times, which is already known to
+ * - tensor_ ultimately call Buffer::times, which is already known to
  *   work. Hence we only need to check that the labels and the tensors correctly
  *   get mapped to that call. The easiest way to test this is to evaluate the
  *   operation with different tensors and label combinations and ensure we get
@@ -24,6 +24,11 @@ TEST_CASE("Times<field::Scalar>") {
 
     auto axb  = a("i,j") * b("j,k");
     auto axbt = a("i,j") * b("k,j");
+
+    SECTION("labels_") {
+        REQUIRE(axb.labels("i,k") == "i,k");
+        REQUIRE(axbt.labels("k,i") == "k,i");
+    }
 
     SECTION("tensor_") {
         SECTION("c = a * b") {
