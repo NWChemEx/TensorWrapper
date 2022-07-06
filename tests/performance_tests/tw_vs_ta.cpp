@@ -12,7 +12,7 @@ using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
 
 
-TEST_CASE("TA_vs_TW") {
+TEST_CASE("TA_vs_TW", "[.][ptest]") {
     const int kmatsize = 100;
     auto& world        = TA::get_default_world();
     using ta_type      = TA::TSpArrayD;
