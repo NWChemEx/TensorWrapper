@@ -144,9 +144,9 @@ protected:
 
 private:
     // These are deleted to avoid accidentally slicing by copying/moving
-    ExpressionPIMPL(ExpressionPIMPL&& other)                 = delete;
+    ExpressionPIMPL(ExpressionPIMPL&& other) = delete;
     ExpressionPIMPL& operator=(const ExpressionPIMPL& other) = delete;
-    ExpressionPIMPL& operator=(ExpressionPIMPL&& other)      = delete;
+    ExpressionPIMPL& operator=(ExpressionPIMPL&& other) = delete;
 };
 
 } // namespace tensorwrapper::tensor::expression::detail_
