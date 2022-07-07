@@ -45,6 +45,11 @@ TEST_CASE("TensorWrapper<Scalar>") {
             TWrapper tw(l, vec_shape->clone(), default_alloc->clone());
             REQUIRE(tw == vec);
         }
+        SECTION("From Element Lambda") {
+            auto l = [](const auto& idx) { return idx[0] + 1; };
+            TWrapper tw(l, vec_shape->clone(), default_alloc->clone());
+            REQUIRE(tw == vec);
+        }
         SECTION("Copy") {
             TWrapper copied(vec);
             REQUIRE(copied.rank() == 1);

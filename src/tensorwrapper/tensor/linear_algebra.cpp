@@ -41,13 +41,8 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
 }
 
 TWrapper cholesky_linv(const TWrapper& M) {
-    using tensor_type = ta_tensor_type;
-
-    const auto& m = M.get<tensor_type>();
-
-    auto linv = TA::math::linalg::cholesky_linv(m);
-
-    throw std::runtime_error("NYI");
+    const auto& m = M.get<ta_tensor_type>();
+    auto linv     = TA::math::linalg::cholesky_linv(m);
 
     return detail_::ta_to_tw(std::move(linv));
 }

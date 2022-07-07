@@ -45,6 +45,14 @@ TEST_CASE("TensorWrapper<Tensor>") {
             REQUIRE(defaulted.size() == 0);
         }
         SECTION("From Tile Lambda") {
+            auto l = [](const auto& outer_idx, const auto& lo, const auto& up,
+                        auto* data) {
+                for(auto i = lo[0]; i < up[0]; ++i) data[i] = i + 1;
+            };
+            TWrapper tw(l, vov_shape.clone(), default_alloc->clone());
+            REQUIRE(tw == vov);
+        }
+        SECTION("From Element Lambda") {
             auto l = [](auto outer, auto inner) -> double {
                 return inner[0] + 1;
             };
