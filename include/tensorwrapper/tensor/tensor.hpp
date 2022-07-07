@@ -1,7 +1,7 @@
 #pragma once
 #include "tensorwrapper/tensor/allclose.hpp"
-#include "tensorwrapper/tensor/approximately_equal.hpp"
 #include "tensorwrapper/tensor/apply_elementwise.hpp"
+#include "tensorwrapper/tensor/approximately_equal.hpp"
 #include "tensorwrapper/tensor/conversions.hpp"
 #include "tensorwrapper/tensor/creation.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
