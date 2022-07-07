@@ -74,8 +74,10 @@ LABELED_VIEW& LABELED_VIEW::operator=(const_expression_reference rhs) {
     auto alloc       = default_allocator<FieldType>();
     auto temp        = rhs.tensor(labels(), shape_type(), *alloc);
 
-    auto& buffer = temp.buffer();
-    auto shape   = std::make_unique<shape_type>(buffer.make_extents());
+    auto& buffer       = temp.buffer();
+    auto outer_extents = buffer.make_extents();
+    auto inner_extents = buffer.make_inner_extents();
+    auto shape = std::make_unique<shape_type>(outer_extents, inner_extents);
 
     tensor() =
       TensorWrapper(std::move(buffer), std::move(shape), std::move(alloc));

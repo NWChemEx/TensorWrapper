@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include "../test_tensor.hpp"
 #include <tensorwrapper/tensor/expression/expression_class.hpp>
 #include <tensorwrapper/tensor/tensor_wrapper.hpp>
 
@@ -17,14 +17,17 @@ using namespace tensorwrapper::tensor;
  * - for the operators we just check that they throw
  */
 
-TEST_CASE("Expression<field::Scalar>") {
-    using field_type      = field::Scalar;
+TEMPLATE_LIST_TEST_CASE("Expression", "", testing::field_types) {
+    using field_type      = TestType;
     using tensor_type     = TensorWrapper<field_type>;
     using expression_type = expression::Expression<field_type>;
 
-    const auto ij = "i,j";
-    tensor_type a{{1.0, 2.0}, {3.0, 4.0}};
-    auto la = a(ij);
+    constexpr bool is_tot = std::is_same_v<TestType, field::Tensor>;
+
+    const auto ij = is_tot ? "i,j" : "i;j";
+    auto tensors  = testing::get_tensors<field_type>();
+    auto a        = tensors.at(is_tot ? "vector-of-vectors" : "vector");
+    auto la       = a(ij);
 
     expression_type empty;
     auto non_empty = la.expression();

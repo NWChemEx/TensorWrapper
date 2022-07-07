@@ -60,22 +60,24 @@ struct ExpressionTestPIMPL
 
 } // namespace testing
 
-TEST_CASE("LabeledView<field::Scalar>") {
-    using field_type      = field::Scalar;
+TEMPLATE_LIST_TEST_CASE("LabeledView", "", testing::field_types) {
+    using field_type      = TestType;
     using labeled_view    = expression::LabeledView<field_type>;
     using tensor_type     = typename labeled_view::tensor_type;
     using label_type      = typename labeled_view::label_type;
     using expression_type = typename labeled_view::expression_type;
 
+    constexpr bool is_tot = std::is_same_v<TestType, field::Tensor>;
+
     auto tensors   = testing::get_tensors<field_type>();
-    auto& v        = tensors.at("vector");
-    const auto& cv = tensors.at("vector");
+    auto& v        = tensors.at(is_tot ? "vector-of-vectors" : "vector");
+    const auto& cv = v;
 
     // Sanity check v and cv alias same instance
     REQUIRE(&v == &cv);
 
     // Make a label and some labeld_tensors
-    label_type v_labels("i");
+    label_type v_labels(is_tot ? "i;j" : "i");
     labeled_view lv(v_labels, v);
     labeled_view lcv(v_labels, cv);
 
@@ -251,7 +253,7 @@ TEST_CASE("LabeledView<field::Scalar>") {
         REQUIRE(lv != lcv);
 
         // Different labels
-        labeled_view diff_label("j", v);
+        labeled_view diff_label(is_tot ? "j;i" : "j", v);
         REQUIRE_FALSE(lv == diff_label);
         REQUIRE(lv != diff_label);
 

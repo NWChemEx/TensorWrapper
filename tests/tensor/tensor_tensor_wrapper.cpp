@@ -89,7 +89,8 @@ TEST_CASE("TensorWrapper<Tensor>") {
         }
 
         SECTION("Initializer Lists") {
-            REQUIRE_THROWS_AS(TWrapper({1.0, 2.0, 3.0}), std::runtime_error);
+            TensorWrapper<field::Scalar> inner{1.0, 2.0, 3.0};
+            REQUIRE_THROWS_AS(TWrapper({inner}), std::runtime_error);
         }
     }
 

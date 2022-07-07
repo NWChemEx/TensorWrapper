@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include "../../test_tensor.hpp"
 #include <tensorwrapper/tensor/expression/detail_/labeled.hpp>
 
 using namespace tensorwrapper::tensor;
@@ -18,9 +18,11 @@ TEST_CASE("Labeled<field::Scalar>") {
     }
 
     SECTION("tensor_") {
-        tensor_type corr{{1.0, 3.0}, {2.0, 4.0}};
-        auto c = exp.tensor("j,i", corr.shape(), corr.allocator());
+        auto c = exp.tensor("i,j", a.shape(), a.allocator());
+        REQUIRE(c == a);
 
-        REQUIRE(c == corr);
+        tensor_type corr{{1.0, 3.0}, {2.0, 4.0}};
+        auto ct = exp.tensor("j,i", corr.shape(), corr.allocator());
+        REQUIRE(ct == corr);
     }
 }

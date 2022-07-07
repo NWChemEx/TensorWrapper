@@ -244,10 +244,10 @@ public:
      *  @throw ??? Throws if allocating the underlying tensor throws. Same throw
      *             guarantee.
      */
-    TensorWrapper(n_d_initializer_list_t<double, 1> il);
-    TensorWrapper(n_d_initializer_list_t<double, 2> il);
-    TensorWrapper(n_d_initializer_list_t<double, 3> il);
-    TensorWrapper(n_d_initializer_list_t<double, 4> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 1> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 2> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 3> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 4> il);
 
     /** @brief Makes a copy of another TensorWrapper
      *

@@ -90,20 +90,20 @@ TENSOR_WRAPPER::TensorWrapper(shape_pointer shape, allocator_pointer p) :
   TensorWrapper(buffer_type{}, std::move(shape), std::move(p)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 1> il) :
-  TensorWrapper(il_to_tw<double, 1, FieldType>(il)) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 1> il) :
+  TensorWrapper(il_to_tw<element_type, 1, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 2> il) :
-  TensorWrapper(il_to_tw<double, 2, FieldType>(il)) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 2> il) :
+  TensorWrapper(il_to_tw<element_type, 2, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 3> il) :
-  TensorWrapper(il_to_tw<double, 3, FieldType>(il)) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 3> il) :
+  TensorWrapper(il_to_tw<element_type, 3, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 4> il) :
-  TensorWrapper(il_to_tw<double, 4, FieldType>(il)) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 4> il) :
+  TensorWrapper(il_to_tw<element_type, 4, FieldType>(il)) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(const TensorWrapper& other) :
