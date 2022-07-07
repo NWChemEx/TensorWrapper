@@ -1,6 +1,5 @@
 #pragma once
 #include "nnary.hpp"
-#include <tensorwrapper/tensor/tensor_wrapper.hpp>
 
 namespace tensorwrapper::tensor::expression::detail_ {
 
