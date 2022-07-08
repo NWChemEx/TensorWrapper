@@ -161,6 +161,9 @@ const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1
 <tr class="memitem:a453196e577b87389ea1a5da9bbe24a98"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a453196e577b87389ea1a5da9bbe24a98">is_initialized</a> () const noexcept</td></tr>
 <tr class="memdesc:a453196e577b87389ea1a5da9bbe24a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to determine if the <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> wraps an actual tensor or not.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a453196e577b87389ea1a5da9bbe24a98">More...</a><br /></td></tr>
 <tr class="separator:a453196e577b87389ea1a5da9bbe24a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcde5e94227f26a83d941c23d61e2c16"><td class="memItemLeft" align="right" valign="top"><a id="adcde5e94227f26a83d941c23d61e2c16"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>permute</b> (<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> my_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> out_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;out) const</td></tr>
+<tr class="separator:adcde5e94227f26a83d941c23d61e2c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361552be0a5c2b3ac2ccbd7a0b430ebb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a361552be0a5c2b3ac2ccbd7a0b430ebb">scale</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> my_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> out_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;out, double rhs) const</td></tr>
 <tr class="memdesc:a361552be0a5c2b3ac2ccbd7a0b430ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales (and optionally permutes) a tensor.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a361552be0a5c2b3ac2ccbd7a0b430ebb">More...</a><br /></td></tr>
 <tr class="separator:a361552be0a5c2b3ac2ccbd7a0b430ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +182,9 @@ const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1
 <tr class="memitem:adf835ebce043cfd158fa702ce70dbf52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#adf835ebce043cfd158fa702ce70dbf52">times</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> my_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> out_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;out, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> rhs_idx, const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:adf835ebce043cfd158fa702ce70dbf52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies (and optionally permutes) two tensors.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#adf835ebce043cfd158fa702ce70dbf52">More...</a><br /></td></tr>
 <tr class="separator:adf835ebce043cfd158fa702ce70dbf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaab3582008da134d873cfccbf1744eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a120e17d41aeb62e7a12f7b1b9993ca25">scalar_value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#acaab3582008da134d873cfccbf1744eb">dot</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> my_idx, <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a> rhs_idx, const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;rhs) const</td></tr>
+<tr class="memdesc:acaab3582008da134d873cfccbf1744eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the dot product of the current buffer with <code>rhs</code>.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#acaab3582008da134d873cfccbf1744eb">More...</a><br /></td></tr>
+<tr class="separator:acaab3582008da134d873cfccbf1744eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af28fc8ff5ad49927279a240fbfd40272"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a120e17d41aeb62e7a12f7b1b9993ca25">scalar_value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#af28fc8ff5ad49927279a240fbfd40272">norm</a> () const</td></tr>
 <tr class="memdesc:af28fc8ff5ad49927279a240fbfd40272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the norm of the underlying tensor.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#af28fc8ff5ad49927279a240fbfd40272">More...</a><br /></td></tr>
 <tr class="separator:af28fc8ff5ad49927279a240fbfd40272"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -485,6 +491,51 @@ template&lt;typename FieldType &gt; </div>
   <table class="exception">
     <tr><td class="paramname">std::runtime_error</td><td>if the present buffer is not initialized. Strong throw guarantee. </td></tr>
     <tr><td class="paramname">std::runtime_error</td><td>if <code>rhs</code> is not initialize. Strong throw gurantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acaab3582008da134d873cfccbf1744eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaab3582008da134d873cfccbf1744eb">&#9670;&nbsp;</a></span>dot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a120e17d41aeb62e7a12f7b1b9993ca25">scalar_value_type</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::dot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a>&#160;</td>
+          <td class="paramname"><em>my_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ae51e3cfe51bca5e7201b4f644c865fd5">const_annotation_reference</a>&#160;</td>
+          <td class="paramname"><em>rhs_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">my_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the dot product of the current buffer with <code>rhs</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the present buffer is not initialized. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>rhs</code> is not initialized. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>

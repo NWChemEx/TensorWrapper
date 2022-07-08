@@ -78,12 +78,12 @@ $(function() {
 <p>Holds the state of a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>.  
  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="pimpl_8hpp_source.html">pimpl.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="include_2tensorwrapper_2tensor_2detail___2pimpl_8hpp_source.html">pimpl.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a862f2fe01bff968f5ce192a3e312c312"><td class="memItemLeft" align="right" valign="top"><a id="a862f2fe01bff968f5ce192a3e312c312"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a862f2fe01bff968f5ce192a3e312c312">annotation_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a82c6a1a1cd64241060c854d051afe121">parent_type::annotation_type</a></td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a862f2fe01bff968f5ce192a3e312c312">annotation_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#ac8d8613bb6a3e8ed5a65892558233367">parent_type::annotation_type</a></td></tr>
 <tr class="memdesc:a862f2fe01bff968f5ce192a3e312c312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to annotate the tensor (i.e. type of the dummy indices) <br /></td></tr>
 <tr class="separator:a862f2fe01bff968f5ce192a3e312c312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3fdceb526b9f1d2e09fb35597d4200f"><td class="memItemLeft" align="right" valign="top"><a id="ae3fdceb526b9f1d2e09fb35597d4200f"></a>
@@ -94,19 +94,19 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#abe9315665671aff0118497fa50e57e3f">variant_type</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html#af043806b6a9973b38584261f7f1dcb87">field_traits::variant_type</a></td></tr>
 <tr class="memdesc:abe9315665671aff0118497fa50e57e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which wraps all of the possible backend tensors. <br /></td></tr>
 <tr class="separator:abe9315665671aff0118497fa50e57e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5538a8dae827d8f2fded916e59e74829"><td class="memItemLeft" align="right" valign="top"><a id="a5538a8dae827d8f2fded916e59e74829"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">buffer::Buffer</a>&lt; FieldType &gt;</td></tr>
-<tr class="memdesc:a5538a8dae827d8f2fded916e59e74829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which holds type-erased tensor instance. <br /></td></tr>
-<tr class="separator:a5538a8dae827d8f2fded916e59e74829"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af77e252da6219c3f1384d0e46eeb6bd7"><td class="memItemLeft" align="right" valign="top"><a id="af77e252da6219c3f1384d0e46eeb6bd7"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &gt;</td></tr>
-<tr class="separator:af77e252da6219c3f1384d0e46eeb6bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f2f992c1dece26ed528fd313622f702"><td class="memItemLeft" align="right" valign="top"><a id="a9f2f992c1dece26ed528fd313622f702"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_reference</b> = const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &amp;</td></tr>
-<tr class="separator:a9f2f992c1dece26ed528fd313622f702"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb36f3c601699de1a8d84d3ba1307338"><td class="memItemLeft" align="right" valign="top"><a id="abb36f3c601699de1a8d84d3ba1307338"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_reference</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a5538a8dae827d8f2fded916e59e74829">buffer_type</a> &amp;</td></tr>
-<tr class="separator:abb36f3c601699de1a8d84d3ba1307338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19498f7e37e9225bd3f5feda8deb3884"><td class="memItemLeft" align="right" valign="top"><a id="a19498f7e37e9225bd3f5feda8deb3884"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a19498f7e37e9225bd3f5feda8deb3884">buffer_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">parent_type::buffer_type</a></td></tr>
+<tr class="memdesc:a19498f7e37e9225bd3f5feda8deb3884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which holds type-erased tensor instance. <br /></td></tr>
+<tr class="separator:a19498f7e37e9225bd3f5feda8deb3884"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a526e00047a9330742483e97517b0a"><td class="memItemLeft" align="right" valign="top"><a id="af4a526e00047a9330742483e97517b0a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> = typename parent_type::buffer_pointer</td></tr>
+<tr class="separator:af4a526e00047a9330742483e97517b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4340a73d5c83139e7750fa519d8feb6"><td class="memItemLeft" align="right" valign="top"><a id="af4340a73d5c83139e7750fa519d8feb6"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_reference</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">parent_type::const_buffer_reference</a></td></tr>
+<tr class="separator:af4340a73d5c83139e7750fa519d8feb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c2991c12ab9d49f6cca6e8c51dbef9c"><td class="memItemLeft" align="right" valign="top"><a id="a3c2991c12ab9d49f6cca6e8c51dbef9c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_reference</b> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">parent_type::buffer_reference</a></td></tr>
+<tr class="separator:a3c2991c12ab9d49f6cca6e8c51dbef9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0be1692320b58c33e61e2d316f54d164"><td class="memItemLeft" align="right" valign="top"><a id="a0be1692320b58c33e61e2d316f54d164"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a0be1692320b58c33e61e2d316f54d164">labeled_variant_type</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1FieldTraits.html#a814f688bec486ce8bb12ab3cd30b2165">field_traits::labeled_variant_type</a></td></tr>
 <tr class="memdesc:a0be1692320b58c33e61e2d316f54d164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type which results from labeling the possible backend. <br /></td></tr>
@@ -393,7 +393,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/tensorwrapper/tensor/detail_/<a class="el" href="pimpl_8hpp_source.html">pimpl.hpp</a></li>
+<li>include/tensorwrapper/tensor/detail_/<a class="el" href="include_2tensorwrapper_2tensor_2detail___2pimpl_8hpp_source.html">pimpl.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
