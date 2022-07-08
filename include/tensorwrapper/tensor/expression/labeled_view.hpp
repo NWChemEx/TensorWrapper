@@ -362,6 +362,12 @@ private:
     std::optional<internal_const_reference> m_ctensor_;
 };
 
+extern template class LabeledView<field::Scalar>;
+extern template class LabeledView<field::Tensor>;
+
+} // namespace expression
+} // namespace tensorwrapper::tensor
+
 /** @brief Allows labeled views to be scaled from the left side
  *
  *  @related LabeledView
@@ -377,12 +383,8 @@ private:
  *  @return An expression object describing the desired operation.
  */
 template<typename FieldType>
-Expression<FieldType> operator*(double lhs, const LabeledView<FieldType>& rhs) {
+tensorwrapper::tensor::expression::Expression<FieldType> operator*(
+  double lhs,
+  const tensorwrapper::tensor::expression::LabeledView<FieldType>& rhs) {
     return rhs * lhs;
 }
-
-extern template class LabeledView<field::Scalar>;
-extern template class LabeledView<field::Tensor>;
-
-} // namespace expression
-} // namespace tensorwrapper::tensor
