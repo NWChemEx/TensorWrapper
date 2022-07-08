@@ -1,6 +1,9 @@
 #include "ta_buffer_pimpl.hpp"
 
+#include "../../../ta_helpers/einsum/einsum.hpp"
 #include "../../../ta_helpers/ta_helpers.hpp"
+
+#include <utilities/strings/string_tools.hpp>
 
 #define TEMPLATE_PARAMS template<typename FieldType>
 #define TABUFFERPIMPL TABufferPIMPL<FieldType>
@@ -322,12 +325,42 @@ void TABUFFERPIMPL::times_(const_annotation_reference my_idx,
                            const_annotation_reference out_idx, base_type& out,
                            const_annotation_reference rhs_idx,
                            const base_type& rhs) const {
+    /// Grab our tensors
     auto& out_tensor       = downcast(out).m_tensor_;
     const auto& rhs_tensor = downcast(rhs).m_tensor_;
     auto l                 = [&](auto&& out, auto&& lhs, auto&& rhs) {
         out(out_idx) = lhs(my_idx) * rhs(rhs_idx);
     };
-    triple_call(out_tensor, m_tensor_, rhs_tensor, l);
+
+    if constexpr(std::is_same_v<FieldType, field::Scalar>) {
+        /// Do we need to use einsum?
+        using utilities::strings::split_string;
+        const auto& lidx = split_string(my_idx, ",");
+        const auto& ridx = split_string(rhs_idx, ",");
+        const auto& oidx = split_string(out_idx, ",");
+        bool use_einsum  = false;
+        for(const auto& x : oidx) {
+            const auto l_count = std::count(lidx.begin(), lidx.end(), x);
+            const auto r_count = std::count(ridx.begin(), ridx.end(), x);
+            if(l_count == 1 && r_count == 1) {
+                use_einsum = true;
+                break;
+            }
+        }
+
+        if(use_einsum) {
+            /// Einsum lambda
+            using ta_helpers::einsum::einsum;
+            auto l_einsum = [&](auto&& out, auto&& lhs, auto&& rhs) {
+                out = einsum(out_idx, my_idx, rhs_idx, lhs, rhs);
+            };
+            triple_call(out_tensor, m_tensor_, rhs_tensor, l_einsum);
+        } else {
+            triple_call(out_tensor, m_tensor_, rhs_tensor, l);
+        }
+    } else {
+        triple_call(out_tensor, m_tensor_, rhs_tensor, l);
+    }
 }
 
 TEMPLATE_PARAMS
