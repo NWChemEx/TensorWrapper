@@ -49,5 +49,10 @@ TEST_CASE("Times<field::Scalar>") {
             c = axb.tensor("k,i", corr.shape(), corr.allocator());
             REQUIRE(allclose(c, corr));
         }
+        SECTION("will use einsum") {
+            tensor_type c, corr{{{5, 6}, {14, 16}}, {{15, 18}, {28, 32}}};
+            c = axb.tensor("i,j,k", corr.shape(), corr.allocator());
+            REQUIRE(allclose(c, corr));
+        }
     }
 }

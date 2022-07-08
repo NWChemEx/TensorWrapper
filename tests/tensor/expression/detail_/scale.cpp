@@ -23,8 +23,12 @@ TEST_CASE("Scale<field::Scalar>") {
     double b{2.0};
 
     auto ab = a("i,j") * b;
+    auto ba = b * a("i,j");
 
-    SECTION("labels_") { REQUIRE(ab.labels("i,j") == "i,j"); }
+    SECTION("labels_") {
+        REQUIRE(ab.labels("i,j") == "i,j");
+        REQUIRE(ba.labels("i,j") == "i,j");
+    }
 
     SECTION("tensor_") {
         SECTION("c = a * b") {
@@ -32,11 +36,15 @@ TEST_CASE("Scale<field::Scalar>") {
             tensor_type c, corr{{2.0, 4.0}, {6.0, 8.0}};
             c = ab.tensor("i,j", corr.shape(), corr.allocator());
             REQUIRE(allclose(c, corr));
+            c = ba.tensor("i,j", corr.shape(), corr.allocator());
+            REQUIRE(allclose(c, corr));
         }
         SECTION("ct = a * b") {
             // Checks that c's labels get mapped to either c or a
             tensor_type c, corr{{2.0, 6.0}, {4.0, 8.0}};
             c = ab.tensor("j,i", corr.shape(), corr.allocator());
+            REQUIRE(allclose(c, corr));
+            c = ba.tensor("j,i", corr.shape(), corr.allocator());
             REQUIRE(allclose(c, corr));
         }
     }
