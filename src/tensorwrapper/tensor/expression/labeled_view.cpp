@@ -1,5 +1,5 @@
 #include "detail_/labeled.hpp"
-#include <tensorwrapper/tensor/allocators/allocators.hpp>
+#include <tensorwrapper/tensor/allocator/allocator_class.hpp>
 #include <tensorwrapper/tensor/expression/labeled_view.hpp>
 namespace tensorwrapper::tensor::expression {
 

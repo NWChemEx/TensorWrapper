@@ -1,12 +1,13 @@
 #pragma once
 #include <tensorwrapper/detail_/hashing.hpp>
-#include <tensorwrapper/tensor/allocators/allocators.hpp>
+#include <tensorwrapper/tensor/allocator/allocator.hpp>
 #include <tensorwrapper/tensor/buffer/buffer.hpp>
 #include <tensorwrapper/tensor/expression/labeled_view.hpp>
 #include <tensorwrapper/tensor/fields.hpp>
 #include <tensorwrapper/tensor/type_traits/field_traits.hpp>
 #include <tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp>
 #include <tiledarray.h>
+
 namespace tensorwrapper::tensor {
 namespace detail_ {
 

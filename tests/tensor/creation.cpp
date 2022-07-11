@@ -2,7 +2,7 @@
 #include "tensorwrapper/tensor/tensor_wrapper.hpp"
 #include "test_tensor.hpp"
 #include <catch2/catch.hpp>
-#include <tensorwrapper/tensor/allocators/allocators.hpp>
+#include <tensorwrapper/tensor/allocator/allocator.hpp>
 #include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper::tensor;
