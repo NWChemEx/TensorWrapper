@@ -52,6 +52,14 @@ bool BUFFER::is_initialized() const noexcept {
 }
 
 TEMPLATE_PARAMS
+void BUFFER::permute(const_annotation_reference my_idx,
+                     const_annotation_reference out_idx, my_type& out) const {
+    assert_initialized_();
+    if(!out.is_initialized()) default_initialize_(out);
+    m_pimpl_->permute(my_idx, out_idx, *out.m_pimpl_);
+}
+
+TEMPLATE_PARAMS
 void BUFFER::scale(const_annotation_reference my_idx,
                    const_annotation_reference out_idx, my_type& out,
                    double rhs) const {
@@ -108,6 +116,15 @@ void BUFFER::times(const_annotation_reference my_idx,
     rhs.assert_initialized_();
     if(!out.is_initialized()) default_initialize_(out);
     m_pimpl_->times(my_idx, out_idx, *out.m_pimpl_, rhs_idx, *rhs.m_pimpl_);
+}
+
+TEMPLATE_PARAMS
+typename BUFFER::scalar_value_type BUFFER::dot(
+  const_annotation_reference my_idx, const_annotation_reference rhs_idx,
+  const my_type& rhs) const {
+    assert_initialized_();
+    rhs.assert_initialized_();
+    return m_pimpl_->dot(my_idx, rhs_idx, *rhs.m_pimpl_);
 }
 
 TEMPLATE_PARAMS

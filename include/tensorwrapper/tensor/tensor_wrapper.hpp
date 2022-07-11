@@ -1,10 +1,12 @@
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/allocators/allocators.hpp"
-#include "tensorwrapper/tensor/detail_/labeled_tensor_wrapper.hpp"
-#include "tensorwrapper/tensor/fields.hpp"
-#include "tensorwrapper/tensor/type_traits/field_traits.hpp"
-#include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
+#include <tensorwrapper/detail_/hashing.hpp>
+#include <tensorwrapper/tensor/allocator/allocator.hpp>
+#include <tensorwrapper/tensor/buffer/buffer.hpp>
+#include <tensorwrapper/tensor/expression/labeled_view.hpp>
+#include <tensorwrapper/tensor/fields.hpp>
+#include <tensorwrapper/tensor/type_traits/field_traits.hpp>
+#include <tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp>
+#include <tiledarray.h>
 
 namespace tensorwrapper::tensor {
 namespace detail_ {
@@ -70,19 +72,6 @@ private:
     template<typename T>
     using eif_is_tensor = std::enable_if_t<is_tensor_v<T>>;
 
-    /** @brief Type of a LabeledTensorWrapper which wraps a TensorWrapper of
-     *         type T.
-     *
-     *  This typedef is used purely to simplify other typedefs which are defined
-     *  in terms of detail_::LabeledTensorWrapper.
-     *
-     *  @tparam T The type of the TensorWrapper which is getting labeled.
-     *            Practically it will be either `my_type` or `const my_type`.
-     *
-     */
-    template<typename T>
-    using labeled_wrapper_type = detail_::LabeledTensorWrapper<T>;
-
     /** @brief Helper value which determines if @p T  is the same as this
      *         tensor's field.
      *
@@ -126,21 +115,28 @@ public:
     /// Type of the field for the wrapped tensor
     using field_type = FieldType;
 
-    /// Type of a wrapper around a labeled tensor
-    using labeled_tensor_type = labeled_wrapper_type<my_type>;
+    /// Type resulting from annotating this tensor
+    using labeled_tensor_type = expression::LabeledView<field_type>;
 
-    /// Type of a wrapper around a read-only labeled tensor
-    using const_labeled_tensor_type = labeled_wrapper_type<const my_type>;
+    using const_labeled_tensor_type = const labeled_tensor_type;
 
     /// String-like type used to annotate a tensor.
-    using annotation_type = std::string;
+    using annotation_type = typename labeled_tensor_type::label_type;
 
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
     /// Type of an allocator
-    using allocator_type      = allocator::Allocator<FieldType>;
-    using buffer_type         = buffer::Buffer<FieldType>;
+    using allocator_type = allocator::Allocator<FieldType>;
+
+    using buffer_type = buffer::Buffer<FieldType>;
+
+    using buffer_pointer = std::unique_ptr<buffer_type>;
+
+    using buffer_reference = buffer_type&;
+
+    using const_buffer_reference = const buffer_type&;
+
     using tile_populator_type = typename allocator_type::tile_populator_type;
     using element_populator_type =
       typename allocator_type::element_populator_type;
@@ -195,7 +191,6 @@ public:
     TensorWrapper(const element_populator_type& fxn, shape_pointer shape,
                   allocator_pointer alloc);
 
-#if 0
     /** @brief Creates a TensorWrapper which will use the provided allocator to
      *         create its state.
      *
@@ -234,7 +229,9 @@ public:
     explicit TensorWrapper(
       shape_pointer shape,
       allocator_pointer p = default_allocator<field_type>());
-#endif
+
+    TensorWrapper(buffer_type buffer, shape_pointer shape,
+                  allocator_pointer alloc);
 
     /** @brief Creates a TensorWrapper which wraps a tensor whose values are
      *  defined by an initializer list.
@@ -248,10 +245,10 @@ public:
      *  @throw ??? Throws if allocating the underlying tensor throws. Same throw
      *             guarantee.
      */
-    TensorWrapper(n_d_initializer_list_t<double, 1> il);
-    TensorWrapper(n_d_initializer_list_t<double, 2> il);
-    TensorWrapper(n_d_initializer_list_t<double, 3> il);
-    TensorWrapper(n_d_initializer_list_t<double, 4> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 1> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 2> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 3> il);
+    TensorWrapper(n_d_initializer_list_t<element_type, 4> il);
 
     /** @brief Makes a copy of another TensorWrapper
      *
@@ -317,6 +314,8 @@ public:
 
     /// Default nothrow dtor
     ~TensorWrapper() noexcept;
+
+    void swap(TensorWrapper& other) noexcept;
 
     /** @brief Returns the allocator in a read-only state.
      *
@@ -631,6 +630,9 @@ public:
         return false;
     }
 
+    buffer_reference buffer();
+    const_buffer_reference buffer() const;
+
     pimpl_reference pimpl();
     inline const_pimpl_reference pimpl() const { return pimpl_(); }
 
@@ -645,9 +647,6 @@ protected:
     const variant_type& variant_() const;
     ///@}
 
-    friend labeled_tensor_type;
-    friend const_labeled_tensor_type;
-
     /// Type which results from annotating the modifiable tensor in the PIMPL
     using labeled_variant_type = typename field_traits::labeled_variant_type;
 
@@ -655,7 +654,7 @@ protected:
     using const_labeled_type =
       typename field_traits::const_labeled_variant_type;
 
-    /// Hook for LabeledTensorWrapper to get the labeled tensors
+    /// Hook for LabeledViewWrapper to get the labeled tensors
     ///@{
     labeled_variant_type annotate_(const annotation_type& annotation);
 
@@ -666,7 +665,7 @@ protected:
 
     /** @brief Returns the wrapped variant.
      *
-     *  This function is used by LabeledTensorWrapper to get
+     *  This function is used by LabeledViewWrapper to get
      * the variant. In general users of the TensorWrapper class
      * shouldn't be working with the variant, which is why the
      * function is not part of the public API.
@@ -679,7 +678,7 @@ protected:
 
     /** @brief Returns the wrapped variant.
      *
-     *  This function is used by LabeledTensorWrapper to get
+     *  This function is used by LabeledViewWrapper to get
      * the variant. In general users of the TensorWrapper class
      * shouldn't be working with the variant, which is why the
      * function is not part of the public API.
