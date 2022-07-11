@@ -1,16 +1,15 @@
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
+#include "../tensor/test_tensor.hpp"
 #include "mkl_service.h"
 #include "tensorwrapper/tensor/creation.hpp"
 #include <catch2/catch.hpp>
 #include <iostream>
+#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 #include <tiledarray.h>
 #include <vector>
-#include "../tensor/test_tensor.hpp"
-#include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
 
 using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
-
 
 TEST_CASE("TA_vs_TW", "[.][ptest]") {
     const int kmatsize = 100;
