@@ -52,6 +52,10 @@ private:
 
     pimpl_pointer clone_() const override;
 
+    void permute_(const_annotation_reference my_idx,
+                  const_annotation_reference out_idx,
+                  base_type& out) const override;
+
     void scale_(const_annotation_reference my_idx,
                 const_annotation_reference out_idx, base_type& out,
                 double rhs) const override;
@@ -78,6 +82,10 @@ private:
                 const_annotation_reference out_idx, base_type& out,
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
+
+    scalar_value_type dot_(const_annotation_reference my_idx,
+                           const_annotation_reference rhs_idx,
+                           const base_type& rhs) const override;
 
     scalar_value_type norm_() const override;
     scalar_value_type sum_() const override;

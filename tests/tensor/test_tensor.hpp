@@ -12,6 +12,24 @@
 
 namespace testing {
 
+/** @brief A tuple that can be used to make unit tests loop over fields
+ *
+ *  This tuple is mainly envisioned as being used like:
+ *
+ *  ```
+ *  #include "test_tensor.hpp" // Make sure this file is included
+ *
+ *  TEMPLATE_LIST_TEST_CASE("Name of your test case",
+ *                          "tags",
+ *                          testing::field_types) {
+ *      // Catch2 will set TestType to one of the types in field_types, use it
+ *      // as the template type parameter for your unit tests from here on in
+ *  }
+ *  ```
+ */
+using field_types = std::tuple<tensorwrapper::tensor::field::Scalar,
+                               tensorwrapper::tensor::field::Tensor>;
+
 /// Function which generates some dummy tensors for a given type
 template<typename FieldType>
 auto get_tensors() {

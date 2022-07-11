@@ -188,6 +188,9 @@ public:
      */
     bool is_initialized() const noexcept;
 
+    void permute(const_annotation_reference my_idx,
+                 const_annotation_reference out_idx, my_type& out) const;
+
     /** @brief Scales (and optionally permutes) a tensor
      *
      *  This function scales a tensor using einstein notation. This means that
@@ -358,6 +361,17 @@ public:
     void times(const_annotation_reference my_idx,
                const_annotation_reference out_idx, my_type& out,
                const_annotation_reference rhs_idx, const my_type& rhs) const;
+
+    /** @brief Computes the dot product of the current buffer with @p rhs.
+     *
+     *  @throw std::runtime_error if the present buffer is not initialized.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if @p rhs is not initialized. Strong throw
+     *                            guarantee.
+     */
+    scalar_value_type dot(const_annotation_reference my_idx,
+                          const_annotation_reference rhs_idx,
+                          const my_type& rhs) const;
 
     /** @brief Computes the norm of the underlying tensor
      *

@@ -46,6 +46,11 @@ public:
 
     virtual ~BufferPIMPL() noexcept = default;
 
+    void permute(const_annotation_reference my_idx,
+                 const_annotation_reference out_idx, my_type& out) const {
+        permute_(my_idx, out_idx, out);
+    }
+
     /** @brief Implements operator*(double)
      *
      */
@@ -100,6 +105,12 @@ public:
         times_(my_idx, out_idx, out, rhs_idx, rhs);
     }
 
+    scalar_value_type dot(const_annotation_reference my_idx,
+                          const_annotation_reference rhs_idx,
+                          const my_type& rhs) const {
+        return dot_(my_idx, rhs_idx, rhs);
+    }
+
     /// Implements norm operation
     inline scalar_value_type norm() const { return norm_(); }
 
@@ -147,6 +158,11 @@ private:
     /// To be overridden by derived class to implement clone
     virtual pimpl_pointer clone_() const = 0;
 
+    /// To be overridden by derived class to implement permute
+    virtual void permute_(const_annotation_reference my_idx,
+                          const_annotation_reference out_idx,
+                          my_type& out) const = 0;
+
     /// To be overridden by derived class to implement operator*(double)
     virtual void scale_(const_annotation_reference my_idx,
                         const_annotation_reference out_idx, my_type& out,
@@ -179,6 +195,10 @@ private:
                         const_annotation_reference out_idx, my_type& out,
                         const_annotation_reference rhs_idx,
                         const my_type& rhs) const = 0;
+
+    virtual scalar_value_type dot_(const_annotation_reference my_idx,
+                                   const_annotation_reference rhs_idx,
+                                   const my_type& rhs) const = 0;
 
     /// To be overridden by derived class to implement norm
     virtual scalar_value_type norm_() const = 0;

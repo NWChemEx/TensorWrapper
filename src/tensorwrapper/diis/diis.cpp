@@ -1,4 +1,5 @@
 #include <tensorwrapper/diis/diis.hpp>
+#include <tensorwrapper/tensor/expression/dot.hpp>
 
 namespace tensorwrapper::diis {
 
@@ -32,7 +33,7 @@ tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
     {
         tensor_type& E_i = m_errors_.at(i);
         tensor_type& E_j = m_errors_.at(j);
-        m_B_(i, j)       = dot(E_i("mu,nu"), E_j("mu,nu"));
+        m_B_(i, j)       = tensor::expression::dot(E_i("mu,nu"), E_j("mu,nu"));
 
         // Fill in lower triangle
         if(i != j) m_B_(j, i) = m_B_(i, j);

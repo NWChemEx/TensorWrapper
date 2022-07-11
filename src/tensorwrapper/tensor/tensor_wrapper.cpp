@@ -74,48 +74,36 @@ TENSOR_WRAPPER::TensorWrapper(const element_populator_type& fxn,
   TensorWrapper(std::make_unique<pimpl_type>(a->allocate(fxn, *s), std::move(s),
                                              std::move(a))) {}
 
-#if 0
+template<typename FieldType>
+TENSOR_WRAPPER::TensorWrapper(buffer_type buffer, shape_pointer shape,
+                              allocator_pointer alloc) :
+  TensorWrapper(std::make_unique<pimpl_type>(
+    std::make_unique<buffer_type>(std::move(buffer)), std::move(shape),
+    std::move(alloc))) {}
+
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(allocator_pointer p) :
-  TensorWrapper(variant_type{}, std::move(p)) {}
+  TensorWrapper(buffer_type{}, shape_pointer{}, std::move(p)) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(shape_pointer shape, allocator_pointer p) :
-  TensorWrapper(p->new_tensor(*shape), std::move(shape), std::move(p)) {}
+  TensorWrapper(buffer_type{}, std::move(shape), std::move(p)) {}
 
 template<typename FieldType>
-template<typename OtherField, typename>
-TENSOR_WRAPPER::TensorWrapper(const TensorWrapper<OtherField>& other,
-                              sparse_pointer pshape, allocator_pointer palloc) :
-  TensorWrapper(new_variant(other.pimpl_().variant(), *pshape, *palloc),
-                pshape->clone(), palloc->clone()) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 1> il) :
+  TensorWrapper(il_to_tw<element_type, 1, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(variant_type v, allocator_pointer p) :
-  m_pimpl_(std::make_unique<pimpl_type>(std::move(v), std::move(p))) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 2> il) :
+  TensorWrapper(il_to_tw<element_type, 2, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(variant_type v, shape_pointer pshape,
-                              allocator_pointer palloc) :
-  m_pimpl_(std::make_unique<pimpl_type>(std::move(v), std::move(pshape),
-                                        std::move(palloc))) {}
-#endif
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 3> il) :
+  TensorWrapper(il_to_tw<element_type, 3, FieldType>(il)) {}
 
 template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 1> il) :
-  TensorWrapper(il_to_tw<double, 1, FieldType>(il)) {}
-
-template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 2> il) :
-  TensorWrapper(il_to_tw<double, 2, FieldType>(il)) {}
-
-template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 3> il) :
-  TensorWrapper(il_to_tw<double, 3, FieldType>(il)) {}
-
-template<typename FieldType>
-TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<double, 4> il) :
-  TensorWrapper(il_to_tw<double, 4, FieldType>(il)) {}
+TENSOR_WRAPPER::TensorWrapper(n_d_initializer_list_t<element_type, 4> il) :
+  TensorWrapper(il_to_tw<element_type, 4, FieldType>(il)) {}
 
 template<typename FieldType>
 TENSOR_WRAPPER::TensorWrapper(const TensorWrapper& other) :
@@ -141,6 +129,11 @@ TENSOR_WRAPPER& TENSOR_WRAPPER::operator=(TensorWrapper&& other) = default;
 
 template<typename FieldType>
 TENSOR_WRAPPER::~TensorWrapper() noexcept = default;
+
+template<typename FieldType>
+void TENSOR_WRAPPER::swap(TensorWrapper& other) noexcept {
+    m_pimpl_.swap(other.m_pimpl_);
+}
 
 //------------------------------------------------------------------------------
 //                           Accessors
@@ -252,6 +245,16 @@ template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl() {
     if(!m_pimpl_) throw std::runtime_error("No TW PIMPL");
     return *m_pimpl_;
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::buffer_reference TENSOR_WRAPPER::buffer() {
+    return pimpl_().buffer();
+}
+
+template<typename FieldType>
+typename TENSOR_WRAPPER::const_buffer_reference TENSOR_WRAPPER::buffer() const {
+    return pimpl_().buffer();
 }
 
 //------------------------------------------------------------------------------
