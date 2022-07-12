@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include "../tensor/test_tensor.hpp"
-// #include "mkl_service.h"
 #include "tensorwrapper/tensor/creation.hpp"
 #include <catch2/catch.hpp>
 #include <iostream>
@@ -42,30 +41,27 @@ TEST_CASE("TA_vs_TW", "[.][ptest]") {
     REQUIRE(ta_helpers::allclose(rhs_tw.get<ta_type>(), rhs_ta));
 
     // start benchmark
-    std::cout << "Performamce Test with matrix of size " << lhs_ta.size()
-              << ": \n";
-
     BENCHMARK("TiledArray_mult") {
-        // mkl_set_num_threads(1);
         world.gop.fence();
         return res_ta("i,j") = lhs_ta("i, k") * rhs_ta("k, j");
+        world.gop.fence();
     };
 
     BENCHMARK("TensorWrapper_mult") {
-        // mkl_set_num_threads(1);
         world.gop.fence();
         return res_tw("i,j") = lhs_tw("i, k") * rhs_tw("k, j");
+        world.gop.fence();
     };
 
     BENCHMARK("TiledArray_add") {
-        // mkl_set_num_threads(1);
         world.gop.fence();
         return res_ta("i,j") = lhs_ta("i, j") + rhs_ta("i, j");
+        world.gop.fence();
     };
 
     BENCHMARK("TensorWrapper_add") {
-        // mkl_set_num_threads(1);
         world.gop.fence();
         return res_tw("i,j") = lhs_tw("i, j") + rhs_tw("i, j");
+        world.gop.fence();
     };
 }
