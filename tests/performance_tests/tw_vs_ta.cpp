@@ -11,16 +11,17 @@ using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
 
 TEST_CASE("TA_vs_TW", "[.][ptest]") {
-    const int kmatsize = 1000;
+    const int kmatsize  = 1000;
     const int tile_size = 100;
-    auto& world        = TA::get_default_world();
-    using ta_type      = TA::TSpArrayD;
-    using tw_type      = ScalarTensorWrapper;
+    auto& world         = TA::get_default_world();
+    using ta_type       = TA::TSpArrayD;
+    using tw_type       = ScalarTensorWrapper;
     using tensorwrapper::tensor::detail_::ta_to_tw;
 
     // generate some random tensors
     std::vector<std::size_t> tile_boundaries;
-    for(std::size_t i = 0; i <= kmatsize; i += tile_size) tile_boundaries.push_back(i);
+    for(std::size_t i = 0; i <= kmatsize; i += tile_size)
+        tile_boundaries.push_back(i);
     std::vector<TA::TiledRange1> ranges(
       2, TA::TiledRange1(tile_boundaries.begin(), tile_boundaries.end()));
     TA::TiledRange trange(ranges.begin(), ranges.end());
