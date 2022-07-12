@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <optional>
+#include <string>
 #include <tensorwrapper/tensor/expression/expression_class.hpp>
 #include <tensorwrapper/tensor/fields.hpp>
 
