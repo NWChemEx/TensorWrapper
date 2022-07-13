@@ -1,6 +1,5 @@
 #pragma once
 #include "tensorwrapper/tensor/buffer/buffer.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"

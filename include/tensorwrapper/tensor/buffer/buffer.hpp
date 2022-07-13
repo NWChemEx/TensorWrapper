@@ -1,6 +1,5 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 #include <memory>
@@ -41,11 +40,6 @@ private:
     using my_type = Buffer<FieldType>;
 
 public:
-    /// XXX: These are to be removed, they are here to expose the variant_type
-    /// XXX: Inclusion the FieldTraits breaks  encapsulation
-    using backend_traits = tensor::backends::TiledArrayTraits<FieldType>;
-    using variant_type   = typename backend_traits::variant_type;
-
     /// Type used for indices in einstein/index-based operations
     using annotation_type = std::string;
 
@@ -497,10 +491,6 @@ public:
      *                                state.
      */
     std::ostream& print(std::ostream& os) const;
-
-    /// XXX: These are to be removed
-    variant_type& variant();
-    const variant_type& variant() const;
 
 private:
     /// Asserts the PIMPL is initialized, throwing std::runtime_error if not

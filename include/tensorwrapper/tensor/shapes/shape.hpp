@@ -1,7 +1,6 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
-//#include "tensorwrapper/tensor/tensor_fwd.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include <memory>
 #include <vector>
