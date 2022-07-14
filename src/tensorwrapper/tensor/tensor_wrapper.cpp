@@ -272,18 +272,6 @@ const typename TENSOR_WRAPPER::variant_type& TENSOR_WRAPPER::variant_() const {
 }
 
 template<typename FieldType>
-typename TENSOR_WRAPPER::labeled_variant_type TENSOR_WRAPPER::annotate_(
-  const annotation_type& annotation) {
-    return pimpl_().annotate(annotation);
-}
-
-template<typename FieldType>
-typename TENSOR_WRAPPER::const_labeled_type TENSOR_WRAPPER::annotate_(
-  const annotation_type& annotation) const {
-    return pimpl_().annotate(annotation);
-}
-
-template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl_() {
     if(!m_pimpl_) {
         using ta_pimpl_type  = buffer::detail_::TABufferPIMPL<FieldType>;

@@ -1,6 +1,6 @@
 #pragma once
 #include "buffer_pimpl.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
+#include "ta_traits.hpp"
 
 /// Forward declare the Conversion class
 namespace tensorwrapper::tensor {
@@ -17,7 +17,7 @@ private:
 
     using base_type = BufferPIMPL<FieldType>;
 
-    using traits_type = tensor::backends::TiledArrayTraits<FieldType>;
+    using traits_type = TiledArrayTraits<FieldType>;
 
     using variant_type = typename traits_type::variant_type;
 

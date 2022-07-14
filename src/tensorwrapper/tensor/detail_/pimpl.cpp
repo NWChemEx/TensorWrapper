@@ -113,24 +113,6 @@ typename PIMPL_TYPE::buffer_reference PIMPL_TYPE::buffer() {
 }
 
 template<typename FieldType>
-typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
-  const annotation_type& annotation) {
-    auto& m_tensor_   = buffer().variant();
-    using new_variant = labeled_variant_t<variant_type>;
-    auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
-    return std::visit(l, m_tensor_);
-}
-
-template<typename FieldType>
-typename PIMPL_TYPE::const_labeled_type PIMPL_TYPE::annotate(
-  const annotation_type& annotation) const {
-    auto& m_tensor_   = buffer().variant();
-    using new_variant = const_labeled_type;
-    auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
-    return std::visit(l, m_tensor_);
-}
-
-template<typename FieldType>
 typename PIMPL_TYPE::extents_type PIMPL_TYPE::extents() const {
     if(m_shape_) {
         auto ex = m_shape_->extents();

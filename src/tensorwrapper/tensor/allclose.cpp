@@ -1,6 +1,5 @@
 #include "../ta_helpers/ta_helpers.hpp"
 #include "tensorwrapper/tensor/allclose.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 
 namespace tensorwrapper::tensor {
 

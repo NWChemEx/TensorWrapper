@@ -19,11 +19,11 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
 
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_tensor(this->m_world_, shape,
-                                                       tiling_, fxn);
+        ta_tensor = detail_::generate_ta_scalar_tensor(
+          this->m_world_.madness_world(), shape, tiling_, fxn);
     } else {
-        ta_tensor =
-          detail_::generate_ta_tot_tensor(this->m_world_, shape, tiling_, fxn);
+        ta_tensor = detail_::generate_ta_tot_tensor(
+          this->m_world_.madness_world(), shape, tiling_, fxn);
     }
 
     // Return Buffer pointer
@@ -38,11 +38,11 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
 
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_tensor(this->m_world_, shape,
-                                                       tiling_, fxn);
+        ta_tensor = detail_::generate_ta_scalar_tensor(
+          this->m_world_.madness_world(), shape, tiling_, fxn);
     } else {
-        ta_tensor =
-          detail_::generate_ta_tot_tensor(this->m_world_, shape, tiling_, fxn);
+        ta_tensor = detail_::generate_ta_tot_tensor(
+          this->m_world_.madness_world(), shape, tiling_, fxn);
     }
 
     // Return Buffer pointer

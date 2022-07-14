@@ -31,7 +31,7 @@ public:
       ta::Storage storage   = ta::Storage::Core,
       ta::Tiling tiling     = ta::Tiling::OneBigTile,
       ta::Distribution dist = ta::Distribution::Replicated,
-      runtime_reference rt  = TA::get_default_world()) :
+      runtime_reference rt  = runtime_reference{}) :
       base_type(rt), storage_(storage), tiling_(tiling), dist_(dist){};
 
     ~TiledArrayAllocator() noexcept = default;

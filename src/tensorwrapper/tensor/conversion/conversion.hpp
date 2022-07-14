@@ -1,7 +1,8 @@
 #pragma once
 #include "../buffer/detail_/ta_buffer_pimpl.hpp"
 #include "tensorwrapper/tensor/buffer/buffer.hpp"
-#include "tensorwrapper/tensor/type_traits/field_traits.hpp"
+#include <TiledArray/dist_array.h>
+#include <TiledArray/tensor.h>
 
 namespace tensorwrapper::tensor {
 
@@ -53,7 +54,6 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
         if(ta_buffer_pimpl == nullptr) { return false; }
 
         /// Check output_t against field traits
-        using field_traits = detail_::FieldTraits<FieldType>;
         return field_traits::template is_tensor_type_v<output_t>;
     }
 
