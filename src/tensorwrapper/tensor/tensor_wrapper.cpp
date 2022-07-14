@@ -11,9 +11,7 @@ namespace {
 
 template<typename ElementType, std::size_t Rank, typename FieldType>
 auto il_to_tw(const n_d_initializer_list_t<ElementType, Rank>& il) {
-    using traits_type      = detail_::FieldTraits<FieldType>;
-    using variant_type     = typename traits_type::variant_type;
-    using default_tensor_t = std::variant_alternative_t<0, variant_type>;
+    using default_tensor_t = TA::TSpArrayD;
 
     auto& world = TA::get_default_world();
 
@@ -260,16 +258,6 @@ typename TENSOR_WRAPPER::const_buffer_reference TENSOR_WRAPPER::buffer() const {
 //------------------------------------------------------------------------------
 //                  Protected and Private Members
 //------------------------------------------------------------------------------
-
-template<typename FieldType>
-typename TENSOR_WRAPPER::variant_type& TENSOR_WRAPPER::variant_() {
-    return pimpl_().variant();
-}
-
-template<typename FieldType>
-const typename TENSOR_WRAPPER::variant_type& TENSOR_WRAPPER::variant_() const {
-    return pimpl_().variant();
-}
 
 template<typename FieldType>
 typename TENSOR_WRAPPER::pimpl_reference TENSOR_WRAPPER::pimpl_() {
