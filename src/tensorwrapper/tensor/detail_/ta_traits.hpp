@@ -14,7 +14,7 @@
  *  the TensorWrapper library.
  */
 
-namespace tensorwrapper::tensor::buffer::detail_ {
+namespace tensorwrapper::tensor::detail_ {
 
 /** @brief Primary template for establishing the types associated with
  *         TiledArray.
@@ -67,4 +67,4 @@ struct TiledArrayTraits<field::Tensor> {
     using variant_type = std::variant<tensor_type<double>>;
 };
 
-} // namespace tensorwrapper::tensor::buffer::detail_
+} // namespace tensorwrapper::tensor::detail_

@@ -1,18 +1,21 @@
 #include "../ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensor/allclose.hpp"
+#include "conversion/conversion.hpp"
+#include "detail_/ta_traits.hpp"
+#include <tensorwrapper/tensor/allclose.hpp>
 
 namespace tensorwrapper::tensor {
 
 using ta_tensor_type =
-  backends::TiledArrayTraits<field::Scalar>::tensor_type<double>;
+  detail_::TiledArrayTraits<field::Scalar>::tensor_type<double>;
 using ta_tot_type =
-  backends::TiledArrayTraits<field::Tensor>::tensor_type<double>;
+  detail_::TiledArrayTraits<field::Tensor>::tensor_type<double>;
 
 bool allclose(const ScalarTensorWrapper& actual, const ScalarTensorWrapper& ref,
               double rtol, double atol) {
-    using tensor_type = ta_tensor_type;
-    const auto& a     = actual.get<tensor_type>();
-    const auto& r     = ref.get<tensor_type>();
+    using converter_t = to_ta_distarrayd_t;
+    converter_t converter;
+    const auto& a = converter.convert(actual.buffer());
+    const auto& r = converter.convert(ref.buffer());
 
     return ta_helpers::allclose(a, r, false, rtol, atol);
 }
