@@ -137,18 +137,6 @@ typename PIMPL_TYPE::annotation_type PIMPL_TYPE::make_annotation(
     return x;
 }
 
-/// XXX THESE ARE TO BE REMOVED
-template<typename FieldType>
-typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() {
-    return buffer().variant();
-}
-
-/// XXX THESE ARE TO BE REMOVED
-template<typename FieldType>
-const typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() const {
-    return buffer().variant();
-}
-
 template<typename FieldType>
 typename PIMPL_TYPE::rank_type PIMPL_TYPE::rank() const {
     return outer_rank_() + inner_rank_();
