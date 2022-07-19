@@ -1,19 +1,12 @@
 #include "../ta_helpers/ta_helpers.hpp"
 #include "conversion/conversion.hpp"
-#include "detail_/ta_traits.hpp"
 #include <tensorwrapper/tensor/allclose.hpp>
 
 namespace tensorwrapper::tensor {
 
-using ta_tensor_type =
-  detail_::TiledArrayTraits<field::Scalar>::tensor_type<double>;
-using ta_tot_type =
-  detail_::TiledArrayTraits<field::Tensor>::tensor_type<double>;
-
 bool allclose(const ScalarTensorWrapper& actual, const ScalarTensorWrapper& ref,
               double rtol, double atol) {
-    using converter_t = to_ta_distarrayd_t;
-    converter_t converter;
+    to_ta_distarrayd_t converter;
     const auto& a = converter.convert(actual.buffer());
     const auto& r = converter.convert(ref.buffer());
 
@@ -22,9 +15,9 @@ bool allclose(const ScalarTensorWrapper& actual, const ScalarTensorWrapper& ref,
 
 bool allclose(const TensorOfTensorsWrapper& actual,
               const TensorOfTensorsWrapper& ref, double rtol, double atol) {
-    using tensor_type = ta_tot_type;
-    const auto& a     = actual.get<tensor_type>();
-    const auto& r     = ref.get<tensor_type>();
+    to_ta_totd_t converter;
+    const auto& a = converter.convert(actual.buffer());
+    const auto& r = converter.convert(ref.buffer());
 
     auto inner_rank = actual.rank() - a.trange().rank();
     return ta_helpers::allclose_tot(a, r, inner_rank, false, rtol, atol);
@@ -32,18 +25,18 @@ bool allclose(const TensorOfTensorsWrapper& actual,
 
 bool abs_allclose(const ScalarTensorWrapper& actual,
                   const ScalarTensorWrapper& ref, double rtol, double atol) {
-    using tensor_type = ta_tensor_type;
-    const auto& a     = actual.get<tensor_type>();
-    const auto& r     = ref.get<tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto& a = converter.convert(actual.buffer());
+    const auto& r = converter.convert(ref.buffer());
 
     return ta_helpers::allclose(a, r, true, rtol, atol);
 }
 
 bool abs_allclose(const TensorOfTensorsWrapper& actual,
                   const TensorOfTensorsWrapper& ref, double rtol, double atol) {
-    using tensor_type = ta_tot_type;
-    const auto& a     = actual.get<tensor_type>();
-    const auto& r     = ref.get<tensor_type>();
+    to_ta_totd_t converter;
+    const auto& a = converter.convert(actual.buffer());
+    const auto& r = converter.convert(ref.buffer());
 
     auto inner_rank = actual.rank() - a.trange().rank();
     return ta_helpers::allclose_tot(a, r, inner_rank, true, rtol, atol);
