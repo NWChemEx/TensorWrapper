@@ -57,8 +57,9 @@ TEST_CASE("TA_vs_TW", "[.][ptest]") {
 
     BENCHMARK("TiledArray_add") {
         world.gop.fence();
-        return res_ta("i,j") = lhs_ta("i, j") + rhs_ta("i, j");
+        res_ta("i,j") = lhs_ta("i, j") + rhs_ta("i, j");
         world.gop.fence();
+        return res_ta;
     };
 
     BENCHMARK("TensorWrapper_add") {
