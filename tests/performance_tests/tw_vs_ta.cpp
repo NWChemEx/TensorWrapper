@@ -45,8 +45,9 @@ TEST_CASE("TA_vs_TW", "[.][ptest]") {
     // start benchmark
     BENCHMARK("TiledArray_mult") {
         world.gop.fence();
-        return res_ta("i,j") = lhs_ta("i, k") * rhs_ta("k, j");
+        res_ta("i,j") = lhs_ta("i, k") * rhs_ta("k, j");
         world.gop.fence();
+        return res_ta;
     };
 
     BENCHMARK("TensorWrapper_mult") {
