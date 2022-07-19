@@ -135,18 +135,20 @@ public:
     using element_populator_type =
       detail_::element_populator_type<FieldType, scalar_type>;
 
-    /** @brief Creates a new allocator with the optionally specified runtime.
-     *
-     *  Allocator is a pure-virtual class, so instances of it can not actually
-     *  be created. Instead the ctor provides derived classes with an API for
-     *  setting the runtime.
-     *
-     *  @param[in] world The runtime the allocator will use for allocating.
-     *                   Defaults to `TA::get_default_world()`.
-     *
-     *  @throw None No throw guarantee.
-     */
-    explicit Allocator(runtime_reference world = runtime_type{});
+    /// TODO: Add parallelzone::Runtime parameters back once it has sane
+    ///       construction options
+    // /** @brief Creates a new allocator with the optionally specified runtime.
+    //  *
+    //  *  Allocator is a pure-virtual class, so instances of it can not actually
+    //  *  be created. Instead the ctor provides derived classes with an API for
+    //  *  setting the runtime.
+    //  *
+    //  *  @param[in] world The runtime the allocator will use for allocating.
+    //  *                   Defaults to `TA::get_default_world()`.
+    //  *
+    //  *  @throw None No throw guarantee.
+    //  */
+    // explicit Allocator(runtime_reference world = runtime_type{});
 
     /** @brief Polymorphic copy.
      *
@@ -230,18 +232,21 @@ public:
      */
     bool operator!=(const Allocator& rhs) const { return !((*this) == rhs); }
 
-    /** @brief Provides access to the runtime to which the tensor will belong.
-     *
-     *  At the moment the runtime associated with the tensor is just a
-     *  TiledArray World. This will change when ParallelZone rolls out.
-     *
-     *  @return A read/write reference to the runtime.
-     *
-     *  @throw None No throw guarantee.
-     */
-    runtime_reference runtime() const { return m_world_; }
+    // /** @brief Provides access to the runtime to which the tensor will belong.
+    //  *
+    //  *  At the moment the runtime associated with the tensor is just a
+    //  *  TiledArray World. This will change when ParallelZone rolls out.
+    //  *
+    //  *  @return A read/write reference to the runtime.
+    //  *
+    //  *  @throw None No throw guarantee.
+    //  */
+    // runtime_reference runtime() const { return m_world_; }
 
 protected:
+    /// Temporary until runtime is sorted
+    Allocator() = default;
+
     /// To help derived classes implement clone_
     Allocator(const Allocator&) = default;
 
@@ -301,17 +306,11 @@ protected:
      *              comparison is done in a no-throw manner.
      */
     virtual bool is_equal_(const Allocator& rhs) const noexcept;
-
-    /// The runtime being used for the allocation
-    runtime_reference m_world_;
 };
 
 //------------------------------------------------------------------------------
 //                         Inline Implementations
 //------------------------------------------------------------------------------
-
-template<typename FieldType>
-Allocator<FieldType>::Allocator(runtime_reference world) : m_world_(world) {}
 
 template<typename FieldType>
 bool Allocator<FieldType>::is_equal(const Allocator& other) const {
