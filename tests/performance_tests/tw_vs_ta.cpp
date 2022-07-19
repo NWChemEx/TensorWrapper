@@ -63,7 +63,8 @@ TEST_CASE("TA_vs_TW", "[.][ptest]") {
 
     BENCHMARK("TensorWrapper_add") {
         world.gop.fence();
-        return res_tw("i,j") = lhs_tw("i, j") + rhs_tw("i, j");
+        res_tw("i,j") = lhs_tw("i, j") + rhs_tw("i, j");
         world.gop.fence();
+        return res_tw;
     };
 }
