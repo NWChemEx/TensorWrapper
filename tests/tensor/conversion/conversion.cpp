@@ -39,22 +39,130 @@ TEST_CASE("Conversion") {
     auto t_tabuffer = std::make_unique<t_tabuffer_t>(corr_vov);
     s_buffer_t s_buffer(s_tabuffer->clone());
     t_buffer_t t_buffer(t_tabuffer->clone());
+    const s_buffer_t const_s_buffer(s_tabuffer->clone());
+    const t_buffer_t const_t_buffer(t_tabuffer->clone());
 
     /// Instances of conversion
     s_conversion_t s_conversion;
     t_conversion_t t_conversion;
 
     SECTION("convert") {
-        /// Scalar check
-        REQUIRE(allclose(s_conversion.convert(s_buffer), corr_mat));
-        /// ToT check
-        REQUIRE(allclose_tot(t_conversion.convert(t_buffer), corr_vov, 1));
+        SECTION("Buffer input") {
+            SECTION("non-const") {
+                SECTION("Scalar") {
+                    auto& output = s_conversion.convert(s_buffer);
+                    REQUIRE(allclose(output, corr_mat));
+                }
+                SECTION("Tensor") {
+                    auto& output = t_conversion.convert(t_buffer);
+                    REQUIRE(allclose_tot(output, corr_vov, 1));
+                }
+            }
+            SECTION("const") {
+                SECTION("Scalar") {
+                    const auto& output = s_conversion.convert(const_s_buffer);
+                    REQUIRE(allclose(output, corr_mat));
+                }
+                SECTION("Tensor") {
+                    const auto& output = t_conversion.convert(const_t_buffer);
+                    REQUIRE(allclose_tot(output, corr_vov, 1));
+                }
+            }
+        }
+        SECTION("BufferPIMPL input") {
+            SECTION("non-const") {
+                SECTION("Scalar") {
+                    auto& output = s_conversion.convert(s_buffer.pimpl());
+                    REQUIRE(allclose(output, corr_mat));
+                }
+                SECTION("Tensor") {
+                    auto& output = t_conversion.convert(t_buffer.pimpl());
+                    REQUIRE(allclose_tot(output, corr_vov, 1));
+                }
+            }
+            SECTION("const") {
+                SECTION("Scalar") {
+                    const auto& output =
+                      s_conversion.convert(const_s_buffer.pimpl());
+                    REQUIRE(allclose(output, corr_mat));
+                }
+                SECTION("Tensor") {
+                    const auto& output =
+                      t_conversion.convert(const_t_buffer.pimpl());
+                    REQUIRE(allclose_tot(output, corr_vov, 1));
+                }
+            }
+        }
     }
 
     SECTION("can_convert") {
-        REQUIRE(s_conversion.can_convert(s_buffer));
-        REQUIRE(t_conversion.can_convert(t_buffer));
-        REQUIRE_FALSE(s_conversion.can_convert(t_buffer));
-        REQUIRE_FALSE(t_conversion.can_convert(s_buffer));
+        SECTION("Buffer Input") {
+            SECTION("non-const") {
+                SECTION("Scalar") {
+                    auto t = s_conversion.can_convert(s_buffer);
+                    auto f = t_conversion.can_convert(s_buffer);
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+                SECTION("Tensor") {
+                    auto t = t_conversion.can_convert(t_buffer);
+                    auto f = s_conversion.can_convert(t_buffer);
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+            }
+            SECTION("const") {
+                SECTION("Scalar") {
+                    auto t = s_conversion.can_convert(const_s_buffer);
+                    auto f = t_conversion.can_convert(const_s_buffer);
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+                SECTION("Tensor") {
+                    auto t = t_conversion.can_convert(const_t_buffer);
+                    auto f = s_conversion.can_convert(const_t_buffer);
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+            }
+        }
+        SECTION("BufferPIMPL Input") {
+            SECTION("non-const") {
+                SECTION("Scalar") {
+                    auto t = s_conversion.can_convert(s_buffer.pimpl());
+                    auto f = t_conversion.can_convert(s_buffer.pimpl());
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+                SECTION("Tensor") {
+                    auto t = t_conversion.can_convert(t_buffer.pimpl());
+                    auto f = s_conversion.can_convert(t_buffer.pimpl());
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+            }
+            SECTION("const") {
+                SECTION("Scalar") {
+                    auto t = s_conversion.can_convert(const_s_buffer.pimpl());
+                    auto f = t_conversion.can_convert(const_s_buffer.pimpl());
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+                SECTION("Tensor") {
+                    auto t = t_conversion.can_convert(const_t_buffer.pimpl());
+                    auto f = s_conversion.can_convert(const_t_buffer.pimpl());
+
+                    REQUIRE(t);
+                    REQUIRE_FALSE(f);
+                }
+            }
+        }
     }
 }

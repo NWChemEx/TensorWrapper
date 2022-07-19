@@ -38,7 +38,7 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
     template<typename FieldType>
     using buffer_t = buffer::Buffer<FieldType>;
 
-    /// The type of Buffer
+    /// The BufferPIMPL type
     template<typename FieldType>
     using buffer_pimpl_t = buffer::detail_::BufferPIMPL<FieldType>;
 
@@ -55,9 +55,9 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
      *  @return True if convertable, false
      */
     template<typename FieldType>
-    bool can_convert(const buffer_pimpl_t<FieldType>& Bp) {
+    bool can_convert(const buffer_pimpl_t<FieldType>* Bp) {
         /// If cast fails, then can't convert
-        auto ta_buffer_pimpl = dynamic_cast<ta_pimpl_t<FieldType>*>(Bp);
+        auto ta_buffer_pimpl = dynamic_cast<const ta_pimpl_t<FieldType>*>(Bp);
         if(ta_buffer_pimpl == nullptr) { return false; }
 
         /// Check output_t against field traits
@@ -76,8 +76,38 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
      */
     template<typename FieldType>
     bool can_convert(const buffer_t<FieldType>& B) {
-        /// If cast fails, then can't convert
         return can_convert(B.pimpl());
+    }
+
+    /** @brief Return the tensor wrapped in @p Bp as a read-only TA DistArray.
+     *
+     *  @tparam FieldType The type of value in the Buffer
+     *
+     *  @param Bp The BufferPIMPL we want to convert
+     *
+     *  @return The wrapped TA DistArray
+     */
+    template<typename FieldType>
+    const output_t& convert(const buffer_pimpl_t<FieldType>* Bp) {
+        /// Try to cast the input buffer's PIMPL to a TABufferPIMPL
+        auto ta_buffer_pimpl = dynamic_cast<const ta_pimpl_t<FieldType>*>(Bp);
+        if(ta_buffer_pimpl == nullptr) { throw std::bad_cast(); }
+
+        /// Return the Tensor stored in the PIMPL
+        return std::get<output_t>(ta_buffer_pimpl->m_tensor_);
+    }
+
+    /** @brief Return the tensor wrapped in @p B as a read-only TA DistArray.
+     *
+     *  @tparam FieldType The type of value in the Buffer
+     *
+     *  @param B The buffer we want to convert
+     *
+     *  @return The wrapped TA DistArray
+     */
+    template<typename FieldType>
+    const output_t& convert(const buffer_t<FieldType>& B) {
+        return convert(B.pimpl());
     }
 
     /** @brief Return the tensor wrapped in @p Bp as a TA DistArray.
@@ -89,56 +119,21 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
      *  @return The wrapped TA DistArray
      */
     template<typename FieldType>
-    output_t& convert(buffer_pimpl_t<FieldType>& Bp) {
-        /// Try to cast the input buffer's PIMPL to a TABufferPIMPL
-        auto ta_buffer_pimpl = dynamic_cast<ta_pimpl_t<FieldType>*>(Bp);
-        if(ta_buffer_pimpl == nullptr) { throw std::bad_cast(); }
-
-        /// Return the Tensor stored in the PIMPL
-        return std::get<output_t>(ta_buffer_pimpl->m_tensor_);
+    output_t& convert(buffer_pimpl_t<FieldType>* Bp) {
+        const buffer_pimpl_t<FieldType>* const_Bp = Bp;
+        return const_cast<output_t&>(convert(const_Bp));
     }
 
     /** @brief Return the tensor wrapped in @p B as a TA DistArray.
      *
      *  @tparam FieldType The type of value in the Buffer
      *
-     *  @param B The Buffer we want to convert
+     *  @param B The buffer we want to convert
      *
      *  @return The wrapped TA DistArray
      */
     template<typename FieldType>
     output_t& convert(buffer_t<FieldType>& B) {
-        return convert(B.pimpl());
-    }
-
-    /** @brief Return the tensor wrapped in @p Bp as a const TA DistArray.
-     *
-     *  @tparam FieldType The type of value in the Buffer
-     *
-     *  @param Bp The BufferPIMPL we want to convert
-     *
-     *  @return The wrapped TA DistArray
-     */
-    template<typename FieldType>
-    const output_t& convert(const buffer_pimpl_t<FieldType>& Bp) {
-        /// Try to cast the input buffer's PIMPL to a TABufferPIMPL
-        auto ta_buffer_pimpl = dynamic_cast<const ta_pimpl_t<FieldType>*>(Bp);
-        if(ta_buffer_pimpl == nullptr) { throw std::bad_cast(); }
-
-        /// Return the Tensor stored in the PIMPL
-        return std::get<const output_t>(ta_buffer_pimpl->m_tensor_);
-    }
-
-    /** @brief Return the tensor wrapped in @p B as a const TA DistArray.
-     *
-     *  @tparam FieldType The type of value in the Buffer
-     *
-     *  @param B The Buffer we want to convert
-     *
-     *  @return The wrapped TA DistArray
-     */
-    template<typename FieldType>
-    const output_t& convert(const buffer_t<FieldType>& B) {
         return convert(B.pimpl());
     }
 };
