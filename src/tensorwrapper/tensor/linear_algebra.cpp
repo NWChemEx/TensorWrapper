@@ -12,7 +12,7 @@ namespace tensorwrapper::tensor {
 using TWrapper = ScalarTensorWrapper;
 
 std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X) {
-    to_ta_totd_t converter;
+    to_ta_distarrayd_t converter;
     const auto& x = converter.convert(X.buffer());
 
     auto [eval_vec, evecs] = TA::math::linalg::heig(x);
@@ -26,7 +26,7 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X) {
 
 std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
                                           const TWrapper& S) {
-    to_ta_totd_t converter;
+    to_ta_distarrayd_t converter;
     const auto& x = converter.convert(X.buffer());
     const auto& s = converter.convert(S.buffer());
 
@@ -39,7 +39,7 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
 }
 
 TWrapper cholesky_linv(const TWrapper& M) {
-    to_ta_totd_t converter;
+    to_ta_distarrayd_t converter;
     const auto& m = converter.convert(M.buffer());
     auto linv     = TA::math::linalg::cholesky_linv(m);
 
@@ -47,7 +47,7 @@ TWrapper cholesky_linv(const TWrapper& M) {
 }
 
 TWrapper hmatrix_pow(const TWrapper& S, double pow) {
-    to_ta_totd_t converter;
+    to_ta_distarrayd_t converter;
     const auto s = converter.convert(S.buffer());
     auto s_out   = tensorwrapper::ta_helpers::hmatrix_pow(s, pow);
 
@@ -61,7 +61,7 @@ auto SVD_(const TWrapper& M) {
     constexpr bool both_vecs = (Vecs == TA::SVD::AllVectors);
 
     // Grab the matrix dimension ranges and determine the shorter one
-    to_ta_totd_t converter;
+    to_ta_distarrayd_t converter;
     const auto& m    = converter.convert(M.buffer());
     const auto& tr_m = m.trange().dim(0);
     const auto& tr_n = m.trange().dim(1);
