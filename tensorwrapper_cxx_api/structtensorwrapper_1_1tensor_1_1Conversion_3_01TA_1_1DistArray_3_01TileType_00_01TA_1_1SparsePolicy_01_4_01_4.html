@@ -91,6 +91,11 @@ template&lt;typename FieldType &gt; </td></tr>
 <tr class="memitem:acbae1af19c1befecb55a9328af4b1658"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">buffer::Buffer</a>&lt; FieldType &gt;</td></tr>
 <tr class="memdesc:acbae1af19c1befecb55a9328af4b1658"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of Buffer. <br /></td></tr>
 <tr class="separator:acbae1af19c1befecb55a9328af4b1658"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ba7b39cb35d9611122b31e6ce3c026"><td class="memTemplParams" colspan="2"><a id="a61ba7b39cb35d9611122b31e6ce3c026"></a>
+template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a61ba7b39cb35d9611122b31e6ce3c026"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html">buffer::detail_::BufferPIMPL</a>&lt; FieldType &gt;</td></tr>
+<tr class="memdesc:a61ba7b39cb35d9611122b31e6ce3c026"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufferPIMPL type. <br /></td></tr>
+<tr class="separator:a61ba7b39cb35d9611122b31e6ce3c026"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad36de72eae5066939cd54131fefa030"><td class="memTemplParams" colspan="2"><a id="aad36de72eae5066939cd54131fefa030"></a>
 template&lt;typename FieldType &gt; </td></tr>
 <tr class="memitem:aad36de72eae5066939cd54131fefa030"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#aad36de72eae5066939cd54131fefa030">ta_pimpl_t</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1TABufferPIMPL.html">buffer::detail_::TABufferPIMPL</a>&lt; FieldType &gt;</td></tr>
@@ -99,10 +104,26 @@ template&lt;typename FieldType &gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abfab8496b07808232122e9738bf17554"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
-<tr class="memitem:abfab8496b07808232122e9738bf17554"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#abfab8496b07808232122e9738bf17554">can_convert</a> (<a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;B)</td></tr>
-<tr class="memdesc:abfab8496b07808232122e9738bf17554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> instance can convert <code>B</code>.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#abfab8496b07808232122e9738bf17554">More...</a><br /></td></tr>
-<tr class="separator:abfab8496b07808232122e9738bf17554"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76ff384668dcd2184dede761fdcd36d6"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a76ff384668dcd2184dede761fdcd36d6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a76ff384668dcd2184dede761fdcd36d6">can_convert</a> (const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *Bp)</td></tr>
+<tr class="memdesc:a76ff384668dcd2184dede761fdcd36d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> instance can convert <code>Bp</code>.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a76ff384668dcd2184dede761fdcd36d6">More...</a><br /></td></tr>
+<tr class="separator:a76ff384668dcd2184dede761fdcd36d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef3f1879e7a9f1adfc6b1849484297d"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a6ef3f1879e7a9f1adfc6b1849484297d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a6ef3f1879e7a9f1adfc6b1849484297d">can_convert</a> (const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;B)</td></tr>
+<tr class="memdesc:a6ef3f1879e7a9f1adfc6b1849484297d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> instance can convert <code>B</code>.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a6ef3f1879e7a9f1adfc6b1849484297d">More...</a><br /></td></tr>
+<tr class="separator:a6ef3f1879e7a9f1adfc6b1849484297d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e685f920ddc8d785384e2023e381d25"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a7e685f920ddc8d785384e2023e381d25"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a7e685f920ddc8d785384e2023e381d25">convert</a> (const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *Bp)</td></tr>
+<tr class="memdesc:a7e685f920ddc8d785384e2023e381d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tensor wrapped in <code>Bp</code> as a read-only TA DistArray.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a7e685f920ddc8d785384e2023e381d25">More...</a><br /></td></tr>
+<tr class="separator:a7e685f920ddc8d785384e2023e381d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac74188fd12938fe664231ca954766947"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:ac74188fd12938fe664231ca954766947"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ac74188fd12938fe664231ca954766947">convert</a> (const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;B)</td></tr>
+<tr class="memdesc:ac74188fd12938fe664231ca954766947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tensor wrapped in <code>B</code> as a read-only TA DistArray.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ac74188fd12938fe664231ca954766947">More...</a><br /></td></tr>
+<tr class="separator:ac74188fd12938fe664231ca954766947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7dfde4a663f35a5b054fb4fa361c997"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:af7dfde4a663f35a5b054fb4fa361c997"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#af7dfde4a663f35a5b054fb4fa361c997">convert</a> (<a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *Bp)</td></tr>
+<tr class="memdesc:af7dfde4a663f35a5b054fb4fa361c997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tensor wrapped in <code>Bp</code> as a TA DistArray.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#af7dfde4a663f35a5b054fb4fa361c997">More...</a><br /></td></tr>
+<tr class="separator:af7dfde4a663f35a5b054fb4fa361c997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f9e26788047ea0303254d861d52cd9d"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
 <tr class="memitem:a5f9e26788047ea0303254d861d52cd9d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a5f9e26788047ea0303254d861d52cd9d">convert</a> (<a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;B)</td></tr>
 <tr class="memdesc:a5f9e26788047ea0303254d861d52cd9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tensor wrapped in <code>B</code> as a TA DistArray.  <a href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a5f9e26788047ea0303254d861d52cd9d">More...</a><br /></td></tr>
@@ -121,8 +142,8 @@ struct tensorwrapper::tensor::Conversion&lt; TA::DistArray&lt; TileType, TA::Spa
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abfab8496b07808232122e9738bf17554"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfab8496b07808232122e9738bf17554">&#9670;&nbsp;</a></span>can_convert()</h2>
+<a id="a76ff384668dcd2184dede761fdcd36d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76ff384668dcd2184dede761fdcd36d6">&#9670;&nbsp;</a></span>can_convert() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +158,54 @@ template&lt;typename FieldType &gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">tensorwrapper::tensor::Conversion</a>&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;::can_convert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *&#160;</td>
+          <td class="paramname"><em>Bp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if this <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> instance can convert <code>Bp</code>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FieldType</td><td>The type of value in the Buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Bp</td><td>The BufferPIMPL we want to convert</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if convertable, false </dd></dl>
+<p>If cast fails, then can't convert</p>
+<p>Check output_t against field traits</p>
+
+</div>
+</div>
+<a id="a6ef3f1879e7a9f1adfc6b1849484297d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ef3f1879e7a9f1adfc6b1849484297d">&#9670;&nbsp;</a></span>can_convert() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TileType &gt; </div>
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">tensorwrapper::tensor::Conversion</a>&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;::can_convert </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;&#160;</td>
           <td class="paramname"><em>B</em></td><td>)</td>
           <td></td>
         </tr>
@@ -163,13 +231,56 @@ template&lt;typename FieldType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if convertable, false </dd></dl>
-<p>If cast fails, then can't convert</p>
-<p>Check output_t against field traits</p>
+
+</div>
+</div>
+<a id="af7dfde4a663f35a5b054fb4fa361c997"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7dfde4a663f35a5b054fb4fa361c997">&#9670;&nbsp;</a></span>convert() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TileType &gt; </div>
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a>&amp; <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">tensorwrapper::tensor::Conversion</a>&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;::convert </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *&#160;</td>
+          <td class="paramname"><em>Bp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the tensor wrapped in <code>Bp</code> as a TA DistArray. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FieldType</td><td>The type of value in the Buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Bp</td><td>The BufferPIMPL we want to convert</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped TA DistArray </dd></dl>
 
 </div>
 </div>
 <a id="a5f9e26788047ea0303254d861d52cd9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f9e26788047ea0303254d861d52cd9d">&#9670;&nbsp;</a></span>convert()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f9e26788047ea0303254d861d52cd9d">&#9670;&nbsp;</a></span>convert() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,8 +321,98 @@ template&lt;typename FieldType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The wrapped TA DistArray </dd></dl>
+
+</div>
+</div>
+<a id="a7e685f920ddc8d785384e2023e381d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e685f920ddc8d785384e2023e381d25">&#9670;&nbsp;</a></span>convert() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TileType &gt; </div>
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a>&amp; <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">tensorwrapper::tensor::Conversion</a>&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;::convert </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#a61ba7b39cb35d9611122b31e6ce3c026">buffer_pimpl_t</a>&lt; FieldType &gt; *&#160;</td>
+          <td class="paramname"><em>Bp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the tensor wrapped in <code>Bp</code> as a read-only TA DistArray. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FieldType</td><td>The type of value in the Buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Bp</td><td>The BufferPIMPL we want to convert</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped TA DistArray </dd></dl>
 <p>Try to cast the input buffer's PIMPL to a TABufferPIMPL</p>
 <p>Return the Tensor stored in the PIMPL</p>
+
+</div>
+</div>
+<a id="ac74188fd12938fe664231ca954766947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac74188fd12938fe664231ca954766947">&#9670;&nbsp;</a></span>convert() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TileType &gt; </div>
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#ad761586bdb9ba1afa46c77562aeb047d">output_t</a>&amp; <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">tensorwrapper::tensor::Conversion</a>&lt; TA::DistArray&lt; TileType, TA::SparsePolicy &gt; &gt;::convert </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion_3_01TA_1_1DistArray_3_01TileType_00_01TA_1_1SparsePolicy_01_4_01_4.html#acbae1af19c1befecb55a9328af4b1658">buffer_t</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>B</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the tensor wrapped in <code>B</code> as a read-only TA DistArray. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FieldType</td><td>The type of value in the Buffer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>The buffer we want to convert</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped TA DistArray </dd></dl>
 
 </div>
 </div>
