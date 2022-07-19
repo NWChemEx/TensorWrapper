@@ -139,7 +139,8 @@ public:
     ///       construction options
     // /** @brief Creates a new allocator with the optionally specified runtime.
     //  *
-    //  *  Allocator is a pure-virtual class, so instances of it can not actually
+    //  *  Allocator is a pure-virtual class, so instances of it can not
+    //  actually
     //  *  be created. Instead the ctor provides derived classes with an API for
     //  *  setting the runtime.
     //  *
@@ -232,7 +233,8 @@ public:
      */
     bool operator!=(const Allocator& rhs) const { return !((*this) == rhs); }
 
-    // /** @brief Provides access to the runtime to which the tensor will belong.
+    // /** @brief Provides access to the runtime to which the tensor will
+    // belong.
     //  *
     //  *  At the moment the runtime associated with the tensor is just a
     //  *  TiledArray World. This will change when ParallelZone rolls out.
