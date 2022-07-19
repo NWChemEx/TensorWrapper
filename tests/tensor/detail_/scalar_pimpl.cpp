@@ -1,6 +1,7 @@
 #include "../buffer/make_pimpl.hpp"
 #include "tensorwrapper/ta_helpers/slice.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
+#include "tensorwrapper/tensor/conversion/conversion.hpp"
 #include "tensorwrapper/tensor/detail_/pimpl.hpp"
 #include <catch2/catch.hpp>
 
@@ -20,11 +21,10 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
     using pimpl_type     = detail_::TensorWrapperPIMPL<field_type>;
     using buffer_type    = typename pimpl_type::buffer_type;
     using buffer_pointer = typename pimpl_type::buffer_pointer;
-    using variant_type   = typename pimpl_type::variant_type;
-    using ta_tensor_type = std::variant_alternative_t<0, variant_type>;
     using shape_type     = typename pimpl_type::shape_type;
     using extents_type   = typename pimpl_type::extents_type;
     using ta_trange_type = TA::TiledRange;
+    using ta_tensor_type = TA::DistArray<TA::Tensor<double>, TA::SparsePolicy>;
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
@@ -286,36 +286,41 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
     SECTION("slice()") {
         SECTION("Vector") {
-            auto slice_corr = std::visit(
-              [](auto&& arg) { return ta_helpers::slice(arg, {0}, {2}); },
-              v.variant());
             auto slice = v.slice({0ul}, {2ul}, palloc->clone());
-            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+
+            to_ta_distarrayd_t converter;
+            auto& slice_value = converter.convert(slice->buffer());
+            auto& slice_corr  = converter.convert(v.buffer());
+            slice_corr        = ta_helpers::slice(slice_corr, {0}, {2});
+
+            REQUIRE(slice_value == slice_corr);
             REQUIRE(slice->shape() == *v_shape->slice({0}, {2}));
             REQUIRE(slice->allocator() == *palloc);
         }
 
         SECTION("Matrix") {
-            auto slice_corr = std::visit(
-              [](auto&& arg) {
-                  return ta_helpers::slice(arg, {0, 1}, {1, 2});
-              },
-              m.variant());
             auto slice = m.slice({0ul, 1ul}, {1ul, 2ul}, palloc->clone());
-            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+
+            to_ta_distarrayd_t converter;
+            auto& slice_value = converter.convert(slice->buffer());
+            auto& slice_corr  = converter.convert(m.buffer());
+            slice_corr        = ta_helpers::slice(slice_corr, {0, 1}, {1, 2});
+
+            REQUIRE(slice_value == slice_corr);
             REQUIRE(slice->shape() == *m_shape->slice({0, 1}, {1, 2}));
             REQUIRE(slice->allocator() == *palloc);
         }
 
         SECTION("Tensor") {
-            auto slice_corr = std::visit(
-              [](auto&& arg) {
-                  return ta_helpers::slice(arg, {0, 0, 1}, {2, 2, 2});
-              },
-              t.variant());
             auto slice =
               t.slice({0ul, 0ul, 1ul}, {2ul, 2ul, 2ul}, palloc->clone());
-            REQUIRE(std::get<0>(slice->variant()) == slice_corr);
+
+            to_ta_distarrayd_t converter;
+            auto& slice_value = converter.convert(slice->buffer());
+            auto& slice_corr  = converter.convert(t.buffer());
+            slice_corr = ta_helpers::slice(slice_corr, {0, 0, 1}, {2, 2, 2});
+
+            REQUIRE(slice_value == slice_corr);
             REQUIRE(slice->shape() == *t_shape->slice({0, 0, 1}, {2, 2, 2}));
             REQUIRE(slice->allocator() == *palloc);
         }
@@ -332,37 +337,46 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
                 auto new_shape = std::make_unique<shape_type>(new_ex);
                 auto cpy       = v.clone();
                 cpy->reshape(new_shape->clone());
+                to_ta_distarrayd_t converter;
+                auto& value = converter.convert(cpy->buffer());
+                ta_trange_type tr{{0, 3}, {0, 1}};
+                ta_tensor_type corr(world, tr, {{1}, {2}, {3}});
+
                 REQUIRE(cpy->allocator().is_equal(*palloc));
                 REQUIRE(cpy->shape() == *new_shape);
                 REQUIRE(cpy->size() == 3);
-                ta_trange_type tr{{0, 3}, {0, 1}};
-                ta_tensor_type corr(world, tr, {{1}, {2}, {3}});
-                REQUIRE(std::get<0>(cpy->variant()) == corr);
+                REQUIRE(value == corr);
             }
             SECTION("matrix") {
                 extents_type new_ex{4};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
                 auto cpy       = m.clone();
                 cpy->reshape(new_shape->clone());
+                to_ta_distarrayd_t converter;
+                auto& value = converter.convert(cpy->buffer());
+                ta_trange_type tr{{0, 4}};
+                ta_tensor_type corr(world, tr, {1, 2, 3, 4});
+
                 REQUIRE(cpy->allocator().is_equal(*palloc));
                 REQUIRE(cpy->shape() == *new_shape);
                 REQUIRE(cpy->size() == 4);
-                ta_trange_type tr{{0, 4}};
-                ta_tensor_type corr(world, tr, {1, 2, 3, 4});
-                REQUIRE(std::get<0>(cpy->variant()) == corr);
+                REQUIRE(value == corr);
             }
             SECTION("tensor") {
                 extents_type new_ex{4, 2};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
                 auto cpy       = t.clone();
                 cpy->reshape(new_shape->clone());
-                REQUIRE(cpy->allocator().is_equal(*palloc));
-                REQUIRE(cpy->shape() == *new_shape);
-                REQUIRE(cpy->size() == 8);
+                to_ta_distarrayd_t converter;
+                auto& value = converter.convert(cpy->buffer());
                 ta_trange_type tr{{0, 4}, {0, 2}};
                 ta_tensor_type corr(world, tr,
                                     {{1, 2}, {3, 4}, {5, 6}, {7, 8}});
-                REQUIRE(std::get<0>(cpy->variant()) == corr);
+
+                REQUIRE(cpy->allocator().is_equal(*palloc));
+                REQUIRE(cpy->shape() == *new_shape);
+                REQUIRE(cpy->size() == 8);
+                REQUIRE(value == corr);
             }
         }
 

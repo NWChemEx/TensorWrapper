@@ -22,11 +22,11 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
     using pimpl_type     = detail_::TensorWrapperPIMPL<field_type>;
     using buffer_type    = typename pimpl_type::buffer_type;
     using buffer_pointer = typename pimpl_type::buffer_pointer;
-    using variant_type   = typename pimpl_type::variant_type;
-    using ta_tensor_type = std::variant_alternative_t<0, variant_type>;
     using shape_type     = typename pimpl_type::shape_type;
     using extents_type   = typename pimpl_type::extents_type;
     using ta_trange_type = TA::TiledRange;
+    using ta_tensor_type =
+      TA::DistArray<TA::Tensor<TA::Tensor<double>>, TA::SparsePolicy>;
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
