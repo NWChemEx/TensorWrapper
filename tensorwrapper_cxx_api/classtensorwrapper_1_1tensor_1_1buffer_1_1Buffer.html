@@ -83,11 +83,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa9cec3d2f21662abbd0a330b829312e6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#aa9cec3d2f21662abbd0a330b829312e6">backend_traits</a> = <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html">tensor::backends::TiledArrayTraits</a>&lt; FieldType &gt;</td></tr>
-<tr class="separator:aa9cec3d2f21662abbd0a330b829312e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7308ca17bdef17962e1964219494a776"><td class="memItemLeft" align="right" valign="top"><a id="a7308ca17bdef17962e1964219494a776"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>variant_type</b> = typename backend_traits::variant_type</td></tr>
-<tr class="separator:a7308ca17bdef17962e1964219494a776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d650f8eb99fa174e6ecbf9017df8f3"><td class="memItemLeft" align="right" valign="top"><a id="a25d650f8eb99fa174e6ecbf9017df8f3"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a25d650f8eb99fa174e6ecbf9017df8f3">annotation_type</a> = std::string</td></tr>
 <tr class="memdesc:a25d650f8eb99fa174e6ecbf9017df8f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indices in einstein/index-based operations. <br /></td></tr>
@@ -213,13 +208,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>permute</b> (<a class
 <tr class="memitem:a63e081fb8d8ba6e7bdcc7a2bce74eb02"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a63e081fb8d8ba6e7bdcc7a2bce74eb02">print</a> (std::ostream &amp;os) const</td></tr>
 <tr class="memdesc:a63e081fb8d8ba6e7bdcc7a2bce74eb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a buffer to the provided ostream.  <a href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a63e081fb8d8ba6e7bdcc7a2bce74eb02">More...</a><br /></td></tr>
 <tr class="separator:a63e081fb8d8ba6e7bdcc7a2bce74eb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab44691852f4150e013eed466cb1cdf6d"><td class="memItemLeft" align="right" valign="top"><a id="ab44691852f4150e013eed466cb1cdf6d"></a>
-variant_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#ab44691852f4150e013eed466cb1cdf6d">variant</a> ()</td></tr>
-<tr class="memdesc:ab44691852f4150e013eed466cb1cdf6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">XXX: These are to be removed. <br /></td></tr>
-<tr class="separator:ab44691852f4150e013eed466cb1cdf6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcecb5feb616d46e54745ffedec977e8"><td class="memItemLeft" align="right" valign="top"><a id="adcecb5feb616d46e54745ffedec977e8"></a>
-const variant_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>variant</b> () const</td></tr>
-<tr class="separator:adcecb5feb616d46e54745ffedec977e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -246,25 +234,7 @@ class tensorwrapper::tensor::buffer::Buffer&lt; FieldType &gt;</h3>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa9cec3d2f21662abbd0a330b829312e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9cec3d2f21662abbd0a330b829312e6">&#9670;&nbsp;</a></span>backend_traits</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html">tensorwrapper::tensor::buffer::Buffer</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#aa9cec3d2f21662abbd0a330b829312e6">backend_traits</a> =  <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html">tensor::backends::TiledArrayTraits</a>&lt;FieldType&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>XXX: These are to be removed, they are here to expose the variant_type XXX: Inclusion the FieldTraits breaks encapsulation </p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a172d0b07949feb986e70368d46bed8d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a172d0b07949feb986e70368d46bed8d0">&#9670;&nbsp;</a></span>Buffer() <span class="overload">[1/4]</span></h2>
 
@@ -328,7 +298,7 @@ template&lt;typename FieldType &gt; </div>
 </div><div class="memdoc">
 
 <p>PIMPL Ctor. </p>
-<p>Generally speaking <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instances are created by <a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a> instances. The allocator instances are implemented in the source and have access to the backend specific PIMPLs (e.g. TABufferPIMPL). Thus what will usually happen is that the allocator makes a backend specific PIMPL and then uses that PIMPL to initialize a <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instance via this ctor.</p>
+<p>Generally speaking <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instances are created by Allocator instances. The allocator instances are implemented in the source and have access to the backend specific PIMPLs (e.g. TABufferPIMPL). Thus what will usually happen is that the allocator makes a backend specific PIMPL and then uses that PIMPL to initialize a <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html" title="Wraps a tensor backend.">Buffer</a> instance via this ctor.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">pimpl</td><td>An initialized backend specific PIMPL, passed via the base class.</td></tr>

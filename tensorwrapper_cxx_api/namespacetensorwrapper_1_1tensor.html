@@ -80,8 +80,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html">Conversion</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.  <a href="structtensorwrapper_1_1tensor_1_1Conversion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,27 +98,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html">SparseShape</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a tensor's shape when there's sparsity.  <a href="classtensorwrapper_1_1tensor_1_1SparseShape.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1TensorTraits.html">TensorTraits</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary template for determining the types associated with a tensor type.  <a href="structtensorwrapper_1_1tensor_1_1TensorTraits.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1TensorTraits_3_01const_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html">TensorTraits&lt; const TA::DistArray&lt; TileType, PolicyType &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specializes <a class="el" href="structtensorwrapper_1_1tensor_1_1TensorTraits.html" title="Primary template for determining the types associated with a tensor type.">TensorTraits</a> for a TiledArray tensor.  <a href="structtensorwrapper_1_1tensor_1_1TensorTraits_3_01const_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1tensor_1_1TensorTraits_3_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html">TensorTraits&lt; TA::DistArray&lt; TileType, PolicyType &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specializes <a class="el" href="structtensorwrapper_1_1tensor_1_1TensorTraits.html" title="Primary template for determining the types associated with a tensor type.">TensorTraits</a> for a TiledArray tensor.  <a href="structtensorwrapper_1_1tensor_1_1TensorTraits_3_01TA_1_1DistArray_3_01TileType_00_01PolicyType_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fundamental type for wrapping tensors.  <a href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a10de54c1ebc0b59e56f70f600375f0d9"><td class="memItemLeft" align="right" valign="top"><a id="a10de54c1ebc0b59e56f70f600375f0d9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>ta_tensor_type</b> = <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html">backends::TiledArrayTraits</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt;::tensor_type&lt; double &gt;</td></tr>
-<tr class="separator:a10de54c1ebc0b59e56f70f600375f0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c5c9d45a14c58ef5d93f6d03784f703"><td class="memItemLeft" align="right" valign="top"><a id="a3c5c9d45a14c58ef5d93f6d03784f703"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>ta_tot_type</b> = <a class="el" href="structtensorwrapper_1_1tensor_1_1backends_1_1TiledArrayTraits.html">backends::TiledArrayTraits</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Tensor.html">field::Tensor</a> &gt;::tensor_type&lt; double &gt;</td></tr>
-<tr class="separator:a3c5c9d45a14c58ef5d93f6d03784f703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabc0724f027b166d635687a169a115e8"><td class="memItemLeft" align="right" valign="top"><a id="aabc0724f027b166d635687a169a115e8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>tensor</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a></td></tr>
 <tr class="separator:aabc0724f027b166d635687a169a115e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,52 +121,16 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>TWrapper</b> = <a cl
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aedc0ec277e31c6f425fa0167ae784337"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>pimpl_type</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html">detail_::SparseShapePIMPL</a>&lt; T &gt;</td></tr>
 <tr class="separator:aedc0ec277e31c6f425fa0167ae784337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb0ce0a7735248f1ecafb9c60730d7d3"><td class="memItemLeft" align="right" valign="top"><a id="adb0ce0a7735248f1ecafb9c60730d7d3"></a>
+<tr class="memitem:a320a48e4d9b8639ced3630508fc26cc2"><td class="memItemLeft" align="right" valign="top"><a id="a320a48e4d9b8639ced3630508fc26cc2"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>ScalarTensorWrapper</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt;</td></tr>
-<tr class="separator:adb0ce0a7735248f1ecafb9c60730d7d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59f5668918147fddb8192dc53486fca8"><td class="memItemLeft" align="right" valign="top"><a id="a59f5668918147fddb8192dc53486fca8"></a>
+<tr class="separator:a320a48e4d9b8639ced3630508fc26cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8d8d439122e7fee0da4f2f3c55a08ab"><td class="memItemLeft" align="right" valign="top"><a id="aa8d8d439122e7fee0da4f2f3c55a08ab"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>TensorOfTensorsWrapper</b> = <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Tensor.html">field::Tensor</a> &gt;</td></tr>
-<tr class="separator:a59f5668918147fddb8192dc53486fca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a188d69e14ed295ed4c217277cf5e102f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U  = void&gt; </td></tr>
-<tr class="memitem:a188d69e14ed295ed4c217277cf5e102f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a188d69e14ed295ed4c217277cf5e102f">enable_if_expression_t</a> = std::enable_if_t&lt; is_expression_v&lt; T &gt;, U &gt;</td></tr>
-<tr class="memdesc:a188d69e14ed295ed4c217277cf5e102f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to enable a function via SFINAE when <code>T</code> is part of the expression layer.  <a href="namespacetensorwrapper_1_1tensor.html#a188d69e14ed295ed4c217277cf5e102f">More...</a><br /></td></tr>
-<tr class="separator:a188d69e14ed295ed4c217277cf5e102f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba797881c277898dca86d419a0951a5b"><td class="memTemplParams" colspan="2">template&lt;typename TensorVariant &gt; </td></tr>
-<tr class="memitem:aba797881c277898dca86d419a0951a5b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#aba797881c277898dca86d419a0951a5b">labeled_variant_t</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1LabeledVariant.html">detail_::LabeledVariant</a>&lt; TensorVariant &gt;::type</td></tr>
-<tr class="memdesc:aba797881c277898dca86d419a0951a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public API for getting a variant of labeled tensors.  <a href="namespacetensorwrapper_1_1tensor.html#aba797881c277898dca86d419a0951a5b">More...</a><br /></td></tr>
-<tr class="separator:aba797881c277898dca86d419a0951a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aa8d8d439122e7fee0da4f2f3c55a08ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac50ac1f1c0854632ca823661c10c2e6b"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:ac50ac1f1c0854632ca823661c10c2e6b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ac50ac1f1c0854632ca823661c10c2e6b">n_d_initializer_list_t</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1NDInitializerListTraits.html">NDInitializerListTraits</a>&lt; T, N &gt;::type</td></tr>
 <tr class="memdesc:ac50ac1f1c0854632ca823661c10c2e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience typedef of the initializer_list for a rank <code>N</code> tensor of scalars of type <code>T</code>.  <a href="namespacetensorwrapper_1_1tensor.html#ac50ac1f1c0854632ca823661c10c2e6b">More...</a><br /></td></tr>
 <tr class="separator:ac50ac1f1c0854632ca823661c10c2e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a082bf5bdce3f92c475065107fae62e4a"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:a082bf5bdce3f92c475065107fae62e4a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a082bf5bdce3f92c475065107fae62e4a">add_expr_t</a> = decltype(std::declval&lt; LType &gt;()+std::declval&lt; RType &gt;())</td></tr>
-<tr class="memdesc:a082bf5bdce3f92c475065107fae62e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the type that results from adding two tensors together.  <a href="namespacetensorwrapper_1_1tensor.html#a082bf5bdce3f92c475065107fae62e4a">More...</a><br /></td></tr>
-<tr class="separator:a082bf5bdce3f92c475065107fae62e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6c7661c7365464aad167bcc57da35ae"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:ac6c7661c7365464aad167bcc57da35ae"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ac6c7661c7365464aad167bcc57da35ae">subt_expr_t</a> = decltype(std::declval&lt; LType &gt;() - std::declval&lt; RType &gt;())</td></tr>
-<tr class="memdesc:ac6c7661c7365464aad167bcc57da35ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the type that results from subtracting two tensors.  <a href="namespacetensorwrapper_1_1tensor.html#ac6c7661c7365464aad167bcc57da35ae">More...</a><br /></td></tr>
-<tr class="separator:ac6c7661c7365464aad167bcc57da35ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfa7d1d7864d1c8286f064c73fe522fd"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:abfa7d1d7864d1c8286f064c73fe522fd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#abfa7d1d7864d1c8286f064c73fe522fd">mult_expr_t</a> = decltype(std::declval&lt; LType &gt;() *std::declval&lt; RType &gt;())</td></tr>
-<tr class="memdesc:abfa7d1d7864d1c8286f064c73fe522fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the type that results from multiplying two tensors together.  <a href="namespacetensorwrapper_1_1tensor.html#abfa7d1d7864d1c8286f064c73fe522fd">More...</a><br /></td></tr>
-<tr class="separator:abfa7d1d7864d1c8286f064c73fe522fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8aad99a77f261567382e195b696d1315"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:a8aad99a77f261567382e195b696d1315"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a8aad99a77f261567382e195b696d1315">add_variant_t</a> = utilities::type_traits::variant::product_t&lt; <a class="el" href="namespacetensorwrapper_1_1tensor.html#a082bf5bdce3f92c475065107fae62e4a">add_expr_t</a>, LType, RType &gt;</td></tr>
-<tr class="memdesc:a8aad99a77f261567382e195b696d1315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef of a variant resulting from adding two variants together.  <a href="namespacetensorwrapper_1_1tensor.html#a8aad99a77f261567382e195b696d1315">More...</a><br /></td></tr>
-<tr class="separator:a8aad99a77f261567382e195b696d1315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8d82cad5a785c88c23c8de1f361e8d6"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:aa8d82cad5a785c88c23c8de1f361e8d6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#aa8d82cad5a785c88c23c8de1f361e8d6">subt_variant_t</a> = utilities::type_traits::variant::product_t&lt; <a class="el" href="namespacetensorwrapper_1_1tensor.html#ac6c7661c7365464aad167bcc57da35ae">subt_expr_t</a>, LType, RType &gt;</td></tr>
-<tr class="memdesc:aa8d82cad5a785c88c23c8de1f361e8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef of a variant resulting from subtracting two variants.  <a href="namespacetensorwrapper_1_1tensor.html#aa8d82cad5a785c88c23c8de1f361e8d6">More...</a><br /></td></tr>
-<tr class="separator:aa8d82cad5a785c88c23c8de1f361e8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacaf6847e15b44694cbbcf24ed2ef00c"><td class="memTemplParams" colspan="2">template&lt;typename LType , typename RType &gt; </td></tr>
-<tr class="memitem:aacaf6847e15b44694cbbcf24ed2ef00c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#aacaf6847e15b44694cbbcf24ed2ef00c">mult_variant_t</a> = utilities::type_traits::variant::product_t&lt; <a class="el" href="namespacetensorwrapper_1_1tensor.html#abfa7d1d7864d1c8286f064c73fe522fd">mult_expr_t</a>, LType, RType &gt;</td></tr>
-<tr class="memdesc:aacaf6847e15b44694cbbcf24ed2ef00c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef of a variant resulting from multiplying two variants together.  <a href="namespacetensorwrapper_1_1tensor.html#aacaf6847e15b44694cbbcf24ed2ef00c">More...</a><br /></td></tr>
-<tr class="separator:aacaf6847e15b44694cbbcf24ed2ef00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af227ab63923553cb396011c0cc699cb2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af227ab63923553cb396011c0cc699cb2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#af227ab63923553cb396011c0cc699cb2">variant_type_t</a> = typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1VariantType.html">detail_::VariantType</a>&lt; T &gt;::type</td></tr>
-<tr class="memdesc:af227ab63923553cb396011c0cc699cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public API for determining the variant type of a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>.  <a href="namespacetensorwrapper_1_1tensor.html#af227ab63923553cb396011c0cc699cb2">More...</a><br /></td></tr>
-<tr class="separator:af227ab63923553cb396011c0cc699cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -267,162 +214,9 @@ template&lt;TA::SVD::Vectors Vecs&gt; </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Forward declare the <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> class. </p>
-<p>TODO: Remove this.</p>
 <p>Used in pimpl_ for default value.</p>
 <p>Used for initializer list construction </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="a082bf5bdce3f92c475065107fae62e4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a082bf5bdce3f92c475065107fae62e4a">&#9670;&nbsp;</a></span>add_expr_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#a082bf5bdce3f92c475065107fae62e4a">tensorwrapper::tensor::add_expr_t</a> = typedef decltype(std::declval&lt;LType&gt;() + std::declval&lt;RType&gt;())</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines the type that results from adding two tensors together. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The type of the tensor on the left side of the plus sign </td></tr>
-    <tr><td class="paramname">RType</td><td>The type of the tensor on the right side of the plus sign </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a8aad99a77f261567382e195b696d1315"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aad99a77f261567382e195b696d1315">&#9670;&nbsp;</a></span>add_variant_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#a8aad99a77f261567382e195b696d1315">tensorwrapper::tensor::add_variant_t</a> = typedef utilities::type_traits::variant::product_t&lt;<a class="el" href="namespacetensorwrapper_1_1tensor.html#a082bf5bdce3f92c475065107fae62e4a">add_expr_t</a>, LType, RType&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef of a variant resulting from adding two variants together. </p>
-<p>Given a std::variant with <code>n</code> types and a std::variant with <code>m</code> types this typedef defines an std::variant with <code>n*m</code> types. Thinking of the resulting std::variant as a row-major matrix, the <code>i,j</code>-th type is that resulting from adding the <code>i</code>-th type in <code>LType</code> with the <code>j</code>-th type in <code>RType</code>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The variant on the left-side of the addition sign. </td></tr>
-    <tr><td class="paramname">RType</td><td>The variant on the right-side of the addition sign. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a188d69e14ed295ed4c217277cf5e102f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a188d69e14ed295ed4c217277cf5e102f">&#9670;&nbsp;</a></span>enable_if_expression_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename U  = void&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#a188d69e14ed295ed4c217277cf5e102f">tensorwrapper::tensor::enable_if_expression_t</a> = typedef std::enable_if_t&lt;is_expression_v&lt;T&gt;, U&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used to enable a function via SFINAE when <code>T</code> is part of the expression layer. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>If <code>T</code> is part of the expression layer the decorated function will participate in overload resolution otherwise it will not. </td></tr>
-    <tr><td class="paramname">U</td><td>The type that the typedef will be set to if <code>T</code> is part of the expression layer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aba797881c277898dca86d419a0951a5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba797881c277898dca86d419a0951a5b">&#9670;&nbsp;</a></span>labeled_variant_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TensorVariant &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#aba797881c277898dca86d419a0951a5b">tensorwrapper::tensor::labeled_variant_t</a> = typedef typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1LabeledVariant.html">detail_::LabeledVariant</a>&lt;TensorVariant&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Public API for getting a variant of labeled tensors. </p>
-<p>This is the public API for turning a variant of tensors into a variant of labeled tensors. For the i-th type in <code>TensorVariant</code> the i-th type in the resulting variant will be the type which results from calling <code>operator()(std::string)</code> on a tensor of that type.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TensorVariant</td><td>A variant of tensors. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abfa7d1d7864d1c8286f064c73fe522fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfa7d1d7864d1c8286f064c73fe522fd">&#9670;&nbsp;</a></span>mult_expr_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#abfa7d1d7864d1c8286f064c73fe522fd">tensorwrapper::tensor::mult_expr_t</a> = typedef decltype(std::declval&lt;LType&gt;() * std::declval&lt;RType&gt;())</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines the type that results from multiplying two tensors together. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The type of the tensor on the left side of the times sign </td></tr>
-    <tr><td class="paramname">RType</td><td>The type of the tensor on the right side of the times sign </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aacaf6847e15b44694cbbcf24ed2ef00c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacaf6847e15b44694cbbcf24ed2ef00c">&#9670;&nbsp;</a></span>mult_variant_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#aacaf6847e15b44694cbbcf24ed2ef00c">tensorwrapper::tensor::mult_variant_t</a> = typedef utilities::type_traits::variant::product_t&lt;<a class="el" href="namespacetensorwrapper_1_1tensor.html#abfa7d1d7864d1c8286f064c73fe522fd">mult_expr_t</a>, LType, RType&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef of a variant resulting from multiplying two variants together. </p>
-<p>Given a std::variant with <code>n</code> types and a std::variant with <code>m</code> types this typedef defines an std::variant with <code>n*m</code> types. Thinking of the resulting std::variant as a row-major matrix, the <code>i,j</code>-th type is that resulting from multiplying the <code>i</code>-th type in <code>LType</code> with the <code>j</code>-th type in <code>RType</code>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The variant on the left-side of the multiplication sign. </td></tr>
-    <tr><td class="paramname">RType</td><td>The variant on the right-side of the multiplication sign. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="ac50ac1f1c0854632ca823661c10c2e6b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac50ac1f1c0854632ca823661c10c2e6b">&#9670;&nbsp;</a></span>n_d_initializer_list_t</h2>
 
@@ -443,82 +237,6 @@ template&lt;typename T , std::size_t N&gt; </div>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the scalars in the tensor. </td></tr>
     <tr><td class="paramname">N</td><td>The rank of the tensor we are generating the initializer_list for. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac6c7661c7365464aad167bcc57da35ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6c7661c7365464aad167bcc57da35ae">&#9670;&nbsp;</a></span>subt_expr_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#ac6c7661c7365464aad167bcc57da35ae">tensorwrapper::tensor::subt_expr_t</a> = typedef decltype(std::declval&lt;LType&gt;() - std::declval&lt;RType&gt;())</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines the type that results from subtracting two tensors. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The type of the tensor on the left side of the minus sign </td></tr>
-    <tr><td class="paramname">RType</td><td>The type of the tensor on the right side of the minus sign </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa8d82cad5a785c88c23c8de1f361e8d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8d82cad5a785c88c23c8de1f361e8d6">&#9670;&nbsp;</a></span>subt_variant_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename LType , typename RType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#aa8d82cad5a785c88c23c8de1f361e8d6">tensorwrapper::tensor::subt_variant_t</a> = typedef utilities::type_traits::variant::product_t&lt;<a class="el" href="namespacetensorwrapper_1_1tensor.html#ac6c7661c7365464aad167bcc57da35ae">subt_expr_t</a>, LType, RType&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef of a variant resulting from subtracting two variants. </p>
-<p>Given a std::variant with <code>n</code> types and a std::variant with <code>m</code> types this typedef defines an std::variant with <code>n*m</code> types. Thinking of the resulting std::variant as a row-major matrix, the <code>i,j</code>-th type is that resulting from subtracting the <code>j</code>-th type in <code>RType</code> from the <code>i</code>-th type in <code>LType</code>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">LType</td><td>The variant on the left-side of the minus sign. </td></tr>
-    <tr><td class="paramname">RType</td><td>The variant on the right-side of the minus sign. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af227ab63923553cb396011c0cc699cb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af227ab63923553cb396011c0cc699cb2">&#9670;&nbsp;</a></span>variant_type_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1tensor.html#af227ab63923553cb396011c0cc699cb2">tensorwrapper::tensor::variant_type_t</a> = typedef typename <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1VariantType.html">detail_::VariantType</a>&lt;T&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Public API for determining the variant type of a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>. </p>
-<p>This typedef is used to get the variant type of a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> specialization. This typedef will fail to compile if <code>T</code> is not a specialization of <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a>.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>A non-qualified <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> type. </td></tr>
   </table>
   </dd>
 </dl>

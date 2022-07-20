@@ -70,7 +70,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">tensorwrapper::tensor::allocator::Allocator&lt; FieldType &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -116,12 +115,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a5d4a348357c63745d21750d8ffe53d93">allocator_ptr</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">my_type</a> &gt;</td></tr>
 <tr class="memdesc:a5d4a348357c63745d21750d8ffe53d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the base class of the allocator hierarchy. <br /></td></tr>
 <tr class="separator:a5d4a348357c63745d21750d8ffe53d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2cdac30feef925ab8d4ce7e4afe39fa"><td class="memItemLeft" align="right" valign="top"><a id="ad2cdac30feef925ab8d4ce7e4afe39fa"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ad2cdac30feef925ab8d4ce7e4afe39fa">runtime_type</a> = TA::World</td></tr>
-<tr class="memdesc:ad2cdac30feef925ab8d4ce7e4afe39fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object describing the runtime. <br /></td></tr>
-<tr class="separator:ad2cdac30feef925ab8d4ce7e4afe39fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81e03706594366596fe40b1e2c53e1cd"><td class="memItemLeft" align="right" valign="top"><a id="a81e03706594366596fe40b1e2c53e1cd"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a81e03706594366596fe40b1e2c53e1cd">runtime_type</a> = parallelzone::Runtime</td></tr>
+<tr class="memdesc:a81e03706594366596fe40b1e2c53e1cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object describing the runtime. <br /></td></tr>
+<tr class="separator:a81e03706594366596fe40b1e2c53e1cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae88e6166067dcc20144a5a28f41c6e0a"><td class="memItemLeft" align="right" valign="top"><a id="ae88e6166067dcc20144a5a28f41c6e0a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ad2cdac30feef925ab8d4ce7e4afe39fa">runtime_type</a> &amp;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a> = <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a81e03706594366596fe40b1e2c53e1cd">runtime_type</a> &amp;</td></tr>
 <tr class="memdesc:ae88e6166067dcc20144a5a28f41c6e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A read-write reference to the runtime object. <br /></td></tr>
 <tr class="separator:ae88e6166067dcc20144a5a28f41c6e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58a3b023affe13a7a02d1cb992c0a282"><td class="memItemLeft" align="right" valign="top"><a id="a58a3b023affe13a7a02d1cb992c0a282"></a>
@@ -138,9 +137,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>element_populator_ty
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aae113a54e405b5c0f6323dfb31cb9a3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aae113a54e405b5c0f6323dfb31cb9a3f">Allocator</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a> world=TA::get_default_world())</td></tr>
-<tr class="memdesc:aae113a54e405b5c0f6323dfb31cb9a3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new allocator with the optionally specified runtime.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aae113a54e405b5c0f6323dfb31cb9a3f">More...</a><br /></td></tr>
-<tr class="separator:aae113a54e405b5c0f6323dfb31cb9a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa951841c4357c04b2087c0a8b6dcfaff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a5d4a348357c63745d21750d8ffe53d93">allocator_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aa951841c4357c04b2087c0a8b6dcfaff">clone</a> () const</td></tr>
 <tr class="memdesc:aa951841c4357c04b2087c0a8b6dcfaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic copy.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aa951841c4357c04b2087c0a8b6dcfaff">More...</a><br /></td></tr>
 <tr class="separator:aa951841c4357c04b2087c0a8b6dcfaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,12 +168,13 @@ value_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</
 <tr class="memitem:a21fa7f76135d934a0b5c59656b158806"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a21fa7f76135d934a0b5c59656b158806">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:a21fa7f76135d934a0b5c59656b158806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-polymorphically compares two Allocators for equality.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a21fa7f76135d934a0b5c59656b158806">More...</a><br /></td></tr>
 <tr class="separator:a21fa7f76135d934a0b5c59656b158806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac473ca6e8b6d5fec91e074d136e3277e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ac473ca6e8b6d5fec91e074d136e3277e">runtime</a> () const</td></tr>
-<tr class="memdesc:ac473ca6e8b6d5fec91e074d136e3277e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides access to the runtime to which the tensor will belong.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ac473ca6e8b6d5fec91e074d136e3277e">More...</a><br /></td></tr>
-<tr class="separator:ac473ca6e8b6d5fec91e074d136e3277e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3bb2522de35fcee73312864a10dbec8f"><td class="memItemLeft" align="right" valign="top"><a id="a3bb2522de35fcee73312864a10dbec8f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a3bb2522de35fcee73312864a10dbec8f">Allocator</a> ()=default</td></tr>
+<tr class="memdesc:a3bb2522de35fcee73312864a10dbec8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporary until runtime is sorted. <br /></td></tr>
+<tr class="separator:a3bb2522de35fcee73312864a10dbec8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdc4d391c5ea551f442b32d6bf72b026"><td class="memItemLeft" align="right" valign="top"><a id="afdc4d391c5ea551f442b32d6bf72b026"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#afdc4d391c5ea551f442b32d6bf72b026">Allocator</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;)=default</td></tr>
 <tr class="memdesc:afdc4d391c5ea551f442b32d6bf72b026"><td class="mdescLeft">&#160;</td><td class="mdescRight">To help derived classes implement clone_. <br /></td></tr>
@@ -212,13 +209,6 @@ virtual value_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>real
 <tr class="memitem:a44de730d3eddbcd246be58d5942e966b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">is_equal_</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:a44de730d3eddbcd246be58d5942e966b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hook for polymorphically comparing two Allocators.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">More...</a><br /></td></tr>
 <tr class="separator:a44de730d3eddbcd246be58d5942e966b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a7672980c214051b321f2d2cee461adfa"><td class="memItemLeft" align="right" valign="top"><a id="a7672980c214051b321f2d2cee461adfa"></a>
-<a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a7672980c214051b321f2d2cee461adfa">m_world_</a></td></tr>
-<tr class="memdesc:a7672980c214051b321f2d2cee461adfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The runtime being used for the allocation. <br /></td></tr>
-<tr class="separator:a7672980c214051b321f2d2cee461adfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename FieldType&gt;<br />
@@ -247,51 +237,7 @@ Adding A New Allocator Specialization</h1>
 <li>Implement make_tr_(). The implementation of this function is highly specific to the derived class.</li>
 </ol>
 <p>Realistically 4. should probably be made more general, but we're punting on that for now. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aae113a54e405b5c0f6323dfb31cb9a3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae113a54e405b5c0f6323dfb31cb9a3f">&#9670;&nbsp;</a></span>Allocator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">tensorwrapper::tensor::allocator::Allocator</a>&lt; FieldType &gt;::<a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a>&#160;</td>
-          <td class="paramname"><em>world</em> = <code>TA::get_default_world()</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new allocator with the optionally specified runtime. </p>
-<p><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> is a pure-virtual class, so instances of it can not actually be created. Instead the ctor provides derived classes with an API for setting the runtime.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">world</td><td>The runtime the allocator will use for allocating. Defaults to <code>TA::get_default_world()</code>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa951841c4357c04b2087c0a8b6dcfaff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa951841c4357c04b2087c0a8b6dcfaff">&#9670;&nbsp;</a></span>clone()</h2>
 
@@ -318,7 +264,7 @@ template&lt;typename FieldType &gt; </div>
 </div><div class="memdoc">
 
 <p>Polymorphic copy. </p>
-<p>The <code><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aa951841c4357c04b2087c0a8b6dcfaff" title="Polymorphic copy.">clone()</a></code> member allows users of an <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> to create polymorphic copies (<em>i.e.</em>, copies that include the derived state too) through the base class. This is important since the <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> class interacts with <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> hierarchies through the base class.</p>
+<p>TODO: Add parallelzone::Runtime parameters back once it has sane construction options The <code><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#aa951841c4357c04b2087c0a8b6dcfaff" title="Polymorphic copy.">clone()</a></code> member allows users of an <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> to create polymorphic copies (<em>i.e.</em>, copies that include the derived state too) through the base class. This is important since the <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> class interacts with <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a> hierarchies through the base class.</p>
 <dl class="section return"><dt>Returns</dt><dd>A deep-, polymoprhic-copy of the current allocator.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -602,48 +548,11 @@ template&lt;typename FieldType &gt; </div>
 
 </div>
 </div>
-<a id="ac473ca6e8b6d5fec91e074d136e3277e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac473ca6e8b6d5fec91e074d136e3277e">&#9670;&nbsp;</a></span>runtime()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae88e6166067dcc20144a5a28f41c6e0a">runtime_reference</a> <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">tensorwrapper::tensor::allocator::Allocator</a>&lt; FieldType &gt;::runtime </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Provides access to the runtime to which the tensor will belong. </p>
-<p>At the moment the runtime associated with the tensor is just a TiledArray World. This will change when ParallelZone rolls out.</p>
-<dl class="section return"><dt>Returns</dt><dd>A read/write reference to the runtime.</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/tensorwrapper/tensor/allocator/<a class="el" href="allocator__class_8hpp_source.html">allocator_class.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_a44de730d3eddbcd246be58d5942e966b"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">tensorwrapper::tensor::allocator::Allocator::is_equal_</a></div><div class="ttdeci">virtual bool is_equal_(const Allocator &amp;rhs) const noexcept</div><div class="ttdoc">Hook for polymorphically comparing two Allocators.</div><div class="ttdef"><b>Definition:</b> allocator_class.hpp:348</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_a44de730d3eddbcd246be58d5942e966b"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">tensorwrapper::tensor::allocator::Allocator::is_equal_</a></div><div class="ttdeci">virtual bool is_equal_(const Allocator &amp;rhs) const noexcept</div><div class="ttdoc">Hook for polymorphically comparing two Allocators.</div><div class="ttdef"><b>Definition:</b> allocator_class.hpp:349</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_a5d4a348357c63745d21750d8ffe53d93"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a5d4a348357c63745d21750d8ffe53d93">tensorwrapper::tensor::allocator::Allocator::allocator_ptr</a></div><div class="ttdeci">std::unique_ptr&lt; my_type &gt; allocator_ptr</div><div class="ttdoc">Pointer to the base class of the allocator hierarchy.</div><div class="ttdef"><b>Definition:</b> allocator_class.hpp:121</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_ae877b052c18db572797cb5262840e94a"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae877b052c18db572797cb5262840e94a">tensorwrapper::tensor::allocator::Allocator::clone_</a></div><div class="ttdeci">virtual allocator_ptr clone_() const =0</div><div class="ttdoc">Hook for polymorphic copy.</div></div>
 <!-- start footer part -->

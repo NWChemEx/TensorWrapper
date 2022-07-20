@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: tensorwrapper::tensor::Allocator&lt; FieldType &gt; Class Template Reference</title>
+<title>tensorwrapper: tensorwrapper::tensor::detail_::TiledArrayTraits&lt; T &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,16 +62,33 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1tensor.html">tensor</a></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1tensor_1_1Allocator.html">Allocator</a></li>  </ul>
+<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1tensor.html">tensor</a></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1TiledArrayTraits.html">TiledArrayTraits</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">tensorwrapper::tensor::Allocator&lt; FieldType &gt; Class Template Reference</div>  </div>
+<div class="title">tensorwrapper::tensor::detail_::TiledArrayTraits&lt; T &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/tensorwrapper/tensor/<a class="el" href="tensor__fwd_8hpp_source.html">tensor_fwd.hpp</a></li>
+
+<p>Primary template for establishing the types associated with TiledArray.  
+ <a href="structtensorwrapper_1_1tensor_1_1detail___1_1TiledArrayTraits.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ta__traits_8hpp_source.html">ta_traits.hpp</a>&gt;</code></p>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T&gt;<br />
+struct tensorwrapper::tensor::detail_::TiledArrayTraits&lt; T &gt;</h3>
+
+<p>Primary template for establishing the types associated with TiledArray. </p>
+<p>The primary template is not defined. Instead <a class="el" href="structtensorwrapper_1_1tensor_1_1detail___1_1TiledArrayTraits.html" title="Primary template for establishing the types associated with TiledArray.">TiledArrayTraits</a> is specialized for each field, establishing a mapping from a field to the types Tiled Array uses for that field.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the field the tensor is over. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/tensorwrapper/tensor/detail_/<a class="el" href="ta__traits_8hpp_source.html">ta_traits.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
