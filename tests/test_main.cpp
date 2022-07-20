@@ -1,13 +1,12 @@
 #define CATCH_CONFIG_RUNNER
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include <catch2/catch.hpp>
-#include <tiledarray.h>
+#include <parallelzone/runtime.hpp>
 
 int main(int argc, char* argv[]) {
-    auto& world = TA::initialize(argc, argv);
+    auto rt = parallelzone::Runtime(argc, argv);
 
     int res = Catch::Session().run(argc, argv);
 
-    TA::finalize();
     return res;
 }

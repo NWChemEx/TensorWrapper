@@ -1,6 +1,7 @@
 #pragma once
 #include "shape_pimpl.hpp"
 #include "tensorwrapper/tensor/shapes/sparse_shape.hpp"
+#include <TiledArray/tiled_range.h>
 
 namespace tensorwrapper::tensor::detail_ {
 

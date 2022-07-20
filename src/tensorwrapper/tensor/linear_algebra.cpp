@@ -1,20 +1,19 @@
 #include "../ta_helpers/pow.hpp"
 #include "../ta_helpers/ta_helpers.hpp"
+#include "conversion/conversion.hpp"
 #include "detail_/ta_to_tw.hpp"
-#include "tensorwrapper/tensor/linear_algebra.hpp"
-#include "tensorwrapper/tensor/tensor.hpp"
 #include <TiledArray/math/linalg/cholesky.h>
 #include <TiledArray/math/linalg/svd.h>
+#include <tensorwrapper/tensor/linear_algebra.hpp>
+#include <tensorwrapper/tensor/tensor.hpp>
 
 namespace tensorwrapper::tensor {
 
-using TWrapper       = ScalarTensorWrapper;
-using ta_tensor_type = TA::TSpArrayD;
+using TWrapper = ScalarTensorWrapper;
 
 std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X) {
-    using tensor_type = ta_tensor_type;
-
-    const auto& x = X.get<tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto& x = converter.convert(X.buffer());
 
     auto [eval_vec, evecs] = TA::math::linalg::heig(x);
     const auto& tr1        = evecs.trange().dim(0);
@@ -27,10 +26,9 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X) {
 
 std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
                                           const TWrapper& S) {
-    using tensor_type = ta_tensor_type;
-
-    const auto& x = X.get<tensor_type>();
-    const auto& s = S.get<tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto& x = converter.convert(X.buffer());
+    const auto& s = converter.convert(S.buffer());
 
     auto [eval_vec, evecs] = TA::math::linalg::heig(x, s);
     const auto& tr1        = evecs.trange().dim(0);
@@ -41,14 +39,16 @@ std::pair<TWrapper, TWrapper> eigen_solve(const TWrapper& X,
 }
 
 TWrapper cholesky_linv(const TWrapper& M) {
-    const auto& m = M.get<ta_tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto& m = converter.convert(M.buffer());
     auto linv     = TA::math::linalg::cholesky_linv(m);
 
     return detail_::ta_to_tw(std::move(linv));
 }
 
 TWrapper hmatrix_pow(const TWrapper& S, double pow) {
-    const auto s = S.get<ta_tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto s = converter.convert(S.buffer());
     auto s_out   = tensorwrapper::ta_helpers::hmatrix_pow(s, pow);
 
     return detail_::ta_to_tw(s_out);
@@ -61,7 +61,8 @@ auto SVD_(const TWrapper& M) {
     constexpr bool both_vecs = (Vecs == TA::SVD::AllVectors);
 
     // Grab the matrix dimension ranges and determine the shorter one
-    const auto& m    = M.get<ta_tensor_type>();
+    to_ta_distarrayd_t converter;
+    const auto& m    = converter.convert(M.buffer());
     const auto& tr_m = m.trange().dim(0);
     const auto& tr_n = m.trange().dim(1);
     const auto& tr_k = tr_m.extent() < tr_n.extent() ? tr_m : tr_n;

@@ -20,6 +20,7 @@ class TiledArrayAllocator : public Allocator<FieldType> {
 
 public:
     using allocator_ptr          = typename base_type::allocator_ptr;
+    using runtime_type           = typename base_type::runtime_type;
     using runtime_reference      = typename base_type::runtime_reference;
     using tile_populator_type    = typename base_type::tile_populator_type;
     using element_populator_type = typename base_type::element_populator_type;
@@ -30,9 +31,8 @@ public:
     explicit TiledArrayAllocator(
       ta::Storage storage   = ta::Storage::Core,
       ta::Tiling tiling     = ta::Tiling::OneBigTile,
-      ta::Distribution dist = ta::Distribution::Replicated,
-      runtime_reference rt  = TA::get_default_world()) :
-      base_type(rt), storage_(storage), tiling_(tiling), dist_(dist){};
+      ta::Distribution dist = ta::Distribution::Replicated) :
+      storage_(storage), tiling_(tiling), dist_(dist){};
 
     ~TiledArrayAllocator() noexcept = default;
 

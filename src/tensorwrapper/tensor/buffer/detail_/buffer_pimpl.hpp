@@ -11,9 +11,6 @@ private:
     /// Type of the Buffer this PIMPL implements
     using buffer_type = Buffer<FieldType>;
 
-    /// XXX: This is to be removed
-    using variant_type = typename buffer_type::variant_type;
-
 public:
     /// Type of a read-only reference to an annotation
     using const_annotation_reference =
@@ -136,10 +133,6 @@ public:
         return are_equal_(rhs) && rhs.are_equal_(*this);
     }
 
-    /// XXX These are to be removed
-    inline variant_type& variant() { return variant_(); }
-    inline const variant_type& variant() const { return variant(); }
-
 protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
     /// still be accesible to derived classes who need them for implementations
@@ -223,10 +216,6 @@ private:
 
     /// To be overriden by derived class to implement printing
     virtual std::string to_str_() const = 0;
-
-    /// XXX These are to be removed
-    virtual variant_type& variant_()             = 0;
-    virtual const variant_type& variant_() const = 0;
 };
 
 template<typename FieldType>

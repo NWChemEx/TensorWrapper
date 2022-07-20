@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include "../tensor/test_tensor.hpp"
+#include "tensorwrapper/tensor/conversion/conversion.hpp"
 #include "tensorwrapper/tensor/creation.hpp"
 #include <catch2/catch.hpp>
 #include <iostream>
@@ -39,8 +40,9 @@ TEST_CASE("TA_vs_TW", "[.][ptest]") {
     ta_type res_ta;
     tw_type res_tw;
 
-    REQUIRE(ta_helpers::allclose(lhs_tw.get<ta_type>(), lhs_ta));
-    REQUIRE(ta_helpers::allclose(rhs_tw.get<ta_type>(), rhs_ta));
+    to_ta_distarrayd_t converter;
+    REQUIRE(ta_helpers::allclose(converter.convert(lhs_tw.buffer()), lhs_ta));
+    REQUIRE(ta_helpers::allclose(converter.convert(rhs_tw.buffer()), rhs_ta));
 
     // start benchmark
     BENCHMARK("TiledArray_mult") {

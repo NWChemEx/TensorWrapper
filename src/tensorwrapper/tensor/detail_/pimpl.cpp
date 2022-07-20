@@ -1,17 +1,19 @@
 #include "../../ta_helpers/slice.hpp"
 #include "../../ta_helpers/ta_helpers.hpp"
-#include "tensorwrapper/tensor/detail_/pimpl.hpp"
-
 #include "../buffer/detail_/ta_buffer_pimpl.hpp"
+#include "../conversion/conversion.hpp"
 #include "../shapes/detail_/sparse_shape_pimpl.hpp"
+#include "ta_traits.hpp"
+#include "tensorwrapper/tensor/detail_/pimpl.hpp"
 
 namespace tensorwrapper::tensor::detail_ {
 namespace {
 
-// TODO: This is basically tensorwrapper::tensor::to_vector copy/pasted, need to
-//       work this into main to_vector routine
+/// TODO: This is basically tensorwrapper::tensor::to_vector copy/pasted, need
+///       to work this into main to_vector routine
 auto to_vector_from_pimpl(const TensorWrapperPIMPL<field::Scalar>& t) {
-    auto t_ta = std::get<TA::TSpArrayD>(t.variant());
+    to_ta_distarrayd_t converter;
+    auto t_ta = converter.convert(t.buffer());
     t_ta.make_replicated();
     std::vector<double> rv(t.size(), 0.0);
 
@@ -27,46 +29,43 @@ auto to_vector_from_pimpl(const TensorWrapperPIMPL<field::Scalar>& t) {
 template<typename FieldType>
 void reshape_helper(buffer::Buffer<FieldType>& buffer,
                     const Shape<FieldType>& shape) {
-    auto l = [&](auto&& old_tensor) {
-        TA::foreach_inplace(old_tensor, [&](auto&& tile) {
-            const auto range = tile.range();
-            const auto lo    = range.lobound();
-            const auto up    = range.upbound();
-            sparse_map::Index lo_idx(lo.begin(), lo.end());
-            sparse_map::Index up_idx(up.begin(), up.end());
-            if(shape.is_hard_zero(lo_idx, up_idx)) { tile.scale_to(0.); }
-            return TA::norm(tile);
-        });
-    };
-    std::visit(l, buffer.variant());
+    using ta_traits   = TiledArrayTraits<FieldType>;
+    using ta_tensor_t = typename ta_traits::template tensor_type<double>;
+    using converter_t = Conversion<ta_tensor_t>;
+
+    converter_t converter;
+    auto& old_tensor = converter.convert(buffer);
+
+    TA::foreach_inplace(old_tensor, [&](auto&& tile) {
+        const auto range = tile.range();
+        const auto lo    = range.lobound();
+        const auto up    = range.upbound();
+        sparse_map::Index lo_idx(lo.begin(), lo.end());
+        sparse_map::Index up_idx(up.begin(), up.end());
+        if(shape.is_hard_zero(lo_idx, up_idx)) { tile.scale_to(0.); }
+        return TA::norm(tile);
+    });
 }
 
 /// XXX This should be replaced with Buffer::slice
 template<typename FieldType>
 auto slice_helper(buffer::Buffer<FieldType>& buffer,
                   const sparse_map::Index& low, const sparse_map::Index& high) {
-    using ta_pimpl_type =
-      tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<FieldType>;
-    auto* ta_pimpl = dynamic_cast<ta_pimpl_type*>(buffer.pimpl());
-    if(!ta_pimpl)
-        throw std::runtime_error("Slice only implemented for TA Backends");
+    if constexpr(field::is_tensor_field_v<FieldType>) {
+        throw std::runtime_error("Can't slice a ToT.");
+        return std::make_unique<buffer::Buffer<FieldType>>();
+    } else {
+        to_ta_distarrayd_t converter;
+        const auto& t_ta = converter.convert(buffer);
 
-    auto l = [=](auto&& arg) {
-        using clean_t         = std::decay_t<decltype(arg)>;
-        constexpr bool is_tot = TensorTraits<clean_t>::is_tot;
-        clean_t rv;
-        if constexpr(is_tot) {
-            throw std::runtime_error("Can't slice a ToT.");
-        } else {
-            rv = ta_helpers::slice(arg, low, high);
-        }
-        return rv;
-    };
+        using ta_pimpl_type =
+          tensorwrapper::tensor::buffer::detail_::TABufferPIMPL<FieldType>;
+        auto slice_pimpl =
+          std::make_unique<ta_pimpl_type>(ta_helpers::slice(t_ta, low, high));
 
-    auto slice_pimpl =
-      std::make_unique<ta_pimpl_type>(std::visit(l, buffer.variant()));
-
-    return std::make_unique<buffer::Buffer<FieldType>>(std::move(slice_pimpl));
+        return std::make_unique<buffer::Buffer<FieldType>>(
+          std::move(slice_pimpl));
+    }
 }
 } // namespace
 
@@ -113,24 +112,6 @@ typename PIMPL_TYPE::buffer_reference PIMPL_TYPE::buffer() {
 }
 
 template<typename FieldType>
-typename PIMPL_TYPE::labeled_variant_type PIMPL_TYPE::annotate(
-  const annotation_type& annotation) {
-    auto& m_tensor_   = buffer().variant();
-    using new_variant = labeled_variant_t<variant_type>;
-    auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
-    return std::visit(l, m_tensor_);
-}
-
-template<typename FieldType>
-typename PIMPL_TYPE::const_labeled_type PIMPL_TYPE::annotate(
-  const annotation_type& annotation) const {
-    auto& m_tensor_   = buffer().variant();
-    using new_variant = const_labeled_type;
-    auto l            = [&](auto&& t) { return new_variant(t(annotation)); };
-    return std::visit(l, m_tensor_);
-}
-
-template<typename FieldType>
 typename PIMPL_TYPE::extents_type PIMPL_TYPE::extents() const {
     if(m_shape_) {
         auto ex = m_shape_->extents();
@@ -153,18 +134,6 @@ typename PIMPL_TYPE::annotation_type PIMPL_TYPE::make_annotation(
     }
     x += letter + std::to_string(r - 1);
     return x;
-}
-
-/// XXX THESE ARE TO BE REMOVED
-template<typename FieldType>
-typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() {
-    return buffer().variant();
-}
-
-/// XXX THESE ARE TO BE REMOVED
-template<typename FieldType>
-const typename PIMPL_TYPE::variant_type& PIMPL_TYPE::variant() const {
-    return buffer().variant();
 }
 
 template<typename FieldType>
@@ -210,29 +179,12 @@ typename PIMPL_TYPE::size_type PIMPL_TYPE::size() const {
 template<typename FieldType>
 typename PIMPL_TYPE::pimpl_pointer PIMPL_TYPE::slice(
   const il_type& lo, const il_type& hi, allocator_pointer p) const {
-#if 0
-    sparse_map::Index low(lo), high(hi);
-    auto l = [=](auto&& arg) {
-        using clean_t         = std::decay_t<decltype(arg)>;
-        constexpr bool is_tot = TensorTraits<clean_t>::is_tot;
-        clean_t rv;
-        if constexpr(is_tot) {
-            throw std::runtime_error("Can't slice a ToT.");
-        } else {
-            rv = ta_helpers::slice(arg, low, high);
-        }
-        return rv;
-    };
-
-    return std::make_unique<my_type>(std::visit(l, m_tensor_), std::move(p));
-#else
     // throw std::runtime_error("TWPIMPL::slice NYI");
     // return nullptr;
     if(!p or !m_allocator_->is_equal(*p))
         throw std::runtime_error("slice + reallocate NYI");
     return std::make_unique<my_type>(slice_helper(*m_buffer_, lo, hi),
                                      m_shape_->slice(lo, hi), std::move(p));
-#endif
 }
 
 template<typename FieldType>
@@ -281,29 +233,6 @@ void PIMPL_TYPE::update_shape() {
 
 template<typename FieldType>
 void PIMPL_TYPE::reshape_(const shape_type& other) {
-#if 0
-    auto shape = other.extents();
-
-    // Short-circuit if shapes are polymorphically equivalent
-    if(m_shape_->is_equal(other)) return;
-
-    // If the extents aren't the same we're shuffling elements around
-    if(shape != extents()) shuffle_(shape);
-
-    // TODO: This is basically a hack to compare the sparsities
-    auto ta_tensor = other.make_tensor(*m_allocator_);
-
-    auto l = [&](auto&& old_tensor) {
-        auto m = [&](auto&& new_tensor) {
-            if(old_tensor.shape() == new_tensor.shape()) return;
-            const auto& new_shape = new_tensor.shape();
-            auto dummy_idx        = make_annotation("j");
-            old_tensor(dummy_idx) = old_tensor(dummy_idx).set_shape(new_shape);
-        };
-        std::visit(m, ta_tensor);
-    };
-    std::visit(l, m_tensor_);
-#else
     // Short-circuit if shapes are polymorphically equivalent
     if(m_shape_->is_equal(other)) return;
 
@@ -312,32 +241,13 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
 
     // Apply sparsity
     reshape_helper(*m_buffer_, other);
-#endif
 }
 
 template<typename FieldType>
 void PIMPL_TYPE::reallocate_(const_allocator_reference p) {
-#if 0
-    auto l = [&](auto&& arg) {
-        // We have nothing to do if it's not initialized yet
-        if(!arg.is_initialized()) return;
-
-        // Only retile if the tiled ranges are different
-        const auto tr = p.make_tiled_range(extents());
-        if(arg.trange() != tr) {
-            if constexpr(std::is_same_v<FieldType, field::Scalar>) {
-                arg = TA::retile(arg, tr);
-            } else {
-                throw std::runtime_error("reallocate for ToT NYI!!!");
-            }
-        }
-    };
-    std::visit(l, m_tensor_);
-#else
     if(m_allocator_ and m_shape_) {
         m_buffer_ = p.reallocate(*m_buffer_, *m_shape_);
     }
-#endif
 }
 
 template<typename FieldType>
@@ -355,30 +265,6 @@ void PIMPL_TYPE::shuffle_(const shape_type& shape) {
         throw std::runtime_error(msg);
     }
 
-#if 0
-    auto tr = m_allocator_->make_tiled_range(shape);
-
-    // TODO: Use a distribution aware algorithm
-    auto l = [=](auto&& arg) {
-        using clean_t = std::decay_t<decltype(arg)>;
-        clean_t rv;
-        if constexpr(TensorTraits<clean_t>::is_tot) {
-            std::runtime_error("Can't reshape a ToT");
-        } else {
-            auto data = to_vector_from_pimpl(*this);
-            rv        = TA::make_array<clean_t>(
-              arg.world(), tr, [=](auto& tile, const auto& range) {
-                  tile = std::decay_t<decltype(tile)>(range);
-                  for(const auto& new_idx : range) {
-                      tile[new_idx] = data[range.ordinal(new_idx)];
-                  }
-                  return tile.norm();
-              });
-        }
-        return rv;
-    };
-    m_tensor_ = std::visit(l, m_tensor_);
-#else
     if constexpr(field::is_scalar_field_v<FieldType>) {
         auto data   = to_vector_from_pimpl(*this);
         size_t rank = shape.extents().size();
@@ -402,7 +288,6 @@ void PIMPL_TYPE::shuffle_(const shape_type& shape) {
         throw std::runtime_error("TW:shuffle_ for ToT NYI");
     }
     m_shape_ = shape.clone();
-#endif
 }
 
 template<typename FieldType>

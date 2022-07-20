@@ -1,5 +1,6 @@
 #include "../ta_helpers/ta_helpers.hpp"
 #include "buffer/detail_/ta_buffer_pimpl.hpp"
+#include "conversion/conversion.hpp"
 #include "detail_/ta_to_tw.hpp"
 #include <TiledArray/conversions/retile.h>
 #include <tensorwrapper/tensor/creation.hpp>
@@ -9,8 +10,9 @@ namespace tensorwrapper::tensor {
 ScalarTensorWrapper concatenate(const ScalarTensorWrapper& lhs,
                                 const ScalarTensorWrapper& rhs,
                                 std::size_t dim) {
-    const auto& C_lhs = lhs.get<TA::TSpArrayD>();
-    const auto& C_rhs = rhs.get<TA::TSpArrayD>();
+    to_ta_distarrayd_t converter;
+    const auto& C_lhs = converter.convert(lhs.buffer());
+    const auto& C_rhs = converter.convert(rhs.buffer());
     const auto rank   = C_lhs.trange().rank();
 
     if(rank != C_rhs.trange().rank())
@@ -115,7 +117,8 @@ TensorOfTensorsWrapper concatenate(const TensorOfTensorsWrapper& lhs,
 }
 
 ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
-    const auto& t_ta = t.get<TA::TSpArrayD>();
+    to_ta_distarrayd_t converter;
+    const auto& t_ta = converter.convert(t.buffer());
     return detail_::ta_to_tw(ta_helpers::grab_diagonal(t_ta));
 }
 
@@ -157,7 +160,8 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
     using ta_type   = TA::TSpArrayD;
     using tile_type = typename ta_type::value_type;
 
-    auto leading_ta   = tensors[0].get<ta_type>();
+    to_ta_distarrayd_t converter;
+    auto leading_ta   = converter.convert(tensors[0].buffer());
     auto slice_trange = leading_ta.trange();
     auto& world       = leading_ta.world();
 
@@ -172,7 +176,7 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
     // Build up stacked tensor
     ta_type new_tensor(world, intermediate_trange);
     for(auto dim = 0; dim < tensors.size(); ++dim) {
-        auto current_ta     = tensors[dim].get<ta_type>();
+        auto current_ta     = converter.convert(tensors[dim].buffer());
         auto current_trange = current_ta.trange();
 
         // Check that the array has the correct layout
@@ -223,7 +227,9 @@ ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {
 }
 
 Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor) {
-    return TA::array_to_eigen(tensor.get<TA::TSpArrayD>());
+    to_ta_distarrayd_t converter;
+    const auto& ta_tensor = converter.convert(tensor.buffer());
+    return TA::array_to_eigen(ta_tensor);
 };
 
 ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix) {

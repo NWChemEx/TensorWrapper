@@ -1,6 +1,7 @@
 #include "../ta_helpers/ta_helpers.hpp"
+#include "conversion/conversion.hpp"
 #include "detail_/ta_to_tw.hpp"
-#include "tensorwrapper/tensor/conversions.hpp"
+#include <tensorwrapper/tensor/conversions.hpp>
 
 namespace tensorwrapper::tensor {
 
@@ -14,7 +15,8 @@ void to_contiguous_buffer(const ScalarTensorWrapper& t, double* buffer_begin,
 
     // XXX: In principle we don't have to make things replicated explictly,
     // we can just grab pieces remotely via RPC
-    auto t_ta = t.get<TA::TSpArrayD>();
+    to_ta_distarrayd_t converter;
+    auto t_ta = converter.convert(t.buffer());
     t_ta.make_replicated();
 
     // Have to use this range to compute ordinal index, using i_range will give

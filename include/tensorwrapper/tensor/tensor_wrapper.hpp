@@ -4,7 +4,6 @@
 #include <tensorwrapper/tensor/buffer/buffer.hpp>
 #include <tensorwrapper/tensor/expression/labeled_view.hpp>
 #include <tensorwrapper/tensor/fields.hpp>
-#include <tensorwrapper/tensor/type_traits/field_traits.hpp>
 #include <tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp>
 #include <tiledarray.h>
 
@@ -38,39 +37,6 @@ private:
 
     /// Read-only reference to the PIMPL
     using const_pimpl_reference = const pimpl_type&;
-
-    /// Type of the field traits
-    using field_traits = tensorwrapper::tensor::detail_::FieldTraits<FieldType>;
-
-    /// Type of the variant in the PIMPL
-    using variant_type = typename field_traits::variant_type;
-
-    /** @brief True if the field recognizes @p T as the type of a tensor and
-     *         false otherwise.
-     *
-     *  This variable is basically a convenience variable for accessing the
-     *  variable by the same name declared in @p field_traits. Its primarily
-     *  purpose is to improve readability of @p eif_is_tensor.
-     *
-     *  @tparam T This variable is used to determine if @p T is the type of a
-     *            tensor associated with this TensorWrapper's field.
-     */
-    template<typename T>
-    static constexpr bool is_tensor_v =
-      field_traits::template is_tensor_type_v<T>;
-
-    /** @brief Used to enable a function if @p T is supported by the PIMPL.
-     *
-     *  This type allows the TensorWrapper class to selectively enable overloads
-     *  of functions by using SFINAE. More specifically the function will
-     *  participate in overload resolution if @p T is one of the tensor types
-     *  the PIMPL can hold.
-     *
-     *  @tparam T The type of the tensor which must appear in `variant_type`.
-     *            @p T is expected to be an unqualfied type.
-     */
-    template<typename T>
-    using eif_is_tensor = std::enable_if_t<is_tensor_v<T>>;
 
     /** @brief Helper value which determines if @p T  is the same as this
      *         tensor's field.
@@ -530,50 +496,6 @@ public:
      */
     scalar_value_type trace() const;
 
-    /** @brief Used to get the wrapped tensor back.
-     *
-     *  This function should really only be called by the
-     * creator of the tensor instance as they are the only ones
-     * who know what type they wrapped. In practice it is also
-     * possible for a function to loop over the types in the
-     * variant to figure out which type is in the wrapper;
-     * however, needing to do this (versus going through the
-     * tensor-generic API of the TensorWrapper class) suggests
-     * that your function may be better off being specialized
-     * for a particular tensor type.
-     *
-     *  @tparam TensorType The cv-qualified type of the tensor
-     * to retrieve.
-     *
-     *  @return A read/write reference to the wrapped tensor.
-     */
-    template<typename TensorType>
-    TensorType& get() {
-        return std::get<TensorType>(variant_());
-    }
-
-    /** @brief Used to get the wrapped tensor back.
-     *
-     *  This function should really only be called by the
-     * creator of the tensor instance as they are the only ones
-     * who know what type they wrapped. In practice it is also
-     * possible for a function to loop over the types in the
-     * variant to figure out which type is in the wrapper;
-     * however, needing to do this (versus going through the
-     * tensor-generic API of the TensorWrapper class) suggests
-     * that your function may be better off being specialized
-     * for a particular tensor type.
-     *
-     *  @tparam TensorType The cv-qualified type of the tensor
-     * to retrieve.
-     *
-     *  @return A read-only reference to the wrapped tensor.
-     */
-    template<typename TensorType>
-    const TensorType& get() const {
-        return std::get<TensorType>(variant_());
-    }
-
     /** @brief Adds a string representation of the wrapped
      * tensor to the provided stream.
      *
@@ -640,26 +562,6 @@ protected:
     /// Allows tensors over other fields to interact with this tensor
     template<typename OtherField>
     friend class TensorWrapper;
-
-    /// Right now these are used for get(); the long term plan is to remove them
-    ///@{
-    variant_type& variant_();
-    const variant_type& variant_() const;
-    ///@}
-
-    /// Type which results from annotating the modifiable tensor in the PIMPL
-    using labeled_variant_type = typename field_traits::labeled_variant_type;
-
-    /// Type which results from annotating a read-only tensor in the PIMPL
-    using const_labeled_type =
-      typename field_traits::const_labeled_variant_type;
-
-    /// Hook for LabeledViewWrapper to get the labeled tensors
-    ///@{
-    labeled_variant_type annotate_(const annotation_type& annotation);
-
-    const_labeled_type annotate_(const annotation_type& annotation) const;
-    ///@}
 
     void update_shape_();
 
