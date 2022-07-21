@@ -12,8 +12,8 @@ struct DirectTile {
     TA::Range range; // The range of the tile
     Builder builder; // The builder that produces the tile data on call
 
-    DirectTile()                                   = default;
-    DirectTile(const DirectTile& other)            = default;
+    DirectTile()                        = default;
+    DirectTile(const DirectTile& other) = default;
     DirectTile& operator=(const DirectTile& other) = default;
     DirectTile(TA::Range& range, Builder builder) :
       range(std::move(range)), builder(std::move(builder)) {}
