@@ -8,4 +8,3 @@
 #include "tensorwrapper/tensor/linear_algebra.hpp"
 #include "tensorwrapper/tensor/remove_redundancy.hpp"
 #include "tensorwrapper/tensor/tensor_wrapper.hpp"
-//#include <variant>

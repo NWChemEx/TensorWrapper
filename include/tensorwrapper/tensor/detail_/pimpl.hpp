@@ -23,9 +23,6 @@ private:
     /// Type of the TensorWrapper this is a PIMPL for
     using parent_type = TensorWrapper<FieldType>;
 
-    /// Traits class used to get types associated with the field
-    using field_traits = tensorwrapper::tensor::detail_::FieldTraits<FieldType>;
-
 public:
     /// Type used to annotate the tensor (i.e. type of the dummy indices)
     using annotation_type = typename parent_type::annotation_type;
@@ -33,21 +30,11 @@ public:
     /// Type of the field the tensor is over
     using field_type = FieldType;
 
-    /// Type which wraps all of the possible backend tensors
-    using variant_type = typename field_traits::variant_type;
-
     /// Type which holds type-erased tensor instance
-    using buffer_type            = typename buffer::Buffer<FieldType>;
-    using buffer_pointer         = std::unique_ptr<buffer_type>;
-    using const_buffer_reference = const buffer_type&;
-    using buffer_reference       = buffer_type&;
-
-    /// Type which results from labeling the possible backend
-    using labeled_variant_type = typename field_traits::labeled_variant_type;
-
-    /// Type of a read-only labeled backend
-    using const_labeled_type =
-      typename field_traits::const_labeled_variant_type;
+    using buffer_type            = typename parent_type::buffer_type;
+    using buffer_pointer         = typename parent_type::buffer_pointer;
+    using const_buffer_reference = typename parent_type::const_buffer_reference;
+    using buffer_reference       = typename parent_type::buffer_reference;
 
     /// Type of a read-only reference to an allocator
     using const_allocator_reference =
@@ -129,40 +116,6 @@ public:
 
     const_buffer_reference buffer() const;
     buffer_reference buffer();
-
-    /** @brief Annotates the modes of the wrapped index with
-     * the provided labels.
-     *
-     *  The domain-specific language of tensor operations is
-     * written in terms of Einstein notation. This requires us
-     * to assign dummy indices to each mode of the tensor. This
-     * function pairs @p annotation with the wrapped tensor to
-     * provide a labeled tensor. The resulting labeled tensor
-     * can be used in tensor expressions.
-     *
-     *  @param[in] annotation The dummy indices we are
-     * annotating the underlying tensor with.
-     *
-     *  @return A labeled read/write tensor.
-     */
-    labeled_variant_type annotate(const annotation_type& annotation);
-
-    /** @brief Annotates the modes of the wrapped index with
-     * the provided labels.
-     *
-     *  The domain-specific language of tensor operations is
-     * written in terms of Einstein notation. This requires us
-     * to assign dummy indices to each mode of the tensor. This
-     * function pairs @p annotation with the wrapped tensor to
-     * provide a labeled tensor. The resulting labeled tensor
-     * can be used in tensor expressions.
-     *
-     *  @param[in] annotation The dummy indices we are
-     * annotating the underlying tensor with.
-     *
-     *  @return A labeled read-only tensor.
-     */
-    const_labeled_type annotate(const annotation_type& annotation) const;
 
     /** @brief Returns the shape of the tensor.
      *
@@ -344,22 +297,6 @@ public:
      *          otherwise.
      */
     bool operator==(const TensorWrapperPIMPL& rhs) const;
-
-    /// XXX These are to be removed
-    ///@{
-    /** @brief Returns the variant in a read/write state.
-     *
-     *  @return The wrapped variant in a modifiable state.
-     */
-    variant_type& variant();
-
-    /** @brief Returns the variant in a read-only state.
-     *
-     *
-     * @return The wrapped variant in a read-only state.
-     */
-    const variant_type& variant() const;
-    ///@}
 
     void update_shape();
 

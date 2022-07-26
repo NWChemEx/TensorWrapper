@@ -1,7 +1,8 @@
 #pragma once
 #include "tensorwrapper/detail_/hashing.hpp"
-#include "tensorwrapper/tensor/allocators/allocator.hpp"
+#include "tensorwrapper/tensor/allocator/allocator_class.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
+#include <TiledArray/sparse_shape.h>
 
 namespace tensorwrapper::tensor::detail_ {
 

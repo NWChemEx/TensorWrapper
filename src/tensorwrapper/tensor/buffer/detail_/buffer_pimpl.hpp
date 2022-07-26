@@ -11,9 +11,6 @@ private:
     /// Type of the Buffer this PIMPL implements
     using buffer_type = Buffer<FieldType>;
 
-    /// XXX: This is to be removed
-    using variant_type = typename buffer_type::variant_type;
-
 public:
     /// Type of a read-only reference to an annotation
     using const_annotation_reference =
@@ -45,6 +42,11 @@ public:
     pimpl_pointer clone() const { return clone_(); }
 
     virtual ~BufferPIMPL() noexcept = default;
+
+    void permute(const_annotation_reference my_idx,
+                 const_annotation_reference out_idx, my_type& out) const {
+        permute_(my_idx, out_idx, out);
+    }
 
     /** @brief Implements operator*(double)
      *
@@ -100,6 +102,12 @@ public:
         times_(my_idx, out_idx, out, rhs_idx, rhs);
     }
 
+    scalar_value_type dot(const_annotation_reference my_idx,
+                          const_annotation_reference rhs_idx,
+                          const my_type& rhs) const {
+        return dot_(my_idx, rhs_idx, rhs);
+    }
+
     /// Implements norm operation
     inline scalar_value_type norm() const { return norm_(); }
 
@@ -125,10 +133,6 @@ public:
         return are_equal_(rhs) && rhs.are_equal_(*this);
     }
 
-    /// XXX These are to be removed
-    inline variant_type& variant() { return variant_(); }
-    inline const variant_type& variant() const { return variant(); }
-
 protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
     /// still be accesible to derived classes who need them for implementations
@@ -146,6 +150,11 @@ private:
 
     /// To be overridden by derived class to implement clone
     virtual pimpl_pointer clone_() const = 0;
+
+    /// To be overridden by derived class to implement permute
+    virtual void permute_(const_annotation_reference my_idx,
+                          const_annotation_reference out_idx,
+                          my_type& out) const = 0;
 
     /// To be overridden by derived class to implement operator*(double)
     virtual void scale_(const_annotation_reference my_idx,
@@ -180,6 +189,10 @@ private:
                         const_annotation_reference rhs_idx,
                         const my_type& rhs) const = 0;
 
+    virtual scalar_value_type dot_(const_annotation_reference my_idx,
+                                   const_annotation_reference rhs_idx,
+                                   const my_type& rhs) const = 0;
+
     /// To be overridden by derived class to implement norm
     virtual scalar_value_type norm_() const = 0;
 
@@ -203,10 +216,6 @@ private:
 
     /// To be overriden by derived class to implement printing
     virtual std::string to_str_() const = 0;
-
-    /// XXX These are to be removed
-    virtual variant_type& variant_()             = 0;
-    virtual const variant_type& variant_() const = 0;
 };
 
 template<typename FieldType>

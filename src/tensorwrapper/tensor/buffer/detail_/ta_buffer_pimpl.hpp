@@ -1,6 +1,6 @@
 #pragma once
+#include "../../detail_/ta_traits.hpp"
 #include "buffer_pimpl.hpp"
-#include "tensorwrapper/tensor/detail_/backends/tiled_array.hpp"
 
 /// Forward declare the Conversion class
 namespace tensorwrapper::tensor {
@@ -17,7 +17,8 @@ private:
 
     using base_type = BufferPIMPL<FieldType>;
 
-    using traits_type = tensor::backends::TiledArrayTraits<FieldType>;
+    using traits_type =
+      tensorwrapper::tensor::detail_::TiledArrayTraits<FieldType>;
 
     using variant_type = typename traits_type::variant_type;
 
@@ -52,6 +53,10 @@ private:
 
     pimpl_pointer clone_() const override;
 
+    void permute_(const_annotation_reference my_idx,
+                  const_annotation_reference out_idx,
+                  base_type& out) const override;
+
     void scale_(const_annotation_reference my_idx,
                 const_annotation_reference out_idx, base_type& out,
                 double rhs) const override;
@@ -79,6 +84,10 @@ private:
                 const_annotation_reference rhs_idx,
                 const base_type& rhs) const override;
 
+    scalar_value_type dot_(const_annotation_reference my_idx,
+                           const_annotation_reference rhs_idx,
+                           const base_type& rhs) const override;
+
     scalar_value_type norm_() const override;
     scalar_value_type sum_() const override;
     scalar_value_type trace_() const override;
@@ -92,10 +101,6 @@ private:
     std::string to_str_() const override;
 
     variant_type m_tensor_;
-
-    /// XXX These are to be removed
-    inline variant_type& variant_() override { return m_tensor_; }
-    inline const variant_type& variant_() const override { return m_tensor_; }
 
     /// Conversion needs access to stored tensor
     template<typename T>

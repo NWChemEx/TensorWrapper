@@ -1,5 +1,5 @@
 #pragma once
-#include <tensorwrapper/tensor/detail_/backends/tiled_array.hpp>
+#include <TiledArray/tensor.h>
 
 namespace testing {
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "../buffer/detail_/ta_buffer_pimpl.hpp"
-#include <tensorwrapper/tensor/allocators/allocators.hpp>
+#include <tensorwrapper/tensor/allocator/allocator.hpp>
 #include <tensorwrapper/tensor/detail_/pimpl.hpp>
 #include <tensorwrapper/tensor/fields.hpp>
 #include <tensorwrapper/tensor/shapes/shape.hpp>
