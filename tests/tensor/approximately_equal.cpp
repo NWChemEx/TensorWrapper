@@ -6,16 +6,6 @@ using namespace tensorwrapper::tensor;
 
 TEST_CASE("Approximate Equality Comparison"){
 
-    using field_type   = field::Scalar;
-    using TWrapper     = TensorWrapper<field_type>;
-    using shape_type   = typename TWrapper::shape_type;
-    using extents_type = typename TWrapper::extents_type;
-    auto vec_shape = std::make_unique<shape_type>(extents_type{3});
-
-    using allocator::ta::Distribution;
-    using allocator::ta::Storage;
-    using allocator::ta::Tiling;
-    
     /* relative tolerance */	
     auto rtol = 1.0E-10;
     /* actual tolerance */
@@ -33,6 +23,15 @@ TEST_CASE("Approximate Equality Comparison"){
     
     /* copy of tensor one elements but with different allocator attributes 
      * The code below has been adapted from ../tests/tensor/scalar_tensor_wrapper.cpp */
+    using field_type   = field::Scalar;
+    using TWrapper     = TensorWrapper<field_type>;
+    using shape_type   = typename TWrapper::shape_type;
+    using extents_type = typename TWrapper::extents_type;
+    auto vec_shape = std::make_unique<shape_type>(extents_type{3});
+
+    using allocator::ta::Distribution;
+    using allocator::ta::Storage;
+    using allocator::ta::Tiling;
     auto other_alloc   = allocator::ta_allocator<field_type>(
       Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
     auto new_p = other_alloc->clone();

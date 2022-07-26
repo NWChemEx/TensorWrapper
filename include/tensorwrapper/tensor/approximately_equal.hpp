@@ -1,18 +1,18 @@
 #pragma once
-#include "tensorwrapper/tensor/tensor_wrapper.hpp"
-#include "tensorwrapper/tensor/approximately_equal.hpp"
 #include "tensorwrapper/tensor/allclose.hpp"
-#include "tensorwrapper/tensor/allocators/allocator.hpp"
+#include "tensorwrapper/tensor/allocator/allocator.hpp"
+#include "tensorwrapper/tensor/approximately_equal.hpp"
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
+#include "tensorwrapper/tensor/tensor_wrapper.hpp"
 
 namespace tensorwrapper::tensor {
 
 /** @brief Compares two TensorWrapper instances for closeness.
  *
- *  This function will compare two tensors, @p actual and @p ref, elementwise and
- *  determine if all their values are close to one another, as specified 
- *  in the file "tensorwrapper/include/tensor/allclose.hpp". The function
- *  also compares shape and allocator attributes of the two tensors.
+ *  This function will compare two tensors, @p actual and @p ref, elementwise
+ * and determine if all their values are close to one another, as specified in
+ * the file "tensorwrapper/include/tensor/allclose.hpp". The function also
+ * compares shape and allocator attributes of the two tensors.
  *
  *  @param[in] ref The tensor you computed and are comparing against a
  *                    reference value.
@@ -35,5 +35,3 @@ namespace tensorwrapper::tensor {
  }
 
 } // namespace tensorwrapper::tensor
-
-
