@@ -26,12 +26,12 @@ namespace tensorwrapper::tensor {
  *  @return True if @p actual is "close" to @p ref and false otherwise.
  */
 
- template<typename FieldType>	
- bool are_approximately_equal(const TensorWrapper<FieldType>& actual, const TensorWrapper<FieldType>& ref, double rtol, double atol){
-
+template<typename FieldType>
+bool are_approximately_equal(const TensorWrapper<FieldType>& actual,
+                             const TensorWrapper<FieldType>& ref, double rtol,
+                             double atol) {
     return (actual.allocator().is_equal(ref.allocator())) &&
-           (actual.shape() ==  ref.shape())   && 
-	   allclose(actual, ref, rtol, atol);
- }
+           (actual.shape() == ref.shape()) && allclose(actual, ref, rtol, atol);
+}
 
 } // namespace tensorwrapper::tensor
