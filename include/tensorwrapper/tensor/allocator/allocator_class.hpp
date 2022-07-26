@@ -4,7 +4,7 @@
 #include "tensorwrapper/tensor/shapes/shapes.hpp"
 #include "tensorwrapper/tensor/type_traits/nd_initializer_list_traits.hpp"
 #include <memory>
-#include <parallelzone/runtime.hpp>
+#include <parallelzone/runtime/runtime_view.hpp>
 #include <vector>
 
 namespace tensorwrapper::tensor::allocator {
@@ -121,7 +121,7 @@ public:
     using allocator_ptr = std::unique_ptr<my_type>;
 
     /// Type of the object describing the runtime
-    using runtime_type = parallelzone::Runtime;
+    using runtime_type = parallelzone::runtime::RuntimeView;
 
     /// A read-write reference to the runtime object
     using runtime_reference = runtime_type&;
