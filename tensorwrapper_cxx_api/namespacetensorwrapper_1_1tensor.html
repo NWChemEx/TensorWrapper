@@ -211,6 +211,10 @@ template&lt;TA::SVD::Vectors Vecs&gt; </td></tr>
 <tr class="memitem:a950a17f112faa0f6fb26a4070c1e9757"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; FieldType &gt;::allocator_ptr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a950a17f112faa0f6fb26a4070c1e9757">default_allocator</a> ()</td></tr>
 <tr class="memdesc:a950a17f112faa0f6fb26a4070c1e9757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the process of creating a defaulted allocator.  <a href="namespacetensorwrapper_1_1tensor.html#a950a17f112faa0f6fb26a4070c1e9757">More...</a><br /></td></tr>
 <tr class="separator:a950a17f112faa0f6fb26a4070c1e9757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b4ce1db4adb6d6be496623358086eb"><td class="memTemplParams" colspan="2">template&lt;typename FieldType &gt; </td></tr>
+<tr class="memitem:a50b4ce1db4adb6d6be496623358086eb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a50b4ce1db4adb6d6be496623358086eb">are_approximately_equal</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; FieldType &gt; &amp;actual, const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; FieldType &gt; &amp;ref, double rtol, double atol)</td></tr>
+<tr class="memdesc:a50b4ce1db4adb6d6be496623358086eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> instances for closeness.  <a href="namespacetensorwrapper_1_1tensor.html#a50b4ce1db4adb6d6be496623358086eb">More...</a><br /></td></tr>
+<tr class="separator:a50b4ce1db4adb6d6be496623358086eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Forward declare the <a class="el" href="structtensorwrapper_1_1tensor_1_1Conversion.html" title="Dispatches to the correct conversion function based on the desired output type of the wrapped tensor.">Conversion</a> class. </p>
@@ -420,6 +424,61 @@ template&lt;typename T , std::size_t N&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a50b4ce1db4adb6d6be496623358086eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b4ce1db4adb6d6be496623358086eb">&#9670;&nbsp;</a></span>are_approximately_equal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FieldType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::tensor::are_approximately_equal </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>actual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TensorWrapper</a>&lt; FieldType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ref</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>rtol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>atol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares two <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> instances for closeness. </p>
+<p>This function will compare two tensors, <code>actual</code> and <code>ref</code>, elementwise and determine if all their values are close to one another, as specified in the file "tensorwrapper/include/tensor/allclose.hpp". The function also compares shape and allocator attributes of the two tensors.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ref</td><td>The tensor you computed and are comparing against a reference value. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ref</td><td>The tensor which <code>actual</code> is being compared to. Should be "the correct value". </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rtol</td><td>The maximum percent error (as a decimal) allowed for any particular value. Assumed to be a positive decimal. Defaults to 1.0E-5, <em>i.e.</em>, 0.001%. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">atol</td><td>The effective value of zero for comparisons. Assumed to be a positive decimal less than 1.0. Defaults to 1.0E-8. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if <code>actual</code> is "close" to <code>ref</code> and false otherwise. </dd></dl>
 
 </div>
 </div>
