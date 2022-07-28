@@ -5,18 +5,28 @@
 
 // A nearly general TiledArray lazy tile for use in direct methods.
 template<typename Tile, typename Builder>
-struct DirectTile {
-    using eval_type    = Tile;
-    using numeric_type = typename Tile::numeric_type;
+struct LazyTile {
+    /// Type of the data tile
+    using eval_type = Tile;
 
-    TA::Range range; // The range of the tile
-    Builder builder; // The builder that produces the tile data on call
+    /// The type of the values of the data tile
+    using value_type = typename Tile::value_type;
 
-    DirectTile()                        = default;
-    DirectTile(const DirectTile& other) = default;
-    DirectTile& operator=(const DirectTile& other) = default;
-    DirectTile(TA::Range& range, Builder builder) :
-      range(std::move(range)), builder(std::move(builder)) {}
+    /// The range of the tile
+    TA::Range range;
+
+    /// The builder that produces the tile data on call
+    /// Needs to be serializable by madness
+    Builder builder;
+
+    /// Normal ctors
+    LazyTile()                                 = default;
+    LazyTile(const LazyTile& other)            = default;
+    LazyTile& operator=(const LazyTile& other) = default;
+
+    /// Ctor that takes range and builder
+    LazyTile(TA::Range range, Builder builder) :
+      range(range), builder(builder) {}
 
     /** @brief Convert to data tile type
      *
@@ -34,7 +44,7 @@ struct DirectTile {
         ar& builder;
     }
 
-}; // class DirectTile
+}; // class LazyTile
 
 /** @brief Stream operator for Direct Tile
  *
@@ -43,7 +53,7 @@ struct DirectTile {
  *  @returns Output Stream
  */
 template<typename Tile, typename Builder>
-std::ostream& operator<<(std::ostream& os, const DirectTile<Tile, Builder>& t) {
+std::ostream& operator<<(std::ostream& os, const LazyTile<Tile, Builder>& t) {
     os << t.range << "\n";
     return os;
 }
