@@ -20,8 +20,8 @@ struct LazyTile {
     Builder builder;
 
     /// Normal ctors
-    LazyTile()                                 = default;
-    LazyTile(const LazyTile& other)            = default;
+    LazyTile()                      = default;
+    LazyTile(const LazyTile& other) = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
     /// Ctor that takes range and builder
