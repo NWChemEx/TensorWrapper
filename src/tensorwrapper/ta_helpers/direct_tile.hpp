@@ -3,36 +3,38 @@
 #include <tiledarray.h>
 #include <utility>
 
+namespace tensorwrapper::ta_helpers {
+
 // A nearly general TiledArray lazy tile for use in direct methods.
-template<typename Tile, typename Builder>
+template<typename TileType, typename EvaluatorType>
 struct LazyTile {
     /// Type of the data tile
-    using eval_type = Tile;
+    using eval_type = TileType;
 
     /// The type of the values of the data tile
-    using value_type = typename Tile::value_type;
+    using value_type = typename TileType::value_type;
 
-    /// The range of the tile
-    TA::Range range;
+    /// TiledArray Range type
+    using range_type = TA::Range;
 
-    /// The builder that produces the tile data on call
+    /// The type of the data evaluator
     /// Needs to be serializable by madness
-    Builder builder;
+    using evaluator_type = EvaluatorType;
 
     /// Normal ctors
-    LazyTile()                      = default;
-    LazyTile(const LazyTile& other) = default;
+    LazyTile()                                 = default;
+    LazyTile(const LazyTile& other)            = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
-    /// Ctor that takes range and builder
-    LazyTile(TA::Range range, Builder builder) :
-      range(range), builder(builder) {}
+    /// Ctor that takes range and evaluator
+    LazyTile(range_type range, evaluator_type evaluator) :
+      m_range_(range), m_evaluator_(evaluator) {}
 
     /** @brief Convert to data tile type
      *
      *  @returns The filled data tile
      */
-    explicit operator eval_type() { return builder(range); }
+    explicit operator eval_type() { return m_evaluator_(m_range_); }
 
     /** @brief Serialize the tile
      *
@@ -40,9 +42,16 @@ struct LazyTile {
      */
     template<typename Archive>
     void serialize(Archive& ar) {
-        ar& range;
-        ar& builder;
+        ar& m_range_;
+        ar& m_evaluator_;
     }
+
+private:
+    /// The range of the tile
+    range_type m_range_;
+
+    /// The evaluator that produces the tile data on call
+    evaluator_type m_evaluator_;
 
 }; // class LazyTile
 
@@ -52,8 +61,11 @@ struct LazyTile {
  *  @param t The direct tile
  *  @returns Output Stream
  */
-template<typename Tile, typename Builder>
-std::ostream& operator<<(std::ostream& os, const LazyTile<Tile, Builder>& t) {
+template<typename Tile, typename EvaluatorType>
+std::ostream& operator<<(std::ostream& os,
+                         const LazyTile<Tile, EvaluatorType>& t) {
     os << t.range << "\n";
     return os;
 }
+
+} // namespace tensorwrapper::ta_helpers

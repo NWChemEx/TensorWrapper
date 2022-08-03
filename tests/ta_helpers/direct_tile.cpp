@@ -14,22 +14,27 @@ using tile_t   = TA::Tensor<double>;
 struct data_ftor {
     tile_t operator()(range_t range) { return tile_t(range, 1.0); }
 };
-using lazy_t = LazyTile<tile_t, data_ftor>;
+using lazy_t = tensorwrapper::ta_helpers::LazyTile<tile_t, data_ftor>;
 
 using tensorwrapper::ta_helpers::allclose;
 
 TEST_CASE("LazyTile") {
+    /// Inputs and comparison values
     auto& world = TA::get_default_world();
-
-    trange_t trange{{0, 3}, {0, 3}};
-    ta_t<tile_t> I{world, trange}, J{world, trange}, Y;
+    auto trange = trange_t{{0, 3}, {0, 3}};
+    auto I      = ta_t<tile_t>{world, trange};
+    auto J      = ta_t<tile_t>{world, trange};
+    ta_t<tile_t> Y;
     I.fill(1.0);
     J.fill(2.0);
 
+    /// Assigns lazy tile to input tile
     auto tile_lambda = [](lazy_t& t, const range_t& r) -> float {
         t = lazy_t(r, data_ftor{});
         return 1.0;
     };
+
+    /// Make a lazy array for testing
     auto X = TiledArray::make_array<ta_t<lazy_t>>(world, trange, tile_lambda);
 
     /// Test operations with the lazy array
