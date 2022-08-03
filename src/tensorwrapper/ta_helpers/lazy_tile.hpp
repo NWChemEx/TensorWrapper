@@ -22,8 +22,8 @@ struct LazyTile {
     using evaluator_type = EvaluatorType;
 
     /// Normal ctors
-    LazyTile()                                 = default;
-    LazyTile(const LazyTile& other)            = default;
+    LazyTile()                      = default;
+    LazyTile(const LazyTile& other) = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
     /// Ctor that takes range and evaluator
