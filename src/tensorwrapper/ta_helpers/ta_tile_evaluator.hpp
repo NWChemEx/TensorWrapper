@@ -22,18 +22,17 @@ class TATileEvaluator {
     using tile_evaluator_t = tensor::data_evaluator::TileEvaluator<field_t>;
 
     /// The type of an element based evaluator
-    using element_evaluator_t =
-      tensor::data_evaluator::ElementEvaluator<field_t>;
+    using elem_evaluator_t = tensor::data_evaluator::ElementEvaluator<field_t>;
 
     /// The type of the stored evaluator
-    using variant_t = std::variant<tile_evaluator_t, element_evaluator_t>;
+    using variant_t = std::variant<tile_evaluator_t, elem_evaluator_t>;
 
     /// Holds the internal data evaluator
     variant_t m_evaluator_;
 
 public:
     TATileEvaluator(tile_evaluator_t& te) : m_evaluator_(te){};
-    TATileEvaluator(element_evaluator_t& ee) : m_evaluator_(ee){};
+    TATileEvaluator(elem_evaluator_t& ee) : m_evaluator_(ee){};
 
     tile_t operator()(range_t range) {
         auto eval = [=](auto&& evaluator) {
