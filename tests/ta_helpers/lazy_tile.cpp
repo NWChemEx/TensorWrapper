@@ -1,4 +1,4 @@
-#include "tensorwrapper/ta_helpers/direct_tile.hpp"
+#include "tensorwrapper/ta_helpers/lazy_tile.hpp"
 #include "tensorwrapper/ta_helpers/ta_helpers.hpp"
 #include <catch2/catch.hpp>
 #include <tiledarray.h>
