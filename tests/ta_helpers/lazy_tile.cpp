@@ -10,11 +10,7 @@ using trange_t = TA::TiledRange;
 using range_t  = TA::Range;
 using tile_t   = TA::Tensor<double>;
 
-/// Simple functor for filling in data tiles.
-struct data_ftor {
-    tile_t operator()(range_t range) { return tile_t(range, 1.0); }
-};
-using lazy_t = tensorwrapper::ta_helpers::LazyTile<tile_t, data_ftor>;
+using lazy_t = tensorwrapper::ta_helpers::lazy_scalar_type;
 
 using tensorwrapper::ta_helpers::allclose;
 
@@ -28,9 +24,15 @@ TEST_CASE("LazyTile") {
     I.fill(1.0);
     J.fill(2.0);
 
+    /// Create data lambda and add to LazyTile evaluators
+    auto data_lambda = [](range_t range) -> tile_t {
+        return tile_t(range, 1.0);
+    };
+    lazy_t::add_evaluator(data_lambda, "test");
+
     /// Assigns lazy tile to input tile
     auto tile_lambda = [](lazy_t& t, const range_t& r) -> float {
-        t = lazy_t(r, data_ftor{});
+        t = lazy_t(r, "test");
         return 1.0;
     };
 
