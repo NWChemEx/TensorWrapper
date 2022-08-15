@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <tensorwrapper/detail_/hashing.hpp>
 #include <tiledarray.h>
 #include <utility>
 
@@ -7,11 +8,16 @@ namespace tensorwrapper::ta_helpers {
 
 template<typename TileType>
 struct LazyTile {
+    using my_type = LazyTile<TileType>;
+
     /// Type of the data tile
     using eval_type = TileType;
 
     /// The type of the values of the data tile
     using value_type = typename TileType::value_type;
+
+    /// The scalar type of the data tile
+    using scalar_type = typename TileType::scalar_type;
 
     /// TiledArray Range type
     using range_type = TA::Range;
@@ -26,8 +32,8 @@ struct LazyTile {
     using map_type = std::map<id_type, evaluator_type>;
 
     /// Normal ctors
-    LazyTile()                      = default;
-    LazyTile(const LazyTile& other) = default;
+    LazyTile()                                 = default;
+    LazyTile(const LazyTile& other)            = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
     /** @brief Adds an evaluator into the map with a given id.
@@ -62,6 +68,24 @@ struct LazyTile {
         if(!evaluators.count(id)) evaluators[id] = evaluator;
     }
 
+    void hash(tensorwrapper::detail_::Hasher& h) const {
+        /// Does this matter?
+    }
+
+    /** @brief Prints the tile
+     *
+     *  @param[in, out] os The stream to print this Tile to. After the
+     *                     call a string representation of this instance
+     * will have been added to @p os.
+     *  @return @p os is returned to support chaining.
+     */
+    std::ostream& print(std::ostream& os) const {
+        os << m_range_;
+        return os;
+    }
+
+    my_type clone() const { return my_type{m_range_, m_id_}; }
+
 private:
     /// The range of the tile
     range_type m_range_;
@@ -73,6 +97,17 @@ private:
     static map_type evaluators;
 
 }; // class LazyTile
+
+/** @brief Stream operator for Direct Tile
+ *
+ *  @param os Stream
+ *  @param t The direct tile
+ *  @returns Output Stream
+ */
+template<typename Tile>
+std::ostream& operator<<(std::ostream& os, const LazyTile<Tile>& t) {
+    return t.print(os);
+}
 
 /// Useful typedefs
 using lazy_scalar_type = LazyTile<TA::Tensor<double>>;

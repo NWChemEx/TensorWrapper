@@ -38,11 +38,16 @@ public:
     using default_tensor_type =
       typename traits_type::template tensor_type<double>;
 
+    using lazy_tensor_type =
+      typename traits_type::template lazy_tensor_type<double>;
+
     using ta_shape_type = TA::SparseShape<float>;
 
     using ta_trange_type = TA::TiledRange;
 
     explicit TABufferPIMPL(default_tensor_type t2wrap = {});
+
+    explicit TABufferPIMPL(lazy_tensor_type t2wrap);
 
     void retile(ta_trange_type trange);
 
