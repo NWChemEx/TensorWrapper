@@ -32,8 +32,8 @@ struct LazyTile {
     using map_type = std::map<id_type, evaluator_type>;
 
     /// Normal ctors
-    LazyTile()                                 = default;
-    LazyTile(const LazyTile& other)            = default;
+    LazyTile()                      = default;
+    LazyTile(const LazyTile& other) = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
     /** @brief Adds an evaluator into the map with a given id.

@@ -56,6 +56,6 @@ TEST_CASE("LazyTile") {
     // X("i,j") = I("i,j");
 
     auto clone = TA::clone(X);
-    Y("i,j") = clone("i,j");
+    Y("i,j")   = clone("i,j");
     REQUIRE(allclose(Y, I));
 }
