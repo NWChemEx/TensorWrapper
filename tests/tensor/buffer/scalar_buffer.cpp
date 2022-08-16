@@ -26,6 +26,14 @@ TEST_CASE("Buffer<Scalar>") {
     buffer_type mat(pmat->clone());
     buffer_type t3d(pt3d->clone());
 
+    auto&& [pdvec, pdmat, pdt3d] = testing::make_direct_pimpl();
+    buffer_type dvec(pdvec->clone());
+    buffer_type dmat(pdmat->clone());
+
+    // Value of this shouldn't matter, used to check for attempts to assign
+    // to a lazy array.
+    buffer_type dout(pdvec->clone());
+
     SECTION("CTors") {
         SECTION("Default") { REQUIRE_FALSE(defaulted.is_initialized()); }
         SECTION("Copy") {
@@ -79,10 +87,21 @@ TEST_CASE("Buffer<Scalar>") {
             buffer_type corr(std::move(out_pimpl));
             REQUIRE(out == corr);
         }
+        SECTION("direct") {
+            dvec.scale("i", "i", out, 2.0);
+            pdvec->scale("i", "i", *out_pimpl, 2.0);
+            buffer_type corr(std::move(out_pimpl));
+            REQUIRE(out == corr);
+        }
 
         SECTION("throws if not initialized") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(defaulted.scale("i", "i", out, 2.0), error_t);
+        }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(dvec.scale("i", "i", dout, 2.0), error_t);
         }
     }
 
@@ -114,6 +133,14 @@ TEST_CASE("Buffer<Scalar>") {
             buffer_type corr(std::move(out_pimpl));
             REQUIRE(out == corr);
         }
+        SECTION("direct") {
+            pdvec->scale("i", "i", *rhs_pimpl, 2.0);
+            buffer_type rhs(rhs_pimpl->clone());
+            dvec.add("i", "i", out, "i", rhs);
+            pdvec->add("i", "i", *out_pimpl, "i", *rhs_pimpl);
+            buffer_type corr(std::move(out_pimpl));
+            REQUIRE(out == corr);
+        }
 
         SECTION("throws if this is not initialized") {
             using error_t = std::runtime_error;
@@ -123,6 +150,11 @@ TEST_CASE("Buffer<Scalar>") {
         SECTION("throws if rhs is not initialized") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(vec.add("i", "i", out, "i", defaulted), error_t);
+        }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(dvec.add("i", "i", dout, "i", vec), error_t);
         }
     }
 
@@ -162,6 +194,11 @@ TEST_CASE("Buffer<Scalar>") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(vec.inplace_add("i", "i", defaulted), error_t);
         }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(dout.inplace_add("i", "i", vec), error_t);
+        }
     }
 
     SECTION("subtract") {
@@ -192,6 +229,14 @@ TEST_CASE("Buffer<Scalar>") {
             buffer_type corr(std::move(out_pimpl));
             REQUIRE(out == corr);
         }
+        SECTION("direct") {
+            pdvec->scale("i", "i", *rhs_pimpl, 2.0);
+            buffer_type rhs(rhs_pimpl->clone());
+            dvec.subtract("i", "i", out, "i", rhs);
+            pdvec->subtract("i", "i", *out_pimpl, "i", *rhs_pimpl);
+            buffer_type corr(std::move(out_pimpl));
+            REQUIRE(out == corr);
+        }
 
         SECTION("throws if this is not initialized") {
             using error_t = std::runtime_error;
@@ -203,6 +248,11 @@ TEST_CASE("Buffer<Scalar>") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(vec.subtract("i", "i", out, "i", defaulted),
                               error_t);
+        }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(vec.subtract("i", "i", dout, "i", vec), error_t);
         }
     }
 
@@ -244,6 +294,11 @@ TEST_CASE("Buffer<Scalar>") {
             REQUIRE_THROWS_AS(vec.inplace_subtract("i", "i", defaulted),
                               error_t);
         }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(dout.inplace_subtract("i", "i", vec), error_t);
+        }
     }
 
     SECTION("times") {
@@ -274,6 +329,14 @@ TEST_CASE("Buffer<Scalar>") {
             buffer_type corr(std::move(out_pimpl));
             REQUIRE(out == corr);
         }
+        SECTION("direct") {
+            pdmat->scale("i,j", "i,j", *rhs_pimpl, 2.0);
+            buffer_type rhs(rhs_pimpl->clone());
+            dmat.times("i,j", "i,k", out, "j,k", rhs);
+            pdmat->times("i,j", "i,k", *out_pimpl, "j,k", *rhs_pimpl);
+            buffer_type corr(std::move(out_pimpl));
+            REQUIRE(out == corr);
+        }
 
         SECTION("throws if this is not initialized") {
             using error_t = std::runtime_error;
@@ -285,6 +348,11 @@ TEST_CASE("Buffer<Scalar>") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(vec.times("i", "i", out, "i", defaulted),
                               error_t);
+        }
+
+        SECTION("throws if trying to assign to direct") {
+            using error_t = std::runtime_error;
+            REQUIRE_THROWS_AS(vec.times("i", "i", dout, "i", vec), error_t);
         }
     }
 
@@ -302,6 +370,11 @@ TEST_CASE("Buffer<Scalar>") {
         SECTION("tensor") {
             auto ref_norm = pt3d->norm();
             auto norm     = t3d.norm();
+            REQUIRE(ref_norm == norm);
+        }
+        SECTION("direct") {
+            auto ref_norm = pvec->norm();
+            auto norm     = dvec.norm();
             REQUIRE(ref_norm == norm);
         }
         SECTION("throws if this is not initialized") {
@@ -326,6 +399,11 @@ TEST_CASE("Buffer<Scalar>") {
             auto sum     = t3d.sum();
             REQUIRE(ref_sum == sum);
         }
+        SECTION("direct") {
+            auto ref_norm = pvec->sum();
+            auto norm     = dvec.sum();
+            REQUIRE(ref_norm == norm);
+        }
         SECTION("throws if this is not initialized") {
             using error_t = std::runtime_error;
             REQUIRE_THROWS_AS(defaulted.sum(), error_t);
@@ -343,6 +421,11 @@ TEST_CASE("Buffer<Scalar>") {
             auto trace     = mat.trace();
             REQUIRE(trace == ref_trace);
         }
+        SECTION("direct") {
+            auto ref_trace = pmat->trace();
+            auto trace     = dmat.trace();
+            REQUIRE(trace == ref_trace);
+        }
     }
 
     SECTION("make_extents") {
@@ -353,6 +436,7 @@ TEST_CASE("Buffer<Scalar>") {
             REQUIRE(vec.make_extents() == std::vector<std::size_t>{3});
             REQUIRE(mat.make_extents() == std::vector<std::size_t>{2, 2});
             REQUIRE(t3d.make_extents() == std::vector<std::size_t>{2, 2, 2});
+            REQUIRE(dvec.make_extents() == std::vector<std::size_t>{3});
         }
     }
 
@@ -365,16 +449,28 @@ TEST_CASE("Buffer<Scalar>") {
             REQUIRE(vec.make_inner_extents() == 1);
             REQUIRE(mat.make_inner_extents() == 1);
             REQUIRE(t3d.make_inner_extents() == 1);
+            REQUIRE(dvec.make_inner_extents() == 1);
         }
     }
 
     SECTION("print") {
-        std::stringstream ss;
-        auto pss = &(vec.print(ss));
-        SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
-        SECTION("Value") {
-            std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
-            REQUIRE(corr == ss.str());
+        SECTION("data") {
+            std::stringstream ss;
+            auto pss = &(vec.print(ss));
+            SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+            SECTION("Value") {
+                std::string corr = "0: [ [0], [3] ) { 1 2 3 }\n";
+                REQUIRE(corr == ss.str());
+            }
+        }
+        SECTION("direct") {
+            std::stringstream ss;
+            auto pss = &(dvec.print(ss));
+            SECTION("Returns ss for chaining") { REQUIRE(pss == &ss); }
+            SECTION("Value") {
+                std::string corr = "0: [ [0], [3] )\n";
+                REQUIRE(corr == ss.str());
+            }
         }
     }
 
@@ -390,6 +486,8 @@ TEST_CASE("Buffer<Scalar>") {
         REQUIRE_FALSE(hash_objects(defaulted) == hash_objects(vec));
 
         REQUIRE_FALSE(hash_objects(vec) == hash_objects(mat));
+
+        // TODO: Hashing of direct?
     }
 
     SECTION("Comparisons") {

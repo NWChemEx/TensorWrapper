@@ -55,6 +55,7 @@ TEST_CASE("LazyTile") {
     /// This will not compile because you can't assign to a lazy tile
     // X("i,j") = I("i,j");
 
+    /// Test clone
     auto clone = TA::clone(X);
     Y("i,j")   = clone("i,j");
     REQUIRE(allclose(Y, I));

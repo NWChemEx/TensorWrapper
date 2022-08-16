@@ -68,6 +68,12 @@ struct LazyTile {
         if(!evaluators.count(id)) evaluators[id] = evaluator;
     }
 
+    /** @brief Hash this tile
+     * 
+     *  Not implemented. Just here to satisfy infrastructure.
+     *
+     *  @param h A hash function
+     */
     void hash(tensorwrapper::detail_::Hasher& h) const {
         /// Does this matter?
     }
@@ -84,6 +90,8 @@ struct LazyTile {
         return os;
     }
 
+    /** @brief Clones this tile.
+     */
     my_type clone() const { return my_type{m_range_, m_id_}; }
 
 private:

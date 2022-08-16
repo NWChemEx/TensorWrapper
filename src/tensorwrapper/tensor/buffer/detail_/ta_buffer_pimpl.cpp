@@ -77,6 +77,20 @@ tot_data_tile_t as_data_tile(tot_lazy_tile_t t) {
     return std::move(t_as_data);
 }
 
+template<typename OutType>
+auto make_index(OutType& t) {
+    auto outer_rank                 = t.trange().rank();
+    decltype(outer_rank) inner_rank = 0;
+    if constexpr(std::is_same_v<OutType, tot_data_array_t> ||
+                 std::is_same_v<OutType, tot_lazy_array_t>) {
+        if(t.is_initialized()) {
+            const auto& tile0 = t.begin()->get();
+            inner_rank        = as_data_tile(tile0)[0].range().rank();
+        }
+    }
+    return TA::detail::dummy_annotation(outer_rank, inner_rank);
+}
+
 // -- Guts Functions -----------------------------------------------------------
 // These exist mostly to deal with data vs lazy array differences and typing.
 
@@ -95,15 +109,7 @@ template<typename OutType>
 void set_shape_guts_(OutType& t, TA::SparseShape<float> new_shape) {
     if constexpr(std::is_same_v<OutType, scal_data_array_t> ||
                  std::is_same_v<OutType, tot_data_array_t>) {
-        auto outer_rank                 = t.trange().rank();
-        decltype(outer_rank) inner_rank = 0;
-        if constexpr(std::is_same_v<OutType, tot_data_array_t>) {
-            if(t.is_initialized()) {
-                const auto& tile0 = t.begin()->get();
-                inner_rank        = as_data_tile(tile0)[0].range().rank();
-            }
-        }
-        auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
+        auto idx = make_index(t);
         t(idx)   = t(idx).set_shape(std::move(new_shape));
     } else {
         throw std::runtime_error("set_shape NYI for Lazy Arrays!!!!");
@@ -116,8 +122,20 @@ bool are_equal_guts_(const LHSType& lhs, const RHSType& rhs) {
         return false;
     } else if constexpr(std::is_same_v<LHSType, scal_lazy_array_t> ||
                         std::is_same_v<LHSType, tot_lazy_array_t>) {
-        /// TODO: Actually evaluate these somehow
-        return false;
+        /// Evaluate lazy tiles and compare
+        auto lhs_idx = make_index(lhs);
+        auto rhs_idx = make_index(rhs);
+        if constexpr(std::is_same_v<LHSType, scal_lazy_array_t>) {
+            scal_data_array_t data_lhs, data_rhs;
+            data_lhs(lhs_idx) = lhs(lhs_idx);
+            data_rhs(rhs_idx) = rhs(rhs_idx);
+            return data_lhs == data_rhs;
+        } else {
+            tot_data_array_t data_lhs, data_rhs;
+            data_lhs(lhs_idx) = lhs(lhs_idx);
+            data_rhs(rhs_idx) = rhs(rhs_idx);
+            return data_lhs == data_rhs;
+        }
     } else {
         return lhs == rhs;
     }
