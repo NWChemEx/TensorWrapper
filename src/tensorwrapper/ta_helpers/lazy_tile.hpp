@@ -69,7 +69,7 @@ struct LazyTile {
     }
 
     /** @brief Hash this tile
-     * 
+     *
      *  Not implemented. Just here to satisfy infrastructure.
      *
      *  @param h A hash function
