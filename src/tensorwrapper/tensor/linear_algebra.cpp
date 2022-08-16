@@ -1,3 +1,4 @@
+#include <TiledArray/math/linalg/basic.h>
 #include "../ta_helpers/pow.hpp"
 #include "../ta_helpers/ta_helpers.hpp"
 #include "conversion/conversion.hpp"
