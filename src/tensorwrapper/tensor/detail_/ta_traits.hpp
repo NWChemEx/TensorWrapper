@@ -1,4 +1,5 @@
 #pragma once
+#include "../../ta_helpers/lazy_tile.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include <TiledArray/dist_array.h>
 #include <TiledArray/tensor.h>
@@ -40,12 +41,22 @@ struct TiledArrayTraits<field::Scalar> {
     template<typename T>
     using tensor_tile_type = TA::Tensor<T>;
 
+    /// Typedef of a lazy tile of scalars
+    template<typename T>
+    using lazy_tile_type =
+      tensorwrapper::ta_helpers::LazyTile<tensor_tile_type<T>>;
+
     /// Typedef of the tensor class
     template<typename T>
     using tensor_type = TA::DistArray<tensor_tile_type<T>, TA::SparsePolicy>;
 
+    /// Typedef of a lazy tensor class
+    template<typename T>
+    using lazy_tensor_type = TA::DistArray<lazy_tile_type<T>, TA::SparsePolicy>;
+
     /// Type of a variant with all possible non-hierarchal tensor types in it
-    using variant_type = std::variant<tensor_type<double>>;
+    using variant_type =
+      std::variant<tensor_type<double>, lazy_tensor_type<double>>;
 };
 
 /** @brief Specializes TiledArrayTraits for tensors which have tensor elements.
@@ -59,12 +70,22 @@ struct TiledArrayTraits<field::Tensor> {
     template<typename T>
     using tensor_tile_type = TA::Tensor<TA::Tensor<T>>;
 
+    /// Typedef of a lazy tile of scalars
+    template<typename T>
+    using lazy_tile_type =
+      tensorwrapper::ta_helpers::LazyTile<tensor_tile_type<T>>;
+
     /// Typedef of the tensor-of-tensors class
     template<typename T>
     using tensor_type = TA::DistArray<tensor_tile_type<T>, TA::SparsePolicy>;
 
+    /// Typedef of a lazy tensor class
+    template<typename T>
+    using lazy_tensor_type = TA::DistArray<lazy_tile_type<T>, TA::SparsePolicy>;
+
     /// Type of a variant with all possible hierarchal tensor_types in it
-    using variant_type = std::variant<tensor_type<double>>;
+    using variant_type =
+      std::variant<tensor_type<double>, lazy_tensor_type<double>>;
 };
 
 } // namespace tensorwrapper::tensor::detail_
