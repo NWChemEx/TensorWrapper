@@ -1,5 +1,6 @@
 #pragma once
 #include "tensorwrapper/tensor/allocator/allocator_class.hpp"
+#include "tensorwrapper/tensor/allocator/direct_tiled_array.hpp"
 #include "tensorwrapper/tensor/allocator/tiled_array.hpp"
 
 namespace tensorwrapper::tensor {
@@ -10,6 +11,13 @@ template<typename FieldType, typename... Args>
 typename Allocator<FieldType>::allocator_ptr ta_allocator(Args&&... args) {
     using alloc_type = TiledArrayAllocator<FieldType>;
     return std::make_unique<alloc_type>(std::forward<Args>(args)...);
+}
+
+template<typename FieldType>
+typename Allocator<FieldType>::allocator_ptr direct_ta_allocator(
+  std::string fxn_id) {
+    using alloc_type = DirectTiledArrayAllocator<FieldType>;
+    return std::make_unique<alloc_type>(fxn_id);
 }
 
 } // namespace allocator

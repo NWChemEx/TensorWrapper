@@ -24,5 +24,8 @@ using ta_buffer_pimpl_type =
 template<typename FieldType>
 using default_tensor_type =
   typename ta_buffer_pimpl_type<FieldType>::default_tensor_type;
+template<typename FieldType>
+using lazy_tensor_type =
+  typename ta_buffer_pimpl_type<FieldType>::lazy_tensor_type;
 
 } // namespace tensorwrapper::tensor::allocator::detail_
