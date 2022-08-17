@@ -23,16 +23,24 @@ namespace tensorwrapper::ta_helpers::einsum {
  */
 inline auto get_block_ranges(
   const std::map<types::index, TA::TiledRange1>& ranges) {
+    using idx_type = typename types::assoc_range::mapped_type;
     types::assoc_range block_ranges;
-    for(auto&& [k, v] : ranges) { block_ranges[k] = v.tiles_range(); }
+    for(auto&& [k, v] : ranges) {
+        auto rng        = v.tiles_range();
+        block_ranges[k] = idx_type{rng.first, rng.second};
+    }
     return block_ranges;
 }
 
 inline auto get_block_range(
   const types::assoc_index& block_idx,
   const std::map<types::index, TA::TiledRange1>& ranges) {
+    using idx_type = typename types::assoc_range::mapped_type;
     types::assoc_range block_range;
-    for(auto&& [k, v] : ranges) block_range[k] = v.tile(block_idx.at(k));
+    for(auto&& [k, v] : ranges) {
+        auto rng       = v.tile(block_idx.at(k));
+        block_range[k] = idx_type{rng.first, rng.second};
+    }
     return block_range;
 }
 

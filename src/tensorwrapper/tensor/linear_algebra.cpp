@@ -2,6 +2,7 @@
 #include "../ta_helpers/ta_helpers.hpp"
 #include "conversion/conversion.hpp"
 #include "detail_/ta_to_tw.hpp"
+#include <TiledArray/math/linalg/basic.h>
 #include <TiledArray/math/linalg/cholesky.h>
 #include <TiledArray/math/linalg/svd.h>
 #include <tensorwrapper/tensor/linear_algebra.hpp>
