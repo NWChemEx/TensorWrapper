@@ -306,7 +306,7 @@ private:
  *
  *  @return @p os with this SparseMap added to it.
  */
-std::ostream& operator<<(std::ostream& os, const SparseMapPIMPL& smb) {
+inline std::ostream& operator<<(std::ostream& os, const SparseMapPIMPL& smb) {
     return smb.print(os);
 }
 
@@ -325,24 +325,24 @@ std::ostream& operator<<(std::ostream& os, const SparseMapPIMPL& smb) {
  *
  *  @throw None No throw guarantee.
  */
-bool operator!=(const SparseMapPIMPL& lhs, const SparseMapPIMPL& rhs) {
+inline bool operator!=(const SparseMapPIMPL& lhs, const SparseMapPIMPL& rhs) {
     return !(lhs == rhs);
 }
 
 //------------------------------------------------------------------------------
 //                           Inline Implementations
 //------------------------------------------------------------------------------
-typename SparseMapPIMPL::size_type SparseMapPIMPL::ind_rank() const noexcept {
+inline typename SparseMapPIMPL::size_type SparseMapPIMPL::ind_rank() const noexcept {
     return !m_sm_.empty() ? m_sm_.begin()->first.size() : 0;
 }
 
-typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank() const noexcept {
+inline typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank() const noexcept {
     for(const auto& [k, v] : m_sm_)
         if(v.rank() > 0) return v.rank();
     return 0; // We get here if it's empty or if all Domains have rank 0
 }
 
-void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
+inline void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
     if(!m_sm_.empty() && ind_rank() != ind.size())
         throw std::runtime_error("Independent index");
     else if(!m_sm_.empty() && dep_rank() != dep.size())
@@ -351,7 +351,7 @@ void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
     m_sm_[ind].insert(dep);
 }
 
-auto& SparseMapPIMPL::at(size_type i) {
+inline auto& SparseMapPIMPL::at(size_type i) {
     if(i >= size())
         throw std::out_of_range("Offset must be in range [0, size())");
     auto itr = m_sm_.begin();
@@ -359,7 +359,7 @@ auto& SparseMapPIMPL::at(size_type i) {
     return *itr;
 }
 
-const auto& SparseMapPIMPL::at(size_type i) const {
+inline const auto& SparseMapPIMPL::at(size_type i) const {
     if(i >= size())
         throw std::out_of_range("Offset must be in range [0, size())");
     auto itr = m_sm_.begin();
@@ -367,19 +367,19 @@ const auto& SparseMapPIMPL::at(size_type i) const {
     return *itr;
 }
 
-const auto& SparseMapPIMPL::at(const key_type& ind) const {
+inline const auto& SparseMapPIMPL::at(const key_type& ind) const {
     if(ind.size() != ind_rank())
         throw std::runtime_error("Rank of key does not equal ind_rank()");
     return m_sm_.at(ind);
 }
 
-std::ostream& SparseMapPIMPL::print(std::ostream& os) const {
+inline std::ostream& SparseMapPIMPL::print(std::ostream& os) const {
     using utilities::printing::operator<<;
     os << m_sm_;
     return os;
 }
 
-auto& SparseMapPIMPL::direct_product_assign(const SparseMapPIMPL& rhs) {
+inline auto& SparseMapPIMPL::direct_product_assign(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty() || rhs.m_sm_.empty()) {
         m_sm_.clear();
         return *this;
@@ -404,7 +404,7 @@ auto& SparseMapPIMPL::direct_product_assign(const SparseMapPIMPL& rhs) {
     return *this;
 }
 
-SparseMapPIMPL& SparseMapPIMPL::operator*=(const SparseMapPIMPL& rhs) {
+inline SparseMapPIMPL& SparseMapPIMPL::operator*=(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty())
         return *this;
     else if(rhs.m_sm_.empty()) {
@@ -426,7 +426,7 @@ SparseMapPIMPL& SparseMapPIMPL::operator*=(const SparseMapPIMPL& rhs) {
     return *this;
 }
 
-SparseMapPIMPL& SparseMapPIMPL::operator+=(const SparseMapPIMPL& rhs) {
+inline SparseMapPIMPL& SparseMapPIMPL::operator+=(const SparseMapPIMPL& rhs) {
     if(rhs.m_sm_.empty())
         return *this;
     else if(m_sm_.empty()) {
@@ -443,7 +443,7 @@ SparseMapPIMPL& SparseMapPIMPL::operator+=(const SparseMapPIMPL& rhs) {
     return *this;
 }
 
-SparseMapPIMPL& SparseMapPIMPL::operator^=(const SparseMapPIMPL& rhs) {
+inline SparseMapPIMPL& SparseMapPIMPL::operator^=(const SparseMapPIMPL& rhs) {
     if(m_sm_.empty())
         return *this;
     else if(rhs.m_sm_.empty() || (ind_rank() != rhs.ind_rank())) {
@@ -461,7 +461,7 @@ SparseMapPIMPL& SparseMapPIMPL::operator^=(const SparseMapPIMPL& rhs) {
     return *this;
 }
 
-bool SparseMapPIMPL::operator==(const SparseMapPIMPL& rhs) const noexcept {
+inline bool SparseMapPIMPL::operator==(const SparseMapPIMPL& rhs) const noexcept {
     return m_sm_ == rhs.m_sm_;
 }
 

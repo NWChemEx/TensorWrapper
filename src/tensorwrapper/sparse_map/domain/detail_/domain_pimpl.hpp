@@ -312,7 +312,7 @@ private:
  *  @param[in] d The pimpl to print.
  *  @return @p os after adding this Domain to it.
  */
-std::ostream& operator<<(std::ostream& os, const DomainPIMPL& p) {
+inline std::ostream& operator<<(std::ostream& os, const DomainPIMPL& p) {
     os << "{";
     for(std::size_t i = 0; i < p.size(); ++i) {
         os << p.at(i);
@@ -337,7 +337,7 @@ std::ostream& operator<<(std::ostream& os, const DomainPIMPL& p) {
  *  @throw None No throw guarantee.
  */
 
-bool operator!=(const DomainPIMPL& lhs, const DomainPIMPL& rhs) {
+inline bool operator!=(const DomainPIMPL& lhs, const DomainPIMPL& rhs) {
     return !(lhs == rhs);
 }
 
@@ -345,22 +345,22 @@ bool operator!=(const DomainPIMPL& lhs, const DomainPIMPL& rhs) {
 // Inline implementations
 //------------------------------------------------------------------------------
 
-bool DomainPIMPL::count(const_reference idx) const noexcept {
+inline bool DomainPIMPL::count(const_reference idx) const noexcept {
     return m_domain_.count(idx);
 }
 
-typename DomainPIMPL::size_type DomainPIMPL::rank() const noexcept {
+inline typename DomainPIMPL::size_type DomainPIMPL::rank() const noexcept {
     return m_domain_.empty() ? 0 : m_domain_.begin()->size();
 }
 
-std::vector<typename DomainPIMPL::size_type> DomainPIMPL::result_extents()
+inline std::vector<typename DomainPIMPL::size_type> DomainPIMPL::result_extents()
   const {
     std::vector<size_type> rv(rank(), 0);
     for(size_type i = 0; i < rank(); ++i) rv[i] = m_mode_map_[i].size();
     return rv;
 }
 
-typename DomainPIMPL::value_type DomainPIMPL::result_index(
+inline typename DomainPIMPL::value_type DomainPIMPL::result_index(
   const value_type& old) const {
     if(size() == 0 || old.size() != rank())
         throw std::out_of_range("Index is not in domain");
@@ -376,19 +376,19 @@ typename DomainPIMPL::value_type DomainPIMPL::result_index(
     return Index(rv.begin(), rv.end());
 }
 
-typename DomainPIMPL::value_type DomainPIMPL::at(size_type i) const {
+inline typename DomainPIMPL::value_type DomainPIMPL::at(size_type i) const {
     bounds_check_(i);
     return *(m_domain_.begin() + i);
 }
 
-void DomainPIMPL::update_mode_map(const_reference idx) {
+inline void DomainPIMPL::update_mode_map(const_reference idx) {
     if(m_mode_map_.empty()) {
         std::vector<std::set<size_type>>(idx.size()).swap(m_mode_map_);
     }
     for(std::size_t i = 0; i < idx.size(); ++i) m_mode_map_[i].insert(idx[i]);
 }
 
-void DomainPIMPL::insert(value_type idx) {
+inline void DomainPIMPL::insert(value_type idx) {
     if(!m_domain_.empty() && idx.size() != rank()) {
         using namespace std::string_literals;
         throw std::runtime_error("Rank of idx ("s + std::to_string(idx.size()) +
@@ -400,7 +400,7 @@ void DomainPIMPL::insert(value_type idx) {
     m_domain_.insert(idx);
 }
 
-DomainPIMPL& DomainPIMPL::operator*=(const DomainPIMPL& other) {
+inline DomainPIMPL& DomainPIMPL::operator*=(const DomainPIMPL& other) {
     const bool is_empty = m_domain_.empty() || other.m_domain_.empty();
 
     if(is_empty) {
@@ -428,7 +428,7 @@ DomainPIMPL& DomainPIMPL::operator*=(const DomainPIMPL& other) {
     return *this;
 }
 
-DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other) {
+inline DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other) {
     if(other.m_domain_.empty())
         return *this;
     else if(m_domain_.empty())
@@ -442,7 +442,7 @@ DomainPIMPL& DomainPIMPL::operator+=(const DomainPIMPL& other) {
     return *this;
 }
 
-DomainPIMPL& DomainPIMPL::operator^=(const DomainPIMPL& other) {
+inline DomainPIMPL& DomainPIMPL::operator^=(const DomainPIMPL& other) {
     if(this == &other) return *this;
 
     const bool is_empty   = m_domain_.empty() || other.m_domain_.empty();
@@ -463,13 +463,13 @@ DomainPIMPL& DomainPIMPL::operator^=(const DomainPIMPL& other) {
     return *this;
 }
 
-bool DomainPIMPL::operator==(const DomainPIMPL& rhs) const noexcept {
+inline bool DomainPIMPL::operator==(const DomainPIMPL& rhs) const noexcept {
     if(rank() != rhs.rank()) return false;
     if(size() != rhs.size()) return false;
     return m_domain_ == rhs.m_domain_;
 }
 
-void DomainPIMPL::bounds_check_(size_type i) const {
+inline void DomainPIMPL::bounds_check_(size_type i) const {
     if(i < size()) return;
     using namespace std::string_literals;
     throw std::out_of_range("i = "s + std::to_string(i) +
