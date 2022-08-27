@@ -353,8 +353,8 @@ inline typename DomainPIMPL::size_type DomainPIMPL::rank() const noexcept {
     return m_domain_.empty() ? 0 : m_domain_.begin()->size();
 }
 
-inline std::vector<typename DomainPIMPL::size_type> DomainPIMPL::result_extents()
-  const {
+inline std::vector<typename DomainPIMPL::size_type>
+DomainPIMPL::result_extents() const {
     std::vector<size_type> rv(rank(), 0);
     for(size_type i = 0; i < rank(); ++i) rv[i] = m_mode_map_[i].size();
     return rv;

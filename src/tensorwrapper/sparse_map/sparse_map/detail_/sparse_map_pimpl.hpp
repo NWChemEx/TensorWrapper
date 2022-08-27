@@ -332,17 +332,20 @@ inline bool operator!=(const SparseMapPIMPL& lhs, const SparseMapPIMPL& rhs) {
 //------------------------------------------------------------------------------
 //                           Inline Implementations
 //------------------------------------------------------------------------------
-inline typename SparseMapPIMPL::size_type SparseMapPIMPL::ind_rank() const noexcept {
+inline typename SparseMapPIMPL::size_type SparseMapPIMPL::ind_rank()
+  const noexcept {
     return !m_sm_.empty() ? m_sm_.begin()->first.size() : 0;
 }
 
-inline typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank() const noexcept {
+inline typename SparseMapPIMPL::size_type SparseMapPIMPL::dep_rank()
+  const noexcept {
     for(const auto& [k, v] : m_sm_)
         if(v.rank() > 0) return v.rank();
     return 0; // We get here if it's empty or if all Domains have rank 0
 }
 
-inline void SparseMapPIMPL::add_to_domain(const key_type& ind, const Index& dep) {
+inline void SparseMapPIMPL::add_to_domain(const key_type& ind,
+                                          const Index& dep) {
     if(!m_sm_.empty() && ind_rank() != ind.size())
         throw std::runtime_error("Independent index");
     else if(!m_sm_.empty() && dep_rank() != dep.size())
@@ -461,7 +464,8 @@ inline SparseMapPIMPL& SparseMapPIMPL::operator^=(const SparseMapPIMPL& rhs) {
     return *this;
 }
 
-inline bool SparseMapPIMPL::operator==(const SparseMapPIMPL& rhs) const noexcept {
+inline bool SparseMapPIMPL::operator==(
+  const SparseMapPIMPL& rhs) const noexcept {
     return m_sm_ == rhs.m_sm_;
 }
 
