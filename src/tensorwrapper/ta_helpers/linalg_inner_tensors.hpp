@@ -76,7 +76,6 @@ auto diagonalize_inner_tensors(TensorType&& t, SType&& s = {}) {
             eval_tile(elem_idx) =
               inner_tensor_type(std::move(eval_range), tile_evals.data());
             evec_tile(elem_idx) = tile_evecs.find({0, 0}).get();
-            //world.gop.fence(); // this fence is extremely dodgy: what if not every processor is dealing with the same number of tiles or the same number of elem_idx-s?
         }
         evals.set(tile_idx, eval_tile);
         evecs.set(tile_idx, evec_tile);
@@ -111,7 +110,6 @@ auto cholesky_linv_inner_tensors(TensorType&& t) {
             auto tile_linv         = TA::cholesky_linv(inner_tile);
             TA::Range linv_range(tile_linv.size());
             linv_tile(elem_idx) = tile_linv.find({0, 0}).get();
-            //world.gop.fence(); // this fence is extremely dodgy: what if not every processor is dealing with the same number of tiles or the same number of elem_idx-s?
         }
         linv.set(tile_idx, linv_tile);
     }
