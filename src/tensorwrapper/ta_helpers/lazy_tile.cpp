@@ -28,4 +28,15 @@ typename lazy_scalar_type::map_type lazy_scalar_type::evaluators{};
 template<>
 typename lazy_tot_type::map_type lazy_tot_type::evaluators{};
 
+template<typename TileType>
+LazyTile<TileType>::operator TileType() {
+    return evaluators[m_id_](m_range_);
+}
+
+template<typename TileType>
+static void LazyTile<TileType>::add_evaluator(
+  std::function<TileType(TA::Range)> evaluator, id_type id) {
+    if(!evaluators.count(id)) evaluators[id] = evaluator;
+}
+
 } // namespace tensorwrapper::ta_helpers
