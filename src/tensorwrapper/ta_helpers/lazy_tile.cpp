@@ -34,7 +34,7 @@ LazyTile<TileType>::operator TileType() {
 }
 
 template<typename TileType>
-static void LazyTile<TileType>::add_evaluator(
+void LazyTile<TileType>::add_evaluator(
   std::function<TileType(TA::Range)> evaluator, id_type id) {
     if(!evaluators.count(id)) evaluators[id] = evaluator;
 }
