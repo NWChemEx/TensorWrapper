@@ -34,7 +34,7 @@ TEST_CASE("LazyTile") {
     /// Inputs and comparison values
     auto& world = TA::get_default_world();
     auto trange = trange_t{{0, 3}, {0, 3}};
-    auto i      = tile_t{{{0, 3}, {0, 3}}, 1.0};
+    auto i      = tile_t{range_t{{0, 3}, {0, 3}}, 1.0};
     auto I      = ta_t<tile_t>{world, trange};
     auto J      = ta_t<tile_t>{world, trange};
     ta_t<tile_t> Y;
@@ -48,7 +48,7 @@ TEST_CASE("LazyTile") {
     lazy_t::add_evaluator(data_lambda, "test");
 
     /// Test lazy evaluation
-    auto x = lazy_t({{0, 3}, {0, 3}}, "test");
+    auto x = lazy_t(range_t{{0, 3}, {0, 3}}, "test");
     auto y = tile_t(x);
     REQUIRE(y == i);
 
