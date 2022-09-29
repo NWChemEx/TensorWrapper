@@ -63,7 +63,7 @@ struct LazyTile {
      *
      *  @returns The filled data tile
      */
-    explicit operator eval_type() { return evaluators[m_id_](m_range_); }
+    explicit operator eval_type();
 
     /** @brief Serialize the tile
      *
@@ -80,9 +80,7 @@ struct LazyTile {
      *  @param evaluator A callable evaluator
      *  @param id The id that will be associated with the evaluator
      */
-    static void add_evaluator(evaluator_type evaluator, id_type id) {
-        if(!evaluators.count(id)) evaluators[id] = evaluator;
-    }
+    static void add_evaluator(evaluator_type evaluator, id_type id);
 
     /** @brief Hash this tile
      *
@@ -136,8 +134,5 @@ std::ostream& operator<<(std::ostream& os, const LazyTile<Tile>& t) {
 /// Useful typedefs
 using lazy_scalar_type = LazyTile<TA::Tensor<double>>;
 using lazy_tot_type    = LazyTile<TA::Tensor<TA::Tensor<double>>>;
-
-extern template class LazyTile<TA::Tensor<double>>;
-extern template class LazyTile<TA::Tensor<TA::Tensor<double>>>;
 
 } // namespace tensorwrapper::ta_helpers

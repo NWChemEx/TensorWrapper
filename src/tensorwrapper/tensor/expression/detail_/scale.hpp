@@ -58,7 +58,7 @@ public:
     using typename base_type::tensor_type;
 
     /// Pull base ctors into scope
-    using base_type::NNary;
+    using base_type::base_type;
 
 protected:
     /// Implements labels() by simply returning @p lhs_labels
