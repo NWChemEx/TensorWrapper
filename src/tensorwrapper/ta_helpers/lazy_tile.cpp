@@ -39,4 +39,15 @@ void LazyTile<TileType>::add_evaluator(
     if(!evaluators.count(id)) evaluators[id] = evaluator;
 }
 
+/// Instantiate add_evaluator
+template void lazy_scalar_type::add_evaluator(
+  std::function<TA::Tensor<double>(TA::Range)> evaluator, id_type id);
+template void lazy_tot_type::add_evaluator(
+  std::function<TA::Tensor<TA::Tensor<double>>(TA::Range)> evaluator,
+  id_type id);
+
+/// Instantiate operator()
+template lazy_scalar_type::operator TA::Tensor<double>();
+template lazy_tot_type::operator TA::Tensor<TA::Tensor<double>>();
+
 } // namespace tensorwrapper::ta_helpers
