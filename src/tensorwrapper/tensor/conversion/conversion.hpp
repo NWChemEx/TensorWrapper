@@ -157,6 +157,5 @@ struct Conversion<TA::DistArray<TileType, TA::SparsePolicy>> {
 /// Typedef of a Conversion instance which can make TA::TSpArrayD instances
 using to_ta_distarrayd_t = Conversion<TA::TSpArrayD>;
 
-using to_ta_totd_t =
-  Conversion<TA::DistArray<TA::Tensor<TA::Tensor<double>>, TA::SparsePolicy>>;
+using to_ta_totd_t = Conversion<TA::TSpArray<TA::Tensor<double>>>;
 } // namespace tensorwrapper::tensor
