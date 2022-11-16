@@ -33,7 +33,7 @@ namespace tensorwrapper::tensor::backends {
  *
  *  @return A ScalarTensorWrapper wrapping the input array
  */
-ScalarTensorWrapper wrap_ta(TA::TSpArrayD& ta);
+ScalarTensorWrapper wrap_ta(TA::TSpArrayD ta);
 
 /** @brief Wrap a sparse distarray of tensors of doubles inside a Tensorwrapper
  *
@@ -41,7 +41,7 @@ ScalarTensorWrapper wrap_ta(TA::TSpArrayD& ta);
  *
  *  @return A TensorOfTensorsWrapper wrapping the input array
  */
-TensorOfTensorsWrapper wrap_ta(TA::TSpArray<TA::Tensor<double>>& ta);
+TensorOfTensorsWrapper wrap_ta(TA::TSpArray<TA::Tensor<double>> ta);
 
 /** @brief Unwrap a sparse distarray of doubles inside a Tensorwrapper
  *
@@ -51,6 +51,14 @@ TensorOfTensorsWrapper wrap_ta(TA::TSpArray<TA::Tensor<double>>& ta);
  */
 TA::TSpArrayD& unwrap_ta(ScalarTensorWrapper& tw);
 
+/** @brief Unwrap a read-only sparse distarray of doubles inside a Tensorwrapper
+ *
+ *  @param[in] tw A ScalarTensorWrapper.
+ *
+ *  @return The underlying TiledArray structure
+ */
+const TA::TSpArrayD& unwrap_ta(const ScalarTensorWrapper& tw);
+
 /** @brief Unwrap a sparse distarray of tensors of doubles inside a
  *         Tensorwrapper
  *
@@ -59,5 +67,15 @@ TA::TSpArrayD& unwrap_ta(ScalarTensorWrapper& tw);
  *  @return The underlying TiledArray structure
  */
 TA::TSpArray<TA::Tensor<double>>& unwrap_ta(TensorOfTensorsWrapper& tw);
+
+/** @brief Unwrap a read-only sparse distarray of tensors of doubles inside a
+ *         Tensorwrapper
+ *
+ *  @param[in] tw A TensorOfTensorsWrapper.
+ *
+ *  @return The underlying TiledArray structure
+ */
+const TA::TSpArray<TA::Tensor<double>>& unwrap_ta(
+  const TensorOfTensorsWrapper& tw);
 
 } // namespace tensorwrapper::tensor::backends
