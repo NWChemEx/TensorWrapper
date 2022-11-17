@@ -24,7 +24,7 @@
 namespace tensorwrapper::tensor::backends {
 
 template<typename TWType, typename TAType>
-TWType wrap_ta_(TAType& t) {
+TWType wrap_ta_(TAType&& t) {
     /// Quick default
     if(!t.is_initialized()) return TWType();
 
@@ -56,29 +56,42 @@ TWType wrap_ta_(TAType& t) {
 }
 
 template<typename TWType, typename TAType>
-TAType& unwrap_ta_(TWType& tw) {
+const TAType& const_unwrap_ta_(const TWType& tw) {
     Conversion<TAType> converter;
     return converter.convert(tw.buffer());
+}
+
+template<typename TWType, typename TAType>
+TAType& unwrap_ta_(TWType& tw) {
+    return const_cast<TAType&>(const_unwrap_ta_<TWType, TAType>(tw));
 }
 
 /// A little bit cleaner typedef
 using TSpArrayD   = TA::TSpArrayD;
 using TSpArrayToD = TA::TSpArray<TA::Tensor<double>>;
 
-ScalarTensorWrapper wrap_ta(TSpArrayD& ta) {
-    return wrap_ta_<ScalarTensorWrapper, TSpArrayD>(ta);
+ScalarTensorWrapper wrap_ta(TSpArrayD ta) {
+    return wrap_ta_<ScalarTensorWrapper, TSpArrayD>(std::move(ta));
 }
 
-TensorOfTensorsWrapper wrap_ta(TSpArrayToD& ta) {
-    return wrap_ta_<TensorOfTensorsWrapper, TSpArrayToD>(ta);
+TensorOfTensorsWrapper wrap_ta(TSpArrayToD ta) {
+    return wrap_ta_<TensorOfTensorsWrapper, TSpArrayToD>(std::move(ta));
 }
 
 TSpArrayD& unwrap_ta(ScalarTensorWrapper& tw) {
     return unwrap_ta_<ScalarTensorWrapper, TSpArrayD>(tw);
 }
 
+const TSpArrayD& unwrap_ta(const ScalarTensorWrapper& tw) {
+    return const_unwrap_ta_<ScalarTensorWrapper, TSpArrayD>(tw);
+}
+
 TSpArrayToD& unwrap_ta(TensorOfTensorsWrapper& tw) {
     return unwrap_ta_<TensorOfTensorsWrapper, TSpArrayToD>(tw);
+}
+
+const TSpArrayToD& unwrap_ta(const TensorOfTensorsWrapper& tw) {
+    return const_unwrap_ta_<TensorOfTensorsWrapper, TSpArrayToD>(tw);
 }
 
 } // namespace tensorwrapper::tensor::backends

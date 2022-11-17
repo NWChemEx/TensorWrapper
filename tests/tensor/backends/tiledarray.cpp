@@ -68,12 +68,24 @@ TEST_CASE("Tiled Array Backend") {
 
     SECTION("unwrap_ta") {
         SECTION("Scalar") {
-            auto& unwrapped = unwrap_ta(corr_mat_tw);
-            REQUIRE(allclose(unwrapped, corr_mat_ta));
+            SECTION("non-const") {
+                auto& unwrapped = unwrap_ta(corr_mat_tw);
+                REQUIRE(allclose(unwrapped, corr_mat_ta));
+            }
+            SECTION("const") {
+                const auto& unwrapped = unwrap_ta(corr_mat_tw);
+                REQUIRE(allclose(unwrapped, corr_mat_ta));
+            }
         }
         SECTION("Tensor of Tensor") {
-            auto& unwrapped = unwrap_ta(corr_vov_tw);
-            REQUIRE(allclose_tot(unwrapped, corr_vov_ta, 1));
+            SECTION("non-const") {
+                auto& unwrapped = unwrap_ta(corr_vov_tw);
+                REQUIRE(allclose_tot(unwrapped, corr_vov_ta, 1));
+            }
+            SECTION("const") {
+                const auto& unwrapped = unwrap_ta(corr_vov_tw);
+                REQUIRE(allclose_tot(unwrapped, corr_vov_ta, 1));
+            }
         }
     }
 }
