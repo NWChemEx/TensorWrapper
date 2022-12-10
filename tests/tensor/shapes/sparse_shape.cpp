@@ -126,14 +126,14 @@ using namespace tensorwrapper::tensor;
 //             auto lhs = hash_objects(m);
 
 //             SECTION("Same state") {
-//                 auto rhs = hash_objects(shape_type(matrix_extents, matrix_sm));
-//                 REQUIRE(lhs == rhs);
+//                 auto rhs = hash_objects(shape_type(matrix_extents,
+//                 matrix_sm)); REQUIRE(lhs == rhs);
 //             }
 
 //             SECTION("Different extents") {
 //                 extents_type other_extents{5, 5};
-//                 auto rhs = hash_objects(shape_type(other_extents, matrix_sm));
-//                 REQUIRE(lhs != rhs);
+//                 auto rhs = hash_objects(shape_type(other_extents,
+//                 matrix_sm)); REQUIRE(lhs != rhs);
 //             }
 
 //             SECTION("Different sparse maps") {
@@ -165,7 +165,8 @@ using namespace tensorwrapper::tensor;
 //         REQUIRE_FALSE(
 //           m == other_shape_type(matrix_extents, other_inner_map, tensor_sm));
 //         REQUIRE(m !=
-//                 other_shape_type(matrix_extents, other_inner_map, tensor_sm));
+//                 other_shape_type(matrix_extents, other_inner_map,
+//                 tensor_sm));
 
 //         // Different extents
 //         REQUIRE_FALSE(m == shape_type(extents_type{5, 5}, matrix_sm));
@@ -234,7 +235,8 @@ using namespace tensorwrapper::tensor;
 //         //     auto pm = extents.data();
 //         //     // auto ipm = inner_extents.data();
 //         //     decltype(inner_map) inner_map_cpy = inner_map;
-//         //     shape_type m2(std::move(extents), std::move(inner_map_cpy), sm,
+//         //     shape_type m2(std::move(extents), std::move(inner_map_cpy),
+//         sm,
 //         //                   i2m);
 //         //     REQUIRE(m2.extents().data() == pm);
 //         //     // REQUIRE(m2.inner_extents().data() == ipm);
