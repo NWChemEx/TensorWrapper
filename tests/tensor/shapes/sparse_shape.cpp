@@ -30,311 +30,309 @@ using namespace tensorwrapper::tensor;
  * - the tensor returned is correct
  * - comparisons
  */
-// TEST_CASE("SparseShape<field::Scalar>") {
-//     using field_type      = field::Scalar;
-//     using shape_type      = SparseShape<field_type>;
-//     using extents_type    = typename shape_type::extents_type;
-//     using sparse_map_type = typename shape_type::sparse_map_type;
-//     using idx_type        = typename sparse_map_type::key_type;
-//     using idx2mode_type   = typename shape_type::idx2mode_type;
+TEST_CASE("SparseShape<field::Scalar>") {
+    using field_type      = field::Scalar;
+    using shape_type      = SparseShape<field_type>;
+    using extents_type    = typename shape_type::extents_type;
+    using sparse_map_type = typename shape_type::sparse_map_type;
+    using idx_type        = typename sparse_map_type::key_type;
+    using idx2mode_type   = typename shape_type::idx2mode_type;
 
-//     extents_type matrix_extents{3, 4};
-//     extents_type tensor_extents{2, 2, 2};
+    extents_type matrix_extents{3, 4};
+    extents_type tensor_extents{2, 2, 2};
 
-//     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
-//     sparse_map_type matrix_sm{{i0, {i0}}, {i1, {i1}}};
-//     sparse_map_type tensor_sm{{i00, {i0}}, {i11, {i1}}};
+    idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
+    sparse_map_type matrix_sm{{i0, {i0}}, {i1, {i1}}};
+    sparse_map_type tensor_sm{{i00, {i0}}, {i11, {i1}}};
 
-//     idx2mode_type i2m{1, 0};
-//     idx2mode_type i2m1{1, 2, 0};
+    idx2mode_type i2m{1, 0};
+    idx2mode_type i2m1{1, 2, 0};
 
-//     shape_type m(matrix_extents, matrix_sm);
-//     shape_type mt(matrix_extents, matrix_sm, i2m);
-//     shape_type t(tensor_extents, tensor_sm);
-//     shape_type tt(tensor_extents, tensor_sm, i2m1);
+    shape_type m(matrix_extents, matrix_sm);
+    shape_type mt(matrix_extents, matrix_sm, i2m);
+    shape_type t(tensor_extents, tensor_sm);
+    shape_type tt(tensor_extents, tensor_sm, i2m1);
 
-//     SECTION("CTors") {
-//         SECTION("No idx2mode") {
-//             REQUIRE(m.extents() == matrix_extents);
-//             REQUIRE(t.extents() == tensor_extents);
+    SECTION("CTors") {
+        SECTION("No idx2mode") {
+            REQUIRE(m.extents() == matrix_extents);
+            REQUIRE(t.extents() == tensor_extents);
 
-//             // Make sure there's not an extra copy
-//             auto pm = matrix_extents.data();
-//             shape_type m2(std::move(matrix_extents), matrix_sm);
-//             REQUIRE(m2.extents().data() == pm);
+            // Make sure there's not an extra copy
+            auto pm = matrix_extents.data();
+            shape_type m2(std::move(matrix_extents), matrix_sm);
+            REQUIRE(m2.extents().data() == pm);
 
-//             // Throws if sm is inconsistent with extents
-//             REQUIRE_THROWS_AS(shape_type(matrix_extents, tensor_sm),
-//                               std::runtime_error);
-//         }
-//         // commented for clang support
-//         // SECTION("idx2mode") {
-//         //     REQUIRE(mt.extents() == matrix_extents);
-//         //     REQUIRE(tt.extents() == tensor_extents);
+            // Throws if sm is inconsistent with extents
+            REQUIRE_THROWS_AS(shape_type(matrix_extents, tensor_sm),
+                              std::runtime_error);
+        }
 
-//         //     // Make sure there's not an extra copy
-//         //     auto pm = matrix_extents.data();
-//         //     shape_type m2(std::move(matrix_extents), matrix_sm, i2m);
-//         //     REQUIRE(m2.extents().data() == pm);
+        SECTION("idx2mode") {
+            REQUIRE(mt.extents() == matrix_extents);
+            REQUIRE(tt.extents() == tensor_extents);
 
-//         //     // Throws if sm is inconsistent with idx2mode
-//         //     REQUIRE_THROWS_AS(shape_type(matrix_extents, matrix_sm, i2m1),
-//         //                       std::runtime_error);
+            // Make sure there's not an extra copy
+            auto pm = matrix_extents.data();
+            shape_type m2(std::move(matrix_extents), matrix_sm, i2m);
+            REQUIRE(m2.extents().data() == pm);
 
-//         //     // Throws if an element of idx2mode is out of range
-//         //     extents_type i2m2{0, 2};
-//         //     REQUIRE_THROWS_AS(shape_type(matrix_extents, matrix_sm, i2m2),
-//         //                       std::runtime_error);
-//         // }
-//     }
+            // Throws if sm is inconsistent with idx2mode
+            REQUIRE_THROWS_AS(shape_type(matrix_extents, matrix_sm, i2m1),
+                              std::runtime_error);
 
-// #if 0
-//     SECTION("make_tensor") {
-//         using ta_tensor = TA::Tensor<float>;
-//         using ta_shape  = TA::SparseShape<float>;
+            // Throws if an element of idx2mode is out of range
+            extents_type i2m2{0, 2};
+            REQUIRE_THROWS_AS(shape_type(matrix_extents, matrix_sm, i2m2),
+                              std::runtime_error);
+        }
+    }
 
-//         SingleElementTiles<field_type> a;
-//         auto max = std::numeric_limits<float>::max();
+#if 0
+    SECTION("make_tensor") {
+        using ta_tensor = TA::Tensor<float>;
+        using ta_shape  = TA::SparseShape<float>;
 
-//         SECTION("Matrix") {
-//             auto matrix  = m.make_tensor(a);
-//             auto corr_tr = a.make_tiled_range(matrix_extents);
+        SingleElementTiles<field_type> a;
+        auto max = std::numeric_limits<float>::max();
 
-//             ta_tensor shape_data(TA::Range(3, 4),
-//                                  {max, 0, 0, 0, 0, max, 0, 0, 0, 0, 0, 0});
-//             ta_shape corr_shape(shape_data, corr_tr);
-//             REQUIRE(std::get<0>(matrix).trange() == corr_tr);
-//             REQUIRE(std::get<0>(matrix).shape() == corr_shape);
-//         }
+        SECTION("Matrix") {
+            auto matrix  = m.make_tensor(a);
+            auto corr_tr = a.make_tiled_range(matrix_extents);
 
-//         SECTION("Tensor") {
-//             auto tensor  = t.make_tensor(a);
-//             auto corr_tr = a.make_tiled_range(tensor_extents);
+            ta_tensor shape_data(TA::Range(3, 4),
+                                 {max, 0, 0, 0, 0, max, 0, 0, 0, 0, 0, 0});
+            ta_shape corr_shape(shape_data, corr_tr);
+            REQUIRE(std::get<0>(matrix).trange() == corr_tr);
+            REQUIRE(std::get<0>(matrix).shape() == corr_shape);
+        }
 
-//             ta_tensor shape_data(TA::Range(2, 2, 2),
-//                                  {max, 0, 0, 0, 0, 0, 0, max});
-//             ta_shape corr_shape(shape_data, corr_tr);
-//             REQUIRE(std::get<0>(tensor).trange() == corr_tr);
-//             REQUIRE(std::get<0>(tensor).shape() == corr_shape);
-//         }
-//     }
-// #endif
+        SECTION("Tensor") {
+            auto tensor  = t.make_tensor(a);
+            auto corr_tr = a.make_tiled_range(tensor_extents);
 
-//     SECTION("hash") {
-//         using tensorwrapper::detail_::hash_objects;
-//         SECTION("LHS is matrix") {
-//             auto lhs = hash_objects(m);
+            ta_tensor shape_data(TA::Range(2, 2, 2),
+                                 {max, 0, 0, 0, 0, 0, 0, max});
+            ta_shape corr_shape(shape_data, corr_tr);
+            REQUIRE(std::get<0>(tensor).trange() == corr_tr);
+            REQUIRE(std::get<0>(tensor).shape() == corr_shape);
+        }
+    }
+#endif
 
-//             SECTION("Same state") {
-//                 auto rhs = hash_objects(shape_type(matrix_extents,
-//                 matrix_sm)); REQUIRE(lhs == rhs);
-//             }
+    SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
+        SECTION("LHS is matrix") {
+            auto lhs = hash_objects(m);
 
-//             SECTION("Different extents") {
-//                 extents_type other_extents{5, 5};
-//                 auto rhs = hash_objects(shape_type(other_extents,
-//                 matrix_sm)); REQUIRE(lhs != rhs);
-//             }
+            SECTION("Same state") {
+                auto rhs = hash_objects(shape_type(matrix_extents, matrix_sm));
+                REQUIRE(lhs == rhs);
+            }
 
-//             SECTION("Different sparse maps") {
-//                 sparse_map_type sm2{{i0, {i0, i1}}, {i1, {i0, i1}}};
-//                 auto rhs = hash_objects(shape_type(matrix_extents, sm2));
-//                 REQUIRE(lhs != rhs);
-//             }
+            SECTION("Different extents") {
+                extents_type other_extents{5, 5};
+                auto rhs = hash_objects(shape_type(other_extents, matrix_sm));
+                REQUIRE(lhs != rhs);
+            }
 
-//             SECTION("Different permutation") {
-//                 REQUIRE(lhs != hash_objects(mt));
-//             }
+            SECTION("Different sparse maps") {
+                sparse_map_type sm2{{i0, {i0, i1}}, {i1, {i0, i1}}};
+                auto rhs = hash_objects(shape_type(matrix_extents, sm2));
+                REQUIRE(lhs != rhs);
+            }
 
-//             SECTION("Is polymorphic") {
-//                 Shape<field::Scalar> base(matrix_extents);
-//                 REQUIRE(lhs != hash_objects(base));
-//             }
-//         }
-//     }
+            SECTION("Different permutation") {
+                REQUIRE(lhs != hash_objects(mt));
+            }
 
-//     SECTION("comparisons") {
-//         // Same
-//         REQUIRE(m == shape_type(matrix_extents, matrix_sm));
-//         REQUIRE_FALSE(m != shape_type(matrix_extents, matrix_sm));
-//         auto other_inner_map =
-//           testing::make_uniform_tot_map(matrix_extents, {{1}});
+            SECTION("Is polymorphic") {
+                Shape<field::Scalar> base(matrix_extents);
+                REQUIRE(lhs != hash_objects(base));
+            }
+        }
+    }
 
-//         // Different fields
-//         using other_shape_type = SparseShape<field::Tensor>;
-//         REQUIRE_FALSE(
-//           m == other_shape_type(matrix_extents, other_inner_map, tensor_sm));
-//         REQUIRE(m !=
-//                 other_shape_type(matrix_extents, other_inner_map,
-//                 tensor_sm));
+    SECTION("comparisons") {
+        // Same
+        REQUIRE(m == shape_type(matrix_extents, matrix_sm));
+        REQUIRE_FALSE(m != shape_type(matrix_extents, matrix_sm));
+        auto other_inner_map =
+          testing::make_uniform_tot_map(matrix_extents, {{1}});
 
-//         // Different extents
-//         REQUIRE_FALSE(m == shape_type(extents_type{5, 5}, matrix_sm));
-//         REQUIRE(m != shape_type(extents_type{5, 5}, matrix_sm));
+        // Different fields
+        using other_shape_type = SparseShape<field::Tensor>;
+        REQUIRE_FALSE(
+          m == other_shape_type(matrix_extents, other_inner_map, tensor_sm));
+        REQUIRE(m !=
+                other_shape_type(matrix_extents, other_inner_map, tensor_sm));
 
-//         // Different sparse maps
-//         sparse_map_type sm2{{i0, {i0, i1}}, {i1, {i0, i1}}};
-//         REQUIRE_FALSE(m == shape_type(matrix_extents, sm2));
-//         REQUIRE(m != shape_type(matrix_extents, sm2));
+        // Different extents
+        REQUIRE_FALSE(m == shape_type(extents_type{5, 5}, matrix_sm));
+        REQUIRE(m != shape_type(extents_type{5, 5}, matrix_sm));
 
-//         // Different permutation
-//         REQUIRE_FALSE(m == mt);
-//         REQUIRE(m != mt);
+        // Different sparse maps
+        sparse_map_type sm2{{i0, {i0, i1}}, {i1, {i0, i1}}};
+        REQUIRE_FALSE(m == shape_type(matrix_extents, sm2));
+        REQUIRE(m != shape_type(matrix_extents, sm2));
 
-//         // Base class's operator== is non-polymorphic
-//         using base_type = Shape<field_type>;
-//         base_type b(matrix_extents);
-//         REQUIRE(b == static_cast<base_type&>(m));
-//         REQUIRE_FALSE(b != static_cast<base_type&>(m));
-//     }
-// }
+        // Different permutation
+        REQUIRE_FALSE(m == mt);
+        REQUIRE(m != mt);
 
-// TEST_CASE("SparseShape<field::Tensor>") {
-//     using field_type         = field::Tensor;
-//     using shape_type         = SparseShape<field_type>;
-//     using extents_type       = typename shape_type::extents_type;
-//     using inner_extents_type = typename shape_type::inner_extents_type;
-//     using sparse_map_type    = typename shape_type::sparse_map_type;
-//     using idx_type           = typename sparse_map_type::key_type;
-//     using idx2mode_type      = typename shape_type::idx2mode_type;
+        // Base class's operator== is non-polymorphic
+        using base_type = Shape<field_type>;
+        base_type b(matrix_extents);
+        REQUIRE(b == static_cast<base_type&>(m));
+        REQUIRE_FALSE(b != static_cast<base_type&>(m));
+    }
+}
 
-//     extents_type extents{3, 4};
-//     extents_type inner_extents{50, 203};
-//     auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
+TEST_CASE("SparseShape<field::Tensor>") {
+    using field_type         = field::Tensor;
+    using shape_type         = SparseShape<field_type>;
+    using extents_type       = typename shape_type::extents_type;
+    using inner_extents_type = typename shape_type::inner_extents_type;
+    using sparse_map_type    = typename shape_type::sparse_map_type;
+    using idx_type           = typename sparse_map_type::key_type;
+    using idx2mode_type      = typename shape_type::idx2mode_type;
 
-//     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
-//     sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
+    extents_type extents{3, 4};
+    extents_type inner_extents{50, 203};
+    auto inner_map = testing::make_uniform_tot_map(extents, inner_extents);
 
-//     idx2mode_type i2m{1, 0};
+    idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
+    sparse_map_type sm{{i00, {i0}}, {i11, {i1}}};
 
-//     shape_type t(extents, inner_map, sm);
-//     shape_type tt(extents, inner_map, sm, i2m);
+    idx2mode_type i2m{1, 0};
 
-//     SECTION("CTors") {
-//         SECTION("No idx2mode") {
-//             REQUIRE(t.extents() == extents);
+    shape_type t(extents, inner_map, sm);
+    shape_type tt(extents, inner_map, sm, i2m);
 
-//             // Make sure there's not an extra copy
-//             auto pm = extents.data();
-//             // auto ipm = inner_extents.data();
-//             decltype(inner_map) inner_map_cpy = inner_map;
-//             shape_type m2(std::move(extents), std::move(inner_map_cpy), sm);
-//             REQUIRE(m2.extents().data() == pm);
-//             // REQUIRE(m2.inner_extents().data() == ipm);
+    SECTION("CTors") {
+        SECTION("No idx2mode") {
+            REQUIRE(t.extents() == extents);
 
-//             sparse_map_type sm2{{i0, {i0}}, {i1, {i1}}};
-//             // Throws if sm is inconsistent with extents
-//             REQUIRE_THROWS_AS(shape_type(extents, inner_map, sm2),
-//                               std::runtime_error);
-//         }
-//         // commented for clang support
-//         // SECTION("idx2mode") {
-//         //     REQUIRE(tt.extents() == extents);
+            // Make sure there's not an extra copy
+            auto pm = extents.data();
+            // auto ipm = inner_extents.data();
+            decltype(inner_map) inner_map_cpy = inner_map;
+            shape_type m2(std::move(extents), std::move(inner_map_cpy), sm);
+            REQUIRE(m2.extents().data() == pm);
+            // REQUIRE(m2.inner_extents().data() == ipm);
 
-//         //     // Make sure there's not an extra copy
-//         //     auto pm = extents.data();
-//         //     // auto ipm = inner_extents.data();
-//         //     decltype(inner_map) inner_map_cpy = inner_map;
-//         //     shape_type m2(std::move(extents), std::move(inner_map_cpy),
-//         sm,
-//         //                   i2m);
-//         //     REQUIRE(m2.extents().data() == pm);
-//         //     // REQUIRE(m2.inner_extents().data() == ipm);
+            sparse_map_type sm2{{i0, {i0}}, {i1, {i1}}};
+            // Throws if sm is inconsistent with extents
+            REQUIRE_THROWS_AS(shape_type(extents, inner_map, sm2),
+                              std::runtime_error);
+        }
 
-//         //     // Throws if sm is inconsistent with idx2mode
-//         //     REQUIRE_THROWS_AS(
-//         //       shape_type(extents, inner_map, sm, idx2mode_type{1, 2, 0}),
-//         //       std::runtime_error);
+        SECTION("idx2mode") {
+            REQUIRE(tt.extents() == extents);
 
-//         //     // Throws if an element of idx2mode is out of range
-//         //     extents_type i2m2{0, 5};
-//         //     REQUIRE_THROWS_AS(shape_type(extents, inner_map, sm, i2m2),
-//         //                       std::runtime_error);
-//         // }
-//     }
+            // Make sure there's not an extra copy
+            auto pm = extents.data();
+            // auto ipm = inner_extents.data();
+            decltype(inner_map) inner_map_cpy = inner_map;
+            shape_type m2(std::move(extents), std::move(inner_map_cpy), sm,
+                          i2m);
+            REQUIRE(m2.extents().data() == pm);
+            // REQUIRE(m2.inner_extents().data() == ipm);
 
-// #if 0
-//     SECTION("make_tensor") {
-//         using ta_tensor = TA::Tensor<float>;
-//         using ta_shape  = TA::SparseShape<float>;
+            // Throws if sm is inconsistent with idx2mode
+            REQUIRE_THROWS_AS(
+              shape_type(extents, inner_map, sm, idx2mode_type{1, 2, 0}),
+              std::runtime_error);
 
-//         SingleElementTiles<field_type> a;
-//         auto max = std::numeric_limits<float>::max();
+            // Throws if an element of idx2mode is out of range
+            extents_type i2m2{0, 5};
+            REQUIRE_THROWS_AS(shape_type(extents, inner_map, sm, i2m2),
+                              std::runtime_error);
+        }
+    }
 
-//         SECTION("Matrix") {
-//             auto matrix  = t.make_tensor(a);
-//             auto corr_tr = a.make_tiled_range(extents);
+#if 0
+    SECTION("make_tensor") {
+        using ta_tensor = TA::Tensor<float>;
+        using ta_shape  = TA::SparseShape<float>;
 
-//             ta_tensor shape_data(TA::Range(3, 4),
-//                                  {max, 0, 0, 0, 0, max, 0, 0, 0, 0, 0, 0});
-//             ta_shape corr_shape(shape_data, corr_tr);
-//             REQUIRE(std::get<0>(matrix).trange() == corr_tr);
-//             REQUIRE(std::get<0>(matrix).shape() == corr_shape);
-//         }
-//     }
-// #endif
+        SingleElementTiles<field_type> a;
+        auto max = std::numeric_limits<float>::max();
 
-//     SECTION("hash") {
-//         using tensorwrapper::detail_::hash_objects;
-//         SECTION("LHS is matrix") {
-//             auto lhs = hash_objects(t);
+        SECTION("Matrix") {
+            auto matrix  = t.make_tensor(a);
+            auto corr_tr = a.make_tiled_range(extents);
 
-//             SECTION("Same state") {
-//                 auto rhs = hash_objects(shape_type(extents, inner_map, sm));
-//                 REQUIRE(lhs == rhs);
-//             }
+            ta_tensor shape_data(TA::Range(3, 4),
+                                 {max, 0, 0, 0, 0, max, 0, 0, 0, 0, 0, 0});
+            ta_shape corr_shape(shape_data, corr_tr);
+            REQUIRE(std::get<0>(matrix).trange() == corr_tr);
+            REQUIRE(std::get<0>(matrix).shape() == corr_shape);
+        }
+    }
+#endif
 
-//             SECTION("Different extents") {
-//                 extents_type other_extents{5, 5};
-//                 auto rhs =
-//                   hash_objects(shape_type(other_extents, inner_map, sm));
-//                 REQUIRE(lhs != rhs);
-//             }
+    SECTION("hash") {
+        using tensorwrapper::detail_::hash_objects;
+        SECTION("LHS is matrix") {
+            auto lhs = hash_objects(t);
 
-//             SECTION("Different sparse maps") {
-//                 sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-//                 auto rhs = hash_objects(shape_type(extents, inner_map, sm2));
-//                 REQUIRE(lhs != rhs);
-//             }
+            SECTION("Same state") {
+                auto rhs = hash_objects(shape_type(extents, inner_map, sm));
+                REQUIRE(lhs == rhs);
+            }
 
-//             SECTION("Different permutation") {
-//                 REQUIRE(lhs != hash_objects(tt));
-//             }
+            SECTION("Different extents") {
+                extents_type other_extents{5, 5};
+                auto rhs =
+                  hash_objects(shape_type(other_extents, inner_map, sm));
+                REQUIRE(lhs != rhs);
+            }
 
-//             SECTION("Is polymorphic") {
-//                 Shape<field::Scalar> base(extents);
-//                 REQUIRE(lhs != hash_objects(base));
-//             }
-//         }
-//     }
+            SECTION("Different sparse maps") {
+                sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
+                auto rhs = hash_objects(shape_type(extents, inner_map, sm2));
+                REQUIRE(lhs != rhs);
+            }
 
-//     SECTION("comparisons") {
-//         // Same
-//         REQUIRE(t == shape_type(extents, inner_map, sm));
-//         REQUIRE_FALSE(t != shape_type(extents, inner_map, sm));
+            SECTION("Different permutation") {
+                REQUIRE(lhs != hash_objects(tt));
+            }
 
-//         // Different fields
-//         using other_shape_type = SparseShape<field::Scalar>;
-//         REQUIRE_FALSE(t == other_shape_type(extents_type{3, 4, 5}, sm));
-//         REQUIRE(t != other_shape_type(extents_type{3, 4, 5}, sm));
+            SECTION("Is polymorphic") {
+                Shape<field::Scalar> base(extents);
+                REQUIRE(lhs != hash_objects(base));
+            }
+        }
+    }
 
-//         // Different extents
-//         REQUIRE_FALSE(t == shape_type(extents_type{5, 5}, inner_map, sm));
-//         REQUIRE(t != shape_type(extents_type{5, 5}, inner_map, sm));
+    SECTION("comparisons") {
+        // Same
+        REQUIRE(t == shape_type(extents, inner_map, sm));
+        REQUIRE_FALSE(t != shape_type(extents, inner_map, sm));
 
-//         // Different sparse maps
-//         sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-//         REQUIRE_FALSE(t == shape_type(extents, inner_map, sm2));
-//         REQUIRE(t != shape_type(extents, inner_map, sm2));
+        // Different fields
+        using other_shape_type = SparseShape<field::Scalar>;
+        REQUIRE_FALSE(t == other_shape_type(extents_type{3, 4, 5}, sm));
+        REQUIRE(t != other_shape_type(extents_type{3, 4, 5}, sm));
 
-//         // Different permutation
-//         REQUIRE_FALSE(t == tt);
-//         REQUIRE(t != tt);
+        // Different extents
+        REQUIRE_FALSE(t == shape_type(extents_type{5, 5}, inner_map, sm));
+        REQUIRE(t != shape_type(extents_type{5, 5}, inner_map, sm));
 
-//         // Base class's operator== is non-polymorphic
-//         using base_type = Shape<field_type>;
-//         base_type b(extents, inner_map);
-//         REQUIRE(b == t);
-//         REQUIRE_FALSE(b != t);
-//     }
-// }
+        // Different sparse maps
+        sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
+        REQUIRE_FALSE(t == shape_type(extents, inner_map, sm2));
+        REQUIRE(t != shape_type(extents, inner_map, sm2));
+
+        // Different permutation
+        REQUIRE_FALSE(t == tt);
+        REQUIRE(t != tt);
+
+        // Base class's operator== is non-polymorphic
+        using base_type = Shape<field_type>;
+        base_type b(extents, inner_map);
+        REQUIRE(b == t);
+        REQUIRE_FALSE(b != t);
+    }
+}
