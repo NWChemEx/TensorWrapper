@@ -242,7 +242,7 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
                            palloc->clone());
             REQUIRE(lhs != hash_objects(rhs));
         }
-        
+
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;
@@ -279,7 +279,7 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
                            palloc->clone());
             REQUIRE_FALSE(vom == rhs);
         }
-        
+
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;

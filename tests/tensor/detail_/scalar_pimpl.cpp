@@ -248,7 +248,7 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
                            palloc->clone());
             REQUIRE(lhs != hash_objects(rhs));
         }
-        
+
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;
@@ -283,7 +283,6 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
         SECTION("Different Allocator") { REQUIRE_FALSE(m == m2); }
 
-        
         SECTION("Different shape") {
             using sparse_shape    = SparseShape<field_type>;
             using sparse_map_type = typename sparse_shape::sparse_map_type;
@@ -407,7 +406,6 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
             // Can't apply to vector (need an independent and a dependent index)
 
-            
             SECTION("matrix") {
                 // [x 0]
                 // [x 0]
@@ -424,13 +422,11 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
                 REQUIRE(m3->size() == 4);
             }
 
-            
             SECTION("tensor") {
                 SECTION("Rank 1 ind, rank 2 dependent") {
                     sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
                     auto new_shape =
-                      std::make_unique<sparse_shape>(extents_type{2, 2, 2},
-                      sm);
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2}, sm);
 
                     auto t3 = t2.clone();
                     t3->reshape(new_shape->clone());
@@ -443,8 +439,7 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
                 SECTION("Rank 2 ind, rank 1 dependent") {
                     sparse_map_type sm{{i00, {i0}}, {i10, {i0}}};
                     auto new_shape =
-                      std::make_unique<sparse_shape>(extents_type{2, 2, 2},
-                      sm);
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2}, sm);
 
                     auto t3 = t2.clone();
                     t3->reshape(new_shape->clone());
