@@ -248,21 +248,21 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
                            palloc->clone());
             REQUIRE(lhs != hash_objects(rhs));
         }
-        // this one
-        // SECTION("Different shape") {
-        //     using sparse_shape    = SparseShape<field_type>;
-        //     using sparse_map_type = typename sparse_shape::sparse_map_type;
-        //     using index_type      = typename sparse_map_type::key_type;
+        
+        SECTION("Different shape") {
+            using sparse_shape    = SparseShape<field_type>;
+            using sparse_map_type = typename sparse_shape::sparse_map_type;
+            using index_type      = typename sparse_map_type::key_type;
 
-        //     index_type i0{0}, i1{1};
-        //     sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-        //     auto new_shape =
-        //       std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
+            index_type i0{0}, i1{1};
+            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
+            auto new_shape =
+              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
 
-        //     pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(),
-        //                    palloc->clone());
-        //     REQUIRE(lhs != hash_objects(rhs));
-        // }
+            pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(),
+                           palloc->clone());
+            REQUIRE(lhs != hash_objects(rhs));
+        }
     }
 
     SECTION("operator==") {
@@ -283,22 +283,22 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
         SECTION("Different Allocator") { REQUIRE_FALSE(m == m2); }
 
-        // this one
-        // SECTION("Different shape") {
-        //     using sparse_shape    = SparseShape<field_type>;
-        //     using sparse_map_type = typename sparse_shape::sparse_map_type;
-        //     using index_type      = typename sparse_map_type::key_type;
+        
+        SECTION("Different shape") {
+            using sparse_shape    = SparseShape<field_type>;
+            using sparse_map_type = typename sparse_shape::sparse_map_type;
+            using index_type      = typename sparse_map_type::key_type;
 
-        //     index_type i0{0}, i1{1};
-        //     sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-        //     auto new_shape =
-        //       std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
+            index_type i0{0}, i1{1};
+            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
+            auto new_shape =
+              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
 
-        //     pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(),
-        //                    palloc->clone());
-        //     REQUIRE(m.buffer() == rhs.buffer()); // Sanity check
-        //     REQUIRE_FALSE(m == rhs);
-        // }
+            pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(),
+                           palloc->clone());
+            REQUIRE(m.buffer() == rhs.buffer()); // Sanity check
+            REQUIRE_FALSE(m == rhs);
+        }
     }
 
     SECTION("slice()") {
@@ -407,54 +407,54 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
             // Can't apply to vector (need an independent and a dependent index)
 
-            // this one
-            // SECTION("matrix") {
-            //     // [x 0]
-            //     // [x 0]
-            //     sparse_map_type sm{{i0, {i0}}, {i1, {i0}}};
-            //     auto new_shape =
-            //       std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
+            
+            SECTION("matrix") {
+                // [x 0]
+                // [x 0]
+                sparse_map_type sm{{i0, {i0}}, {i1, {i0}}};
+                auto new_shape =
+                  std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
 
-            //     auto m3 = m2.clone();
-            //     m3->reshape(new_shape->clone());
+                auto m3 = m2.clone();
+                m3->reshape(new_shape->clone());
 
-            //     REQUIRE(m3->allocator() == *new_alloc);
-            //     REQUIRE(m3->shape() == *new_shape);
-            //     REQUIRE(m3->sum() == Approx(4.0));
-            //     REQUIRE(m3->size() == 4);
-            // }
+                REQUIRE(m3->allocator() == *new_alloc);
+                REQUIRE(m3->shape() == *new_shape);
+                REQUIRE(m3->sum() == Approx(4.0));
+                REQUIRE(m3->size() == 4);
+            }
 
-            // this one
-            // SECTION("tensor") {
-            //     SECTION("Rank 1 ind, rank 2 dependent") {
-            //         sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
-            //         auto new_shape =
-            //           std::make_unique<sparse_shape>(extents_type{2, 2, 2},
-            //           sm);
+            
+            SECTION("tensor") {
+                SECTION("Rank 1 ind, rank 2 dependent") {
+                    sparse_map_type sm{{i0, {i00}}, {i1, {i00}}};
+                    auto new_shape =
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2},
+                      sm);
 
-            //         auto t3 = t2.clone();
-            //         t3->reshape(new_shape->clone());
+                    auto t3 = t2.clone();
+                    t3->reshape(new_shape->clone());
 
-            //         REQUIRE(t3->allocator() == *new_alloc);
-            //         REQUIRE(t3->shape() == *new_shape);
-            //         REQUIRE(t3->sum() == Approx(6.0));
-            //         REQUIRE(t3->size() == 8);
-            //     }
-            //     SECTION("Rank 2 ind, rank 1 dependent") {
-            //         sparse_map_type sm{{i00, {i0}}, {i10, {i0}}};
-            //         auto new_shape =
-            //           std::make_unique<sparse_shape>(extents_type{2, 2, 2},
-            //           sm);
+                    REQUIRE(t3->allocator() == *new_alloc);
+                    REQUIRE(t3->shape() == *new_shape);
+                    REQUIRE(t3->sum() == Approx(6.0));
+                    REQUIRE(t3->size() == 8);
+                }
+                SECTION("Rank 2 ind, rank 1 dependent") {
+                    sparse_map_type sm{{i00, {i0}}, {i10, {i0}}};
+                    auto new_shape =
+                      std::make_unique<sparse_shape>(extents_type{2, 2, 2},
+                      sm);
 
-            //         auto t3 = t2.clone();
-            //         t3->reshape(new_shape->clone());
+                    auto t3 = t2.clone();
+                    t3->reshape(new_shape->clone());
 
-            //         REQUIRE(t3->allocator() == *new_alloc);
-            //         REQUIRE(t3->shape() == *new_shape);
-            //         REQUIRE(t3->sum() == Approx(6.0));
-            //         REQUIRE(t3->size() == 8);
-            //     }
-            // }
+                    REQUIRE(t3->allocator() == *new_alloc);
+                    REQUIRE(t3->shape() == *new_shape);
+                    REQUIRE(t3->sum() == Approx(6.0));
+                    REQUIRE(t3->size() == 8);
+                }
+            }
         }
     }
 #if 0
