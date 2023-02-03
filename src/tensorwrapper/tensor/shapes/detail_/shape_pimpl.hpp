@@ -156,9 +156,9 @@ public:
 
     /// Deleted to avoid slicing
     ///@{
-    ShapePIMPL(ShapePIMPL&& other) = delete;
+    ShapePIMPL(ShapePIMPL&& other)               = delete;
     ShapePIMPL& operator=(const ShapePIMPL& rhs) = delete;
-    ShapePIMPL& operator=(ShapePIMPL&& rhs) = delete;
+    ShapePIMPL& operator=(ShapePIMPL&& rhs)      = delete;
     ///@}
 
     /// Default dtor
@@ -312,23 +312,29 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(
     inner_extents_type new_inner_extents;
     if constexpr(field::is_scalar_field_v<FieldType>) new_inner_extents = 1;
     if constexpr(field::is_tensor_field_v<FieldType>) {
-        /// Make an index_type for the highest included index.
-        std::vector<size_type> extents_minus_one(new_tiling.size());
-        for(auto i = 0ul; i < new_tiling.size(); ++i) {
-            extents_minus_one[i] = new_tiling[i].back() - 1;
-        }
-        index_type highest_included_index(extents_minus_one);
+        /// Step through necessary indices ordinally
+        size_type volume = 1;
+        for(auto i = 0ul; i < _lo.size(); ++i) volume *= _hi[i] - _lo[i];
+        for(auto ordinal = 0ul; ordinal < volume; ++ordinal) {
+            /// temp holds index in a mutable form
+            std::vector<size_type> temp(_lo.size());
 
-        /// For each index within the slice, determine their indices with the
-        /// lower bound as the new zero and store in a new map with the shape
-        /// of the inner tensor.
-        for(const auto& [idx, shape] : m_inner_extents_) {
-            if(idx < _lo or idx > highest_included_index) continue;
-            std::vector<size_type> new_idx(_lo.size());
-            for(auto i = 0ul; i < _lo.size(); ++i) {
-                new_idx[i] = idx[i] - _lo[i];
+            /// Determine the index in the new extents
+            auto ord = ordinal;
+            for(auto i = 0ul; i < _lo.size() - 1; ++i) {
+                const auto d = _hi[i] - _lo[i];
+                temp[i]      = ord % d;
+                ord          = ord / d;
             }
-            new_inner_extents[index_type(new_idx)] = shape;
+            temp[_lo.size() - 1] = ord;
+            index_type new_idx{temp};
+
+            /// Determine the index in the old extents
+            for(auto i = 0ul; i < _lo.size(); ++i) { temp[i] += _lo[i]; }
+            index_type old_idx{temp};
+
+            /// Fill in new map
+            new_inner_extents[new_idx] = m_inner_extents_.at(old_idx);
         }
     }
 

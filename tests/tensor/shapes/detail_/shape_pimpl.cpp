@@ -193,7 +193,6 @@ TEST_CASE("ShapePIMPL<Scalar>") {
     }
 }
 
-/// TODO: Update for tiling
 TEST_CASE("ShapePIMPL<Tensor>") {
     using field_type   = field::Tensor;
     using pimpl_type   = tensorwrapper::tensor::detail_::ShapePIMPL<field_type>;
@@ -206,21 +205,34 @@ TEST_CASE("ShapePIMPL<Tensor>") {
     extents_type matrix_extents{3, 4};
 
     tiling_type scalar_tiling;
-    tiling_type vector_tiling{{0, 3}};
-    tiling_type matrix_tiling{{0, 3}, {0, 4}};
+    tiling_type vector_span_tiling{{0, 3}};
+    tiling_type matrix_span_tiling{{0, 3}, {0, 4}};
+    tiling_type vector_block_tiling{{0, 1, 2, 3}};
+    tiling_type matrix_block_tiling{{0, 1, 2, 3}, {0, 1, 2, 3, 4}};
+
+    inner_extents_type vov_map =
+      testing::make_uniform_tot_map(vector_extents, vector_extents);
+    inner_extents_type vom_map =
+      testing::make_uniform_tot_map(vector_extents, matrix_extents);
+    inner_extents_type mov_map =
+      testing::make_uniform_tot_map(matrix_extents, vector_extents);
+    inner_extents_type mom_map =
+      testing::make_uniform_tot_map(matrix_extents, matrix_extents);
 
     pimpl_type defaulted;
-    auto vov = testing::make_uniform_tot_shape<pimpl_type>(vector_extents,
-                                                           vector_extents);
-    auto vom = testing::make_uniform_tot_shape<pimpl_type>(vector_extents,
-                                                           matrix_extents);
-    auto mov = testing::make_uniform_tot_shape<pimpl_type>(matrix_extents,
-                                                           vector_extents);
-    auto mom = testing::make_uniform_tot_shape<pimpl_type>(matrix_extents,
-                                                           matrix_extents);
+    pimpl_type vov(vector_extents, vov_map);
+    pimpl_type vom(vector_extents, vom_map);
+    pimpl_type mov(matrix_extents, mov_map);
+    pimpl_type mom(matrix_extents, mom_map);
+
+    pimpl_type vov_from_tiling(vector_block_tiling, vov_map);
+    pimpl_type vom_from_tiling(vector_block_tiling, vom_map);
+    pimpl_type mov_from_tiling(matrix_block_tiling, mov_map);
+    pimpl_type mom_from_tiling(matrix_block_tiling, mom_map);
 
     SECTION("Sanity") {
         REQUIRE_THROWS_AS(pimpl_type(vector_extents), std::runtime_error);
+        REQUIRE_THROWS_AS(pimpl_type(vector_span_tiling), std::runtime_error);
     }
 
     SECTION("CTors") {
@@ -232,25 +244,47 @@ TEST_CASE("ShapePIMPL<Tensor>") {
         SECTION("Uniform Inner Extents") {
             REQUIRE(vov.extents() == vector_extents);
             REQUIRE(vom.extents() == vector_extents);
-
             REQUIRE(mov.extents() == matrix_extents);
             REQUIRE(mom.extents() == matrix_extents);
 
-            const auto& vov_ie = vov.inner_extents();
-            const auto& vom_ie = vom.inner_extents();
+            REQUIRE(vov.tiling() == vector_span_tiling);
+            REQUIRE(vom.tiling() == vector_span_tiling);
+            REQUIRE(mov.tiling() == matrix_span_tiling);
+            REQUIRE(mom.tiling() == matrix_span_tiling);
+
+            REQUIRE(vov_from_tiling.extents() == vector_extents);
+            REQUIRE(vom_from_tiling.extents() == vector_extents);
+            REQUIRE(mov_from_tiling.extents() == matrix_extents);
+            REQUIRE(mom_from_tiling.extents() == matrix_extents);
+
+            REQUIRE(vov_from_tiling.tiling() == vector_block_tiling);
+            REQUIRE(vom_from_tiling.tiling() == vector_block_tiling);
+            REQUIRE(mov_from_tiling.tiling() == matrix_block_tiling);
+            REQUIRE(mom_from_tiling.tiling() == matrix_block_tiling);
+
+            const auto& vov_ie  = vov.inner_extents();
+            const auto& vom_ie  = vom.inner_extents();
+            const auto& vov2_ie = vov_from_tiling.inner_extents();
+            const auto& vom2_ie = vom_from_tiling.inner_extents();
             for(auto i = 0ul; i < 3; ++i) {
                 Index idx({i});
                 REQUIRE(vov_ie.at(idx).extents() == vector_extents);
                 REQUIRE(vom_ie.at(idx).extents() == matrix_extents);
+                REQUIRE(vov2_ie.at(idx).extents() == vector_extents);
+                REQUIRE(vom2_ie.at(idx).extents() == matrix_extents);
             }
 
-            const auto& mov_ie = mov.inner_extents();
-            const auto& mom_ie = mom.inner_extents();
+            const auto& mov_ie  = mov.inner_extents();
+            const auto& mom_ie  = mom.inner_extents();
+            const auto& mov2_ie = mov_from_tiling.inner_extents();
+            const auto& mom2_ie = mom_from_tiling.inner_extents();
             for(auto i = 0ul; i < 3; ++i) {
                 for(auto j = 0ul; j < 4; ++j) {
                     Index idx({i, j});
                     REQUIRE(mov_ie.at(idx).extents() == vector_extents);
                     REQUIRE(mom_ie.at(idx).extents() == matrix_extents);
+                    REQUIRE(mov2_ie.at(idx).extents() == vector_extents);
+                    REQUIRE(mom2_ie.at(idx).extents() == matrix_extents);
                 }
             }
 
@@ -287,6 +321,34 @@ TEST_CASE("ShapePIMPL<Tensor>") {
         REQUIRE(*mom.clone() == mom);
     }
 
+    SECTION("field_rank()") {
+        REQUIRE(vov.field_rank() == vov_map.size());
+        REQUIRE(mov.field_rank() == mov_map.size());
+        REQUIRE(vom.field_rank() == vom_map.size());
+        REQUIRE(mom.field_rank() == mom_map.size());
+    }
+
+    SECTION("slice()") {
+        SECTION("inner extent correctness") {
+            auto vov_slice = vov.slice({1}, {3});
+            auto mov_slice = mov.slice({1, 1}, {3, 3});
+
+            extents_type vov_slice_extents{2};
+            extents_type mov_slice_extents{2, 2};
+
+            inner_extents_type vov_slice_map =
+              testing::make_uniform_tot_map(vov_slice_extents, vector_extents);
+            inner_extents_type mov_slice_map =
+              testing::make_uniform_tot_map(mov_slice_extents, vector_extents);
+
+            pimpl_type corr_vov_slice(vov_slice_extents, vov_slice_map);
+            pimpl_type corr_mov_slice(mov_slice_extents, mov_slice_map);
+
+            REQUIRE(*vov_slice == corr_vov_slice);
+            REQUIRE(*mov_slice == corr_mov_slice);
+        }
+    }
+
     SECTION("hash") {
         using tensorwrapper::detail_::hash_objects;
 
@@ -294,21 +356,19 @@ TEST_CASE("ShapePIMPL<Tensor>") {
             const auto hash2 = hash_objects(pimpl_type(oe, ie));
             REQUIRE(hash_objects(obj) == hash2);
         };
-        test_hash(
-          vov, vector_extents,
-          testing::make_uniform_tot_map(vector_extents, vector_extents));
-        test_hash(
-          vom, vector_extents,
-          testing::make_uniform_tot_map(vector_extents, matrix_extents));
-        test_hash(
-          mov, matrix_extents,
-          testing::make_uniform_tot_map(matrix_extents, vector_extents));
-        test_hash(
-          mom, matrix_extents,
-          testing::make_uniform_tot_map(matrix_extents, matrix_extents));
+        test_hash(vov, vector_extents, vov_map);
+        test_hash(vom, vector_extents, vom_map);
+        test_hash(mov, matrix_extents, mov_map);
+        test_hash(mom, matrix_extents, mom_map);
+
+        test_hash(vov_from_tiling, vector_block_tiling, vov_map);
+        test_hash(vom_from_tiling, vector_block_tiling, vom_map);
+        test_hash(mov_from_tiling, matrix_block_tiling, mov_map);
+        test_hash(mom_from_tiling, matrix_block_tiling, mom_map);
 
         REQUIRE_FALSE(hash_objects(vov) == hash_objects(mom)); // both diff
         REQUIRE_FALSE(hash_objects(vom) == hash_objects(mov)); // extent swap
+        REQUIRE_FALSE(hash_objects(vov) == hash_objects(vov_from_tiling));
 
         auto test_hash_false = [&](auto& obj, auto oe, auto ie) {
             const auto hash2 = hash_objects(pimpl_type(oe, ie));
@@ -327,18 +387,15 @@ TEST_CASE("ShapePIMPL<Tensor>") {
     }
 
     SECTION("Equality") {
-        REQUIRE(vov == testing::make_uniform_tot_shape<pimpl_type>(
-                         vector_extents, vector_extents));
-        REQUIRE(vom == testing::make_uniform_tot_shape<pimpl_type>(
-                         vector_extents, matrix_extents));
-        REQUIRE(mov == testing::make_uniform_tot_shape<pimpl_type>(
-                         matrix_extents, vector_extents));
-        REQUIRE(mom == testing::make_uniform_tot_shape<pimpl_type>(
-                         matrix_extents, matrix_extents));
+        REQUIRE(vov == pimpl_type(vector_extents, vov_map));
+        REQUIRE(vom == pimpl_type(vector_extents, vom_map));
+        REQUIRE(mov == pimpl_type(matrix_extents, mov_map));
+        REQUIRE(mom == pimpl_type(matrix_extents, mom_map));
 
-        REQUIRE_FALSE(defaulted == vov); // default doesn't equal filled
-        REQUIRE_FALSE(vov == mom);       // different ranks
-        REQUIRE_FALSE(vom == mov);       // swapped extents
+        REQUIRE_FALSE(defaulted == vov);       // default doesn't equal filled
+        REQUIRE_FALSE(vov == mom);             // different ranks
+        REQUIRE_FALSE(vom == mov);             // swapped extents
+        REQUIRE_FALSE(vom == vom_from_tiling); // different tiling
         REQUIRE_FALSE(vov == testing::make_uniform_tot_shape<pimpl_type>(
                                extents_type{5}, extents_type{5}));
     }
