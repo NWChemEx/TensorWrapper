@@ -18,7 +18,6 @@ on:
   push:
     branches:
       - master
-      - test-tagging
 
 jobs:
   tag:
