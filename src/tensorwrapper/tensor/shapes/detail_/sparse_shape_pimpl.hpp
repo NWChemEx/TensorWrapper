@@ -42,6 +42,7 @@ public:
     /// Type used to specify the lengths of each mode
     using typename base_type::extents_type;
     using typename base_type::inner_extents_type;
+    using typename base_type::tiling_type;
 
     using index_type = typename parent_type::index_type;
 
@@ -88,6 +89,13 @@ public:
     SparseShapePIMPL(extents_type x, inner_extents_type y, sparse_map_type sm,
                      idx2mode_type i2m);
     inline SparseShapePIMPL(extents_type x, sparse_map_type sm,
+                            idx2mode_type i2m) :
+      SparseShapePIMPL(std::move(x), inner_extents_type{}, std::move(sm),
+                       std::move(i2m)){};
+
+    SparseShapePIMPL(tiling_type x, inner_extents_type y, sparse_map_type sm,
+                     idx2mode_type i2m);
+    inline SparseShapePIMPL(tiling_type x, sparse_map_type sm,
                             idx2mode_type i2m) :
       SparseShapePIMPL(std::move(x), inner_extents_type{}, std::move(sm),
                        std::move(i2m)){};
@@ -165,6 +173,9 @@ protected:
     void hash_(tensorwrapper::detail_::Hasher& h) const override;
 
 private:
+    /// Private function for common construction error handling
+    void validate_construction_() const;
+
     /// Makes a polymorphic deep copy of this PIMPL
     virtual pimpl_pointer clone_() const override;
 

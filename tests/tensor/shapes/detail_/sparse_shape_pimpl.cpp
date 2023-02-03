@@ -47,6 +47,7 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
     using field_type    = field::Scalar;
     using pimpl_type    = detail_::SparseShapePIMPL<field_type>;
     using extents_type  = typename pimpl_type::extents_type;
+    using tiling_type   = typename pimpl_type::tiling_type;
     using sm_type       = typename pimpl_type::sparse_map_type;
     using el_index      = typename sm_type::key_type;
     using idx2mode_type = typename pimpl_type::idx2mode_type;
@@ -67,6 +68,11 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
             // Extents rank doesn't match SM
             extents_type bad_extents{2};
             REQUIRE_THROWS_AS(pimpl_type(bad_extents, sm, i2m),
+                              std::runtime_error);
+
+            // Tiling rank doesn't match SM
+            tiling_type bad_tiling{{0, 2}};
+            REQUIRE_THROWS_AS(pimpl_type(bad_tiling, sm, i2m),
                               std::runtime_error);
 
             // i2m rank doesn't match SM (and thus extents)
