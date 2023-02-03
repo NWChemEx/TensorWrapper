@@ -87,6 +87,12 @@ public:
     /// Type of a read-only reference to the inner
     using const_inner_extents_reference = const inner_extents_type&;
 
+    /// Type used to specify the tiling of the outer modes
+    using tiling_type = std::vector<std::vector<size_type>>;
+
+    /// Type of a read-only reference to the outer modes
+    using const_tiling_reference = const tiling_type&;
+
     /// Type of a pointer to this class
     using pointer_type = std::unique_ptr<my_type>;
 
@@ -116,6 +122,15 @@ public:
      *                        throw guarantee.
      */
     explicit Shape(extents_type extents, inner_extents_type inner_extents = {});
+
+    /** @brief Creates a shape with the provided tiling.
+     *
+     *  @param[in] tiling How each mode of the corresponding tensor is tiled.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the PIMPL. Strong
+     *                        throw guarantee.
+     */
+    explicit Shape(tiling_type tiling, inner_extents_type inner_extents = {});
 
     /** @brief Creates a shape by copying another shape.
      *
@@ -197,6 +212,7 @@ public:
     const_extents_reference extents() const;
 
     const_inner_extents_reference inner_extents() const;
+    const_tiling_reference tiling() const;
     size_type field_rank() const;
 
     bool is_hard_zero(const index_type& i) const { return is_hard_zero_(i); }

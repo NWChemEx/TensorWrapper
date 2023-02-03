@@ -63,8 +63,7 @@ public:
     using size_type = typename parent_type::size_type;
 
     /// Type used to specify the tiling of the outer modes
-    /// TODO: move to Shape
-    using tiling_type = std::vector<std::vector<size_type>>;
+    using tiling_type = typename parent_type::tiling_type;
 
     /// Type of a pointer to the base of the ShapePIMPL hierarchy
     using pimpl_pointer = typename parent_type::pimpl_pointer;

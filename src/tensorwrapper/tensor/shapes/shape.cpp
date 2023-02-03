@@ -41,6 +41,10 @@ SHAPE::Shape(extents_type extents, inner_extents_type inner_extents) :
   Shape(make_pimpl<FieldType>(std::move(extents), std::move(inner_extents))) {}
 
 template<typename FieldType>
+SHAPE::Shape(tiling_type tiling, inner_extents_type inner_extents) :
+  Shape(make_pimpl<FieldType>(std::move(tiling), std::move(inner_extents))) {}
+
+template<typename FieldType>
 SHAPE::~Shape() noexcept = default;
 
 template<typename FieldType>
@@ -76,6 +80,12 @@ template<typename FieldType>
 typename SHAPE::const_inner_extents_reference SHAPE::inner_extents() const {
     assert_pimpl_();
     return m_pimpl_->inner_extents();
+}
+
+template<typename FieldType>
+typename SHAPE::const_tiling_reference SHAPE::tiling() const {
+    assert_pimpl_();
+    return m_pimpl_->tiling();
 }
 
 template<typename FieldType>
