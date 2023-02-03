@@ -156,9 +156,9 @@ public:
 
     /// Deleted to avoid slicing
     ///@{
-    ShapePIMPL(ShapePIMPL&& other)               = delete;
+    ShapePIMPL(ShapePIMPL&& other) = delete;
     ShapePIMPL& operator=(const ShapePIMPL& rhs) = delete;
-    ShapePIMPL& operator=(ShapePIMPL&& rhs)      = delete;
+    ShapePIMPL& operator=(ShapePIMPL&& rhs) = delete;
     ///@}
 
     /// Default dtor
