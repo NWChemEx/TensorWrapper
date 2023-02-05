@@ -79,7 +79,6 @@ TEST_CASE("DirectTiledArrayAllocator<Scalar>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     using extents_type = typename allocator_type::extents_type;
     using shape_type   = typename allocator_type::shape_type;

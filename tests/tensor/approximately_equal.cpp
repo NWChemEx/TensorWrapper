@@ -53,9 +53,9 @@ TEST_CASE("Approximate Equality Comparison") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
+
     auto other_alloc = allocator::ta_allocator<field_type>(
-      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Distribution::Distributed);
     auto new_p           = other_alloc->clone();
     const auto* pa       = new_p.get();
     auto tensor_one_copy = tensor_one.pimpl().clone();

@@ -45,10 +45,9 @@ inline constexpr bool is_tot_tile_fxn_v = is_tot_tile_fxn<Op>::value;
 
 template<typename ShapeType, typename Op>
 default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
-  TA::World& world, const ShapeType& shape, ta::Tiling tiling,
-  Op&& scalar_fxn) {
+  TA::World& world, const ShapeType& shape, Op&& scalar_fxn) {
     // Get TiledRange for specified tiling
-    auto ta_range = make_tiled_range(tiling, shape);
+    auto ta_range = make_tiled_range(shape);
 
     // Generate the TA tensor
     using tensor_type = default_tensor_type<field::Scalar>;
@@ -85,9 +84,9 @@ default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
 
 template<typename ShapeType, typename Op>
 default_tensor_type<field::Tensor> generate_ta_tot_tensor(
-  TA::World& world, const ShapeType& shape, ta::Tiling tiling, Op&& tot_fxn) {
+  TA::World& world, const ShapeType& shape, Op&& tot_fxn) {
     // Get TiledRange for specified tiling
-    auto ta_range = make_tiled_range(tiling, shape);
+    auto ta_range = make_tiled_range(shape);
 
     // Generate the TA tensor
     using tensor_type     = default_tensor_type<field::Tensor>;
@@ -142,8 +141,7 @@ lazy_tensor_type<field::Scalar> generate_ta_scalar_direct_tensor(
   TA::World& world, const ShapeType& shape, std::string fxn_id,
   Op&& scalar_fxn) {
     // Get TiledRange for tiling
-    // CAREFUL: Only does OneBigTile right now!!
-    auto ta_range = make_tiled_range(ta::Tiling::OneBigTile, shape);
+    auto ta_range = make_tiled_range(shape);
 
     // Generate the TA tensor
     using tensor_type = lazy_tensor_type<field::Scalar>;
@@ -191,8 +189,7 @@ template<typename ShapeType, typename Op>
 lazy_tensor_type<field::Tensor> generate_ta_tot_direct_tensor(
   TA::World& world, const ShapeType& shape, std::string fxn_id, Op&& tot_fxn) {
     // Get TiledRange for tiling
-    // CAREFUL: Only does OneBigTile right now!!
-    auto ta_range = make_tiled_range(ta::Tiling::OneBigTile, shape);
+    auto ta_range = make_tiled_range(shape);
 
     // Generate the TA tensor
     using tensor_type     = lazy_tensor_type<field::Tensor>;

@@ -23,8 +23,6 @@ namespace ta {
 
 enum class Storage { Core };
 
-enum class Tiling { OneBigTile, SingleElementTile };
-
 enum class Distribution { Replicated, Distributed };
 
 } // namespace ta
@@ -46,20 +44,17 @@ public:
 
     explicit TiledArrayAllocator(
       ta::Storage storage   = ta::Storage::Core,
-      ta::Tiling tiling     = ta::Tiling::OneBigTile,
       ta::Distribution dist = ta::Distribution::Replicated) :
-      storage_(storage), tiling_(tiling), dist_(dist){};
+      storage_(storage), dist_(dist){};
 
     ~TiledArrayAllocator() noexcept = default;
 
     // Getters
     inline auto storage() const { return storage_; }
-    inline auto tiling() const { return tiling_; }
     inline auto dist() const { return dist_; }
 
     bool operator==(const my_type& other) const {
-        return storage_ == other.storage_ and tiling_ == other.tiling_ and
-               dist_ == other.dist_;
+        return storage_ == other.storage_ and dist_ == other.dist_;
     }
 
     bool operator!=(const my_type& other) const {
@@ -78,7 +73,6 @@ private:
     bool is_equal_(const base_type& rhs) const noexcept override;
 
     ta::Storage storage_;
-    ta::Tiling tiling_;
     ta::Distribution dist_;
 };
 

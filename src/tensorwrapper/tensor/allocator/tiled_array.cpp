@@ -21,7 +21,7 @@
 namespace tensorwrapper::tensor::allocator {
 
 TPARAM void TA_ALLOCATOR::hash_(tensorwrapper::detail_::Hasher& h) const {
-    h(storage_, tiling_, dist_);
+    h(storage_, dist_);
 }
 
 TPARAM typename TA_ALLOCATOR::allocator_ptr TA_ALLOCATOR::clone_() const {
@@ -37,10 +37,10 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
         ta_tensor = detail_::generate_ta_scalar_tensor(m_world_.madness_world(),
-                                                       shape, tiling_, fxn);
+                                                       shape, fxn);
     } else {
-        ta_tensor = detail_::generate_ta_tot_tensor(m_world_.madness_world(),
-                                                    shape, tiling_, fxn);
+        ta_tensor =
+          detail_::generate_ta_tot_tensor(m_world_.madness_world(), shape, fxn);
     }
 
     // Return Buffer pointer
@@ -57,10 +57,10 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
         ta_tensor = detail_::generate_ta_scalar_tensor(m_world_.madness_world(),
-                                                       shape, tiling_, fxn);
+                                                       shape, fxn);
     } else {
-        ta_tensor = detail_::generate_ta_tot_tensor(m_world_.madness_world(),
-                                                    shape, tiling_, fxn);
+        ta_tensor =
+          detail_::generate_ta_tot_tensor(m_world_.madness_world(), shape, fxn);
     }
 
     // Return Buffer pointer
@@ -82,7 +82,7 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::reallocate_(
           "TA Allocator:: Passed Buffer is not TA buffer");
 
     // Get new TR, etc
-    auto ta_range = detail_::make_tiled_range(tiling_, shape);
+    auto ta_range = detail_::make_tiled_range(shape);
     // TODO Handle possible sparse_map driven shape
 
     // Retile

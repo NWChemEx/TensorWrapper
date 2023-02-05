@@ -133,6 +133,9 @@ public:
     /// Container-of-extents type used to specify the extents of all modes
     using extents_type = typename shape_type::extents_type;
 
+    /// Container-of-tiling type used to specify the tiling of all modes
+    using tiling_type = typename shape_type::tiling_type;
+
     /// Pointer to the base class of the allocator hierarchy
     using allocator_ptr = std::unique_ptr<my_type>;
 

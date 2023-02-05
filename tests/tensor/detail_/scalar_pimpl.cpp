@@ -44,11 +44,10 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     auto palloc = default_allocator<field_type>();
     auto oalloc = allocator::ta_allocator<field_type>(
-      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Distribution::Distributed);
 
     buffer_pointer vec_buffer_obt, mat_buffer_obt, t3d_buffer_obt;
     buffer_pointer vec_buffer_set, mat_buffer_set, t3d_buffer_set;

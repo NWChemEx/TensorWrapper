@@ -15,7 +15,7 @@
  */
 
 #include <catch2/catch.hpp>
-//#include "../../test_tensor.hpp"
+// #include "../../test_tensor.hpp"
 #include "../buffer/make_pimpl.hpp"
 #include "../shapes/make_tot_shape.hpp"
 #include "tensorwrapper/ta_helpers/slice.hpp"
@@ -46,11 +46,10 @@ TEST_CASE("TensorWrapperPIMPL<Tensor>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     auto palloc = default_allocator<field_type>();
     auto oalloc = allocator::ta_allocator<field_type>(
-      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Distribution::Distributed);
 
     buffer_pointer vov_buffer_obt, vom_buffer_obt, mov_buffer_obt;
     // TODO: Test SET
