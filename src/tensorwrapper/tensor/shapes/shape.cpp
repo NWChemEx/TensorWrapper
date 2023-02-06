@@ -168,7 +168,7 @@ template<typename FieldType>
 typename SHAPE::pointer_type SHAPE::clone_() const {
     if(has_pimpl_())
         return pointer_type(
-          new Shape(pimpl_().extents(), pimpl_().inner_extents()));
+          new Shape(pimpl_().tiling(), pimpl_().inner_extents()));
     return pointer_type(new Shape());
 }
 

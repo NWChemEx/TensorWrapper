@@ -74,8 +74,10 @@ TEST_CASE("Shape<Scalar>") {
         }
 
         SECTION("Clone") {
-            auto pv = vector.clone();
-            REQUIRE(*pv == vector);
+            shape_type v(tiling_type{{0, 1, 2, 3, 4}});
+            auto pv = v.clone();
+            REQUIRE(*pv == v);
+            REQUIRE(*pv != vector);
         }
 
         SECTION("Copy") {
