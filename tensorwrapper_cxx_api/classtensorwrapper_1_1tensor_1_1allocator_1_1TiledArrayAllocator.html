@@ -130,6 +130,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a190a5454295e2d6e447f08bbf4ffc566">extents_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a32fcd6de874861a5267006eb8e553835">shape_type::extents_type</a></td></tr>
 <tr class="memdesc:a190a5454295e2d6e447f08bbf4ffc566 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container-of-extents type used to specify the extents of all modes. <br /></td></tr>
 <tr class="separator:a190a5454295e2d6e447f08bbf4ffc566 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a468b197c4572c25d9e473dbd948c6c32 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="memItemLeft" align="right" valign="top"><a id="a468b197c4572c25d9e473dbd948c6c32"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a468b197c4572c25d9e473dbd948c6c32">tiling_type</a> = typename <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a491b2dbbf9295ad1fc6ef66b7bdf40b4">shape_type::tiling_type</a></td></tr>
+<tr class="memdesc:a468b197c4572c25d9e473dbd948c6c32 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container-of-tiling type used to specify the tiling of all modes. <br /></td></tr>
+<tr class="separator:a468b197c4572c25d9e473dbd948c6c32 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d4a348357c63745d21750d8ffe53d93 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="memItemLeft" align="right" valign="top"><a id="a5d4a348357c63745d21750d8ffe53d93"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a5d4a348357c63745d21750d8ffe53d93">allocator_ptr</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">my_type</a> &gt;</td></tr>
 <tr class="memdesc:a5d4a348357c63745d21750d8ffe53d93 inherit pub_types_classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the base class of the allocator hierarchy. <br /></td></tr>
@@ -156,15 +160,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>element_populator_ty
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a29701d82747893dcc15190b246a38dba"><td class="memItemLeft" align="right" valign="top"><a id="a29701d82747893dcc15190b246a38dba"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TiledArrayAllocator</b> (ta::Storage storage=ta::Storage::Core, ta::Tiling tiling=ta::Tiling::OneBigTile, ta::Distribution dist=ta::Distribution::Replicated)</td></tr>
-<tr class="separator:a29701d82747893dcc15190b246a38dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5f86294acbdda160f770dc35a9748c"><td class="memItemLeft" align="right" valign="top"><a id="acc5f86294acbdda160f770dc35a9748c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TiledArrayAllocator</b> (ta::Storage storage=ta::Storage::Core, ta::Distribution dist=ta::Distribution::Replicated)</td></tr>
+<tr class="separator:acc5f86294acbdda160f770dc35a9748c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa99f2f8dd4855018178bdf1040d87bfe"><td class="memItemLeft" align="right" valign="top"><a id="aa99f2f8dd4855018178bdf1040d87bfe"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>storage</b> () const</td></tr>
 <tr class="separator:aa99f2f8dd4855018178bdf1040d87bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd96ff389f671e09748298ce579956fb"><td class="memItemLeft" align="right" valign="top"><a id="acd96ff389f671e09748298ce579956fb"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>tiling</b> () const</td></tr>
-<tr class="separator:acd96ff389f671e09748298ce579956fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ad0c57b2ee3e36fa4e99221bf556a1"><td class="memItemLeft" align="right" valign="top"><a id="a41ad0c57b2ee3e36fa4e99221bf556a1"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>dist</b> () const</td></tr>
 <tr class="separator:a41ad0c57b2ee3e36fa4e99221bf556a1"><td class="memSeparator" colspan="2">&#160;</td></tr>

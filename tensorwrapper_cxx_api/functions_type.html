@@ -157,6 +157,9 @@ $(function() {
 <li>const_tensor_reference
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1expression_1_1LabeledView.html#a77eb8a16420a07abfc4b186956aabe53">tensorwrapper::tensor::expression::LabeledView&lt; FieldType &gt;</a>
 </li>
+<li>const_tiling_reference
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ae48ea7c860810acbfa1b7d8ce2f27aa7">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
+</li>
 </ul>
 
 
@@ -224,6 +227,7 @@ $(function() {
 </li>
 <li>index_type
 : <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#a1b5d6d6376c32208e7280c72a5c5bd2f">tensorwrapper::sparse_map::Index</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ae3b88ea1ed4fe46c55bacc562708cfe2">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#a58ca8053e5420f372c5c4292d9f35c95">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#abae02a3a8889d68f6f574bcfeb3ebd3d">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#abae02a3a8889d68f6f574bcfeb3ebd3d">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
@@ -232,6 +236,8 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1Buffer.html#a3be79e4221bc90269d99c93dd13b5982">tensorwrapper::tensor::buffer::Buffer&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1BufferPIMPL.html#a6bcd553968366eb608fe363eaca867dd">tensorwrapper::tensor::buffer::detail_::BufferPIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1buffer_1_1detail___1_1TABufferPIMPL.html#a6bcd553968366eb608fe363eaca867dd">tensorwrapper::tensor::buffer::detail_::TABufferPIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a6a36cfbd67db2f2a2e9d25550c5fb390">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#a6a36cfbd67db2f2a2e9d25550c5fb390">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#ac005ffdadbc624c71e084aa30452357b">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#ac005ffdadbc624c71e084aa30452357b">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
 </li>
@@ -357,6 +363,7 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a423529e5caead54a5b40ffac1ca1ac70">tensorwrapper::sparse_map::Domain</a>
 , <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#abd116adbdffb5b1cd0a13798f23b9208">tensorwrapper::sparse_map::Index</a>
 , <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html#a832e1e642093c1fe906e85e1471b5ae1">tensorwrapper::sparse_map::SparseMap</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#af0bfa6364f471abae73d653775ce1d10">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1TensorWrapperPIMPL.html#acfc55387affe3ec76f72011d34c97abf">tensorwrapper::tensor::detail_::TensorWrapperPIMPL&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#af44543d687e89d35c2ee27ab4b3f3527">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html#a24a429a44475d4d447914f6c9151a04e">tensorwrapper::tensor::TensorWrapper&lt; FieldType &gt;</a>
@@ -404,6 +411,13 @@ $(function() {
 </li>
 <li>tile_populator_type
 : <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ac7619fba0cef2302426790e09fed54b9">tensorwrapper::tensor::allocator::Allocator&lt; FieldType &gt;</a>
+</li>
+<li>tiling_type
+: <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a468b197c4572c25d9e473dbd948c6c32">tensorwrapper::tensor::allocator::Allocator&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ab56aaec763dfca1afc3381b9e97ac356">tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1SparseShapePIMPL.html#ab56aaec763dfca1afc3381b9e97ac356">tensorwrapper::tensor::detail_::SparseShapePIMPL&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a491b2dbbf9295ad1fc6ef66b7bdf40b4">tensorwrapper::tensor::Shape&lt; FieldType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1tensor_1_1SparseShape.html#a491b2dbbf9295ad1fc6ef66b7bdf40b4">tensorwrapper::tensor::SparseShape&lt; FieldType &gt;</a>
 </li>
 <li>type
 : <a class="el" href="structtensorwrapper_1_1tensor_1_1NDInitializerListTraits.html#aa9950d85388462259f8331f083eb90a4">tensorwrapper::tensor::NDInitializerListTraits&lt; T, N &gt;</a>

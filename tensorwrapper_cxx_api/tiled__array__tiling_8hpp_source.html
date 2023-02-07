@@ -91,49 +91,22 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span>tensorwrapper::tensor::allocator::detail_ {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ShapeType&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;tiled_range_type make_one_big_tile_tiled_range(<span class="keyword">const</span> ShapeType&amp; shape) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">using</span> size_type = <span class="keyword">typename</span> ShapeType::size_type;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> extents = shape.extents();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> n_modes = extents.size();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::vector&lt;tr1_type&gt; tr1s(n_modes);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">for</span>(size_type i = 0; i &lt; n_modes; ++i) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        tr1s[i] = tr1_type{0, extents[i]};</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> tiled_range_type(tr1s.begin(), tr1s.end());</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ShapeType&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;tiled_range_type make_tiled_range(<span class="keyword">const</span> ShapeType&amp; shape) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">using</span> size_type = <span class="keyword">typename</span> ShapeType::size_type;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> tiling  = shape.tiling();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> n_modes = tiling.size();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::vector&lt;tr1_type&gt; tr1s(n_modes);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">for</span>(size_type mode_i = 0; mode_i &lt; n_modes; ++mode_i) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">auto</span> tiling_i = tiling[mode_i];</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        tr1s[mode_i]  = tr1_type(tiling_i.begin(), tiling_i.end());</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ShapeType&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;tiled_range_type make_single_element_tile_tiled_range(<span class="keyword">const</span> ShapeType&amp; shape) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">using</span> size_type   = <span class="keyword">typename</span> ShapeType::size_type;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">using</span> offset_type = <span class="keyword">typename</span> tr1_type::index1_type;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> extents = shape.extents();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> n_modes = extents.size();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    std::vector&lt;tr1_type&gt; tr1s(n_modes);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span>(size_type mode_i = 0; mode_i &lt; n_modes; ++mode_i) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        std::vector&lt;offset_type&gt; edges(extents[mode_i] + 1);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        std::iota(edges.begin(), edges.end(), 0);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        tr1s[mode_i] = tr1_type(edges.begin(), edges.end());</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> tiled_range_type(tr1s.begin(), tr1s.end());</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ShapeType&gt;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;tiled_range_type make_tiled_range(ta::Tiling tiling, <span class="keyword">const</span> ShapeType&amp; shape) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">switch</span>(tiling) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">case</span> ta::Tiling::OneBigTile:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> make_one_big_tile_tiled_range(shape);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">case</span> ta::Tiling::SingleElementTile:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">return</span> make_single_element_tile_tiled_range(shape);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">default</span>: <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Provided Tiling Not Supported&quot;</span>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">return</span> tiled_range_type();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">// namespace tensorwrapper::tensor::allocator::detail_</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">return</span> tiled_range_type(tr1s.begin(), tr1s.end());</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace tensorwrapper::tensor::allocator::detail_</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
