@@ -22,6 +22,6 @@ on:
 
 jobs:
   tag:
-    uses: NWChemEx-Project/.github/.github/workflows/tag_and_release_master.yaml@master
+    uses: NWChemEx-Project/.github/.github/workflows/tag_and_release_master.yaml@cache-build2
     secrets:
       token: ${{ secrets.TAG_TOKEN }}
