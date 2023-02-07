@@ -49,9 +49,9 @@ TEST_CASE("to_vector") {
         using field_t = field::Scalar;
         using alloc_t = allocator::TiledArrayAllocator<field_t>;
         auto storage  = allocator::ta::Storage::Core;
-        auto tiling   = allocator::ta::Tiling::SingleElementTile;
-        auto palloc   = std::make_unique<alloc_t>(storage, tiling);
+        auto palloc   = std::make_unique<alloc_t>(storage);
         auto t        = tensors.at("matrix");
+        /// TODO: Tiling lives on shape not allocator. Reallocate needs update
         t.reallocate(std::move(palloc));
         std::vector<double> corr{1.0, 2.0, 3.0, 4.0};
         REQUIRE(to_vector(t) == corr);

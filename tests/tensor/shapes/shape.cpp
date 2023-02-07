@@ -38,13 +38,19 @@ TEST_CASE("Shape<Scalar>") {
     using shape_type         = Shape<field_type>;
     using extents_type       = typename shape_type::extents_type;
     using inner_extents_type = typename shape_type::inner_extents_type;
+    using tiling_type        = typename shape_type::tiling_type;
 
     extents_type vector_extents{4};
     extents_type matrix_extents{3, 5};
 
+    tiling_type vector_tiling{{0, 4}};
+    tiling_type matrix_tiling{{0, 3}, {0, 5}};
+
     shape_type defaulted;
     shape_type vector(vector_extents);
     shape_type matrix(matrix_extents);
+    shape_type vector2(vector_tiling);
+    shape_type matrix2(matrix_tiling);
 
     SECTION("Sanity") {
         using size_type = typename shape_type::size_type;
@@ -58,6 +64,9 @@ TEST_CASE("Shape<Scalar>") {
             REQUIRE(vector.extents() == vector_extents);
             REQUIRE(matrix.extents() == matrix_extents);
 
+            REQUIRE(vector == vector2);
+            REQUIRE(matrix == matrix2);
+
             // Ensure that extents are properly moved
             auto* vp = vector_extents.data();
             shape_type v2(std::move(vector_extents));
@@ -65,8 +74,10 @@ TEST_CASE("Shape<Scalar>") {
         }
 
         SECTION("Clone") {
-            auto pv = vector.clone();
-            REQUIRE(*pv == vector);
+            shape_type v(tiling_type{{0, 1, 2, 3, 4}});
+            auto pv = v.clone();
+            REQUIRE(*pv == v);
+            REQUIRE(*pv != vector);
         }
 
         SECTION("Copy") {
@@ -102,6 +113,12 @@ TEST_CASE("Shape<Scalar>") {
         REQUIRE_THROWS_AS(defaulted.extents(), std::runtime_error);
         REQUIRE(vector.extents() == vector_extents);
         REQUIRE(matrix.extents() == matrix_extents);
+    }
+
+    SECTION("tiling") {
+        REQUIRE_THROWS_AS(defaulted.tiling(), std::runtime_error);
+        REQUIRE(vector.tiling() == vector_tiling);
+        REQUIRE(matrix.tiling() == matrix_tiling);
     }
 
     SECTION("is_hard_zero") {

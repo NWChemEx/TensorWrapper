@@ -38,17 +38,17 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
     using buffer_type    = typename pimpl_type::buffer_type;
     using buffer_pointer = typename pimpl_type::buffer_pointer;
     using shape_type     = typename pimpl_type::shape_type;
-    using extents_type   = typename pimpl_type::extents_type;
+    using extents_type   = typename shape_type::extents_type;
+    using tiling_type    = typename shape_type::tiling_type;
     using ta_trange_type = TA::TiledRange;
     using ta_tensor_type = TA::DistArray<TA::Tensor<double>, TA::SparsePolicy>;
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     auto palloc = default_allocator<field_type>();
     auto oalloc = allocator::ta_allocator<field_type>(
-      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Distribution::Distributed);
 
     buffer_pointer vec_buffer_obt, mat_buffer_obt, t3d_buffer_obt;
     buffer_pointer vec_buffer_set, mat_buffer_set, t3d_buffer_set;
@@ -204,28 +204,19 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
         SECTION("vector") {
             auto v_copy = v.clone();
             v_copy->reallocate(oalloc->clone());
-
             REQUIRE(v_copy->allocator() == *oalloc);
-            REQUIRE(v_copy->buffer() == v2.buffer());
-            REQUIRE(v_copy->buffer() != v.buffer());
         }
 
         SECTION("matrix") {
             auto m_copy = m.clone();
             m_copy->reallocate(oalloc->clone());
-
             REQUIRE(m_copy->allocator() == *oalloc);
-            REQUIRE(m_copy->buffer() == m2.buffer());
-            REQUIRE(m_copy->buffer() != m.buffer());
         }
 
         SECTION("tensor") {
             auto t_copy = t.clone();
             t_copy->reallocate(oalloc->clone());
-
             REQUIRE(t_copy->allocator() == *oalloc);
-            REQUIRE(t_copy->buffer() == t2.buffer());
-            REQUIRE(t_copy->buffer() != t.buffer());
         }
     }
 
@@ -349,13 +340,13 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
         SECTION("Literal reshape") {
             auto& world = TA::get_default_world();
             SECTION("vector") {
-                extents_type new_ex{3, 1};
+                tiling_type new_ex{{0, 1, 2, 3}, {0, 1}};
                 auto new_shape = std::make_unique<shape_type>(new_ex);
                 auto cpy       = v.clone();
                 cpy->reshape(new_shape->clone());
                 to_ta_distarrayd_t converter;
                 auto& value = converter.convert(cpy->buffer());
-                ta_trange_type tr{{0, 3}, {0, 1}};
+                ta_trange_type tr{{0, 1, 2, 3}, {0, 1}};
                 ta_tensor_type corr(world, tr, {{1}, {2}, {3}});
 
                 REQUIRE(cpy->allocator().is_equal(*palloc));

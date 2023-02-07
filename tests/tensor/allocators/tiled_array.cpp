@@ -27,21 +27,17 @@ TEMPLATE_TEST_CASE("TiledArrayAllocator Generic", "[allocator][ta]",
     using alloc_type = allocator::TiledArrayAllocator<field_type>;
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     alloc_type defaulted;
-    alloc_type non_default(Storage::Core, Tiling::SingleElementTile,
-                           Distribution::Distributed);
+    alloc_type non_default(Storage::Core, Distribution::Distributed);
 
     SECTION("Default State") {
         REQUIRE(defaulted.storage() == Storage::Core);
-        REQUIRE(defaulted.tiling() == Tiling::OneBigTile);
         REQUIRE(defaulted.dist() == Distribution::Replicated);
     }
 
     SECTION("Manual Ctor") {
         REQUIRE(non_default.storage() == Storage::Core);
-        REQUIRE(non_default.tiling() == Tiling::SingleElementTile);
         REQUIRE(non_default.dist() == Distribution::Distributed);
 
         REQUIRE(defaulted != non_default);
@@ -89,28 +85,24 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     using extents_type = typename allocator_type::extents_type;
+    using tiling_type  = typename allocator_type::tiling_type;
     using shape_type   = typename allocator_type::shape_type;
 
     auto&& [pvec, pmat, pt3d] = testing::make_pimpl<field_type>();
 
-    extents_type vec_extents{3};
-    extents_type mat_extents{2, 2};
-    extents_type ten_extents{2, 2, 2};
-
-    shape_type vec_shape(vec_extents);
-    shape_type mat_shape(mat_extents);
-    shape_type ten_shape(ten_extents);
-
     SECTION("OneBigTile") {
+        shape_type vec_shape(extents_type{3});
+        shape_type mat_shape(extents_type{2, 2});
+        shape_type ten_shape(extents_type{2, 2, 2});
+
         // Default tiling is OneBigTile
         buffer_type vec(pvec->clone());
         buffer_type mat(pmat->clone());
         buffer_type ten(pt3d->clone());
 
-        allocator_type alloc(Storage::Core, Tiling::OneBigTile);
+        allocator_type alloc(Storage::Core);
 
         SECTION("allocate(rank 1) - tile op") {
             size_t inner_tile_count = 0;
@@ -250,6 +242,10 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
     }
 
     SECTION("SingleElementTile") {
+        shape_type vec_shape(tiling_type{{0, 1, 2, 3}});
+        shape_type mat_shape(tiling_type{{0, 1, 2}, {0, 1, 2}});
+        shape_type ten_shape(tiling_type{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}});
+
         // Default tiling is OneBigTile, retile to SingleElementTile
         ta_trange_type se_tr_vec{{0, 1, 2, 3}};
         ta_trange_type se_tr_mat{{0, 1, 2}, {0, 1, 2}};
@@ -261,7 +257,7 @@ TEST_CASE("TiledArrayAllocator<Scalar>") {
         buffer_type mat(pmat->clone());
         buffer_type ten(pt3d->clone());
 
-        allocator_type alloc(Storage::Core, Tiling::SingleElementTile);
+        allocator_type alloc(Storage::Core);
 
         SECTION("allocate(rank 1)") {
             std::atomic<int> inner_tile_count = 0;
@@ -359,7 +355,6 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     using extents_type = typename allocator_type::extents_type;
     using shape_type   = typename allocator_type::shape_type;
@@ -381,7 +376,7 @@ TEST_CASE("TiledArrayAllocator<Tensor>") {
         buffer_type vom(pvom->clone());
         buffer_type mov(pmov->clone());
 
-        allocator_type alloc(Storage::Core, Tiling::OneBigTile);
+        allocator_type alloc(Storage::Core);
 
         SECTION("allocate(vov) - tile op") {
             size_t outer_tile_count = 0;

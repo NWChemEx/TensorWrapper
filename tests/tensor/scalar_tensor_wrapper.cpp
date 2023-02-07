@@ -34,11 +34,10 @@ TEST_CASE("TensorWrapper<Scalar>") {
 
     using allocator::ta::Distribution;
     using allocator::ta::Storage;
-    using allocator::ta::Tiling;
 
     auto default_alloc = default_allocator<field_type>();
     auto other_alloc   = allocator::ta_allocator<field_type>(
-      Storage::Core, Tiling::SingleElementTile, Distribution::Distributed);
+      Storage::Core, Distribution::Distributed);
 
     auto ref_tensors = testing::get_tensors<field_type>();
     auto& vec        = ref_tensors["vector"];

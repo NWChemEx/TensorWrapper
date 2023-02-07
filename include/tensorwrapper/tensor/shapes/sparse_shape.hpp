@@ -52,6 +52,8 @@ public:
     /// Type use to describe the length of each inner mode
     using typename base_type::inner_extents_type;
 
+    using typename base_type::tiling_type;
+
     using typename base_type::index_type;
 
     /// Type when this class is returned as a pointer to the base class
@@ -92,6 +94,10 @@ public:
     SparseShape(extents_type extents, inner_extents_type inner_extents,
                 sparse_map_type sm);
 
+    SparseShape(tiling_type tiling, sparse_map_type sm);
+    SparseShape(tiling_type tiling, inner_extents_type inner_extents,
+                sparse_map_type sm);
+
     /** @brief Creates a new SparseShape from extents, a SparseMap, and a
      *         mapping from SparseMap indices to tensor modes.
      *
@@ -121,6 +127,10 @@ public:
      */
     SparseShape(extents_type extents, sparse_map_type sm, idx2mode_type i2m);
     SparseShape(extents_type extents, inner_extents_type inner_extents,
+                sparse_map_type sm, idx2mode_type i2m);
+
+    SparseShape(tiling_type tiling, sparse_map_type sm, idx2mode_type i2m);
+    SparseShape(tiling_type tiling, inner_extents_type inner_extents,
                 sparse_map_type sm, idx2mode_type i2m);
 
     /** @brief Non-polymorphic comparison of two SparseShape instances.

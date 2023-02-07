@@ -115,24 +115,16 @@ SPARSE_SHAPE_PIMPL::SparseShapePIMPL(extents_type x, inner_extents_type y,
   m_sm_(std::move(sm)),
   m_i2m_(std::move(i2m)),
   base_type(std::move(x), std::move(y)) {
-    const auto nind = m_sm_.ind_rank();
-    const auto ndep = m_sm_.dep_rank();
-    const auto rank = nind + ndep;
+    validate_construction_();
+}
 
-    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
-    const auto max_rank   = is_tot ? nind : rank;
-
-    if(max_rank != this->extents().size())
-        throw std::runtime_error("Rank of SparseMap is not consistent with the "
-                                 "provided extents");
-
-    if(max_rank != m_i2m_.size())
-        throw std::runtime_error("SparseMap not consistent with idx2mode");
-
-    for(const auto x : m_i2m_)
-        if(x >= max_rank)
-            throw std::out_of_range("Index maps to mode outside range [0, " +
-                                    std::to_string(max_rank) + ")");
+template<typename FieldType>
+SPARSE_SHAPE_PIMPL::SparseShapePIMPL(tiling_type x, inner_extents_type y,
+                                     sparse_map_type sm, idx2mode_type i2m) :
+  m_sm_(std::move(sm)),
+  m_i2m_(std::move(i2m)),
+  base_type(std::move(x), std::move(y)) {
+    validate_construction_();
 }
 
 template<typename FieldType>
@@ -306,6 +298,28 @@ typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::slice_(
 
     return pimpl_pointer(new my_type(
       _base_ptr->extents(), _base_ptr->inner_extents(), new_sm, m_i2m_));
+}
+
+template<typename FieldType>
+void SPARSE_SHAPE_PIMPL::validate_construction_() const {
+    const auto nind = m_sm_.ind_rank();
+    const auto ndep = m_sm_.dep_rank();
+    const auto rank = nind + ndep;
+
+    constexpr bool is_tot = field::is_tensor_field_v<FieldType>;
+    const auto max_rank   = is_tot ? nind : rank;
+
+    if(max_rank != this->extents().size())
+        throw std::runtime_error("Rank of SparseMap is not consistent with the "
+                                 "provided extents");
+
+    if(max_rank != m_i2m_.size())
+        throw std::runtime_error("SparseMap not consistent with idx2mode");
+
+    for(const auto i : m_i2m_)
+        if(i >= max_rank)
+            throw std::out_of_range("Index maps to mode outside range [0, " +
+                                    std::to_string(max_rank) + ")");
 }
 
 template<typename FieldType>

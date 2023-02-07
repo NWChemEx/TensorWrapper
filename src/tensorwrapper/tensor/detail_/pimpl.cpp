@@ -253,7 +253,10 @@ void PIMPL_TYPE::reshape_(const shape_type& other) {
     if(m_shape_->is_equal(other)) return;
 
     // If the extents aren't the same we're shuffling elements around
-    if(m_shape_->extents() != other.extents()) shuffle_(other);
+    // If the tiling is not the same we're retiling
+    if((m_shape_->extents() != other.extents()) or
+       (m_shape_->tiling() != other.tiling()))
+        shuffle_(other);
 
     // Apply sparsity
     reshape_helper(*m_buffer_, other);

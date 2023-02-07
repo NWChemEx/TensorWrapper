@@ -56,10 +56,14 @@ public:
     /// Type used to specify the lengths of each (outer) mode
     using extents_type = typename parent_type::extents_type;
 
-    // Type used to specify the lengths of each inner mode
+    /// Type used to specify the lengths of each inner mode
     using inner_extents_type = typename parent_type::inner_extents_type;
 
+    /// Type used to return the rank of the Shape
     using size_type = typename parent_type::size_type;
+
+    /// Type used to specify the tiling of the outer modes
+    using tiling_type = typename parent_type::tiling_type;
 
     /// Type of a pointer to the base of the ShapePIMPL hierarchy
     using pimpl_pointer = typename parent_type::pimpl_pointer;
@@ -67,6 +71,7 @@ public:
     /// Type TA uses for specifying the tile sparsity of a tensor
     using ta_shape = TA::SparseShape<float>;
 
+    /// Type used to request slices of the Shape
     using index_type = typename parent_type::index_type;
 
 public:
@@ -76,8 +81,11 @@ public:
      *  @param[in] x The extents of each mode of the tensor. When the field is
      *               scalar @p x should specify the extents of each mode. When
      *               the field is tensor @p x should only specify the extents of
-     *               the independent modes. Default is a default object of type
-     *               `extents_type`.
+     *               the independent modes.
+     *  @param[in] y The extents of each inner mode of the tensor. When the
+     *               field is scalar @p y will be set to 1 regardless of input.
+     *               When the field is tensor @p y should be a map of outer
+     *               indices to the shape of the tensor stored in a given index.
      *
      *  @throw None No throw guarantee.
      */
@@ -88,6 +96,43 @@ public:
         else if constexpr(field::is_tensor_field_v<FieldType>) {
             if(m_extents_.size() and !m_inner_extents_.size())
                 throw std::runtime_error("ToT Must Have Inner Dimension");
+        }
+
+        // Default tiling to span the whole extent of the mode
+        m_tiling_ = tiling_type(m_extents_.size());
+        for(auto i = 0ul; i < m_extents_.size(); ++i) {
+            m_tiling_[i] = {0, m_extents_[i]};
+        }
+    }
+
+    /** @brief Creates a new ShapePIMPL with the provided tiling and inner
+     * extents.
+     *
+     *
+     *  @param[in] x The tiling of each mode of the tensor. When the field is
+     *               scalar @p x should specify the tiling of each mode. When
+     *               the field is tensor @p x should only specify the tiling of
+     *               the independent modes.
+     *  @param[in] y The extents of each inner mode of the tensor. When the
+     *               field is scalar @p y will be set to 1 regardless of input.
+     *               When the field is tensor @p y should be a map of outer
+     *               indices to the shape of the tensor stored in a given index.
+     *
+     *  @throw None No throw guarantee.
+     */
+    explicit ShapePIMPL(tiling_type x, inner_extents_type y = {}) :
+      m_tiling_(std::move(x)), m_inner_extents_(std::move(y)) {
+        if constexpr(field::is_scalar_field_v<FieldType>)
+            m_inner_extents_ = 1;
+        else if constexpr(field::is_tensor_field_v<FieldType>) {
+            if(m_tiling_.size() and !m_inner_extents_.size())
+                throw std::runtime_error("ToT Must Have Inner Dimension");
+        }
+
+        // Set extents to last bound of each tiling
+        m_extents_ = extents_type(m_tiling_.size());
+        for(auto i = 0ul; i < m_tiling_.size(); ++i) {
+            m_extents_[i] = m_tiling_[i].back();
         }
     }
 
@@ -141,7 +186,31 @@ public:
      *  @throw None No throw gurantee.
      */
     const extents_type& extents() const { return m_extents_; }
+
+    /** @brief Returns the lengths of each inner mode of the tensor.
+     *
+     *  The inner extents of a tensor are the lengths of each inner mode. This
+     *  function returns 1, when the field is scalar, and the extents of the
+     *  dependent modes, when the field is tensor.
+     *
+     *  @return A read-only reference to the tensor's inner extents.
+     *
+     *  @throw None No throw gurantee.
+     */
     const inner_extents_type& inner_extents() const { return m_inner_extents_; }
+
+    /** @brief Returns the tiling of each mode of the tensor.
+     *
+     *  This function returns the tilings of all modes, when the field is
+     *  scalar, and the tilings of the independent modes, when the field is
+     *  tensor.
+     *
+     *  @return A read-only reference to the tensor's extents.
+     *
+     *  @throw None No throw gurantee.
+     */
+    const tiling_type& tiling() const { return m_tiling_; }
+
     size_type field_rank() const {
         if constexpr(field::is_tensor_field_v<FieldType>)
             return m_inner_extents_.size();
@@ -185,7 +254,7 @@ public:
 protected:
     /// To be overridden by the derived class to implement hash()
     virtual void hash_(tensorwrapper::detail_::Hasher& h) const {
-        h(m_extents_, m_inner_extents_);
+        h(m_extents_, m_inner_extents_, m_tiling_);
     }
 
     virtual pimpl_pointer slice_(const index_type&, const index_type&) const;
@@ -197,6 +266,9 @@ private:
     /// The extents of the corresponding tensor
     extents_type m_extents_;
     inner_extents_type m_inner_extents_;
+
+    /// The tiling of the corresponding tensor
+    tiling_type m_tiling_;
 };
 
 #define SHAPE_PIMPL ShapePIMPL<FieldType>
@@ -214,22 +286,65 @@ typename SHAPE_PIMPL::pimpl_pointer SHAPE_PIMPL::slice_(
     if(_hi.size() != m_extents_.size())
         throw std::runtime_error("Hi bounds do not match extents");
 
-    extents_type new_extents(m_extents_.size());
+    tiling_type new_tiling(m_extents_.size());
     for(auto i = 0ul; i < m_extents_.size(); ++i) {
         if(_lo[i] < 0 or _lo[i] >= m_extents_[i])
             throw std::runtime_error("Invalid lo bound");
         if(_hi[i] > m_extents_[i]) throw std::runtime_error("Invalid hi bound");
         if(_lo[i] > _hi[i])
             throw std::runtime_error("Lo must be smaller than Hi");
-        new_extents[i] = _hi[i] - _lo[i];
+
+        // Shift tiling bounds so the lower bound of the slice is zero.
+        // Push back shifted bounds that are greater than zero,
+        // until we get to one that is greater than or equal to the new
+        // extent of this mode. Then tack the new extent on the end.
+        new_tiling[i] = {0};
+        for(auto bound : m_tiling_[i]) {
+            if(bound < _lo[i]) continue;
+            auto shifted_bound = bound - _lo[i];
+            if(shifted_bound >= (_hi[i] - _lo[i])) break;
+            if(shifted_bound > 0) new_tiling[i].push_back(shifted_bound);
+        }
+        new_tiling[i].push_back((_hi[i] - _lo[i]));
     }
-    return pimpl_pointer(new my_type(new_extents, m_inner_extents_));
+
+    inner_extents_type new_inner_extents;
+    if constexpr(field::is_scalar_field_v<FieldType>) new_inner_extents = 1;
+    if constexpr(field::is_tensor_field_v<FieldType>) {
+        /// Step through necessary indices ordinally
+        size_type volume = 1;
+        for(auto i = 0ul; i < _lo.size(); ++i) volume *= _hi[i] - _lo[i];
+        for(auto ordinal = 0ul; ordinal < volume; ++ordinal) {
+            /// temp holds index in a mutable form
+            std::vector<size_type> temp(_lo.size());
+
+            /// Determine the index in the new extents
+            auto ord = ordinal;
+            for(auto i = 0ul; i < _lo.size() - 1; ++i) {
+                const auto d = _hi[i] - _lo[i];
+                temp[i]      = ord % d;
+                ord          = ord / d;
+            }
+            temp[_lo.size() - 1] = ord;
+            index_type new_idx{temp};
+
+            /// Determine the index in the old extents
+            for(auto i = 0ul; i < _lo.size(); ++i) { temp[i] += _lo[i]; }
+            index_type old_idx{temp};
+
+            /// Fill in new map
+            new_inner_extents[new_idx] = m_inner_extents_.at(old_idx);
+        }
+    }
+
+    return pimpl_pointer(new my_type(new_tiling, new_inner_extents));
 }
 
 template<typename FieldType>
 bool SHAPE_PIMPL::operator==(const ShapePIMPL& rhs) const noexcept {
     return m_extents_ == rhs.m_extents_ and
-           m_inner_extents_ == rhs.m_inner_extents_;
+           m_inner_extents_ == rhs.m_inner_extents_ and
+           m_tiling_ == rhs.m_tiling_;
 }
 
 #undef SHAPE_PIMPL

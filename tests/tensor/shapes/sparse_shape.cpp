@@ -34,12 +34,15 @@ TEST_CASE("SparseShape<field::Scalar>") {
     using field_type      = field::Scalar;
     using shape_type      = SparseShape<field_type>;
     using extents_type    = typename shape_type::extents_type;
+    using tiling_type     = typename shape_type::tiling_type;
     using sparse_map_type = typename shape_type::sparse_map_type;
     using idx_type        = typename sparse_map_type::key_type;
     using idx2mode_type   = typename shape_type::idx2mode_type;
 
     extents_type matrix_extents{3, 4};
     extents_type tensor_extents{2, 2, 2};
+
+    tiling_type matrix_tiling{{0, 3}, {0, 4}};
 
     idx_type i0{0}, i1{1}, i00{0, 0}, i11{1, 1};
     sparse_map_type matrix_sm{{i0, {i0}}, {i1, {i1}}};
@@ -53,10 +56,15 @@ TEST_CASE("SparseShape<field::Scalar>") {
     shape_type t(tensor_extents, tensor_sm);
     shape_type tt(tensor_extents, tensor_sm, i2m1);
 
+    shape_type m2(matrix_tiling, matrix_sm);
+    shape_type m2t(matrix_tiling, matrix_sm, i2m);
+
     SECTION("CTors") {
         SECTION("No idx2mode") {
             REQUIRE(m.extents() == matrix_extents);
             REQUIRE(t.extents() == tensor_extents);
+
+            REQUIRE(m == m2);
 
             // Make sure there's not an extra copy
             auto pm = matrix_extents.data();
@@ -71,6 +79,8 @@ TEST_CASE("SparseShape<field::Scalar>") {
         SECTION("idx2mode") {
             REQUIRE(mt.extents() == matrix_extents);
             REQUIRE(tt.extents() == tensor_extents);
+
+            REQUIRE(mt == m2t);
 
             // Make sure there's not an extra copy
             auto pm = matrix_extents.data();
