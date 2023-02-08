@@ -141,35 +141,64 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t) {
 ScalarTensorWrapper diagonal_tensor_wrapper(
   double val, const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape) {
-    auto& world = TA::get_default_world();
-
-    std::vector<TA::TiledRange1> dims{};
-    for(auto i : shape.extents()) {
-        dims.push_back(ta_helpers::make_1D_trange(i, i));
-    }
-    TA::TiledRange trange(dims);
-
-    auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange, val);
-
-    return detail_::ta_to_tw(ta_diag); // shape.clone(), allocator.clone());
+    /// Assign the value if diagonal, 0.0 otherwise.
+    auto l = [val](const auto& idx) {
+        auto idx0    = idx[0];
+        bool is_diag = std::all_of(idx.begin(), idx.end(),
+                                   [idx0](auto i) { return i == idx0; });
+        return (is_diag) ? val : 0.;
+    };
+    return ScalarTensorWrapper(l, shape.clone(), allocator.clone());
 };
 
 ScalarTensorWrapper diagonal_tensor_wrapper(
   const std::vector<double>& vals,
   const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape) {
-    auto& world = TA::get_default_world();
+    /// Enough values?
+    auto& exts   = shape.extents();
+    auto min_ext = std::min_element(exts.begin(), exts.end());
+    if(*min_ext > vals.size())
+        throw std::runtime_error("Too few values to fill diagonal");
 
-    std::vector<TA::TiledRange1> dims{};
-    for(auto i : shape.extents()) {
-        dims.push_back(ta_helpers::make_1D_trange(i, i));
+    /// Assign the corresponding value if diagonal, 0.0 otherwise.
+    auto l = [vals](const auto& idx) {
+        auto idx0    = idx[0];
+        bool is_diag = std::all_of(idx.begin(), idx.end(),
+                                   [idx0](auto i) { return i == idx0; });
+        return (is_diag) ? vals[idx0] : 0.;
+    };
+    return ScalarTensorWrapper(l, shape.clone(), allocator.clone());
+};
+
+ScalarTensorWrapper diagonal_tensor_wrapper(
+  const std::vector<std::vector<double>>& vals,
+  const allocator::Allocator<field::Scalar>& allocator,
+  const Shape<field::Scalar>& shape) {
+    auto& exts = shape.extents();
+    auto rank  = exts.size();
+
+    /// How far along the diagonal can vals reach?
+    std::size_t diag_reach = 0;
+
+    /// Check that the values span full blocks
+    for(auto& block : vals) {
+        auto block_size   = block.size();
+        auto nth_root     = std::pow(block_size, 1.0 / rank);
+        auto root_floored = std::floor(nth_root);
+        if(nth_root != root_floored)
+            throw std::runtime_error("Values don't span the entire block");
+        diag_reach += (int)root_floored;
     }
-    TA::TiledRange trange(dims);
 
-    auto ta_diag = TA::diagonal_array<TA::TSpArrayD>(world, trange,
-                                                     vals.begin(), vals.end());
+    /// Enough values?
+    auto min_ext = std::min_element(exts.begin(), exts.end());
+    if(*min_ext > diag_reach)
+        throw std::runtime_error("Too few values to fill diagonal");
 
-    return detail_::ta_to_tw(ta_diag); //, shape.clone(), allocator.clone());
+    /// Assign the corresponding value if diagonal, 0.0 otherwise.
+    auto l = [vals](const auto& idx) { return 1.0; };
+    return ScalarTensorWrapper(l, shape.clone(), allocator.clone());
 };
 
 ScalarTensorWrapper stack_tensors(std::vector<ScalarTensorWrapper> tensors) {

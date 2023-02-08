@@ -170,6 +170,45 @@ TEST_CASE("diagonal_tensor_wrapper") {
             auto rv   = diagonal_tensor_wrapper(two_vals, *p, shape);
             REQUIRE(rv == corr);
         }
+
+        SECTION("Too few values") {
+            extents_t extents{3};
+            shape_t shape{extents};
+            REQUIRE_THROWS_AS(diagonal_tensor_wrapper(two_vals, *p, shape),
+                              std::runtime_error);
+        }
+    }
+
+    SECTION("Block Diagonal Values") {
+        SECTION("1D") {
+            extents_t extents{3};
+            shape_t shape{extents};
+        }
+
+        SECTION("2D") {
+            extents_t extents{2, 2};
+            shape_t shape{extents};
+        }
+
+        SECTION("3D") {
+            extents_t extents{2, 2, 2};
+            shape_t shape{extents};
+        }
+
+        SECTION("Rectangular") {
+            extents_t extents{3, 2};
+            shape_t shape{extents};
+        }
+
+        SECTION("Too few values") {
+            extents_t extents{3};
+            shape_t shape{extents};
+        }
+
+        SECTION("Block not square") {
+            extents_t extents{3};
+            shape_t shape{extents};
+        }
     }
 }
 
