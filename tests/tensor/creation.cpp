@@ -180,34 +180,57 @@ TEST_CASE("diagonal_tensor_wrapper") {
     }
 
     SECTION("Block Diagonal Values") {
+        std::vector<std::vector<double>> test_vals{{1.0}, {2.0, 3.0, 4.0, 5.0}};
+
         SECTION("1D") {
             extents_t extents{3};
             shape_t shape{extents};
+            auto rv = diagonal_tensor_wrapper(test_vals, *p, shape);
+            tensor_t corr({1.0, 2.0, 3.0});
+            REQUIRE(rv == corr);
         }
 
         SECTION("2D") {
-            extents_t extents{2, 2};
+            extents_t extents{3, 3};
             shape_t shape{extents};
+            auto rv = diagonal_tensor_wrapper(test_vals, *p, shape);
+            tensor_t corr({{1.0, 0.0, 0.0}, {0.0, 2.0, 3.0}, {0.0, 4.0, 5.0}});
+            REQUIRE(rv == corr);
         }
 
         SECTION("3D") {
-            extents_t extents{2, 2, 2};
+            std::vector<std::vector<double>> test_vals2{
+              {1.0}, {2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0}};
+            extents_t extents{3, 3, 3};
             shape_t shape{extents};
+            auto rv = diagonal_tensor_wrapper(test_vals2, *p, shape);
+            tensor_t corr(
+              {{{1.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}},
+               {{0.0, 0.0, 0.0}, {0.0, 2.0, 3.0}, {0.0, 4.0, 5.0}},
+               {{0.0, 0.0, 0.0}, {0.0, 6.0, 7.0}, {0.0, 8.0, 9.0}}});
+            REQUIRE(rv == corr);
         }
 
         SECTION("Rectangular") {
             extents_t extents{3, 2};
             shape_t shape{extents};
+            auto rv = diagonal_tensor_wrapper(test_vals, *p, shape);
+            tensor_t corr({{1.0, 0.0}, {0.0, 2.0}, {0.0, 4.0}});
+            REQUIRE(rv == corr);
         }
 
         SECTION("Too few values") {
-            extents_t extents{3};
+            extents_t extents{4, 4};
             shape_t shape{extents};
+            REQUIRE_THROWS_AS(diagonal_tensor_wrapper(test_vals, *p, shape),
+                              std::runtime_error);
         }
 
         SECTION("Block not square") {
-            extents_t extents{3};
+            extents_t extents{3, 1, 1};
             shape_t shape{extents};
+            REQUIRE_THROWS_AS(diagonal_tensor_wrapper(test_vals, *p, shape),
+                              std::runtime_error);
         }
     }
 }

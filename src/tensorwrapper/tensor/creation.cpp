@@ -178,17 +178,22 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
     auto& exts = shape.extents();
     auto rank  = exts.size();
 
-    /// How far along the diagonal can vals reach?
+    /// Track how far along the diagonal the values can reach
     std::size_t diag_reach = 0;
 
-    /// Check that the values span full blocks
-    for(auto& block : vals) {
-        auto block_size   = block.size();
-        auto nth_root     = std::pow(block_size, 1.0 / rank);
-        auto root_floored = std::floor(nth_root);
-        if(nth_root != root_floored)
+    /// Track the extent of each block of values
+    std::vector<std::array<std::size_t, 2>> block_ranges(vals.size());
+
+    /// Check that the values span full blocks for the given rank
+    for(auto i = 0; i < vals.size(); ++i) {
+        auto block_size = vals[i].size();
+        auto nth_root   = std::pow(block_size, 1.0 / rank);
+        if(nth_root != std::floor(nth_root))
             throw std::runtime_error("Values don't span the entire block");
-        diag_reach += (int)root_floored;
+
+        block_ranges[i][0] = diag_reach;
+        diag_reach += (int)nth_root;
+        block_ranges[i][1] = diag_reach;
     }
 
     /// Enough values?
@@ -197,7 +202,34 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
         throw std::runtime_error("Too few values to fill diagonal");
 
     /// Assign the corresponding value if diagonal, 0.0 otherwise.
-    auto l = [vals](const auto& idx) { return 1.0; };
+    auto l = [rank, vals, block_ranges](const auto& idx) {
+        /// Determine if idx corresponds to a value in vals
+        std::size_t block_i = 0; /// vals index
+        while(block_i < block_ranges.size()) {
+            auto& range = block_ranges[block_i];
+            /// Find the value block that idx[0] would be in
+            if(idx[0] >= range[0] and idx[0] < range[1]) {
+                /// If any elements of idx are outside the bounds, then idx is 0
+                /// Otherwise, block_i is the correct block and we break.
+                for(auto& j : idx) {
+                    if(j < range[0] or j >= range[1]) return 0.0;
+                }
+                break;
+            }
+            ++block_i;
+        }
+
+        /// Find which element of vals[block_i] goes in idx
+        std::size_t ord = 0;
+        auto block_ext  = block_ranges[block_i][1] - block_ranges[block_i][0];
+        for(auto j = 0; j < rank; ++j) {
+            auto relative_idx_j = idx[j] - block_ranges[block_i][0];
+            auto rank_step      = std::pow(block_ext, rank - 1 - j);
+            ord += relative_idx_j * (int)rank_step;
+        }
+
+        return vals[block_i][ord];
+    };
     return ScalarTensorWrapper(l, shape.clone(), allocator.clone());
 };
 
