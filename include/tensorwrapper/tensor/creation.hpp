@@ -72,12 +72,11 @@ ScalarTensorWrapper grab_diagonal(const ScalarTensorWrapper& t);
 
 /** @brief Produces a new TensorWrapper with the given value along its diagonal.
  *
- *  @param[in] extents The desired extents of the new tensor.
  *  @param[in] val The value to place on the diagonal of the tensor.
+ *  @param[in] allocator The allocator for the new tensor.
+ *  @param[in] shape The shape of the resulting tensor
  *
  *  @return A TensorWrapper containing a diagonal tensor.
- *
- *  @throw Whatever TA's diagonal_array throws.
  */
 ScalarTensorWrapper diagonal_tensor_wrapper(
   double val, const allocator::Allocator<field::Scalar>& allocator,
@@ -86,15 +85,33 @@ ScalarTensorWrapper diagonal_tensor_wrapper(
 /** @brief Produces a new TensorWrapper with the given values along its
  * diagonal.
  *
- *  @param[in] extents The desired extents of the new tensor.
  *  @param[in] vals The values to place on the diagonal of the tensor.
+ *  @param[in] allocator The allocator for the new tensor.
+ *  @param[in] shape The shape of the resulting tensor
  *
  *  @return A TensorWrapper containing a diagonal tensor.
  *
- *  @throw Whatever TA's diagonal_array throws.
+ *  @throw std::runtime_error if all extents are longer than @p vals.
  */
 ScalarTensorWrapper diagonal_tensor_wrapper(
   const std::vector<double>& vals,
+  const allocator::Allocator<field::Scalar>& allocator,
+  const Shape<field::Scalar>& shape);
+
+/** @brief Produces a block diagonal TensorWrapper with the given values.
+ *
+ *  @param[in] vals The values to place in the diagonal blocks of the tensor.
+ *  @param[in] allocator The allocator for the new tensor.
+ *  @param[in] shape The shape of the resulting tensor
+ *
+ *  @return A TensorWrapper containing a diagonal tensor.
+ *
+ *  @throw std::runtime_error if any of the elements of @p vals don't contain a
+ *                            square number of values or if there are not
+ *                            enoughs to reach the end of the diagonal.
+ */
+ScalarTensorWrapper diagonal_tensor_wrapper(
+  const std::vector<std::vector<double>>& vals,
   const allocator::Allocator<field::Scalar>& allocator,
   const Shape<field::Scalar>& shape);
 
