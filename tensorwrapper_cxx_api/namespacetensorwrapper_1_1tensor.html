@@ -167,6 +167,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a69d0da70c6354b99fd756f3e26f63941"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a69d0da70c6354b99fd756f3e26f63941">diagonal_tensor_wrapper</a> (const std::vector&lt; double &gt; &amp;vals, const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
 <tr class="memdesc:a69d0da70c6354b99fd756f3e26f63941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values along its diagonal.  <a href="namespacetensorwrapper_1_1tensor.html#a69d0da70c6354b99fd756f3e26f63941">More...</a><br /></td></tr>
 <tr class="separator:a69d0da70c6354b99fd756f3e26f63941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f7fd4e3529a31e5e79c41d76f72a7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a96f7fd4e3529a31e5e79c41d76f72a7e">diagonal_tensor_wrapper</a> (const std::vector&lt; std::vector&lt; double &gt;&gt; &amp;vals, const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;allocator, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
+<tr class="memdesc:a96f7fd4e3529a31e5e79c41d76f72a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces a block diagonal <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values.  <a href="namespacetensorwrapper_1_1tensor.html#a96f7fd4e3529a31e5e79c41d76f72a7e">More...</a><br /></td></tr>
+<tr class="separator:a96f7fd4e3529a31e5e79c41d76f72a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a913cacafad15e2d225d25d97d6f1a0b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a913cacafad15e2d225d25d97d6f1a0b2">stack_tensors</a> (std::vector&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &gt; tensors)</td></tr>
 <tr class="memdesc:a913cacafad15e2d225d25d97d6f1a0b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks a group of tensors along a new dimension.  <a href="namespacetensorwrapper_1_1tensor.html#a913cacafad15e2d225d25d97d6f1a0b2">More...</a><br /></td></tr>
 <tr class="separator:a913cacafad15e2d225d25d97d6f1a0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -572,7 +575,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <a id="a69d0da70c6354b99fd756f3e26f63941"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69d0da70c6354b99fd756f3e26f63941">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a69d0da70c6354b99fd756f3e26f63941">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -606,23 +609,87 @@ template&lt;typename FieldType &gt; </div>
 <p>Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values along its diagonal. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">extents</td><td>The desired extents of the new tensor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">vals</td><td>The values to place on the diagonal of the tensor.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">vals</td><td>The values to place on the diagonal of the tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>The allocator for the new tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of the resulting tensor</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">Whatever</td><td>TA's diagonal_array throws. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if all extents are longer than <code>vals</code>. </td></tr>
   </table>
   </dd>
 </dl>
+<p>Enough values?</p>
+<p>Assign the corresponding value if diagonal, 0.0 otherwise.</p>
+
+</div>
+</div>
+<a id="a96f7fd4e3529a31e5e79c41d76f72a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f7fd4e3529a31e5e79c41d76f72a7e">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> tensorwrapper::tensor::diagonal_tensor_wrapper </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; double &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>vals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">allocator::Allocator</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>allocator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produces a block diagonal <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">vals</td><td>The values to place in the diagonal blocks of the tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>The allocator for the new tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of the resulting tensor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if any of the elements of <code>vals</code> don't contain a square number of values or if there are not enoughs to reach the end of the diagonal. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Track how far along the diagonal the values can reach</p>
+<p>Track the extent of each block of values</p>
+<p>Check that the values span full blocks for the given rank</p>
+<p>Enough values?</p>
+<p>Assign the corresponding value if diagonal, 0.0 otherwise.</p>
+<p>Determine if idx corresponds to a value in vals</p>
+<p>vals index</p>
+<p>Find the value block that idx[0] would be in</p>
+<p>If any elements of idx are outside the bounds, then idx is 0 Otherwise, block_i is the correct block and we break.</p>
+<p>Find which element of vals[block_i] goes in idx</p>
 
 </div>
 </div>
 <a id="ae3157b114d40afe2393e4bf822102c8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3157b114d40afe2393e4bf822102c8e">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3157b114d40afe2393e4bf822102c8e">&#9670;&nbsp;</a></span>diagonal_tensor_wrapper() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -656,18 +723,14 @@ template&lt;typename FieldType &gt; </div>
 <p>Produces a new <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the given value along its diagonal. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">extents</td><td>The desired extents of the new tensor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>The value to place on the diagonal of the tensor.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td>The value to place on the diagonal of the tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocator</td><td>The allocator for the new tensor. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of the resulting tensor</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor.</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">Whatever</td><td>TA's diagonal_array throws. </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> containing a diagonal tensor. </dd></dl>
+<p>Assign the value if diagonal, 0.0 otherwise.</p>
 
 </div>
 </div>
