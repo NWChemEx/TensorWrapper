@@ -9,11 +9,11 @@ jobs:
   bash-example:
     runs-on: ubuntu-latest
     steps:
-      - name: Group of log lines
+      - name: Log before build
         run: |
-            echo "::group::My title"
-            echo "Inside group"
-            echo "::endgroup::"
+            echo "BEGIN_BEFORE_BUILD"
+            ls -lR
+            echo "END_BEFORE_BUILD"
   build-with-gcc:
     uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@cache-build2
     with: 
@@ -27,8 +27,8 @@ jobs:
   bash-example-2:
     runs-on: ubuntu-latest
     steps:
-      - name: Group of log lines
+      - name: Log after build
         run: |
-            echo "::group::My title"
-            echo "Inside group"
-            echo "::endgroup::"
+            echo "BEGIN_AFTER_BUILD"
+            ls -lR
+            echo "END_AFTER_BUILD
