@@ -59,6 +59,24 @@ cpp_find_or_build_dependency(
 
 #cache tiledarray here
 message(CHECK_CACHED_TILEDARRAY="$ENV{CACHE_TILEDARRAY}")
+if(NOT "$ENV{CACHE_TILEDARRAY}"  STREQUAL "true")
+        message("Build for Tiledarray here")
+        # N.B. If you update the TA version, you may also need to update 
+        #      the MADNESS version in the ParallelZone repo.
+        cpp_find_or_build_dependency(
+            tiledarray
+            URL github.com/ValeevGroup/tiledarray
+            VERSION fab5dc31fc10d88d381e8421d868d2185f164667
+            BUILD_TARGET tiledarray
+            FIND_TARGET tiledarray
+            CMAKE_ARGS TA_BUILD_UNITTEST=OFF
+                       BUILD_TESTING=OFF 
+                       BLAS_THREAD_LAYER=sequential
+                       MADNESS_ENABLE_CEREAL=ON
+        )
+message(END_CHECK_CACHED_TILEDARRAY="$ENV{CACHE_TILEDARRAY}")
+endif()
+
 
 find_package(Boost REQUIRED COMPONENTS container)
 
