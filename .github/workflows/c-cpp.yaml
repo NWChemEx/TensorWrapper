@@ -9,6 +9,7 @@ jobs:
   build-with-gcc:
     uses: NWChemEx-Project/.github/.github/workflows/c-cpp_tmpl.yaml@cache-build2
     with: 
+      cached-libs: 'tiledarray'
       dependencies: 'ninja gcc gcovr openblas cblas lapacke scalapack boost eigen3 openmpi'
       clang-build: false
       gcc-build: true
