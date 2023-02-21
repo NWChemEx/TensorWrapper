@@ -57,7 +57,9 @@ cpp_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
 )
 
+message(CHECK_CACHED_TILEDARRAY="${CACHE_TILEDARRAY}")
 if("${CACHE_TILEDARRAY}")
+        message("Build for Tiledarray here")
         # N.B. If you update the TA version, you may also need to update 
         #      the MADNESS version in the ParallelZone repo.
         cpp_find_or_build_dependency(
