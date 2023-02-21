@@ -105,3 +105,6 @@ if("${BUILD_TESTING}")
         DEPENDS Catch2::Catch2 tensorwrapper
     )
 endif()
+message(CHECK_AFTER_BUILD)
+execute_process(COMMAND  ls -lR)
+message(CHECK_AFTER_BUILD_END)
