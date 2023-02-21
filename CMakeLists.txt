@@ -58,7 +58,7 @@ cpp_find_or_build_dependency(
 )
 
 message(CHECK_CACHED_TILEDARRAY="${CACHE_TILEDARRAY}")
-if("${CACHE_TILEDARRAY}"  STREQUAL "true")
+if(NOT "${CACHE_TILEDARRAY}"  STREQUAL "true")
         message("Build for Tiledarray here")
         # N.B. If you update the TA version, you may also need to update 
         #      the MADNESS version in the ParallelZone repo.
