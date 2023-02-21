@@ -31,4 +31,4 @@ jobs:
         run: |
             echo "BEGIN_AFTER_BUILD"
             ls -lR
-            echo "END_AFTER_BUILD
+            echo "END_AFTER_BUILD"
