@@ -24,11 +24,11 @@ jobs:
       ninja_build: true
     secrets:
       CPP_GITHUB_TOKEN: ${{ secrets.CPP_GITHUB_TOKEN }}
-  bash-example-2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log after build
-        run: |
-            echo "BEGIN_AFTER_BUILD"
-            ls -lR
-            echo "END_AFTER_BUILD"
+#   bash-example-2:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Log after build
+#         run: |
+#             echo "BEGIN_AFTER_BUILD"
+#             ls -lR
+#             echo "END_AFTER_BUILD"
