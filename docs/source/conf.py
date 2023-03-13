@@ -28,9 +28,7 @@ project = u'TensorWrapper'
 copyright = u'2020, NWChemEx Team'
 author = u'NWChemEx Team'
 
-# Get the version from version.txt
-with open('../../version.txt', 'r') as file:
-    version = file.read().replace('\n', '')
+version = '1.0.0'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -42,15 +40,14 @@ release = version
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-# needs_sphinx = '1.0'
+needs_sphinx = '1.3'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx',
-    'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.mathjax',
-    'sphinx.ext.githubpages'
+    'sphinx.ext.autodoc','sphinx.ext.mathjax', 'sphinx.ext.githubpages',
+    'sphinx.ext.autosummary', 'sphinx_rtd_theme', 'sphinxcontrib.bibtex'
 ]
 dir_path = os.path.dirname(os.path.realpath(__file__))
 doc_path = os.path.dirname(dir_path)
@@ -82,6 +79,8 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+numfig = True
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -168,7 +167,10 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
 
-# -- Options for todo extension ----------------------------------------------
+# -- Options for bibtex --------------------------------------------------------
 
-# If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+bibtex_bibfiles = [
+    'bibliography/background.bib'
+]
+bibtex_reference_style = 'super'
+bibtex_default_style = 'plain'

@@ -25,7 +25,9 @@ the mathematical operations implied by the equations often leaves much
 performance on the table. Nonetheless we argue that having a tensor-based DSL is
 important for physics-based codes because:
 
-- Translating theory to code is trivial.
+- Facilitates translating theory to code.
+- Encapsulates mathematical optimizations.
+- Code is easier to read/rationalize about.
 
 The following subsections summarize the considerations our tensor DSL, TW, must
 contend with if it is to encapsulate the process of going from tensor

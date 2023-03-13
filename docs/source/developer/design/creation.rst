@@ -12,14 +12,24 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-####################
-Design Documentation
-####################
+#################
+Creating a Tensor
+#################
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+The entry point into TensorWrapper is creating a tensor. We break tensor 
+creation into two pieces: 
 
-   motivation
-   considerations
-   architecture
+#. Specifying the details of the tensor.
+#. Translating the details into a literal tensor object.
+
+The relevant pieces are summarized in Fig. :numref:`fig_tensor_creation`.
+
+
+.. _fig_tensor_creation:
+
+.. figure:: assets/creation.png
+   :align: center
+
+   Pieces needed to create a tensor.
+
+Fig. :numref:`fig_tensor_creation` 
