@@ -12,32 +12,26 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-####################
-Design Documentation
-####################
+.. _tw_terminology:
 
-Topics in these sections capture the design process of TensorWrapper.
+#########################
+TensorWrapper Terminology
+#########################
 
-***********************
-High-Level Architecture
-***********************
+******************
+Tensor Terminology
+******************
 
-.. toctree::
-   :maxdepth: 2
+Extent
+======
 
-   motivation
-   considerations
-   tensor_stack
-   creation
+The number of elements along a mode. For a vector, the extent of the vector is
+the total number of elements in the vector (also called its length). A matrix
+has two extents: the number of rows and the number of columns.
 
-************
-Class Design
-************
+Mode
+====
 
-.. toctree::
-   :maxdepth: 2
-
-   shape
-   relationships
-   sparsity
-   distribution
+Colloquially the number of indices required to specify an element of the tensor.
+A scalar is a 0-mode tensor, a vector is a 1-mode tensor, a matrix is a 2-mode
+tensor, etc.
