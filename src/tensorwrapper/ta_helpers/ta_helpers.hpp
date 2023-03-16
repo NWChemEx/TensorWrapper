@@ -17,7 +17,6 @@
 #pragma once
 #include "get_block_idx.hpp"
 #include "reducer.hpp"
-#include "ta_hashers.hpp"
 #include "ta_headers.hpp"
 
 namespace tensorwrapper::ta_helpers {

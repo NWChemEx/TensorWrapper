@@ -84,10 +84,4 @@ bool DIIS::operator==(const DIIS& rhs) const noexcept {
             (m_B_ == rhs.m_B_));
 }
 
-void DIIS::hash(tensorwrapper::detail_::Hasher& h) const {
-    h(m_max_vec_);
-    for(auto& x : m_x_values_) h(x);
-    for(auto& e : m_errors_) h(e);
-}
-
 } // end namespace tensorwrapper::diis

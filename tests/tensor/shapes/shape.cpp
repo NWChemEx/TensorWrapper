@@ -160,27 +160,6 @@ TEST_CASE("Shape<Scalar>") {
         REQUIRE(defaulted != Shape<other_field>{});
         REQUIRE_FALSE(defaulted == Shape<other_field>{});
     }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        SECTION("LHS is defaulted") {
-            auto lhs = hash_objects(defaulted);
-
-            REQUIRE(lhs == hash_objects(shape_type{}));
-            REQUIRE(lhs != hash_objects(vector));
-            REQUIRE(lhs != hash_objects(matrix));
-            // TODO: enable when hashing properly accounts for types
-            // REQUIRE(lhs != hash_objects(Shape<other_field>{}));
-        }
-
-        SECTION("LHS is vector") {
-            auto lhs = hash_objects(vector);
-
-            REQUIRE(lhs == hash_objects(shape_type(vector_extents)));
-            REQUIRE(lhs != hash_objects(matrix));
-        }
-    }
 }
 
 TEST_CASE("Shape<Tensor>") {
@@ -266,28 +245,5 @@ TEST_CASE("Shape<Tensor>") {
         // Different Fields
         REQUIRE(defaulted != Shape<other_field>{});
         REQUIRE_FALSE(defaulted == Shape<other_field>{});
-    }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        SECTION("LHS is defaulted") {
-            auto lhs = hash_objects(defaulted);
-
-            REQUIRE(lhs == hash_objects(shape_type{}));
-            REQUIRE(lhs != hash_objects(vov));
-            REQUIRE(lhs != hash_objects(vom));
-            REQUIRE(lhs != hash_objects(mom));
-            // TODO: enable when hashing properly accounts for types
-            // REQUIRE(lhs != hash_objects(Shape<other_field>{}));
-        }
-
-        SECTION("LHS is vector") {
-            auto lhs = hash_objects(vov);
-
-            REQUIRE(lhs == hash_objects(shape_type(vector_extents, vov_map)));
-            REQUIRE(lhs != hash_objects(vom));
-            REQUIRE(lhs != hash_objects(mom));
-        }
     }
 }

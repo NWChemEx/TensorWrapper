@@ -1698,22 +1698,6 @@ TEST_CASE("DomainPIMPL") {
             }
         }
     }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        auto h1 = hash_objects(ps.at("empty"));
-
-        SECTION("Empty") { REQUIRE(h1 == hash_objects(pimpl_type{})); }
-
-        SECTION("Single element") {
-            REQUIRE(h1 != hash_objects(ps.at("1 rank 1 index")));
-        }
-
-        SECTION("Two elements") {
-            REQUIRE(h1 != hash_objects(ps.at("2 rank 2 indices")));
-        }
-    }
 }
 
 TEST_CASE("DomainPIMPL comparisons") {

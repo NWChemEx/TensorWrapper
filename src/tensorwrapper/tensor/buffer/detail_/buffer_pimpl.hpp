@@ -39,9 +39,6 @@ public:
     // using const_shape_reference = typename
     // buffer_type::const_shape_reference;
 
-    /// Type of a mutable hasher reference
-    using hasher_reference = typename buffer_type::hasher_reference;
-
     /// Type of scalar values
     using scalar_value_type = typename buffer_type::scalar_value_type;
 
@@ -141,8 +138,6 @@ public:
         return make_inner_extents_();
     }
 
-    void hash(hasher_reference h) const { hash_(h); }
-
     explicit operator std::string() const { return to_str_(); }
 
     bool are_equal(const my_type& rhs) const noexcept {
@@ -153,11 +148,11 @@ protected:
     /// These are protected to avoid users accidentally slicing the PIMPL, but
     /// still be accesible to derived classes who need them for implementations
     ///@{
-    BufferPIMPL() noexcept          = default;
-    BufferPIMPL(const BufferPIMPL&) = default;
-    BufferPIMPL(BufferPIMPL&&)      = default;
+    BufferPIMPL() noexcept                     = default;
+    BufferPIMPL(const BufferPIMPL&)            = default;
+    BufferPIMPL(BufferPIMPL&&)                 = default;
     BufferPIMPL& operator=(const BufferPIMPL&) = default;
-    BufferPIMPL& operator=(BufferPIMPL&&) = default;
+    BufferPIMPL& operator=(BufferPIMPL&&)      = default;
     ///@}
 
 private:
@@ -223,9 +218,6 @@ private:
 
     /// To be overridden by derived class to implement make_inner_extents
     virtual inner_extents_type make_inner_extents_() const = 0;
-
-    /// To be overridden by derived classs to implement hash
-    virtual void hash_(hasher_reference h) const = 0;
 
     /// To be overriden by derived class to implement value equality
     virtual bool are_equal_(const my_type& rhs) const noexcept = 0;

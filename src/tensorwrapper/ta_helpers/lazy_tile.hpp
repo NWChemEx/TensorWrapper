@@ -16,7 +16,6 @@
 
 #pragma once
 #include <memory>
-#include <tensorwrapper/detail_/hashing.hpp>
 #include <tiledarray.h>
 #include <utility>
 
@@ -48,8 +47,8 @@ struct LazyTile {
     using map_type = std::map<id_type, evaluator_type>;
 
     /// Normal ctors
-    LazyTile()                      = default;
-    LazyTile(const LazyTile& other) = default;
+    LazyTile()                                 = default;
+    LazyTile(const LazyTile& other)            = default;
     LazyTile& operator=(const LazyTile& other) = default;
 
     /** @brief Adds an evaluator into the map with a given id.
@@ -81,16 +80,6 @@ struct LazyTile {
      *  @param id The id that will be associated with the evaluator
      */
     static void add_evaluator(evaluator_type evaluator, id_type id);
-
-    /** @brief Hash this tile
-     *
-     *  Not implemented. Just here to satisfy infrastructure.
-     *
-     *  @param h A hash function
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const {
-        /// Does this matter?
-    }
 
     /** @brief Prints the tile
      *

@@ -15,9 +15,9 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -269,17 +269,6 @@ public:
      *
      */
     bool is_equal(const Shape& rhs) const noexcept;
-
-    /** @brief Polymorphic hash function.
-     *
-     *  This function will hash the entire state (including that in any derived
-     *  classes).
-     *
-     *  @param[in,out] h The instance to use for hashing. After this call, the
-     *                   internal state of @p h will be updated to include the
-     *                   hash of the current Shape instance.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
 
 protected:
     /** @brief Creates the Shape with the specified PIMPL

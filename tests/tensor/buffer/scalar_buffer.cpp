@@ -490,22 +490,6 @@ TEST_CASE("Buffer<Scalar>") {
         }
     }
 
-    SECTION("hash") {
-        using parallelzone::hash_objects;
-        REQUIRE(hash_objects(defaulted) == hash_objects(buffer_type{}));
-
-        // TODO: Reenable when hashing includes types
-        using other_buffer = buffer::Buffer<field::Tensor>;
-        // REQUIRE_FALSE(hash_objects(defaulted) ==
-        // hash_objects(other_buffer{}));
-
-        REQUIRE_FALSE(hash_objects(defaulted) == hash_objects(vec));
-
-        REQUIRE_FALSE(hash_objects(vec) == hash_objects(mat));
-
-        // TODO: Hashing of direct?
-    }
-
     SECTION("Comparisons") {
         REQUIRE(defaulted == buffer_type{});
         REQUIRE_FALSE(defaulted != buffer_type{});

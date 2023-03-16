@@ -220,42 +220,6 @@ TEST_CASE("TensorWrapperPIMPL<Scalar>") {
         }
     }
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        auto lhs = hash_objects(m);
-
-        SECTION("Same") {
-            pimpl_type rhs(from_buffer(mat_buffer_obt), m_shape->clone(),
-                           palloc->clone());
-            REQUIRE(lhs == hash_objects(rhs));
-        }
-
-        SECTION("Different values") {
-            auto rhs_buffer = from_buffer(mat_buffer_obt);
-            mat_buffer_obt->scale("i,j", "i,j", *rhs_buffer, 4.2);
-
-            pimpl_type rhs(from_buffer(rhs_buffer), m_shape->clone(),
-                           palloc->clone());
-            REQUIRE(lhs != hash_objects(rhs));
-        }
-
-        SECTION("Different shape") {
-            using sparse_shape    = SparseShape<field_type>;
-            using sparse_map_type = typename sparse_shape::sparse_map_type;
-            using index_type      = typename sparse_map_type::key_type;
-
-            index_type i0{0}, i1{1};
-            sparse_map_type sm{{i0, {i0, i1}}, {i1, {i0, i1}}};
-            auto new_shape =
-              std::make_unique<sparse_shape>(extents_type{2, 2}, sm);
-
-            pimpl_type rhs(from_buffer(mat_buffer_obt), new_shape->clone(),
-                           palloc->clone());
-            REQUIRE(lhs != hash_objects(rhs));
-        }
-    }
-
     SECTION("operator==") {
         SECTION("Same") {
             pimpl_type rhs(from_buffer(mat_buffer_obt), m_shape->clone(),

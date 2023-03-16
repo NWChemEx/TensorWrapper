@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
+#include <map>
 #include <memory>                                  // For smart pointers
 #include <utilities/iterators/offset_iterator.hpp> // For iterator
 #include <vector>
@@ -490,17 +490,6 @@ public:
      * @throw None No throw guarantee.
      */
     bool operator==(const Domain& rhs) const noexcept;
-
-    /** @brief Adds a hash of the current domain to the provided hashing object.
-     *
-     *  @param[in,out] h The object being used for hashing. After this function
-     *                   the internal state will be updated with a hash of this
-     *                   object.
-     *
-     *  @throws std::runtime_error if the PIMPL is not set. Strong throw
-     *                             guarantee.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
 
     /** @brief Adds a string representation of this Domain to the provided
      *         stream.

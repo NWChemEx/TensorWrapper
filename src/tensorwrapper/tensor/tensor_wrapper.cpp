@@ -242,11 +242,6 @@ std::ostream& TENSOR_WRAPPER::print(std::ostream& os) const {
 }
 
 template<typename FieldType>
-void TENSOR_WRAPPER::hash(tensorwrapper::detail_::Hasher& h) const {
-    if(m_pimpl_) pimpl_().hash(h);
-}
-
-template<typename FieldType>
 bool TENSOR_WRAPPER::operator==(const TensorWrapper& rhs) const {
     if(m_pimpl_ && rhs.m_pimpl_)
         return pimpl_() == rhs.pimpl_();

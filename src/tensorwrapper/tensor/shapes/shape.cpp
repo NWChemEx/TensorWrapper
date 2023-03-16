@@ -111,11 +111,6 @@ bool SHAPE::operator==(const Shape& rhs) const noexcept {
 }
 
 template<typename FieldType>
-void SHAPE::hash(tensorwrapper::detail_::Hasher& h) const {
-    h(m_pimpl_);
-}
-
-template<typename FieldType>
 bool SHAPE::is_equal(const Shape& rhs) const noexcept {
     // Needs to be symmetric to engage the most derived class of each instance
     if(is_equal_(rhs) && rhs.is_equal_(*this)) return true;

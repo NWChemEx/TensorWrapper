@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include <tensorwrapper/detail_/hashing.hpp>
 #include <tensorwrapper/tensor/allocator/allocator.hpp>
 #include <tensorwrapper/tensor/buffer/buffer.hpp>
 #include <tensorwrapper/tensor/expression/labeled_view.hpp>
@@ -524,14 +523,6 @@ public:
      * operator chaining.
      */
     std::ostream& print(std::ostream& os) const;
-
-    /** @brief Adds the hash of the wrapped tensor to the
-     * provided Hasher.
-     *
-     *  @param[in] h The hasher we are adding the wrapped
-     * tensor to.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
 
     /** @brief Determines if two TensorWrappers wrap identical
      * tensors.

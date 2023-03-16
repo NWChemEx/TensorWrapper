@@ -53,10 +53,10 @@ public:
     SparseMapPIMPL() = default;
 
     /// Default ctors
-    SparseMapPIMPL(const SparseMapPIMPL& rhs) = default;
-    SparseMapPIMPL(SparseMapPIMPL&& rhs)      = default;
+    SparseMapPIMPL(const SparseMapPIMPL& rhs)            = default;
+    SparseMapPIMPL(SparseMapPIMPL&& rhs)                 = default;
     SparseMapPIMPL& operator=(const SparseMapPIMPL& rhs) = default;
-    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs) = default;
+    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs)      = default;
 
     /// Default polymorphic dtor
     virtual ~SparseMapPIMPL() = default;
@@ -293,14 +293,6 @@ public:
      * @return @p os with this SparseMap added to it.
      */
     std::ostream& print(std::ostream& os) const;
-
-    /** @brief Adds this SparseMap's state to a hash.
-     *
-     *  @param[in,out] h The object hashing the SparseMap. After this call the
-     *                   internal hash of @p h will be updated to include this
-     *                   SparseMap's state.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_sm_); }
 
 private:
     /// Type of the std::map holding the SparseMap's state

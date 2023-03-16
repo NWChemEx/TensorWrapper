@@ -16,6 +16,7 @@
 
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
 #include <catch2/catch.hpp>
+#include <sstream>
 
 /* Testing strategy.
  *
@@ -1167,56 +1168,6 @@ TEST_CASE("Domain") {
             }
         }
     }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        SECTION("LHS == empty") {
-            auto h = hash_objects(d_empty);
-            SECTION("RHS == empty") { REQUIRE(h == hash_objects(Domain{})); }
-
-            SECTION("RHS == rank 0") { REQUIRE(h != hash_objects(d0)); }
-            SECTION("RHS == rank 1") { REQUIRE(h != hash_objects(d1)); }
-            SECTION("RHS == rank 2") { REQUIRE(h != hash_objects(d2)); }
-        }
-
-        SECTION("LHS == rank 0") {
-            auto h = hash_objects(d0);
-            SECTION("RHS == empty") { REQUIRE(h != hash_objects(d_empty)); }
-            SECTION("RHS == rank 0") { REQUIRE(h == hash_objects(Domain{i0})); }
-            SECTION("RHS == rank 1") { REQUIRE(h != hash_objects(d1)); }
-            SECTION("RHS == rank 2") { REQUIRE(h != hash_objects(d2)); }
-        }
-
-        SECTION("LHS == rank 1") {
-            auto h = hash_objects(d1);
-            SECTION("RHS == empty") { REQUIRE(h != hash_objects(d_empty)); }
-            SECTION("RHS == rank 0") { REQUIRE(h != hash_objects(d0)); }
-            SECTION("RHS == rank 1") {
-                SECTION("Same") { REQUIRE(h == hash_objects(Domain{i1})); }
-                SECTION("Different") {
-                    REQUIRE(h != hash_objects(Domain{Index{2}}));
-                }
-            }
-            SECTION("RHS == rank 2") { REQUIRE(h != hash_objects(d2)); }
-        }
-
-        SECTION("LHS == rank 2") {
-            auto h = hash_objects(d2);
-            SECTION("RHS == empty") { REQUIRE(h != hash_objects(d_empty)); }
-            SECTION("RHS == rank 0") { REQUIRE(h != hash_objects(d0)); }
-            SECTION("RHS == rank 1") { REQUIRE(h != hash_objects(d1)); }
-            SECTION("RHS == rank 2") {
-                SECTION("Same") { REQUIRE(h == hash_objects(Domain{i2})); }
-                SECTION("Different") {
-                    REQUIRE(h != hash_objects(Domain{Index{2, 1}}));
-                }
-            }
-        }
-
-        SECTION("LHS == No PIMPL") {
-            REQUIRE_THROWS_AS(hash_objects(mf), std::runtime_error);
-        }
-    } // SECTION("hash")
 
     SECTION("print") {
         std::stringstream ss;

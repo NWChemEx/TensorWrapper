@@ -51,7 +51,6 @@ public:
     }
 
 private:
-    void hash_(tensorwrapper::detail_::Hasher& h) const override;
     allocator_ptr clone_() const override;
     value_pointer allocate_(const tile_populator_type& fxn,
                             const shape_type& shape) const override;

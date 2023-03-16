@@ -43,8 +43,6 @@ public:
 
     using typename base_type::pimpl_pointer;
 
-    using typename base_type::hasher_reference;
-
     using typename base_type::scalar_value_type;
 
     using typename base_type::extents_type;
@@ -114,8 +112,6 @@ private:
     scalar_value_type trace_() const override;
     extents_type make_extents_() const override;
     inner_extents_type make_inner_extents_() const override;
-
-    void hash_(hasher_reference h) const override;
 
     bool are_equal_(const base_type& rhs) const noexcept override;
 

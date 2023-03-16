@@ -168,10 +168,6 @@ public:
     bool is_hard_zero(const index_type&, const index_type&) const;
     bool is_hard_zero(const index_type&) const;
 
-protected:
-    /// Additionally hashes the sparse map and index mapping
-    void hash_(tensorwrapper::detail_::Hasher& h) const override;
-
 private:
     /// Private function for common construction error handling
     void validate_construction_() const;

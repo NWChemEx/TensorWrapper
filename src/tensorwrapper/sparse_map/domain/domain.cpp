@@ -181,8 +181,6 @@ bool Domain::operator==(const Domain& rhs) const noexcept {
     return *m_pimpl_ == *rhs.m_pimpl_;
 }
 
-void Domain::hash(tensorwrapper::detail_::Hasher& h) const { h(pimpl_()); }
-
 std::ostream& Domain::print(std::ostream& os) const {
     os << "{";
     using utilities::printing::operator<<;
