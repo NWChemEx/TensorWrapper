@@ -16,6 +16,7 @@
 
 #include "detail_/sparse_map_pimpl.hpp"
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
+#include <sstream>
 
 namespace tensorwrapper::sparse_map {
 
@@ -167,13 +168,6 @@ bool SparseMap::operator==(const SparseMap& rhs) const noexcept {
     else if(!rhs.m_pimpl_)
         return empty();
     return pimpl_() == rhs.pimpl_();
-}
-
-void SparseMap::hash(tensorwrapper::detail_::Hasher& h) const {
-    if(m_pimpl_)
-        pimpl_().hash(h);
-    else
-        h(nullptr);
 }
 
 std::ostream& SparseMap::print(std::ostream& os) const {

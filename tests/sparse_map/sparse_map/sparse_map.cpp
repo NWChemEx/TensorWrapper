@@ -16,6 +16,7 @@
 
 #include "tensorwrapper/sparse_map/sparse_map/sparse_map.hpp"
 #include <catch2/catch.hpp>
+#include <sstream>
 
 using namespace tensorwrapper::sparse_map;
 using namespace tensorwrapper::sparse_map::detail_;
@@ -993,73 +994,6 @@ TEST_CASE("SparseMap") {
                 REQUIRE(ss.str() == corr);
             }
             SECTION("Returns ostream") { REQUIRE(pss == &ss); }
-        }
-    }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        SECTION("Empty == Empty") {
-            auto h  = hash_objects(sms.at("Empty"));
-            auto h2 = hash_objects(SparseMap{});
-            REQUIRE(h == h2);
-        }
-
-        SECTION("Empty == No PIMPL") {
-            auto h  = hash_objects(sms.at("Empty"));
-            auto h2 = hash_objects(sms.at("No PIMPL"));
-#ifdef BPHASH_USE_TYPEID
-            REQUIRE_FALSE(h == h2);
-#else
-            REQUIRE(h == h2);
-#endif
-        }
-
-        SECTION("Empty != non-empty") {
-            auto h = hash_objects(sms.at("Empty"));
-            for(std::size_t i = 0; i < 3; ++i) {
-                std::string key = "Ind == rank " + std::to_string(i);
-                auto& rhs       = sms.at(key);
-                SECTION(key) {
-                    auto h2 = hash_objects(rhs);
-                    REQUIRE(h != h2);
-                }
-            }
-        }
-
-        SECTION("Same non-empty") {
-            auto& lhs = sms.at("Ind == rank 0");
-            auto h    = hash_objects(lhs);
-            auto h2   = hash_objects(SparseMap(lhs));
-            REQUIRE(h == h2);
-        }
-
-        SECTION("Domain is subset/superset") {
-            auto& lhs = sms.at("Ind == rank 0");
-            auto h    = hash_objects(lhs);
-            SparseMap copy(lhs);
-            copy.add_to_domain(i0, Index{3});
-            auto h2 = hash_objects(copy);
-            REQUIRE(h != h2);
-        }
-
-        SECTION("Different independent indices") {
-            auto& lhs = sms.at("Ind == rank 1");
-            auto h    = hash_objects(lhs);
-            SparseMap copy(lhs);
-            copy.add_to_domain(Index{3}, Index{3});
-            auto h2 = hash_objects(copy);
-            REQUIRE(h != h2);
-        }
-
-        SECTION("No PIMPL != non-empty") {
-            auto& lhs = sms.at("No PIMPL");
-            auto h    = hash_objects(lhs);
-            for(std::size_t i = 0; i < 3; ++i) {
-                std::string key = "Ind == rank " + std::to_string(i);
-                auto& rhs       = sms.at(key);
-                auto h2         = hash_objects(rhs);
-                SECTION(key) { REQUIRE(h != h2); }
-            }
         }
     }
 }

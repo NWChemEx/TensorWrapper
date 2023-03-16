@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/tensor_wrapper.hpp"
 #include <Eigen/Dense>
 #include <deque>
@@ -85,14 +84,6 @@ public:
      *  @return True if the DIIS instances has the same states. False otherwise.
      */
     bool operator==(const DIIS& rhs) const noexcept;
-
-    /** @brief Adds a hash of the current DIIS to the provided hashing object.
-     *
-     *  @param[in,out] h The object being used for hashing. After this function
-     *                   the internal state will be updated with a hash of this
-     *                   object.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
 
 private:
     size_type m_max_vec_;

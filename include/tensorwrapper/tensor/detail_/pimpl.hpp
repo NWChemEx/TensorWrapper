@@ -293,12 +293,6 @@ public:
      */
     std::ostream& print(std::ostream& os) const;
 
-    /** @brief Adds the hash of the wrapped tensor to the provided Hasher.
-     *
-     *  @param[in,out] h The hasher we are adding the wrapped tensor to.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
-
     /** @brief Determines if two TensorWrapperPIMPLs wrap identical
      *         tensors.
      *

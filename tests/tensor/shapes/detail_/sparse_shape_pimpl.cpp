@@ -366,40 +366,6 @@ TEST_CASE("SparseShapePIMPL<field::Scalar>") {
                 sm_slice_corr);
     }
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
-        extents_type matrix{3, 5};
-        idx2mode_type i2m{0, 1};
-        auto lhs = hash_objects(pimpl_type(matrix, sm, i2m));
-
-        REQUIRE(lhs == hash_objects(pimpl_type(matrix, sm, i2m)));
-
-        SECTION("Different extents") {
-            extents_type mat2{5, 5};
-            auto rhs = hash_objects(pimpl_type(mat2, sm, i2m));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different sm") {
-            sm_type sm2{{i0, {i1}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
-            auto rhs = hash_objects(pimpl_type(matrix, sm2, i2m));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different permutation") {
-            idx2mode_type i2m2{1, 0};
-            auto rhs = hash_objects(pimpl_type(matrix, sm, i2m2));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different most derived classes") {
-            auto rhs = hash_objects(detail_::ShapePIMPL<field_type>(matrix));
-            REQUIRE(lhs != rhs);
-        }
-    }
-
     SECTION("comparison") {
         sm_type sm{{i0, {i1, i3}}, {i1, {i0, i2, i4}}, {i2, {i0, i4}}};
         extents_type matrix{3, 5};
@@ -598,44 +564,6 @@ TEST_CASE("SparseShapePIMPL<field::Tensor>") {
         REQUIRE(p.inner_extents() == inner_map_cpy);
         REQUIRE(p.extents().data() == pmatrix);
         // REQUIRE(p.inner_extents().data() == pinner);
-    }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        sm_type sm{{i00, {i1, i3}}, {i10, {i0, i2, i4}}, {i11, {i0, i4}}};
-        extents_type extents{2, 2};
-        extents_type inner_ex{3, 41, 73};
-        auto inner_map = testing::make_uniform_tot_map(extents, inner_ex);
-        idx2mode_type i2m{0, 1};
-        auto lhs = hash_objects(pimpl_type(extents, inner_map, sm, i2m));
-
-        // Same
-        REQUIRE(lhs == hash_objects(pimpl_type(extents, inner_map, sm, i2m)));
-
-        SECTION("Different extents") {
-            extents_type mat2{5, 5};
-            auto rhs = hash_objects(pimpl_type(mat2, inner_map, sm, i2m));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different sm") {
-            sm_type sm2{{i00, {i1}}, {i01, {i0, i2, i4}}, {i11, {i0, i4}}};
-            auto rhs = hash_objects(pimpl_type(extents, inner_map, sm2, i2m));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different permutation") {
-            idx2mode_type i2m2{1, 0};
-            auto rhs = hash_objects(pimpl_type(extents, inner_map, sm, i2m2));
-            REQUIRE(lhs != rhs);
-        }
-
-        SECTION("Different most derived classes") {
-            auto rhs =
-              hash_objects(detail_::ShapePIMPL<field_type>(extents, inner_map));
-            REQUIRE(lhs != rhs);
-        }
     }
 
     SECTION("comparisons") {

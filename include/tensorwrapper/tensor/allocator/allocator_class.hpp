@@ -210,14 +210,6 @@ public:
     value_pointer reallocate(const value_type& buf,
                              const shape_type& shape) const;
 
-    /** @brief Polymorphically hashes this allocator instance.
-     *
-     *  @param[in,out] h The instance to use for the hashing. After this call
-     *                   @p h will contain a hash of the present allocator.
-     *
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { return hash_(h); }
-
     /** @brief Non-polymorphically compares two Allocators for equality.
      *
      *  This is a non-polymorphic comparison of two Allocator instances, meaning
@@ -270,17 +262,6 @@ protected:
 
     /// To help derived classes implement clone_
     Allocator(const Allocator&) = default;
-
-    /** @brief Hook for polymorphically hashing an Allocator.
-     *
-     *  The derived class is responsible for hashing any state it adds to the
-     *  allocator and then calling the `hash_` of the class below it.
-     *
-     *  @param[in,out] h The instance being used to hash. After this call @p h
-     *                   will contain a hash of this allocator instance.
-     *
-     */
-    virtual void hash_(tensorwrapper::detail_::Hasher& h) const;
 
     /// Deleted to avoid slicing
     Allocator(Allocator&&) = delete;
@@ -367,12 +348,6 @@ typename Allocator<FieldType>::value_pointer Allocator<FieldType>::reallocate(
 template<typename FieldType>
 bool Allocator<FieldType>::is_equal_(const Allocator& rhs) const noexcept {
     return *this == rhs;
-}
-
-template<typename FieldType>
-void Allocator<FieldType>::hash_(tensorwrapper::detail_::Hasher& h) const {
-    throw std::runtime_error("Hasher NYI");
-    // h(m_world_);
 }
 
 } // namespace tensorwrapper::tensor::allocator

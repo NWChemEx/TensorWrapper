@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/fields.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 #include <memory>
@@ -73,12 +72,6 @@ public:
 
     /// Type used for returning inner extents
     using inner_extents_type = typename shape_type::inner_extents_type;
-
-    /// Type of the object used for hashing
-    using hasher_type = tensorwrapper::detail_::Hasher;
-
-    /// Mutable reference to a hasher
-    using hasher_reference = hasher_type&;
 
     /// Type used for scalar values in the tensor
     using scalar_value_type = double;
@@ -476,15 +469,6 @@ public:
     bool operator==(const Buffer<T>& rhs) const noexcept {
         return false;
     }
-
-    /** @brief Hashes the present buffer.
-     *
-     *
-     *  @param[in,out] h The object to use for hashing this instance. After this
-     *                   call the internal state of @p h will be updated to
-     *                   include a hash of this Buffer's state.
-     */
-    void hash(hasher_reference h) const;
 
     /** @brief Prints a buffer to the provided ostream.
      *

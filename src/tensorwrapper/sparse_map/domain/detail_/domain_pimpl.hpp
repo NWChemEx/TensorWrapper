@@ -15,20 +15,11 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include <boost/container/flat_set.hpp>
 #include <memory>
 #include <set>
 #include <utilities/iter_tools.hpp>
-
-namespace boost::container {
-template<typename ElementType>
-void hash_object(const boost::container::flat_set<ElementType>& v,
-                 tensorwrapper::detail_::Hasher& h) {
-    for(const auto& x : v) h(x);
-}
-} // namespace boost::container
 
 namespace tensorwrapper::sparse_map::detail_ {
 
@@ -280,14 +271,6 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator==(const DomainPIMPL& rhs) const noexcept;
-
-    /** @brief Computes the hash of the Domain.
-     *
-     *  @param[in,out] h The object computing the hash. After this call the
-     *                   internal state will be updated with the hash of the
-     *                   Domain's state.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_domain_); }
 
 private:
     /** @brief Adds the specified index to the mode_map instance.

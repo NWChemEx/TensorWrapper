@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/tensor/allocator/allocator_class.hpp"
 #include "tensorwrapper/tensor/shapes/shape.hpp"
 #include <TiledArray/sparse_shape.h>
@@ -38,7 +37,6 @@ namespace tensorwrapper::tensor::detail_ {
  *  Derived classes should override the following functions as appropriate:
  *
  *  - clone_
- *  - hash_
  *
  *  @tparam FieldType The type of the elements in the tensor. Assumed to be
  *                    either field::Scalar or field::Tensor.
@@ -239,24 +237,7 @@ public:
      */
     bool operator==(const ShapePIMPL& rhs) const noexcept;
 
-    /** @brief Polymorphic hash operation.
-     *
-     *  This function will hash the entire state of the current instance,
-     *  including any state in the derived classes. For this to work, the
-     *  derived class must override `hash_`.
-     *
-     *  @param[in,out] h The hasher instance to use to hash this instance. After
-     *                   this call the interal state of @p h will be updated
-     *                   with a hash of the current instance.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { hash_(h); }
-
 protected:
-    /// To be overridden by the derived class to implement hash()
-    virtual void hash_(tensorwrapper::detail_::Hasher& h) const {
-        h(m_extents_, m_inner_extents_, m_tiling_);
-    }
-
     virtual pimpl_pointer slice_(const index_type&, const index_type&) const;
 
 private:

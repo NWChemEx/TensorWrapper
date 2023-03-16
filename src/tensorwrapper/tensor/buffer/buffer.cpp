@@ -183,9 +183,6 @@ bool BUFFER::operator==(const Buffer& rhs) const noexcept {
 }
 
 TEMPLATE_PARAMS
-void BUFFER::hash(hasher_reference h) const { h(m_pimpl_); }
-
-TEMPLATE_PARAMS
 std::ostream& BUFFER::print(std::ostream& os) const {
     if(!is_initialized()) return os;
     return os << *m_pimpl_;

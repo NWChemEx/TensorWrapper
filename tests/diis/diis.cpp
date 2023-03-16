@@ -15,7 +15,6 @@
  */
 
 #include <catch2/catch.hpp>
-#include <tensorwrapper/detail_/hashing.hpp>
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/tensor/allclose.hpp>
 #include <tensorwrapper/tensor/detail_/ta_to_tw.hpp>
@@ -99,17 +98,5 @@ TEST_CASE("DIIS") {
         SECTION("Recorded values different") {
             REQUIRE(diis_default != diis_used);
         }
-    }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        auto h_default    = hash_objects(diis_default);
-        auto h_with_value = hash_objects(diis_max_2);
-        auto h_used       = hash_objects(diis_used);
-
-        REQUIRE(h_default == hash_objects(diis_type()));
-        REQUIRE(h_with_value == hash_objects(diis_type(2)));
-        REQUIRE(h_default != h_with_value);
-        REQUIRE(h_default != h_used);
     }
 }

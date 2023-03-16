@@ -411,11 +411,6 @@ typename TABUFFERPIMPL::inner_extents_type TABUFFERPIMPL::make_inner_extents_()
 // -- Utilities ----------------------------------------------------------------
 
 TEMPLATE_PARAMS
-void TABUFFERPIMPL::hash_(hasher_reference h) const {
-    std::visit([&](auto&& t) { h(t); }, m_tensor_);
-}
-
-TEMPLATE_PARAMS
 bool TABUFFERPIMPL::are_equal_(const base_type& rhs) const noexcept {
     // Attempt to downcast
     auto ptr = dynamic_cast<const my_type*>(&rhs);

@@ -210,11 +210,6 @@ std::ostream& PIMPL_TYPE::print(std::ostream& os) const {
 }
 
 template<typename FieldType>
-void PIMPL_TYPE::hash(tensorwrapper::detail_::Hasher& h) const {
-    h(m_shape_, m_allocator_, m_buffer_);
-}
-
-template<typename FieldType>
 bool PIMPL_TYPE::operator==(const TensorWrapperPIMPL& rhs) const {
     // Compare shapes
     if(m_shape_ && rhs.m_shape_) {

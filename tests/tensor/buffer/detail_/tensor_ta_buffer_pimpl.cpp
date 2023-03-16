@@ -392,16 +392,6 @@ TEST_CASE("TABufferPIMPL<Tensor>") {
         }
     }
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        auto lhs = hash_objects(vov);
-
-        SECTION("Are same") {
-            REQUIRE(lhs == hash_objects(buffer_type(vov_ta)));
-        }
-        SECTION("Different") { REQUIRE(lhs != hash_objects(mov)); }
-    }
-
     SECTION("are_equal") {
         SECTION("Are same") {
             buffer_type other_vov(vov_ta);

@@ -294,14 +294,6 @@ public:
      */
     std::ostream& print(std::ostream& os) const;
 
-    /** @brief Adds this SparseMap's state to a hash.
-     *
-     *  @param[in,out] h The object hashing the SparseMap. After this call the
-     *                   internal hash of @p h will be updated to include this
-     *                   SparseMap's state.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_sm_); }
-
 private:
     /// Type of the std::map holding the SparseMap's state
     using map_type = std::map<key_type, mapped_type>;

@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include "tensorwrapper/sparse_map/domain/domain.hpp"
 #include "tensorwrapper/sparse_map/index.hpp"
 #include <map>
@@ -500,14 +499,6 @@ public:
      * @return @p os with this SparseMap added to it.
      */
     std::ostream& print(std::ostream& os) const;
-
-    /** @brief Adds this SparseMap's state to a hash.
-     *
-     *  @param[in,out] h The object hashing the SparseMap. After this call the
-     *                   internal hash of @p h will be updated to include this
-     *                   SparseMap's state.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const;
 
 private:
     /// Ensures the instance has a PIMPL and returns it

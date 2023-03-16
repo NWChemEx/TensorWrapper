@@ -520,16 +520,6 @@ TEST_CASE("TABufferPIMPL<Scalar>") {
         }
     }
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        auto lhs = hash_objects(vec);
-
-        SECTION("Are same") {
-            REQUIRE(lhs == hash_objects(buffer_type(vec_ta)));
-        }
-        SECTION("Different") { REQUIRE(lhs != hash_objects(mat)); }
-    }
-
     SECTION("are_equal") {
         SECTION("Are same") {
             buffer_type other_vec(vec_ta);

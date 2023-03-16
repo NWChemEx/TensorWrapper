@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "tensorwrapper/detail_/hashing.hpp"
 #include <algorithm> // lexicographic_compare
 #include <iostream>
 #include <vector>
@@ -165,14 +164,6 @@ struct Index {
      *          index.
      */
     auto end() const { return m_index.end(); }
-
-    /** @brief Updates the hasher so that it accounts for this Index's value.
-     *
-     *  @param[in,out] h The object computing a hash. After this call the
-     *                   running hash of @p h will include the state of this
-     *                   Index instance.
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const { h(m_index); }
 
     /** @brief Prints the Index to the provided std::ostream
      *

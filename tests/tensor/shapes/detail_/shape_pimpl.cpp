@@ -151,32 +151,6 @@ TEST_CASE("ShapePIMPL<Scalar>") {
         REQUIRE(matrix_from_tiling.tiling() == matrix_block_tiling);
     }
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        REQUIRE(hash_objects(defaulted) == hash_objects(scalar));
-
-        const auto v2_hash = hash_objects(pimpl_type(vector_extents));
-        REQUIRE(hash_objects(vector_from_extents) == v2_hash);
-
-        const auto m2_hash = hash_objects(pimpl_type(matrix_extents));
-        REQUIRE(hash_objects(matrix_from_extents) == m2_hash);
-
-        REQUIRE_FALSE(hash_objects(defaulted) ==
-                      hash_objects(vector_from_extents));
-
-        REQUIRE_FALSE(hash_objects(vector_from_extents) ==
-                      hash_objects(matrix_from_extents));
-
-        const auto v3_hash = hash_objects(pimpl_type(extents_type{5}));
-        REQUIRE_FALSE(hash_objects(vector_from_tiling) == v3_hash);
-
-        REQUIRE_FALSE(hash_objects(vector_from_extents) ==
-                      hash_objects(vector_from_tiling));
-
-        REQUIRE_FALSE(hash_objects(matrix_from_extents) ==
-                      hash_objects(matrix_from_tiling));
-    }
-
     SECTION("Equality") {
         REQUIRE(defaulted == scalar);
         REQUIRE(pimpl_type(vector_span_tiling) == pimpl_type(vector_extents));
@@ -347,43 +321,6 @@ TEST_CASE("ShapePIMPL<Tensor>") {
             REQUIRE(*vov_slice == corr_vov_slice);
             REQUIRE(*mov_slice == corr_mov_slice);
         }
-    }
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-
-        auto test_hash = [&](auto& obj, auto& oe, auto&& ie) {
-            const auto hash2 = hash_objects(pimpl_type(oe, ie));
-            REQUIRE(hash_objects(obj) == hash2);
-        };
-        test_hash(vov, vector_extents, vov_map);
-        test_hash(vom, vector_extents, vom_map);
-        test_hash(mov, matrix_extents, mov_map);
-        test_hash(mom, matrix_extents, mom_map);
-
-        test_hash(vov_from_tiling, vector_block_tiling, vov_map);
-        test_hash(vom_from_tiling, vector_block_tiling, vom_map);
-        test_hash(mov_from_tiling, matrix_block_tiling, mov_map);
-        test_hash(mom_from_tiling, matrix_block_tiling, mom_map);
-
-        REQUIRE_FALSE(hash_objects(vov) == hash_objects(mom)); // both diff
-        REQUIRE_FALSE(hash_objects(vom) == hash_objects(mov)); // extent swap
-        REQUIRE_FALSE(hash_objects(vov) == hash_objects(vov_from_tiling));
-
-        auto test_hash_false = [&](auto& obj, auto oe, auto ie) {
-            const auto hash2 = hash_objects(pimpl_type(oe, ie));
-            REQUIRE_FALSE(hash_objects(obj) == hash2);
-        };
-
-        test_hash_false(
-          vov, extents_type{5},
-          testing::make_uniform_tot_map(extents_type{5}, vector_extents));
-        test_hash_false(
-          vov, vector_extents,
-          testing::make_uniform_tot_map(vector_extents, extents_type{5}));
-        test_hash_false(
-          vov, extents_type{5},
-          testing::make_uniform_tot_map(extents_type{5}, extents_type{5}));
     }
 
     SECTION("Equality") {

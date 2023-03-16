@@ -16,7 +16,6 @@
 
 #pragma once
 #include <memory>
-#include <tensorwrapper/detail_/hashing.hpp>
 #include <tiledarray.h>
 #include <utility>
 
@@ -81,16 +80,6 @@ struct LazyTile {
      *  @param id The id that will be associated with the evaluator
      */
     static void add_evaluator(evaluator_type evaluator, id_type id);
-
-    /** @brief Hash this tile
-     *
-     *  Not implemented. Just here to satisfy infrastructure.
-     *
-     *  @param h A hash function
-     */
-    void hash(tensorwrapper::detail_::Hasher& h) const {
-        /// Does this matter?
-    }
 
     /** @brief Prints the tile
      *

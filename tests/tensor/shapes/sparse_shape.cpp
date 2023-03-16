@@ -130,39 +130,6 @@ TEST_CASE("SparseShape<field::Scalar>") {
     }
 #endif
 
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        SECTION("LHS is matrix") {
-            auto lhs = hash_objects(m);
-
-            SECTION("Same state") {
-                auto rhs = hash_objects(shape_type(matrix_extents, matrix_sm));
-                REQUIRE(lhs == rhs);
-            }
-
-            SECTION("Different extents") {
-                extents_type other_extents{5, 5};
-                auto rhs = hash_objects(shape_type(other_extents, matrix_sm));
-                REQUIRE(lhs != rhs);
-            }
-
-            SECTION("Different sparse maps") {
-                sparse_map_type sm2{{i0, {i0, i1}}, {i1, {i0, i1}}};
-                auto rhs = hash_objects(shape_type(matrix_extents, sm2));
-                REQUIRE(lhs != rhs);
-            }
-
-            SECTION("Different permutation") {
-                REQUIRE(lhs != hash_objects(mt));
-            }
-
-            SECTION("Is polymorphic") {
-                Shape<field::Scalar> base(matrix_extents);
-                REQUIRE(lhs != hash_objects(base));
-            }
-        }
-    }
-
     SECTION("comparisons") {
         // Same
         REQUIRE(m == shape_type(matrix_extents, matrix_sm));
@@ -281,40 +248,6 @@ TEST_CASE("SparseShape<field::Tensor>") {
         }
     }
 #endif
-
-    SECTION("hash") {
-        using tensorwrapper::detail_::hash_objects;
-        SECTION("LHS is matrix") {
-            auto lhs = hash_objects(t);
-
-            SECTION("Same state") {
-                auto rhs = hash_objects(shape_type(extents, inner_map, sm));
-                REQUIRE(lhs == rhs);
-            }
-
-            SECTION("Different extents") {
-                extents_type other_extents{5, 5};
-                auto rhs =
-                  hash_objects(shape_type(other_extents, inner_map, sm));
-                REQUIRE(lhs != rhs);
-            }
-
-            SECTION("Different sparse maps") {
-                sparse_map_type sm2{{i00, {i0, i1}}, {i11, {i0, i1}}};
-                auto rhs = hash_objects(shape_type(extents, inner_map, sm2));
-                REQUIRE(lhs != rhs);
-            }
-
-            SECTION("Different permutation") {
-                REQUIRE(lhs != hash_objects(tt));
-            }
-
-            SECTION("Is polymorphic") {
-                Shape<field::Scalar> base(extents);
-                REQUIRE(lhs != hash_objects(base));
-            }
-        }
-    }
 
     SECTION("comparisons") {
         // Same

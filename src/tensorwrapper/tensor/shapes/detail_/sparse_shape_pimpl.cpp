@@ -327,12 +327,6 @@ typename SPARSE_SHAPE_PIMPL::pimpl_pointer SPARSE_SHAPE_PIMPL::clone_() const {
     return pimpl_pointer(new my_type(*this));
 }
 
-template<typename FieldType>
-void SPARSE_SHAPE_PIMPL::hash_(tensorwrapper::detail_::Hasher& h) const {
-    h(m_sm_, m_i2m_);
-    base_type::hash_(h);
-}
-
 #undef SPARSE_SHAPE_PIMPL
 
 template class SparseShapePIMPL<field::Scalar>;

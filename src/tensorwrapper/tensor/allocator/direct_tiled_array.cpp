@@ -20,10 +20,6 @@
 #define TA_ALLOCATOR DirectTiledArrayAllocator<FieldType>
 namespace tensorwrapper::tensor::allocator {
 
-TPARAM void TA_ALLOCATOR::hash_(tensorwrapper::detail_::Hasher& h) const {
-    h(m_fxn_id_);
-}
-
 TPARAM typename TA_ALLOCATOR::allocator_ptr TA_ALLOCATOR::clone_() const {
     return allocator_ptr(new my_type(*this));
 }
