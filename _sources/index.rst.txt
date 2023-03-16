@@ -12,14 +12,15 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
+#############
 TensorWrapper
-==========
+#############
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   orbital_space/index
+   terminology
+   developer/index
    sparse_maps/index
    C++ API <https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html>
-
-

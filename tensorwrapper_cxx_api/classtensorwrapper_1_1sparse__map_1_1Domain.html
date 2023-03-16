@@ -180,9 +180,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a58491965a0954d686d7eb2b5d4dc0121"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a58491965a0954d686d7eb2b5d4dc0121">operator==</a> (const <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html">Domain</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:a58491965a0954d686d7eb2b5d4dc0121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if two Domains are the same.  <a href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a58491965a0954d686d7eb2b5d4dc0121">More...</a><br /></td></tr>
 <tr class="separator:a58491965a0954d686d7eb2b5d4dc0121"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c7e30a8ee4453a3bdcb452e5ee5543d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a7c7e30a8ee4453a3bdcb452e5ee5543d">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a7c7e30a8ee4453a3bdcb452e5ee5543d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a hash of the current domain to the provided hashing object.  <a href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a7c7e30a8ee4453a3bdcb452e5ee5543d">More...</a><br /></td></tr>
-<tr class="separator:a7c7e30a8ee4453a3bdcb452e5ee5543d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9280fe245223ddf5622c3cb41409a8b6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a9280fe245223ddf5622c3cb41409a8b6">print</a> (std::ostream &amp;os) const</td></tr>
 <tr class="memdesc:a9280fe245223ddf5622c3cb41409a8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1Domain.html" title="A set of element coordinate indices.">Domain</a> to the provided stream.  <a href="classtensorwrapper_1_1sparse__map_1_1Domain.html#a9280fe245223ddf5622c3cb41409a8b6">More...</a><br /></td></tr>
 <tr class="separator:a9280fe245223ddf5622c3cb41409a8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -508,38 +505,6 @@ Related Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a7c7e30a8ee4453a3bdcb452e5ee5543d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c7e30a8ee4453a3bdcb452e5ee5543d">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void tensorwrapper::sparse_map::Domain::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a hash of the current domain to the provided hashing object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The object being used for hashing. After this function the internal state will be updated with a hash of this object.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if the PIMPL is not set. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>

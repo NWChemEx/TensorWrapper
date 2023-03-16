@@ -157,9 +157,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:adcece865810a1ea6397121e7edc0e8ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:adcece865810a1ea6397121e7edc0e8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-polymorphic comparison.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#adcece865810a1ea6397121e7edc0e8ab">More...</a><br /></td></tr>
 <tr class="separator:adcece865810a1ea6397121e7edc0e8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3367d3d8f8643cd7ef1a401df06fc27d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a3367d3d8f8643cd7ef1a401df06fc27d">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a3367d3d8f8643cd7ef1a401df06fc27d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic hash operation.  <a href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a3367d3d8f8643cd7ef1a401df06fc27d">More...</a><br /></td></tr>
-<tr class="separator:a3367d3d8f8643cd7ef1a401df06fc27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:abb65daadefd1d623a3f8d19a278c0a5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#abb65daadefd1d623a3f8d19a278c0a5d">ShapePIMPL</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">ShapePIMPL</a> &amp;&amp;other)=delete</td></tr>
 <tr class="separator:abb65daadefd1d623a3f8d19a278c0a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,10 +169,6 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a5b42743a2d18d36d6cbbda7c497b6261"><td class="memItemLeft" align="right" valign="top"><a id="a5b42743a2d18d36d6cbbda7c497b6261"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a5b42743a2d18d36d6cbbda7c497b6261">hash_</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a5b42743a2d18d36d6cbbda7c497b6261"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be overridden by the derived class to implement <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a3367d3d8f8643cd7ef1a401df06fc27d" title="Polymorphic hash operation.">hash()</a> <br /></td></tr>
-<tr class="separator:a5b42743a2d18d36d6cbbda7c497b6261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef62684be309d70adf843bf2de58a347"><td class="memItemLeft" align="right" valign="top"><a id="aef62684be309d70adf843bf2de58a347"></a>
 virtual <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#a85daea3cdc35012dc8a7d31d13efce7f">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slice_</b> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ae3b88ea1ed4fe46c55bacc562708cfe2">index_type</a> &amp;, const <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html#ae3b88ea1ed4fe46c55bacc562708cfe2">index_type</a> &amp;) const</td></tr>
 <tr class="separator:aef62684be309d70adf843bf2de58a347"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,7 +183,6 @@ class tensorwrapper::tensor::detail_::ShapePIMPL&lt; FieldType &gt;</h3>
 <p>Derived classes should override the following functions as appropriate:</p>
 <ul>
 <li>clone_</li>
-<li>hash_</li>
 </ul>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -447,43 +439,6 @@ template&lt;typename FieldType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw gurantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a3367d3d8f8643cd7ef1a401df06fc27d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3367d3d8f8643cd7ef1a401df06fc27d">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1tensor_1_1detail___1_1ShapePIMPL.html">tensorwrapper::tensor::detail_::ShapePIMPL</a>&lt; FieldType &gt;::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Polymorphic hash operation. </p>
-<p>This function will hash the entire state of the current instance, including any state in the derived classes. For this to work, the derived class must override <code>hash_</code>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The hasher instance to use to hash this instance. After this call the interal state of <code>h</code> will be updated with a hash of the current instance. </td></tr>
   </table>
   </dd>
 </dl>

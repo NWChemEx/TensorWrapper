@@ -134,9 +134,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab7df7ff65fbde8ffc0d4d811555bbf2e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#ab7df7ff65fbde8ffc0d4d811555bbf2e">end</a> () const</td></tr>
 <tr class="memdesc:ab7df7ff65fbde8ffc0d4d811555bbf2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator pointing to just past the last component of the index.  <a href="structtensorwrapper_1_1sparse__map_1_1Index.html#ab7df7ff65fbde8ffc0d4d811555bbf2e">More...</a><br /></td></tr>
 <tr class="separator:ab7df7ff65fbde8ffc0d4d811555bbf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cb9c672e072958e918ead54bee74529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#a6cb9c672e072958e918ead54bee74529">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a6cb9c672e072958e918ead54bee74529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the hasher so that it accounts for this <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html" title="Thin wrapper class around a multi-rank index.">Index</a>'s value.  <a href="structtensorwrapper_1_1sparse__map_1_1Index.html#a6cb9c672e072958e918ead54bee74529">More...</a><br /></td></tr>
-<tr class="separator:a6cb9c672e072958e918ead54bee74529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa3cbcf8832ec6c7997a21bd3b592b1d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html#afa3cbcf8832ec6c7997a21bd3b592b1d">print</a> (std::ostream &amp;os) const</td></tr>
 <tr class="memdesc:afa3cbcf8832ec6c7997a21bd3b592b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html" title="Thin wrapper class around a multi-rank index.">Index</a> to the provided std::ostream.  <a href="structtensorwrapper_1_1sparse__map_1_1Index.html#afa3cbcf8832ec6c7997a21bd3b592b1d">More...</a><br /></td></tr>
 <tr class="separator:afa3cbcf8832ec6c7997a21bd3b592b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -514,40 +511,6 @@ template&lt;typename BeginItr , typename EndItr , typename &gt; </div>
 
 <p>Returns an iterator pointing to just past the last component of the index. </p>
 <dl class="section return"><dt>Returns</dt><dd>An iterator pointing to just past the last component of the index. </dd></dl>
-
-</div>
-</div>
-<a id="a6cb9c672e072958e918ead54bee74529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cb9c672e072958e918ead54bee74529">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void tensorwrapper::sparse_map::Index::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Updates the hasher so that it accounts for this <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html" title="Thin wrapper class around a multi-rank index.">Index</a>'s value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The object computing a hash. After this call the running hash of <code>h</code> will include the state of this <a class="el" href="structtensorwrapper_1_1sparse__map_1_1Index.html" title="Thin wrapper class around a multi-rank index.">Index</a> instance. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

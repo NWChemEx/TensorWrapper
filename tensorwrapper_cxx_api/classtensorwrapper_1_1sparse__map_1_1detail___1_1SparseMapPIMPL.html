@@ -160,9 +160,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>count</b> (const <a c
 <tr class="memitem:a9d71a7c049b25558b978066a9610c238"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9d71a7c049b25558b978066a9610c238">print</a> (std::ostream &amp;os) const</td></tr>
 <tr class="memdesc:a9d71a7c049b25558b978066a9610c238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a> to the stream.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a9d71a7c049b25558b978066a9610c238">More...</a><br /></td></tr>
 <tr class="separator:a9d71a7c049b25558b978066a9610c238"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state to a hash.  <a href="classtensorwrapper_1_1sparse__map_1_1detail___1_1SparseMapPIMPL.html#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">More...</a><br /></td></tr>
-<tr class="separator:a41f5dc2fcdf7631a7ad1e29c1d9c67ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -468,40 +465,6 @@ Related Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>if there is not enough memory to store the new state. Strong throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a41f5dc2fcdf7631a7ad1e29c1d9c67ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41f5dc2fcdf7631a7ad1e29c1d9c67ec">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void tensorwrapper::sparse_map::detail_::SparseMapPIMPL::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state to a hash. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The object hashing the <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>. After this call the internal hash of <code>h</code> will be updated to include this <a class="el" href="classtensorwrapper_1_1sparse__map_1_1SparseMap.html">SparseMap</a>'s state. </td></tr>
   </table>
   </dd>
 </dl>

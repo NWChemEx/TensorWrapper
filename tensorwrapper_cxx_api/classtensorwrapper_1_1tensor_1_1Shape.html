@@ -198,9 +198,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_hard_zero</b> (con
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a5a06372c74de8c2c91e2ad907941f22c">is_equal</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:a5a06372c74de8c2c91e2ad907941f22c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic equality comparison. <br /></td></tr>
 <tr class="separator:a5a06372c74de8c2c91e2ad907941f22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89f00246132cd481366c8152dc1d0cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html#a89f00246132cd481366c8152dc1d0cc4">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a89f00246132cd481366c8152dc1d0cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic hash function.  <a href="classtensorwrapper_1_1tensor_1_1Shape.html#a89f00246132cd481366c8152dc1d0cc4">More...</a><br /></td></tr>
-<tr class="separator:a89f00246132cd481366c8152dc1d0cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -655,35 +652,6 @@ template&lt;typename FieldType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a89f00246132cd481366c8152dc1d0cc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89f00246132cd481366c8152dc1d0cc4">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">tensorwrapper::tensor::Shape</a>&lt; FieldType &gt;::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Polymorphic hash function. </p>
-<p>This function will hash the entire state (including that in any derived classes).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The instance to use for hashing. After this call, the internal state of <code>h</code> will be updated to include the hash of the current <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a> instance. </td></tr>
   </table>
   </dd>
 </dl>

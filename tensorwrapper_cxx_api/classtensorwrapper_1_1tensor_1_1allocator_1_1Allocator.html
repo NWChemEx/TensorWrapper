@@ -164,9 +164,6 @@ value_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b>
 <tr class="memitem:a744e9f0a717820fa70fe235ee42e8201"><td class="memItemLeft" align="right" valign="top"><a id="a744e9f0a717820fa70fe235ee42e8201"></a>
 value_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>reallocate</b> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae975492077d0e0bb0ffc231a41f56997">value_type</a> &amp;buf, const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a3c1edba20e2bca001f8ee90a84c8277a">shape_type</a> &amp;shape) const</td></tr>
 <tr class="separator:a744e9f0a717820fa70fe235ee42e8201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae61aca2e10a5f80e54550fd68d9b9022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae61aca2e10a5f80e54550fd68d9b9022">hash</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:ae61aca2e10a5f80e54550fd68d9b9022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphically hashes this allocator instance.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae61aca2e10a5f80e54550fd68d9b9022">More...</a><br /></td></tr>
-<tr class="separator:ae61aca2e10a5f80e54550fd68d9b9022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a960134897aa1e38050ed72d95be4d621"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a960134897aa1e38050ed72d95be4d621">operator==</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:a960134897aa1e38050ed72d95be4d621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-polymorphically compares two Allocators for equality.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a960134897aa1e38050ed72d95be4d621">More...</a><br /></td></tr>
 <tr class="separator:a960134897aa1e38050ed72d95be4d621"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,9 +181,6 @@ Protected Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#afdc4d391c5ea551f442b32d6bf72b026">Allocator</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;)=default</td></tr>
 <tr class="memdesc:afdc4d391c5ea551f442b32d6bf72b026"><td class="mdescLeft">&#160;</td><td class="mdescRight">To help derived classes implement clone_. <br /></td></tr>
 <tr class="separator:afdc4d391c5ea551f442b32d6bf72b026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dd1acfa9939282cdfc549248459f64d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a0dd1acfa9939282cdfc549248459f64d">hash_</a> (tensorwrapper::detail_::Hasher &amp;h) const</td></tr>
-<tr class="memdesc:a0dd1acfa9939282cdfc549248459f64d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hook for polymorphically hashing an <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a>.  <a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a0dd1acfa9939282cdfc549248459f64d">More...</a><br /></td></tr>
-<tr class="separator:a0dd1acfa9939282cdfc549248459f64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9c95106e080b52dc38e7356712cd867"><td class="memItemLeft" align="right" valign="top"><a id="ae9c95106e080b52dc38e7356712cd867"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#ae9c95106e080b52dc38e7356712cd867">Allocator</a> (<a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">Allocator</a> &amp;&amp;)=delete</td></tr>
 <tr class="memdesc:ae9c95106e080b52dc38e7356712cd867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted to avoid slicing. <br /></td></tr>
@@ -238,7 +232,7 @@ Adding A New Allocator Specialization</h1>
 <div class="line">    <span class="keywordflow">if</span>(!prhs) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line">    <span class="keywordflow">return</span> *<span class="keyword">this</span> == *prhs;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_a44de730d3eddbcd246be58d5942e966b"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">tensorwrapper::tensor::allocator::Allocator::is_equal_</a></div><div class="ttdeci">virtual bool is_equal_(const Allocator &amp;rhs) const noexcept</div><div class="ttdoc">Hook for polymorphically comparing two Allocators.</div><div class="ttdef"><b>Definition:</b> allocator_class.hpp:368</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1tensor_1_1allocator_1_1Allocator_html_a44de730d3eddbcd246be58d5942e966b"><div class="ttname"><a href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html#a44de730d3eddbcd246be58d5942e966b">tensorwrapper::tensor::allocator::Allocator::is_equal_</a></div><div class="ttdeci">virtual bool is_equal_(const Allocator &amp;rhs) const noexcept</div><div class="ttdoc">Hook for polymorphically comparing two Allocators.</div><div class="ttdef"><b>Definition:</b> allocator_class.hpp:349</div></div>
 </div><!-- fragment --> as long as the non-polymorphic comparison operator (<em>i.e.</em>, operator==) is implemented correctly.</li>
 <li>Implement make_tr_(). The implementation of this function is highly specific to the derived class.</li>
 </ol>
@@ -312,79 +306,6 @@ template&lt;typename FieldType &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>The derived class may throw std::bad_alloc if a problem arises making the deep copy. The derived class is responsible for ensuring that if an exception does arise, this function obeys a strong throw guarantee. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ae61aca2e10a5f80e54550fd68d9b9022"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae61aca2e10a5f80e54550fd68d9b9022">&#9670;&nbsp;</a></span>hash()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">tensorwrapper::tensor::allocator::Allocator</a>&lt; FieldType &gt;::hash </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Polymorphically hashes this allocator instance. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The instance to use for the hashing. After this call <code>h</code> will contain a hash of the present allocator. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0dd1acfa9939282cdfc549248459f64d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dd1acfa9939282cdfc549248459f64d">&#9670;&nbsp;</a></span>hash_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FieldType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html">tensorwrapper::tensor::allocator::Allocator</a>&lt; FieldType &gt;::hash_ </td>
-          <td>(</td>
-          <td class="paramtype">tensorwrapper::detail_::Hasher &amp;&#160;</td>
-          <td class="paramname"><em>h</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Hook for polymorphically hashing an <a class="el" href="classtensorwrapper_1_1tensor_1_1allocator_1_1Allocator.html" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed.">Allocator</a>. </p>
-<p>The derived class is responsible for hashing any state it adds to the allocator and then calling the <code>hash_</code> of the class below it.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">h</td><td>The instance being used to hash. After this call <code>h</code> will contain a hash of this allocator instance. </td></tr>
   </table>
   </dd>
 </dl>
