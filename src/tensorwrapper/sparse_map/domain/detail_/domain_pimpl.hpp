@@ -63,9 +63,9 @@ public:
     DomainPIMPL() = default;
 
     /// Default copy and move ctors
-    DomainPIMPL(const DomainPIMPL& other)                = default;
-    DomainPIMPL(DomainPIMPL&& other) noexcept            = default;
-    DomainPIMPL& operator=(const DomainPIMPL& other)     = default;
+    DomainPIMPL(const DomainPIMPL& other)     = default;
+    DomainPIMPL(DomainPIMPL&& other) noexcept = default;
+    DomainPIMPL& operator=(const DomainPIMPL& other) = default;
     DomainPIMPL& operator=(DomainPIMPL&& other) noexcept = default;
 
     /// Default dtor

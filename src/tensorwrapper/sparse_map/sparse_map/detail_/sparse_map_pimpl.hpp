@@ -53,10 +53,10 @@ public:
     SparseMapPIMPL() = default;
 
     /// Default ctors
-    SparseMapPIMPL(const SparseMapPIMPL& rhs)            = default;
-    SparseMapPIMPL(SparseMapPIMPL&& rhs)                 = default;
+    SparseMapPIMPL(const SparseMapPIMPL& rhs) = default;
+    SparseMapPIMPL(SparseMapPIMPL&& rhs)      = default;
     SparseMapPIMPL& operator=(const SparseMapPIMPL& rhs) = default;
-    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs)      = default;
+    SparseMapPIMPL& operator=(SparseMapPIMPL&& rhs) = default;
 
     /// Default polymorphic dtor
     virtual ~SparseMapPIMPL() = default;
