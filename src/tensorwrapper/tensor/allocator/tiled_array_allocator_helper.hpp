@@ -98,11 +98,12 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
         auto ta_functor = [=, &tot_fxn, &shape](tile_type& t,
                                                 const range_type& range) {
             t = tile_type(range);
-            for(auto idx : range) {
-                auto nwx_outer_idx = sparse_map::Index(idx.begin(), idx.end());
+            for(auto oidx : range) {
+                auto nwx_outer_idx =
+                  sparse_map::Index(oidx.begin(), oidx.end());
                 if(!shape.is_hard_zero(nwx_outer_idx)) {
-                    std::vector<size_t> outer_index(idx.begin(), idx.end());
-                    auto& inner_tile = t[idx];
+                    std::vector<size_t> outer_index(oidx.begin(), oidx.end());
+                    auto& inner_tile = t[oidx];
 
                     // Get inner tile dimension
                     const auto& inner_extents =
@@ -119,9 +120,9 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
                         tot_fxn(outer_index, lo_bound, up_bound,
                                 inner_tile.data());
                     } else {
-                        for(const auto& idx : inner_range) {
-                            std::vector<size_t> _idx(idx.begin(), idx.end());
-                            inner_tile[idx] = tot_fxn(outer_index, _idx);
+                        for(const auto& iidx : inner_range) {
+                            std::vector<size_t> _idx(iidx.begin(), iidx.end());
+                            inner_tile[iidx] = tot_fxn(outer_index, _idx);
                         }
                     }
                 }
