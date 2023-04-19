@@ -15,6 +15,7 @@
  */
 
 #include "tiled_array_allocator_helper.hpp"
+#include <madness/world/MADworld.h>
 
 #define TPARAM template<typename FieldType>
 #define TA_ALLOCATOR DirectTiledArrayAllocator<FieldType>
@@ -29,14 +30,16 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     using lazy_tensor_type     = detail_::lazy_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
-    runtime_type m_world_{};
+    runtime_type m_runtime_{};
+    auto comm   = m_runtime_.mpi_comm();
+    auto& world = *madness::World::find_instance(SafeMPI::Intracomm(comm));
     lazy_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_direct_tensor(
-          m_world_.madness_world(), shape, m_fxn_id_, fxn);
+        ta_tensor = detail_::generate_ta_scalar_direct_tensor(world, shape,
+                                                              m_fxn_id_, fxn);
     } else {
-        ta_tensor = detail_::generate_ta_tot_direct_tensor(
-          m_world_.madness_world(), shape, m_fxn_id_, fxn);
+        ta_tensor =
+          detail_::generate_ta_tot_direct_tensor(world, shape, m_fxn_id_, fxn);
     }
 
     // Return Buffer pointer
@@ -49,14 +52,16 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     using lazy_tensor_type     = detail_::lazy_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
-    runtime_type m_world_{};
+    runtime_type m_runtime_{};
+    auto comm   = m_runtime_.mpi_comm();
+    auto& world = *madness::World::find_instance(SafeMPI::Intracomm(comm));
     lazy_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_direct_tensor(
-          m_world_.madness_world(), shape, m_fxn_id_, fxn);
+        ta_tensor = detail_::generate_ta_scalar_direct_tensor(world, shape,
+                                                              m_fxn_id_, fxn);
     } else {
-        ta_tensor = detail_::generate_ta_tot_direct_tensor(
-          m_world_.madness_world(), shape, m_fxn_id_, fxn);
+        ta_tensor =
+          detail_::generate_ta_tot_direct_tensor(world, shape, m_fxn_id_, fxn);
     }
 
     // Return Buffer pointer

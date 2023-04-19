@@ -15,6 +15,7 @@
  */
 
 #include "tiled_array_allocator_helper.hpp"
+#include <madness/world/MADworld.h>
 
 #define TPARAM template<typename FieldType>
 #define TA_ALLOCATOR TiledArrayAllocator<FieldType>
@@ -29,14 +30,14 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     using default_tensor_type  = detail_::default_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
-    runtime_type m_world_{};
+    runtime_type m_runtime_{};
+    auto comm   = m_runtime_.mpi_comm();
+    auto& world = *madness::World::find_instance(SafeMPI::Intracomm(comm));
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_tensor(m_world_.madness_world(),
-                                                       shape, fxn);
+        ta_tensor = detail_::generate_ta_scalar_tensor(world, shape, fxn);
     } else {
-        ta_tensor =
-          detail_::generate_ta_tot_tensor(m_world_.madness_world(), shape, fxn);
+        ta_tensor = detail_::generate_ta_tot_tensor(world, shape, fxn);
     }
 
     // Return Buffer pointer
@@ -49,14 +50,14 @@ TPARAM typename TA_ALLOCATOR::value_pointer TA_ALLOCATOR::allocate_(
     using default_tensor_type  = detail_::default_tensor_type<FieldType>;
     using ta_buffer_pimpl_type = detail_::ta_buffer_pimpl_type<FieldType>;
 
-    runtime_type m_world_{};
+    runtime_type m_runtime_{};
+    auto comm   = m_runtime_.mpi_comm();
+    auto& world = *madness::World::find_instance(SafeMPI::Intracomm(comm));
     default_tensor_type ta_tensor;
     if constexpr(field::is_scalar_field_v<FieldType>) {
-        ta_tensor = detail_::generate_ta_scalar_tensor(m_world_.madness_world(),
-                                                       shape, fxn);
+        ta_tensor = detail_::generate_ta_scalar_tensor(world, shape, fxn);
     } else {
-        ta_tensor =
-          detail_::generate_ta_tot_tensor(m_world_.madness_world(), shape, fxn);
+        ta_tensor = detail_::generate_ta_tot_tensor(world, shape, fxn);
     }
 
     // Return Buffer pointer
