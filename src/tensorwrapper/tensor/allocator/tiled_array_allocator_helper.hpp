@@ -54,7 +54,7 @@ default_tensor_type<field::Scalar> generate_ta_scalar_tensor(
     using tile_type   = TA::Tensor<double>;
     using range_type  = TA::Range;
     if(scalar_fxn) {
-        auto ta_functor = [&](tile_type& t, const range_type& range) {
+        auto ta_functor = [=](tile_type& t, const range_type& range) {
             const auto lo = range.lobound();
             const auto up = range.upbound();
             sparse_map::Index lo_idx(lo.begin(), lo.end());
@@ -95,7 +95,7 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     using range_type      = TA::Range;
 
     if(tot_fxn) {
-        auto ta_functor = [=, &tot_fxn, &shape](tile_type& t,
+        auto ta_functor = [=](tile_type& t,
                                                 const range_type& range) {
             t = tile_type(range);
             for(auto oidx : range) {
