@@ -95,8 +95,7 @@ default_tensor_type<field::Tensor> generate_ta_tot_tensor(
     using range_type      = TA::Range;
 
     if(tot_fxn) {
-        auto ta_functor = [=](tile_type& t,
-                                                const range_type& range) {
+        auto ta_functor = [=](tile_type& t, const range_type& range) {
             t = tile_type(range);
             for(auto oidx : range) {
                 auto nwx_outer_idx =
