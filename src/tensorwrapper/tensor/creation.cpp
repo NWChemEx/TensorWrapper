@@ -321,4 +321,32 @@ ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix) {
     return detail_::ta_to_tw(tensor);
 };
 
+ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix, const Shape<field::Scalar>& shape) {
+    auto& world = TA::get_default_world();
+
+    const auto& tiling = shape.tiling();
+
+    if(tiling.size() != 2) 
+      throw std::invalid_argument("Eigen Conversion Requires Matrix (2D) Shape)");
+    if( not tiling[0].size() or not tiling[1].size() )
+      throw std::invalid_argument("Shape Tiling Cannot Be Empty in Eigen Conversion");
+    if( not tiling[0].front() == 0 and not tiling[0].back() == matrix.rows() )
+      throw std::invalid_argument("Shape Row Tiling and Matrix Row Count Incompatible");
+    if( not tiling[1].front() == 0 and not tiling[1].back() == matrix.cols() )
+      throw std::invalid_argument("Shape Col Tiling and Matrix Col Count Incompatible");
+    if( not std::is_sorted(tiling[0].begin(), tiling[0].end()) )
+      throw std::invalid_argument("Row Tiling Must Be Sorted");
+    if( not std::is_sorted(tiling[1].begin(), tiling[1].end()) )
+      throw std::invalid_argument("Col Tiling Must Be Sorted");
+
+
+    TA::TiledRange1 cols_tr( tiling[0].begin(), tiling[0].end() );
+    TA::TiledRange1 rows_tr( tiling[1].begin(), tiling[1].end() );
+    TA::TiledRange trange({cols_tr, rows_tr});
+
+    auto tensor = TA::eigen_to_array<TA::TSpArrayD>(world, trange, matrix);
+
+    return detail_::ta_to_tw(tensor);
+};
+
 } // namespace tensorwrapper::tensor
