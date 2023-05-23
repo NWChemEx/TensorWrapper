@@ -170,7 +170,7 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # -- Options for bibtex --------------------------------------------------------
 
 bibtex_bibfiles = [
-    'bibliography/background.bib'
+    'bibliography/background.bib', 'bibliography/other_libraries.bib'
 ]
 bibtex_reference_style = 'super'
 bibtex_default_style = 'plain'
