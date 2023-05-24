@@ -157,6 +157,7 @@ ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix);
  *          the specified shape.
  *  @throw Whatever TA's eigen_to_array throws.
  */
-ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix, const Shape<field::Scalar>& shape);
+ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix,
+                                            const Shape<field::Scalar>& shape);
 
 } // namespace tensorwrapper::tensor
