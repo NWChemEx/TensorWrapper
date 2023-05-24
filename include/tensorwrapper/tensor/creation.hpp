@@ -140,12 +140,24 @@ Eigen::MatrixXd tensor_wrapper_to_eigen(const ScalarTensorWrapper& tensor);
 
 /** @brief Produce a TensorWrapper from an Eigen Matrix
  *
- *  @param[in] tensor The Eigen Matric to convert.
+ *  @param[in] matrix The Eigen Matrix to convert.
  *
  *  @return A TensorWrapper with the elements of the Eigen Matrix.
  *
  *  @throw Whatever TA's eigen_to_array throws.
  */
 ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix);
+
+/** @brief Produce a TensorWrapper from an Eigen Matrix with Specified Shape
+ *
+ *  @param[in] matrix The Eigen Matrix to convert.
+ *  @param[in] shape  The shape of the resulting tensor
+ *
+ *  @return A TensorWrapper with the elements of the Eigen Matrix with
+ *          the specified shape.
+ *  @throw Whatever TA's eigen_to_array throws.
+ */
+ScalarTensorWrapper eigen_to_tensor_wrapper(const Eigen::MatrixXd& matrix,
+                                            const Shape<field::Scalar>& shape);
 
 } // namespace tensorwrapper::tensor
