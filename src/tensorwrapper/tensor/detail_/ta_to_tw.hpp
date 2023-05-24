@@ -31,16 +31,16 @@ auto ta_to_tw(T&& t) {
     if(!t.is_initialized()) return TensorWrapper<FieldType>();
 
     // Step 0: Make shape
-    using shape_type   = Shape<FieldType>;
+    using shape_type  = Shape<FieldType>;
     using tiling_type = typename shape_type::tiling_type;
     tiling_type tiling(t.trange().rank());
     for(std::size_t i = 0; i < tiling.size(); ++i) {
-        auto dim_range = t.trange().dim(i);
+        auto dim_range    = t.trange().dim(i);
         const auto ntiles = std::distance(dim_range.begin(), dim_range.end());
-        tiling[i] = typename tiling_type::value_type(ntiles+1);
-        std::transform( dim_range.begin(), dim_range.end(), tiling[i].begin(),
-          [](const auto& p){ return p.first; } );
-        tiling[i].back() = (dim_range.end()-1)->second;
+        tiling[i]         = typename tiling_type::value_type(ntiles + 1);
+        std::transform(dim_range.begin(), dim_range.end(), tiling[i].begin(),
+                       [](const auto& p) { return p.first; });
+        tiling[i].back() = (dim_range.end() - 1)->second;
     }
     auto pshape = std::make_unique<shape_type>(tiling);
 

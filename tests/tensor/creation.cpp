@@ -320,15 +320,16 @@ TEST_CASE("Eigen conversions") {
     SECTION("eigen_to_tensor_wrapper (default shape)") {
         auto rv = eigen_to_tensor_wrapper(eigen_m);
         REQUIRE(rv == twrapper);
-        tiling_t one_big_tile{{0,2},{0,2}};
+        tiling_t one_big_tile{{0, 2}, {0, 2}};
         shape_t one_big_tile_shape(one_big_tile);
         REQUIRE(rv.shape() == one_big_tile_shape);
     }
 
     SECTION("eigen_to_tensor_wrapper (specified shape)") {
-        tiling_t single_element_row_tile{{0,1,2},{0,2}};
+        tiling_t single_element_row_tile{{0, 1, 2}, {0, 2}};
         shape_t single_element_row_tile_shape(single_element_row_tile);
-        auto rv = eigen_to_tensor_wrapper(eigen_m, single_element_row_tile_shape);
+        auto rv =
+          eigen_to_tensor_wrapper(eigen_m, single_element_row_tile_shape);
         REQUIRE(rv.shape() == single_element_row_tile_shape);
 #if 1
         // Convert resulting tensor back to eigen
