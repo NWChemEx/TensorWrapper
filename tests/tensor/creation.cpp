@@ -330,13 +330,7 @@ TEST_CASE("Eigen conversions") {
         shape_t single_element_row_tile_shape(single_element_row_tile);
         auto rv = eigen_to_tensor_wrapper(eigen_m, single_element_row_tile_shape);
         REQUIRE(rv.shape() == single_element_row_tile_shape);
-#if 1
-        // Convert resulting tensor back to eigen
-        auto eigen_rv = tensor_wrapper_to_eigen(rv);
-        REQUIRE(eigen_rv == eigen_m);
-#else
-        twrapper.reshape(single_element_row_tile_shape.clone());
-        REQUIRE(rv == twrapper);
-#endif
+        auto reshaped = twrapper.reshape(single_element_row_tile_shape.clone());
+        REQUIRE(rv == reshaped);
     }
 }
