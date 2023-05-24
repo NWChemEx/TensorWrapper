@@ -179,6 +179,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ac99dcbf9e453092382750b7811b3fdc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ac99dcbf9e453092382750b7811b3fdc4">eigen_to_tensor_wrapper</a> (const Eigen::MatrixXd &amp;matrix)</td></tr>
 <tr class="memdesc:ac99dcbf9e453092382750b7811b3fdc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produce a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> from an Eigen Matrix.  <a href="namespacetensorwrapper_1_1tensor.html#ac99dcbf9e453092382750b7811b3fdc4">More...</a><br /></td></tr>
 <tr class="separator:ac99dcbf9e453092382750b7811b3fdc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e6fd264a7ac31ec241512cd64ddad4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#ac0e6fd264a7ac31ec241512cd64ddad4">eigen_to_tensor_wrapper</a> (const Eigen::MatrixXd &amp;matrix, const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;shape)</td></tr>
+<tr class="memdesc:ac0e6fd264a7ac31ec241512cd64ddad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produce a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> from an Eigen Matrix with Specified <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a>.  <a href="namespacetensorwrapper_1_1tensor.html#ac0e6fd264a7ac31ec241512cd64ddad4">More...</a><br /></td></tr>
+<tr class="separator:ac0e6fd264a7ac31ec241512cd64ddad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3764d8a3628f5861d9ab155829c3c9da"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TWrapper</a>, <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">TWrapper</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1tensor.html#a3764d8a3628f5861d9ab155829c3c9da">eigen_solve</a> (const <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> &amp;X)</td></tr>
 <tr class="memdesc:a3764d8a3628f5861d9ab155829c3c9da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a traditional eigen solve on a matrix <code>X</code>.  <a href="namespacetensorwrapper_1_1tensor.html#a3764d8a3628f5861d9ab155829c3c9da">More...</a><br /></td></tr>
 <tr class="separator:a3764d8a3628f5861d9ab155829c3c9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -801,7 +804,7 @@ template&lt;typename FieldType &gt; </div>
 </div>
 </div>
 <a id="ac99dcbf9e453092382750b7811b3fdc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac99dcbf9e453092382750b7811b3fdc4">&#9670;&nbsp;</a></span>eigen_to_tensor_wrapper()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99dcbf9e453092382750b7811b3fdc4">&#9670;&nbsp;</a></span>eigen_to_tensor_wrapper() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -819,11 +822,55 @@ template&lt;typename FieldType &gt; </div>
 <p>Produce a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> from an Eigen Matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tensor</td><td>The Eigen Matric to convert.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>The Eigen Matrix to convert.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the elements of the Eigen Matrix.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">Whatever</td><td>TA's eigen_to_array throws. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0e6fd264a7ac31ec241512cd64ddad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e6fd264a7ac31ec241512cd64ddad4">&#9670;&nbsp;</a></span>eigen_to_tensor_wrapper() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html">ScalarTensorWrapper</a> tensorwrapper::tensor::eigen_to_tensor_wrapper </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html">Shape</a>&lt; <a class="el" href="structtensorwrapper_1_1tensor_1_1field_1_1Scalar.html">field::Scalar</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produce a <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> from an Eigen Matrix with Specified <a class="el" href="classtensorwrapper_1_1tensor_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout.">Shape</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>The Eigen Matrix to convert. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of the resulting tensor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1tensor_1_1TensorWrapper.html" title="Fundamental type for wrapping tensors.">TensorWrapper</a> with the elements of the Eigen Matrix with the specified shape. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">Whatever</td><td>TA's eigen_to_array throws. </td></tr>
