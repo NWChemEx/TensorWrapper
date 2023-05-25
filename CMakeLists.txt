@@ -31,6 +31,7 @@ set(
 )
 
 include(get_cmaize)
+include(nwx_versions)
 include(nwx_cxx_api_docs)
 nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
                  "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -42,7 +43,7 @@ option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
 cmaize_find_or_build_dependency(
     utilities
     URL github.com/NWChemEx-Project/utilities
-    PRIVATE TRUE
+    VERSION ${NWX_UTILITIES_VERSION}
     BUILD_TARGET utilities
     FIND_TARGET nwx::utilities
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -51,7 +52,7 @@ cmaize_find_or_build_dependency(
 cmaize_find_or_build_dependency(
     parallelzone
     URL github.com/NWChemEx-Project/ParallelZone
-    PRIVATE TRUE
+    VERSION ${NWX_PARALLELZONE_VERSION}
     BUILD_TARGET parallelzone
     FIND_TARGET nwx::parallelzone
     CMAKE_ARGS BUILD_TESTING=OFF
@@ -62,7 +63,7 @@ cmaize_find_or_build_dependency(
 cmaize_find_or_build_dependency(
     tiledarray
     URL github.com/ValeevGroup/tiledarray
-    VERSION fab5dc31fc10d88d381e8421d868d2185f164667
+    VERSION ${NWX_TILEDARRAY_VERSION}
     BUILD_TARGET tiledarray
     FIND_TARGET tiledarray
     CMAKE_ARGS TA_BUILD_UNITTEST=OFF
@@ -89,7 +90,7 @@ if("${BUILD_TESTING}")
         URL github.com/catchorg/Catch2
         BUILD_TARGET Catch2
         FIND_TARGET Catch2::Catch2
-        VERSION v2.x
+        VERSION ${NWX_CATCH2_VERSION}
     )
     cmaize_add_tests(
         test_tensorwrapper
