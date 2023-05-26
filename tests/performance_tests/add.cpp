@@ -59,7 +59,7 @@ TEST_CASE("TA_vs_TW_ADD", "[ptest]") {
     to_ta_distarrayd_t converter;
     REQUIRE(ta_helpers::allclose(converter.convert(lhs_tw.buffer()), lhs_ta));
     REQUIRE(ta_helpers::allclose(converter.convert(rhs_tw.buffer()), rhs_ta));
-	
+
     // start benchmark
 
     BENCHMARK("TiledArray_add") {
