@@ -38,7 +38,7 @@ nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src"
 
 ### Options ###
 option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_PYBINDINGS "Should we build Python3 bindings?" ON)
+option(BUILD_CPPYY_PYBINDINGS "Should we build Python3 bindings?" ON)
 
 cmaize_find_or_build_dependency(
     utilities
