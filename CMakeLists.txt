@@ -72,13 +72,13 @@ cmaize_find_or_build_dependency(
                MADNESS_ENABLE_CEREAL=ON
 )
 
-find_package(Boost REQUIRED COMPONENTS container)
+find_package(Boost REQUIRED)
 
 cmaize_add_library(
     tensorwrapper
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
     INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include/tensorwrapper"
-    DEPENDS utilities parallelzone tiledarray Boost::container
+    DEPENDS utilities parallelzone tiledarray Boost::boost
 )
 
 include(nwx_python_mods)
