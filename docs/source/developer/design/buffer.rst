@@ -140,8 +140,8 @@ a lambda like:
 
 The exact syntax of the lambda is an ``Allocator`` consideration.
 
-Buffer Operations
-=================
+Buffer Methods
+==============
 
 Once you have a ``Buffer`` you can inspect some basic properties:
 
@@ -204,3 +204,30 @@ processes.
 
    // To make the distributed buffer replicated
    ReplicatedBuffer replicated_buffer(dist_buffer);
+
+Evaluating an OpGraph
+=====================
+
+When a series of operations are assigned to an ``AnnotatedTensor``,  this
+triggers the creation of an ``OpGraph`` object. For our current purposes an
+``OpGraph`` object is opaque (see :ref:`tw_designing_the_opgraph` for the full
+design specification). For designing the ``Buffer`` the important part to note
+is that the ``OpGraph`` must contain all necessary information about the
+operation the backend needs to perform.
+
+.. code-block:: c++
+
+   auto buffer = get_buffer();
+
+   auto graph = get_op_graph();
+
+   buffer.compute(graph);
+
+*************
+Buffer Design
+*************
+
+.. figure:: assets/buffer.png
+   :align: center
+
+   Design of the buffer.

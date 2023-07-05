@@ -41,3 +41,5 @@ Class Design
    relationships
    sparsity
    distribution
+   allocator
+   buffer
