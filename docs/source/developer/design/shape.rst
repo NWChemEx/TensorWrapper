@@ -40,9 +40,33 @@ A tensor's shape is arguably the most primitive information about the tensor.
 Without the shape it is not possible to even begin laying out the tensor in
 memory.
 
+*****************
+Shape Terminology
+*****************
+
+layered
+   We say a tensor is layered if its elements are also tensors (of rank greater
+   than 0).
+
+logical layering
+   If we partition a tensor's modes into sub ranges we conceptually split
+   the tensor into two layers. The elements of the outer layer are now slices
+   of the original tensor with the indices of the outer layer being used to
+   index slices. We term this a logical layering because...
+
+physical layering
+    Chipping
+
 ********************
 Shape Considerations
 ********************
+
+layered
+   While a layered tensor may seem exotic, in practice we often think of a
+   tensor as being layered. For example, a distributed tensor is often thought
+   of as being a tensor whose elements are tiles (which are themselves tensors)
+
+
 
 #. Element-based API.
 

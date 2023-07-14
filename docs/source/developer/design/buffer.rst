@@ -8,46 +8,82 @@ Designing the Buffer
 What is the Buffer?
 *******************
 
-TensorWrapper is designed to wrap existing tensor implementations under a
-unified API. We assume that each of those existing tensor implementations
-already has some sort of data structure. The ``Buffer`` class is primarily
-intended to type-erase those data structures, while still providing readily
-accessible.
+To vastly over simplify, tensors consist of two things: the literal elements of
+the tensor and all the additional properties and mathematical structure imposed
+on top of those elements. The ``Buffer`` class is responsible for holding the
+literal elements of the tensor and being able to describe physically how those
+elements are held.
 
+************************
+Why do we need a Buffer?
+************************
+
+TensorWrapper is ultimately powered by other tensor libraries. The boundary
+between those libraries and TensorWrapper is the ``Buffer`` class. The
+``Buffer`` class is the interface through which the user's intentions (specified
+with the TensorWrapper DSL) are conveyed to the backend.
+
+******************
+Buffer Terminology
+******************
+
+distributed
+   A buffer is distributed if it has both local and remote pieces. By contrast
+   remote buffers only contain remote data (no local data).
+
+future (to a buffer)
+   A future to a buffer is an object which will eventually be a buffer, but at
+   the time of creation may not actually have its data yet. Futures to buffers
+   typically arise when a task scheduler is creating buffers and we do not want
+   to wait for the scheduler to create the buffer. In this case a backgrounded
+   task for creating the buffer is added to the scheduler and control
+   continues with only a future to the result. Once the backgrounded task
+   has completed creating the buffer, the buffer can be accessed directly
+   from the future to the buffer. If control requests the buffer before it has
+   been created, then control must wait until the buffer is ready before
+   continuing.
+
+lazy
+   A buffer is lazy if it does not store the values which live in it, but
+   instead creates them on-the-fly. This differs from a future in that the
+   values of a lazy tensor are "immediately available" (after the delay required
+   to compute them).
+
+local
+   A buffer is "local" if the current process can access the state of the
+   buffer without communicating with another process. A local buffer is the
+   opposite of a remote buffer
+
+remote
+   A buffer is "remote" if none of the state can be accessed without
+   communicating with another process. A remote buffer has no local piece (if it
+   has a local piece it is a distributed buffer).
 
 *********************
 Buffer Considerations
 *********************
 
+.. _b_wrapping_other_tensor_libraries:
+
+Wrapping other tensor libraries.
+   In practice the literal data layouts of a tensor can be very complicated.
+   Many existing tensor libraries have already optimized tensor operations on
+   their data structures for some particular scenarios. We do not want to
+   reinvent those optimizations and suggest ``Buffer`` should actually wrap
+   those libraries' data structures.
 
 .. _b_type_erasure:
 
 Type erasure
-   ``Buffer`` objects are primarily responsible for type-erasing the backend
-   being used. Interactions among ``Buffer`` objects occur in a type-erased
-   manner.
+   As consideration :ref:`b_wrapping_other_tensor_libraries` states, the
+   ``Buffer`` objects do not just hold ``double*``, but rather tensor-like
+   objects from existing tensor libraries. To allow the various tensor libraries
+   to be somewhat interoperable we propose that the ``Buffer`` objects type-
+   erase the backend they hold.
 
-   - As a corollary, we need to be able to unwrap the type-erased object too.
-
-.. _b_data_structure:
-
-Data structure
-   Buffer is primarily envisioned as the fundamental data structure behind the
-   TensorWrapper DSL. As a data structure ``Buffer`` should have a fairly
-   minimal set of operations. Advanced operations are done by unwrapping the
-   ``Buffer`` and interacting with the wrapped tensor directly.
-
-.. _b_fundamental_methods:
-
-Fundamental methods
-   Somewhat of a corollary to :ref:`_b_data_structure`, but all backends must,
-   in theory, be able to implement all methods defined on the ``Buffer`` class.
-   The methods should thus be very fundamental tensor operations. In practice,
-   we can always throw if a backend doesn't implement a method, but we want to
-   minimize such methods.
-
-   - Methods should be read-only to avoid having to modify the underlying state
-     of the backend.
+   - We will need to be able to unwrap the type-erased object too.
+   - The set of methods exposed by the ``Buffer`` class needs to be very
+     general so as to have analogs in every possible backend.
 
 .. _b_data_location:
 
@@ -149,8 +185,8 @@ Once you have a ``Buffer`` you can inspect some basic properties:
 
    auto buffer = get_buffer();
 
-   // Get the total number of elements in the buffer
-   auto n_elements = buffer.size();
+   // Get the shape of the buffer
+   auto shape = buffer.shape();
 
    // Get an enum representing the scalar elements of the buffer
    // N.B. Buffer also type erases this information
@@ -176,7 +212,7 @@ unwrap the buffer somewhat regularly we propose that this is done by:
 The ``Converter`` class is responsible for determining if the type-erased value
 inside the ``Buffer`` is already of type ``unwrapped_tensor_type``. If it is
 it just returns it; if it is not, then it either converts it to an object of
-type ``unwrapped_tensor_type`` or throws.
+type ``unwrapped_tensor_type`` or throws an error.
 
 Working with Distributed Buffers
 ================================
@@ -222,6 +258,9 @@ operation the backend needs to perform.
    auto graph = get_op_graph();
 
    buffer.compute(graph);
+
+
+N.B. that we can use the visitor pattern to automatically downcast the buffer
 
 *************
 Buffer Design
