@@ -18,17 +18,15 @@ Design Documentation
 
 Topics in these sections capture the design process of TensorWrapper.
 
-***********************
-High-Level Architecture
-***********************
+************
+Architecture
+************
 
 .. toctree::
    :maxdepth: 2
 
-   motivation
    considerations
-   tensor_stack
-   creation
+
 
 ************
 Class Design
@@ -37,9 +35,6 @@ Class Design
 .. toctree::
    :maxdepth: 2
 
-   shape
-   relationships
-   sparsity
-   distribution
-   allocator
    buffer
+   shape
+   op_graph

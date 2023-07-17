@@ -80,3 +80,9 @@ User Experience
 #. Users may provide performant implementations.
 
    - Mechanism to override underlying optimizations.
+
+*****************
+Tensor Operations
+*****************
+
+#. Element-wise addition, subtraction, multiplication, and division

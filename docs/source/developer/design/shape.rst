@@ -27,61 +27,52 @@ What is a tensor's shape?
 .. |n| replace:: :math:`n`
 
 For computing purposes tensors are really nothing more than a bunch of floating
-point values. These floating point values are typically arranged into
-|n|-dimensional rectangular arrays, where |n| is the number of modes in the
-tensor. A tensor's shape represents the layout of the |n|-dimensional
-rectangular array.
+point values and meta-data associated with those values. Conceptually, the
+floating point values are typically arranged into |n|-dimensional rectangular
+arrays, where |n| is the number of modes in the tensor. A tensor's shape
+represents how the values are conceptually, and physically, laid out.
 
 ********************************
 Why do we need a tensor's shape?
 ********************************
 
-A tensor's shape is arguably the most primitive information about the tensor.
-Without the shape it is not possible to even begin laying out the tensor in
-memory.
-
-*****************
-Shape Terminology
-*****************
-
-layered
-   We say a tensor is layered if its elements are also tensors (of rank greater
-   than 0).
-
-logical layering
-   If we partition a tensor's modes into sub ranges we conceptually split
-   the tensor into two layers. The elements of the outer layer are now slices
-   of the original tensor with the indices of the outer layer being used to
-   index slices. We term this a logical layering because...
-
-physical layering
-    Chipping
+A tensor's shape is arguably the most primitive meta-data associated with the
+tensor. Without the shape of the tensor we do not know how to access elements
+or lay them out in memory.
 
 ********************
 Shape Considerations
 ********************
 
-layered
-   While a layered tensor may seem exotic, in practice we often think of a
-   tensor as being layered. For example, a distributed tensor is often thought
-   of as being a tensor whose elements are tiles (which are themselves tensors)
+Rank and extents
+   The main data in the shape is the :ref:`term_rank` and the
+   :ref:`term_extent`s of each mode.
 
+Nested
+   While a :ref:`term_nested` tensor may seem exotic, in practice, distributed
+   tensors are often implemented by nesting (ideally the user need not be aware
+   of such nesting aside from possibly specifying it at construction). Nesting,
+   also occurs naturally when discussing sparsity.
 
+   - Nestings may be :ref:`term_smooth`  or :ref:`term_jagged`
 
-#. Element-based API.
+Logical vs actual
+   The user declares the tensor with some shape. That shape usually reflects the
+   physical problem being modeled. Internally we may need to store the tensor
+   as a different shape, for performance reasons. The shape describing how the
+   user wants to interact with the tensor is the "logical" shape.
 
-   - Algorithms interacting with the DSL reason in terms of elements, not tiles.
-   - Tiling is largely an implementation detail needed for performance.
-   - Internally, easy to map element-to-tile and vice versa.
+   - The user should interact with the tensor as if it had the external shape.
+   - We should allow the user to override the internal shape if need be.
 
-#. Contains the number of modes.
-#. Contains the extent of each mode.
-#. Contains the tiling of each mode.
+Non-integral indices
+   Sometimes it is useful to index modes with something other than an offset.
+   For example, one may want to name sub-ranges and refer to blocks by those
+   names.
 
-   - Performance requires some sort of tiling.
-   - Tiling is not strictly restricted to distributed computing.
+Symmetry
+   In the generalized sense.
 
-#. Shape may need to be recursive.
-
-   - Elements of tensors typically thought of as scalars, but can be any field.
-   - Need to be able to get the shape of the field's elements.
+*************
+Proposed APIs
+*************
