@@ -18,23 +18,15 @@ Design Documentation
 
 Topics in these sections capture the design process of TensorWrapper.
 
-************
-Architecture
-************
-
 .. toctree::
    :maxdepth: 2
 
-   considerations
-
-
-************
-Class Design
-************
-
-.. toctree::
-   :maxdepth: 2
-
-   buffer
+   architecture
    shape
+   symmetry
+   sparsity
+   allocator
+   buffer
+   tensor_wrapper
+   expression
    op_graph

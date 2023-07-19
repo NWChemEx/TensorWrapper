@@ -103,7 +103,8 @@ shape
 
 The shape of a tensor is the set containing the :ref:`term_extent` of each
 :ref:`term_mode`. The shape defines the edge lengths of the hyper-rectangular
-array the elements are stored in.
+array the elements are stored in. Since the number of edge lengths is the
+:ref:`term_rank` of the tensor, the shape also contains that information.
 
 .. _term_slice:
 

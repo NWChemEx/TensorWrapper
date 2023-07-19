@@ -70,8 +70,15 @@ Non-integral indices
    For example, one may want to name sub-ranges and refer to blocks by those
    names.
 
-Symmetry
-   In the generalized sense.
+Not in Scope
+============
+
+Sparsity
+   The shape focuses on properties knowable from the equations.
+
+
+Permutational Symmetry
+   This includes antisymmetry too.
 
 *************
 Proposed APIs
