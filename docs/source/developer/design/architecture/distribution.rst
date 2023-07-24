@@ -12,11 +12,11 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _distribution_design:
+.. _layout_design:
 
-###################
-Distribution Design
-###################
+#############
+Layout Design
+#############
 
 ********************************
 What is a (tensor) distribution?

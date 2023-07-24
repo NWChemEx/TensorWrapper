@@ -45,10 +45,10 @@ other common names for extent are length and dimensionality.
 jagged
 ======
 
-Elements of a :ref:`nested` tensor :math:`J` are tensors themselves. If the
+Elements of a :ref:`term_nested` tensor :math:`J` are tensors themselves. If the
 shapes of the elements of the :math:`J` can NOT be written as a Cartesian
 product of tilings, we say :math:`J` is jagged. Put another way, let
-:math:`j_i` and :math:`k_i` be :ref:`term_slice`s of :math:`J` along the
+:math:`j_i` and :math:`k_i` be :ref:`term_slice` s of :math:`J` along the
 :math:`i`-th :ref:`term_mode`,  then if for any mode of :math:`J` there exists
 a :math:`j_i` and a :math:`k_i` with different shapes, :math:`J` is jagged.
 
@@ -84,7 +84,7 @@ the field defines the set of values the elements of a tensor may have. While we
 usually assume that field associated with a tensor is the field of real (or
 complex) numbers, mathematically there is no such restrictions. Indeed, we
 sometimes find it useful to use other fields (such as fields whose elements
-are tensors of a :ref:`term_rank`` greater than 0). We say a tensor is nested
+are tensors of a :ref:`term_rank` greater than 0). We say a tensor is nested
 if its elements are tensors of rank greater than 0.
 
 .. _term_rank:
@@ -92,7 +92,7 @@ if its elements are tensors of rank greater than 0.
 rank
 ====
 
-The number of :ref:`term_mode`s a tensor has. A scalar is a rank 0 tensor, a
+The number of :ref:`term_mode` s a tensor has. A scalar is a rank 0 tensor, a
 vector is rank 1 tensor, a matrix is a rank 2 tensor, etc. Outside TensorWrapper
 other common names are dimensionality and order.
 
@@ -123,6 +123,22 @@ smooth
 While not a widely used term, it is helpful to introduce a term to contrast
 with :ref:`term_jagged`. We define a "smooth" :ref:`term_nested` tensor to be
 a tensor which is not jagged.  Put another way, let :math:`j_i` and :math:`k_i`
-be :ref:`term_slice`s of :math:`S` along the :math:`i`-th :ref:`term_mode`,
+be :ref:`term_slice` s of :math:`S` along the :math:`i`-th :ref:`term_mode`,
 then if for all modes of :math:`S` every pair :math:`j_i` and a :math:`k_i`
 has the same shape, :math:`S` is smooth.
+
+****************************
+Computer Science Terminology
+****************************
+
+.. _term_dsl:
+
+DSL
+===
+
+A domain-specific language (DSL) is a coding language targeted at a particular
+domain of applications. Compared to general-purpose coding languages, DSLs
+tend to contain fewer language primitives on account of the DSL only concerning
+itself with being general enough to express operations within the target
+domain. The DSL in ``TensorWrapper`` targets the domain of tensor math and is
+designed to makes it easy to express tensor operations in a performant manner.

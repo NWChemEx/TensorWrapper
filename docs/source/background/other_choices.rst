@@ -18,7 +18,7 @@ Fastor
 
 - `GitHub <https://github.com/romeric/Fastor>`__
 
-Fastor :ref:`Poya2017` is focused on tensors with known shapes.
+Fastor :cite:`Poya2017` is focused on tensors with known shapes.
 
 - Total tensor size must be known in advance (not just number of modes, but
   also the extents of those modes).

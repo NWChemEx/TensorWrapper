@@ -1,8 +1,10 @@
-.. _tensor_wrapper_architecture:
+.. _tensor_wrapper_overview:
 
-#############################
-Architecture of TensorWrapper
-#############################
+#########################
+Overview of TensorWrapper
+#########################
+
+This section provides a high-level overview of TensorWrapper's architecture.
 
 **********************
 What is TensorWrapper?
@@ -10,31 +12,32 @@ What is TensorWrapper?
 
 There are a number of existing tensor libraries, with a variety of useful
 features; however, to our knowledge no existing tensor library has all the
-features a high-performance physics code may encounter. TensorWrapper is
-designed to provide a high-level, user-friendly, domain-specific language (DSL)
-on top of existing tensor libraries which abstracts away as much complexity as
+tensor features a high-performance physics code may encounter. TensorWrapper is
+designed to provide a high-level, user-friendly, :ref:`term_dsl` on top of
+existing tensor libraries, while abstracting away as much complexity as
 possible.
 
 *****************************
 Why do we need TensorWrapper?
 *****************************
 
-Tensors are the DSL of physics, since nearly every law of physics is succinctly
-summarized by a tensor equation. That said, naively creating arrays of
-floating-point values and subjecting them to the mathematical operations
+Tensors are the "DSL of physics" because nearly every law of physics is
+succinctly summarized by a tensor equation. That said, naively creating arrays
+of floating-point values and then subjecting them to the mathematical operations
 implied by the equations often leaves much performance on the table.
-Nonetheless we argue that having a tensor-based DSL is
-important for physics-based codes because:
+Nonetheless we argue that having a tensor-based DSL is important for
+physics-based codes because:
 
 - Facilitates translating theory to code.
 - Encapsulates mathematical optimizations.
 - Code is easier to read/rationalize about.
 
 Most existing tensor libraries are capable of achieving high-performance, but
-in many cases can only do so by "breaking API". The need to break API
-complicates the use of many of these libraries. The goal of TensorWrapper is
-to provide a middle layer between existing tensor libraries and the user. By
-adding a middle layer we can better decouple the interface from the details.
+in many cases can only do so in certain cases or by "breaking API". The need to
+break API complicates the use of those libraries and places much onus on the
+programmer. The goal of TensorWrapper is to provide a middle layer between
+existing tensor libraries and the user. By adding a middle layer we can better
+decouple the interface from the details.
 
 .. _atw_architecture_considerations:
 
@@ -192,7 +195,7 @@ object.
 
    The architecture of TensorWrapper.
 
-:numref:`_fig_tw_architecture` shows the major components of TensorWrapper. The
+:numref:`fig_tw_architecture` shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
 of TensorWrapper or a dependency and whether they are user-facing or
 implementation-facing.
@@ -215,6 +218,7 @@ the ``Shape`` component is responsible for representing:
 - rank of the tensor
 - extent of the tensor
 - nesting structure of the hyper-rectangular arrays
+- converting indices from one shape to indices in another shape
 
 Symmetry
 --------
@@ -225,7 +229,11 @@ In practice many of the tensors commonly encountered have some sort of
 permutational symmetry. While such symmetry could be discovered by inspecting
 the tensor, it is more common to have the user specify it. The ``Symmetry``
 component is charged with storing the symmetry relationships and providing
-helpful tools for exploiting it.
+helpful tools for exploiting it. In particular the ``Symmetry`` component is
+responsible for:
+
+- Symmetry and antisymmetry (real elements)
+- Hermitian and anti-Hermitian (complex elements)
 
 Sparsity
 --------
@@ -233,7 +241,25 @@ Sparsity
 Main discussion: :ref:`sparsity_design`.
 
 While symmetry deals with telling us which elements must be the same (up to a
-sign), sparsity deals with telling us which elements are zero.
+sign), sparsity deals with telling us which elements are zero. The ``Sparsity``
+component is responsible for dealing with:
+
+- tracking element-wise sparsity
+- switching among sparsity representations
+
+TensorWrapper
+-------------
+
+Main discussion: :ref:`designing_tensor_wrapper_class`.
+
+The ``TensorWrapper`` class is the tensor-like object that users interact with.
+The DSL uses ``TensorWrapper`` objects as the leaf nodes of the
+abstract syntax tree. To users, the main responsibilities of the
+``TensorWrapper`` component are:
+
+- storing the data
+- providing an entry point into the DSL.
+
 
 User-Facing External Dependencies
 =================================
@@ -245,26 +271,77 @@ purpose we have elected to build upon
 Implementation-Facing Classes
 =============================
 
+As shown in :numref:`fig_tw_workflows`, the
+:ref:`atw_performance_considerations` lead ``TensorWrapper`` to have several
+additional components. These components are required to convey additional
+state necessary for performance.
+
+Layout
+------
+
+Main discussion: :ref:`layout_design`.
+
+The ``Shape`` provided by the user is the shape of the tensor's values based on
+the problem. The ``Symmetry`` object tells us which of those values are
+independent. And the ``Sparsity`` object tells us which values are zero.
+Missing still is where in the runtime we should literally put the values, and
+how we should store those values. The ``Layout`` component is charged with
+modeling the mapping of the user-provided tensor state to the physical machine.
+This includes:
+
+- Vectorization strategy (row-major vs. column-major)
+- Value location: RAM, disk, on-the-fly, GPU
+- Actual shape of the tensor (including tiling)
+- Distribution for multi-process tensors.
+
 Allocator
 ---------
+
+Main discussion: :ref:`designing_the_allocator`.
+
+With the ``Layout`` object we know how to physically lay the tensor out in the
+runtime, but we need to actually do it. The ``Allocator`` component wraps the
+process of going from the ``Layout`` to an object of the backend library.
+
+- Wrap the process of creating an instance of the backend.
+-
 
 Buffer
 ------
 
+Main discussion: :ref:`designing_the_buffer`.
+
+To the extent possible ``TensorWrapper`` strives to avoid needing to reimplement
+tensor math routines. Key to these efforts are the already existing tensor
+libraries. The ``Buffer`` component is responsible for providing a unified
+interface into which the various backends can be attached. The main goals of
+the buffer are:
+
+- Type-erase the backend.
+- Model data locality
+
+
 Expression
 ----------
+
+Main discussion: :ref:`designing_the_expression_component`.
+
+Like most tensor libraries, TensorWrapper will rely on an expression layer for
+composing tensor expressions. Strictly, speaking this layer is entered into
+in a user-facing manner; however, the expression layer is specifically designed
+to appear to the user like they are working with only ``TensorWrapper`` objects,
+which is why we consider it an implementation detail.
+
 
 OpGraph
 -------
 
+Main discussion: :ref:`designing_the_opgraph`.
+
 Implementation-Facing External Dependencies
 ===========================================
 
-TiledArray
-==========
-
-TAMM
-====
-
-Eigen
-=====
+TensorWrapper is designed to wrap existing high-performance tensor libraries
+into a common DSL and to exploit the advantages of each of these libraries in
+an interoperable manner. The interfaces to these various backends live in this
+component.

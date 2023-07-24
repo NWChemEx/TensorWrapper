@@ -21,12 +21,5 @@ Topics in these sections capture the design process of TensorWrapper.
 .. toctree::
    :maxdepth: 2
 
-   architecture
-   shape
-   symmetry
-   sparsity
-   allocator
-   buffer
-   tensor_wrapper
-   expression
-   op_graph
+   motivation
+   architecture/index

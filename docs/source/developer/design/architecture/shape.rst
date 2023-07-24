@@ -26,11 +26,11 @@ What is a tensor's shape?
 
 .. |n| replace:: :math:`n`
 
-For computing purposes tensors are really nothing more than a bunch of floating
+For computing purposes, tensors are really nothing more than a bunch of floating
 point values and meta-data associated with those values. Conceptually, the
 floating point values are typically arranged into |n|-dimensional rectangular
-arrays, where |n| is the number of modes in the tensor. A tensor's shape
-represents how the values are conceptually, and physically, laid out.
+arrays, where |n| is the number of :ref:`term_mode` s in the tensor. A tensor's
+shape describes this hyper-rectangular array's layout.
 
 ********************************
 Why do we need a tensor's shape?
@@ -46,7 +46,7 @@ Shape Considerations
 
 Rank and extents
    The main data in the shape is the :ref:`term_rank` and the
-   :ref:`term_extent`s of each mode.
+   :ref:`term_extent` s of each mode.
 
 Nested
    While a :ref:`term_nested` tensor may seem exotic, in practice, distributed

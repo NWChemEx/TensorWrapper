@@ -1,3 +1,6 @@
+
+.. _designing_tensor_wrapper_class:
+
 #############################
 Designing TensorWrapper Class
 #############################

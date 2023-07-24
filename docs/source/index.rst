@@ -20,7 +20,8 @@ TensorWrapper
    :maxdepth: 2
    :caption: Contents:
 
-   terminology
+   background/index
    developer/index
    sparse_maps/index
+   bibliography/bibliography
    C++ API <https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html>

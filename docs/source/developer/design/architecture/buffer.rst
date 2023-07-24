@@ -141,7 +141,7 @@ Backend Allocation
    going to be heavily dependent on the identity of the backend.
 
    - The responsibility for allocating ``Buffer`` objects is punted to the
-     ``Allocator`` component. See :ref:`tw_desinging_the_allocator` for
+     ``Allocator`` component. See :ref:`tw_designing_the_allocator` for
      more details.
 
 
