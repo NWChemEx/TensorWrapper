@@ -131,6 +131,28 @@ has the same shape, :math:`S` is smooth.
 Computer Science Terminology
 ****************************
 
+.. _term_ast:
+
+AST
+===
+
+With respect to source code, an abstract syntax tree (AST) is a representation
+of the structure of what the programmer wrote, whereas a :ref:`term_cst`
+contains the literal representation of what the programmer wrote. Carrying out
+the programmed instructions is easier by traversing an AST, versus a CST,
+because extraneous information has been removed.
+
+.. _term_cst:
+
+CST
+===
+
+With respect to source code, a concrete syntax tree (CST) is a representation
+of the literal source code the programmer wrote. The CST contains all details
+of the source code, including how the programmer chose to represent a
+particular concept. Distilling out the essential concepts leads to an
+:ref:`term_ast`.
+
 .. _term_dsl:
 
 DSL

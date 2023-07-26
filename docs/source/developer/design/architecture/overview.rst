@@ -234,6 +234,7 @@ responsible for:
 
 - Symmetry and antisymmetry (real elements)
 - Hermitian and anti-Hermitian (complex elements)
+- Nesting of symmetry
 
 Sparsity
 --------
@@ -244,8 +245,10 @@ While symmetry deals with telling us which elements must be the same (up to a
 sign), sparsity deals with telling us which elements are zero. The ``Sparsity``
 component is responsible for dealing with:
 
-- tracking element-wise sparsity
+- tracking element-wise sparsity (N.B. tile sparsity is element-sparsity in a
+  nested tensor)
 - switching among sparsity representations
+- Nesting of sparsity
 
 TensorWrapper
 -------------
@@ -276,35 +279,20 @@ As shown in :numref:`fig_tw_workflows`, the
 additional components. These components are required to convey additional
 state necessary for performance.
 
-Layout
-------
-
-Main discussion: :ref:`layout_design`.
-
-The ``Shape`` provided by the user is the shape of the tensor's values based on
-the problem. The ``Symmetry`` object tells us which of those values are
-independent. And the ``Sparsity`` object tells us which values are zero.
-Missing still is where in the runtime we should literally put the values, and
-how we should store those values. The ``Layout`` component is charged with
-modeling the mapping of the user-provided tensor state to the physical machine.
-This includes:
-
-- Vectorization strategy (row-major vs. column-major)
-- Value location: RAM, disk, on-the-fly, GPU
-- Actual shape of the tensor (including tiling)
-- Distribution for multi-process tensors.
-
 Allocator
 ---------
 
 Main discussion: :ref:`designing_the_allocator`.
 
-With the ``Layout`` object we know how to physically lay the tensor out in the
-runtime, but we need to actually do it. The ``Allocator`` component wraps the
-process of going from the ``Layout`` to an object of the backend library.
+The ``Allocator`` component wraps the process of going from the actual
+``Shape``, ``Sparsity``, and ``Symmetry`` for the tensor to an object of the
+backend library. Appropriate selection of the allocator determines things such
+as:
 
-- Wrap the process of creating an instance of the backend.
--
+- Fundamental type of the values (*e.g.*, float, double, etc.)
+- Vectorization strategy (row-major vs. column-major)
+- Value location: distribution, RAM, disk, on-the-fly, GPU
+- Distribution strategy
 
 Buffer
 ------
@@ -318,7 +306,25 @@ interface into which the various backends can be attached. The main goals of
 the buffer are:
 
 - Type-erase the backend.
-- Model data locality
+- Record data runtime location
+- Opaquely move data
+
+Layout
+------
+
+Main discussion: :ref:`layout_design`.
+
+The ``Shape`` provided by the user is the shape of the tensor's values based on
+the problem. The ``Symmetry`` object tells us which of those values are
+independent. And the ``Sparsity`` object tells us which values are zero.
+For performance reasons TensorWrapper may opt to actually allocate the tensor
+with different properties. The ``Layout`` component is responsible for
+describing the runtime properties of the tensor:
+
+- Actual shape of the tensor (including tiling)
+- Actual symmetry (accounting for actual shape)
+- Actual sparsity of the tensor (accounting for symmetry)
+- Distribution for multi-process tensors
 
 
 Expression
@@ -330,13 +336,30 @@ Like most tensor libraries, TensorWrapper will rely on an expression layer for
 composing tensor expressions. Strictly, speaking this layer is entered into
 in a user-facing manner; however, the expression layer is specifically designed
 to appear to the user like they are working with only ``TensorWrapper`` objects,
-which is why we consider it an implementation detail.
+which is why we consider it an implementation detail. Responsibilities include:
+
+- Assembling the :ref:`term_cst` from the DSL.
+- Express transformations of a single tensor
+- Express binary operations
+- Represent branching nodes of the abstract syntax tree
 
 
 OpGraph
 -------
 
 Main discussion: :ref:`designing_the_opgraph`.
+
+The ``Expression`` component contains a user-friendly mechanism for composing
+tensors using TensorWrapper's DSL. The result is a CSL. In practice, CSLs
+contain extraneous information (and in C++ are typically represented by
+heavily nested template instantiations which are not fun to look at). The
+``OpGraph`` component is designed to be an easier-to-manipulate,
+more-programmer-friendly representation of the tensor algebra the user
+requested than the ``Expression`` component. It is the ``OpGraph`` which is
+used to drive executing the backends. Responsibilities include:
+
+- Converting the CST to an AST
+- Runtime optimizations of the AST
 
 Implementation-Facing External Dependencies
 ===========================================
