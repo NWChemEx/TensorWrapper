@@ -7,5 +7,6 @@ TensorWrapper Background
    :maxdepth: 2
    :caption: Contents:
 
+   key_features
    other_choices
    terminology

@@ -71,6 +71,8 @@ Tensor Library for C++
 
 - `GitHub <https://github.com/abeschneider/tensor>`__
 
+.. _tiledarray:
+
 **********
 TiledArray
 **********

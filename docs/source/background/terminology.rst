@@ -133,8 +133,8 @@ Computer Science Terminology
 
 .. _term_ast:
 
-AST
-===
+Abstract Syntax Tree (AST)
+==========================
 
 With respect to source code, an abstract syntax tree (AST) is a representation
 of the structure of what the programmer wrote, whereas a :ref:`term_cst`
@@ -144,8 +144,8 @@ because extraneous information has been removed.
 
 .. _term_cst:
 
-CST
-===
+Concrete Syntax Tree (CST)
+==========================
 
 With respect to source code, a concrete syntax tree (CST) is a representation
 of the literal source code the programmer wrote. The CST contains all details
@@ -155,10 +155,10 @@ particular concept. Distilling out the essential concepts leads to an
 
 .. _term_dsl:
 
-DSL
-===
+Domain Specific Language (DSL)
+==============================
 
-A domain-specific language (DSL) is a coding language targeted at a particular
+A domain specific language (DSL) is a coding language targeted at a particular
 domain of applications. Compared to general-purpose coding languages, DSLs
 tend to contain fewer language primitives on account of the DSL only concerning
 itself with being general enough to express operations within the target
