@@ -44,12 +44,19 @@ or lay them out in memory.
 Shape Considerations
 ********************
 
-Rank and extents
-   The main data in the shape is the :ref:`term_rank` and the
-   :ref:`term_extent` s of each mode.
+.. _shape_rank_and_extents:
 
-   - Runtime determination of extents is a very common scenario.
-   - Usually know the rank at compile time, but don't want to assume this.
+Basic operations
+   The unifying theme of objects in the shape component is that they are
+   shapes. It is common to not This means they have:
+
+   - rank
+   - extents
+   - sub-shapes or slices
+   - *N.B.*, some, all, or none of these properties may be known at compile
+     time and we need a mechanism for setting them at runtime.
+
+.. _shape_nested:
 
 Nested
    While a :ref:`term_nested` tensor may seem exotic, in practice, distributed
@@ -58,10 +65,14 @@ Nested
    also occurs naturally when discussing sparsity.
 
    - Nestings may be :ref:`term_smooth`  or :ref:`term_jagged`.
-   - While :ref:`term_smooth` nestings can be "flattened" into non-nested shapes
-     (*e.g.*, a 3 by 4 matrix of 2 element vectors is in practice just a 3 by 4
-     by 2 rank-3 tensor), flattening the shape destroys the partitioning
-     information, which is useful for specifying slices.
+   - While nestings can be flattened (*e.g.*, a smooth matrix of matrices
+     can just be treated as a rank 4 tensor and a smooth matrix of jagged
+     matrices can be treated as a single jagged rank 4 tensor) doing so
+     destroys the mode partitioning information.
+   - Mode partitioning information is needed for providing hints to the backend
+     pertaining to slicing operations and hierarchical memory layouts.
+
+.. _shape_jagged:
 
 Jagged-ness
    A truly jagged shape (one where slices along the same mode have different
@@ -75,14 +86,12 @@ Jagged-ness
      :math:`s` must minimally be viewed as having :math:`r-s` layers
    - A key use of jagged shapes is for tiling tensors.
 
+.. _shape_combining_shapes:
+
 Combining shapes
    As we do tensor operations we will need to work out the resulting shapes.
    This in general requires knowing how the modes of the inputs map to the
    modes of the output.
-
-Sliceable
-   It should be possible to get slices of a shape. Slices may have the same
-   rank as the original shape, or may have lower ranks.
 
 Not in Scope
 ============
@@ -94,7 +103,6 @@ Sparsity
    elements are zero.
 
    - Sparsity is punted to :ref:`sparsity_design`.
-
 
 Permutational Symmetry
    In many cases the elements of a tensor are not all linearly-independent and
@@ -123,9 +131,9 @@ In designing the class hierarchy we note the following:
 - An algorithm which works for a jagged shape should work for a smooth shape
   as well. The reverse, smooth algorithms with jagged shapes, will in general
   not work.
-- Nested shapes require partitioning modes into layers.
-- ``IndexedShape`` is introduced to allow combining shapes in a manner similar
-  to how the tensors are combined.
+- Nestings are logically imposed over an existing shape. The resulting nested
+  shape is still an instance of the underlying shape.
+- Tiled shapes are a subcategory of jagged shapes.
 
 .. _fig_shape_design:
 
@@ -134,29 +142,38 @@ In designing the class hierarchy we note the following:
 
    The architecture of TensorWrapper's Shape component.
 
-:numref:`fig_shape_design` shows the four main classes implementing the shape
-component. Most end users will deal with the ``Shape`` class.
+:numref:`fig_shape_design` shows the classes primarily responsible for
+implementing the shape component. Most end users will deal with the ``Shape``
+class.
+
+ShapeBase
+=========
+
+The unifying features of all shapes were summarized in the
+:ref:`shape_rank_and_extents` consideration. ``ShapeBase`` provides the API
+that all shapes must minimally satisfy because they are shapes. The actual
+class serves primarily as code factorization.
 
 Shape
 =====
 
-The ``Shape`` class describes a hyper-rectangular array of data and can be used
-for "traditional" tensors (those which are not nested or jagged). Most end
-users will simply create ``Shape`` objects and pass them on to ``TensorWrapper``
-and we expect that manipulations of ``Shape`` objects by end users will be
-rare. Nonetheless the ``Shape`` object will be full featured to aid
-TensorWrapper developers.
+The ``Shape`` class describes a (smooth) hyper-rectangular array of data and
+can be used for "traditional" tensors (those which are not nested or jagged).
+Most end users will simply create ``Shape`` objects and pass them on to
+``TensorWrapper``. We expect that manipulations of ``Shape`` objects will be
+aimed at TensorWrapper developers.
 
 JaggedShape
 ===========
 
-Similar to ``Shape`` except that users must explicitly provide the shape of
-the slices. Generally speaking ``JaggedShape`` objects of rank :math:`r` will
-contain a series of rank :math:`s` ``Shape`` objects. The actual
-``JaggedShape`` object serves as a map from an index with :math:`(r-s)` indices
-to the ``Shape`` of that slice. Like ``Shape`` we expect users to primarily be
-concerned with construction. Manipulations of the ``JaggedShape`` will be
-primarily of interest to TensorWrapper developers.
+To satisfy the :ref:`shape_jagged` consideration we introduce ``JaggedShape``.
+``JaggedShape`` is similar to ``Shape`` except that users must explicitly
+provide the shape of the slices. Generally speaking ``JaggedShape`` objects of
+rank :math:`r` will contain a series of rank :math:`s` ``Shape`` objects. The
+actual ``JaggedShape`` object serves as a map from an index with :math:`(r-s)`
+indices to the ``Shape`` of that slice. Like ``Shape`` we expect users to
+primarily be concerned with construction. Again, manipulations of the
+``JaggedShape`` will be primarily of interest to TensorWrapper developers.
 
 TiledShape
 ==========
@@ -164,8 +181,11 @@ TiledShape
 Introduced primarily as a convenience for constructing ``JaggedShape`` objects
 by tiling.
 
-NestedShape
-===========
+Nested
+======
+
+To address the :ref:`shape_nested` consideration, we have added a ``Nested``
+class.
 
 With objects like ``Shape`` TensorWrapper can't tell how the user is thinking
 of the tensor. For example, they could be thinking of a matrix as a matrix or
@@ -179,11 +199,12 @@ how we view the tensor can affect physical layout.
 IndexedShape
 ============
 
-``IndexedShape`` is the result of an operation like ``s("i,j,k")`` (assuming
-``s`` is a ``Shape``, ``JaggedShape``, or ``NestedShape`` object). While
-``IndexedShape`` is technically exposed to the user, it's used primarily for
-expressing shape manipulations using Einstein index notation and is expected to
-be primarily of use to TensorWrapper developers.
+Consideration :ref:`shape_combining_shapes` requires us to be able to compose
+the various shape objects. To do this, we rely on the same mechanism used for
+``TensorWrapper``, *i.e.*, an expression layer. More specifically,
+``IndexedShape`` objects result from indexing a shape like ``s("i,j,k")``. While
+``IndexedShape`` is technically exposed to the user, user can be somewhat
+oblivious to its existence.
 
 *******************
 Proposed Shape APIs
@@ -402,13 +423,25 @@ All shapes know their total rank and the total number of scalar elements:
    assert(js.size() == 6200); // 6000 + (10*20) = 6200;
 
 
-``NestedShape`` additionally allows you to get this information per layer:
+``Nested`` additionally allows you to get this information per layer:
 
 .. code-block:: c++
 
-   assert(s3_3.n_layers() == 2);
-   assert(s3_3.elements_in_layer(0) == 6000);
-   assert(s3_3.elements_in_layer(1) == 36000000);
+   Nested<Shape> s1_2({1, 2}, s);
+   Nested<JaggedShape> js1_2({1, 2}, js);
+
+   assert(s1_2.n_layers() == 2);
+   assert(js1_2.n_layers() == 2);
+
+   assert(s1_2.rank_layer(0) == 1);
+   assert(s1_2.rank_layer(1) == 2);
+   assert(js1_2.rank_layer(0) == 1);
+   assert(js1_2.rank_layer(1) == 2);
+
+   assert(s1_2.elements_in_layer(0) == 10);
+   assert(s1_2.elements_in_layer(1) == 6000);
+   assert(js1_2.elements_in_layer(0) == 2);
+   assert(js1_2.elements_in_layer(1) == 6200);
 
    // Get the shape of the 0,0-th element (returns a std::variant)
    assert(s3_3({0, 0}) == s);
@@ -459,6 +492,37 @@ compatible sizes).
    js1("i,j,k") = js0("i,j") * js0("i,k");
    assert(js1 == JaggedShape{Shape{10,10}, Shape{20,20}});
 
+Combining ``Nested<T>`` objects is conceptually done layer-by-layer. In practice
+we just combine the underlying ``T`` objects while preserving the layer
+assignments and ensuring layer shapes are compatible:
+
+.. code-block:: c++
+
+   Shape s{10, 20, 30};
+   Nested<Shape> s1_2({1, 2}, s), s2_1({2,1}, s), result;
+
+   result("i,j,k") = s1_2("i,j,k") + s1_2("i,j,k");
+   assert(result == s1_2);
+
+   // Not allowed because we can't add rank 1 tensors to rank 2 tensors
+   // result("i,j,k") = s1_2("i,j,k") + s2_1("i,j,k");
+
+   result("i,j") = s1_2("i,j,k") * s1_2("i,j,k");
+   assert(result == Nested<Shape>({1, 1}, Shape{10, 20}));
+
+   result("j,k") = s1_2("i,j,k") * s1_2("i,j,k");
+   assert(result == Nested<Shape>({0,2}, Shape{20, 30}));
+
+   // Layers only need compatible, not identical, shapes
+   result("j,k") = s1_2("i,j,k") * s2_1("i,j,k");
+   assert(result == Nested<Shape>({1, 1}, Shape{20, 30}));
+
+
+We note that it's quite likely that scenarios will arise where the user will
+want the result to be layered different than the default behavior provides. In
+practice re-layering a shape is a trivial operation (swapping two small
+vectors of integers).
+
 Slicing
 =======
 
@@ -478,3 +542,23 @@ Slicing
    // signalling we want the entire mode)
    auto sx2 = s.slice(tensor_wrapper::all, 2);
    assert(sx2 == Shape{10});
+
+*******
+Summary
+*******
+
+The design of the shape component satisfies the considerations raised above
+by:
+
+:ref:`shape_rank_and_extents`
+   The ``ShapeBase`` class will provide a common API for getting/setting basic
+   information and performing common operations.
+
+:ref:`shape_nested`
+   The ``Nested`` class tracks how the modes of a tensor are layered.
+
+:ref:`shape_jagged`
+   The ``JaggedShape`` class is used to represent jagged shapes.
+
+:ref:`shape_combining_shapes`
+   The ``IndexedShape`` class allows us to easily compose shapes.

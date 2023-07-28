@@ -282,7 +282,7 @@ state necessary for performance.
 Allocator
 ---------
 
-Main discussion: :ref:`designing_the_allocator`.
+Main discussion: :ref:`tw_designing_the_allocator`.
 
 The ``Allocator`` component wraps the process of going from the actual
 ``Shape``, ``Sparsity``, and ``Symmetry`` for the tensor to an object of the
@@ -297,7 +297,7 @@ as:
 Buffer
 ------
 
-Main discussion: :ref:`designing_the_buffer`.
+Main discussion: :ref:`tw_designing_the_buffer`.
 
 To the extent possible ``TensorWrapper`` strives to avoid needing to reimplement
 tensor math routines. Key to these efforts are the already existing tensor
@@ -347,7 +347,7 @@ which is why we consider it an implementation detail. Responsibilities include:
 OpGraph
 -------
 
-Main discussion: :ref:`designing_the_opgraph`.
+Main discussion: :ref:`tw_designing_the_opgraph`.
 
 The ``Expression`` component contains a user-friendly mechanism for composing
 tensors using TensorWrapper's DSL. The result is a CSL. In practice, CSLs
