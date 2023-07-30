@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tensor Relationships Design &mdash; TensorWrapper 1.0.0 documentation</title>
+  <title>Designing the Symmetry Component &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,7 +16,6 @@
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,22 +47,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../terminology.html">TensorWrapper Terminology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">TensorWrapper Background</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design Documentation</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="index.html#high-level-architecture">High-Level Architecture</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html#class-design">Class Design</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Tensor Relationships Design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="distribution.html">Distribution Design</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design of TensorWrapper</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="motivation.html">Motivating TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Symmetry Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
@@ -82,10 +85,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Design Documentation</a></li>
-      <li class="breadcrumb-item active">Tensor Relationships Design</li>
+          <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
+      <li class="breadcrumb-item active">Designing the Symmetry Component</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/developer/design/relationships.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/symmetry.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -93,62 +96,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="tensor-relationships-design">
-<span id="relationships-design"></span><h1>Tensor Relationships Design<a class="headerlink" href="#tensor-relationships-design" title="Permalink to this heading"></a></h1>
-<div class="section" id="what-is-a-tensor-relationship">
-<h2>What is a tensor relationship?<a class="headerlink" href="#what-is-a-tensor-relationship" title="Permalink to this heading"></a></h2>
-<p>It is often possible to generate an element of a tensor given the value of a
-different element. In other words, the elements are not linearly-independent
-parameters. For example, if we know an <span class="math notranslate nohighlight">\(m\)</span> by <span class="math notranslate nohighlight">\(m\)</span> element matrix
-<span class="math notranslate nohighlight">\(A\)</span> is a symmetric matrix, then we know that its elements satisfy
-<span class="math notranslate nohighlight">\(A_{ij}=A_{ji}\)</span>. In turn, only the diagonal elements, and half of the
-off-diagonal elements, are actually linearly-independent. When a tensor contains
-linearly-dependent elements we say that a “relationship” exists among those
-elements. We intentionally avoid the word “symmetry” to avoid mathematical and
-spatial connotations.</p>
-</div>
-<div class="section" id="why-do-we-need-tensor-relationships">
-<h2>Why do we need (tensor) relationships?<a class="headerlink" href="#why-do-we-need-tensor-relationships" title="Permalink to this heading"></a></h2>
-<p>Performance. If we store both the linearly-independent and linearly-dependent
-elements we waste memory storing the linearly-dependent elements since they can
-be generated by the linearly-independent elements. We also potentially waste
-computational time since redundant operations will occur multiple times. That
-said an obligatory caveat is in order, namely that non-standard memory access
-patterns can also ruin performance and thus it sometimes can be beneficial to
-have some redundancy.</p>
-</div>
-<div class="section" id="tensor-relationship-considerations">
-<h2>(Tensor) relationship considerations<a class="headerlink" href="#tensor-relationship-considerations" title="Permalink to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Symmetry, antisymmetry</p>
-<ul class="simple">
-<li><p>Arguably most important consideration on list.</p></li>
-</ul>
-</li>
-<li><p>Hermitian, anti-Hermitian</p>
-<ul class="simple">
-<li><p>Only relevant for complex elements.</p></li>
-</ul>
-</li>
-<li><p>Cyclic permutations?</p>
-<ul class="simple">
-<li><p>Generalizes above to permutations of three or more indices.</p></li>
-</ul>
-</li>
-<li><p>Spatial symmetry (of basis functions)</p>
-<ul class="simple">
-<li><p>Out of scope. Manifests as sparsity.</p></li>
-</ul>
-</li>
-<li><p>Sparse maps.</p>
-<ul class="simple">
-<li><p>Map offsets of one (or more) mode(s) to the non-zero offsets of another
-mode.</p></li>
-<li><p>A non-symmetry relationship among modes.</p></li>
-</ul>
-</li>
-</ol>
-</div>
+  <div class="section" id="designing-the-symmetry-component">
+<span id="tw-designing-the-symmetry-component"></span><h1>Designing the Symmetry Component<a class="headerlink" href="#designing-the-symmetry-component" title="Permalink to this heading"></a></h1>
 </div>
 
 

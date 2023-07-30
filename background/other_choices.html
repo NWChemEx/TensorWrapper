@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Existing Tensor Libraries &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TensorWrapper Terminology" href="terminology.html" />
+    <link rel="prev" title="Key Features of TensorWrapper" href="key_features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TensorWrapper
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">TensorWrapper Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Existing Tensor Libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cyclops-tensor-framework-ctf">Cyclops Tensor Framework (CTF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fastor">Fastor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ftensor">FTensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intelligent-tensor-itensor">Intelligent Tensor (ITensor)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#libtensor">libtensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pytorch">PyTorch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor">Tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-algebra-compiler-taco">Tensor Algebra Compiler (TACO)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-library-for-c">Tensor Library for C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tiledarray">TiledArray</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">TensorWrapper Terminology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">TensorWrapper Background</a></li>
+      <li class="breadcrumb-item active">Existing Tensor Libraries</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/background/other_choices.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="existing-tensor-libraries">
+<h1>Existing Tensor Libraries<a class="headerlink" href="#existing-tensor-libraries" title="Permalink to this heading"></a></h1>
+<p>What follows are the existing tensor libraries we are aware of. There are a ton
+of tensor libraries and we have limited ourselves to C++ libraries providing
+tensor functionality. The libraries are listed in alphabetical order.</p>
+<div class="section" id="cyclops-tensor-framework-ctf">
+<h2>Cyclops Tensor Framework (CTF)<a class="headerlink" href="#cyclops-tensor-framework-ctf" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/cyclops-community/ctf">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="fastor">
+<h2>Fastor<a class="headerlink" href="#fastor" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/romeric/Fastor">GitHub</a></p></li>
+</ul>
+<p>Fastor <span id="id1"><sup><a class="reference internal" href="../bibliography/bibliography.html#id2" title="Roman Poya, Antonio J. Gil, and Rogelio Ortigosa. A high performance data parallel tensor contraction framework: application to coupled electro-mechanics. Computer Physics Communications, 2017. URL: http://www.sciencedirect.com/science/article/pii/S0010465517300681, doi:http://dx.doi.org/10.1016/j.cpc.2017.02.016.">1</a></sup></span> is focused on tensors with known shapes.</p>
+<ul class="simple">
+<li><p>Total tensor size must be known in advance (not just number of modes, but
+also the extents of those modes).</p></li>
+</ul>
+</div>
+<div class="section" id="ftensor">
+<h2>FTensor<a class="headerlink" href="#ftensor" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gitlab.com/wlandry/ftensor">GitLab</a></p></li>
+</ul>
+</div>
+<div class="section" id="intelligent-tensor-itensor">
+<h2>Intelligent Tensor (ITensor)<a class="headerlink" href="#intelligent-tensor-itensor" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ITensor/ITensor">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="libtensor">
+<h2>libtensor<a class="headerlink" href="#libtensor" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/epifanovsky/libtensor">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="pytorch">
+<h2>PyTorch<a class="headerlink" href="#pytorch" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pytorch/pytorch">GitHub</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/cppdocs/">Docs</a></p></li>
+</ul>
+<p>I know what you’re saying, “Wait PyTorch is in Python” well they have a C++ API
+so it’s on the list.</p>
+</div>
+<div class="section" id="tensor">
+<h2>Tensor<a class="headerlink" href="#tensor" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/robclu/tensor">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="tensor-algebra-compiler-taco">
+<h2>Tensor Algebra Compiler (TACO)<a class="headerlink" href="#tensor-algebra-compiler-taco" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/tensor-compiler/taco">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="tensor-library-for-c">
+<h2>Tensor Library for C++<a class="headerlink" href="#tensor-library-for-c" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/abeschneider/tensor">GitHub</a></p></li>
+</ul>
+</div>
+<div class="section" id="tiledarray">
+<span id="id2"></span><h2>TiledArray<a class="headerlink" href="#tiledarray" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ValeevGroup/tiledarray">GitHub</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="key_features.html" class="btn btn-neutral float-left" title="Key Features of TensorWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="terminology.html" class="btn btn-neutral float-right" title="TensorWrapper Terminology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

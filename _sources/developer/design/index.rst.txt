@@ -12,32 +12,23 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-####################
-Design Documentation
-####################
+.. _tensor_wrapper_design:
 
-Topics in these sections capture the design process of TensorWrapper.
-
-***********************
-High-Level Architecture
-***********************
+#######################
+Design of TensorWrapper
+#######################
 
 .. toctree::
    :maxdepth: 2
 
    motivation
-   considerations
-   tensor_stack
-   creation
-
-************
-Class Design
-************
-
-.. toctree::
-   :maxdepth: 2
-
+   overview
    shape
-   relationships
+   symmetry
    sparsity
+   tensor_wrapper
+   allocator
+   buffer
    distribution
+   expression
+   op_graph

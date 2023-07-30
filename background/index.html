@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developer Documentation &mdash; TensorWrapper 1.0.0 documentation</title>
+  <title>TensorWrapper Background &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Design of TensorWrapper" href="design/index.html" />
-    <link rel="prev" title="TensorWrapper Terminology" href="../background/terminology.html" /> 
+    <link rel="next" title="Key Features of TensorWrapper" href="key_features.html" />
+    <link rel="prev" title="TensorWrapper" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,11 +47,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../background/index.html">TensorWrapper Background</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/index.html">Design of TensorWrapper</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TensorWrapper Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">TensorWrapper Terminology</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
@@ -71,9 +73,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Developer Documentation</li>
+      <li class="breadcrumb-item active">TensorWrapper Background</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/index.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/background/index.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -81,23 +83,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="developer-documentation">
-<h1>Developer Documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this heading"></a></h1>
+  <div class="section" id="tensorwrapper-background">
+<h1>TensorWrapper Background<a class="headerlink" href="#tensorwrapper-background" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="design/index.html">Design of TensorWrapper</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/motivation.html">Motivating TensorWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/overview.html">Overview of TensorWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/shape.html">Tensor Shape Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/symmetry.html">Designing the Symmetry Component</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/sparsity.html">Tensor Sparsity Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/tensor_wrapper.html">Designing TensorWrapper Class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/allocator.html">Designing the Allocator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/buffer.html">Designing the Buffer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/distribution.html">Layout Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/expression.html">Designing the Expression Component</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/op_graph.html">Designing the OpGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="key_features.html#design-features">Design Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="key_features.html#math-features">Math Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#cyclops-tensor-framework-ctf">Cyclops Tensor Framework (CTF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#fastor">Fastor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#ftensor">FTensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#intelligent-tensor-itensor">Intelligent Tensor (ITensor)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#libtensor">libtensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#pytorch">PyTorch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#tensor">Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#tensor-algebra-compiler-taco">Tensor Algebra Compiler (TACO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#tensor-library-for-c">Tensor Library for C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html#tiledarray">TiledArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="terminology.html">TensorWrapper Terminology</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html#tensor-terminology">Tensor Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html#computer-science-terminology">Computer Science Terminology</a></li>
 </ul>
 </li>
 </ul>
@@ -108,8 +119,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../background/terminology.html" class="btn btn-neutral float-left" title="TensorWrapper Terminology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="design/index.html" class="btn btn-neutral float-right" title="Design of TensorWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="TensorWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="key_features.html" class="btn btn-neutral float-right" title="Key Features of TensorWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

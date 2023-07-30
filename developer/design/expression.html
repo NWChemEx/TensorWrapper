@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tensor Sparsity Design &mdash; TensorWrapper 1.0.0 documentation</title>
+  <title>Designing the Expression Component &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Designing TensorWrapper Class" href="tensor_wrapper.html" />
-    <link rel="prev" title="Designing the Symmetry Component" href="symmetry.html" /> 
+    <link rel="next" title="Designing the OpGraph" href="op_graph.html" />
+    <link rel="prev" title="Layout Design" href="distribution.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,17 +54,12 @@
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Tensor Sparsity Design</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#what-is-tensor-sparsity">What is tensor sparsity?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#why-do-we-need-tensor-sparsity">Why do we need tensor sparsity?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sparsity-considerations">Sparsity considerations</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Expression Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
 </li>
@@ -91,9 +86,9 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
-      <li class="breadcrumb-item active">Tensor Sparsity Design</li>
+      <li class="breadcrumb-item active">Designing the Expression Component</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/sparsity.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/expression.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -101,63 +96,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="tensor-sparsity-design">
-<span id="sparsity-design"></span><h1>Tensor Sparsity Design<a class="headerlink" href="#tensor-sparsity-design" title="Permalink to this heading"></a></h1>
-<p>This page documents the process of designing the sparsity component of
-TensorWrapper.</p>
-<div class="section" id="what-is-tensor-sparsity">
-<h2>What is tensor sparsity?<a class="headerlink" href="#what-is-tensor-sparsity" title="Permalink to this heading"></a></h2>
-<p>In the context of tensors, sparsity refers to tensors possessing elements which
-are effectively zero. Exactly what defines the effective zero is situational
-and problem-specific. The sparsity component is responsible for indicating
-which elements are zero or non-zero.</p>
-<p>For our purposes tensor sparsity comes in two types: tile and element sparsity.
-Element sparsity is the more fundamental sparsity and indicates which elements
-of the tensor are zero/non-zero. Tensors are typically tiled, and under the
-hood we are thus more interested in tile sparsity, which is whether or not a
-tile contains non-zero elements.</p>
-</div>
-<div class="section" id="why-do-we-need-tensor-sparsity">
-<h2>Why do we need tensor sparsity?<a class="headerlink" href="#why-do-we-need-tensor-sparsity" title="Permalink to this heading"></a></h2>
-<p>If a tensor exhibits a substantial amount of sparsity, then implicitly storing
-the zero values leads to a significant space savings. Furthermore, many
-operations can be simplified based on whether or not the operation involves
-sparsity, <em>e.g.</em>, Contracting a non-zero tile with a zero tile results in a
-zero-tile (which if the resulting tile is implicitly stored means the
-contraction is a no-op). Thus properly exploiting sparsity can result in
-substantial space and time savings.</p>
-</div>
-<div class="section" id="sparsity-considerations">
-<h2>Sparsity considerations<a class="headerlink" href="#sparsity-considerations" title="Permalink to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Element sparsity.</p>
-<ul class="simple">
-<li><p>TensorWrapper APIs are element-based for user-friendliness.</p></li>
-<li><p>Non-zero tiles can still have element sparsity.</p></li>
-</ul>
-</li>
-<li><p>Tile sparsity.</p>
-<ul class="simple">
-<li><p>Most implementations will work with tile sparsity.</p></li>
-<li><p>Convertible to element sparsity with Shape.</p></li>
-</ul>
-</li>
-<li><p>Interact with sparse maps.</p>
-<ul class="simple">
-<li><p>Running modes through a series of sparse maps produces sparsity object.</p></li>
-</ul>
-</li>
-<li><p>Potentially recursive structure.</p></li>
-</ol>
-</div>
+  <div class="section" id="designing-the-expression-component">
+<span id="id1"></span><h1>Designing the Expression Component<a class="headerlink" href="#designing-the-expression-component" title="Permalink to this heading"></a></h1>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="symmetry.html" class="btn btn-neutral float-left" title="Designing the Symmetry Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tensor_wrapper.html" class="btn btn-neutral float-right" title="Designing TensorWrapper Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="distribution.html" class="btn btn-neutral float-left" title="Layout Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="op_graph.html" class="btn btn-neutral float-right" title="Designing the OpGraph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

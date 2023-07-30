@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Tensor Relationships Design" href="relationships.html" />
-    <link rel="prev" title="Creating a Tensor" href="creation.html" /> 
+    <link rel="next" title="Designing the Symmetry Component" href="symmetry.html" />
+    <link rel="prev" title="Overview of TensorWrapper" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,22 +48,34 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../terminology.html">TensorWrapper Terminology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">TensorWrapper Background</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design Documentation</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="index.html#high-level-architecture">High-Level Architecture</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html#class-design">Class Design</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Tensor Shape Design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="relationships.html">Tensor Relationships Design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="distribution.html">Distribution Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design of TensorWrapper</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="motivation.html">Motivating TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tensor Shape Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-a-tensor-s-shape">What is a tensor’s shape?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-do-we-need-a-tensor-s-shape">Why do we need a tensor’s shape?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shape-considerations">Shape Considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Shape Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#proposed-shape-apis">Proposed Shape APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
@@ -82,10 +94,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Design Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
       <li class="breadcrumb-item active">Tensor Shape Design</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/developer/design/shape.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/shape.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -98,43 +110,492 @@
 <p>This page captures the design process of TensorWrapper’s <code class="docutils literal notranslate"><span class="pre">Shape</span></code> class.</p>
 <div class="section" id="what-is-a-tensor-s-shape">
 <h2>What is a tensor’s shape?<a class="headerlink" href="#what-is-a-tensor-s-shape" title="Permalink to this heading"></a></h2>
-<p>For computing purposes tensors are really nothing more than a bunch of floating
-point values. These floating point values are typically arranged into
-<span class="math notranslate nohighlight">\(n\)</span>-dimensional rectangular arrays, where <span class="math notranslate nohighlight">\(n\)</span> is the number of modes in the
-tensor. A tensor’s shape represents the layout of the <span class="math notranslate nohighlight">\(n\)</span>-dimensional
-rectangular array.</p>
+<p>For computing purposes, tensors are really nothing more than a bunch of floating
+point values and meta-data associated with those values. Conceptually, the
+floating point values are typically arranged into <span class="math notranslate nohighlight">\(n\)</span>-dimensional rectangular
+arrays, where <span class="math notranslate nohighlight">\(n\)</span> is the number of <a class="reference internal" href="../../background/terminology.html#term-mode"><span class="std std-ref">mode</span></a> s in the tensor. A tensor’s
+shape describes this hyper-rectangular array’s layout.</p>
 </div>
 <div class="section" id="why-do-we-need-a-tensor-s-shape">
 <h2>Why do we need a tensor’s shape?<a class="headerlink" href="#why-do-we-need-a-tensor-s-shape" title="Permalink to this heading"></a></h2>
-<p>A tensor’s shape is arguably the most primitive information about the tensor.
-Without the shape it is not possible to even begin laying out the tensor in
-memory.</p>
+<p>A tensor’s shape is arguably the most primitive meta-data associated with the
+tensor. Without the shape of the tensor we do not know how to access elements
+or lay them out in memory.</p>
 </div>
 <div class="section" id="shape-considerations">
 <h2>Shape Considerations<a class="headerlink" href="#shape-considerations" title="Permalink to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Element-based API.</p>
+<dl class="simple" id="shape-rank-and-extents">
+<dt>Basic operations</dt><dd><p>The unifying theme of objects in the shape component is that they are
+shapes. It is common to not This means they have:</p>
 <ul class="simple">
-<li><p>Algorithms interacting with the DSL reason in terms of elements, not tiles.</p></li>
-<li><p>Tiling is largely an implementation detail needed for performance.</p></li>
-<li><p>Internally, easy to map element-to-tile and vice versa.</p></li>
+<li><p>rank</p></li>
+<li><p>extents</p></li>
+<li><p>sub-shapes or slices</p></li>
+<li><p><em>N.B.</em>, some, all, or none of these properties may be known at compile
+time and we need a mechanism for setting them at runtime.</p></li>
 </ul>
-</li>
-<li><p>Contains the number of modes.</p></li>
-<li><p>Contains the extent of each mode.</p></li>
-<li><p>Contains the tiling of each mode.</p>
+</dd>
+</dl>
+<dl class="simple" id="shape-nested">
+<dt>Nested</dt><dd><p>While a <a class="reference internal" href="../../background/terminology.html#term-nested"><span class="std std-ref">nested</span></a> tensor may seem exotic, in practice, distributed
+tensors are often implemented by nesting (ideally the user need not be aware
+of such nesting aside from possibly specifying it at construction). Nesting,
+also occurs naturally when discussing sparsity.</p>
 <ul class="simple">
-<li><p>Performance requires some sort of tiling.</p></li>
-<li><p>Tiling is not strictly restricted to distributed computing.</p></li>
+<li><p>Nestings may be <a class="reference internal" href="../../background/terminology.html#term-smooth"><span class="std std-ref">smooth</span></a>  or <a class="reference internal" href="../../background/terminology.html#term-jagged"><span class="std std-ref">jagged</span></a>.</p></li>
+<li><p>While nestings can be flattened (<em>e.g.</em>, a smooth matrix of matrices
+can just be treated as a rank 4 tensor and a smooth matrix of jagged
+matrices can be treated as a single jagged rank 4 tensor) doing so
+destroys the mode partitioning information.</p></li>
+<li><p>Mode partitioning information is needed for providing hints to the backend
+pertaining to slicing operations and hierarchical memory layouts.</p></li>
 </ul>
-</li>
-<li><p>Shape may need to be recursive.</p>
+</dd>
+</dl>
+<dl class="simple" id="shape-jagged">
+<dt>Jagged-ness</dt><dd><p>A truly jagged shape (one where slices along the same mode have different
+shapes) require special treatment.</p>
 <ul class="simple">
-<li><p>Elements of tensors typically thought of as scalars, but can be any field.</p></li>
-<li><p>Need to be able to get the shape of the field’s elements.</p></li>
+<li><p>Requires the tensor be at least rank 2 to be truly jagged.</p></li>
+<li><p>Must have smooth slices of at least rank 1, but could have higher-rank
+smooth slices, <em>e.g.</em>, a jagged rank 3 tensors could have smooth matrices
+as elements.</p></li>
+<li><p>A jagged tensor of rank <span class="math notranslate nohighlight">\(r\)</span>, which has smooth slices of rank
+<span class="math notranslate nohighlight">\(s\)</span> must minimally be viewed as having <span class="math notranslate nohighlight">\(r-s\)</span> layers</p></li>
+<li><p>A key use of jagged shapes is for tiling tensors.</p></li>
 </ul>
-</li>
-</ol>
+</dd>
+</dl>
+<dl class="simple" id="shape-combining-shapes">
+<dt>Combining shapes</dt><dd><p>As we do tensor operations we will need to work out the resulting shapes.
+This in general requires knowing how the modes of the inputs map to the
+modes of the output.</p>
+</dd>
+</dl>
+<div class="section" id="not-in-scope">
+<h3>Not in Scope<a class="headerlink" href="#not-in-scope" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>Sparsity</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Shape</span></code> component is targeted at describing the conceptual layout of
+the hyper-rectangular array of values. The conceptual layout is independent
+of the values of the elements. Sparsity is concerned with knowing which
+elements are zero.</p>
+<ul class="simple">
+<li><p>Sparsity is punted to <a class="reference internal" href="sparsity.html#sparsity-design"><span class="std std-ref">Tensor Sparsity Design</span></a>.</p></li>
+</ul>
+</dd>
+<dt>Permutational Symmetry</dt><dd><p>In many cases the elements of a tensor are not all linearly-independent and
+optimizations are possible by avoiding redundant computation.</p>
+<ul class="simple">
+<li><p>Antisymmetry, Hermitian, and anti-Hermitian all fall into this
+consideration too.</p></li>
+<li><p>Symmetry is punted to <a class="reference internal" href="symmetry.html#tw-designing-the-symmetry-component"><span class="std std-ref">Designing the Symmetry Component</span></a>.</p></li>
+</ul>
+</dd>
+<dt>Logical vs actual</dt><dd><p>The user declares the tensor with some shape. That shape usually reflects the
+physical problem being modeled. Internally we may need to store the tensor
+as a different shape, for performance reasons. The shape describing how the
+user wants to interact with the tensor is the “logical” shape.</p>
+<ul class="simple">
+<li><p>Both the logical and actual shapes are <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects.</p></li>
+<li><p>It is the responsibility of the user creating <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects to track
+if they represent logical or actual shapes.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Shape Design<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<p>In designing the class hierarchy we note the following:</p>
+<ul class="simple">
+<li><p>An algorithm which works for a jagged shape should work for a smooth shape
+as well. The reverse, smooth algorithms with jagged shapes, will in general
+not work.</p></li>
+<li><p>Nestings are logically imposed over an existing shape. The resulting nested
+shape is still an instance of the underlying shape.</p></li>
+<li><p>Tiled shapes are a subcategory of jagged shapes.</p></li>
+</ul>
+<div class="figure align-center" id="id2">
+<span id="fig-shape-design"></span><img alt="../../_images/shape.png" src="../../_images/shape.png" />
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The architecture of TensorWrapper’s Shape component.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</div>
+<p><a class="reference internal" href="#fig-shape-design"><span class="std std-numref">Fig. 3</span></a> shows the classes primarily responsible for
+implementing the shape component. Most end users will deal with the <code class="docutils literal notranslate"><span class="pre">Shape</span></code>
+class.</p>
+<div class="section" id="shapebase">
+<h3>ShapeBase<a class="headerlink" href="#shapebase" title="Permalink to this heading"></a></h3>
+<p>The unifying features of all shapes were summarized in the
+<a class="reference internal" href="#shape-rank-and-extents"><span class="std std-ref">Basic operations</span></a> consideration. <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> provides the API
+that all shapes must minimally satisfy because they are shapes. The actual
+class serves primarily as code factorization.</p>
+</div>
+<div class="section" id="shape">
+<h3>Shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Shape</span></code> class describes a (smooth) hyper-rectangular array of data and
+can be used for “traditional” tensors (those which are not nested or jagged).
+Most end users will simply create <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects and pass them on to
+<code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>. We expect that manipulations of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects will be
+aimed at TensorWrapper developers.</p>
+</div>
+<div class="section" id="jaggedshape">
+<h3>JaggedShape<a class="headerlink" href="#jaggedshape" title="Permalink to this heading"></a></h3>
+<p>To satisfy the <a class="reference internal" href="#shape-jagged"><span class="std std-ref">Jagged-ness</span></a> consideration we introduce <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>.
+<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">Shape</span></code> except that users must explicitly
+provide the shape of the slices. Generally speaking <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects of
+rank <span class="math notranslate nohighlight">\(r\)</span> will contain a series of rank <span class="math notranslate nohighlight">\(s\)</span> <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects. The
+actual <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> object serves as a map from an index with <span class="math notranslate nohighlight">\((r-s)\)</span>
+indices to the <code class="docutils literal notranslate"><span class="pre">Shape</span></code> of that slice. Like <code class="docutils literal notranslate"><span class="pre">Shape</span></code> we expect users to
+primarily be concerned with construction. Again, manipulations of the
+<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> will be primarily of interest to TensorWrapper developers.</p>
+</div>
+<div class="section" id="tiledshape">
+<h3>TiledShape<a class="headerlink" href="#tiledshape" title="Permalink to this heading"></a></h3>
+<p>Introduced primarily as a convenience for constructing <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects
+by tiling.</p>
+</div>
+<div class="section" id="nested">
+<h3>Nested<a class="headerlink" href="#nested" title="Permalink to this heading"></a></h3>
+<p>To address the <a class="reference internal" href="#shape-nested"><span class="std std-ref">Nested</span></a> consideration, we have added a <code class="docutils literal notranslate"><span class="pre">Nested</span></code>
+class.</p>
+<p>With objects like <code class="docutils literal notranslate"><span class="pre">Shape</span></code> TensorWrapper can’t tell how the user is thinking
+of the tensor. For example, they could be thinking of a matrix as a matrix or
+as a vector of vectors. The point of the <code class="docutils literal notranslate"><span class="pre">NestedShape</span></code> object is to partition
+the ranks of the tensor into layers, so we know how many layers the user is
+viewing the tensor as, and how many ranks each layer has. Mathematically
+the various ways of a viewing a tensor do not change the properties of the
+tensor; however, when we are physically laying the tensor out on the computer
+how we view the tensor can affect physical layout.</p>
+</div>
+<div class="section" id="indexedshape">
+<h3>IndexedShape<a class="headerlink" href="#indexedshape" title="Permalink to this heading"></a></h3>
+<p>Consideration <a class="reference internal" href="#shape-combining-shapes"><span class="std std-ref">Combining shapes</span></a> requires us to be able to compose
+the various shape objects. To do this, we rely on the same mechanism used for
+<code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>, <em>i.e.</em>, an expression layer. More specifically,
+<code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> objects result from indexing a shape like <code class="docutils literal notranslate"><span class="pre">s(&quot;i,j,k&quot;)</span></code>. While
+<code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> is technically exposed to the user, user can be somewhat
+oblivious to its existence.</p>
+</div>
+</div>
+<div class="section" id="proposed-shape-apis">
+<h2>Proposed Shape APIs<a class="headerlink" href="#proposed-shape-apis" title="Permalink to this heading"></a></h2>
+<div class="section" id="constructing-a-shape">
+<h3>Constructing a <code class="docutils literal notranslate"><span class="pre">Shape</span></code><a class="headerlink" href="#constructing-a-shape" title="Permalink to this heading"></a></h3>
+<p>Creating a non-nested shape just requires knowing the extent of each mode:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">null_shape</span><span class="p">;</span><span class="w">              </span><span class="c1">// No rank and no elements</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">rank0_shape</span><span class="p">{};</span><span class="w">           </span><span class="c1">// A scalar</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">rank1_shape</span><span class="p">{</span><span class="mi">10</span><span class="p">};</span><span class="w">         </span><span class="c1">// 10 element vector</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">rank2_shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">};</span><span class="w">     </span><span class="c1">// 10 by 20 matrix</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">rank3_shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span><span class="w"> </span><span class="c1">// 10 by 20 by 30 tensor</span>
+</pre></div>
+</div>
+<p>Note that following usual C++ rules the first two lines actually call
+different constructors (default ctor vs. initializer list). Using an initializer
+list requires us to know the rank at compile time. If we want to determine the
+rank at runtime we can use iterators:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Somehow create a vector of extents</span>
+<span class="k">using</span><span class="w"> </span><span class="n">size_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Shape</span><span class="o">::</span><span class="n">size_type</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">size_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">extents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_extents</span><span class="p">();</span>
+
+<span class="c1">// Construct Shape from iterator pair</span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">runtime_rank_shape</span><span class="p">(</span><span class="n">extents</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">extents</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jagged-shape-construction">
+<h3>Jagged Shape Construction<a class="headerlink" href="#jagged-shape-construction" title="Permalink to this heading"></a></h3>
+<p>For a <code class="docutils literal notranslate"><span class="pre">Shape</span></code> we need to specify the extents of each mode. <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>
+declaration is done in terms of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects and looks like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// For brevity define variables</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">s20</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30</span><span class="p">{</span><span class="mi">30</span><span class="p">};</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30_40</span><span class="p">{</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">},</span><span class="w"> </span><span class="n">s50_60</span><span class="p">{</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20_30</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">{</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span>
+
+<span class="c1">// No elements, no rank</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">null_shape</span><span class="p">;</span>
+
+<span class="c1">// A &quot;jagged&quot; scalar (only a single element, so it&#39;s also smooth)</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank0_shape</span><span class="p">{};</span>
+
+<span class="c1">// A &quot;jagged&quot; vector (same as a smooth vector)</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank1_shape</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span>
+
+<span class="c1">// A jagged matrix with 3 rows; row 0 has 10 elements, row 1 has 20, row 2 30</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank2_shape</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+
+<span class="c1">// A jagged rank 3 tensor with smooth matrices. Matrix 0 is 10 by 20,</span>
+<span class="c1">// matrix 1 is 30 by 40, and matrix 2 is 50 by 60</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape</span><span class="p">{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">};</span>
+
+<span class="c1">// A jagged rank 3 tensor where elements are jagged matrices. Matrix 0 is</span>
+<span class="c1">// 1 by 10, matrix 2 has 20 columns in row 0 and 30 columns in row 2, and</span>
+<span class="c1">// matrix 3 has 30 columns in row 0, 10 columns in row 1, and 20 columns in</span>
+<span class="c1">// row 2</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape2</span><span class="p">{{</span><span class="n">s10</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s30</span><span class="p">,</span><span class="w"> </span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">}};</span>
+
+<span class="w"> </span><span class="c1">// A jagged rank 4 tensor where the 0-th element of the 0-th mode is a</span>
+<span class="w"> </span><span class="c1">// 10 by 20 by 30 smooth tensor and the 1-st element is a 40 by 50 by 60</span>
+<span class="w"> </span><span class="c1">// smooth tensor</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">s10_20_30</span><span class="p">,</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">};</span>
+
+<span class="c1">// A jagged rank 4 tensor where the elements are jagged rank 3 tensors.</span>
+<span class="c1">// Taking slices along the 0 and 1-st modes, the (0,0)-th slice is a 10 by 20</span>
+<span class="c1">// matrix, the (0,1)-th slice is a 30 by 40 matrix, the (1,0)-th slice is</span>
+<span class="c1">// a 30 by 40 matrix, the (1,1)-th slice is a 10 by 20 matrix, and the</span>
+<span class="c1">// (1,2)-th slice is a 50 by 60 matrix</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape2</span><span class="p">{{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">}};</span>
+
+<span class="c1">// A jagged rank 4 tensors where the elements are jagged rank 3 tensors,</span>
+<span class="c1">// which have jagged matrices for elements. Taking slices along the 0, 1, and</span>
+<span class="c1">// 2 modes we have:</span>
+<span class="c1">// - (0,0,0) is a 10 element vector,</span>
+<span class="c1">// - (0,1,0) is a 20 element vector,</span>
+<span class="c1">// - (0,1,1) is a 30 element vector,</span>
+<span class="c1">// - (1,0,0) is a 10 element vector,</span>
+<span class="c1">// - (1,0,1) is a 30 element vector,</span>
+<span class="c1">// - (1,1,0) is a 20 element vector,</span>
+<span class="c1">// - (1,2,0) is a 10 element vector,</span>
+<span class="c1">// - (1,2,1) is a 20 element vector,</span>
+<span class="c1">// - (1,2,2) is a 30 element vector</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{{{</span><span class="n">s10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}},</span>
+<span class="w">                        </span><span class="p">{{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}}};</span>
+</pre></div>
+</div>
+<p>Consider the shape of the (0,1) slice of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code>. This slice is a
+vector of vectors where the outer vector has two elements, element 0 of the
+outer vector is a 10-element vector and element 1 is a  30-element vector. In
+other words the shape of the (0,1) slice of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code> describes a jagged
+matrix, which could have been initialized by <code class="docutils literal notranslate"><span class="pre">JaggedShape{s20,</span> <span class="pre">s30}</span></code>. In turn
+the above construction of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code> is actually equivalent to:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">e00</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e01</span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e10</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e11</span><span class="p">{</span><span class="n">s20</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e12</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e0</span><span class="p">{</span><span class="n">e00</span><span class="p">,</span><span class="w"> </span><span class="n">e01</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e1</span><span class="p">{</span><span class="n">e10</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">,</span><span class="w"> </span><span class="n">e12</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">e0</span><span class="p">,</span><span class="w"> </span><span class="n">e1</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>And we see that <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is a recursive structure and thus the runtime
+mechanism for initializing a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is with iterators running over
+<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slice_shapes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_slices</span><span class="p">();</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>So far we have focused on the most general way to create a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> one
+of the most common ways to form a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is by tiling. Consider a
+30 by 30 matrix where we tile each mode into 5, 15, and 10 element chunks.
+Using <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> this can be done by:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span>
+<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span>
+<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">}}};</span>
+</pre></div>
+</div>
+<p>This is an admittedly verbose declaration. Thus for the special case of crating
+<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects which result from tiling smooth <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects we
+introduce the <code class="docutils literal notranslate"><span class="pre">TiledShape</span></code> class. Using <code class="docutils literal notranslate"><span class="pre">TiledShape</span></code> the same shape could
+be declared via:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TiledShape</span><span class="w"> </span><span class="n">s</span><span class="p">{{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">}};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="constructing-nested-shapes">
+<h3>Constructing Nested Shapes<a class="headerlink" href="#constructing-nested-shapes" title="Permalink to this heading"></a></h3>
+<p>Creating a <code class="docutils literal notranslate"><span class="pre">NestedShape</span></code> requires knowing the shape of the tensor and how
+the indices are partitioned into layers.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// One layer scalar</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0</span><span class="p">({</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
+
+<span class="c1">// Two layer scalar</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_0</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
+
+<span class="c1">// One layer vector</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
+
+<span class="c1">// Two layer vector (mode in layer 0)</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_0</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
+
+<span class="c1">// Two layer vector (mode in layer 1)</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_1</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
+
+<span class="c1">// One layer matrix</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
+
+<span class="c1">// Two layer matrix (both modes in layer 0)</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_0</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
+
+<span class="c1">// Two layer matrix (one mode per layer)</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
+
+<span class="c1">// Two layer matrix (both modes in layer 1)</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_2</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
+
+<span class="c1">// One layer rank 3</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s3</span><span class="p">({</span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
+
+<span class="c1">// Two layer rank 3 one mode in layer 0 two in layer 1</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
+
+<span class="c1">// Three layer rank 3, one mode per layer</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
+
+<span class="c1">// A two-layer shape where modes 0 and 1 are in layer 0 and modes 2 and 3</span>
+<span class="c1">// are layer 1</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>The general syntax for an <span class="math notranslate nohighlight">\(n\)</span> layer tensor is an <span class="math notranslate nohighlight">\(n\)</span> element
+container where the <span class="math notranslate nohighlight">\(i\)</span>-th element is the number of ranks in that
+layer (ranks from the shape object are assigned to layers left to right; so
+permutations may be needed to line up with layering).</p>
+</div>
+<div class="section" id="basic-operations">
+<h3>Basic Operations<a class="headerlink" href="#basic-operations" title="Permalink to this heading"></a></h3>
+<p>All shapes know their total rank and the total number of scalar elements:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}};</span>
+
+<span class="c1">// Total rank of the tensor</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// Total number of elements in the tensor</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6000</span><span class="p">);</span><span class="w">  </span><span class="c1">// 10 * 20 * 30 = 6000</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6200</span><span class="p">);</span><span class="w"> </span><span class="c1">// 6000 + (10*20) = 6200;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Nested</span></code> additionally allows you to get this information per layer:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">js1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">js</span><span class="p">);</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6000</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6200</span><span class="p">);</span>
+
+<span class="c1">// Get the shape of the 0,0-th element (returns a std::variant)</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s3_3</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shape-composition">
+<h3>Shape Composition<a class="headerlink" href="#shape-composition" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects are composed similarly (with
+<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects having many more checks to ensure slices are of
+compatible sizes).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s0</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}},</span><span class="w"> </span><span class="n">js1</span><span class="p">;</span>
+
+<span class="c1">// Addition, subtraction, and element-wise multiplication do nothing without</span>
+<span class="c1">// a permutation</span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s0</span><span class="p">);</span>
+
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">js0</span><span class="p">);</span>
+
+<span class="c1">// Permuting modes</span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">});</span>
+
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;j,i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">}});</span>
+
+<span class="c1">// Contraction</span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
+
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;k,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">}});</span>
+
+<span class="c1">// These would throw since contracted modes aren&#39;t the same length</span>
+<span class="c1">// s1(&quot;i,k&quot;) = s0(&quot;j,i,k&quot;) * s0(&quot;i,j,k&quot;);</span>
+
+<span class="c1">// js1(&quot;i,k&quot;) = js0(&quot;i,j&quot;) * js0(&quot;j,k&quot;);</span>
+
+<span class="c1">// Direct product</span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k,l&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,l&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
+
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">}});</span>
+</pre></div>
+</div>
+<p>Combining <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code> objects is conceptually done layer-by-layer. In practice
+we just combine the underlying <code class="docutils literal notranslate"><span class="pre">T</span></code> objects while preserving the layer
+assignments and ensuring layer shapes are compatible:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">s2_1</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s1_2</span><span class="p">);</span>
+
+<span class="c1">// Not allowed because we can&#39;t add rank 1 tensors to rank 2 tensors</span>
+<span class="c1">// result(&quot;i,j,k&quot;) = s1_2(&quot;i,j,k&quot;) + s2_1(&quot;i,j,k&quot;);</span>
+
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}));</span>
+
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span>
+
+<span class="c1">// Layers only need compatible, not identical, shapes</span>
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s2_1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span>
+</pre></div>
+</div>
+<p>We note that it’s quite likely that scenarios will arise where the user will
+want the result to be layered different than the default behavior provides. In
+practice re-layering a shape is a trivial operation (swapping two small
+vectors of integers).</p>
+</div>
+<div class="section" id="slicing">
+<h3>Slicing<a class="headerlink" href="#slicing" title="Permalink to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">};</span>
+
+<span class="c1">// Get the shape of the first five columns of the first five rows...</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s05_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s05_05</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span>
+
+<span class="c1">// Get the shape of row 2</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">});</span>
+
+<span class="c1">// Get the shape of column 2 (`TW::all` is a special literal value</span>
+<span class="c1">// signalling we want the entire mode)</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sx2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="n">tensor_wrapper</span><span class="o">::</span><span class="n">all</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">sx2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>The design of the shape component satisfies the considerations raised above
+by:</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#shape-rank-and-extents"><span class="std std-ref">Basic operations</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> class will provide a common API for getting/setting basic
+information and performing common operations.</p>
+</dd>
+<dt><a class="reference internal" href="#shape-nested"><span class="std std-ref">Nested</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Nested</span></code> class tracks how the modes of a tensor are layered.</p>
+</dd>
+<dt><a class="reference internal" href="#shape-jagged"><span class="std std-ref">Jagged-ness</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> class is used to represent jagged shapes.</p>
+</dd>
+<dt><a class="reference internal" href="#shape-combining-shapes"><span class="std std-ref">Combining shapes</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> class allows us to easily compose shapes.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -142,8 +603,8 @@ memory.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="creation.html" class="btn btn-neutral float-left" title="Creating a Tensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="relationships.html" class="btn btn-neutral float-right" title="Tensor Relationships Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview of TensorWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="symmetry.html" class="btn btn-neutral float-right" title="Designing the Symmetry Component" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

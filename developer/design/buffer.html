@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing the Buffer &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Layout Design" href="distribution.html" />
+    <link rel="prev" title="Designing the Allocator" href="allocator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TensorWrapper
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">TensorWrapper Background</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design of TensorWrapper</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="motivation.html">Motivating TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Buffer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-the-buffer">What is the Buffer?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-do-we-need-a-buffer">Why do we need a Buffer?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-terminology">Buffer Terminology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-considerations">Buffer Considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#proposed-apis">Proposed APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-design">Buffer Design</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
+      <li class="breadcrumb-item active">Designing the Buffer</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/buffer.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="designing-the-buffer">
+<span id="tw-designing-the-buffer"></span><h1>Designing the Buffer<a class="headerlink" href="#designing-the-buffer" title="Permalink to this heading"></a></h1>
+<div class="section" id="what-is-the-buffer">
+<h2>What is the Buffer?<a class="headerlink" href="#what-is-the-buffer" title="Permalink to this heading"></a></h2>
+<p>To vastly over simplify, tensors consist of two things: the literal elements of
+the tensor and all the additional properties and mathematical structure imposed
+on top of those elements. The <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> class is responsible for holding the
+literal elements of the tensor and being able to describe physically how those
+elements are held.</p>
+</div>
+<div class="section" id="why-do-we-need-a-buffer">
+<h2>Why do we need a Buffer?<a class="headerlink" href="#why-do-we-need-a-buffer" title="Permalink to this heading"></a></h2>
+<p>TensorWrapper is ultimately powered by other tensor libraries. The boundary
+between those libraries and TensorWrapper is the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> class. The
+<code class="docutils literal notranslate"><span class="pre">Buffer</span></code> class is the interface through which the user’s intentions (specified
+with the TensorWrapper DSL) are conveyed to the backend.</p>
+</div>
+<div class="section" id="buffer-terminology">
+<h2>Buffer Terminology<a class="headerlink" href="#buffer-terminology" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>distributed</dt><dd><p>A buffer is distributed if it has both local and remote pieces. By contrast
+remote buffers only contain remote data (no local data).</p>
+</dd>
+<dt>future (to a buffer)</dt><dd><p>A future to a buffer is an object which will eventually be a buffer, but at
+the time of creation may not actually have its data yet. Futures to buffers
+typically arise when a task scheduler is creating buffers and we do not want
+to wait for the scheduler to create the buffer. In this case a backgrounded
+task for creating the buffer is added to the scheduler and control
+continues with only a future to the result. Once the backgrounded task
+has completed creating the buffer, the buffer can be accessed directly
+from the future to the buffer. If control requests the buffer before it has
+been created, then control must wait until the buffer is ready before
+continuing.</p>
+</dd>
+<dt>lazy</dt><dd><p>A buffer is lazy if it does not store the values which live in it, but
+instead creates them on-the-fly. This differs from a future in that the
+values of a lazy tensor are “immediately available” (after the delay required
+to compute them).</p>
+</dd>
+<dt>local</dt><dd><p>A buffer is “local” if the current process can access the state of the
+buffer without communicating with another process. A local buffer is the
+opposite of a remote buffer</p>
+</dd>
+<dt>remote</dt><dd><p>A buffer is “remote” if none of the state can be accessed without
+communicating with another process. A remote buffer has no local piece (if it
+has a local piece it is a distributed buffer).</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="buffer-considerations">
+<h2>Buffer Considerations<a class="headerlink" href="#buffer-considerations" title="Permalink to this heading"></a></h2>
+<dl class="simple" id="b-wrapping-other-tensor-libraries">
+<dt>Wrapping other tensor libraries.</dt><dd><p>In practice the literal data layouts of a tensor can be very complicated.
+Many existing tensor libraries have already optimized tensor operations on
+their data structures for some particular scenarios. We do not want to
+reinvent those optimizations and suggest <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> should actually wrap
+those libraries’ data structures.</p>
+</dd>
+</dl>
+<dl class="simple" id="b-type-erasure">
+<dt>Type erasure</dt><dd><p>As consideration <a class="reference internal" href="#b-wrapping-other-tensor-libraries"><span class="std std-ref">Wrapping other tensor libraries.</span></a> states, the
+<code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects do not just hold <code class="docutils literal notranslate"><span class="pre">double*</span></code>, but rather tensor-like
+objects from existing tensor libraries. To allow the various tensor libraries
+to be somewhat interoperable we propose that the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects type-
+erase the backend they hold.</p>
+<ul class="simple">
+<li><p>We will need to be able to unwrap the type-erased object too.</p></li>
+<li><p>The set of methods exposed by the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> class needs to be very
+general so as to have analogs in every possible backend.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="b-data-location">
+<dt>Data location</dt><dd><p>How a user interacts with a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> depends on where the data lives.
+Data that can only be seen by the current process is usually treated
+differently than data which all processes can see.</p>
+<ul class="simple">
+<li><p>Need to know if data is distributed, local, or replicated.</p></li>
+<li><p>For distributed data, need to be able to replicate, get handles to remote
+data, and access local data.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="b-implicit-data">
+<dt>Implicit data</dt><dd><p>Particularly for high-rank tensors, we often do not store data explicitly.
+The <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> must be able to work seamlessly when data is stored
+implicitly, also known as lazily.</p>
+<ul class="simple">
+<li><p>In practice, implicit tensors usually need to store some state.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="b-asynchronous-support">
+<dt>Asynchronous support</dt><dd><p>We want the creation of a distributed tensor to be asynchronous. For this
+to work, we need the ability to have proxy <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects. Such objects
+will eventually be filled in, but in the meantime control can continue to
+use them to build up an operation queue. Attempting to access such a
+<code class="docutils literal notranslate"><span class="pre">Buffer</span></code> results in waiting until the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> has been filled in.</p>
+</dd>
+</dl>
+<dl class="simple" id="b-op-graph-evaluation">
+<dt>OpGraph evaluation</dt><dd><p>Once TensorWrapper has figured out what the user wants to do, it needs to
+tell the backend to do it. This process involves recording the operations to
+be done in an <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> object and passing that object to the buffer the
+result is to be assigned to.</p>
+</dd>
+</dl>
+<div class="section" id="out-of-scope">
+<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>Tensor math</dt><dd><p>While mathematical operations on tensors are arguably fundamental, the
+reality is each backend is going to approach those operations in a different
+manner. Attempting to unify these operations would be difficult. In our
+opinion a better solution is to queue up a set of operations to be done and
+then tell the backend to do them.</p>
+<ul class="simple">
+<li><p>Evaluating a set of operations is in scope and is covered by
+<a class="reference internal" href="#b-op-graph-evaluation"><span class="std std-ref">OpGraph evaluation</span></a></p></li>
+</ul>
+</dd>
+<dt>Backend Allocation</dt><dd><p>Literally making an object of the backend is a fundamental tensor operation;
+however, like “Tensor math” above, the creation of a backend object is
+going to be heavily dependent on the identity of the backend.</p>
+<ul class="simple">
+<li><p>The responsibility for allocating <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects is punted to the
+<code class="docutils literal notranslate"><span class="pre">Allocator</span></code> component. See <a class="reference internal" href="allocator.html#tw-designing-the-allocator"><span class="std std-ref">Designing the Allocator</span></a> for
+more details.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="proposed-apis">
+<h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this heading"></a></h2>
+<div class="section" id="creating-a-buffer">
+<h3>Creating a Buffer<a class="headerlink" href="#creating-a-buffer" title="Permalink to this heading"></a></h3>
+<p>Creating a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> is done through an allocator, the exact details for how
+to create an allocator are beyond our current scope. For now we treat it as an
+opaque type. Creation of a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> requires providing the allocator a
+<code class="docutils literal notranslate"><span class="pre">Shape</span></code> object (which is also opaque for our current purposes) in one of two
+ways. The first invocation is just the shape:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">shape</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">get_shape</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_allocator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">allocator</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This invocation is suitable for initializing a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> to assign to.
+Initializing a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> with actual data is done by also passing the allocator
+a lambda like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">shape</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">get_shape</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_allocator</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">allocator</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">lambda_fxn</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The exact syntax of the lambda is an <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> consideration.</p>
+</div>
+<div class="section" id="buffer-methods">
+<h3>Buffer Methods<a class="headerlink" href="#buffer-methods" title="Permalink to this heading"></a></h3>
+<p>Once you have a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> you can inspect some basic properties:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_buffer</span><span class="p">();</span>
+
+<span class="c1">// Get the shape of the buffer</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">shape</span><span class="p">();</span>
+
+<span class="c1">// Get an enum representing the scalar elements of the buffer</span>
+<span class="c1">// N.B. Buffer also type erases this information</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">scalar_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="n">element_type</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-the-wrapped-tensor">
+<h3>Retrieving the Wrapped Tensor<a class="headerlink" href="#retrieving-the-wrapped-tensor" title="Permalink to this heading"></a></h3>
+<p>Until TensorWrapper is fleshed out we anticipate that users will need to
+unwrap the buffer somewhat regularly we propose that this is done by:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get the buffer object we want to unwrap</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_buffer</span><span class="p">();</span>
+
+<span class="c1">// The type the backend uses as a tensor, e.g. for Eigen:</span>
+<span class="k">using</span><span class="w"> </span><span class="n">unwrapped_tensor_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eigen</span><span class="o">::</span><span class="n">Tensor</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">eigen_t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Converter</span><span class="o">&lt;</span><span class="n">unwrapped_tensor_type</span><span class="o">&gt;::</span><span class="n">convert</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Converter</span></code> class is responsible for determining if the type-erased value
+inside the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> is already of type <code class="docutils literal notranslate"><span class="pre">unwrapped_tensor_type</span></code>. If it is
+it just returns it; if it is not, then it either converts it to an object of
+type <code class="docutils literal notranslate"><span class="pre">unwrapped_tensor_type</span></code> or throws an error.</p>
+</div>
+<div class="section" id="working-with-distributed-buffers">
+<h3>Working with Distributed Buffers<a class="headerlink" href="#working-with-distributed-buffers" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DistributedBuffer</span></code> extends the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> class to the scenario when the
+underlying <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object has data potentially distributed across multiple
+processes.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">dist_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_buffer</span><span class="p">();</span>
+
+<span class="c1">// Gets a handle to the part of the distributed buffer which is local to</span>
+<span class="c1">// the current process</span>
+<span class="n">LocalBuffer</span><span class="w"> </span><span class="n">my_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_buffer</span><span class="p">.</span><span class="n">local_buffer</span><span class="p">();</span>
+
+<span class="c1">// Gets a handle to a part of the distributed buffer whose state is not</span>
+<span class="c1">// local to the current process. N.B. this does NOT make the data local</span>
+<span class="c1">// yet. We do assume that every process knows how to do this with no</span>
+<span class="c1">// communication though</span>
+<span class="n">RemoteBuffer</span><span class="w"> </span><span class="n">a_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_buffer</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">range</span><span class="p">);</span>
+
+<span class="c1">// Actually pulls the data</span>
+<span class="n">LocalBuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a_buffer</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+
+<span class="c1">// To make the distributed buffer replicated</span>
+<span class="n">ReplicatedBuffer</span><span class="w"> </span><span class="nf">replicated_buffer</span><span class="p">(</span><span class="n">dist_buffer</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="evaluating-an-opgraph">
+<h3>Evaluating an OpGraph<a class="headerlink" href="#evaluating-an-opgraph" title="Permalink to this heading"></a></h3>
+<p>When a series of operations are assigned to an <code class="docutils literal notranslate"><span class="pre">AnnotatedTensor</span></code>,  this
+triggers the creation of an <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> object. For our current purposes an
+<code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> object is opaque (see <a class="reference internal" href="op_graph.html#tw-designing-the-opgraph"><span class="std std-ref">Designing the OpGraph</span></a> for the full
+design specification). For designing the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> the important part to note
+is that the <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> must contain all necessary information about the
+operation the backend needs to perform.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_buffer</span><span class="p">();</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_op_graph</span><span class="p">();</span>
+
+<span class="n">buffer</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>N.B. that we can use the visitor pattern to automatically downcast the buffer</p>
+</div>
+</div>
+<div class="section" id="buffer-design">
+<h2>Buffer Design<a class="headerlink" href="#buffer-design" title="Permalink to this heading"></a></h2>
+<div class="figure align-center" id="id1">
+<img alt="../../_images/buffer.png" src="../../_images/buffer.png" />
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Design of the buffer.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="allocator.html" class="btn btn-neutral float-left" title="Designing the Allocator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="distribution.html" class="btn btn-neutral float-right" title="Layout Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

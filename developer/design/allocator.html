@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tensor Sparsity Design &mdash; TensorWrapper 1.0.0 documentation</title>
+  <title>Designing the Allocator &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Designing TensorWrapper Class" href="tensor_wrapper.html" />
-    <link rel="prev" title="Designing the Symmetry Component" href="symmetry.html" /> 
+    <link rel="next" title="Designing the Buffer" href="buffer.html" />
+    <link rel="prev" title="Designing TensorWrapper Class" href="tensor_wrapper.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,14 +54,12 @@
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Tensor Sparsity Design</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#what-is-tensor-sparsity">What is tensor sparsity?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#why-do-we-need-tensor-sparsity">Why do we need tensor sparsity?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sparsity-considerations">Sparsity considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Allocator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#allocator-considerations">Allocator Considerations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
@@ -91,9 +89,9 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
-      <li class="breadcrumb-item active">Tensor Sparsity Design</li>
+      <li class="breadcrumb-item active">Designing the Allocator</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/sparsity.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/allocator.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -101,54 +99,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="tensor-sparsity-design">
-<span id="sparsity-design"></span><h1>Tensor Sparsity Design<a class="headerlink" href="#tensor-sparsity-design" title="Permalink to this heading"></a></h1>
-<p>This page documents the process of designing the sparsity component of
-TensorWrapper.</p>
-<div class="section" id="what-is-tensor-sparsity">
-<h2>What is tensor sparsity?<a class="headerlink" href="#what-is-tensor-sparsity" title="Permalink to this heading"></a></h2>
-<p>In the context of tensors, sparsity refers to tensors possessing elements which
-are effectively zero. Exactly what defines the effective zero is situational
-and problem-specific. The sparsity component is responsible for indicating
-which elements are zero or non-zero.</p>
-<p>For our purposes tensor sparsity comes in two types: tile and element sparsity.
-Element sparsity is the more fundamental sparsity and indicates which elements
-of the tensor are zero/non-zero. Tensors are typically tiled, and under the
-hood we are thus more interested in tile sparsity, which is whether or not a
-tile contains non-zero elements.</p>
-</div>
-<div class="section" id="why-do-we-need-tensor-sparsity">
-<h2>Why do we need tensor sparsity?<a class="headerlink" href="#why-do-we-need-tensor-sparsity" title="Permalink to this heading"></a></h2>
-<p>If a tensor exhibits a substantial amount of sparsity, then implicitly storing
-the zero values leads to a significant space savings. Furthermore, many
-operations can be simplified based on whether or not the operation involves
-sparsity, <em>e.g.</em>, Contracting a non-zero tile with a zero tile results in a
-zero-tile (which if the resulting tile is implicitly stored means the
-contraction is a no-op). Thus properly exploiting sparsity can result in
-substantial space and time savings.</p>
-</div>
-<div class="section" id="sparsity-considerations">
-<h2>Sparsity considerations<a class="headerlink" href="#sparsity-considerations" title="Permalink to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Element sparsity.</p>
+  <div class="section" id="designing-the-allocator">
+<span id="tw-designing-the-allocator"></span><h1>Designing the Allocator<a class="headerlink" href="#designing-the-allocator" title="Permalink to this heading"></a></h1>
+<div class="section" id="allocator-considerations">
+<h2>Allocator Considerations<a class="headerlink" href="#allocator-considerations" title="Permalink to this heading"></a></h2>
+<dl class="simple" id="a-runtime-aware">
+<dt>Runtime aware</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> is charged with literally allocating <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects.
+In order to do this in a performant manner, the <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> will need
+access to runtime information such as the number of processes and the
+amount of available memory.</p>
 <ul class="simple">
-<li><p>TensorWrapper APIs are element-based for user-friendliness.</p></li>
-<li><p>Non-zero tiles can still have element sparsity.</p></li>
+<li><p>Tracking the state of the runtime is the responsibility of ParallelZone.</p></li>
 </ul>
-</li>
-<li><p>Tile sparsity.</p>
-<ul class="simple">
-<li><p>Most implementations will work with tile sparsity.</p></li>
-<li><p>Convertible to element sparsity with Shape.</p></li>
-</ul>
-</li>
-<li><p>Interact with sparse maps.</p>
-<ul class="simple">
-<li><p>Running modes through a series of sparse maps produces sparsity object.</p></li>
-</ul>
-</li>
-<li><p>Potentially recursive structure.</p></li>
-</ol>
+</dd>
+</dl>
+<dl class="simple" id="a-input-initialization">
+<dt>Input initialization</dt><dd><p>Before any tensor operations can be performed some tensors will need to be
+filled in with values. Sometimes this an identity or zero tensor, but more
+often the initial value of an element depends on its indices. The
+<code class="docutils literal notranslate"><span class="pre">Allocator</span></code> must have a mechanism for filling in blocks of a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code>
+with arbitrary values.</p>
+</dd>
+</dl>
+<dl class="simple" id="a-result-initialization">
+<dt>Result initialization</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> will need to be able to initialize a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> in a way
+that is suitable for assignment. In general, this is a more lightweight
+initialization than input initialization.</p>
+</dd>
+</dl>
+<dl class="simple" id="a-buffer-hierarchy-support">
+<dt>Buffer hierarchy support</dt><dd><p>Since <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects are created by <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> objects, the
+<code class="docutils literal notranslate"><span class="pre">Allocator</span></code> object must be aware of the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> hierarchy in order to
+create instances of</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -156,8 +140,8 @@ substantial space and time savings.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="symmetry.html" class="btn btn-neutral float-left" title="Designing the Symmetry Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tensor_wrapper.html" class="btn btn-neutral float-right" title="Designing TensorWrapper Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tensor_wrapper.html" class="btn btn-neutral float-left" title="Designing TensorWrapper Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="buffer.html" class="btn btn-neutral float-right" title="Designing the Buffer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
