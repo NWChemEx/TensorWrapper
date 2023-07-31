@@ -248,7 +248,7 @@ responsible for:
 
 - Symmetry and antisymmetry (real elements)
 - Hermitian and anti-Hermitian (complex elements)
-- Nesting of symmetry
+- Other symmetry mappings
 
 Sparsity
 --------
