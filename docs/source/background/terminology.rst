@@ -30,6 +30,19 @@ Tensor Terminology
 
 Terms are listed alphabetically.
 
+.. _term_chip:
+
+chip
+====
+
+A chip of a tensor is similar to a :ref:`term_slice`, but the resulting tensor
+has lower rank. The distinction between chip and slice is important because of
+the ambiguity associated with taking slices with extents of length one along
+one or more modes. For example, say we ask for the first row of a matrix with
+|n| columns. Does the user want a 1 by |n| matrix or an |n|-element vector? Chip
+vs. slice resolves this ambiguity. If the user asked for row as a slice, they
+get back a matrix, if they asked for the row as a chip they get back a vector.
+
 .. _term_element:
 
 element
@@ -128,8 +141,9 @@ slice
 =====
 
 A sub-tensor of a tensor. A "proper" slice contains less elements than the
-tensor it originates from. We use the term slice for any sub-tensor regardless
-of whether the sub-tensor has the same :ref:`term_rank` as the original tensor.
+tensor it originates from. We require slices to have the same :ref:`term_rank`
+as the original tensor. If a sub-tensor has a lower rank it is referred to as
+a :ref:`term_chip`.
 
 .. _term_smooth:
 

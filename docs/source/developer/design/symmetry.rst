@@ -28,53 +28,87 @@ What is (tensor) symmetry?
 .. |T| replace:: :math:`\mathbf{T}`
 .. |tij| replace:: :math:`t_{ij}`
 .. |tab| replace:: :math:`t_{ab}`
+.. |t| replace:: :math:`\mathbf{t}`
+.. |S| replace:: :math:`S`
 
 Consider a matrix |T|, we say |T| has symmetry if given element |tij| we know
-the value of a different element of |T|, say |tab|. One of the most common types
-of symmetry is when |T| is symmetric, in which case
-:math:`t_{ij} = t_{ab} = t_{ji}`. Symmetry also appears in higher-rank tensors.
+the value of a different element of |T|, say |tab|. One of the more common types
+of symmetry is when |T| is a symmetric matrix, in which case
+:math:`t_{ij} = t_{ab} = t_{ji}`.
+
+For our purposes, given a tensor |T|, a symmetry |S| is a mapping of a
+slice of |T|, |t|, to itself (up to a sign). We are specifically interested in
+non-trivial mappings where the input slice to |S| has different indices
+than the output slice. In the common scenario of permutational symmetry, |t|
+will be a single element of |T|, but for other symmetries |t| may contain more
+than one element. Strictly speaking :math:`\mathbf{t}=\mathbf{0}` satisfies
+our definition of a symmetry; however, such symmetries are usually treated
+differently on account of the special properties of zero (namely its trivial
+multiplication and addition). The case when :math:`\mathbf{t}=\mathbf{0}` is
+usually referred to as "sparsity" and is considered in :ref:`sparsity_design`.
 
 ************************************
 Why do we need to consider symmetry?
 ************************************
 
-Performance. While we can always pad the tensor with the symmetrically
+Performance. While we can always fill the tensor with the symmetrically
 equivalent elements and then subject the tensor to standard tensor operations,
-doing so leads to a lot of redundant work.
-
+doing so leads to a lot of wasted memory and also leads to a large amount of
+redundant work. By understanding the symmetry of the tensor we can avoid
+this additional work.
 
 ***********************
 Symmetry Considerations
 ***********************
 
-Symmetric and antisymmetric
-   We are primarily concerned with permutational symmetry of a tensor.
+.. _sym_symmetric_and_antisymmetric:
 
-   - Modes are sorted into sets. Modes in the same set can be permuted to form
-     other elements. Sets are not necessarily disjoint.
+Symmetric and antisymmetric
+   As far as we know, permutational symmetry is the most common type of tensor
+   symmetry. Permutational symmetry occurs when the symmetry operation, maps
+   the input slice to an output slice with the same indices, just permuted. A
+   common example is a symmetric matrix where an element |tij| is equal to
+   :math:`t_{ji}`.
+
+   - In tensors with rank greater than 2, symmetric/antisymmetric modes are
+     sorted into sets. The full set of symmetry equivalent elements is generated
+     by considering all possible permutations of the set.
+   - Sets of symmetric/antisymmetric modes are not necessarily disjoint;
+     however, no pair of modes can appear in more than one set.
    - Generalizes to Hermitian/anti-Hermitian  if elements are complex.
    - The same tensor can have both symmetric and antisymmetric modes.
+   - Pairwise mode permutations are most common, but it is also possible that
+     permutations must be ternary (*e.g.* cyclic permutations of three-
+     dimensional space) or higher.
 
+.. _sym_translational_symmetry:
 
 Translational symmetry
-   Sometimes we know that, say, the upper left block of a matrix must be the
-   same as the lower right block of a matrix. Storing both blocks leads to an
-   increase in memory and computing with both blocks leads to redundant work.
+   As a disclaimer, we could not find a name for this sort of tensor symmetry
+   and thus coined our own. Thinking of a tensor as a series of tiles,
+   symmetries occur when any of those tiles are the same. If we only stored
+   one copy of each symmetry unique tile, we could then form the entire tensor
+   by translating the symmetry unique tiles to each of the symmetry redundant
+   positions. For permutational symmetry, the indices of the symmetry redundant
+   tiles must be the same as the the indices of the symmetry unique tile, up
+   to a permutation. However, our translation algorithm suggests that in
+   general other translations will be needed, specifically translations where
+   the input and output indices are not related by permutations. We term such
+   symmetries as translational.
 
-   - Can arise when basis vectors are products and the tensor's elements only
-     depend on part of the basis vector.
+   - Can arise when basis vectors are products and the value of the tensor's
+     elements only depend on part of the basis vector.
+   - In general are specified by providing the input slice and the output
+     slice.
 
-Symmetry unique elements
-   The symmetry component should be able to tell us which elements need to be
-   evaluated and which elements can be formed from those elements.
+.. _sym_basic_properties:
 
-   - There are multiple ways to select the symmetry unique elements.
+Basic properties
+   Users interacting with classes in the symmetry component will want access to:
 
-How many elements are redundant
-   For determining if a symmetry is worth exploiting we need to know how many
-   elements are actually redundant.
-
-   - Needs the shape of the tensor (which tells us the nesting).
+   - Which elements are symmetry unique/redundant.
+   - Whether an element is symmetry unique/redundant.
+   - For a given shape, how many elements are symmetry unique/redundant.
 
 Out of Scope Considerations
 ===========================
@@ -91,12 +125,25 @@ Nesting
    - While nesting is out of scope, the internals of the symmetry component
      may need to be aware of nesting.
 
-.. _fig_upper_v_lower:
+Sparsity
+   Based on our definition of symmetry, sparsity is a symmetry; however, users
+   typically think of it differently, plus it internally is used differently.
+   For these reasons we consider sparsity separately from symmetry.
 
-.. figure:: assets/upper_v_lower.png
+***************
+Symmetry Design
+***************
+
+.. _fig_symmetry:
+
+.. figure:: assets/symmetry.png
    :align: center
 
-   Differences between upper-triangular and lower-triangular
+   The major classes involved in the symmetry component.
+
+:numref:`fig_symmetry` shows the classes primarily responsible for defining
+the symmetry component. Ultimately the user assembles a ``Symmetry`` object,
+which describes all of the tensor's overall symmetries.
 
 *************
 Proposed APIs
@@ -240,18 +287,59 @@ stands for all ``n`` choose 2 possible mode pairs that can be formed from the
 because ``s0123`` additionally has symmetries among 0 and 2, 0 and 3,
 1 and 2, and 1 and 3, which are not present in ``s01_s23``.
 
-Constructing Translational Symmetry Tensors
-===========================================
+Constructing Symmetry Objects with Translational Symmetry
+=========================================================
 
-The symmetries of a tensor form a group in the mathematical sense. Each
-operation of that group takes an element of the tensor and maps it to a
-different element. Thus the most general way to specify a tensor symmetry is by
-providing the operation. For constructing the translational symmetry of a
-tensor we use the base ``SymmetryOp`` API:
+For specifying permutational symmetry we needed to state the modes to permute.
+For translational symmetry we need to specify which blocks are equivalent:
 
 .. code-block:: c++
 
-   Translational e00_e11();
+   // Block 0 starts at {0,0} and ends at {10,10}
+   // Block 1 starts at {10,10} and ends at {20,20}
+   // Block 2 starts at {20,20} and ends at {30,30}
+   Shape block0{10, 10}, block1({10, 10}, {10, 10}), block2({10, 10}, {20, 20});
+
+   // matrix where block0 is the same as block1
+   Symmetry b0b1(Translational{block0, block1});
+
+   // matrix where block0 is the same as block1 and block2
+   Symmetry b0b1b2(Translational{block0, block1, block2});
+
+   // Just like permutational symmetry where only some of the modes need to
+   // be involved, we can have translational symmetry which only involves a
+   // subset of the modes. In this case we need to specify which modes the
+   // indices are associated with. The following declares a Symmetry object
+   // for a rank 3 tensor where modes 0 and 1 have translational symmetry such
+   // that the block0 slice is the same as the block1 slice
+   Symmetry b0b1(3, Translational({block0, block1}, {0, 1}));
+
+It's possible to combine all of these mechanisms:
+
+.. code-block:: c++
+
+   // two 1 by 1 shapes, one with origin (0, 0) the other with origin (1,1)
+   Shape e00{1, 1}, e11({1, 1}, {1, 1});
+
+   // Rank 4 tensor, slice is the same as the (1,1) slice and modes 2 and
+   // 3 are symmetric
+   Symmetry sym(Translational({e00, e11}, {0, 1}), Symmetric{2, 3});
+
+*******
+Summary
+*******
+
+:ref:`sym_symmetric_and_antisymmetric`
+   The ``Symmetric``, ``AntiSymmetric``, and ``Asymmetric`` classes have been
+   introduced to facilitate expressing permutational symmetry. Cyclic
+   permutation classes could be added later if needed.
+
+
+:ref:`sym_translational_symmetry`
+   The ``Translation`` class describes slices of the tensor which are the same.
+
+:ref:`sym_basic_properties`
+   Respectively users can get the properties considered here from:
 
 ****************
 Additional Notes

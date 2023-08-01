@@ -25,6 +25,7 @@ What is a tensor's shape?
 *************************
 
 .. |n| replace:: :math:`n`
+.. |r| replace:: :math:`r`
 
 For computing purposes, tensors are really nothing more than a bunch of floating
 point values and meta-data associated with those values. Conceptually, the
@@ -52,7 +53,8 @@ Basic operations
 
    - rank
    - extents
-   - sub-shapes or slices
+   - sub-shapes (a sub-shape can be either a :ref:`term_slice` or a
+     :ref:`term_chip`)
    - *N.B.*, some, all, or none of these properties may be known at compile
      time and we need a mechanism for setting them at runtime.
 
@@ -82,7 +84,7 @@ Jagged-ness
    - Must have smooth slices of at least rank 1, but could have higher-rank
      smooth slices, *e.g.*, a jagged rank 3 tensors could have smooth matrices
      as elements.
-   - A jagged tensor of rank :math:`r`, which has smooth slices of rank
+   - A jagged tensor of rank |r|, which has smooth slices of rank
      :math:`s` must minimally be viewed as having :math:`r-s` layers
    - A key use of jagged shapes is for tiling tensors.
 
@@ -92,6 +94,16 @@ Combining shapes
    As we do tensor operations we will need to work out the resulting shapes.
    This in general requires knowing how the modes of the inputs map to the
    modes of the output.
+
+.. _shape_iterable:
+
+Iterable
+   A natural use case of a shape is to iterate over the indices in the shape.
+
+   - For iterating, it is useful to be able to set the origin. This allows
+     iterating over slices using the original tensor's indices.
+   - Sometimes we want the absolute indices (starting from the origin) and
+     other times we only want the offsets (always relative to zero).
 
 Not in Scope
 ============
@@ -121,6 +133,11 @@ Logical vs actual
    - Both the logical and actual shapes are ``Shape`` objects.
    - It is the responsibility of the user creating ``Shape`` objects to track
      if they represent logical or actual shapes.
+
+Masks
+   Shapes are index contiguous. Masks allow you to view a non contiguous set
+   of indices as if they were contiguous. Masks can be implemented on top of
+   the shape component and are therefore not in scope for this discussion.
 
 ************
 Shape Design
@@ -169,7 +186,7 @@ JaggedShape
 To satisfy the :ref:`shape_jagged` consideration we introduce ``JaggedShape``.
 ``JaggedShape`` is similar to ``Shape`` except that users must explicitly
 provide the shape of the slices. Generally speaking ``JaggedShape`` objects of
-rank :math:`r` will contain a series of rank :math:`s` ``Shape`` objects. The
+rank |r| will contain a series of rank :math:`s` ``Shape`` objects. The
 actual ``JaggedShape`` object serves as a map from an index with :math:`(r-s)`
 indices to the ``Shape`` of that slice. Like ``Shape`` we expect users to
 primarily be concerned with construction. Again, manipulations of the
@@ -253,14 +270,23 @@ declaration is done in terms of ``Shape`` objects and looks like:
    // No elements, no rank
    JaggedShape null_shape;
 
-   // A "jagged" scalar (only a single element, so it's also smooth)
+   // Smooth scalar viewed as a JaggedShape (note () not {})
+   JaggedShape smooth0_shape(Shape{});
+
+   // Smooth vector viewed as a JaggedShape (note () not {})
+   JaggedShape smooth1_shape(Shape{10});
+
+   // Smooth matrix viewed as a JaggedShape (note () not {})
+   JaggedShape smooth2_shape(Shape{10, 20});
+
+   // A "jagged" vector with no elements
    JaggedShape rank0_shape{};
 
-   // A "jagged" vector (same as a smooth vector)
-   JaggedShape rank1_shape{s10};
+   // A jagged matrix with 1 row, note the {}
+   JaggedShape rank2_shape{s10};
 
    // A jagged matrix with 3 rows; row 0 has 10 elements, row 1 has 20, row 2 30
-   JaggedShape rank2_shape{s10, s20, s30};
+   JaggedShape rank2_shape2{s10, s20, s30};
 
    // A jagged rank 3 tensor with smooth matrices. Matrix 0 is 10 by 20,
    // matrix 1 is 30 by 40, and matrix 2 is 50 by 60
@@ -399,7 +425,7 @@ the indices are partitioned into layers.
    // are layer 1
    Nested<Shape> s({2, 2}, Shape{5, 10, 15, 20});
 
-The general syntax for an :math:`n` layer tensor is an :math:`n` element
+The general syntax for an |n| layer tensor is an |n| element
 container where the :math:`i`-th element is the number of ranks in that
 layer (ranks from the shape object are assigned to layers left to right; so
 permutations may be needed to line up with layering).
@@ -523,25 +549,107 @@ want the result to be layered different than the default behavior provides. In
 practice re-layering a shape is a trivial operation (swapping two small
 vectors of integers).
 
-Slicing
-=======
+Slicing and Chipping
+=====================
+
+Slices of a shape have the same rank, chips have different ranks:
 
 .. code-block:: c++
 
    Shape s{10, 20};
 
+   // Get the shape of row 0 as a matrix
+   auto s0 = s.slice(0);
+   assert(s0 == Shape{1, 20});
+
+   // Get the shape of column 0 as a matrix
+   auto sx0 = s.slice({0, 0}, {10, 1});
+   assert(sx0 == Shape{10, 1});
+
    // Get the shape of the first five columns of the first five rows...
    auto s05_05 = s.slice({0,0}, {5,5});
    assert(s05_05 == Shape{5, 5});
 
-   // Get the shape of row 2
-   auto s2 = s.slice(2);
+   // Note that this shape still refers to a rank 2 tensor even though the
+   // first mode has a single element
+   auto s01_05 = s.slice({0, 0}, {1, 5});
+   assert(s01_05 == Shape{1, 5});
+
+   // Get the shape of row 2 as a vector
+   auto s2 = s.chip(2);
    assert(s2 == Shape{20});
 
-   // Get the shape of column 2 (`TW::all` is a special literal value
-   // signalling we want the entire mode)
-   auto sx2 = s.slice(tensor_wrapper::all, 2);
+   // Get the shape of column 2 as a vector
+   auto sx2 = s.chip({0, 2}, {10, 3});
    assert(sx2 == Shape{10});
+
+For a rank |r| tensor, the general overload of ``slice`` and ``chip`` takes
+two |r|-element vectors. The first vector is the first element in the
+slice/chip and the second vector is the first element not in the slice/chip.
+For convenience we also provide an overload where the user may provide up to
+|r| integers. This overload pins the :math:`i`-th mode to the :math:`i`-th
+integer all other modes run their entire span.
+
+It is possible to slice and chip ``JaggedShape`` and ``Nested`` objects too:
+
+.. code-block:: c++
+
+   JaggedShape js0{Shape{10}, Shape{20}};
+
+   auto j0 = js0.chip(0);
+   assert(j0 == JaggedShape{Shape10});
+
+   auto j1 = js0.slice(0);
+   assert(j1 == JaggedShape({Shape{10}});
+
+   Nested<Shape> s1_2({1, 2}, Shape{10, 20, 30});
+   auto s2 = s1_2.chip(0);
+   assert(s2 == Shape{10, 20});
+
+Iterating
+=========
+
+By default the origin of a freshly constructed shape is the zero vector. For
+slices and chips, the origin is the first element in the slice or chip (note
+that in the previous section we conveniently chose our slices/chips so the
+origin was the zero vector). By default, when iterating over a shape indices are
+returned as offsets from the origin, in lexicographical order. For example:
+
+.. code-block:: c++
+
+   auto print_shape = [](auto&& s){
+      for(const auto& index : s)
+         std::cout << "{" << index[0] << "," << index[1] << "} ";
+   };
+
+   Shape s{2, 3};
+   print_shape(s);  // prints {0,0} {0,1} {0,2} {1,0} {1,1} {1,2}
+
+   auto s01_13 = s.slice({0, 1}, {1, 3});
+   print_shape(s01_13); // prints {0,1}, {0,2} NOT {0,0} {0,1}
+
+   // If we wanted {0,0} {0,1}
+   print_shape(s01_13.offsets());
+
+   // We can move the origin
+   s.set_origin({10, 10});
+   print_shape(s); // prints {10,10} {10,11} {10,12} {11,10} {11,11} {11,12}
+
+For completeness we define an overloads of ``Shape`` and ``JaggedShape`` which
+also take an origin. For ``JaggedShape`` the origin need only be specified for
+the explicitly unrolled ranks.
+
+.. code-block:: c++
+
+   // Makes a shape for a 2 by 3 matrix whose first element is {10, 10}
+   Shape s({2, 3}, {10, 10});
+
+   // Outer vector starts at 10, element 0 of the outer vector starts at 5,
+   // element 1 of the outer vector starts at 6
+   JaggedShape js({{Shape({10}, {5}), Shape({20}, {6})}, {10});
+
+   // Outer vector starts at 10, inner vector starts at 10
+   Nested<Shape> s1_1({1, 1}, s);
 
 *******
 Summary
@@ -562,3 +670,7 @@ by:
 
 :ref:`shape_combining_shapes`
    The ``IndexedShape`` class allows us to easily compose shapes.
+
+:ref:`shape_iterable`
+   The various classes define iterators which allow users to iterate over the
+   indices contained in the shape.
