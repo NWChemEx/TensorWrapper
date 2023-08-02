@@ -30,6 +30,15 @@ Tensor Terminology
 
 Terms are listed alphabetically.
 
+.. _term_block:
+
+block
+=====
+
+We use the term block to generically refer to a sub-tensor. Blocks can
+be either :ref:`term_chip` or :ref:`term_slice` depending on how their rank
+compares to that of the parent tensor.
+
 .. _term_chip:
 
 chip
