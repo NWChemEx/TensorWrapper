@@ -109,6 +109,7 @@ Basic properties
    - Which elements are symmetry unique/redundant.
    - Whether an element is symmetry unique/redundant.
    - For a given shape, how many elements are symmetry unique/redundant.
+   - The sign of the resulting element.
 
 Out of Scope Considerations
 ===========================
@@ -143,7 +144,43 @@ Symmetry Design
 
 :numref:`fig_symmetry` shows the classes primarily responsible for defining
 the symmetry component. Ultimately the user assembles a ``Symmetry`` object,
-which describes all of the tensor's overall symmetries.
+which describes all of the tensor's overall symmetries. It is the ``Symmetry``
+object which is used by the rest of TensorWrapper. The remaining classes of
+the ``Symmetry`` class hierarchy exist primarily to help the user create the
+``Symmetry`` object in a straightforward manner.
+
+- ``TotallySymmetric`` allows a user to declare a tensor as totally symmetric
+  simply by providing the rank of the tensor.
+- ``TotallyAntiSymmetric`` allows a user to declare a tensor as totally
+  antisymmetric simply by providing the rank of the tensor.
+
+Ultimately the symmetry of a tensor is mathematically treated using group
+theory. The symmetry operations on the tensor being the members of the group.
+Hence when a tensor has a symmetry other than totally symmetric/antisymmetric
+it suffices for the user to provide TensorWrapper with the symmetry operations.
+All symmetry operations derive from ``SymmetryOp``, which serves primarily to
+provided a consistent API among the various operations and to provide some
+code factorization.
+
+Of the symmetry operations provided by TensorWrapper, ``Asymmetric`` is the
+simplest. By creating an instance of ``Asymmetric``, the user is stating that
+the modes in the resulting object exhibit no symmetry among themselves.
+``Asymmetric`` exists primarily to contrast with the other symmetry operations
+and is assumed by default.
+
+``Symmetric`` and ``Antisymmetric`` are the next simplest symmetry operations.
+When a user creates an instance of the ``Symmetric``/ ``Antisymmetric`` classes
+they are stating that the modes in the resulting object are pairwise symmetric
+or antisymmetric respectively.
+
+The final symmetry operation is ``Translation``. The inputs to a ``Translation``
+object are two or more ``Shape`` objects (``JaggedShape`` and ``Nested`` work
+too). The input objects are treated as ranges, and indicate which slices or
+chips of the tensor which must have the same values. Conceptually it is
+possible to specify any symmetry in this manner, but it is vary tedious (*e.g.*,
+specifying that an :math:`n` by :math:`n` matrix is symmetric using
+``Translation`` objects requires creating :math:`n\choose 2` ``Translation``
+objects, one for every pair of symmetry related elements).
 
 *************
 Proposed APIs
@@ -301,10 +338,10 @@ For translational symmetry we need to specify which blocks are equivalent:
    Shape block0{10, 10}, block1({10, 10}, {10, 10}), block2({10, 10}, {20, 20});
 
    // matrix where block0 is the same as block1
-   Symmetry b0b1(Translational{block0, block1});
+   Symmetry b0b1(Translation{block0, block1});
 
    // matrix where block0 is the same as block1 and block2
-   Symmetry b0b1b2(Translational{block0, block1, block2});
+   Symmetry b0b1b2(Translation{block0, block1, block2});
 
    // Just like permutational symmetry where only some of the modes need to
    // be involved, we can have translational symmetry which only involves a
@@ -312,9 +349,36 @@ For translational symmetry we need to specify which blocks are equivalent:
    // indices are associated with. The following declares a Symmetry object
    // for a rank 3 tensor where modes 0 and 1 have translational symmetry such
    // that the block0 slice is the same as the block1 slice
-   Symmetry b0b1(3, Translational({block0, block1}, {0, 1}));
+   Symmetry b0b1(3, Translation({block0, block1}, {0, 1}));
 
-It's possible to combine all of these mechanisms:
+Translational symmetry can also be declared for more exotic ranges, such as
+those involving jagged and/or nesting:
+
+.. code-block:: c++
+
+   // Block of a jagged matrix where row 0 is 10 elements long and row 1 is 20
+   JaggedShape jblock0{Shape{10}, Shape{20}};
+
+   // Block of a jagged matrix where row 2 is 10 elements long and row 4 is 20
+   JaggedShape jblock1({Shape{10}, Shape{20}}, {2});
+
+   // Symmetry for a jagged matrix where block0 and block1 must be the same
+   Symmetry b0b1(Translation{jblock0, jblock1});
+
+   // Outer vector 10 elements long, inner are 20
+   Nested<Shape> nblock0({1,1}, Shape{10, 20});
+
+   // Same shape, but the first index of the first inner vector is 20 not 0
+   Nested<Shape> nblock1({1, 1}, Shape({10, 20}, {0, 20}));
+
+   // Symmetry for a rank 4 tensor where modes 0 and 1 are nested
+   Symmetry nb0nb1(4, Translation{nblock0, nblock1}, {0, 1});
+
+Note that the fact that ``Translation`` describes a symmetry operation means
+that the shapes in the symmetry operations must be the same up to a translation
+of the origin. The shapes will also need to be consistent with the shapes of
+the respective modes of the tensor. Finally, we note that it's possible to
+combine all of these mechanisms:
 
 .. code-block:: c++
 
@@ -325,6 +389,13 @@ It's possible to combine all of these mechanisms:
    // 3 are symmetric
    Symmetry sym(Translational({e00, e11}, {0, 1}), Symmetric{2, 3});
 
+Basic Properties
+================
+
+While I have some idea of what properties will be needed, how to best expose
+them is punted until I have a better idea of how they would be used under the
+hood.
+
 *******
 Summary
 *******
@@ -334,16 +405,15 @@ Summary
    introduced to facilitate expressing permutational symmetry. Cyclic
    permutation classes could be added later if needed.
 
-
 :ref:`sym_translational_symmetry`
    The ``Translation`` class describes slices of the tensor which are the same.
 
 :ref:`sym_basic_properties`
-   Respectively users can get the properties considered here from:
+   This is one of the primary responsibilities of the ``Symmetry`` class.
 
 ****************
 Additional Notes
 ****************
 
-Can we use jagged tensors here? In particular I'm thinking an upper-triangular
-matrix without the lower triangle is a jagged matrix.
+- Can we use jagged tensors here? In particular I'm thinking an upper-triangular
+  matrix without the lower triangle is a jagged matrix.
