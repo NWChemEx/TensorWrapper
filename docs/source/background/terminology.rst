@@ -30,6 +30,32 @@ Tensor Terminology
 
 Terms are listed alphabetically.
 
+.. _term_chip:
+
+chip
+====
+
+A chip of a tensor is similar to a :ref:`term_slice`, but the resulting tensor
+has lower rank. The distinction between chip and slice is important because of
+the ambiguity associated with taking slices with extents of length one along
+one or more modes. For example, say we ask for the first row of a matrix with
+|n| columns. Does the user want a 1 by |n| matrix or an |n|-element vector? Chip
+vs. slice resolves this ambiguity. If the user asked for row as a slice, they
+get back a matrix, if they asked for the row as a chip they get back a vector.
+
+.. _term_element:
+
+element
+=======
+
+Tensors are typically thought of as hyper-rectangular arrays of floating-point
+values. These individual values are termed "elements". Elements do not need to
+be floating-point values; they can be integers, strings, or even other tensors.
+The important part is that the elements form a mathematical :ref:`term_field`.
+For a rank |n| tensor, an individual element can be specified by providing the
+offset along each of the |n| modes. Other common names for elements include
+"components".
+
 .. _term_extent:
 
 extent
@@ -45,12 +71,15 @@ other common names for extent are length and dimensionality.
 jagged
 ======
 
-Elements of a :ref:`term_nested` tensor :math:`J` are tensors themselves. If the
-shapes of the elements of the :math:`J` can NOT be written as a Cartesian
-product of tilings, we say :math:`J` is jagged. Put another way, let
-:math:`j_i` and :math:`k_i` be :ref:`term_slice` s of :math:`J` along the
-:math:`i`-th :ref:`term_mode`,  then if for any mode of :math:`J` there exists
-a :math:`j_i` and a :math:`k_i` with different shapes, :math:`J` is jagged.
+.. |J| replace:: :math:`\mathbf{J}`
+.. |ji| replace:: :math:`j_i`
+.. |ki| replace:: :math:`k_i`
+
+Elements of a :ref:`term_nested` tensor |J| are tensors themselves. If the
+shapes of the elements of |J| differ, then |J| is jagged. Put another way, let
+|ji| and |ki| be :ref:`term_slice` s of |J| along the
+:math:`i`-th :ref:`term_mode`,  then if for any mode of |J| there exists
+a |ji| and a |ki| with different shapes, |J| is jagged.
 
 .. _term_mode:
 
@@ -112,20 +141,23 @@ slice
 =====
 
 A sub-tensor of a tensor. A "proper" slice contains less elements than the
-tensor it originates from. We use the term slice for any sub-tensor regardless
-of whether the sub-tensor has the same :ref:`term_rank` as the original tensor.
+tensor it originates from. We require slices to have the same :ref:`term_rank`
+as the original tensor. If a sub-tensor has a lower rank it is referred to as
+a :ref:`term_chip`.
 
 .. _term_smooth:
 
 smooth
 ======
 
+.. |S| replace:: :math:`\mathbf{S}`
+
 While not a widely used term, it is helpful to introduce a term to contrast
 with :ref:`term_jagged`. We define a "smooth" :ref:`term_nested` tensor to be
-a tensor which is not jagged.  Put another way, let :math:`j_i` and :math:`k_i`
-be :ref:`term_slice` s of :math:`S` along the :math:`i`-th :ref:`term_mode`,
-then if for all modes of :math:`S` every pair :math:`j_i` and a :math:`k_i`
-has the same shape, :math:`S` is smooth.
+a tensor which is not jagged.  Put another way, let |ji| and |ki|
+be :ref:`term_slice` s of |S| along the :math:`i`-th :ref:`term_mode`,
+then if for all modes of |S| every pair |ji| and a |ki|
+has the same shape, |S| is smooth.
 
 ****************************
 Computer Science Terminology
@@ -133,7 +165,7 @@ Computer Science Terminology
 
 .. _term_ast:
 
-Abstract Syntax Tree (AST)
+abstract syntax tree (AST)
 ==========================
 
 With respect to source code, an abstract syntax tree (AST) is a representation
@@ -144,7 +176,7 @@ because extraneous information has been removed.
 
 .. _term_cst:
 
-Concrete Syntax Tree (CST)
+concrete syntax tree (CST)
 ==========================
 
 With respect to source code, a concrete syntax tree (CST) is a representation
@@ -155,7 +187,7 @@ particular concept. Distilling out the essential concepts leads to an
 
 .. _term_dsl:
 
-Domain Specific Language (DSL)
+domain specific language (DSL)
 ==============================
 
 A domain specific language (DSL) is a coding language targeted at a particular
@@ -164,3 +196,20 @@ tend to contain fewer language primitives on account of the DSL only concerning
 itself with being general enough to express operations within the target
 domain. The DSL in ``TensorWrapper`` targets the domain of tensor math and is
 designed to makes it easy to express tensor operations in a performant manner.
+
+***********************
+Mathematics Terminology
+***********************
+
+.. _term_field:
+
+field
+=====
+
+A field is a set of elements along with two operations, usually termed
+addition and multiplication. Addition and multiplication behave like the
+traditional addition and multiplication operations, *i.e.*, both addition and
+multiplication are commutative and associative, and multiplication distributes
+over addition. Finally, each non-zero element in the set must also posses an
+additive and multiplicative inverse (zero elements will have only an additive
+inverse).
