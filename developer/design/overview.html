@@ -31,8 +31,9 @@
 
           
           
-          <a href="../../index.html" class="icon icon-home">
-            TensorWrapper
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -110,7 +111,7 @@
 <p>There are a number of existing tensor libraries, with a variety of useful
 features; however, to our knowledge no existing tensor library has all the
 tensor features a high-performance physics code may encounter. TensorWrapper is
-designed to provide a high-level, user-friendly, <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">Domain Specific Language (DSL)</span></a> on top of
+designed to provide a high-level, user-friendly, <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> on top of
 existing tensor libraries, while abstracting away as much complexity as
 possible.</p>
 </div>
@@ -304,7 +305,7 @@ responsible for:</p>
 <ul class="simple">
 <li><p>Symmetry and antisymmetry (real elements)</p></li>
 <li><p>Hermitian and anti-Hermitian (complex elements)</p></li>
-<li><p>Nesting of symmetry</p></li>
+<li><p>Other symmetry mappings</p></li>
 </ul>
 </div>
 <div class="section" id="sparsity">
@@ -398,7 +399,7 @@ in a user-facing manner; however, the expression layer is specifically designed
 to appear to the user like they are working with only <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects,
 which is why we consider it an implementation detail. Responsibilities include:</p>
 <ul class="simple">
-<li><p>Assembling the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">Concrete Syntax Tree (CST)</span></a> from the DSL.</p></li>
+<li><p>Assembling the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a> from the DSL.</p></li>
 <li><p>Express transformations of a single tensor</p></li>
 <li><p>Express binary operations</p></li>
 <li><p>Represent branching nodes of the abstract syntax tree</p></li>

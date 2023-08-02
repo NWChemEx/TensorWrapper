@@ -32,8 +32,9 @@
 
           
           
-          <a href="../index.html" class="icon icon-home">
-            TensorWrapper
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -53,6 +54,8 @@
 <li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">TensorWrapper Terminology</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tensor-terminology">Tensor Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#chip">chip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#element">element</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extent">extent</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#jagged">jagged</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mode">mode</a></li>
@@ -64,9 +67,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#computer-science-terminology">Computer Science Terminology</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstract-syntax-tree-ast">Abstract Syntax Tree (AST)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#concrete-syntax-tree-cst">Concrete Syntax Tree (CST)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#domain-specific-language-dsl">Domain Specific Language (DSL)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstract-syntax-tree-ast">abstract syntax tree (AST)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#concrete-syntax-tree-cst">concrete syntax tree (CST)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#domain-specific-language-dsl">domain specific language (DSL)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mathematics-terminology">Mathematics Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#field">field</a></li>
 </ul>
 </li>
 </ul>
@@ -112,6 +119,26 @@ TensorWrapper.</p>
 <div class="section" id="tensor-terminology">
 <h2>Tensor Terminology<a class="headerlink" href="#tensor-terminology" title="Permalink to this heading"></a></h2>
 <p>Terms are listed alphabetically.</p>
+<div class="section" id="chip">
+<span id="term-chip"></span><h3>chip<a class="headerlink" href="#chip" title="Permalink to this heading"></a></h3>
+<p>A chip of a tensor is similar to a <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a>, but the resulting tensor
+has lower rank. The distinction between chip and slice is important because of
+the ambiguity associated with taking slices with extents of length one along
+one or more modes. For example, say we ask for the first row of a matrix with
+<span class="math notranslate nohighlight">\(n\)</span> columns. Does the user want a 1 by <span class="math notranslate nohighlight">\(n\)</span> matrix or an <span class="math notranslate nohighlight">\(n\)</span>-element vector? Chip
+vs. slice resolves this ambiguity. If the user asked for row as a slice, they
+get back a matrix, if they asked for the row as a chip they get back a vector.</p>
+</div>
+<div class="section" id="element">
+<span id="term-element"></span><h3>element<a class="headerlink" href="#element" title="Permalink to this heading"></a></h3>
+<p>Tensors are typically thought of as hyper-rectangular arrays of floating-point
+values. These individual values are termed “elements”. Elements do not need to
+be floating-point values; they can be integers, strings, or even other tensors.
+The important part is that the elements form a mathematical <a class="reference internal" href="#term-field"><span class="std std-ref">field</span></a>.
+For a rank <span class="math notranslate nohighlight">\(n\)</span> tensor, an individual element can be specified by providing the
+offset along each of the <span class="math notranslate nohighlight">\(n\)</span> modes. Other common names for elements include
+“components”.</p>
+</div>
 <div class="section" id="extent">
 <span id="term-extent"></span><h3>extent<a class="headerlink" href="#extent" title="Permalink to this heading"></a></h3>
 <p>The number of elements along a <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>. For a vector, the extent of
@@ -121,12 +148,11 @@ other common names for extent are length and dimensionality.</p>
 </div>
 <div class="section" id="jagged">
 <span id="term-jagged"></span><h3>jagged<a class="headerlink" href="#jagged" title="Permalink to this heading"></a></h3>
-<p>Elements of a <a class="reference internal" href="#term-nested"><span class="std std-ref">nested</span></a> tensor <span class="math notranslate nohighlight">\(J\)</span> are tensors themselves. If the
-shapes of the elements of the <span class="math notranslate nohighlight">\(J\)</span> can NOT be written as a Cartesian
-product of tilings, we say <span class="math notranslate nohighlight">\(J\)</span> is jagged. Put another way, let
-<span class="math notranslate nohighlight">\(j_i\)</span> and <span class="math notranslate nohighlight">\(k_i\)</span> be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(J\)</span> along the
-<span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,  then if for any mode of <span class="math notranslate nohighlight">\(J\)</span> there exists
-a <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span> with different shapes, <span class="math notranslate nohighlight">\(J\)</span> is jagged.</p>
+<p>Elements of a <a class="reference internal" href="#term-nested"><span class="std std-ref">nested</span></a> tensor <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> are tensors themselves. If the
+shapes of the elements of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> differ, then <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is jagged. Put another way, let
+<span class="math notranslate nohighlight">\(j_i\)</span> and <span class="math notranslate nohighlight">\(k_i\)</span> be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> along the
+<span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,  then if for any mode of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> there exists
+a <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span> with different shapes, <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is jagged.</p>
 </div>
 <div class="section" id="mode">
 <span id="term-mode"></span><h3>mode<a class="headerlink" href="#mode" title="Permalink to this heading"></a></h3>
@@ -173,45 +199,59 @@ array the elements are stored in. Since the number of edge lengths is the
 <div class="section" id="slice">
 <span id="term-slice"></span><h3>slice<a class="headerlink" href="#slice" title="Permalink to this heading"></a></h3>
 <p>A sub-tensor of a tensor. A “proper” slice contains less elements than the
-tensor it originates from. We use the term slice for any sub-tensor regardless
-of whether the sub-tensor has the same <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a> as the original tensor.</p>
+tensor it originates from. We require slices to have the same <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a>
+as the original tensor. If a sub-tensor has a lower rank it is referred to as
+a <a class="reference internal" href="#term-chip"><span class="std std-ref">chip</span></a>.</p>
 </div>
 <div class="section" id="smooth">
 <span id="term-smooth"></span><h3>smooth<a class="headerlink" href="#smooth" title="Permalink to this heading"></a></h3>
 <p>While not a widely used term, it is helpful to introduce a term to contrast
 with <a class="reference internal" href="#term-jagged"><span class="std std-ref">jagged</span></a>. We define a “smooth” <a class="reference internal" href="#term-nested"><span class="std std-ref">nested</span></a> tensor to be
 a tensor which is not jagged.  Put another way, let <span class="math notranslate nohighlight">\(j_i\)</span> and <span class="math notranslate nohighlight">\(k_i\)</span>
-be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(S\)</span> along the <span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,
-then if for all modes of <span class="math notranslate nohighlight">\(S\)</span> every pair <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span>
-has the same shape, <span class="math notranslate nohighlight">\(S\)</span> is smooth.</p>
+be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> along the <span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,
+then if for all modes of <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> every pair <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span>
+has the same shape, <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> is smooth.</p>
 </div>
 </div>
 <div class="section" id="computer-science-terminology">
 <h2>Computer Science Terminology<a class="headerlink" href="#computer-science-terminology" title="Permalink to this heading"></a></h2>
 <div class="section" id="abstract-syntax-tree-ast">
-<span id="term-ast"></span><h3>Abstract Syntax Tree (AST)<a class="headerlink" href="#abstract-syntax-tree-ast" title="Permalink to this heading"></a></h3>
+<span id="term-ast"></span><h3>abstract syntax tree (AST)<a class="headerlink" href="#abstract-syntax-tree-ast" title="Permalink to this heading"></a></h3>
 <p>With respect to source code, an abstract syntax tree (AST) is a representation
-of the structure of what the programmer wrote, whereas a <a class="reference internal" href="#term-cst"><span class="std std-ref">Concrete Syntax Tree (CST)</span></a>
+of the structure of what the programmer wrote, whereas a <a class="reference internal" href="#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>
 contains the literal representation of what the programmer wrote. Carrying out
 the programmed instructions is easier by traversing an AST, versus a CST,
 because extraneous information has been removed.</p>
 </div>
 <div class="section" id="concrete-syntax-tree-cst">
-<span id="term-cst"></span><h3>Concrete Syntax Tree (CST)<a class="headerlink" href="#concrete-syntax-tree-cst" title="Permalink to this heading"></a></h3>
+<span id="term-cst"></span><h3>concrete syntax tree (CST)<a class="headerlink" href="#concrete-syntax-tree-cst" title="Permalink to this heading"></a></h3>
 <p>With respect to source code, a concrete syntax tree (CST) is a representation
 of the literal source code the programmer wrote. The CST contains all details
 of the source code, including how the programmer chose to represent a
 particular concept. Distilling out the essential concepts leads to an
-<a class="reference internal" href="#term-ast"><span class="std std-ref">Abstract Syntax Tree (AST)</span></a>.</p>
+<a class="reference internal" href="#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a>.</p>
 </div>
 <div class="section" id="domain-specific-language-dsl">
-<span id="term-dsl"></span><h3>Domain Specific Language (DSL)<a class="headerlink" href="#domain-specific-language-dsl" title="Permalink to this heading"></a></h3>
+<span id="term-dsl"></span><h3>domain specific language (DSL)<a class="headerlink" href="#domain-specific-language-dsl" title="Permalink to this heading"></a></h3>
 <p>A domain specific language (DSL) is a coding language targeted at a particular
 domain of applications. Compared to general-purpose coding languages, DSLs
 tend to contain fewer language primitives on account of the DSL only concerning
 itself with being general enough to express operations within the target
 domain. The DSL in <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> targets the domain of tensor math and is
 designed to makes it easy to express tensor operations in a performant manner.</p>
+</div>
+</div>
+<div class="section" id="mathematics-terminology">
+<h2>Mathematics Terminology<a class="headerlink" href="#mathematics-terminology" title="Permalink to this heading"></a></h2>
+<div class="section" id="field">
+<span id="term-field"></span><h3>field<a class="headerlink" href="#field" title="Permalink to this heading"></a></h3>
+<p>A field is a set of elements along with two operations, usually termed
+addition and multiplication. Addition and multiplication behave like the
+traditional addition and multiplication operations, <em>i.e.</em>, both addition and
+multiplication are commutative and associative, and multiplication distributes
+over addition. Finally, each non-zero element in the set must also posses an
+additive and multiplicative inverse (zero elements will have only an additive
+inverse).</p>
 </div>
 </div>
 </div>

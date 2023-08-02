@@ -32,8 +32,9 @@
 
           
           
-          <a href="../index.html" class="icon icon-home">
-            TensorWrapper
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -116,14 +117,14 @@ usually not modularized) some functionality.</p>
 <p>Most C++ tensor libraries have an expression layer, which relies on
 meta-template programming to build up a representation of what the user wants
 before actually running the computation. From a computer language perspective,
-the expression layer is a <a class="reference internal" href="terminology.html#term-dsl"><span class="std std-ref">Domain Specific Language (DSL)</span></a> which is represented as a
-<a class="reference internal" href="terminology.html#term-cst"><span class="std std-ref">Concrete Syntax Tree (CST)</span></a>. To our knowledge, all existing C++ tensor libraries then
+the expression layer is a <a class="reference internal" href="terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> which is represented as a
+<a class="reference internal" href="terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>. To our knowledge, all existing C++ tensor libraries then
 execute the CST (potentially after some optimization) in order to compute the
 requested result. The problem with such an approach is that the optimizations
 and implementations behind the individual operations become coupled to the
 syntax of the tensor library’s DSL (because CSTs are written in terms of the
 DSL). TensorWrapper follows usual parsing procedures and converts the CST into
-an <a class="reference internal" href="terminology.html#term-ast"><span class="std std-ref">Abstract Syntax Tree (AST)</span></a> before optimization and executing occur. In turn, the AST
+an <a class="reference internal" href="terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a> before optimization and executing occur. In turn, the AST
 serves as an intermediate representation which is not tied to the tensor
 front end.</p>
 </div>
