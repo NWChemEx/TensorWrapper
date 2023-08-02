@@ -30,6 +30,7 @@ Tensor Terminology
 
 Terms are listed alphabetically.
 
+<<<<<<< HEAD
 .. _term_chip:
 
 chip
@@ -56,6 +57,8 @@ For a rank |n| tensor, an individual element can be specified by providing the
 offset along each of the |n| modes. Other common names for elements include
 "components".
 
+=======
+>>>>>>> master
 .. _term_extent:
 
 extent
@@ -71,6 +74,7 @@ other common names for extent are length and dimensionality.
 jagged
 ======
 
+<<<<<<< HEAD
 .. |J| replace:: :math:`\mathbf{J}`
 .. |ji| replace:: :math:`j_i`
 .. |ki| replace:: :math:`k_i`
@@ -80,6 +84,14 @@ shapes of the elements of |J| differ, then |J| is jagged. Put another way, let
 |ji| and |ki| be :ref:`term_slice` s of |J| along the
 :math:`i`-th :ref:`term_mode`,  then if for any mode of |J| there exists
 a |ji| and a |ki| with different shapes, |J| is jagged.
+=======
+Elements of a :ref:`term_nested` tensor :math:`J` are tensors themselves. If the
+shapes of the elements of the :math:`J` can NOT be written as a Cartesian
+product of tilings, we say :math:`J` is jagged. Put another way, let
+:math:`j_i` and :math:`k_i` be :ref:`term_slice` s of :math:`J` along the
+:math:`i`-th :ref:`term_mode`,  then if for any mode of :math:`J` there exists
+a :math:`j_i` and a :math:`k_i` with different shapes, :math:`J` is jagged.
+>>>>>>> master
 
 .. _term_mode:
 

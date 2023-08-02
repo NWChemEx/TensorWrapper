@@ -302,6 +302,8 @@ TEST_CASE("stack_tensors") {
 TEST_CASE("Eigen conversions") {
     using tensor_t = tensorwrapper::tensor::ScalarTensorWrapper;
     using scalar_t = tensorwrapper::tensor::field::Scalar;
+    using shape_t  = typename tensor_t::shape_type;
+    using tiling_t = typename shape_t::tiling_type;
     auto twrapper  = testing::get_tensors<scalar_t>().at("matrix");
 
     Eigen::MatrixXd eigen_m(2, 2);
@@ -315,8 +317,21 @@ TEST_CASE("Eigen conversions") {
         REQUIRE(rv == eigen_m);
     }
 
-    SECTION("eigen_to_tensor_wrapper") {
+    SECTION("eigen_to_tensor_wrapper (default shape)") {
         auto rv = eigen_to_tensor_wrapper(eigen_m);
         REQUIRE(rv == twrapper);
+        tiling_t one_big_tile{{0, 2}, {0, 2}};
+        shape_t one_big_tile_shape(one_big_tile);
+        REQUIRE(rv.shape() == one_big_tile_shape);
+    }
+
+    SECTION("eigen_to_tensor_wrapper (specified shape)") {
+        tiling_t single_element_row_tile{{0, 1, 2}, {0, 2}};
+        shape_t single_element_row_tile_shape(single_element_row_tile);
+        auto rv =
+          eigen_to_tensor_wrapper(eigen_m, single_element_row_tile_shape);
+        REQUIRE(rv.shape() == single_element_row_tile_shape);
+        auto reshaped = twrapper.reshape(single_element_row_tile_shape.clone());
+        REQUIRE(rv == reshaped);
     }
 }

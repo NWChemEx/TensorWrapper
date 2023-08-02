@@ -84,8 +84,8 @@ Jagged-ness
    - Must have smooth slices of at least rank 1, but could have higher-rank
      smooth slices, *e.g.*, a jagged rank 3 tensors could have smooth matrices
      as elements.
-   - A jagged tensor of rank |r|, which has smooth slices of rank
-     :math:`s` must minimally be viewed as having :math:`r-s` layers
+   - A jagged tensor of rank |r|, which has smooth slices of rank :math:`s`
+     must minimally be viewed as having :math:`r-s` layers
    - A key use of jagged shapes is for tiling tensors.
 
 .. _shape_combining_shapes:

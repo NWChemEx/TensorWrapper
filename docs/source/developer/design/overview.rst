@@ -250,6 +250,7 @@ responsible for:
 - Hermitian and anti-Hermitian (complex elements)
 - Other symmetry mappings
 
+
 Sparsity
 --------
 
