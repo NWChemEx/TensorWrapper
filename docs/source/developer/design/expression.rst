@@ -17,3 +17,7 @@
 ##################################
 Designing the Expression Component
 ##################################
+
+
+- ``IndexedSparsity``, ``IndexedShape``, ``IndexedSymmetry``, etc. should use
+  this component.

@@ -91,7 +91,17 @@ Effective Sparsity
 
 .. _sparse_operational_sparsity:
 
-Operational Sparsity
+ Operational Sparsity
+    Given an operation combining two tensors, |A| and |B|, to form |C| we
+    need to be able to work out the sparsity of |C| from the sparsity of |A|
+    and |B|.
+
+    - To work out the sparsity of |C| we need the shapes of |A| and |B|. Having
+      the symmetry makes it potentially more efficient.
+
+.. _sparse_effective_operational_sparsity:
+
+Effective Operational Sparsity
    Given two tensors, |A| and |B|, which are not sparse, it is possible to
    combine |A| and |B| to form |C|, and have |C| be sparse. Of particular note,
    is when |A| and |B| contain values with magnitudes between 0 and 1, in which
@@ -105,6 +115,12 @@ Operational Sparsity
    - Sparsity may arise through addition, if |A| and |B| have opposite signs.
      In this case the resulting sparsity is similar to that which results from
      subtraction.
+   - Effective operational sparsity can only be exploited by doing the operation
+     and inspecting the result. For elemental sparsity this requires doing the
+     traditional operation on all of |A| and |B| and inspecting |C|. If |C|
+     has additional sparsity, then noting the sparsity can be useful in using 
+     |C| down the road. For block and sparse map sparsity, pre-computation with 
+     norms can be done to avoid forming sparse blocks of |C|.
 
 .. _sparse_dual_problem:
 
@@ -128,30 +144,71 @@ Basic Operations
    - Whether an element/range of elements is zero or not.
    - The fraction of zero/non-zero elements.
 
+Not in Scope
+============
+
+Storage format
+   A number of schemes exist for storing sparse tensors, *e.g.*, compressed
+   sparse row and compressed sparse column. While the sparsity component will
+   need to adopt one (or possibly multiple) formats, doing so is an 
+   implementation detail and not explicitly considered in the design.
+
 ***************
 Sparsity Design
 ***************
 
-Considerations :ref:`sparse_element_sparsity`, :ref:`sparse_block_sparsity`,
-and :ref:`sparse_sparse_map` led to three different ways to specify the sparsity
-of a tensor. TensorWrapper represents each of these ways with its own container
-(respectively ``Element``, ``Block``, ``SparseMap``). From the
-:ref:`sparse_dual_problem` consideration we know that the user may
-wish to fill these containers either with the zero elements of the tensor or
-with the non-zero elements of the tensor. We thus introduce two strong
-types ``Zero`` and ``Nonzero`` which are templated on the container type.
+.. _fig_sparsity:
 
+.. figure:: assets/sparsity.png
+   :align: center
 
-For nested structures it is more natural to use a map-like format to specify
-the sparsity. The resulting ``NonzeroMap`` class takes a nested shape and a
-potentially nested map. The keys of the map are the non-zero elements of the
-outer most layer, the values are the non-zero elements of the next most
-outer layer, which are expressed themselves as a map if the nesting has more
-than two layers. Taking the direct product of a key with all of the values it
-maps to results in the total set of non-zero elements. The ``ZeroMap`` class
-works conceptually the same way except that one specifies the zero elements
-instead of the non-zero elements.
+   The major classes underlying the sparsity component of TensorWrapper.
+
+:numref:`fig_sparsity` shows the main components of TensorWrapper's sparsity
+component. From considerations :ref:`sparse_element_sparsity`, 
+:ref:`sparse_block_sparsity`, and :ref:`sparse_sparse_map` we know there are
+three different ways to specify the sparsity of a tensor. TensorWrapper 
+represents each of these ways with its own container (respectively ``Element``, 
+``Block``, ``SparseMap``). Ultimately these descriptions all contain the
+same information, just with different representations, hence we also have
+made them convertible among each other. From the :ref:`sparse_dual_problem` 
+consideration we know that the user may wish to fill these containers either 
+with the zero elements of the tensor or with the non-zero elements of the 
+tensor. We thus introduce two strong types ``Zero`` and ``Nonzero`` which are 
+templated on the container type.
+
+For determining the sparsity of an operation we introduce the 
+``IndexedSparsity`` class. Like the other indexed quantities, 
+``IndexedSparsity`` allows sparsity objects to be combined using Einstein
+notation. 
 
 *************
 Proposed APIs
 *************
+
+Declaring an Element Object
+===========================
+
+.. code-block:: c++
+
+   // A null sparsity object
+   Element enull;
+
+   // Sparsity for a scalar (n.b. use of {})
+   Element e0{};
+
+   // Sparsity for a vector with non-zero elements 3,5,7
+   Element e1{3, 5, 7};
+
+   // Sparsity for a matrix with non-zero elements: (1,2), (2,3), and (3,4)
+   Element e2{{1,2}, {2,3}, {3,4}};
+
+   // Sparsity for a rank 3 tensor with non-zero elements: (1,2,3) and (2,3,4)
+   Element e3{{1,2,3}, {2,3,4}};
+
+***********
+Other Notes
+***********
+
+- Do we need the tensor's overall shape?
+- What about symmetry?
