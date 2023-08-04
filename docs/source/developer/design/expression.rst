@@ -21,3 +21,4 @@ Designing the Expression Component
 
 - ``IndexedSparsity``, ``IndexedShape``, ``IndexedSymmetry``, etc. should use
   this component.
+- Sparse maps got punted here.

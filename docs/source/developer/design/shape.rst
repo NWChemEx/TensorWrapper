@@ -590,7 +590,7 @@ For convenience we also provide an overload where the user may provide up to
 |r| integers. This overload pins the :math:`i`-th mode to the :math:`i`-th
 integer all other modes run their entire span.
 
-It is possible to slice and chip ``JaggedShape`` and ``Nested`` objects too:
+Slicing and chipping ``JaggedShape`` objects is largely the same:
 
 .. code-block:: c++
 
@@ -602,9 +602,64 @@ It is possible to slice and chip ``JaggedShape`` and ``Nested`` objects too:
    auto j1 = js0.slice(0);
    assert(j1 == JaggedShape({Shape{10}});
 
-   Nested<Shape> s1_2({1, 2}, Shape{10, 20, 30});
-   auto s2 = s1_2.chip(0);
-   assert(s2 == Shape{10, 20});
+Because chipping selects a single element per mode per layer, chipping a
+``Nested`` object is fairly straightforward:
+
+.. code-block:: c++
+
+   Nested<Shape> s2_2({2, 2}, Shape{2, 2, 10, 10});
+   assert(s2_2.chip(0) == Nested<Shape>({1, 2}, Shape{2, 10, 10}));
+   assert(s2_2.chip(1,2) == Shape{10, 10});
+   assert(s2_2.chip(1,2,3) == Shape{10});e
+   assert(s2_2.chip(1,2,3,4) == Shape{});
+
+Taking arbitrary slices of a ``Nested`` object is significantly more
+complicated on account of the fact that slice requests for any of the inner
+layers will in general be slicing multiple tensors simultaneously. For example
+consider ``s2_2`` from the previous code snippet. Slicing layer 0 is
+straightforward, asking for say ``{1,0}, {2,2}`` selects row 1 of the outer
+matrix. Generalizing, something like ``{1,0,5,5}, {2,2,10,10}`` would grab
+row 1 of layer 0, and rows 5 through 9 (inclusive) for each inner matrix. What
+if we wanted the first 5 rows of outer element ``{1,0}`` and the last 3 rows
+of outer element ``{1,1}``? This request requires more than just a block range,
+it requires a ``JaggedShape``. The above request can be requested by:
+
+.. code-block:: c++
+
+   // The shape resulting from taking the first 5 rows of a 10 by 10 matrix
+   Shape e10({5,10}, {0,0});
+   // The shape resulting from taking the last 5 rows from a 10 by 10 matrix
+   Shape e11({3,10}, {7,0});
+   // A 1 row matrix with 2 columns whose elements are a 5 by 10 and a
+   // 3 by 10 matrix, the origin of the outer tensor is {1,0}
+   JaggedShape slice({{e10, e11}}, {1,0});
+
+   auto requested_slice = s2_2.slice(slice);
+
+   assert(requested_slice == slice);
+
+As this also shows, requesting such slices also completely negates the point of
+the ``slice`` member because the input is the result. As a result, we have not
+designed such an API. Instead the slicing APIs for a ``Nested`` object are:
+
+.. code-block:: c++
+
+   Nested<Shape> s2_2({2, 2}, Shape{2, 2, 10, 10});
+   Shape s01({1, 1, 10, 10}, {0, 1, 0, 0});
+
+   // Grabs the 0,1 element of the outer matrix preserving the rank
+   assert(s2_2.slice(0, 1) == Nested<Shape>({2, 2}, s01));
+
+   // Grabs the bottom row of the outer matrix, and the bottom 5 rows of
+   // the inner matrices
+   Nested<Shape> s1050({1, 2, 5, 5}, {1, 0, 5, 0});
+   s2_2.slice({1, 0, 5, 0}, {2, 2, 10, 10});
+
+
+Ultimately, bear in mind, chipping and slicing are little more than convenience
+functions for working out the shapes resulting from slicing/chipping the tensor;
+for complicated selections it should always be possible to build the resulting
+shape manually.
 
 Iterating
 =========
@@ -636,19 +691,20 @@ returned as offsets from the origin, in lexicographical order. For example:
    print_shape(s); // prints {10,10} {10,11} {10,12} {11,10} {11,11} {11,12}
 
 For completeness we define an overloads of ``Shape`` and ``JaggedShape`` which
-also take an origin. For ``JaggedShape`` the origin need only be specified for
-the explicitly unrolled ranks.
+also take an origin. For ``JaggedShape`` the origin needs to be specified for
+the internal shapes and the explicitly unrolled ranks.
 
 .. code-block:: c++
 
    // Makes a shape for a 2 by 3 matrix whose first element is {10, 10}
    Shape s({2, 3}, {10, 10});
 
-   // Outer vector starts at 10, element 0 of the outer vector starts at 5,
-   // element 1 of the outer vector starts at 6
+   // Outer vector starts at 10, element 11 of the outer vector starts at 5,
+   // element 12 of the outer vector starts at 6
    JaggedShape js({{Shape({10}, {5}), Shape({20}, {6})}, {10});
 
-   // Outer vector starts at 10, inner vector starts at 10
+   // Outer vector starts at 10, inner vectors start at 10. N.B. that
+   // conceptually a Nested<Shape> is a direct product factorization of a
    Nested<Shape> s1_1({1, 1}, s);
 
 *******
@@ -674,3 +730,10 @@ by:
 :ref:`shape_iterable`
    The various classes define iterators which allow users to iterate over the
    indices contained in the shape.
+
+****************
+Additional Notes
+****************
+
+- Slicing and chipping assume contiguous sub-tensors. For grabbing noncontiguous
+  sub-blocks and using them as if they were contiguous, one needs a mask.
