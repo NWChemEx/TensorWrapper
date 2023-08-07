@@ -28,7 +28,8 @@ What is tensor sparsity?
 In the context of tensors, sparsity refers to tensors possessing elements which
 are effectively zero. Exactly what defines the effective zero is situational
 and problem-specific. The sparsity component is responsible for indicating
-which elements are zero or non-zero.
+which elements are zero or non-zero, not only in a single tensor, but also in
+tensor expressions.
 
 *******************************
 Why do we need tensor sparsity?
@@ -70,9 +71,13 @@ Element Sparsity
 
 Block Sparsity
    Block sparsity is concerned with specifying whether multi-element
-   :ref:`term_slice` and :ref:`term_chip` of a tensor are zero/non-zero. It
-   should be noted that a slice/chip is zero only if every element in the chip
-   is zero too.
+   :ref:`term_slice` and :ref:`term_chip` of a tensor are all zero of if they
+   contain non-zero elements. It should be noted that a slice/chip is zero only
+   if every element in the chip is zero too. Since slices/chips can contain a
+   single element the distinction between element and block sparsity is not
+   always clear. Simply put, element vs block sparsity comes down to
+   whether the user provided the sparsity component with single elements or
+   chips/slices.
 
    - Exploiting block-wise sparsity can only be done with block-wise operations
      (either involving chips or slices).
@@ -119,12 +124,14 @@ Effective Operational Sparsity
    - Sparsity may arise through addition, if |A| and |B| have opposite signs.
      In this case the resulting sparsity is similar to that which results from
      subtraction.
-   - Effective operational sparsity can only be exploited by doing the operation
-     and inspecting the result. For elemental sparsity this requires doing the
-     traditional operation on all of |A| and |B| and inspecting |C|. If |C|
-     has additional sparsity, then noting the sparsity can be useful in using
-     |C| down the road. For block sparsity, pre-computation with norms can be
-     done to avoid forming sparse blocks of |C|.
+   - Exploiting effective operational sparsity requires use of inequalities
+     such as Cacuchy-Schwarz. For elemental sparsity these inequalities must be
+     considered element by element and offer no cost savings over simply
+     carrying out the operation and inspecting the result (n.b., that inspecting
+     the result, |C|,  for additional sparsity can be useful if |C| is used
+     later). For block sparsity, inequalities can be checked by using block
+     norms. If the norms fail the inequality then it is possible to avoid
+     forming the full sparse block.
 
 .. _sparse_dual_problem:
 
@@ -144,8 +151,8 @@ Dual problem
 .. _sparse_symmetry:
 
 Symmetry
-   Sparsity is affected by symmetry. Knowing the symmetry of the tensor allows
-   us to know where zero/non-zero elements are with less information.
+   Knowing the symmetry of the tensor allows us to know where zero/non-zero
+   elements are with less information.
 
 .. _sparse_basic_operations:
 
@@ -154,8 +161,8 @@ Basic Operations
    need to know:
 
    - Whether an element/range of elements is zero or not.
-   - The fraction of zero/non-zero elements.
-   - Unions of two objects.
+   - The fraction of zero elements (*i.e.*, the sparsity).
+   - Unions of sparsity objects.
 
 Not in Scope
 ============
@@ -164,7 +171,8 @@ Storage format
    A number of schemes exist for storing sparse tensors, *e.g.*, compressed
    sparse row and compressed sparse column. While the sparsity component will
    need to adopt one (or possibly multiple) formats, doing so is an
-   implementation detail and not explicitly considered in the design.
+   implementation detail and not explicitly considered in the user-facing
+   design.
 
 Sparse Map
    For a matrix, compressed sparse row format is a map from non-zero row
@@ -325,7 +333,7 @@ sub-shapes which are non-zero:
    Block b0(Shape{}, {})
 
    // Sparsity for a non-zero scalar
-   Block zero0(Shape{}, {{}});
+   Block zero0(Shape{}, {Shape{}});
 
    // Sparsity for 10 element vector with non-zero elements: 1, 3, 4, 5, and 6.
    Shape s1{10};
@@ -356,27 +364,53 @@ Analogous to ``Element``, one can specify the zero blocks by using
 Declaring a Sparsity Object with Norms
 ======================================
 
-As long as a tensor is defined in terms of a ``Nested<Shape>`` or a
-``Nested<JaggedShape>`` we can use the norms of the sub-tensors to check for
-effective sparsity in operations. This is conceptually a variation on ``Block``
-where instead of specifying whether each block is/isn't zero, we instead specify
-how zero a block actually is. In practice this requires providing the norms of
-the blocks and the effective threshold.
+Effective sparsity is conceptually a variation on block sparsity where instead
+of specifying whether each block is/isn't zero, we instead specify "how zero" a
+block actually is. Put another way, ``Block`` objects are ``Norm`` objects
+where zero blocks have a norm of zero and and non-zero blocks have norms of
+infinity. Declaring a ``Norm`` object requires: the shape of the tensor, the
+norms of the blocks, and the effective zero threshold:
 
 .. code-block:: c++
 
+   // Null Norm object (no shape, no sparsity)
+   Norm nnull;
 
-   Nested<Shape> s1_1({1, 1}, Shape{10, 20});
+   // Norm object for a scalar
+   Norm n0(Shape{}, Tensor{norm});
 
-   TensorWrapper t{norm0, norm1, norm2, norm3.., norm9};
-   NormBased e2(t, 10E-10);
+   // Norm object for a 10 element vector
+   Norm n1(Shape{10}, Tensor{norm}));
+
+   // Norm object for a 5 by 20 Matrix viewed as a vector of vectors
+   Nested<Shape> s1_1({1, 1}, Shape{5, 20});;
+   Norm n2(s1_1, Tensor{norm0, norm1, norm2, norm3, norm4}, 10E-10);
+
+   // Vector of matrices example
+   Nested<Shape> s1_2({1, 2}, Shape{5, 20, 30});
+   Norm n1_2(s1_2, Tensor{norm0, norm1, norm2, norm3, norm4});
+
+   // Matrix of vectors example
+   Nested<Shape> s2_1({2, 1}, Shape{3, 3, 10});
+   Tensor t{{norm00, norm01, norm02},
+            {norm10, norm11, norm12},
+            {norm20, norm21, norm22}};
+   Norm n2_1(s2_1, t);
+
+   // Jagged matrix with three rows
+   JaggedShape js2{Shape{10}, Shape{20}, Shape{30}};
+   Norm jn2(js2, Tensor{norm0, norm1, norm2});
 
 
-It should be noted that this sort of sparsity can only be effectively exploited
-in operations with other ``NormBased`` objects (``Block`` and ``Element``
-objects implicitly store a norm tensor with elements that are 0 or 1; in turn,
-the resulting sparsity is completely determined by the hard-zero norms).
-
+As shown for ``n0``, ``Norm`` works with ``Shape`` objects, but only supports a
+single norm (that of the entire tensor) in such cases. Generally speaking,
+``Norm`` is much more useful for tensors declared with ``JaggedShape``,
+``Nested<Shape>``, or ``Nested<JaggedShape>`` shapes. As also shown, the norms
+are provided as ``Tensor`` objects. The rank of the provided tensor is always
+zero if the ``Norm`` object is based off of a ``Shape`` object and it is the
+rank of the outer layer for ``JaggedShape`` and ``Nested`` objects. Finally,
+as shown in constructing ``n2`` the user may provide a custom zero (default is
+machine precision).
 
 Composing Sparsity Objects
 ==========================
@@ -417,6 +451,44 @@ two matrices |A| and |B|, each of which is 10 by 20. In code:
    );
    assert(c == corr);
 
+Composing of sparsity objects follows the same API as composing with other
+TensorWrapper objects, largely for consistency.
+
+Basic Operations
+================
+
+.. note::
+
+   This section will be filled out more as the operations needed are better
+   understood.
+
+All sparse containers inherit from the ``Sparsity`` class, which also defines
+the basic API for many sparsity operations.
+
+.. code-block:: c++
+
+   Sparsity s = get_tensor_sparsity();
+   Sparsity other_sparsity = get_other_sparsity();
+   // Checks if element (0,1) is 0
+   auto is_zero = s.is_zero({0, 1});
+
+   // Checks if a block starting with (0,1) and ending with (10, 10) is all 0
+   is_zero = s.is_zero({0,1}, {10, 10});
+
+   // Checks if element (0,1) is non-zero
+   auto is_nonzero = s.is_nonzero({0, 1});
+
+   // Checks if the block starting with (0,1) and ending with (10, 10) has any
+   // non-zero elements
+   is_nonzero = s.is_nonzero({0, 1}, {10, 10});
+
+   // Compute the sparsity (# of zero elements/total number of elements)
+   auto sparsity = s.sparsity();
+
+   // Create a new sparsity object with the same total shape and the zeros from
+   // s and other_sparsity
+   auto the_union = s.union(other_sparsity);
+
 *******
 Summary
 *******
@@ -430,8 +502,7 @@ Summary
    ``Block``.
 
 :ref:`sparse_effective_sparsity`
-   The base ``Sparsity`` class contains a threshold parameter which is used to
-   determine what the effective zero is/was for the object.
+    Exploiting effective sparsity is done with the ``Norm`` class.
 
 :ref:`sparse_operational_sparsity`
    The ``Sparsity`` objects can be composed using Einstein notation. Sparsity
@@ -454,3 +525,4 @@ Summary
 
 :ref:`sparse_basic_operations`
    Basic operations have been factored out into the ``Sparsity`` base class.
+   The exact API
