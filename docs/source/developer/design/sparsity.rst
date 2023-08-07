@@ -162,7 +162,8 @@ Basic Operations
 
    - Whether an element/range of elements is zero or not.
    - The fraction of zero elements (*i.e.*, the sparsity).
-   - Unions of sparsity objects.
+   - Unions of sparsity objects (for algorithm purposes and useful for building
+     up the final sparsity).
 
 Not in Scope
 ============
@@ -485,9 +486,13 @@ the basic API for many sparsity operations.
    // Compute the sparsity (# of zero elements/total number of elements)
    auto sparsity = s.sparsity();
 
-   // Create a new sparsity object with the same total shape and the zeros from
-   // s and other_sparsity
-   auto the_union = s.union(other_sparsity);
+   // Create a new sparsity object with the same total shape and the non-zero
+   // elements from s and other_sparsity
+   auto the_union = s.nonzero_union(other_sparsity);
+
+   // Create a new sparsity object with the same total shape and the zero
+   // elements from z and other_sparsity
+   the_union = s.zero_union(other_sparsity);
 
 *******
 Summary
