@@ -79,6 +79,13 @@ Tensor Algebra Compiler (TACO)
 - `GitHub <https://github.com/tensor-compiler/taco>`__
 
 
+******************************************
+Tensor Algebra for many-body methods(TAMM)
+******************************************
+
+- `GitHub <https://github.com/NWChemEx-Project/TAMM>`__
+
+
 **********************
 Tensor Library for C++
 **********************
