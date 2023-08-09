@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">TensorWrapper Terminology</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tensor-terminology">Tensor Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#block">block</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#chip">chip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#element">element</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extent">extent</a></li>
@@ -119,6 +120,12 @@ TensorWrapper.</p>
 <div class="section" id="tensor-terminology">
 <h2>Tensor Terminology<a class="headerlink" href="#tensor-terminology" title="Permalink to this heading"></a></h2>
 <p>Terms are listed alphabetically.</p>
+<div class="section" id="block">
+<span id="term-block"></span><h3>block<a class="headerlink" href="#block" title="Permalink to this heading"></a></h3>
+<p>We use the term block to generically refer to a sub-tensor. Blocks can
+be either <a class="reference internal" href="#term-chip"><span class="std std-ref">chip</span></a> or <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> depending on how their rank
+compares to that of the parent tensor.</p>
+</div>
 <div class="section" id="chip">
 <span id="term-chip"></span><h3>chip<a class="headerlink" href="#chip" title="Permalink to this heading"></a></h3>
 <p>A chip of a tensor is similar to a <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a>, but the resulting tensor

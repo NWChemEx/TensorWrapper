@@ -111,6 +111,18 @@ Basic properties
    - For a given shape, how many elements are symmetry unique/redundant.
    - The sign of the resulting element.
 
+.. |A| replace:: :math:`\mathbf{A}`
+.. |B| replace:: :math:`\mathbf{B}`
+.. |C| replace:: :math:`\mathbf{C}`
+
+.. _sym_composition:
+
+Composition
+   When combining two tensors |A| and |B| to form |C|, the symmetry of |C| is
+   determined from the symmetry of |A| and |B|. The symmetry component should
+   be able to compose symmetries using Einstein notation, just like the
+   tensors the symmetries describe.
+
 Out of Scope Considerations
 ===========================
 
@@ -417,3 +429,6 @@ Additional Notes
 
 - Can we use jagged tensors here? In particular I'm thinking an upper-triangular
   matrix without the lower triangle is a jagged matrix.
+- I believe that symmetry can be completely implemented without needing to
+  store the tensor's overall shape (``Translational`` will need the shapes of
+  the blocks, but shouldn't need the overall shape).

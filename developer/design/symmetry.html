@@ -188,6 +188,13 @@ slice.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="simple" id="sym-composition">
+<dt>Composition</dt><dd><p>When combining two tensors <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> to form <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, the symmetry of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> is
+determined from the symmetry of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>. The symmetry component should
+be able to compose symmetries using Einstein notation, just like the
+tensors the symmetries describe.</p>
+</dd>
+</dl>
 <div class="section" id="out-of-scope-considerations">
 <h3>Out of Scope Considerations<a class="headerlink" href="#out-of-scope-considerations" title="Permalink to this heading"></a></h3>
 <dl class="simple">
@@ -459,6 +466,9 @@ permutation classes could be added later if needed.</p>
 <ul class="simple">
 <li><p>Can we use jagged tensors here? In particular I’m thinking an upper-triangular
 matrix without the lower triangle is a jagged matrix.</p></li>
+<li><p>I believe that symmetry can be completely implemented without needing to
+store the tensor’s overall shape (<code class="docutils literal notranslate"><span class="pre">Translational</span></code> will need the shapes of
+the blocks, but shouldn’t need the overall shape).</p></li>
 </ul>
 </div>
 </div>
