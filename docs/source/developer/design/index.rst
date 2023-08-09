@@ -26,9 +26,9 @@ Design of TensorWrapper
    shape
    symmetry
    sparsity
-   tensor_wrapper
+   layout
    allocator
    buffer
-   distribution
+   tensor_wrapper
    expression
    op_graph

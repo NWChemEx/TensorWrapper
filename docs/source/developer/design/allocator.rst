@@ -18,6 +18,27 @@
 Designing the Allocator
 #######################
 
+
+*********************
+What is an Allocator?
+*********************
+
+In C++, allocators are objects used by containers to allocate the elements of
+the container. Conceptually, we can think of an allocator as wrapping the
+process of creating the object. In particular the allocator wraps the steps
+that need to be done prior to calling an object's constructor.
+
+**************************************
+Why do We Need an Allocator Component?
+**************************************
+
+Using TensorWrapper, users will create objects for describing a tensor's shape,
+symmetries, and sparsity. Since TensorWrapper is designed to wrap existing
+tensor libraries those tensor wrapper specific objects will need to be converted
+to verio. Each of these
+libraries has their own tensor class (or classes). Wrapping the tensor class
+is the job of ``Buffer``.thus the TensorWrapper objects
+
 ************************
 Allocator Considerations
 ************************
