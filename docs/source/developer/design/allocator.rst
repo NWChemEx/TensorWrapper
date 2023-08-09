@@ -18,30 +18,44 @@
 Designing the Allocator
 #######################
 
+The point of this page is to capture the design process of the
 
 *********************
 What is an Allocator?
 *********************
 
-In C++, allocators are objects used by containers to allocate the elements of
-the container. Conceptually, we can think of an allocator as wrapping the
-process of creating the object. In particular the allocator wraps the steps
-that need to be done prior to calling an object's constructor.
+In C++, allocators are objects used by containers to secure uninitialized
+storage for the elements of the container. Optionally, the allocator may also
+initialize the storage. In TensorWrapper, an allocator is responsible for
+securing a (possibly uninitialized) instance of the backend's tensor object.
 
 **************************************
 Why do We Need an Allocator Component?
 **************************************
 
 Using TensorWrapper, users will create objects for describing a tensor's shape,
-symmetries, and sparsity. Since TensorWrapper is designed to wrap existing
-tensor libraries those tensor wrapper specific objects will need to be converted
-to verio. Each of these
-libraries has their own tensor class (or classes). Wrapping the tensor class
-is the job of ``Buffer``.thus the TensorWrapper objects
+symmetries, and sparsity. Those objects will then be converted into a layout.
+Given the target layout, TensorWrapper will then create a tensor object from
+one of the available backends. Since each of these libraries has their own
+tensor class (or classes), with their own construction methods, the allocator
+component is needed to hide the process of constructing the backend's buffer
+objects.
 
 ************************
 Allocator Considerations
 ************************
+
+.. _a_backend_aware:
+
+Backend aware
+   The allocator's primary purposes are to provide a mechanism for selecting
+   the tensor backend and to wrap the process of creating instances for that
+   backend.
+
+   - Eventually we would like to automate the backend selection process.
+     Ideally, TensorWrapper would know which backend works best in which
+     situations and would choose it for the user. This can be done by having a
+     super allocator which delegates to the individual backend allocators.
 
 .. _a_runtime_aware:
 
@@ -52,26 +66,47 @@ Runtime aware
    amount of available memory.
 
    - Tracking the state of the runtime is the responsibility of ParallelZone.
+   - Not all backends resource manage, TensorWrapper will have to do it for
+     them.
 
-.. _a_input_initialization:
+.. _a_initialization:
 
-Input initialization
+Initialization
    Before any tensor operations can be performed some tensors will need to be
-   filled in with values. Sometimes this an identity or zero tensor, but more
-   often the initial value of an element depends on its indices. The
-   ``Allocator`` must have a mechanism for filling in blocks of a ``Buffer``
-   with arbitrary values.
+   filled in with values. Sometimes the tensor is simply an identity or zero
+   tensor, but more often the initial value of an element depends on its
+   indices. The ``Allocator`` must have a mechanism for filling in blocks of the
+   ``Buffer`` with arbitrary values.
 
-.. _a_result_initialization:
+.. _a_propagation:
 
-Result initialization
-   The ``Allocator`` will need to be able to initialize a ``Buffer`` in a way
-   that is suitable for assignment. In general, this is a more lightweight
-   initialization than input initialization.
+Propagation
+   Tensors contain the ``Allocator`` used to create their ``Buffer``. Reuse of
+   that ``Allocator`` will create additional ``Buffer`` objects which rely on
+   the same backend. In turn, by grabbing the ``Allocator`` associated with a
+   tensor, users can create additional ``Buffer`` objects which are guaranteed
+   to be compatible with the tensor backend. This requires the ``Allocator`` to
+   propagate through expressions.
 
-.. _a_buffer_hierarchy_support:
+.. _a_rebind:
 
-Buffer hierarchy support
-   Since ``Buffer`` objects are created by ``Allocator`` objects, the
-   ``Allocator`` object must be aware of the ``Buffer`` hierarchy in order to
-   create instances of
+Rebind
+   C++ allocators are associated with a specific type. If you want to use the
+   allocator to allocate memory for a different type, you have to "rebind" the
+   allocator (the mechanism for doing this changed in C++20, but boils down to
+   using template meta-programming to work out the type of the other allocator).
+   In TensorWrapper's use case, many of the various backends will be able to
+   make different types of buffers (*e.g.*, distributed libraries will usually
+   be able to minimally make ``DistributedBuffer`` and ``ReplicatedBuffer``
+   objects). Being able to rebind TensorWrapper allocators thus allows us to
+   create other buffer types which are still compatible with the backend.
+
+.. _a_downcasting:
+
+Downcasting
+   Since allocators are tied to a particular type, given the allocator which
+   made a buffer, the allocator should know what the actual (not type-erased)
+   type of the buffer is.
+
+   - The main use case here is for converting between backends by using the
+     allocators to establish which backends the buffers contain.
