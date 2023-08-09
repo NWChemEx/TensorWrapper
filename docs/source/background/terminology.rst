@@ -19,6 +19,7 @@ TensorWrapper Terminology
 #########################
 
 .. |n| replace:: :math:`n`
+.. |m| replace:: :math:`m`
 
 When discussing tensors, different researchers use different terminology. This
 section provides a glossary of the tensor terminology we will use throughout
@@ -133,6 +134,18 @@ rank
 The number of :ref:`term_mode` s a tensor has. A scalar is a rank 0 tensor, a
 vector is rank 1 tensor, a matrix is a rank 2 tensor, etc. Outside TensorWrapper
 other common names are dimensionality and order.
+
+.. _term_reshape:
+
+reshape
+=======
+
+The hyper-rectangular layout of a tensor is not unique. We can just as easily
+treat an |m| by |n| matrix as a vector with :math:`nm` elements. When converting
+a tensor into a vector, the process is usually termed vectorization. More
+generally, this process is termed reshaping as it changes the shape of the
+tensor from an |m|-dimensional hyper-rectangular array to an |n|-dimensional
+hyper-rectangular array (:math:`m\neq n`).
 
 .. _term_shape:
 
