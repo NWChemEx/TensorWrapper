@@ -89,7 +89,7 @@ numfig = True
 #
 html_theme = 'sphinx_rtd_theme'
 
-#html_logo = "assets/logo.png"
+html_logo = "assets/logo.png"
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -98,6 +98,7 @@ html_theme = 'sphinx_rtd_theme'
 #
 html_theme_options = {
     'vcs_pageview_mode' : 'edit',
+    'logo_only' : True
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

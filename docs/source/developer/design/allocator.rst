@@ -88,6 +88,13 @@ Propagation
    to be compatible with the tensor backend. This requires the ``Allocator`` to
    propagate through expressions.
 
+   - Like other components, propagating the ``Allocator`` through the expression
+     layer is natural.
+   - When allocators are not mixed (all allocators make buffers of the same
+     type). Propagation is straightforward (assume the same allocator).
+   - When allocators are mixed, will need heuristics to determine which one to
+     use for the product.
+
 .. _a_rebind:
 
 Rebind
@@ -110,3 +117,120 @@ Downcasting
 
    - The main use case here is for converting between backends by using the
      allocators to establish which backends the buffers contain.
+   - Possible with visitor pattern?
+
+****************
+Allocator Design
+****************
+
+.. _fig_allocator:
+
+.. figure:: assets/allocator.png
+   :align: center
+
+   The major components of the allocator. Classes in the diagram are meant to
+   be representative of the backends and will not be kept up to date as
+   support is added.
+
+:numref:`fig_allocator` shows the major components of the allocator component.
+At the base of the hierarchy is ``AllocatorBase`` which is primarily meant to
+serve as code factorization and a means of type-erasing the buffer type the
+allocator actually produces. Deriving from ``AllocatorBase`` is ``Allocator``
+which is templated on the buffer type it creates. The various tensor backends
+then derive from as many ``Allocator`` specializations as they support. For
+example, TiledArray (TA) supports both distributed and replicated buffers so
+it would derive two allocators, one for making ``DistributedBuffer`` objects
+and one for making ``ReplicatedBuffer`` objects.
+
+*************
+Proposed APIs
+*************
+
+For the most part we expect that the bulk of interactions with ``Allocator``
+objects will be construction and allocation:
+
+.. code-block:: c++
+
+   // Most allocators will only require a RuntimeView for construction
+   parallelzone::RuntimeView rv = get_runtime();
+   Allocator<ReplicatedBuffer> alloc(rv);
+
+   Layout l = get_tensor_layout();
+
+   // Create an uninitialized buffer
+   auto ui_buffer = alloc.allocate(l);
+
+   // Create a buffer initialized with 0s
+   auto zero_buffer = alloc.construct(l, 0);
+
+   // Fill buffer in using a function. The function should take a Shape (which
+   // describes where the buffer goes in the overall tensor) and a LocalBuffer
+   // object. The body of the function should fill the LocalBuffer in, and then
+   // return the LocalBuffer object. The buffer may be left empty if it's zero.
+   auto fxn = [](const Shape& s, LocalBuffer buffer) {
+      return fill_buffer(s, buffer);
+   };
+   auto fxn_buffer = alloc.construct(l, fxn);
+
+Here we note that names of the methods, ``allocate`` and ``construct`` are
+taken from the analogously named methods comprising the C++ allocator concept.
+The difference is that ``allocate`` only allocates, whereas ``construct``
+allocates and initializes.
+
+Allocators are used to create additional buffers which are compatible with the
+associated backend. Consideration :ref:`a_rebind` raised the use case of
+needing to make buffers with different properties, but still maintain backend
+compatibility. For example, say we want to make a distributed TiledArray buffer
+into a replicated TiledArray buffer:
+
+.. code-block:: c++
+
+   // Somehow get a TADist object
+   TADist dist_alloc(get_runtime());
+
+   // Get an allocator, compatible with TA, that can make ReplicatedBuffer
+   // objects
+   auto replicated_alloc = dist_alloc.rebind<ReplicatedBuffer>();
+
+   // Use the allocators to convert a distributed buffer to a replicated buffer
+   auto dist_buffer = dist_alloc.construct(get_layout(), get_values());
+
+   // This would copy dist_buffer into rep_buffer
+   auto rep_buffer = replicated_alloc.construct(dist_buffer);
+
+   // This would reuse dist_buffer to the extent possible
+   rep_buffer = replicated_alloc.construct(std::move(dist_buffer));
+
+The motivation for relying on ``construct`` for conversions is that conceptually
+we are just calling conversion constructors of the new buffer.
+
+*******
+Summary
+*******
+
+:ref:`a_backend_aware`
+   This consideration is addressed by having the most derived classes in the
+   hierarchy backend specific. All such classes will actually be passed around
+   via base classes, which type-erases the backend choice.
+
+:ref:`a_runtime_aware`
+   The constructor for non-default ``AllocatorBase`` objects requires a
+   ``RuntimeView`` object. This provides the allocator with access to the
+   runtime environment.
+
+:ref:`a_initialization`
+   Allocators can allocate uninitialized buffers or they can allocate and
+   initialize buffers. The latter can be done by setting all elements to
+   a single value or by running a function on local buffers.
+
+:ref:`a_propagation`
+   Like other TensorWrapper components, ``Allocator`` objects will propagate
+   through the expression layer.
+
+:ref:`a_rebind`
+   ``Allocator`` objects have a method ``rebind`` which allows users to get
+   pointers to allocators for different buffer types.
+
+:ref:`a_downcasting`
+   Converting between buffers can be done by passing an existing buffer into
+   the ``construct`` function.
