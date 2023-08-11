@@ -18,6 +18,9 @@
 Designing the Buffer
 ####################
 
+The point of this page is to record the design process of TensorWrapper's
+buffer component.
+
 *******************
 What is the Buffer?
 *******************
@@ -35,7 +38,7 @@ Why do we need a Buffer?
 TensorWrapper is ultimately powered by other tensor libraries. The boundary
 between those libraries and TensorWrapper is the ``Buffer`` class. The
 ``Buffer`` class is the interface through which the user's intentions (specified
-with the TensorWrapper DSL) are conveyed to the backend.
+with the TensorWrapper :ref:`term_dsl`) are conveyed to the backend.
 
 ******************
 Buffer Terminology
@@ -57,11 +60,11 @@ future (to a buffer)
    been created, then control must wait until the buffer is ready before
    continuing.
 
-lazy
-   A buffer is lazy if it does not store the values which live in it, but
-   instead creates them on-the-fly. This differs from a future in that the
-   values of a lazy tensor are "immediately available" (after the delay required
-   to compute them).
+on demand
+   An "on demand" buffer does not store the values which live in it, but
+   instead creates them when requested. This differs from a future in that the
+   values of an on-demand tensor are "immediately available" (not accounting for
+   the delay required to compute them).
 
 local
    A buffer is "local" if the current process can access the state of the
@@ -85,6 +88,9 @@ Wrapping other tensor libraries.
    their data structures for some particular scenarios. We do not want to
    reinvent those optimizations and suggest ``Buffer`` should actually wrap
    those libraries' data structures.
+
+   - We note that creating those structures is the responsibility of the
+     ``Allocator`` component (see :ref:`tw_designing_the_allocator`).
 
 .. _b_type_erasure:
 
@@ -110,14 +116,15 @@ Data location
    - For distributed data, need to be able to replicate, get handles to remote
      data, and access local data.
 
-.. _b_implicit_data:
+.. _b_on_demand_data:
 
-Implicit data
+On demand data
    Particularly for high-rank tensors, we often do not store data explicitly.
-   The ``Buffer`` must be able to work seamlessly when data is stored
-   implicitly, also known as lazily.
+   The ``Buffer`` must be able to work seamlessly when data is computed
+   on demand.
 
-   - In practice, implicit tensors usually need to store some state.
+   - In practice, tensors which are computed on demand still usually store some
+     state.
 
 .. _b_asynchronous_support:
 
@@ -128,13 +135,17 @@ Asynchronous support
    use them to build up an operation queue. Attempting to access such a
    ``Buffer`` results in waiting until the ``Buffer`` has been filled in.
 
-.. _b_op_graph_evaluation:
+.. _b_basic_operations:
 
-OpGraph evaluation
-   Once TensorWrapper has figured out what the user wants to do, it needs to
-   tell the backend to do it. This process involves recording the operations to
-   be done in an ``OpGraph`` object and passing that object to the buffer the
-   result is to be assigned to.
+Basic operations
+   Collectively, the various tensor backends expose many possible operations.
+   The operations exposed by the ``Buffer`` classes should be very basic
+   operations which should be present in each backend.
+
+
+   - Actually executing an ``OpGraph`` accounts for any additional operations
+     the backend needs to run.
+
 
 Out of Scope
 ============
@@ -147,7 +158,7 @@ Tensor math
    then tell the backend to do them.
 
    - Evaluating a set of operations is in scope and is covered by
-     :ref:`b_op_graph_evaluation`
+     :ref:`b_basic_operations`
 
 Backend Allocation
    Literally making an object of the backend is a fundamental tensor operation;
@@ -158,6 +169,34 @@ Backend Allocation
      ``Allocator`` component. See :ref:`tw_designing_the_allocator` for
      more details.
 
+*************
+Buffer Design
+*************
+
+.. _fig_buffer:
+
+.. figure:: assets/buffer.png
+   :align: center
+
+   Design of the buffer component of TensorWrapper.
+
+:numref:`fig_buffer` shows the major components of TensorWrapper's buffer
+component. In addressing the :ref:`b_wrapping_other_tensor_libraries`
+consideration we made the decision to have each tensor library derive one or
+more buffer types. The backend-specific classes are responsible for implementing
+the interfaces of the classes they derive from. Additionally, the backend-
+specific classes will allow users to retrieve the native data structure if need
+be. The classes that the backend-specific classes derive from do not contain
+reference to the various backends, in particular TensorWrapper will pass most
+buffer objects around by pointers to the ``Buffer`` base class, thus
+satisfying the :ref:`b_type_erasure` consideration.
+
+
+For writing generic algorithms we usually need more information. Deriving from
+``Buffer`` we have several classes including: ``LocalBuffer``,
+``OnDemandBuffer``, ``ReplicatedBuffer``, ``FutureBuffer``, and
+``DistributedBuffer``. Together these classes address :ref:`b_data_location`,
+:ref:`b_on_demand_data`, and :ref:`b_asynchronous_support`.
 
 *************
 Proposed APIs
@@ -166,8 +205,11 @@ Proposed APIs
 Creating a Buffer
 =================
 
-Creating a ``Buffer`` is done through an allocator, the exact details for how
-to create an allocator are beyond our current scope. For now we treat it as an
+Creating a ``Buffer`` is done through an allocator. For now we treat allocators
+as opaque objects (design details for the allocator component can be found in
+the :ref:`tw_designing_the_allocator` section).
+
+beyond our current scope. For now we treat it as an
 opaque type. Creation of a ``Buffer`` requires providing the allocator a
 ``Shape`` object (which is also opaque for our current purposes) in one of two
 ways. The first invocation is just the shape:
@@ -276,11 +318,34 @@ operation the backend needs to perform.
 
 N.B. that we can use the visitor pattern to automatically downcast the buffer
 
-*************
-Buffer Design
-*************
 
-.. figure:: assets/buffer.png
-   :align: center
+*******
+Summary
+*******
 
-   Design of the buffer.
+:ref:`b_wrapping_other_tensor_libraries`
+   For each tensor backend we define one or more buffers. Each buffer derives
+   from the TensorWrapper buffer type which best summarizes the storage
+   strategy of the backend.
+
+:ref:`b_type_erasure`
+   The ``Buffer`` class is a common base class for all components of the
+   ``Buffer`` component. Passing objects via the ``Buffer`` base class
+   type-erases the backend.
+
+:ref:`b_data_location`
+   In the design of the buffer component, we derive several classes
+   including: ``LocalBuffer``, ``OnDemandBuffer``, and ``DistributedBuffer``,
+   which represent the storage strategy of the backend. Additional classes can
+   be added as needed to, for example, distinguish between buffers living in
+   RAM versus on the GPU.
+
+:ref:`b_on_demand_data`
+   The ``OnDemandBuffer`` class has been introduced to cover this consideration.
+
+:ref:`b_asynchronous_support`
+   The ``FutureBuffer`` class template has been introduced to cover this
+   consideration.
+
+:ref:`b_basic_operations`
+   The example APIs given demonstrate how basic operations may be performed.
