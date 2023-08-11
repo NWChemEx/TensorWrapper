@@ -142,7 +142,10 @@ Basic operations
    The operations exposed by the ``Buffer`` classes should be very basic
    operations which should be present in each backend.
 
-
+   - ``Buffer`` objects should contain their layouts, users should be able to
+     inspect those layouts.
+   - The ``Buffer`` should have access to the runtime it belongs to.
+   - Slices and chips for moving data around.
    - Actually executing an ``OpGraph`` accounts for any additional operations
      the backend needs to run.
 
@@ -206,69 +209,44 @@ Creating a Buffer
 =================
 
 Creating a ``Buffer`` is done through an allocator. For now we treat allocators
-as opaque objects (design details for the allocator component can be found in
-the :ref:`tw_designing_the_allocator` section).
-
-beyond our current scope. For now we treat it as an
-opaque type. Creation of a ``Buffer`` requires providing the allocator a
-``Shape`` object (which is also opaque for our current purposes) in one of two
-ways. The first invocation is just the shape:
+as largely opaque objects (design details for the allocator component can be
+found in the :ref:`tw_designing_the_allocator` section). Using an allocator,
+the typical process for creating a buffer looks like:
 
 .. code-block:: c++
 
-   auto shape     = get_shape();
-   auto allocator = get_allocator();
-   auto buffer    = allocator.allocate(shape);
+   auto alloc = get_allocator(); //N.B. allocators know about the runtime
+   Layout l   = get_layout(); // Figure out the tensor's shape, symmetry, etc.
 
-This invocation is suitable for initializing a ``Buffer`` to assign to.
-Initializing a ``Buffer`` with actual data is done by also passing the allocator
-a lambda like:
+   // This constructs a 0-initialized buffer. Other constructions are possible
+   auto pbuffer = alloc.construct(l, 0);
 
-.. code-block:: c++
-
-   auto shape     = get_shape();
-   auto allocator = get_allocator();
-   auto buffer    = allocator.allocate(shape, lambda_fxn);
-
-The exact syntax of the lambda is an ``Allocator`` consideration.
-
-Buffer Methods
-==============
-
-Once you have a ``Buffer`` you can inspect some basic properties:
-
-.. code-block:: c++
-
-   auto buffer = get_buffer();
-
-   // Get the shape of the buffer
-   auto shape = buffer.shape();
-
-   // Get an enum representing the scalar elements of the buffer
-   // N.B. Buffer also type erases this information
-   auto scalar_type = buffer.element_type();
-
+Since buffers are polymorphic objects, allocators return smart pointers to base
+classes of the actual object (the exact base class returned depends on the
+allocator).
 
 Retrieving the Wrapped Tensor
 =============================
 
 Until TensorWrapper is fleshed out we anticipate that users will need to
-unwrap the buffer somewhat regularly we propose that this is done by:
+unwrap the buffer somewhat regularly. We propose that this is done by:
 
 .. code-block:: c++
 
-   // Get the buffer object we want to unwrap
-   auto buffer = make_buffer();
+   // Get a pointer to a buffer object we want to unwrap
+   auto pbuffer = make_buffer();
 
-   // The type the backend uses as a tensor, e.g. for Eigen:
-   using unwrapped_tensor_type = eigen::Tensor<double, 3>;
+   // Declare the allocator for the appropriate backend, here we use the TADist
+   // allocator
+   TADist alloc(pbuffer->runtime());
 
-   auto eigen_t = Converter<unwrapped_tensor_type>::convert(buffer);
+   // This call will create a DistributedBuffer with TA as the backend by
+   // copying *pbuffer. Moving *pbuffer would (potentially) avoid the copy
+   auto converted = alloc.construct(*pbuffer);
 
-The ``Converter`` class is responsible for determining if the type-erased value
-inside the ``Buffer`` is already of type ``unwrapped_tensor_type``. If it is
-it just returns it; if it is not, then it either converts it to an object of
-type ``unwrapped_tensor_type`` or throws an error.
+Generally speaking, conversions work best if the layout of the input buffer is
+also supported by the output buffer. If the layouts are not compatible it is
+left up to the allocator how to deal with this.
 
 Working with Distributed Buffers
 ================================
@@ -288,36 +266,53 @@ processes.
    // Gets a handle to a part of the distributed buffer whose state is not
    // local to the current process. N.B. this does NOT make the data local
    // yet. We do assume that every process knows how to do this with no
-   // communication though
-   RemoteBuffer a_buffer = dist_buffer.at(range);
+   // communication though (chips work too)
+   auto shape_of_slice = get_shape_of_the_slice();
+   RemoteBuffer a_buffer = dist_buffer.slice(shape_of_slice);
 
    // Actually pulls the data
-   LocalBuffer = a_buffer.get();
+   auto now_its_local = a_buffer.local_buffer();
 
    // To make the distributed buffer replicated
-   ReplicatedBuffer replicated_buffer(dist_buffer);
+   auto rep_alloc = dist_buffer.allocator().rebind<ReplicatedBuffer>();
+   auto preplicated = rep_alloc.construct(std::move(dist_buffer));
 
-Evaluating an OpGraph
-=====================
+We note that ``DistributedBuffer`` objects will have ``Nested`` shapes. The
+outer layer of the shape will describe the block boundaries so that users can
+avoid choosing slices/chips that cross said boundaries.
 
-When a series of operations are assigned to an ``AnnotatedTensor``,  this
-triggers the creation of an ``OpGraph`` object. For our current purposes an
-``OpGraph`` object is opaque (see :ref:`tw_designing_the_opgraph` for the full
-design specification). For designing the ``Buffer`` the important part to note
-is that the ``OpGraph`` must contain all necessary information about the
-operation the backend needs to perform.
+Other Buffer Methods
+====================
+
+Once you have a ``Buffer`` basic operations include:
 
 .. code-block:: c++
 
    auto buffer = get_buffer();
 
+   // Get the shape, symmetry, or sparsity of the buffer
+   auto shape    = buffer.shape();
+   auto symmetry = buffer.symmetry();
+   auto sparsity = buffer.sparsity();
+
+   // Request slices and chips
+   auto a_slice = buffer.slice(shape);
+   auto a_chip  = buffer.chip(shape);
+
+The expression layer (see :ref:`designing_the_expression_component`) results in
+a :ref:`term_cst`. TensorWrapper will convert the CST into an :ref:`term_ast`,
+which is then passed to the backend via:
+
+.. code-block:: c++
+
+   // Somehow get the buffer the result will be assigned to
+   auto buffer = get_buffer();
+
+   // Get the AST, which is an OpGraph object
    auto graph = get_op_graph();
 
+   // Use the AST to update the buffer's state accordingly
    buffer.compute(graph);
-
-
-N.B. that we can use the visitor pattern to automatically downcast the buffer
-
 
 *******
 Summary
