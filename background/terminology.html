@@ -62,6 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#mode">mode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#nested">nested</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rank">rank</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reshape">reshape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#shape">shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#slice">slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#smooth">smooth</a></li>
@@ -195,6 +196,15 @@ if its elements are tensors of rank greater than 0.</p>
 <p>The number of <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a> s a tensor has. A scalar is a rank 0 tensor, a
 vector is rank 1 tensor, a matrix is a rank 2 tensor, etc. Outside TensorWrapper
 other common names are dimensionality and order.</p>
+</div>
+<div class="section" id="reshape">
+<span id="term-reshape"></span><h3>reshape<a class="headerlink" href="#reshape" title="Permalink to this heading"></a></h3>
+<p>The hyper-rectangular layout of a tensor is not unique. We can just as easily
+treat an <span class="math notranslate nohighlight">\(m\)</span> by <span class="math notranslate nohighlight">\(n\)</span> matrix as a vector with <span class="math notranslate nohighlight">\(nm\)</span> elements. When converting
+a tensor into a vector, the process is usually termed vectorization. More
+generally, this process is termed reshaping as it changes the shape of the
+tensor from an <span class="math notranslate nohighlight">\(m\)</span>-dimensional hyper-rectangular array to an <span class="math notranslate nohighlight">\(n\)</span>-dimensional
+hyper-rectangular array (<span class="math notranslate nohighlight">\(m\neq n\)</span>).</p>
 </div>
 <div class="section" id="shape">
 <span id="term-shape"></span><h3>shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h3>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing the Layout Component &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Designing the Allocator" href="allocator.html" />
+    <link rel="prev" title="Tensor Sparsity Design" href="sparsity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">TensorWrapper Background</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Design of TensorWrapper</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="motivation.html">Motivating TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of TensorWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Layout Component</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-a-tensor-layout">What is a (tensor) layout?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-do-we-need-a-tensor-layout">Why do we need a (tensor) layout?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tensor-layout-considerations">Tensor Layout Considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Layout Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#proposed-apis">Proposed APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
+      <li class="breadcrumb-item active">Designing the Layout Component</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/layout.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="designing-the-layout-component">
+<span id="layout-design"></span><h1>Designing the Layout Component<a class="headerlink" href="#designing-the-layout-component" title="Permalink to this heading"></a></h1>
+<p>This page records the process of designing the layout component of
+TensorWrapper.</p>
+<div class="section" id="what-is-a-tensor-layout">
+<h2>What is a (tensor) layout?<a class="headerlink" href="#what-is-a-tensor-layout" title="Permalink to this heading"></a></h2>
+<p>Tensors contain (hyper-) rectangular arrays of elements. The user interacts with
+the tensor object as if those arrays really exist; however, this is usually a
+software abstraction since modern memory is vector-based. Point being, providing
+users with software abstractions for tensors can require a fair bit of mental
+gymnastics to actually map the abstraction to the hardware. The layout
+component is responsible for representing those mental gymnastics.</p>
+</div>
+<div class="section" id="why-do-we-need-a-tensor-layout">
+<h2>Why do we need a (tensor) layout?<a class="headerlink" href="#why-do-we-need-a-tensor-layout" title="Permalink to this heading"></a></h2>
+<p>As mentioned in the previous section, only scalars and vectors map trivially to
+hardware (and even for vectors the user may opt for non-trivial layouts). The
+layout describes the mapping process, and will have substantial performance
+consequences as certain layouts favor certain operations. While we strive to
+ultimately isolate the user from the layout details, for the foreseeable
+future users will likely want some control over the layout, thus we need a
+user-friendly abstraction to represent the layout.</p>
+</div>
+<div class="section" id="tensor-layout-considerations">
+<h2>Tensor Layout Considerations<a class="headerlink" href="#tensor-layout-considerations" title="Permalink to this heading"></a></h2>
+<dl class="simple" id="l-reshape">
+<dt>Reshape</dt><dd><p>One of the most fundamental layout considerations is being able to
+<a class="reference internal" href="../../background/terminology.html#term-reshape"><span class="std std-ref">reshape</span></a> the tensor. Reshaping is minimally needed to store
+tensors in memory/on disk.</p>
+<ul class="simple">
+<li><p>Tiling a tensor is also a reshape, albeit one that increases the rank.</p></li>
+<li><p>As tiling suggests, reshapes can be logical and need not be physical.</p></li>
+<li><p>The sparsity and symmetry of the tensor will need to be updated to match
+the new shape.</p></li>
+<li><p>TensorWrapper will store the data in objects provided by the backend,
+the “physical” shape TensorWrapper stores may therefore still be logical
+as the true physical shape is left to the backend.</p></li>
+<li><p>Multiple vectorization strategies exist (row-major, column-major being
+the most natural). Even if this is handled by the backend, the backend may
+require us to choose.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="l-representation">
+<dt>Representation</dt><dd><p>Elements of a tensor can have a variety of types (in a C++ sense). Even if
+the user provides us values in single-precision, they may want the algebra
+to be done in double-precision to mitigate against finite-arithmetic errors.</p>
+<ul class="simple">
+<li><p>In theory, it is possible to have uncertainty models for each kernel which
+allow us to predict the error resulting from dropping precision. In
+practice such models are not readily available and users typically use
+intuition.</p></li>
+<li><p>Representations could conceivably vary by tile.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="l-ownership">
+<dt>Ownership</dt><dd><p>Where do the literal values live? In RAM? On the GPU? On disk? Implicit via
+a generating function? Which process owns which tiles?</p>
+<ul class="simple">
+<li><p>Cost to recompute tiles may vary, meaning we may want different ownership
+strategies per tile.</p></li>
+<li><p>May want the same tile to be owned by multiple processes.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="l-distinction">
+<dt>Distinction</dt><dd><p>A large motivation for the layout component is simply to distinguish how
+the tensor is actually laid out from how the user declared it.</p>
+<ul class="simple">
+<li><p>The classes in the layout component serve somewhat like a strong type to
+tell the physical/logical layouts apart (with classes in the layout
+component containing the actual layout).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="l-basic-operations">
+<dt>Basic operations</dt><dd><p>We anticipate that users will minimally want to be able to retrieve the
+state stored in the classes. Aside from that we anticipate use cases
+involving:</p>
+<ul class="simple">
+<li><p>Composition. As tensors are composed into expressions, so too will be
+their layouts.</p></li>
+<li><p>Toggle the on-the-fly nature of tiles</p></li>
+<li><p>Change the representation/ownership</p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="out-of-scope">
+<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>Tiling Process</dt><dd><p>The actual process of tiling a shape is assumed to be done elsewhere. The
+<code class="docutils literal notranslate"><span class="pre">Layout</span></code> class will hold the resulting tiled shape.</p>
+<ul class="simple">
+<li><p>The best tilings rely on properties of the basis set. Often these
+properties are not readily available to the tensor, which is why tiling
+will likely need to occur outside TensorWrapper for the foreseeable
+future.</p></li>
+</ul>
+</dd>
+<dt>Backend Selection</dt><dd><p>Arguably part of laying out the tensor is also choosing the backend to hold
+the data. The layout component tries to factor out as many of the layout
+considerations as possible into a backend independent layer. The actual
+selection of the backend is done in the allocator component
+(see <a class="reference internal" href="allocator.html#tw-designing-the-allocator"><span class="std std-ref">Designing the Allocator</span></a>).</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Layout Design<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<div class="figure align-center" id="id2">
+<span id="fig-layout"></span><img alt="../../_images/layout.png" src="../../_images/layout.png" />
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">The major pieces of the layout component.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</div>
+<p><a class="reference internal" href="#fig-layout"><span class="std std-numref">Fig. 7</span></a> illustrates the major pieces of the layout component. The
+base class of the component is the <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> component. We have opted to
+make <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> the base because a non-tiled layout can be viewed as having
+a single tile, whereas viewing a legitimately tiled layout as a single tile may
+hide information. Consistent with the <a class="reference internal" href="#l-reshape"><span class="std std-ref">Reshape</span></a> consideration, the
+<code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> object contains a <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code>
+object. To address the <a class="reference internal" href="#l-representation"><span class="std std-ref">Representation</span></a> consideration the
+<code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> class holds the desired representation per inner-most tile.
+Similarly, to address <a class="reference internal" href="#l-ownership"><span class="std std-ref">Ownership</span></a>, <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> holds ParallelZone
+objects per tile to denote the process, memory bank, or accelerator where the
+tile lives.</p>
+</div>
+<div class="section" id="proposed-apis">
+<h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this heading"></a></h2>
+<p>Since TensorWrapper will in general be used in distributed contexts we assume
+that users will typically be constructing <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> objects, which are
+constructed by:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Determining the actual shape is outside the concern of layout</span>
+<span class="n">TiledShape</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_actual_shape</span><span class="p">();</span>
+
+<span class="c1">// as is computing the symmetry and sparsity associated with it</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_symmetry_and_sparsity</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span>
+
+<span class="c1">// We anticipate that most users will create a TiledLayout object then set</span>
+<span class="c1">// the tile properties</span>
+<span class="n">TiledLayout</span><span class="w"> </span><span class="nf">tl</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">);</span>
+<span class="n">tl</span><span class="p">.</span><span class="n">set_all_tiles</span><span class="p">(</span><span class="n">RowMajor</span><span class="p">);</span><span class="w"> </span><span class="c1">// All tiles will be vectorized in row-major</span>
+<span class="n">tl</span><span class="p">.</span><span class="n">set</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">ScalarType</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">{});</span><span class="w"> </span><span class="c1">// Only tile 0,1 will use floats</span>
+<span class="n">tl</span><span class="p">.</span><span class="n">set</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">GPU</span><span class="p">);</span><span class="w"> </span><span class="c1">// The {0,1} to {10,10} slice of tiles will be</span>
+
+<span class="c1">// By default all tiles are stored, *i.e.*, they are NOT thrown away after</span>
+<span class="c1">// use. To switch a tile (or tiles) to being built on-the-fly:</span>
+<span class="n">tl</span><span class="p">.</span><span class="n">do_not_store</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="n">tl</span><span class="p">.</span><span class="n">store</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+
+<span class="c1">// We note that most backends do not actually support tile by tile layouts</span>
+<span class="c1">// so the above operations are likely to lead to runtime errors when</span>
+<span class="c1">// attempting to allocate the backend until support for mixed tile layouts</span>
+<span class="c1">// is built into TensorWrapper itself.</span>
+</pre></div>
+</div>
+<p>By default all tiles will be stored, row major, <code class="docutils literal notranslate"><span class="pre">ScalarType&lt;double&gt;</span></code>, and RAM
+based. The distribution of the tiles (which process gets which tile is left to
+the backend for now, but could eventually be set by mapping
+<code class="docutils literal notranslate"><span class="pre">ParallelZone::ResourceSet</span></code> objects to tile indices/ranges).</p>
+<p>Declaring a <code class="docutils literal notranslate"><span class="pre">Layout</span></code> object is conceptually similar except that the <code class="docutils literal notranslate"><span class="pre">set</span></code>
+member does not need tile indices or ranges:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Like TiledLayout construction, shape, symmetry, and sparsity must be made</span>
+<span class="c1">// in advance for the Layout class</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_inputs</span><span class="p">();</span>
+
+
+<span class="n">Layout</span><span class="w"> </span><span class="nf">l</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">);</span>
+<span class="n">l</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">RowMajor</span><span class="p">);</span>
+<span class="n">l</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">ScalarType</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">complex</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">);</span>
+<span class="n">l</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">GPU</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#l-reshape"><span class="std std-ref">Reshape</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> object holds a <code class="docutils literal notranslate"><span class="pre">Shape</span></code> object and is capable of storing
+an enum representing the vectorization strategy on a per tile basis.</p>
+</dd>
+<dt><a class="reference internal" href="#l-representation"><span class="std std-ref">Representation</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> object holds what C++ type the scalars are on a per
+tile basis.</p>
+</dd>
+<dt><a class="reference internal" href="#l-ownership"><span class="std std-ref">Ownership</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> object allows the user to specify what process owns
+each tile, as well as where the tile is stored (<em>e.g.</em>, RAM, disk, or GPU),
+and if it is even stored.</p>
+</dd>
+<dt><a class="reference internal" href="#l-distinction"><span class="std std-ref">Distinction</span></a></dt><dd><p>This consideration is addressed by the existence of the <code class="docutils literal notranslate"><span class="pre">TiledLayout</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Layout</span></code> classes.</p>
+</dd>
+<dt><a class="reference internal" href="#l-basic-operations"><span class="std std-ref">Basic operations</span></a></dt><dd><p>The API examples above demonstrate how users can perform the considered
+operations.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sparsity.html" class="btn btn-neutral float-left" title="Tensor Sparsity Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="allocator.html" class="btn btn-neutral float-right" title="Designing the Allocator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

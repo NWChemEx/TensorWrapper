@@ -56,10 +56,10 @@
 <li class="toctree-l3"><a class="reference internal" href="shape.html">Tensor Shape Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="symmetry.html">Designing the Symmetry Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sparsity.html">Tensor Sparsity Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html">Designing the Layout Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="distribution.html">Layout Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
@@ -142,12 +142,22 @@
 <li class="toctree-l2"><a class="reference internal" href="sparsity.html#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tensor_wrapper.html#proposed-apis">Proposed APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout.html">Designing the Layout Component</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#what-is-a-tensor-layout">What is a (tensor) layout?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#why-do-we-need-a-tensor-layout">Why do we need a (tensor) layout?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#tensor-layout-considerations">Tensor Layout Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#id1">Layout Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#proposed-apis">Proposed APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="allocator.html">Designing the Allocator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="allocator.html#what-is-an-allocator">What is an Allocator?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocator.html#why-do-we-need-an-allocator-component">Why do We Need an Allocator Component?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="allocator.html#allocator-considerations">Allocator Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocator.html#allocator-design">Allocator Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocator.html#proposed-apis">Proposed APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocator.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="buffer.html">Designing the Buffer</a><ul>
@@ -159,10 +169,8 @@
 <li class="toctree-l2"><a class="reference internal" href="buffer.html#buffer-design">Buffer Design</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="distribution.html">Layout Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="distribution.html#what-is-a-tensor-distribution">What is a (tensor) distribution?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="distribution.html#why-do-we-need-a-tensor-distribution">Why do we need a (tensor) distribution?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="distribution.html#tensor-distribution-considerations">Tensor distribution considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tensor_wrapper.html#proposed-apis">Proposed APIs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
