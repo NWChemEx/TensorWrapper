@@ -31,6 +31,11 @@ Multiple sink nodes
    types based on whether or not they are terminating the graph. The graph
    terminates on a ``TensorWrapper`` object.
 
+References to actual data
+   The ``OpGraph`` must either have handles to the actual data, or somehow be
+   associated with the actual data in order for backends to translate the AST
+   into results.
+
 *******************
 OpGraph Motivations
 *******************

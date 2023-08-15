@@ -113,6 +113,10 @@
 types based on whether or not they are terminating the graph. The graph
 terminates on a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object.</p>
 </dd>
+<dt>References to actual data</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> must either have handles to the actual data, or somehow be
+associated with the actual data in order for backends to translate the AST
+into results.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="opgraph-motivations">

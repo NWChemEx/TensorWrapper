@@ -28,7 +28,7 @@ this means that more-or-less any indexed quantity is a tensor (according to
 TensorWrapper). Given the prevalence of indexed-quantities in physics
 equations, tensors can be seen as a natural domain-specific language (DSL)
 for physics, since most physics theories can be expressed succinctly in terms
-of tensors. As a perfect example consider the energy, :math:`E` of an
+of tensors. As a perfect example consider the energy, :math:`E`, of an
 |N|-dimensional harmonic oscillator:
 
 .. math::
@@ -79,7 +79,7 @@ version.
 So if the for-loop produces better overall code, why would we want the DSL
 version? The short answer is the for-loop based version is not optimal in
 all situations. By using the DSL, we can express our intent while punting the
-optimizations to the backend. This is because using modern object-oriented
+optimizations to the backend. This is because, using modern object-oriented
 programming techniques, there is a disconnect between the apparent API and how
 things are actually implemented. Point being, just because the tensor DSL code
 looks like it has extra memory usage doesn't mean it really does (simple
@@ -87,8 +87,8 @@ reference counting techniques could identify ``dr`` and ``dr2`` as
 intermediates). Furthermore it's entirely possible that, as written, the
 implementation underlying the tensor DSL is parallelized and/or GPU
 accelerated. The loop-based version is, however, not parallelized, and would
-need to be rewritten for threading and or process parallelization. This can be
-potentially a lot of work if multiple loop-based implementations need to be
+need to be rewritten for threading and or process parallelization. This can
+potentially be a lot of work if multiple loop-based implementations need to be
 rewritten.
 
 ******************
