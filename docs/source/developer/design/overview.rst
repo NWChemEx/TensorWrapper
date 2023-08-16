@@ -96,6 +96,12 @@ Create a tensor
       element's indices as input.
     - There are a number of notable "special" tensors like the zero and identity
       tensors which users will sometimes need to create too.
+    - Part of creating the tensor is selecting the backend. Ideally, 
+      TensorWrapper would be able to pick the backend most appropriate for the
+      requested calculation; however, it is likely that for the forseeable
+      future users will need to specify the backend, at least for the initial
+      tensors (tensors computed from the initial tensors will use the same
+      backend).
 
 .. _atw_compose_with_tensors:
 
@@ -178,6 +184,10 @@ Domain-specific optimization
    math layer less reusable. Furthermore, things like spin symmetry and spatial
    symmetry often simply result in tensor sparsity. Point being, many of these
    optimizations can be mapped to more general tensor considerations.
+
+   - To be clear, designing interfaces explicitly for domain-specific 
+     optimizations is out of scope. The underlying optimizations (usually
+     sparsity and symmetry) are in scope.
 
 *******************
 Architecture Design
@@ -265,6 +275,12 @@ component is responsible for dealing with:
 - switching among sparsity representations
 - Nesting of sparsity
 
+As a note, in TensorWrapper tiling implies a nested tensor. Therefore tile-
+sparsity is actually element-sparsity, just for non-scalar elements. The point
+is, even though we anticipate tile-sparsity to be the most important sparsity
+we think that TensorWrapper needs to be designed with element-sparsity in mind
+from the getgo.
+
 TensorWrapper
 -------------
 
@@ -284,7 +300,7 @@ User-Facing External Dependencies
 
 TensorWrapper additionally needs a description of the runtime. For this
 purpose we have elected to build upon
-`ParallelZone <https://github.com/NWChemEx-Project/ParallelZone>__`.
+`ParallelZone <https://github.com/NWChemEx-Project/ParallelZone>`__.
 
 Implementation-Facing Classes
 =============================
@@ -307,7 +323,6 @@ as:
 - Fundamental type of the values (*e.g.*, float, double, etc.)
 - Vectorization strategy (row-major vs. column-major)
 - Value location: distribution, RAM, disk, on-the-fly, GPU
-- Distribution strategy
 
 Buffer
 ------
@@ -339,7 +354,7 @@ describing the runtime properties of the tensor:
 - Actual shape of the tensor (including tiling)
 - Actual symmetry (accounting for actual shape)
 - Actual sparsity of the tensor (accounting for symmetry)
-- Distribution for multi-process tensors
+- Distribution for distributed tensors
 
 
 Expression
@@ -353,11 +368,10 @@ in a user-facing manner; however, the expression layer is specifically designed
 to appear to the user like they are working with only ``TensorWrapper`` objects,
 which is why we consider it an implementation detail. Responsibilities include:
 
-- Assembling the :ref:`term_cst` from the DSL.
+- Assembling the :ref:`term_cst` from the :ref:`term_dsl`.
 - Express transformations of a single tensor
 - Express binary operations
 - Represent branching nodes of the abstract syntax tree
-
 
 OpGraph
 -------
@@ -365,15 +379,15 @@ OpGraph
 Main discussion: :ref:`tw_designing_the_opgraph`.
 
 The ``Expression`` component contains a user-friendly mechanism for composing
-tensors using TensorWrapper's DSL. The result is a CSL. In practice, CSLs
-contain extraneous information (and in C++ are typically represented by
+tensors using TensorWrapper's DSL. The result is a :ref:`term_cst`. In practice, 
+CSTs contain extraneous information (and in C++ are typically represented by
 heavily nested template instantiations which are not fun to look at). The
 ``OpGraph`` component is designed to be an easier-to-manipulate,
 more-programmer-friendly representation of the tensor algebra the user
 requested than the ``Expression`` component. It is the ``OpGraph`` which is
 used to drive executing the backends. Responsibilities include:
 
-- Converting the CST to an AST
+- Converting the CST to an :ref:`term_ast`
 - Runtime optimizations of the AST
 
 Implementation-Facing External Dependencies

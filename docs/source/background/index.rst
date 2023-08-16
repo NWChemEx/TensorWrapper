@@ -23,4 +23,5 @@ TensorWrapper Background
 
    key_features
    other_choices
+   logical_v_physical
    terminology
