@@ -171,6 +171,12 @@ fill in the elements of the tensor.</p>
 element’s indices as input.</p></li>
 <li><p>There are a number of notable “special” tensors like the zero and identity
 tensors which users will sometimes need to create too.</p></li>
+<li><p>Part of creating the tensor is selecting the backend. Ideally,
+TensorWrapper would be able to pick the backend most appropriate for the
+requested calculation; however, it is likely that for the forseeable
+future users will need to specify the backend, at least for the initial
+tensors (tensors computed from the initial tensors will use the same
+backend).</p></li>
 </ul>
 </dd>
 </dl>
@@ -248,6 +254,11 @@ to build these optimizations into the math layer, but this in turn makes the
 math layer less reusable. Furthermore, things like spin symmetry and spatial
 symmetry often simply result in tensor sparsity. Point being, many of these
 optimizations can be mapped to more general tensor considerations.</p>
+<ul class="simple">
+<li><p>To be clear, designing interfaces explicitly for domain-specific
+optimizations is out of scope. The underlying optimizations (usually
+sparsity and symmetry) are in scope.</p></li>
+</ul>
 </dd>
 </dl>
 </div>
@@ -256,11 +267,11 @@ optimizations can be mapped to more general tensor considerations.</p>
 <h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this heading"></a></h2>
 <div class="figure align-center" id="id5">
 <span id="fig-tw-workflows"></span><img alt="../../_images/workflows.png" src="../../_images/workflows.png" />
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
 user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </div>
 <p>Section <a class="reference internal" href="#atw-architecture-considerations"><span class="std std-ref">Architecture Considerations</span></a> presented two workflows: a
-user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a>
+user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a>
 illustrates these workflows using the major pieces of TensorWrapper. As
 mentioned in the previous section, the end goal is to have the
 performance-focused workflow be an implementation detail. For example, the
@@ -271,15 +282,15 @@ triggered when a <code class="docutils literal notranslate"><span class="pre">Te
 object.</p>
 <div class="figure align-center" id="id6">
 <span id="fig-tw-architecture"></span><img alt="../../_images/architecture.png" src="../../_images/architecture.png" />
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 2</span></a> shows the major components of TensorWrapper. The
+<p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 3</span></a> shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
 of TensorWrapper or a dependency and whether they are user-facing or
 implementation-facing.</p>
 <div class="section" id="user-facing-classes">
 <h3>User-Facing Classes<a class="headerlink" href="#user-facing-classes" title="Permalink to this heading"></a></h3>
-<p>As motivated by <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a>, users of TensorWrapper primarily
+<p>As motivated by <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a>, users of TensorWrapper primarily
 interact with four components:</p>
 <div class="section" id="shape">
 <h4>Shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h4>
@@ -321,6 +332,11 @@ nested tensor)</p></li>
 <li><p>switching among sparsity representations</p></li>
 <li><p>Nesting of sparsity</p></li>
 </ul>
+<p>As a note, in TensorWrapper tiling implies a nested tensor. Therefore tile-
+sparsity is actually element-sparsity, just for non-scalar elements. The point
+is, even though we anticipate tile-sparsity to be the most important sparsity
+we think that TensorWrapper needs to be designed with element-sparsity in mind
+from the getgo.</p>
 </div>
 <div class="section" id="tensorwrapper">
 <h4>TensorWrapper<a class="headerlink" href="#tensorwrapper" title="Permalink to this heading"></a></h4>
@@ -339,11 +355,11 @@ The DSL uses <code class="docutils literal notranslate"><span class="pre">Tensor
 <h3>User-Facing External Dependencies<a class="headerlink" href="#user-facing-external-dependencies" title="Permalink to this heading"></a></h3>
 <p>TensorWrapper additionally needs a description of the runtime. For this
 purpose we have elected to build upon
-<cite>ParallelZone &lt;https://github.com/NWChemEx-Project/ParallelZone&gt;__</cite>.</p>
+<a class="reference external" href="https://github.com/NWChemEx-Project/ParallelZone">ParallelZone</a>.</p>
 </div>
 <div class="section" id="implementation-facing-classes">
 <h3>Implementation-Facing Classes<a class="headerlink" href="#implementation-facing-classes" title="Permalink to this heading"></a></h3>
-<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 2</span></a>, the
+<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 3</span></a>, the
 <a class="reference internal" href="#atw-performance-considerations"><span class="std std-ref">Performance Considerations</span></a> lead <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> to have several
 additional components. These components are required to convey additional
 state necessary for performance.</p>
@@ -358,7 +374,6 @@ as:</p>
 <li><p>Fundamental type of the values (<em>e.g.</em>, float, double, etc.)</p></li>
 <li><p>Vectorization strategy (row-major vs. column-major)</p></li>
 <li><p>Value location: distribution, RAM, disk, on-the-fly, GPU</p></li>
-<li><p>Distribution strategy</p></li>
 </ul>
 </div>
 <div class="section" id="buffer">
@@ -388,7 +403,7 @@ describing the runtime properties of the tensor:</p>
 <li><p>Actual shape of the tensor (including tiling)</p></li>
 <li><p>Actual symmetry (accounting for actual shape)</p></li>
 <li><p>Actual sparsity of the tensor (accounting for symmetry)</p></li>
-<li><p>Distribution for multi-process tensors</p></li>
+<li><p>Distribution for distributed tensors</p></li>
 </ul>
 </div>
 <div class="section" id="expression">
@@ -410,8 +425,8 @@ which is why we consider it an implementation detail. Responsibilities include:<
 <h4>OpGraph<a class="headerlink" href="#opgraph" title="Permalink to this heading"></a></h4>
 <p>Main discussion: <a class="reference internal" href="op_graph.html#tw-designing-the-opgraph"><span class="std std-ref">Designing the OpGraph</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Expression</span></code> component contains a user-friendly mechanism for composing
-tensors using TensorWrapper’s <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a>. The result is a CSL. In practice, CSLs
-contain extraneous information (and in C++ are typically represented by
+tensors using TensorWrapper’s DSL. The result is a <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>. In practice,
+CSTs contain extraneous information (and in C++ are typically represented by
 heavily nested template instantiations which are not fun to look at). The
 <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> component is designed to be an easier-to-manipulate,
 more-programmer-friendly representation of the tensor algebra the user

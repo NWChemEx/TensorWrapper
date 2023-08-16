@@ -272,9 +272,9 @@ punted to <a class="reference internal" href="expression.html#designing-the-expr
 <h2>Sparsity Design<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <div class="figure align-center" id="id2">
 <span id="fig-sparsity"></span><img alt="../../_images/sparsity.png" src="../../_images/sparsity.png" />
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">The major classes underlying the sparsity component of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">The major classes underlying the sparsity component of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-sparsity"><span class="std std-numref">Fig. 5</span></a> shows the main components of TensorWrapper’s sparsity
+<p><a class="reference internal" href="#fig-sparsity"><span class="std std-numref">Fig. 6</span></a> shows the main components of TensorWrapper’s sparsity
 component. From considerations <a class="reference internal" href="#sparse-element-sparsity"><span class="std std-ref">Element Sparsity</span></a> and
 <a class="reference internal" href="#sparse-block-sparsity"><span class="std std-ref">Block Sparsity</span></a> we know that we expect users to specify sparsity in
 one of two ways. TensorWrapper represents each of these ways with its own
@@ -471,9 +471,9 @@ machine precision).</p>
 <h3>Composing Sparsity Objects<a class="headerlink" href="#composing-sparsity-objects" title="Permalink to this heading"></a></h3>
 <div class="figure align-center" id="id3">
 <span id="fig-composing-sparsity"></span><img alt="../../_images/composing_sparsity.png" src="../../_images/composing_sparsity.png" />
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">An example of combining the sparsities of two 10 by 20 matrices.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">An example of combining the sparsities of two 10 by 20 matrices.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-composing-sparsity"><span class="std std-numref">Fig. 6</span></a> shows two of the basic tensor operations for
+<p><a class="reference internal" href="#fig-composing-sparsity"><span class="std std-numref">Fig. 7</span></a> shows two of the basic tensor operations for
 two matrices <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>, each of which is 10 by 20. In code:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">};</span>
 
