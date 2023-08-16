@@ -26,7 +26,7 @@ What is TensorWrapper?
 
 There are a number of existing tensor libraries, with a variety of useful
 features; however, to our knowledge no existing tensor library has all the
-tensor features a high-performance physics code may encounter. TensorWrapper is
+tensor features a high-performance physics or chemistry code may encounter. TensorWrapper is
 designed to provide a high-level, user-friendly, :ref:`term_dsl` on top of
 existing tensor libraries, while abstracting away as much complexity as
 possible.
@@ -38,9 +38,10 @@ Why do we need TensorWrapper?
 Tensors are the "DSL of physics" because nearly every law of physics is
 succinctly summarized by a tensor equation. That said, naively creating arrays
 of floating-point values and then subjecting them to the mathematical operations
-implied by the equations often leaves much performance on the table.
+implied by the equations often leaves much performance on the table (especially
+when those operations are performed on heterogeneous high performance computers).
 Nonetheless we argue that having a tensor-based DSL is important for
-physics-based codes because:
+physics-based codes because it:
 
 - Facilitates translating theory to code.
 - Encapsulates mathematical optimizations.
@@ -116,7 +117,7 @@ Compose with tensors
 
 Compute results
    After expressing the operations they want to do. The user expects to be
-   able to have the operations evaluated.
+   able to have the operations evaluated - hopefully, in an efficient manner.
 
 .. _atw_performance_considerations:
 
@@ -141,8 +142,8 @@ Runtime aware properties
 
    - The actual properties depend on the runtime conditions, whereas the
      logical properties only depend on the problem.
-   - Actual shapes usually involve some sort of tiling.
-   - Will need to figure out how to distribute tiles (if they exist)
+   - Actual shapes usually involve some sort of tiling for distribution across nodes and devices.
+   - How to distribute tiles (if they exist) for performance will need to be determined.
    - Sparsity objects will need to be updated to account for the actual shape.
 
 .. _atw_runtime_aware_allocation:
@@ -151,7 +152,7 @@ Runtime aware allocation
    Where we put the tensor (*e.g.*, CPU vs. GPU and RAM vs. disk vs. generated
    on-the-fly) can depend on the runtime status. Similarly the back end we
    choose (particular whether it is distributed or replicated) depends on the
-   runtime as well as the extents of the tensor.
+   runtime as well as the :ref:`term_extent`s of the tensor.
 
 .. _atw_runtime_expression_optimization:
 
@@ -162,7 +163,7 @@ Runtime expression optimization
    runtime conditions and thus can only be done in the context of the current
    runtime (or with a preconceived notion of what the runtime will look like).
 
-   - Order of contraction, depends on the :ref:`term_extent` of each mode.
+   - The order of contraction depends on the :ref:`term_extent` of each mode.
      Extents aren't known until runtime.
    - Factoring out on-the-fly tensors requires knowing they will actually be
      generated on-the-fly.
@@ -239,8 +240,8 @@ Tensors are thought of as hyper-rectangular arrays of elements. The ``Shape``
 component is responsible for describing this array of values. In particular
 the ``Shape`` component is responsible for representing:
 
-- rank of the tensor
-- extent of the tensor
+- :ref:`term_rank` of the tensor
+- :ref:`term_extent`s of the tensor
 - nesting structure of the hyper-rectangular arrays
 - converting indices from one shape to indices in another shape
 
@@ -287,8 +288,8 @@ TensorWrapper
 Main discussion: :ref:`designing_tensor_wrapper_class`.
 
 The ``TensorWrapper`` class is the tensor-like object that users interact with.
-The DSL uses ``TensorWrapper`` objects as the leaf nodes of the
-abstract syntax tree. To users, the main responsibilities of the
+The DSL uses ``TensorWrapper`` objects as the leaf nodes of an
+:ref:`term_ast`. To users, the main responsibilities of the
 ``TensorWrapper`` component are:
 
 - storing the data
@@ -305,7 +306,7 @@ purpose we have elected to build upon
 Implementation-Facing Classes
 =============================
 
-As shown in :numref:`fig_tw_workflows`, the
+As shown in :numref:`fig_tw_workflows` and :numref:`fig_tw_architecture`, the
 :ref:`atw_performance_considerations` lead ``TensorWrapper`` to have several
 additional components. These components are required to convey additional
 state necessary for performance.
@@ -371,7 +372,7 @@ which is why we consider it an implementation detail. Responsibilities include:
 - Assembling the :ref:`term_cst` from the :ref:`term_dsl`.
 - Express transformations of a single tensor
 - Express binary operations
-- Represent branching nodes of the abstract syntax tree
+- Represent branching nodes of the :ref:`term_ast`
 
 OpGraph
 -------
@@ -387,13 +388,13 @@ more-programmer-friendly representation of the tensor algebra the user
 requested than the ``Expression`` component. It is the ``OpGraph`` which is
 used to drive executing the backends. Responsibilities include:
 
-- Converting the CST to an :ref:`term_ast`
-- Runtime optimizations of the AST
+- Converting the :ref:`term_cst` to an :ref:`term_ast`
+- Runtime optimizations of the :ref:`term_ast`
 
 Implementation-Facing External Dependencies
 ===========================================
 
 TensorWrapper is designed to wrap existing high-performance tensor libraries
-into a common DSL and to exploit the advantages of each of these libraries in
+into a common :ref:`term_dsl` and to exploit the advantages of each of these libraries in
 an interoperable manner. The interfaces to these various backends live in this
 component.
