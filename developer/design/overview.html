@@ -110,7 +110,7 @@
 <h2>What is TensorWrapper?<a class="headerlink" href="#what-is-tensorwrapper" title="Permalink to this heading"></a></h2>
 <p>There are a number of existing tensor libraries, with a variety of useful
 features; however, to our knowledge no existing tensor library has all the
-tensor features a high-performance physics code may encounter. TensorWrapper is
+tensor features a high-performance physics or chemistry code may encounter. TensorWrapper is
 designed to provide a high-level, user-friendly, <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> on top of
 existing tensor libraries, while abstracting away as much complexity as
 possible.</p>
@@ -120,9 +120,10 @@ possible.</p>
 <p>Tensors are the “DSL of physics” because nearly every law of physics is
 succinctly summarized by a tensor equation. That said, naively creating arrays
 of floating-point values and then subjecting them to the mathematical operations
-implied by the equations often leaves much performance on the table.
+implied by the equations often leaves much performance on the table (especially
+when those operations are performed on heterogeneous high performance computers).
 Nonetheless we argue that having a tensor-based DSL is important for
-physics-based codes because:</p>
+physics-based codes because it:</p>
 <ul class="simple">
 <li><p>Facilitates translating theory to code.</p></li>
 <li><p>Encapsulates mathematical optimizations.</p></li>
@@ -184,7 +185,7 @@ operations.</p>
 </ul>
 </dd>
 <dt>Compute results</dt><dd><p>After expressing the operations they want to do. The user expects to be
-able to have the operations evaluated.</p>
+able to have the operations evaluated - hopefully, in an efficient manner.</p>
 </dd>
 </dl>
 <div class="section" id="performance-considerations">
@@ -204,8 +205,8 @@ on the runtime conditions.</p>
 <ul class="simple">
 <li><p>The actual properties depend on the runtime conditions, whereas the
 logical properties only depend on the problem.</p></li>
-<li><p>Actual shapes usually involve some sort of tiling.</p></li>
-<li><p>Will need to figure out how to distribute tiles (if they exist)</p></li>
+<li><p>Actual shapes usually involve some sort of tiling for distribution across nodes and devices.</p></li>
+<li><p>How to distribute tiles (if they exist) for performance will need to be determined.</p></li>
 <li><p>Sparsity objects will need to be updated to account for the actual shape.</p></li>
 </ul>
 </dd>
@@ -214,7 +215,7 @@ logical properties only depend on the problem.</p></li>
 <dt>Runtime aware allocation</dt><dd><p>Where we put the tensor (<em>e.g.</em>, CPU vs. GPU and RAM vs. disk vs. generated
 on-the-fly) can depend on the runtime status. Similarly the back end we
 choose (particular whether it is distributed or replicated) depends on the
-runtime as well as the extents of the tensor.</p>
+runtime as well as the :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>term_extent`s of the tensor.</p>
 </dd>
 </dl>
 <dl class="simple" id="atw-runtime-expression-optimization">
@@ -224,7 +225,7 @@ the overall computational complexity. Other optimizations are tied to
 runtime conditions and thus can only be done in the context of the current
 runtime (or with a preconceived notion of what the runtime will look like).</p>
 <ul class="simple">
-<li><p>Order of contraction, depends on the <a class="reference internal" href="../../background/terminology.html#term-extent"><span class="std std-ref">extent</span></a> of each mode.
+<li><p>The order of contraction depends on the <a class="reference internal" href="../../background/terminology.html#term-extent"><span class="std std-ref">extent</span></a> of each mode.
 Extents aren’t known until runtime.</p></li>
 <li><p>Factoring out on-the-fly tensors requires knowing they will actually be
 generated on-the-fly.</p></li>
@@ -253,10 +254,10 @@ optimizations can be mapped to more general tensor considerations.</p>
 </div>
 <div class="section" id="architecture-design">
 <h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id1">
+<div class="figure align-center" id="id5">
 <span id="fig-tw-workflows"></span><img alt="../../_images/workflows.png" src="../../_images/workflows.png" />
 <p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
-user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </div>
 <p>Section <a class="reference internal" href="#atw-architecture-considerations"><span class="std std-ref">Architecture Considerations</span></a> presented two workflows: a
 user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a>
@@ -268,9 +269,9 @@ steps could occur within the constructor of the <code class="docutils literal no
 Similarly, the <a class="reference internal" href="#atw-runtime-expression-optimization"><span class="std std-ref">Runtime expression optimization</span></a> step could be
 triggered when a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object is initialized by an <code class="docutils literal notranslate"><span class="pre">Expression</span></code>
 object.</p>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id6">
 <span id="fig-tw-architecture"></span><img alt="../../_images/architecture.png" src="../../_images/architecture.png" />
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
 </div>
 <p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 2</span></a> shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
@@ -287,8 +288,8 @@ interact with four components:</p>
 component is responsible for describing this array of values. In particular
 the <code class="docutils literal notranslate"><span class="pre">Shape</span></code> component is responsible for representing:</p>
 <ul class="simple">
-<li><p>rank of the tensor</p></li>
-<li><p>extent of the tensor</p></li>
+<li><p><a class="reference internal" href="../../background/terminology.html#term-rank"><span class="std std-ref">rank</span></a> of the tensor</p></li>
+<li><p>:ref:<a href="#id3"><span class="problematic" id="id4">`</span></a>term_extent`s of the tensor</p></li>
 <li><p>nesting structure of the hyper-rectangular arrays</p></li>
 <li><p>converting indices from one shape to indices in another shape</p></li>
 </ul>
@@ -325,8 +326,8 @@ nested tensor)</p></li>
 <h4>TensorWrapper<a class="headerlink" href="#tensorwrapper" title="Permalink to this heading"></a></h4>
 <p>Main discussion: <a class="reference internal" href="tensor_wrapper.html#designing-tensor-wrapper-class"><span class="std std-ref">Designing TensorWrapper Class</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class is the tensor-like object that users interact with.
-The DSL uses <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects as the leaf nodes of the
-abstract syntax tree. To users, the main responsibilities of the
+The DSL uses <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects as the leaf nodes of an
+<a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a>. To users, the main responsibilities of the
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> component are:</p>
 <ul class="simple">
 <li><p>storing the data</p></li>
@@ -342,7 +343,7 @@ purpose we have elected to build upon
 </div>
 <div class="section" id="implementation-facing-classes">
 <h3>Implementation-Facing Classes<a class="headerlink" href="#implementation-facing-classes" title="Permalink to this heading"></a></h3>
-<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a>, the
+<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 1</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 2</span></a>, the
 <a class="reference internal" href="#atw-performance-considerations"><span class="std std-ref">Performance Considerations</span></a> lead <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> to have several
 additional components. These components are required to convey additional
 state necessary for performance.</p>
@@ -399,17 +400,17 @@ in a user-facing manner; however, the expression layer is specifically designed
 to appear to the user like they are working with only <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects,
 which is why we consider it an implementation detail. Responsibilities include:</p>
 <ul class="simple">
-<li><p>Assembling the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a> from the DSL.</p></li>
+<li><p>Assembling the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a> from the <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a>.</p></li>
 <li><p>Express transformations of a single tensor</p></li>
 <li><p>Express binary operations</p></li>
-<li><p>Represent branching nodes of the abstract syntax tree</p></li>
+<li><p>Represent branching nodes of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
 </ul>
 </div>
 <div class="section" id="opgraph">
 <h4>OpGraph<a class="headerlink" href="#opgraph" title="Permalink to this heading"></a></h4>
 <p>Main discussion: <a class="reference internal" href="op_graph.html#tw-designing-the-opgraph"><span class="std std-ref">Designing the OpGraph</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Expression</span></code> component contains a user-friendly mechanism for composing
-tensors using TensorWrapper’s DSL. The result is a CSL. In practice, CSLs
+tensors using TensorWrapper’s <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a>. The result is a CSL. In practice, CSLs
 contain extraneous information (and in C++ are typically represented by
 heavily nested template instantiations which are not fun to look at). The
 <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> component is designed to be an easier-to-manipulate,
@@ -417,15 +418,15 @@ more-programmer-friendly representation of the tensor algebra the user
 requested than the <code class="docutils literal notranslate"><span class="pre">Expression</span></code> component. It is the <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> which is
 used to drive executing the backends. Responsibilities include:</p>
 <ul class="simple">
-<li><p>Converting the CST to an AST</p></li>
-<li><p>Runtime optimizations of the AST</p></li>
+<li><p>Converting the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a> to an <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
+<li><p>Runtime optimizations of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="implementation-facing-external-dependencies">
 <h3>Implementation-Facing External Dependencies<a class="headerlink" href="#implementation-facing-external-dependencies" title="Permalink to this heading"></a></h3>
 <p>TensorWrapper is designed to wrap existing high-performance tensor libraries
-into a common DSL and to exploit the advantages of each of these libraries in
+into a common <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> and to exploit the advantages of each of these libraries in
 an interoperable manner. The interfaces to these various backends live in this
 component.</p>
 </div>
