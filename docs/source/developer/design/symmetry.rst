@@ -52,7 +52,8 @@ Why do we need to consider symmetry?
 ************************************
 
 Performance. While we can always fill the tensor with the symmetrically
-equivalent elements and then subject the tensor to standard tensor operations,
+equivalent elements and then subject the tensor to standard tensor operations
+without symmetry,
 doing so leads to a lot of wasted memory and also leads to a large amount of
 redundant work. By understanding the symmetry of the tensor we can avoid
 this additional work.
@@ -65,8 +66,8 @@ Symmetry Considerations
 
 Symmetric and antisymmetric
    As far as we know, permutational symmetry is the most common type of tensor
-   symmetry. Permutational symmetry occurs when the symmetry operation, maps
-   the input slice to an output slice with the same indices, just permuted. A
+   symmetry. Permutational symmetry occurs when the symmetry operation maps
+   the input slice to an output slice with the same indices just permuted. A
    common example is a symmetric matrix where an element |tij| is equal to
    :math:`t_{ji}`.
 
@@ -78,7 +79,7 @@ Symmetric and antisymmetric
    - Generalizes to Hermitian/anti-Hermitian  if elements are complex.
    - The same tensor can have both symmetric and antisymmetric modes.
    - Pairwise mode permutations are most common, but it is also possible that
-     permutations must be ternary (*e.g.* cyclic permutations of three-
+     permutations must be ternary (*e.g.*, cyclic permutations of three-
      dimensional space) or higher.
 
 .. _sym_translational_symmetry:
@@ -189,7 +190,7 @@ The final symmetry operation is ``Translation``. The inputs to a ``Translation``
 object are two or more ``Shape`` objects (``JaggedShape`` and ``Nested`` work
 too). The input objects are treated as ranges, and indicate which slices or
 chips of the tensor which must have the same values. Conceptually it is
-possible to specify any symmetry in this manner, but it is vary tedious (*e.g.*,
+possible to specify any symmetry in this manner, but it is very tedious (*e.g.*,
 specifying that an :math:`n` by :math:`n` matrix is symmetric using
 ``Translation`` objects requires creating :math:`n\choose 2` ``Translation``
 objects, one for every pair of symmetry related elements).
@@ -256,7 +257,7 @@ Here it should be noted that something like:
 
 is not allowed because the first argument says that modes 0 and 1 are symmetric,
 but the second one declares them asymmetric. Having to specify all of the
-asymmetric pairs is tedious, following from the declarations of scalars and
+asymmetric pairs is tedious. Following from the declarations of scalars and
 vectors, one can also provide ``Symmetry`` with the overall tensor rank. When
 provided, ``Symmetry`` assumes all pairs not specified in the ctor are
 asymmetric, so we could have declared ``s01_2`` also like:
@@ -364,7 +365,7 @@ For translational symmetry we need to specify which blocks are equivalent:
    Symmetry b0b1(3, Translation({block0, block1}, {0, 1}));
 
 Translational symmetry can also be declared for more exotic ranges, such as
-those involving jagged and/or nesting:
+those involving jagged and/or nested:
 
 .. code-block:: c++
 
