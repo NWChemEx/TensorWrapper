@@ -51,8 +51,8 @@ Basic operations
    The unifying theme of objects in the shape component is that they are
    shapes. It is common to not This means they have:
 
-   - rank
-   - extents
+   - :ref:`term_rank`
+   - :ref:`term_extent`
    - sub-shapes (a sub-shape can be either a :ref:`term_slice` or a
      :ref:`term_chip`)
    - *N.B.*, some, all, or none of these properties may be known at compile
@@ -210,7 +210,7 @@ as a vector of vectors. The point of the ``NestedShape`` object is to partition
 the ranks of the tensor into layers, so we know how many layers the user is
 viewing the tensor as, and how many ranks each layer has. Mathematically
 the various ways of a viewing a tensor do not change the properties of the
-tensor; however, when we are physically laying the tensor out on the computer
+tensor; however, when we are physically laying the tensor out on the computer,
 how we view the tensor can affect physical layout.
 
 IndexedShape
@@ -690,7 +690,7 @@ returned as offsets from the origin, in lexicographical order. For example:
    s.set_origin({10, 10});
    print_shape(s); // prints {10,10} {10,11} {10,12} {11,10} {11,11} {11,12}
 
-For completeness we define an overloads of ``Shape`` and ``JaggedShape`` which
+For completeness we define overloads of ``Shape`` and ``JaggedShape`` which
 also take an origin. For ``JaggedShape`` the origin needs to be specified for
 the internal shapes and the explicitly unrolled ranks.
 
