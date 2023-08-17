@@ -19,6 +19,13 @@
 Designing TensorWrapper Class
 #############################
 
+The point of this page is to document the design process of the TensorWrapper
+class.
+
+********************************
+What is the TensorWrapper class?
+********************************
+
 
 
 

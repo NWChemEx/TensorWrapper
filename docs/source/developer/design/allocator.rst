@@ -18,7 +18,8 @@
 Designing the Allocator
 #######################
 
-The point of this page is to capture the design process of the
+The point of this page is to capture the design process of the allocator
+component of TensorWrapper.
 
 *********************
 What is an Allocator?
