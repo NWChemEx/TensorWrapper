@@ -131,7 +131,8 @@ usually referred to as “sparsity” and is considered in <a class="reference i
 <div class="section" id="why-do-we-need-to-consider-symmetry">
 <h2>Why do we need to consider symmetry?<a class="headerlink" href="#why-do-we-need-to-consider-symmetry" title="Permalink to this heading"></a></h2>
 <p>Performance. While we can always fill the tensor with the symmetrically
-equivalent elements and then subject the tensor to standard tensor operations,
+equivalent elements and then subject the tensor to standard tensor operations
+without symmetry,
 doing so leads to a lot of wasted memory and also leads to a large amount of
 redundant work. By understanding the symmetry of the tensor we can avoid
 this additional work.</p>
@@ -140,8 +141,8 @@ this additional work.</p>
 <h2>Symmetry Considerations<a class="headerlink" href="#symmetry-considerations" title="Permalink to this heading"></a></h2>
 <dl class="simple" id="sym-symmetric-and-antisymmetric">
 <dt>Symmetric and antisymmetric</dt><dd><p>As far as we know, permutational symmetry is the most common type of tensor
-symmetry. Permutational symmetry occurs when the symmetry operation, maps
-the input slice to an output slice with the same indices, just permuted. A
+symmetry. Permutational symmetry occurs when the symmetry operation maps
+the input slice to an output slice with the same indices just permuted. A
 common example is a symmetric matrix where an element <span class="math notranslate nohighlight">\(t_{ij}\)</span> is equal to
 <span class="math notranslate nohighlight">\(t_{ji}\)</span>.</p>
 <ul class="simple">
@@ -153,7 +154,7 @@ however, no pair of modes can appear in more than one set.</p></li>
 <li><p>Generalizes to Hermitian/anti-Hermitian  if elements are complex.</p></li>
 <li><p>The same tensor can have both symmetric and antisymmetric modes.</p></li>
 <li><p>Pairwise mode permutations are most common, but it is also possible that
-permutations must be ternary (<em>e.g.</em> cyclic permutations of three-
+permutations must be ternary (<em>e.g.</em>, cyclic permutations of three-
 dimensional space) or higher.</p></li>
 </ul>
 </dd>
@@ -255,7 +256,7 @@ or antisymmetric respectively.</p>
 object are two or more <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects (<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> and <code class="docutils literal notranslate"><span class="pre">Nested</span></code> work
 too). The input objects are treated as ranges, and indicate which slices or
 chips of the tensor which must have the same values. Conceptually it is
-possible to specify any symmetry in this manner, but it is vary tedious (<em>e.g.</em>,
+possible to specify any symmetry in this manner, but it is very tedious (<em>e.g.</em>,
 specifying that an <span class="math notranslate nohighlight">\(n\)</span> by <span class="math notranslate nohighlight">\(n\)</span> matrix is symmetric using
 <code class="docutils literal notranslate"><span class="pre">Translation</span></code> objects requires creating <span class="math notranslate nohighlight">\(n\choose 2\)</span> <code class="docutils literal notranslate"><span class="pre">Translation</span></code>
 objects, one for every pair of symmetry related elements).</p>
@@ -313,7 +314,7 @@ be provided to it. The relevant constructions are:</p>
 </div>
 <p>is not allowed because the first argument says that modes 0 and 1 are symmetric,
 but the second one declares them asymmetric. Having to specify all of the
-asymmetric pairs is tedious, following from the declarations of scalars and
+asymmetric pairs is tedious. Following from the declarations of scalars and
 vectors, one can also provide <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> with the overall tensor rank. When
 provided, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> assumes all pairs not specified in the ctor are
 asymmetric, so we could have declared <code class="docutils literal notranslate"><span class="pre">s01_2</span></code> also like:</p>
@@ -407,7 +408,7 @@ For translational symmetry we need to specify which blocks are equivalent:</p>
 </pre></div>
 </div>
 <p>Translational symmetry can also be declared for more exotic ranges, such as
-those involving jagged and/or nesting:</p>
+those involving jagged and/or nested:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Block of a jagged matrix where row 0 is 10 elements long and row 1 is 20</span>
 <span class="n">JaggedShape</span><span class="w"> </span><span class="n">jblock0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}};</span>
 
