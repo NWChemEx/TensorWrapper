@@ -48,8 +48,9 @@ Shape Considerations
 .. _shape_rank_and_extents:
 
 Basic operations
-   The unifying theme of objects in the shape component is that they are
-   shapes. It is common to not This means they have:
+   The unifying theme of objects in the shape component is that they describe
+   the layout of the hyper-rectangular array of values. This means they need to
+   represent:
 
    - :ref:`term_rank`
    - :ref:`term_extent`
@@ -87,6 +88,11 @@ Jagged-ness
    - A jagged tensor of rank |r|, which has smooth slices of rank :math:`s`
      must minimally be viewed as having :math:`r-s` layers
    - A key use of jagged shapes is for tiling tensors.
+   - Another use of jagged shapes is for when you do not want to pad a mode (add
+     zeros for unused basis functions). Put another way, in theory, a jagged
+     shape can always be turned into a smooth shape by introducing padding;
+     however, doing so may have performance complications if the number of
+     padding elements is significant.
 
 .. _shape_combining_shapes:
 
@@ -124,11 +130,10 @@ Permutational Symmetry
      consideration too.
    - Symmetry is punted to :ref:`tw_designing_the_symmetry_component`.
 
-Logical vs actual
-   The user declares the tensor with some shape. That shape usually reflects the
-   physical problem being modeled. Internally we may need to store the tensor
-   as a different shape, for performance reasons. The shape describing how the
-   user wants to interact with the tensor is the "logical" shape.
+Logical vs physical
+   See :ref:`logical_vs_physical` for a full description, but the point is that
+   the user may declare a tensor to have a shape different from how the tensor
+   is actually stored.
 
    - Both the logical and actual shapes are ``Shape`` objects.
    - It is the responsibility of the user creating ``Shape`` objects to track
@@ -138,6 +143,11 @@ Masks
    Shapes are index contiguous. Masks allow you to view a non contiguous set
    of indices as if they were contiguous. Masks can be implemented on top of
    the shape component and are therefore not in scope for this discussion.
+
+Memory allocation.
+   The shape simply describes the hyper-rectangular array of values, it does
+   not allocate memory for those values. Allocating memory is the responsibility
+   of the allocator component (see :ref:`tw_designing_the_allocator`).
 
 ************
 Shape Design
@@ -201,17 +211,17 @@ by tiling.
 Nested
 ======
 
-To address the :ref:`shape_nested` consideration, we have added a ``Nested``
-class.
+To address the :ref:`shape_nested` consideration, we have added a ``Nested<T>``
+class which is templated on the type of the tensor's overall shape.
 
-With objects like ``Shape`` TensorWrapper can't tell how the user is thinking
-of the tensor. For example, they could be thinking of a matrix as a matrix or
-as a vector of vectors. The point of the ``NestedShape`` object is to partition
-the ranks of the tensor into layers, so we know how many layers the user is
-viewing the tensor as, and how many ranks each layer has. Mathematically
-the various ways of a viewing a tensor do not change the properties of the
-tensor; however, when we are physically laying the tensor out on the computer,
-how we view the tensor can affect physical layout.
+With objects like ``Shape`` and ``JaggedShape``, TensorWrapper can't tell how
+the user is thinking of the tensor. For example, they could be thinking of a
+matrix as a matrix or as a vector of vectors. The point of the ``Nested<T>``
+object is to partition the ranks of the tensor into layers, so we know how many
+layers the user is viewing the tensor as, and how many ranks each layer has.
+Mathematically the various ways of a viewing a tensor do not change the
+properties of the tensor; however, when we are physically laying the tensor out
+on the computer, how we view the tensor can affect physical layout.
 
 IndexedShape
 ============
@@ -380,10 +390,13 @@ be declared via:
 Constructing Nested Shapes
 ==========================
 
-Creating a ``NestedShape`` requires knowing the shape of the tensor and how
+Creating a ``Nested<T>`` object requires knowing the shape of the tensor and how
 the indices are partitioned into layers.
 
 .. code-block:: c++
+
+   // Zero layer scalar
+   Nested<Shape> s({}, Shape{});
 
    // One layer scalar
    Nested<Shape> s0({0}, Shape{});
@@ -484,8 +497,9 @@ compatible sizes).
    Shape s0{10, 20, 30}, s1;
    JaggedShape js0{Shape{10}, Shape{20}}, js1;
 
-   // Addition, subtraction, and element-wise multiplication do nothing without
-   // a permutation
+   // Since addition, subtraction, and element-wise multiplication only work out
+   // the shape of the result, they often amount to copying the state on the
+   // right side of the assignment operator (possibly with a permutation)
    s1("i,j,k") =  s0("i,j,k") + s0("i,j,k");
    assert(s1 == s0);
 
@@ -503,6 +517,9 @@ compatible sizes).
    s1("i,k") = s0("i,j,k") * s0("i,j,k");
    assert(s1 == Shape{10, 30});
 
+   // js0 is a jagged matrix with 2 rows, contracting over the variable number
+   // of columns gives a 2 by 2 matrix (represented as jagged matrix even though
+   // it's smooth)
    js1("i,k") = js0("i,j") * js0("k,j");
    assert(js1 == JaggedShape{Shape{2}, Shape{2}});
 
@@ -613,7 +630,7 @@ Because chipping selects a single element per mode per layer, chipping a
    assert(s2_2.chip(1,2,3) == Shape{10});e
    assert(s2_2.chip(1,2,3,4) == Shape{});
 
-Taking arbitrary slices of a ``Nested`` object is significantly more
+Taking arbitrary slices of a ``Nested<T>`` object is significantly more
 complicated on account of the fact that slice requests for any of the inner
 layers will in general be slicing multiple tensors simultaneously. For example
 consider ``s2_2`` from the previous code snippet. Slicing layer 0 is
@@ -703,8 +720,7 @@ the internal shapes and the explicitly unrolled ranks.
    // element 12 of the outer vector starts at 6
    JaggedShape js({{Shape({10}, {5}), Shape({20}, {6})}, {10});
 
-   // Outer vector starts at 10, inner vectors start at 10. N.B. that
-   // conceptually a Nested<Shape> is a direct product factorization of a
+   // Outer vector starts at 10, inner vectors start at 10.
    Nested<Shape> s1_1({1, 1}, s);
 
 *******

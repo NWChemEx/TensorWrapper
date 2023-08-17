@@ -97,7 +97,7 @@ Create a tensor
       element's indices as input.
     - There are a number of notable "special" tensors like the zero and identity
       tensors which users will sometimes need to create too.
-    - Part of creating the tensor is selecting the backend. Ideally, 
+    - Part of creating the tensor is selecting the backend. Ideally,
       TensorWrapper would be able to pick the backend most appropriate for the
       requested calculation; however, it is likely that for the forseeable
       future users will need to specify the backend, at least for the initial
@@ -152,7 +152,7 @@ Runtime aware allocation
    Where we put the tensor (*e.g.*, CPU vs. GPU and RAM vs. disk vs. generated
    on-the-fly) can depend on the runtime status. Similarly the back end we
    choose (particular whether it is distributed or replicated) depends on the
-   runtime as well as the :ref:`term_extent`s of the tensor.
+   runtime as well as the :ref:`term_extent` of the tensor.
 
 .. _atw_runtime_expression_optimization:
 
@@ -186,7 +186,7 @@ Domain-specific optimization
    symmetry often simply result in tensor sparsity. Point being, many of these
    optimizations can be mapped to more general tensor considerations.
 
-   - To be clear, designing interfaces explicitly for domain-specific 
+   - To be clear, designing interfaces explicitly for domain-specific
      optimizations is out of scope. The underlying optimizations (usually
      sparsity and symmetry) are in scope.
 
@@ -241,7 +241,7 @@ component is responsible for describing this array of values. In particular
 the ``Shape`` component is responsible for representing:
 
 - :ref:`term_rank` of the tensor
-- :ref:`term_extent`s of the tensor
+- :ref:`term_extent` of the tensor
 - nesting structure of the hyper-rectangular arrays
 - converting indices from one shape to indices in another shape
 
@@ -380,7 +380,7 @@ OpGraph
 Main discussion: :ref:`tw_designing_the_opgraph`.
 
 The ``Expression`` component contains a user-friendly mechanism for composing
-tensors using TensorWrapper's DSL. The result is a :ref:`term_cst`. In practice, 
+tensors using TensorWrapper's DSL. The result is a :ref:`term_cst`. In practice,
 CSTs contain extraneous information (and in C++ are typically represented by
 heavily nested template instantiations which are not fun to look at). The
 ``OpGraph`` component is designed to be an easier-to-manipulate,
