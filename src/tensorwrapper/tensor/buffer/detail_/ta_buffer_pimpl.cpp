@@ -101,7 +101,7 @@ auto make_index(OutType& t) {
                  std::is_same_v<OutType, tot_lazy_array_t>) {
         if(t.is_initialized()) {
             const auto& tile0 = t.begin()->get();
-            inner_rank        = as_data_tile(tile0).at_ordinal(0).range().rank();
+            inner_rank = as_data_tile(tile0).at_ordinal(0).range().rank();
         }
     }
     return TA::detail::dummy_annotation(outer_rank, inner_rank);
@@ -303,7 +303,7 @@ typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::norm_() const {
           if constexpr(std::is_same_v<FieldType, field::Tensor>) {
               if(t.is_initialized()) {
                   const auto& tile0 = t.begin()->get();
-                  inner_rank        = as_data_tile(tile0).at_ordinal(0).range().rank();
+                  inner_rank = as_data_tile(tile0).at_ordinal(0).range().rank();
               }
           }
           auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
@@ -322,7 +322,7 @@ typename TABUFFERPIMPL::scalar_value_type TABUFFERPIMPL::sum_() const {
           if constexpr(std::is_same_v<FieldType, field::Tensor>) {
               if(t.is_initialized()) {
                   const auto& tile0 = t.begin()->get();
-                  inner_rank        = as_data_tile(tile0).at_ordinal(0).range().rank();
+                  inner_rank = as_data_tile(tile0).at_ordinal(0).range().rank();
               }
           }
           auto idx = TA::detail::dummy_annotation(outer_rank, inner_rank);
