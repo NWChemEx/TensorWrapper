@@ -12,6 +12,8 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
+.. _logical_vs_physical:
+
 ########################################################
 Logical Versus Physical: Understanding the Tensor Layout
 ########################################################
@@ -30,10 +32,10 @@ of the tensor as they relate to the problem being modeled. Roughly speaking,
 this amounts to the literal values of the tensor, the symmetry of the tensor,
 and the sparsity of the tensor. The literal implementation may need additional
 structure, for example tiling and distribution. This additional structure
-effectively changes the properties of the tensor (vide infra), and moreover 
+effectively changes the properties of the tensor (vide infra), and moreover
 this additional structure may only appear on certain hardware.
 
-In an effort to distinguish the problem-specific structure from the 
+In an effort to distinguish the problem-specific structure from the
 implementation-/hardware-specific structure we term the former the "logical"
 structure and the latter the "physical" structure. Generally speaking, the
 physical structure will describe how the tensor is actually structured, whereas
@@ -71,7 +73,7 @@ Summary
 *******
 
 - Ideally users will interact with tensors in a manner dictated by the problem
-  being modeled. This "logical" interaction will ideally be performance 
+  being modeled. This "logical" interaction will ideally be performance
   portable.
 - Ideally, TensorWrapper will automatically map the logical view to a
   "physical" performant representation.
