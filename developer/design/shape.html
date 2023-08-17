@@ -130,8 +130,8 @@ or lay them out in memory.</p>
 <dt>Basic operations</dt><dd><p>The unifying theme of objects in the shape component is that they are
 shapes. It is common to not This means they have:</p>
 <ul class="simple">
-<li><p>rank</p></li>
-<li><p>extents</p></li>
+<li><p><a class="reference internal" href="../../background/terminology.html#term-rank"><span class="std std-ref">rank</span></a></p></li>
+<li><p><a class="reference internal" href="../../background/terminology.html#term-extent"><span class="std std-ref">extent</span></a></p></li>
 <li><p>sub-shapes (a sub-shape can be either a <a class="reference internal" href="../../background/terminology.html#term-slice"><span class="std std-ref">slice</span></a> or a
 <a class="reference internal" href="../../background/terminology.html#term-chip"><span class="std std-ref">chip</span></a>)</p></li>
 <li><p><em>N.B.</em>, some, all, or none of these properties may be known at compile
@@ -280,7 +280,7 @@ as a vector of vectors. The point of the <code class="docutils literal notransla
 the ranks of the tensor into layers, so we know how many layers the user is
 viewing the tensor as, and how many ranks each layer has. Mathematically
 the various ways of a viewing a tensor do not change the properties of the
-tensor; however, when we are physically laying the tensor out on the computer
+tensor; however, when we are physically laying the tensor out on the computer,
 how we view the tensor can affect physical layout.</p>
 </div>
 <div class="section" id="indexedshape">
@@ -712,7 +712,7 @@ returned as offsets from the origin, in lexicographical order. For example:</p>
 <span class="n">print_shape</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="c1">// prints {10,10} {10,11} {10,12} {11,10} {11,11} {11,12}</span>
 </pre></div>
 </div>
-<p>For completeness we define an overloads of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> which
+<p>For completeness we define overloads of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> which
 also take an origin. For <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> the origin needs to be specified for
 the internal shapes and the explicitly unrolled ranks.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Makes a shape for a 2 by 3 matrix whose first element is {10, 10}</span>
