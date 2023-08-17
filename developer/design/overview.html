@@ -221,7 +221,7 @@ logical properties only depend on the problem.</p></li>
 <dt>Runtime aware allocation</dt><dd><p>Where we put the tensor (<em>e.g.</em>, CPU vs. GPU and RAM vs. disk vs. generated
 on-the-fly) can depend on the runtime status. Similarly the back end we
 choose (particular whether it is distributed or replicated) depends on the
-runtime as well as the :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>term_extent`s of the tensor.</p>
+runtime as well as the <a class="reference internal" href="../../background/terminology.html#term-extent"><span class="std std-ref">extent</span></a> of the tensor.</p>
 </dd>
 </dl>
 <dl class="simple" id="atw-runtime-expression-optimization">
@@ -265,10 +265,10 @@ sparsity and symmetry) are in scope.</p></li>
 </div>
 <div class="section" id="architecture-design">
 <h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id1">
 <span id="fig-tw-workflows"></span><img alt="../../_images/workflows.png" src="../../_images/workflows.png" />
 <p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
-user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </div>
 <p>Section <a class="reference internal" href="#atw-architecture-considerations"><span class="std std-ref">Architecture Considerations</span></a> presented two workflows: a
 user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a>
@@ -280,9 +280,9 @@ steps could occur within the constructor of the <code class="docutils literal no
 Similarly, the <a class="reference internal" href="#atw-runtime-expression-optimization"><span class="std std-ref">Runtime expression optimization</span></a> step could be
 triggered when a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object is initialized by an <code class="docutils literal notranslate"><span class="pre">Expression</span></code>
 object.</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id2">
 <span id="fig-tw-architecture"></span><img alt="../../_images/architecture.png" src="../../_images/architecture.png" />
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </div>
 <p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 3</span></a> shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
@@ -300,7 +300,7 @@ component is responsible for describing this array of values. In particular
 the <code class="docutils literal notranslate"><span class="pre">Shape</span></code> component is responsible for representing:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../background/terminology.html#term-rank"><span class="std std-ref">rank</span></a> of the tensor</p></li>
-<li><p>:ref:<a href="#id3"><span class="problematic" id="id4">`</span></a>term_extent`s of the tensor</p></li>
+<li><p><a class="reference internal" href="../../background/terminology.html#term-extent"><span class="std std-ref">extent</span></a> of the tensor</p></li>
 <li><p>nesting structure of the hyper-rectangular arrays</p></li>
 <li><p>converting indices from one shape to indices in another shape</p></li>
 </ul>
