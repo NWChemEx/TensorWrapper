@@ -263,7 +263,7 @@ auto reduce_tot_elementwise(const TA::DistArray<TileType, PolicyType>& lhs,
           return lhs.reduce(rhs, inner_times, add_op, init);
       };
     const auto& tile0 = lhs.begin()->get();
-    auto ir           = tile0[0].range().rank();
+    auto ir           = tile0.at_ordinal(0).range().rank();
     return reduce_elementwise(lhs, rhs, std::forward<AddOp>(add_op),
                               outer_times, init, ir)
       .get();
