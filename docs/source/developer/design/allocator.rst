@@ -18,7 +18,8 @@
 Designing the Allocator
 #######################
 
-The point of this page is to capture the design process of the
+The point of this page is to capture the design process of the allocator
+component of TensorWrapper.
 
 *********************
 What is an Allocator?
@@ -141,6 +142,8 @@ then derive from as many ``Allocator`` specializations as they support. For
 example, TiledArray (TA) supports both distributed and replicated buffers so
 it would derive two allocators, one for making ``DistributedBuffer`` objects
 and one for making ``ReplicatedBuffer`` objects.
+
+.. _a_proposed_apis:
 
 *************
 Proposed APIs
