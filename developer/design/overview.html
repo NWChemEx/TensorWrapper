@@ -65,7 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="layout.html">Designing the Layout Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="allocator.html">Designing the Allocator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
@@ -336,10 +336,10 @@ nested tensor)</p></li>
 sparsity is actually element-sparsity, just for non-scalar elements. The point
 is, even though we anticipate tile-sparsity to be the most important sparsity
 we think that TensorWrapper needs to be designed with element-sparsity in mind
-from the getgo.</p>
+from the get go.</p>
 </div>
 <div class="section" id="tensorwrapper">
-<h4>TensorWrapper<a class="headerlink" href="#tensorwrapper" title="Permalink to this heading"></a></h4>
+<h4><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code><a class="headerlink" href="#tensorwrapper" title="Permalink to this heading"></a></h4>
 <p>Main discussion: <a class="reference internal" href="tensor_wrapper.html#designing-tensor-wrapper-class"><span class="std std-ref">Designing TensorWrapper Class</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class is the tensor-like object that users interact with.
 The DSL uses <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects as the leaf nodes of an

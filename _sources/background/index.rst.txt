@@ -21,7 +21,7 @@ TensorWrapper Background
    :maxdepth: 2
    :caption: Contents:
 
+   terminology
+   logical_v_physical
    key_features
    other_choices
-   logical_v_physical
-   terminology

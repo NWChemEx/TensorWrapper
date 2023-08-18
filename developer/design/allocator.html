@@ -67,7 +67,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
@@ -107,7 +107,8 @@
              
   <div class="section" id="designing-the-allocator">
 <span id="tw-designing-the-allocator"></span><h1>Designing the Allocator<a class="headerlink" href="#designing-the-allocator" title="Permalink to this heading"></a></h1>
-<p>The point of this page is to capture the design process of the</p>
+<p>The point of this page is to capture the design process of the allocator
+component of TensorWrapper.</p>
 <div class="section" id="what-is-an-allocator">
 <h2>What is an Allocator?<a class="headerlink" href="#what-is-an-allocator" title="Permalink to this heading"></a></h2>
 <p>In C++, allocators are objects used by containers to secure uninitialized
@@ -219,7 +220,7 @@ it would derive two allocators, one for making <code class="docutils literal not
 and one for making <code class="docutils literal notranslate"><span class="pre">ReplicatedBuffer</span></code> objects.</p>
 </div>
 <div class="section" id="proposed-apis">
-<h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this heading"></a></h2>
+<span id="a-proposed-apis"></span><h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this heading"></a></h2>
 <p>For the most part we expect that the bulk of interactions with <code class="docutils literal notranslate"><span class="pre">Allocator</span></code>
 objects will be construction and allocation:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Most allocators will only require a RuntimeView for construction</span>

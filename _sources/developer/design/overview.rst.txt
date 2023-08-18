@@ -280,10 +280,10 @@ As a note, in TensorWrapper tiling implies a nested tensor. Therefore tile-
 sparsity is actually element-sparsity, just for non-scalar elements. The point
 is, even though we anticipate tile-sparsity to be the most important sparsity
 we think that TensorWrapper needs to be designed with element-sparsity in mind
-from the getgo.
+from the get go.
 
-TensorWrapper
--------------
+``TensorWrapper``
+-----------------
 
 Main discussion: :ref:`designing_tensor_wrapper_class`.
 

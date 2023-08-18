@@ -68,7 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing TensorWrapper Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
 <li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
 </ul>
@@ -110,6 +110,13 @@
 <span id="tw-designing-the-buffer"></span><h1>Designing the Buffer<a class="headerlink" href="#designing-the-buffer" title="Permalink to this heading"></a></h1>
 <p>The point of this page is to record the design process of TensorWrapper’s
 buffer component.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Based on <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> design, this needs reworked. Namely <code class="docutils literal notranslate"><span class="pre">Buffer</span></code>
+should be a single class, with a polymorphic PIMPL. In particular, users
+may need to give up ownership of <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects which is easier to do
+if <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> is not polymorphic.</p>
+</div>
 <div class="section" id="what-is-the-buffer">
 <h2>What is the Buffer?<a class="headerlink" href="#what-is-the-buffer" title="Permalink to this heading"></a></h2>
 <p>To vastly over simplify, tensors consist of two things: the literal elements of
