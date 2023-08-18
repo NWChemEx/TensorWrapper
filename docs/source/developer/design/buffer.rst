@@ -21,6 +21,13 @@ Designing the Buffer
 The point of this page is to record the design process of TensorWrapper's
 buffer component.
 
+.. note::
+
+   Based on ``TensorWrapper`` design, this needs reworked. Namely ``Buffer``
+   should be a single class, with a polymorphic PIMPL. In particular, users
+   may need to give up ownership of ``Buffer`` objects which is easier to do
+   if ``Buffer`` is not polymorphic.
+
 *******************
 What is the Buffer?
 *******************
