@@ -143,6 +143,8 @@ example, TiledArray (TA) supports both distributed and replicated buffers so
 it would derive two allocators, one for making ``DistributedBuffer`` objects
 and one for making ``ReplicatedBuffer`` objects.
 
+.. _a_proposed_apis:
+
 *************
 Proposed APIs
 *************
