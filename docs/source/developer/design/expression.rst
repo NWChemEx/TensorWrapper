@@ -18,6 +18,88 @@
 Designing the Expression Component
 ##################################
 
+This page documents the process of designing the expression component of
+TensorWrapper.
+
+*********************************
+What is the expression component?
+*********************************
+
+Users of a tensor library have two main needs: to create tensors and to solve
+tensor expressions involving those tensors. The expression component contains
+the pieces of the :ref:`term_dsl` required to write succinct tensor expressions.
+
+***************************************
+Why do we need an expression component?
+***************************************
+
+Most libraries tend to be eagerly evaluated, meaning code is evaluated as it is
+encountered. For simple, easily optimized code such a strategy is fine. 
+Unfortunately, tensor expressions tend to be significantly harder to optimize, 
+plus the optimal evaluation tends to be highly runtime dependent. A potential 
+solution to this problem is to evaluate the code lazily, instead of eagerly. 
+Lazily evaluated code is "recorded" until it is needed. Once it is needed it
+is played back.
+
+Most tensor operations are steps in a bigger algorithm. By lazily 
+evaluating tensor computations we can register the user's intention and
+optimize our evaluation strategy accordingly. The point of the expression layer
+is to provide a user-friendly DSL for lazy evaluation of tensors.
+
+***********************************
+Expression Component Considerations
+***********************************
+
+.. _ec_compose_multiple_objects:
+
+compose multiple objects
+   While our goal is to ultimately be able to compose ``TensorWrapper`` objects,
+   we can decompose the work needed to do so by ensuring we can compose the
+   pieces of the ``TensorWrapper`` object. In particular we want to be able to
+   compose objects from the shape, symmetry, sparsity, and allocator components.
+
+.. _ec_generalized_einstein_notation:
+
+generalized Einstein notation
+   Many of the most common tensor operations are succinctly specified using
+   generalized Einstein notation (indices appearing on the right side of
+   an equation, but not the left are summed over).
+
+   - For expressions which involve more than one term, this notation may be
+     ambiguous (TODO: add an example when I can recall how it's ambiguous).
+
+.. _ec_non_einstein_math:
+
+non-Einstein math
+   There are a number of tensor operations which can not be expressed using
+   Einstein summation convention, including solving eigenvalue equations, 
+   solving linear equations, and factorizations. These operations are still
+   important and must be expressible as part of the expression layer.
+
+sparse maps
+   The sparsity component :ref:`sparsity_design` realized that sparse maps are
+   a mechanism for creating sparsity objects and thus should live above the 
+   sparsity component. Sparse maps are most naturally expressed as 
+   relationships among dummy indices, that is given an expression like 
+   ``C("i,j") = A("i,j,a,b") * B("i,j,b,a");`` we may define a sparse map which
+   for a given ``i,j`` pair tells us which ``a,b`` pairs are non-zero. From that
+   sparse map we can work out the sparsity of ``A``, ``B``, and ``C``. The 
+   trick here is we need to know how the input/output modes to/from the sparse 
+   map map to the modes of ``A``, ``B``, and ``C``. This information is
+   available in the expression layer.
+
+***************************
+Expression Component Design
+***************************
+
+To implement lazy evaluation in C++ one typically relies on a C++ template
+meta-programming technique known as expression templates. With expression 
+templates, users write code using expression objects. The expression objects
+capture the user's intent and map it to a single, heavily nested, instance of a 
+class template. The resulting type contains all of the information about the
+requested calculation. Then when the object is instantiated at runtime, the
+class plays back the type's namesake computation.
+
 
 - ``IndexedSparsity``, ``IndexedShape``, ``IndexedSymmetry``, etc. should use
   this component.
