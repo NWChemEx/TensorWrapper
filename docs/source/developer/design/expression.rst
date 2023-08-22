@@ -67,6 +67,7 @@ generalized Einstein notation
 
    - For expressions which involve more than one term, this notation may be
      ambiguous (TODO: add an example when I can recall how it's ambiguous).
+   - Can "put the summation signs back in" to remove ambiguity. 
    - Math operations include: addition, subtraction, scaling, multiplication,
      and division. The latter is missing from a number of existing tensor
      libraries.
@@ -86,10 +87,27 @@ non-Einstein math
    - Slicing/chipping
    - Matrix powers
 
-.. _ec_identifying_common_intermediates:
+.. _ec_template_meta_programming_cost:
 
-identifying common intermediates
-   As we build
+template meta-programming cost
+   In C++ lazy evaluation is typically implemented by using the template meta-
+   programming technique known as expression templates. Ultimately expression
+   templates map different expressions to different types. The type of an
+   expression is usually a heavily nested instantiation of a template class,
+   which can lead to significant compiler overhead (as well as nearly 
+   undecipherable compiler errors, though C++20 concepts helps a lot in this
+   regard).
+
+multiple sources/sinks
+   The expression layers in most existing tensor libraries tend to be limited
+   to a single (final) sink, *i.e.*, the entire expression must be assigned to
+   a single tensor and it is this assignment which forces the evaluation.
+
+   - Avoiding the evaluation can be done by storing the expression in the tensor
+     instead of assigning the state to the tensor. This however, complicates
+     forcing evaluation.
+   - An alternative is a different tensor type, say ``TempTensor``, which acts
+     like a ``TensorWrapper`` object, but doesn't force evaluation.
 
 sparse maps
    The sparsity component :ref:`sparsity_design` realized that sparse maps are
@@ -103,20 +121,113 @@ sparse maps
    the modes of ``A``, ``B``, and ``C``. This information is
    available in the expression layer.
 
+Out of Scope
+============
+
+expression optimization
+   The goal of the expression layer is simply to capture the information needed
+   to perform the calculation, not to optimize the calculation, or to perform
+   it. Optimizing the calculation can be done using the OpGraph component (see
+   :ref:`tw_designing_the_opgraph`). Running the calculation is done by the 
+   backend of the Buffer component, given an OpGraph object (see 
+   :ref:`tw_designing_the_buffer`).
+
+common intermediates
+   As we build an expression certain sub-expressions may appear multiple times.
+   Identifying these common sub-expressions is a precursory step to optimization
+   and is thus out of scope for the expression layer.
+
 ***************************
 Expression Component Design
 ***************************
 
-To implement lazy evaluation in C++ one typically relies on a C++ template
-meta-programming technique known as expression templates. With expression
-templates, users write code using expression objects. The expression objects
-capture the user's intent and map it to a single, heavily nested, instance of a
-class template. The resulting type contains all of the information about the
-requested calculation. Then when the object is instantiated at runtime, the
-class plays back the type's namesake computation.
+***********
+Example API
+***********
+
+.. note::
+   
+   The examples in this section purposely use the real types from the expression
+   layer. This is NOT what we expect a user to do. What a user sees is shown
+   later (see :ref:`expression_user_api`).
 
 
-- ``IndexedSparsity``, ``IndexedShape``, ``IndexedSymmetry``, etc. should use
-  this component.
-- Sparse maps got punted here.
-- Hooks for linear algebra including eigen solves, etc.
+The expression layer works basically the same for every composable object of
+type ``T`` (``T`` being things like ``Shape``, ``Symmetry``, ``TensorWrapper``)
+so we avoid specifying the value of ``T``.
+
+Construction
+============
+
+Following from the :ref:`ec_generalized_einstein_notation` consideration we
+expect that most users will enter into the expression layer by adding dummy
+indices to an object. C++ wise this looks like:
+
+.. code-block:: c++
+
+   // Assume we have some T objects
+   T a, b, c;
+
+   Indexed<T> ia = a("i,j,k");
+   Indexed<T> ib = b("i,j,k");
+   Indexed<T> ic = c("i,j,k");
+
+The ``Indexed<T>`` objects will then be composed pair-wise to form 
+``BinaryExpression<T>`` objects.
+
+.. code-block:: c++
+
+   // continues from last code block
+   Addition<T> iapib = ia + ib;
+   Multiplication<T> iatib = ia * ib;
+   Subtraction<T> iasib = ia - ib;
+   Division<T> iadib = ia / ib;
+
+Note that unlike traditional expression templates which would end up with
+types like ``Addition<Indexed<T>, Indexed<T>>`` we rely on the fact
+the all of the pieces derive from ``Expression<T>``, which helps us address
+consideration :ref:`ec_template_meta_programming_cost`.
+
+
+Obtaining an OpGraph
+====================
+
+The trick to avoid the nasty nested expression templates is to obtain the final
+``OpGraph`` object via the base class's ``Expression<T>`` API. This can be
+done via the visitor pattern and looks something like:
+
+.. code-block:: c++
+
+   // In practice e would be a pointer b/c Expression is an abstract base class
+   Expression<Shape> e = get_expression();
+
+   auto [graph, node] = e.add_to_graph(OpGraph{});
+
+Then internally the ``add_to_graph`` method of the most derived class,
+``Derived<T>``, is implemented something like:
+
+.. code-block:: c++
+
+   std::pair<OpGraph, Node> Derived<T>::add_to_graph(OpGraph g){
+       // Assume Derived<T> inherits from Base<T>
+       auto [subgraph, parent_node] = Base<T>::add_to_graph(g);
+
+       // Create node corresponding to Derived<T> add to parent_node
+
+       // Return new graph and new node
+   }
+
+This works because ``Expression<T>`` defines a virtual function 
+``std::pair<OpGraph, Node> add_to_graph(OpGraph g)`` which is overridden by each
+of the derived classes. Each derived class calls the base class's 
+``add_to_graph`` method, which in turn returns the graph and the node just
+added. Exactly what the nodes look like, and what information they contain is
+punted to the OpGraph component (see :ref:`tw_designing_the_opgraph`).
+
+
+
+.. _expression_user_api:
+
+********
+User API
+********
