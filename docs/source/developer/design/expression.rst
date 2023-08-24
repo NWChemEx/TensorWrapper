@@ -147,6 +147,114 @@ finding common intermediates
 Expression Component Design
 ***************************
 
+. _expression_user_api:
+
+********
+User API
+********
+
+This section focuses on what the user actually writes. The next section looks
+at how the DSL works in more detail, by filling in the blanks regarding the
+many unnamed temporary objects these code snippets hide.
+
+Construction
+============
+
+Most tensor operations will look like tensor math written using the generalized
+Einstein summation convention. Some examples:
+
+.. code-block:: c++
+
+   auto [a, b] = fill_in_a_and_b();
+   T c, d, e, g; // No "f" to make connection to the example API section
+
+   c("i,j,k") = a("i,j,k") + b("i,j,k");
+   d("i,j,k") = a("i,j,k") * b("i,j,k");
+   e("i,j,k") = a("i,j,k") - b("i,j,k");
+   g("i,j,k") = a("i,j,k") / b("i,j,k");
+
+Since these lines all involve unnamed temporary intermediates, each line must
+be treated as a separate expression, *i.e.*, there is no way to preserve the
+lifetime of the intermediates from one line to another. Hence, in order to 
+satisfy :ref:`ec_reusable_intermediates`, we require that the user assigns at 
+least one of the common intermediates (recall an intermediate is as simple as
+``a("i,j,k")``) to a named variable, *e.g.*:
+
+.. code-block:: c++
+
+   {
+      auto aijk = a("i,j,k");
+      c("i,j,k")  = aijk * b("i,j,k");
+      d("i,j,k")  = aijk / b("i,j,k");
+   }
+
+In practice the way this will work is that the ``Buffer`` objects actually 
+assigned to ``c`` and ``d`` are ``FutureBuffer`` objects (see 
+:ref:`tw_designing_the_buffer`). The ``FutureBuffer`` objects will be tied to 
+the lifetime of the expression layer which generated them. When all expression-
+layer objects involved in creating the ``FutureBuffer`` objects go out of scope 
+evaluation begins. So if we want to ensure that the above two equations are 
+treated as a set of equations, and not two individual equations, we need to make 
+sure at least one of the expression-layer objects is present in each equation 
+(the ``{}`` are needed to establish a scope for ``aijk``, ensuring it goes out 
+scope after the second equation). 
+
+While it is theoretically possible for TensorWrapper to correctly identify the 
+two temporary objects in the previous code block that result from ``b("i,j,k")`` 
+as identical, it is unlikely that TensorWrapper will contain such optimizations 
+in the near future. Hence best practice will be to assign each common 
+intermediate to a named variable, *i.e.*, the above code block should really be 
+written as:
+
+.. code-block:: c++
+
+   {
+      auto aijk = a("i,j,k");
+      auto bijk = b("i,j,k");
+      c("i,j,k")  = aijk * bijk;
+      d("i,j,k")  = aijk / bijk;
+   }
+
+so that the expression layer will identify ``b("i,j,k")`` as evaluating to the
+same intermediate.
+
+Non-Einstein Algebra
+====================
+
+In order to perform operations which involve tensor algebra that can not be
+expressed using generalized Einstein summation convention, we still require
+the user to annotate the modes of the tensor (this is so we can generate and
+track an CST). Proposed user APIs are:
+
+.. code-block:: c++
+
+   T L, Lt, v, λ, a10_10, a2;
+   {
+       auto Aij = A("i,j");
+
+      // disclaimer, I'm not 100% sure the cholesky/eigen_solve APIs will work
+      // as shown, but it should be possible to get something close.
+
+      // A = LLt
+      std::make_pair(L("i,j"), Lt("i,j")) = Aij.cholesky(); 
+   
+      // Av = λBv (no argument needed if B is 1)
+      std::make_pair(v("i,j"), λ("j")]  = Aij.eigen_solve(B("i,j"));
+
+      // If we just wanted the eigenvalues/eigenvectors
+      λ("j")   = Aij.eigen_values();
+      v("i,j") = Aij.eigen_vectors();
+
+      // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
+      a10_10("i,j") = Aij.slice({0, 0}, {10, 10});
+   
+      // Raise A to the power 2
+      a2("i,j") = Aij.pow(2);
+  }
+
+The above code actually would create one set of expressions since ``Aij`` is
+used in all of the expressions.
+
 ***********
 Example API
 ***********
@@ -160,7 +268,8 @@ Example API
 
 The expression layer works basically the same for every composable object of
 type ``T`` (``T`` being things like ``Shape``, ``Symmetry``, ``TensorWrapper``)
-so we avoid specifying the value of ``T``.
+so we avoid specifying the value of ``T``. The APIs shown in this section are
+more to flesh out how the unnamed temporaries actually interact.
 
 .. _expression_construction:
 
@@ -169,7 +278,7 @@ Construction
 
 Following from the :ref:`ec_generalized_einstein_notation` consideration we
 expect that most users will enter into the expression layer by adding dummy
-indices to an object. C++ wise this looks like:
+indices to an object. This looks like:
 
 .. code-block:: c++
 
@@ -215,6 +324,63 @@ It is worth noting, that it is somewhat trivial to satisfy consideration
 directly. This is because each expression object is actually a node in the
 :ref:`term_cst`, so by reusing the literal nodes we reuse the intermediates.
 
+From this we can see that ``c("i,j") = a("i,j") + b("i,j");`` actually works
+by:
+
+- ``a("i,j,k")`` creates an unnamed temporary ``Indexed<T>`` object,
+- ``b("i,j,k")`` creates  another unnamed temporary ``Indexed<T>`` object,
+- the ``Indexed<T>::operator+`` method is then called on the previous two
+  temporary objects resulting in a third temporary of type ``Addition<T>``
+- ``c("i,j,k")`` creates yet another temporary ``Indexed<T>`` object.
+- Finally ``Indexed<T>::operator=`` is called assigning the ``Addition<T>``
+  object to the the temporary resulting from ``c("i,j,k")``.
+
+Non-Einstein Algebra
+====================
+
+The previous section showed how to write tensor algebra for operations which can
+be expressed using generalized Einstein summation convention. Consideration
+:ref:`ec_non_einstein_math` means that the expression layer must be able to
+support other tensor algebra operations as well. In terms of expression-layer
+objects:
+
+.. code-block:: c++
+
+   auto [A, B] = get_filled_matrices();
+   T L, Lt, v, λ, a10_10, a2;
+
+   // Promote everything to the expression layer
+   Indexed<T> iA      = A("i,j");
+   Indexed<T> iB      = B("i,j");
+   Indexed<T> iL      = L("i,q");
+   Indexed<T> iLt     = Lt("q,j");
+   Indexed<T> iv      = v("i,q");
+   Indexed<T> iλ      = λ("q");
+   Indexed<T> ia10_10 = a10_a10("i,j");
+   Indexed<T> ia2     = a2("i,j");
+
+   // A = LLt
+   std::tie(iL, iLt) = Aij.cholesky(); 
+   
+   // Av = λBv (argument only needed for generalized eigen_solves)
+   std::tie(iv, iλ) = Aij.eigen_solve(Bij);
+
+   // If we just wanted the eigenvalues/eigenvectors
+   iλ = Aij.eigen_values();
+   iv = Aij.eigen_vectors();
+
+   // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
+   ia10_1 = Aij.slice({0, 0}, {10, 10});
+   
+   // Raise A to the power 2
+   ia2 = Aij.pow(2);
+  
+The trick to satisfying :ref:`ec_non_einstein_math` consideration is that we 
+require the various operations to involve tensors which are already wrapped in
+expression-layer constructs. While this is a bit more verbose, it also allows
+us to in some cases (like the ``slice`` operation) support transposing the
+result.
+
 Obtaining an OpGraph
 ====================
 
@@ -250,93 +416,6 @@ of the derived classes. Each derived class calls the base class's
 added. Exactly what the nodes look like, and what information they contain is
 punted to the OpGraph component (see :ref:`tw_designing_the_opgraph`).
 
-.. _expression_user_api:
-
-********
-User API
-********
-
-The previous section showed how the expression objects actually interacted.
-This section focuses on what the user actually writes.
-
-Construction
-============
-
-If we view the main goal of the construction section to be the expressions
-like ``ic = iapib;``, using the DSL the user would actually write this as:
-
-.. code-block:: c++
-
-   auto [a, b] = fill_in_a_and_b();
-   T c, d, e, g; // No "f" to make connection to the example API section
-
-   c("i,j,k") = a("i,j,k") + b("i,j,k");
-   d("i,j,k") = a("i,j,k") * b("i,j,k");
-   e("i,j,k") = a("i,j,k") - b("i,j,k");
-   g("i,j,k") = a("i,j,k") / b("i,j,k");
-
-This code is much more concise, but still contains all the contents shown
-explicitly in :ref:`expression_construction`, but it now happens via a series
-of unnamed temporary objects. For example the first line actually works by:
-
-- ``a("i,j,k")`` creates an unnamed temporary ``Indexed<T>`` object,
-- ``b("i,j,k")`` creates  another unnamed temporary ``Indexed<T>`` object,
-- the ``Indexed<T>::operator+`` method is then called on the previous two
-  temporary objects resulting in a third temporary of type ``Addition<T>``
-- ``c("i,j,k")`` creates yet another temporary ``Indexed<T>`` object.
-- Finally ``Indexed<T>::operator=`` is called assigning the ``Addition<T>``
-  object to the the temporary resulting from ``c("i,j,k")``.
-
-In order to satisfy :ref:`ec_reusable_intermediates`, we need to assign at least
-one of the common intermediates to a named variable, *e.g.*:
-
-.. code-block:: c++
-
-   {
-      auto aijk = a("i,j,k");
-      c("i,j,k")  = aijk * b("i,j,k");
-      d("i,j,k")  = aijk / b("i,j,k");
-   }
-
-In practice the ``Buffer`` objects actually assigned to ``c`` and ``d`` are
-``FutureBuffer`` objects (see :ref:`tw_designing_the_buffer`). The
-``FutureBuffer`` objects are tied to lifetime of the expression layer which
-generated them. When all expression-layer objects involved in creating the
-``FutureBuffer`` objects go out of scope evaluation begins. So if we want to
-ensure that the above two equations are treated as a set of equations, and not
-two individual equations, we need to make sure at least one of the expression-
-layer objects is present in each equation (the ``{}`` are needed to establish a
-scope for ``aijk``, ensuring it goes out scope after the second equation). While
-it is theoretically possible for TensorWrapper to correctly identify the two
-temporary objects resulting from ``b("i,j,k")`` to be identical, it is unlikely
-that TensorWrapper will contain such optimizations in the near future. Hence
-best practice will be to assign each common intermediate to a named variable,
-*i.e.*, the above code block should really be written as:
-
-.. code-block:: c++
-
-   {
-      auto aijk = a("i,j,k");
-      auto bijk = b("i,j,k");
-      c("i,j,k")  = aijk * bijk;
-      d("i,j,k")  = aijk / bijk;
-   }
-
-so that the expression layer will identify ``b("i,j,k")`` as evaluating to the
-same intermediate.
-
-Non-Einstein Algebra
-====================
-
-.. code-block:: c++
-
-   auto [L, Lt] = CholeskyDecomposition(A); // A = LLt
-   auto [v, λ]  = EigenDecomposition(A, B); // Av = λBv
-
-   auto a10_10 = A.slice(10, 10);
-
-
-
 *******
 Summary
 *******
@@ -356,7 +435,10 @@ by:
    generalized Einstein notation.
 
 :ref:`ec_non_einstein_math`
-
+   Tensor operations which can not be expressed using generalized Einstein
+   summation convention are supported, but in order to ensure they interact
+   with the expression layer we still require the tensors to have their modes
+   annotated.
 
 :ref:`ec_template_meta_programming_cost`
    Instead of templating the various pieces of the expression layer on the
