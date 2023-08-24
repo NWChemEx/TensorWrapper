@@ -62,8 +62,8 @@ products like (note there is no implicit summation in the next equation):
 
 Making the observation that indices which are summed over only appear on one
 side of the equation. We can define a "generalized Einstein summation
-convention" which says that if an index only appears on side of an equation it
-is implicitly summed over. Note that this also relaxes the "pair"
+convention" which says that if an index only appears on a single side of an
+equation it is implicitly summed over. Note that this also relaxes the "pair"
 restriction so summing over a row of a matrix to form a vector, *i.e.*,
 
 .. math::
@@ -74,7 +74,13 @@ could be written using the generalized Einstein summation convention as:
 
 .. math::
 
-   v_j = A_{ij}.
+   v_j = A_{ij}
+
+similarly the trace of |A| can be written:
+
+.. math::
+
+   Tr\left(\mathbf{A}\right) = A_{ii}.
 
 For the purposes of TensorWrapper, generalized Einstein summation convention
 allows us to write many tensor operations in a user-friendly manner. For example
@@ -100,13 +106,101 @@ the above equations
    // Summing over a row of a matrix
    v("j") = A("i,j");
 
+   // Trace of a matrix
+   c("") = A("i,i");
+
 ***********
 Limitations
 ***********
 
-The conventional Einstein summation convention is limited to pairs of repeated
-indices because
+Traditional Einstein summation convention is usually said to be limited to pairs
+of repeated indices because repeating an index three or more times is ambiguous
+(*e.g.*, see
+`here https://math.stackexchange.com/questions/436515/problem-with-free-index-in-einstein-summation-notation`__).
+Consider the equation:
 
 .. math::
 
-   A_{ij}B_{ij}C_{ij}
+   u_{i} = v_{i}B_{ii}.
+
+Traditional Einstein summation convention requires that we must sum over pairs
+of repeated indices. Since :math:`i` appears more than once we must sum it.
+There are three possible ways to sum over pairs of :math:`i`. For clarity,
+we perform a dummy index transformation so that we are summing over :math:`j`
+instead:
+
+.. math::
+
+   u_{i} = \sum_{j} v_j B_{ji}
+
+or
+
+.. math::
+
+   u_{i} = \sum_{j} v_{j}B_{ij}
+
+or
+
+.. math::
+
+   u_{i} = \sum_{j}  v_{i} B_{jj}.
+
+We however argue that none of these interpretations are in the spirit of
+conventional summation notation because changing the value of a dummy index
+must be done to all occurrences of the dummy index in order to preserve the
+meaning. Even for vectors we can not selectively change dummy indices without
+changing the meaning, *i.e.*,
+
+.. math::
+
+   \sum_{i} u_iv_i \neq \sum_{ij} u_iv_j.
+
+The general Einstein summation convention has no ambiguity for three repeated
+indices and, consistent with conventional summation conventions, recognizes
+:math:`u_i=v_iB_{ii}` as the product of |v| and the diagonal of |B|. In fact,
+generalized Einstein summation convention has no ambiguity since
+every index is either summed over, or not, based on whether it appears on one or
+both sides of an equation respectively. Indices which must have the same values
+in each term must be assigned the same letter. Indices which are allowed to
+vary independently must be assigned different letters.
+
+That said, in dynamic programming situations it can be hard to ensure indices
+are chosen in a manner which adheres to the general Einstein summation
+convention. For example, it is not unreasonable to write something like:
+
+.. code-block:: c++
+
+   auto l = [](std::size_t i){
+       auto [A, B]  = build_tensors_from_parameter(i);
+       return A("i,k")*B("k,j");
+   }
+   auto rhs = l(0) + l(1);
+   TensorWrapper C;
+   C("i,j") = rhs;
+
+The idea being we have a function which generates terms for an expression, then
+the caller of the function assembles those terms into a larger expression before
+ultimately assigning it to an indexed tensor. As written the above would
+generate an expression which looks something like (note that ``A`` and ``B``
+in the lambda are temporary variable names):
+
+.. code-block:: c++
+
+   C("i,j") = A("i,k")*B("k,j")* D("i,k")*E("k,j");
+
+This is an unambiguous expression, with summations inserted it's equivalent to:
+
+.. math::
+
+   C_{ij} = \sum_{k}\left(A_{ik}B_{kj}D_{ik}E_{kj}\right)
+
+which is not the same as:
+
+.. math::
+
+   C_{ij} = \sum_{kl}\left(A_{ik}B_{kj}D_{il}E_{lj}\right).
+
+Point being, if the intent of the function calls was to return a matrix in a
+factorized form, they needed to choose different contraction indices in each
+call. Generally speaking, generalized Einstein summation convention is best
+applied to binary operations and not to nested expressions.

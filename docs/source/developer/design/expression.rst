@@ -46,6 +46,8 @@ evaluating tensor computations we can register the user's intention and
 optimize our evaluation strategy accordingly. The point of the expression layer
 is to provide a user-friendly DSL for lazy evaluation of tensors.
 
+.. _ec_considerations:
+
 ***********************************
 Expression Component Considerations
 ***********************************
@@ -65,15 +67,14 @@ generalized Einstein notation
    generalized Einstein notation (indices appearing on the right side of
    an equation, but not the left are summed over).
 
-   - For expressions which involve more than one term, this notation may be
-     ambiguous (TODO: add an example when I can recall how it's ambiguous).
-   - Can "put the summation signs back in" to remove ambiguity. 
+   - There are some gotchas (see :ref:`eistein_summation_convention`).
    - Math operations include: addition, subtraction, scaling, multiplication,
      and division. The latter is missing from a number of existing tensor
      libraries.
    - Note that multiplication actually covers a number of operations including:
      element-wise product, matrix multiplication, contraction, trace, and direct
      product.
+   - Could actually enable an alternative syntax with explicit summations.
 
 .. _ec_non_einstein_math:
 
@@ -94,20 +95,24 @@ template meta-programming cost
    programming technique known as expression templates. Ultimately expression
    templates map different expressions to different types. The type of an
    expression is usually a heavily nested instantiation of a template class,
-   which can lead to significant compiler overhead (as well as nearly 
+   which can lead to significant compiler overhead (as well as nearly
    undecipherable compiler errors, though C++20 concepts helps a lot in this
    regard).
 
-multiple sources/sinks
-   The expression layers in most existing tensor libraries tend to be limited
-   to a single (final) sink, *i.e.*, the entire expression must be assigned to
-   a single tensor and it is this assignment which forces the evaluation.
+.. _ec_reusable_intermediates:
 
-   - Avoiding the evaluation can be done by storing the expression in the tensor
-     instead of assigning the state to the tensor. This however, complicates
-     forcing evaluation.
-   - An alternative is a different tensor type, say ``TempTensor``, which acts
-     like a ``TensorWrapper`` object, but doesn't force evaluation.
+reusable intermediates
+   In most tensor libraries the expression layer goes from a series of sources
+   to a single sink. Along the way a series of temporary, unnamed intermediates
+   is created. If any of these intermediates is common to more than one
+   expression we want to make sure those intermediates are only formed once.
+
+   - *N.b.* while an expression like ``A("i,j,k") + B("i,j,k")`` is clearly an
+     intermediate, so is ``A("i,j,k")``. This is because ``A("i,j,k")``
+     corresponds to tensor access of the "i,j,k"-th element and may be
+     non-trivial (also note that behind the scenes, for performance,
+     TensorWrapper may map the element access to "slice access followed by
+     element access").
 
 sparse maps
    The sparsity component :ref:`sparsity_design` realized that sparse maps are
@@ -128,14 +133,15 @@ expression optimization
    The goal of the expression layer is simply to capture the information needed
    to perform the calculation, not to optimize the calculation, or to perform
    it. Optimizing the calculation can be done using the OpGraph component (see
-   :ref:`tw_designing_the_opgraph`). Running the calculation is done by the 
-   backend of the Buffer component, given an OpGraph object (see 
+   :ref:`tw_designing_the_opgraph`). Running the calculation is done by the
+   backend of the Buffer component, given an OpGraph object (see
    :ref:`tw_designing_the_buffer`).
 
-common intermediates
-   As we build an expression certain sub-expressions may appear multiple times.
-   Identifying these common sub-expressions is a precursory step to optimization
-   and is thus out of scope for the expression layer.
+finding common intermediates
+   While consideration :ref:`reusable_intermediates` concerns the expression
+   layer being able to annotate common intermediates, actually finding said
+   common intermediates is much harder. For now it is the user's job to identify
+   common intermediates.
 
 ***************************
 Expression Component Design
@@ -146,7 +152,7 @@ Example API
 ***********
 
 .. note::
-   
+
    The examples in this section purposely use the real types from the expression
    layer. This is NOT what we expect a user to do. What a user sees is shown
    later (see :ref:`expression_user_api`).
@@ -155,6 +161,8 @@ Example API
 The expression layer works basically the same for every composable object of
 type ``T`` (``T`` being things like ``Shape``, ``Symmetry``, ``TensorWrapper``)
 so we avoid specifying the value of ``T``.
+
+.. _expression_construction:
 
 Construction
 ============
@@ -166,13 +174,16 @@ indices to an object. C++ wise this looks like:
 .. code-block:: c++
 
    // Assume we have some T objects
-   T a, b, c;
+   T a, b, c, d, e, g; // No f b/c variable would be "if"
 
    Indexed<T> ia = a("i,j,k");
    Indexed<T> ib = b("i,j,k");
    Indexed<T> ic = c("i,j,k");
+   Indexed<T> id = d("i,j,k");
+   Indexed<T> ie = e("i,j,k");
+   Indexed<T> ig = g("i,j,k");
 
-The ``Indexed<T>`` objects will then be composed pair-wise to form 
+The ``Indexed<T>`` objects will then be composed pair-wise to form
 ``BinaryExpression<T>`` objects.
 
 .. code-block:: c++
@@ -188,6 +199,21 @@ types like ``Addition<Indexed<T>, Indexed<T>>`` we rely on the fact
 the all of the pieces derive from ``Expression<T>``, which helps us address
 consideration :ref:`ec_template_meta_programming_cost`.
 
+Once we have built up terms they get assigned to an ``Indexed<T>`` object like:
+
+.. code-block:: c++
+
+   // continues from last two code blocks
+
+   ic = iapib; // Assigns results of addition to C
+   id = iatib; // Assigns results of multiplication to C
+   ie = iasib; // Assigns results of subtraction to C
+   ig = iadib; // Assigns results of division to C
+
+It is worth noting, that it is somewhat trivial to satisfy consideration
+:ref:`ec_reusable_intermediates` when interacting with the expression layer
+directly. This is because each expression object is actually a node in the
+:ref:`term_cst`, so by reusing the literal nodes we reuse the intermediates.
 
 Obtaining an OpGraph
 ====================
@@ -217,17 +243,129 @@ Then internally the ``add_to_graph`` method of the most derived class,
        // Return new graph and new node
    }
 
-This works because ``Expression<T>`` defines a virtual function 
+This works because ``Expression<T>`` defines a virtual function
 ``std::pair<OpGraph, Node> add_to_graph(OpGraph g)`` which is overridden by each
-of the derived classes. Each derived class calls the base class's 
+of the derived classes. Each derived class calls the base class's
 ``add_to_graph`` method, which in turn returns the graph and the node just
 added. Exactly what the nodes look like, and what information they contain is
 punted to the OpGraph component (see :ref:`tw_designing_the_opgraph`).
-
-
 
 .. _expression_user_api:
 
 ********
 User API
 ********
+
+The previous section showed how the expression objects actually interacted.
+This section focuses on what the user actually writes.
+
+Construction
+============
+
+If we view the main goal of the construction section to be the expressions
+like ``ic = iapib;``, using the DSL the user would actually write this as:
+
+.. code-block:: c++
+
+   auto [a, b] = fill_in_a_and_b();
+   T c, d, e, g; // No "f" to make connection to the example API section
+
+   c("i,j,k") = a("i,j,k") + b("i,j,k");
+   d("i,j,k") = a("i,j,k") * b("i,j,k");
+   e("i,j,k") = a("i,j,k") - b("i,j,k");
+   g("i,j,k") = a("i,j,k") / b("i,j,k");
+
+This code is much more concise, but still contains all the contents shown
+explicitly in :ref:`expression_construction`, but it now happens via a series
+of unnamed temporary objects. For example the first line actually works by:
+
+- ``a("i,j,k")`` creates an unnamed temporary ``Indexed<T>`` object,
+- ``b("i,j,k")`` creates  another unnamed temporary ``Indexed<T>`` object,
+- the ``Indexed<T>::operator+`` method is then called on the previous two
+  temporary objects resulting in a third temporary of type ``Addition<T>``
+- ``c("i,j,k")`` creates yet another temporary ``Indexed<T>`` object.
+- Finally ``Indexed<T>::operator=`` is called assigning the ``Addition<T>``
+  object to the the temporary resulting from ``c("i,j,k")``.
+
+In order to satisfy :ref:`ec_reusable_intermediates`, we need to assign at least
+one of the common intermediates to a named variable, *e.g.*:
+
+.. code-block:: c++
+
+   {
+      auto aijk = a("i,j,k");
+      c("i,j,k")  = aijk * b("i,j,k");
+      d("i,j,k")  = aijk / b("i,j,k");
+   }
+
+In practice the ``Buffer`` objects actually assigned to ``c`` and ``d`` are
+``FutureBuffer`` objects (see :ref:`tw_designing_the_buffer`). The
+``FutureBuffer`` objects are tied to lifetime of the expression layer which
+generated them. When all expression-layer objects involved in creating the
+``FutureBuffer`` objects go out of scope evaluation begins. So if we want to
+ensure that the above two equations are treated as a set of equations, and not
+two individual equations, we need to make sure at least one of the expression-
+layer objects is present in each equation (the ``{}`` are needed to establish a
+scope for ``aijk``, ensuring it goes out scope after the second equation). While
+it is theoretically possible for TensorWrapper to correctly identify the two
+temporary objects resulting from ``b("i,j,k")`` to be identical, it is unlikely
+that TensorWrapper will contain such optimizations in the near future. Hence
+best practice will be to assign each common intermediate to a named variable,
+*i.e.*, the above code block should really be written as:
+
+.. code-block:: c++
+
+   {
+      auto aijk = a("i,j,k");
+      auto bijk = b("i,j,k");
+      c("i,j,k")  = aijk * bijk;
+      d("i,j,k")  = aijk / bijk;
+   }
+
+so that the expression layer will identify ``b("i,j,k")`` as evaluating to the
+same intermediate.
+
+Non-Einstein Algebra
+====================
+
+.. code-block:: c++
+
+   auto [L, Lt] = CholeskyDecomposition(A); // A = LLt
+   auto [v, λ]  = EigenDecomposition(A, B); // Av = λBv
+
+   auto a10_10 = A.slice(10, 10);
+
+
+
+*******
+Summary
+*******
+
+The above design satisfies the considerations raised in :ref:`ec_considerations`
+by:
+
+:ref:`ec_compose_multiple_objects`
+   The entire expression layer is templated on the type of the object being
+   composed. This allows the expression layer to be reused with various pieces
+   of the ``TensorWrapper`` class (*e.g.*, the ``Shape`` class) in addition to
+   the ``TensorWrapper`` class itself.
+
+:ref:`ec_generalized_einstein_notation`
+   The entry pont to the expression layer is, for most operations, is assigning
+   indices to a tensor's modes. The resulting objects can then be composed using
+   generalized Einstein notation.
+
+:ref:`ec_non_einstein_math`
+
+
+:ref:`ec_template_meta_programming_cost`
+   Instead of templating the various pieces of the expression layer on the
+   types of the sub-expressions, as is usually done, we only template the
+   expression layer pieces on the types of the object being composed, *e.g.*,
+   the template type parameter would be something like ``Shape`` or
+   ``TensorWrapper`` instead of say a type like
+   ``Addition<Indexed<Shape>, Indexed<Shape>>``.
+
+:ref:`ec_reusable_intermediates`
+   Each object in the expression layer is a node of a CST. Reusing the same
+   object in multiple places reuses the same node of the CST.
