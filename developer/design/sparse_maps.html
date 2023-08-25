@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Designing the OpGraph &mdash; TensorWrapper 1.0.0 documentation</title>
+  <title>Designing the Sparse Map Component &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Designing the Sparse Map Component" href="sparse_maps.html" />
-    <link rel="prev" title="Designing the Expression Component" href="expression.html" /> 
+    <link rel="next" title="Sparse Maps Sublibrary" href="../../sparse_maps/index.html" />
+    <link rel="prev" title="Designing the OpGraph" href="op_graph.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,12 +61,8 @@
 <li class="toctree-l3"><a class="reference internal" href="buffer.html">Designing the Buffer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensor_wrapper.html">Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="expression.html">Designing the Expression Component</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the OpGraph</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#opgraph-considerations">OpGraph Considerations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#opgraph-motivations">OpGraph Motivations</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="sparse_maps.html">Designing the Sparse Map Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op_graph.html">Designing the OpGraph</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing the Sparse Map Component</a></li>
 </ul>
 </li>
 </ul>
@@ -92,9 +88,9 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Developer Documentation</a></li>
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
-      <li class="breadcrumb-item active">Designing the OpGraph</li>
+      <li class="breadcrumb-item active">Designing the Sparse Map Component</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/op_graph.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/sparse_maps.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -102,44 +98,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="designing-the-opgraph">
-<span id="tw-designing-the-opgraph"></span><h1>Designing the OpGraph<a class="headerlink" href="#designing-the-opgraph" title="Permalink to this heading"></a></h1>
-<div class="section" id="opgraph-considerations">
-<h2>OpGraph Considerations<a class="headerlink" href="#opgraph-considerations" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt>Multiple source nodes</dt><dd><p>The graph may have multiple inputs. Each input is assumed to be a
-<code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object.</p>
-</dd>
-<dt>Multiple sink nodes</dt><dd><p>The graph may have multiple results. We assume the results have different
-types based on whether or not they are terminating the graph. The graph
-terminates on a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object.</p>
-</dd>
-<dt>References to actual data</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> must either have handles to the actual data, or somehow be
-associated with the actual data in order for backends to translate the AST
-into results.</p>
-</dd>
-<dt>expression component compatibility</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> object will ultimately be filled in by the objects in the
-expression component. Thus the interface of the <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> class needs to
-be designed so that it is compatible with the <code class="docutils literal notranslate"><span class="pre">Expression</span></code> component’s
-implementation (see <a class="reference internal" href="expression.html#designing-the-expression-component"><span class="std std-ref">Designing the Expression Component</span></a>).</p>
-</dd>
-</dl>
-</div>
-<div class="section" id="opgraph-motivations">
-<h2>OpGraph Motivations<a class="headerlink" href="#opgraph-motivations" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id1">
-<img alt="../../_images/graph_example.png" src="../../_images/graph_example.png" />
-<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">Examples of some tensor graphs arising in electronic structure theory.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</div>
-</div>
+  <div class="section" id="designing-the-sparse-map-component">
+<span id="tw-designing-the-sparse-map-component"></span><h1>Designing the Sparse Map Component<a class="headerlink" href="#designing-the-sparse-map-component" title="Permalink to this heading"></a></h1>
+<p>TODO: Write me!!!</p>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="expression.html" class="btn btn-neutral float-left" title="Designing the Expression Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sparse_maps.html" class="btn btn-neutral float-right" title="Designing the Sparse Map Component" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="op_graph.html" class="btn btn-neutral float-left" title="Designing the OpGraph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../sparse_maps/index.html" class="btn btn-neutral float-right" title="Sparse Maps Sublibrary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

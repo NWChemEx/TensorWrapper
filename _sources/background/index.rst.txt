@@ -22,6 +22,7 @@ TensorWrapper Background
    :caption: Contents:
 
    terminology
+   einstein_summation_convention
    logical_v_physical
    key_features
    other_choices

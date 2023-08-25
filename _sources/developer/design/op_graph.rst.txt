@@ -36,6 +36,12 @@ References to actual data
    associated with the actual data in order for backends to translate the AST
    into results.
 
+expression component compatibility
+   The ``OpGraph`` object will ultimately be filled in by the objects in the
+   expression component. Thus the interface of the ``OpGraph`` class needs to
+   be designed so that it is compatible with the ``Expression`` component's
+   implementation (see :ref:`designing_the_expression_component`).
+
 *******************
 OpGraph Motivations
 *******************
