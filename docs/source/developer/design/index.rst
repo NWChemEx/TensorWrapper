@@ -32,3 +32,4 @@ Design of TensorWrapper
    tensor_wrapper
    expression
    op_graph
+   sparse_maps

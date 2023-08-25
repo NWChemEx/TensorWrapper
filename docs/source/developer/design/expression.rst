@@ -67,7 +67,7 @@ generalized Einstein notation
    generalized Einstein notation (indices appearing on the right side of
    an equation, but not the left are summed over).
 
-   - There are some gotchas (see :ref:`eistein_summation_convention`).
+   - There are some gotchas (see :ref:`einstein_summation_convention`).
    - Math operations include: addition, subtraction, scaling, multiplication,
      and division. The latter is missing from a number of existing tensor
      libraries.
@@ -114,6 +114,8 @@ reusable intermediates
      TensorWrapper may map the element access to "slice access followed by
      element access").
 
+.. _ec_sparse_maps:
+
 sparse maps
    The sparsity component :ref:`sparsity_design` realized that sparse maps are
    a mechanism for creating sparsity objects and thus should live above the
@@ -125,6 +127,22 @@ sparse maps
    and ``C``. The trick is we need to know how the sparse map's modes map to
    the modes of ``A``, ``B``, and ``C``. This information is
    available in the expression layer.
+
+   - The design of the sparse map objects is punted to the sparse map component
+     of TensorWrapper (see :ref:`tw_designing_the_sparse_map_component`).
+   - The API needs to work for sparse maps which map from one or more modes to
+     one or more modes, *i.e.*, we should not assume that we are always mapping
+     a single mode to a single mode.   
+
+.. _ec_linked:
+
+linked
+   Ultimately all expressions which are to be treated together will need to be
+   linked so they can share information. Linked in this context means that they
+   share common state.
+
+   - The lifetime of the common state will likely need to be managed by a shared
+     pointer.
 
 Out of Scope
 ============
@@ -138,16 +156,121 @@ expression optimization
    :ref:`tw_designing_the_buffer`).
 
 finding common intermediates
-   While consideration :ref:`reusable_intermediates` concerns the expression
+   While consideration :ref:`ec_reusable_intermediates` concerns the expression
    layer being able to annotate common intermediates, actually finding said
    common intermediates is much harder. For now it is the user's job to identify
    common intermediates.
+
+filling in the sparse maps
+   Sparse maps are an alternative means of specifying sparsity. As with the
+   objects in the sparsity component (see :ref:`sparsity_design`) filling in
+   the sparse map is left to the user.
 
 ***************************
 Expression Component Design
 ***************************
 
-. _expression_user_api:
+.. _fig_expression_component:
+
+.. figure:: assets/expressions.png
+   :align: center
+
+   Overall inheritance diagram for the classes comprising the expression 
+   component of TensorWrapper.
+
+:numref:`fig_expression_component` shows the classes involved in TensorWrapper's
+expression component and how they are related. The following subsections
+describe the main highlights of the hierarchy in more detail.
+
+Expression
+----------
+
+The base of the class hierarchy
+is ``Expression<T>`` which is templated on the type of object being composed.
+For example viable options for ``T`` are ``Shape`` and ``TensorWrapper``.
+Templating on the object being composed addresses 
+:ref:`ec_compose_multiple_objects`. The ``Expression<T>`` object will also
+contain a pointer to the linked state (see consideration :ref:`ec_linked`).
+
+The main motivation for this class is to define the API all derived classes
+must obey and then to interact with those classes through the base class. In
+particular this approach relies on dynamic polymorphism, not the static 
+polymorphism usually leveraged in expression templates. This paves the way for
+addressing :ref:`ec_template_meta_programming_cost`.
+
+As a note, since the API for composing expression objects will involve
+taking objects by their base class and returning them wrapped in a derived
+class, to avoid loops in the hierarchy where the base class depends on the
+derived class, most operations will need to be defined as free functions. For
+example:
+
+.. code-block:: c++
+
+   Addition<T> operator+(const Expression<T>& lhs, const Expression<T>& rhs);
+   CholeskyVectors<T> cholesky(const Expression<T>& A);
+
+The definitions will 
+One of the key properties of any ``Expression<T>`` object is that when assigned
+to an object of type ``Indexed<T>`` it can produce an object of type ``T``.
+
+.. note::
+
+   Because assigning to ``Indexed<T>`` has to be treated specially care needs
+   to be taken in defining copy/move assignment operators.
+
+Nary
+----
+
+Deriving from ``Expression<T>`` is the ``Nary<N,T>`` class (n-ary being the 
+generalization of unary, binary, trinary, etc. to n objects). This class serves
+as code-factorization for objects which must hold pointers/references to ``N`` 
+objects of type ``T``. We have opted to specify ``N`` statically since it is
+almost always known ahead of time. While ``N==1`` and ``N==2`` scenarios are
+most common, we can envision optimizations which may be enabled by having
+higher values of ``N`` (for example triple products).
+
+Unary
+-----
+
+Most of the tensor algebra falling under the :ref:`ec_non_einstein_math`
+consideration involves operations on a single object. 
+
+- For taking slices/chips of the object we respectively have the ``Slice<T>``/ 
+  ``Chip<T>`` classes.
+- ``Permuation<T>`` represents permutations of the modes. 
+- ``EigenVectors<T>`` and ``EigenValues<T>`` respectively represent the 
+  eigenvectors and eigenvalues resulting from an eigen decomposition. 
+- Similarly, ``CholeskyVectors<T>`` represents the Cholesky vectors resulting 
+  from a Cholesky decomposition. 
+- ``Scale<T>`` scales an ``Expression<T>`` by a constant.  
+- ``Pow<T>`` represents taking a matrix power (could template on the power too 
+  since I think it's usually known at compile time also).
+
+The last unary class is ``Indexed<T>`` which is a bit of a special class. Given 
+a series of objects of type ``T``, the objects are promoted to the 
+expression layer by annotating the modes (providing string labels). The object 
+which results from annotating the modes is an instance of ``Indexed<T>``. The 
+reason this class is special is that the only way to get back to objects of type
+``T``, *i.e.*, to leave the expression layer is by assigning an 
+``Expression<T>`` object to an ``Indexed<T>`` object.
+
+Binary
+------
+
+Members of the binary series of classes involve combining two objects. Most
+tensor algebra which can be expressed using generalized Einstein summation
+convention (consideration :ref:`ec_generalized_einstein_notation`) falls under
+this category.
+
+- ``Addition<T>`` results from adding two ``Expression<T>`` objects together.
+- ``Subtraction<T>`` results from subtracting two ``Expression<T>`` objects.
+- ``Multiplication<T>`` results from multiplying two ``Expression<T>`` objects
+- ``Division<T>`` results from dividing two ``Expression<T>`` objects
+- ``AssignTo<T>`` results from assigning an ``Expression<T>`` to an 
+  ``Indexed<T>`` object. These objects are only ever created for generating
+  nodes of the :ref:`term_ast`.
+
+.. _expression_user_api:
 
 ********
 User API
@@ -236,24 +359,49 @@ track an CST). Proposed user APIs are:
       // as shown, but it should be possible to get something close.
 
       // A = LLt
-      std::make_pair(L("i,j"), Lt("i,j")) = Aij.cholesky(); 
+      L("i,j") = cholesky(Aij); 
    
       // Av = λBv (no argument needed if B is 1)
-      std::make_pair(v("i,j"), λ("j")]  = Aij.eigen_solve(B("i,j"));
-
-      // If we just wanted the eigenvalues/eigenvectors
-      λ("j")   = Aij.eigen_values();
-      v("i,j") = Aij.eigen_vectors();
+      std::make_pair(v("i,j"), λ("j")]  = eigen_solve(Aij, B("i,j"));
 
       // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
-      a10_10("i,j") = Aij.slice({0, 0}, {10, 10});
+      a10_10("i,j") = slice(Aij, {0, 0}, {10, 10});
    
       // Raise A to the power 2
-      a2("i,j") = Aij.pow(2);
+      a2("i,j") = pow(Aij, 2);
   }
 
 The above code actually would create one set of expressions since ``Aij`` is
 used in all of the expressions.
+
+Sparse Maps
+===========
+
+Each element of a particular set of expressions will necessarily have access to
+the same graph. The user should thus be able to set the sparse maps through
+any element of the expression layer, *e.g.*,
+
+.. code-block:: c++
+
+     {
+      auto Lij = get_sparse_map_from_mode_i_to_mode_j();
+      auto Lik + get_sparse_map_from_mode_i_to_mode_k();
+
+      auto aijk = a("i,j,k");
+      auto bijk = b("i,j,k");
+      c("i,j,k")  = aijk * bijk;
+      d("i,j,k")  = aijk / bijk;
+      aijk.set_sparse_map("i", "j", Lij);
+      aijk.set_sparse_map("i", "k", Lik);
+   }
+
+The above registers two sparse maps: one which for a given offset along modes
+labeled with ``"i"`` gives non-zero offsets along modes labeled with ``j"`` and
+a similar sparse map for modes labeled with ``"i"`` to modes labeled with 
+``"k"``. Note that for this API to work the user MUST use indices consistently,
+which is to say ``i"``, ``"j"``, and ``"k"`` must be indexing the same modes 
+each time they appear.
+
 
 ***********
 Example API
@@ -349,36 +497,22 @@ objects:
    auto [A, B] = get_filled_matrices();
    T L, Lt, v, λ, a10_10, a2;
 
-   // Promote everything to the expression layer
-   Indexed<T> iA      = A("i,j");
-   Indexed<T> iB      = B("i,j");
-   Indexed<T> iL      = L("i,q");
-   Indexed<T> iLt     = Lt("q,j");
-   Indexed<T> iv      = v("i,q");
-   Indexed<T> iλ      = λ("q");
-   Indexed<T> ia10_10 = a10_a10("i,j");
-   Indexed<T> ia2     = a2("i,j");
-
    // A = LLt
-   std::tie(iL, iLt) = Aij.cholesky(); 
+   CholeskyVectors<T> L = cholesky(Aij); 
    
    // Av = λBv (argument only needed for generalized eigen_solves)
-   std::tie(iv, iλ) = Aij.eigen_solve(Bij);
-
-   // If we just wanted the eigenvalues/eigenvectors
-   iλ = Aij.eigen_values();
-   iv = Aij.eigen_vectors();
+   std::pair<EigenVectors<T>, EigenValues<T>> vλ = Aij.eigen_solve(Bij);
 
    // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
-   ia10_1 = Aij.slice({0, 0}, {10, 10});
+   Slice<T> a10_10 = slice(Aij, {0, 0}, {10, 10});
    
    // Raise A to the power 2
-   ia2 = Aij.pow(2);
+   Pow<T> a2 = pow(Aij, 2);
   
 The trick to satisfying :ref:`ec_non_einstein_math` consideration is that we 
 require the various operations to involve tensors which are already wrapped in
 expression-layer constructs. While this is a bit more verbose, it also allows
-us to in some cases (like the ``slice`` operation) support transposing the
+us to, in some cases (like the ``slice`` operation), support transposing the
 result.
 
 Obtaining an OpGraph
@@ -416,6 +550,19 @@ of the derived classes. Each derived class calls the base class's
 added. Exactly what the nodes look like, and what information they contain is
 punted to the OpGraph component (see :ref:`tw_designing_the_opgraph`).
 
+.. _ec_understanding_the_linked_state:
+
+******************************
+Understanding the Linked State
+******************************
+
+Pursuant to the :ref:`ec_linked` consideration, expression component objects
+belong to the same set of expressions must share a common state. The purpose of
+this section will be to work out the lifetime semantics and shared behavior of
+this state.
+
+TODO: We can punt on this until we're ready to implement it.
+
 *******
 Summary
 *******
@@ -451,3 +598,20 @@ by:
 :ref:`ec_reusable_intermediates`
    Each object in the expression layer is a node of a CST. Reusing the same
    object in multiple places reuses the same node of the CST.
+
+:ref:`ec_sparse_maps`
+   The objects associated with a particular set of expressions are linked.
+   Using any of these objects the user can set one or more sparse maps which
+   will then work out the sparsity for the set of equations.
+
+:ref:`ec_linked`
+   The linked state of the expression component is described in the
+   :ref:`ec_understanding_the_linked_state` section.
+
+***********
+Other Notes
+***********
+
+At some point we'll probably need a way of applying arbitrary functions to
+slices of one or more tensor. Such an operation could conceivably be built into
+the ``Nary<N,T>`` class and the classes which derive from it 
