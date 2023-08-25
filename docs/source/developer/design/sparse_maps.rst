@@ -12,24 +12,10 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _tensor_wrapper_design:
+.. _tw_designing_the_sparse_map_component:
 
-#######################
-Design of TensorWrapper
-#######################
+##################################
+Designing the Sparse Map Component
+##################################
 
-.. toctree::
-   :maxdepth: 2
-
-   motivation
-   overview
-   shape
-   symmetry
-   sparsity
-   layout
-   allocator
-   buffer
-   tensor_wrapper
-   expression
-   op_graph
-   sparse_maps
+TODO: Write me!!!
