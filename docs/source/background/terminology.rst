@@ -23,7 +23,9 @@ TensorWrapper Terminology
 
 When discussing tensors, different researchers use different terminology. This
 section provides a glossary of the tensor terminology we will use throughout
-TensorWrapper.
+TensorWrapper. The terminology is inspired by the initial tensor interface
+efforts of the MolSSI organization (see
+`here <https://github.com/MolSSI/tensor-interfaces>`__).
 
 ******************
 Tensor Terminology
@@ -50,8 +52,9 @@ has lower rank. The distinction between chip and slice is important because of
 the ambiguity associated with taking slices with extents of length one along
 one or more modes. For example, say we ask for the first row of a matrix with
 |n| columns. Does the user want a 1 by |n| matrix or an |n|-element vector? Chip
-vs. slice resolves this ambiguity. If the user asked for row as a slice, they
-get back a matrix, if they asked for the row as a chip they get back a vector.
+vs. slice resolves this ambiguity. If the user asked for the row as a slice,
+they get back a matrix, if they asked for the row as a chip they get back a
+vector.
 
 .. _term_element:
 
@@ -74,7 +77,7 @@ extent
 The number of elements along a :ref:`term_mode`. For a vector, the extent of
 the vector is the total number of elements in the vector. A matrix has two
 extents: the number of rows and the number of columns. Outside TensorWrapper
-other common names for extent are length and dimensionality.
+other common names for extent are length, dimension, and size.
 
 .. _term_jagged:
 
@@ -124,7 +127,8 @@ usually assume that field associated with a tensor is the field of real (or
 complex) numbers, mathematically there is no such restrictions. Indeed, we
 sometimes find it useful to use other fields (such as fields whose elements
 are tensors of a :ref:`term_rank` greater than 0). We say a tensor is nested
-if its elements are tensors of rank greater than 0.
+if its elements are tensors of rank greater than 0. Nesting can be confusing
+and is covered in more detail on the :ref:`nested_tensors` page.
 
 .. _term_on_demand:
 
@@ -245,3 +249,16 @@ multiplication are commutative and associative, and multiplication distributes
 over addition. Finally, each non-zero element in the set must also posses an
 additive and multiplicative inverse (zero elements will have only an additive
 inverse).
+
+.. _term_isomorphism:
+
+isomorphism
+===========
+
+Two mathematical objects (*e.g.*, spaces, fields, sets of numbers) are said to
+be isomorphic if there exists an invertible, bijective map from one object to
+the other. Practically, isomorphisms can be thought of as a generalization
+of equality. Whereas equality usually requires two objects to be
+indistinguishable, isomorphism only requires the objects to behave the same,
+*i.e.*, the two objects can be thought of as different representations of a more
+fundamental object.
