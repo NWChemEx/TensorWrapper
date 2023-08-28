@@ -118,11 +118,12 @@ designing the symmetry component of TensorWrapper.</p>
 the value of a different element of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, say <span class="math notranslate nohighlight">\(t_{ab}\)</span>. One of the more common types
 of symmetry is when <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> is a symmetric matrix, in which case
 <span class="math notranslate nohighlight">\(t_{ij} = t_{ab} = t_{ji}\)</span>.</p>
-<p>For our purposes, given a tensor <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, a symmetry <span class="math notranslate nohighlight">\(S\)</span> is a mapping of a
-slice of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>, to itself (up to a sign). We are specifically interested in
-non-trivial mappings where the input slice to <span class="math notranslate nohighlight">\(S\)</span> has different indices
-than the output slice. In the common scenario of permutational symmetry, <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>
-will be a single element of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, but for other symmetries <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> may contain more
+<p>For our purposes, given a tensor <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, a symmetry <span class="math notranslate nohighlight">\(S\)</span> is a mapping of the
+elements comprising a slice of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>, to those same elements (up to a sign)
+in another slice <span class="math notranslate nohighlight">\(\mathbf{t'}\)</span>. We are specifically interested in non-trivial mappings
+where <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t'}\)</span> are not given by the same offsets. In the common scenario of
+permutational symmetry, <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t'}\)</span> will be slices containing a single element,
+but for other symmetries <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> may contain more
 than one element. Strictly speaking <span class="math notranslate nohighlight">\(\mathbf{t}=\mathbf{0}\)</span> satisfies
 our definition of a symmetry; however, such symmetries are usually treated
 differently on account of the special properties of zero (namely its trivial
@@ -200,21 +201,15 @@ tensors the symmetries describe.</p>
 <div class="section" id="out-of-scope-considerations">
 <h3>Out of Scope Considerations<a class="headerlink" href="#out-of-scope-considerations" title="Permalink to this heading"></a></h3>
 <dl class="simple">
-<dt>Nesting</dt><dd><p>Tensors can be nested and we will need to know the symmetry of each layer.
-In general, the symmetry may vary from element to element of a nested
-tensor (<em>e.g.</em>, if we tile a symmetric matrix the outer matrix will also
-be symmetric, but only the diagonal inner matrices are symmetric). That said,
-from the perspective of the symmetry component, nesting presents no
-additional complications beyond needing to store many copies of the symmetry
-object (minimally one per layer).</p>
-<ul class="simple">
-<li><p>While nesting is out of scope, the internals of the symmetry component
-may need to be aware of nesting.</p></li>
-</ul>
-</dd>
 <dt>Sparsity</dt><dd><p>Based on our definition of symmetry, sparsity is a symmetry; however, users
 typically think of it differently, plus it internally is used differently.
-For these reasons we consider sparsity separately from symmetry.</p>
+For these reasons we consider sparsity separately from symmetry. For full
+design details of the sparsity component see <a class="reference internal" href="sparsity.html#sparsity-design"><span class="std std-ref">Tensor Sparsity Design</span></a>.</p>
+</dd>
+<dt>Exploiting symmetry</dt><dd><p>The point of the symmetry component is to provide the user a mechanism for
+expressing the symmetry of the tensor. Choosing what elements to store is
+part of the physical layout (see <a class="reference internal" href="layout.html#layout-design"><span class="std std-ref">Designing the Layout Component</span></a>) and actually
+exploiting the symmetry of the tensor is left to the backend.</p>
 </dd>
 </dl>
 </div>
@@ -239,8 +234,7 @@ antisymmetric simply by providing the rank of the tensor.</p></li>
 </ul>
 <p>Ultimately the symmetry of a tensor is mathematically treated using group
 theory. The symmetry operations on the tensor being the members of the group.
-Hence when a tensor has a symmetry other than totally symmetric/antisymmetric
-it suffices for the user to provide TensorWrapper with the symmetry operations.
+<code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> is thus a container filled with <code class="docutils literal notranslate"><span class="pre">SymmetryOp</span></code> objects.
 All symmetry operations derive from <code class="docutils literal notranslate"><span class="pre">SymmetryOp</span></code>, which serves primarily to
 provided a consistent API among the various operations and to provide some
 code factorization.</p>
@@ -320,6 +314,10 @@ vectors, one can also provide <code class="docutils literal notranslate"><span c
 provided, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> assumes all pairs not specified in the ctor are
 asymmetric, so we could have declared <code class="docutils literal notranslate"><span class="pre">s01_2</span></code> also like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>and we can declare an asymmetric rank 2 tensor like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">as2</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Note that for declaring the <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object for a rank <code class="docutils literal notranslate"><span class="pre">r</span></code> tensor,
@@ -413,7 +411,7 @@ those involving jagged and/or nested:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Block of a jagged matrix where row 0 is 10 elements long and row 1 is 20</span>
 <span class="n">JaggedShape</span><span class="w"> </span><span class="n">jblock0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}};</span>
 
-<span class="c1">// Block of a jagged matrix where row 2 is 10 elements long and row 4 is 20</span>
+<span class="c1">// Block of a jagged matrix where row 2 is 10 elements long and row 3 is 20</span>
 <span class="n">JaggedShape</span><span class="w"> </span><span class="nf">jblock1</span><span class="p">({</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// Symmetry for a jagged matrix where block0 and block1 must be the same</span>
