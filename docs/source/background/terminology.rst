@@ -130,6 +130,16 @@ are tensors of a :ref:`term_rank` greater than 0). We say a tensor is nested
 if its elements are tensors of rank greater than 0. Nesting can be confusing
 and is covered in more detail on the :ref:`nested_tensors` page.
 
+.. _term_on_demand:
+
+on-demand
+=========
+
+A tensor, or more typically a slice of a tensor, is on-demand if the elements of
+the tensor are computed when needed, then discarded. On-demand tensors typically
+store a callback which is capable of building a specified slice of a tensor.
+The slice will exist in memory, but will not be stored in the tensor.
+
 .. _term_rank:
 
 rank
