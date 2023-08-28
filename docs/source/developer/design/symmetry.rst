@@ -29,6 +29,7 @@ What is (tensor) symmetry?
 .. |tij| replace:: :math:`t_{ij}`
 .. |tab| replace:: :math:`t_{ab}`
 .. |t| replace:: :math:`\mathbf{t}`
+.. |tp| replace:: :math:`\mathbf{t'}`
 .. |S| replace:: :math:`S`
 
 Consider a matrix |T|, we say |T| has symmetry if given element |tij| we know
@@ -36,11 +37,12 @@ the value of a different element of |T|, say |tab|. One of the more common types
 of symmetry is when |T| is a symmetric matrix, in which case
 :math:`t_{ij} = t_{ab} = t_{ji}`.
 
-For our purposes, given a tensor |T|, a symmetry |S| is a mapping of a
-slice of |T|, |t|, to itself (up to a sign). We are specifically interested in
-non-trivial mappings where the input slice to |S| has different indices
-than the output slice. In the common scenario of permutational symmetry, |t|
-will be a single element of |T|, but for other symmetries |t| may contain more
+For our purposes, given a tensor |T|, a symmetry |S| is a mapping of the
+elements comprising a slice of |T|, |t|, to those same elements (up to a sign)
+in another slice |tp|. We are specifically interested in non-trivial mappings
+where |t| and |tp| are not given by the same offsets. In the common scenario of
+permutational symmetry, |t| and |tp| will be slices containing a single element,
+but for other symmetries |t| may contain more
 than one element. Strictly speaking :math:`\mathbf{t}=\mathbf{0}` satisfies
 our definition of a symmetry; however, such symmetries are usually treated
 differently on account of the special properties of zero (namely its trivial
@@ -127,22 +129,17 @@ Composition
 Out of Scope Considerations
 ===========================
 
-Nesting
-   Tensors can be nested and we will need to know the symmetry of each layer.
-   In general, the symmetry may vary from element to element of a nested
-   tensor (*e.g.*, if we tile a symmetric matrix the outer matrix will also
-   be symmetric, but only the diagonal inner matrices are symmetric). That said,
-   from the perspective of the symmetry component, nesting presents no
-   additional complications beyond needing to store many copies of the symmetry
-   object (minimally one per layer).
-
-   - While nesting is out of scope, the internals of the symmetry component
-     may need to be aware of nesting.
-
 Sparsity
    Based on our definition of symmetry, sparsity is a symmetry; however, users
    typically think of it differently, plus it internally is used differently.
-   For these reasons we consider sparsity separately from symmetry.
+   For these reasons we consider sparsity separately from symmetry. For full
+   design details of the sparsity component see :ref:`sparsity_design`.
+
+Exploiting symmetry
+   The point of the symmetry component is to provide the user a mechanism for
+   expressing the symmetry of the tensor. Choosing what elements to store is
+   part of the physical layout (see :ref:`layout_design`) and actually
+   exploiting the symmetry of the tensor is left to the backend.
 
 ***************
 Symmetry Design
@@ -169,8 +166,7 @@ the ``Symmetry`` class hierarchy exist primarily to help the user create the
 
 Ultimately the symmetry of a tensor is mathematically treated using group
 theory. The symmetry operations on the tensor being the members of the group.
-Hence when a tensor has a symmetry other than totally symmetric/antisymmetric
-it suffices for the user to provide TensorWrapper with the symmetry operations.
+``Symmetry`` is thus a container filled with ``SymmetryOp`` objects.
 All symmetry operations derive from ``SymmetryOp``, which serves primarily to
 provided a consistent API among the various operations and to provide some
 code factorization.
@@ -265,6 +261,12 @@ asymmetric, so we could have declared ``s01_2`` also like:
 .. code-block:: c++
 
    Symmetry s01_2(3, Symmetric{0, 1});
+
+and we can declare an asymmetric rank 2 tensor like:
+
+.. code-block:: c++
+
+   Symmetry as2(2);
 
 Note that for declaring the ``Symmetry`` object for a rank ``r`` tensor,
 specifying ``r`` is only necessary if ``(r-1)`` does not appear in a subset
@@ -372,7 +374,7 @@ those involving jagged and/or nested:
    // Block of a jagged matrix where row 0 is 10 elements long and row 1 is 20
    JaggedShape jblock0{Shape{10}, Shape{20}};
 
-   // Block of a jagged matrix where row 2 is 10 elements long and row 4 is 20
+   // Block of a jagged matrix where row 2 is 10 elements long and row 3 is 20
    JaggedShape jblock1({Shape{10}, Shape{20}}, {2});
 
    // Symmetry for a jagged matrix where block0 and block1 must be the same
