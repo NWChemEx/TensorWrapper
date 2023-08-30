@@ -199,6 +199,16 @@ has the same shape, |S| is smooth.
 Computer Science Terminology
 ****************************
 
+.. _term_arity:
+
+arity
+=====
+
+The "arity" of a function indicates the number of arguments it takes. Functions
+taking zero arguments are called "nullary". Functions taking one argument are
+"unary". Functions taking two, three, and four arguments respectively are:
+"binary", "ternary", and "quaternary".
+
 .. _term_ast:
 
 abstract syntax tree (AST)
