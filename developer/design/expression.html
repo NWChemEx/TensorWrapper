@@ -33,7 +33,7 @@
           
           <a href="../../index.html">
             
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../_static/logo_candybar.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -251,12 +251,14 @@ the sparse map is left to the user.</p>
 <h2>Expression Component Design<a class="headerlink" href="#expression-component-design" title="Permalink to this heading"></a></h2>
 <div class="figure align-center" id="id4">
 <span id="fig-expression-component"></span><img alt="../../_images/expressions.png" src="../../_images/expressions.png" />
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Overall inheritance diagram for the classes comprising the expression
+<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Overall inheritance diagram for the classes comprising the expression
 component of TensorWrapper.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-expression-component"><span class="std std-numref">Fig. 12</span></a> shows the classes involved in TensorWrapper’s
+<p><a class="reference internal" href="#fig-expression-component"><span class="std std-numref">Fig. 14</span></a> shows the classes involved in TensorWrapper’s
 expression component and how they are related. The following subsections
 describe the main highlights of the hierarchy in more detail.</p>
+<div class="section" id="expression">
+<h3>Expression<a class="headerlink" href="#expression" title="Permalink to this heading"></a></h3>
 <p>The base of the class hierarchy
 is <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> which is templated on the type of object being composed.
 For example viable options for <code class="docutils literal notranslate"><span class="pre">T</span></code> are <code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>.
@@ -285,6 +287,9 @@ to an object of type <code class="docutils literal notranslate"><span class="pre
 <p>Because assigning to <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> has to be treated specially care needs
 to be taken in defining copy/move assignment operators.</p>
 </div>
+</div>
+<div class="section" id="nary">
+<h3>Nary<a class="headerlink" href="#nary" title="Permalink to this heading"></a></h3>
 <p>Deriving from <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> is the <code class="docutils literal notranslate"><span class="pre">Nary&lt;N,T&gt;</span></code> class (n-ary being the
 generalization of unary, binary, trinary, etc. to n objects). This class serves
 as code-factorization for objects which must hold pointers/references to <code class="docutils literal notranslate"><span class="pre">N</span></code>
@@ -292,6 +297,9 @@ objects of type <code class="docutils literal notranslate"><span class="pre">T</
 almost always known ahead of time. While <code class="docutils literal notranslate"><span class="pre">N==1</span></code> and <code class="docutils literal notranslate"><span class="pre">N==2</span></code> scenarios are
 most common, we can envision optimizations which may be enabled by having
 higher values of <code class="docutils literal notranslate"><span class="pre">N</span></code> (for example triple products).</p>
+</div>
+<div class="section" id="unary">
+<h3>Unary<a class="headerlink" href="#unary" title="Permalink to this heading"></a></h3>
 <p>Most of the tensor algebra falling under the <a class="reference internal" href="#ec-non-einstein-math"><span class="std std-ref">non-Einstein math</span></a>
 consideration involves operations on a single object.</p>
 <ul class="simple">
@@ -313,6 +321,9 @@ which results from annotating the modes is an instance of <code class="docutils 
 reason this class is special is that the only way to get back to objects of type
 <code class="docutils literal notranslate"><span class="pre">T</span></code>, <em>i.e.</em>, to leave the expression layer is by assigning an
 <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> object to an <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> object.</p>
+</div>
+<div class="section" id="binary">
+<h3>Binary<a class="headerlink" href="#binary" title="Permalink to this heading"></a></h3>
 <p>Members of the binary series of classes involve combining two objects. Most
 tensor algebra which can be expressed using generalized Einstein summation
 convention (consideration <a class="reference internal" href="#ec-generalized-einstein-notation"><span class="std std-ref">generalized Einstein notation</span></a>) falls under
@@ -326,6 +337,7 @@ this category.</p>
 <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> object. These objects are only ever created for generating
 nodes of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a>.</p></li>
 </ul>
+</div>
 </div>
 <div class="section" id="user-api">
 <span id="expression-user-api"></span><h2>User API<a class="headerlink" href="#user-api" title="Permalink to this heading"></a></h2>

@@ -34,7 +34,7 @@
           
           <a href="../index.html">
             
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../_static/logo_candybar.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -68,19 +68,23 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#computer-science-terminology">Computer Science Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#arity">arity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#abstract-syntax-tree-ast">abstract syntax tree (AST)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#concrete-syntax-tree-cst">concrete syntax tree (CST)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#domain-specific-language-dsl">domain specific language (DSL)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#mathematics-terminology">Mathematics Terminology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#directed-acyclic-graph-dag">directed acyclic graph (DAG)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#field">field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#isomorphism">isomorphism</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="einstein_summation_convention.html">Einstein Summation Convention</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logical_v_physical.html">Logical Versus Physical: Understanding the Tensor Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nested_tensors.html">Understanding Nested Tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
 </ul>
@@ -120,7 +124,9 @@
 <span id="tw-terminology"></span><h1>TensorWrapper Terminology<a class="headerlink" href="#tensorwrapper-terminology" title="Permalink to this heading"></a></h1>
 <p>When discussing tensors, different researchers use different terminology. This
 section provides a glossary of the tensor terminology we will use throughout
-TensorWrapper.</p>
+TensorWrapper. The terminology is inspired by the initial tensor interface
+efforts of the MolSSI organization (see
+<a class="reference external" href="https://github.com/MolSSI/tensor-interfaces">here</a>).</p>
 <div class="section" id="tensor-terminology">
 <h2>Tensor Terminology<a class="headerlink" href="#tensor-terminology" title="Permalink to this heading"></a></h2>
 <p>Terms are listed alphabetically.</p>
@@ -137,8 +143,9 @@ has lower rank. The distinction between chip and slice is important because of
 the ambiguity associated with taking slices with extents of length one along
 one or more modes. For example, say we ask for the first row of a matrix with
 <span class="math notranslate nohighlight">\(n\)</span> columns. Does the user want a 1 by <span class="math notranslate nohighlight">\(n\)</span> matrix or an <span class="math notranslate nohighlight">\(n\)</span>-element vector? Chip
-vs. slice resolves this ambiguity. If the user asked for row as a slice, they
-get back a matrix, if they asked for the row as a chip they get back a vector.</p>
+vs. slice resolves this ambiguity. If the user asked for the row as a slice,
+they get back a matrix, if they asked for the row as a chip they get back a
+vector.</p>
 </div>
 <div class="section" id="element">
 <span id="term-element"></span><h3>element<a class="headerlink" href="#element" title="Permalink to this heading"></a></h3>
@@ -155,7 +162,7 @@ offset along each of the <span class="math notranslate nohighlight">\(n\)</span>
 <p>The number of elements along a <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>. For a vector, the extent of
 the vector is the total number of elements in the vector. A matrix has two
 extents: the number of rows and the number of columns. Outside TensorWrapper
-other common names for extent are length and dimensionality.</p>
+other common names for extent are length, dimension, and size.</p>
 </div>
 <div class="section" id="jagged">
 <span id="term-jagged"></span><h3>jagged<a class="headerlink" href="#jagged" title="Permalink to this heading"></a></h3>
@@ -192,7 +199,8 @@ usually assume that field associated with a tensor is the field of real (or
 complex) numbers, mathematically there is no such restrictions. Indeed, we
 sometimes find it useful to use other fields (such as fields whose elements
 are tensors of a <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a> greater than 0). We say a tensor is nested
-if its elements are tensors of rank greater than 0.</p>
+if its elements are tensors of rank greater than 0. Nesting can be confusing
+and is covered in more detail on the <a class="reference internal" href="nested_tensors.html#nested-tensors"><span class="std std-ref">Understanding Nested Tensors</span></a> page.</p>
 </div>
 <div class="section" id="on-demand">
 <span id="term-on-demand"></span><h3>on-demand<a class="headerlink" href="#on-demand" title="Permalink to this heading"></a></h3>
@@ -242,6 +250,13 @@ has the same shape, <span class="math notranslate nohighlight">\(\mathbf{S}\)</s
 </div>
 <div class="section" id="computer-science-terminology">
 <h2>Computer Science Terminology<a class="headerlink" href="#computer-science-terminology" title="Permalink to this heading"></a></h2>
+<div class="section" id="arity">
+<span id="term-arity"></span><h3>arity<a class="headerlink" href="#arity" title="Permalink to this heading"></a></h3>
+<p>The “arity” of a function indicates the number of arguments it takes. Functions
+taking zero arguments are called “nullary”. Functions taking one argument are
+“unary”. Functions taking two, three, and four arguments respectively are:
+“binary”, “ternary”, and “quaternary”.</p>
+</div>
 <div class="section" id="abstract-syntax-tree-ast">
 <span id="term-ast"></span><h3>abstract syntax tree (AST)<a class="headerlink" href="#abstract-syntax-tree-ast" title="Permalink to this heading"></a></h3>
 <p>With respect to source code, an abstract syntax tree (AST) is a representation
@@ -270,6 +285,16 @@ designed to makes it easy to express tensor operations in a performant manner.</
 </div>
 <div class="section" id="mathematics-terminology">
 <h2>Mathematics Terminology<a class="headerlink" href="#mathematics-terminology" title="Permalink to this heading"></a></h2>
+<div class="section" id="directed-acyclic-graph-dag">
+<span id="term-dag"></span><h3>directed acyclic graph (DAG)<a class="headerlink" href="#directed-acyclic-graph-dag" title="Permalink to this heading"></a></h3>
+<p>A graph is a series of nodes and edges which represents what pieces of a system
+are connected (nodes being the pieces of the system and edges being the
+connections). An acyclic graph is one where there are no cycles, <em>i.e.</em>, if node
+0 is connected to node 1 and node 1 is connected to node 2, node 2 can NOT be
+connected to node 0. Finally, a directed graph has edges with directionality,
+<em>i.e.</em>, edges are arrows where the tail points from the calling node to the
+callee.</p>
+</div>
 <div class="section" id="field">
 <span id="term-field"></span><h3>field<a class="headerlink" href="#field" title="Permalink to this heading"></a></h3>
 <p>A field is a set of elements along with two operations, usually termed
@@ -279,6 +304,16 @@ multiplication are commutative and associative, and multiplication distributes
 over addition. Finally, each non-zero element in the set must also posses an
 additive and multiplicative inverse (zero elements will have only an additive
 inverse).</p>
+</div>
+<div class="section" id="isomorphism">
+<span id="term-isomorphism"></span><h3>isomorphism<a class="headerlink" href="#isomorphism" title="Permalink to this heading"></a></h3>
+<p>Two mathematical objects (<em>e.g.</em>, spaces, fields, sets of numbers) are said to
+be isomorphic if there exists an invertible, bijective map from one object to
+the other. Practically, isomorphisms can be thought of as a generalization
+of equality. Whereas equality usually requires two objects to be
+indistinguishable, isomorphism only requires the objects to behave the same,
+<em>i.e.</em>, the two objects can be thought of as different representations of a more
+fundamental object.</p>
 </div>
 </div>
 </div>

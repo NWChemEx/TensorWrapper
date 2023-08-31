@@ -33,7 +33,7 @@
           
           <a href="../../index.html">
             
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../_static/logo_candybar.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -206,11 +206,11 @@ allocators to establish which backends the buffers contain.</p></li>
 <h2>Allocator Design<a class="headerlink" href="#allocator-design" title="Permalink to this heading"></a></h2>
 <div class="figure align-center" id="id1">
 <span id="fig-allocator"></span><img alt="../../_images/allocator.png" src="../../_images/allocator.png" />
-<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">The major components of the allocator. Classes in the diagram are meant to
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">The major components of the allocator. Classes in the diagram are meant to
 be representative of the backends and will not be kept up to date as
 support is added.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-allocator"><span class="std std-numref">Fig. 9</span></a> shows the major components of the allocator component.
+<p><a class="reference internal" href="#fig-allocator"><span class="std std-numref">Fig. 11</span></a> shows the major components of the allocator component.
 At the base of the hierarchy is <code class="docutils literal notranslate"><span class="pre">AllocatorBase</span></code> which is primarily meant to
 serve as code factorization and a means of type-erasing the buffer type the
 allocator actually produces. Deriving from <code class="docutils literal notranslate"><span class="pre">AllocatorBase</span></code> is <code class="docutils literal notranslate"><span class="pre">Allocator</span></code>

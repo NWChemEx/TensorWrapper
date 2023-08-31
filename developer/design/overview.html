@@ -33,7 +33,7 @@
           
           <a href="../../index.html">
             
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../_static/logo_candybar.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -268,11 +268,11 @@ sparsity and symmetry) are in scope.</p></li>
 <h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this heading"></a></h2>
 <div class="figure align-center" id="id1">
 <span id="fig-tw-workflows"></span><img alt="../../_images/workflows.png" src="../../_images/workflows.png" />
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
 user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </div>
 <p>Section <a class="reference internal" href="#atw-architecture-considerations"><span class="std std-ref">Architecture Considerations</span></a> presented two workflows: a
-user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a>
+user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a>
 illustrates these workflows using the major pieces of TensorWrapper. As
 mentioned in the previous section, the end goal is to have the
 performance-focused workflow be an implementation detail. For example, the
@@ -283,15 +283,15 @@ triggered when a <code class="docutils literal notranslate"><span class="pre">Te
 object.</p>
 <div class="figure align-center" id="id2">
 <span id="fig-tw-architecture"></span><img alt="../../_images/architecture.png" src="../../_images/architecture.png" />
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </div>
-<p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 3</span></a> shows the major components of TensorWrapper. The
+<p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 5</span></a> shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
 of TensorWrapper or a dependency and whether they are user-facing or
 implementation-facing.</p>
 <div class="section" id="user-facing-classes">
 <h3>User-Facing Classes<a class="headerlink" href="#user-facing-classes" title="Permalink to this heading"></a></h3>
-<p>As motivated by <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a>, users of TensorWrapper primarily
+<p>As motivated by <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a>, users of TensorWrapper primarily
 interact with four components:</p>
 <div class="section" id="shape">
 <h4>Shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h4>
@@ -360,7 +360,7 @@ purpose we have elected to build upon
 </div>
 <div class="section" id="implementation-facing-classes">
 <h3>Implementation-Facing Classes<a class="headerlink" href="#implementation-facing-classes" title="Permalink to this heading"></a></h3>
-<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 2</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 3</span></a>, the
+<p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 5</span></a>, the
 <a class="reference internal" href="#atw-performance-considerations"><span class="std std-ref">Performance Considerations</span></a> lead <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> to have several
 additional components. These components are required to convey additional
 state necessary for performance.</p>

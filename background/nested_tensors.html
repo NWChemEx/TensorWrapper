@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Nested Tensors &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Key Features of TensorWrapper" href="key_features.html" />
+    <link rel="prev" title="Logical Versus Physical: Understanding the Tensor Layout" href="logical_v_physical.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_candybar.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">TensorWrapper Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">TensorWrapper Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="einstein_summation_convention.html">Einstein Summation Convention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logical_v_physical.html">Logical Versus Physical: Understanding the Tensor Layout</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Understanding Nested Tensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">TensorWrapper Background</a></li>
+      <li class="breadcrumb-item active">Understanding Nested Tensors</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/background/nested_tensors.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="understanding-nested-tensors">
+<span id="nested-tensors"></span><h1>Understanding Nested Tensors<a class="headerlink" href="#understanding-nested-tensors" title="Permalink to this heading"></a></h1>
+<p>Mathematically tensors can be very confusing objects because of the many
+<a class="reference internal" href="terminology.html#term-isomorphism"><span class="std std-ref">isomorphism</span></a>s that exist among them. While mathematics may be fine
+treating isomorphic structures as equivalent, most tensor libraries are not. By
+introducing the concept of a nested tensor we are better able
+to distinguish among mathematical ambiguities which arise because of the
+isomorphic nature of the structures.</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading"></a></h2>
+<div class="figure align-center" id="id1">
+<span id="fig-rank0-v-rank123"></span><img alt="../_images/rank0_v_rank1_v_rank2_v_rank3.png" src="../_images/rank0_v_rank1_v_rank2_v_rank3.png" />
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Illustration of a scalar (the blue square), can equivalently be thought of
+as a vector, a matrix, and a rank 3 tensor.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</div>
+<p>Consider a tensor <span class="math notranslate nohighlight">\(A\)</span> with a single element in it. <span class="math notranslate nohighlight">\(A\)</span> is arguably best
+represented as a scalar (rank 0 tensor); however, if we wanted to, we could
+also represent <span class="math notranslate nohighlight">\(A\)</span> as a single element vector (rank 1 tensor), or a
+single element matrix (rank 2 tensor), or a single element rank 3 tensor, etc.
+This scenario is shown pictorially in <a class="reference internal" href="#fig-rank0-v-rank123"><span class="std std-numref">Fig. 2</span></a>.</p>
+<p>Because these representations are related by an isomorphism, math says that all
+of these representations of <span class="math notranslate nohighlight">\(A\)</span> behave similarly. For better or worse, most
+tensor libraries are rather pedantic about representation, <em>e.g.</em>, if <span class="math notranslate nohighlight">\(A\)</span> is
+declared as a vector, the user will need to provide one offset to access the
+single element. By requiring users to declare the rank of a tensor before use,
+the tensor library is able to avoid ambiguity and know how many indices to
+expect.</p>
+<div class="figure align-center" id="id2">
+<span id="fig-matrix-v-vov"></span><img alt="../_images/matrix_v_vov.png" src="../_images/matrix_v_vov.png" />
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">While it is conventional to view a rank 2 tensor as having rank 0 elements,
+one can equivalently view it as having rank 1 elements, <em>i.e.</em> a vector of
+vectors.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</div>
+<p>Unfortunately, rank alone is not sufficient to remove all of the
+ambiguity. Another point of ambiguity comes from the fact that vectors,
+matrices, etc. are actually isomorphic with scalars. <a class="reference internal" href="#fig-matrix-v-vov"><span class="std std-numref">Fig. 3</span></a>
+summarizes this isomorphism of tensors, namely given that <span class="math notranslate nohighlight">\(A\)</span> has a rank <span class="math notranslate nohighlight">\(r\)</span>
+we can actually view the elements as having any rank between 0 ane <span class="math notranslate nohighlight">\(r\)</span>
+inclusive. When we choose to view the elements of <span class="math notranslate nohighlight">\(A\)</span> as having a rank greater
+than 0, we say that <span class="math notranslate nohighlight">\(A\)</span> is a nested tensor. Finally, note that it is possible
+for a rank <span class="math notranslate nohighlight">\(r\)</span> tensor to have up to <span class="math notranslate nohighlight">\(r\)</span> layers of nesting, which is to say
+that nesting is not limited to a tensor of tensors, but can also include tensors
+of tensors of tensors, etc.</p>
+</div>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading"></a></h2>
+<p>So why does the ambiguity from nesting matter? The short answer is performance.
+In TensorWrapper, the nesting of the physical layout (see
+<a class="reference internal" href="../developer/design/tensor_wrapper.html#tw-logical-v-physical"><span class="std std-ref">Logical versus physical</span></a> for the distinction between the logical and
+physical layouts) is used to determine how a tensor is physically stored. If
+the physical layout of the tensor has no nesting then TensorWrapper can store
+the tensor however it wants. If the physical layout has a nesting like that
+shown above in <a class="reference internal" href="#fig-matrix-v-vov"><span class="std std-numref">Fig. 3</span></a>, then TensorWrapper will prioritize
+keeping columns of the matrix together. If instead the physical layout of a
+matrix is actually a rank 4 tensor resulting from tiling, like that shown on the
+right side of <a class="reference internal" href="logical_v_physical.html#fig-logical-v-physical"><span class="std std-numref">Fig. 1</span></a>, then TensorWrapper knows to
+prioritize keeping slices together. Viewing the same tiled tensor as a matrix of
+vectors of vectors (a triply nested tensor) would tell TensorWrapper to
+first prioritize keeping the slices together and then second prioritize keeping
+either the rows or the columns of the slices together (whether the second
+priority is the rows or the columns depends on how the innermost vectors were
+defined).</p>
+<p>Nested shapes were primarily developed to tell different physical layouts
+apart; however, there are some circumstances where the user may want to declare
+the logical layout to be nested. Ultimately nesting is a way of recursively
+partitioning a tensor. So if the problem the user is modeling is usually
+expressed in terms of equations which rely on partitioned tensors, then the user
+may opt to express the logical layout of the tensor as being nested. As an
+example, in many physics applications partitioned equations result from
+forces, energies, etc. that contain several identifiable components.</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>There are many different representations of the same tensor. While the results
+of formal tensor algebra are indifferent to the representation, numerical
+performance may change. To distinguish among the various ways of partitioning
+a tensor we introduce the concept of a nested tensor.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="logical_v_physical.html" class="btn btn-neutral float-left" title="Logical Versus Physical: Understanding the Tensor Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="key_features.html" class="btn btn-neutral float-right" title="Key Features of TensorWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
