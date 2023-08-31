@@ -93,8 +93,14 @@ if("${BUILD_TESTING}")
         VERSION ${NWX_CATCH2_VERSION}
     )
     cmaize_add_tests(
-        test_tensorwrapper
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests"
+        test_unit_tensorwrapper
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/unit"
+        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
+        DEPENDS Catch2 tensorwrapper
+    )
+    cmaize_add_tests(
+        test_integration_tensorwrapper
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/integration"
         INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
         DEPENDS Catch2 tensorwrapper
     )
