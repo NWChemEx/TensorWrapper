@@ -130,7 +130,7 @@ Limitations
 Traditional Einstein summation convention is usually said to be limited to pairs
 of repeated indices because repeating an index three or more times is ambiguous
 (*e.g.*, see
-`here https://math.stackexchange.com/questions/436515/problem-with-free-index-in-einstein-summation-notation`__).
+`here <https://math.stackexchange.com/questions/436515/problem-with-free-index-in-einstein-summation-notation>`__).
 Consider the equation:
 
 .. math::
