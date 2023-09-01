@@ -35,7 +35,7 @@ on:
       tiledarray_version:
         type: string
         required: false
-        default: fab5dc31fc10d88d381e8421d868d2185f164667
+        default: 63e180bf55849c173585a734c5e7456cbf31a986
       openblas_version:
         type: string
         required: false
