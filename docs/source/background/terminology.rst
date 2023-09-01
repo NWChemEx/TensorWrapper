@@ -199,6 +199,16 @@ has the same shape, |S| is smooth.
 Computer Science Terminology
 ****************************
 
+.. _term_arity:
+
+arity
+=====
+
+The "arity" of a function indicates the number of arguments it takes. Functions
+taking zero arguments are called "nullary". Functions taking one argument are
+"unary". Functions taking two, three, and four arguments respectively are:
+"binary", "ternary", and "quaternary".
+
 .. _term_ast:
 
 abstract syntax tree (AST)
@@ -221,6 +231,8 @@ of the source code, including how the programmer chose to represent a
 particular concept. Distilling out the essential concepts leads to an
 :ref:`term_ast`.
 
+
+
 .. _term_dsl:
 
 domain specific language (DSL)
@@ -236,6 +248,19 @@ designed to makes it easy to express tensor operations in a performant manner.
 ***********************
 Mathematics Terminology
 ***********************
+
+.. _term_dag:
+
+directed acyclic graph (DAG)
+============================
+
+A graph is a series of nodes and edges which represents what pieces of a system
+are connected (nodes being the pieces of the system and edges being the
+connections). An acyclic graph is one where there are no cycles, *i.e.*, if node
+0 is connected to node 1 and node 1 is connected to node 2, node 2 can NOT be
+connected to node 0. Finally, a directed graph has edges with directionality,
+*i.e.*, edges are arrows where the tail points from the calling node to the
+callee.
 
 .. _term_field:
 

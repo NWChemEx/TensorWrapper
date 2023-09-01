@@ -89,7 +89,7 @@ numfig = True
 #
 html_theme = 'sphinx_rtd_theme'
 
-html_logo = "assets/logo.png"
+html_logo = "assets/logo_candybar.png"
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
