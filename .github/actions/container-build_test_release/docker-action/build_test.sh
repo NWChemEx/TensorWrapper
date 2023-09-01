@@ -27,7 +27,7 @@ set -e # Exit with error if any command fails
 
 # checkout repo with the current branch (not master!)
 
-git clone -b ${env_branch_name} https://github.com/NWChemEx-Project/TensorWrapper.git
+git clone -b ${env_branch_name} https://$env_user:$env_cr_pat@github.com/NWChemEx-Project/TensorWrapper.git
 cd TensorWrapper
 
 cmake_command=cmake

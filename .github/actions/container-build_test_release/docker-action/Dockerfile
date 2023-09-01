@@ -37,6 +37,8 @@ ARG install
 ARG unit_test
 ARG int_test
 ARG branch_name
+ARG cr_pat
+ARG user
 
 
 ENV env_cmake_version=$cmake_version
@@ -49,5 +51,7 @@ ENV env_install=$install
 ENV env_unit_test=$unit_test
 ENV env_int_test=$int_test
 ENV env_branch_name=$branch_name
+ENV env_cr_pat=$cr_pat
+ENV env_user=$user
 
 ENTRYPOINT ["/build_test.sh"]
