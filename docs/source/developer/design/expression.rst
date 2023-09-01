@@ -132,7 +132,7 @@ sparse maps
      of TensorWrapper (see :ref:`tw_designing_the_sparse_map_component`).
    - The API needs to work for sparse maps which map from one or more modes to
      one or more modes, *i.e.*, we should not assume that we are always mapping
-     a single mode to a single mode.   
+     a single mode to a single mode.
 
 .. _ec_linked:
 
@@ -175,7 +175,7 @@ Expression Component Design
 .. figure:: assets/expressions.png
    :align: center
 
-   Overall inheritance diagram for the classes comprising the expression 
+   Overall inheritance diagram for the classes comprising the expression
    component of TensorWrapper.
 
 :numref:`fig_expression_component` shows the classes involved in TensorWrapper's
@@ -183,18 +183,18 @@ expression component and how they are related. The following subsections
 describe the main highlights of the hierarchy in more detail.
 
 Expression
-----------
+==========
 
 The base of the class hierarchy
 is ``Expression<T>`` which is templated on the type of object being composed.
 For example viable options for ``T`` are ``Shape`` and ``TensorWrapper``.
-Templating on the object being composed addresses 
+Templating on the object being composed addresses
 :ref:`ec_compose_multiple_objects`. The ``Expression<T>`` object will also
 contain a pointer to the linked state (see consideration :ref:`ec_linked`).
 
 The main motivation for this class is to define the API all derived classes
 must obey and then to interact with those classes through the base class. In
-particular this approach relies on dynamic polymorphism, not the static 
+particular this approach relies on dynamic polymorphism, not the static
 polymorphism usually leveraged in expression templates. This paves the way for
 addressing :ref:`ec_template_meta_programming_cost`.
 
@@ -209,7 +209,7 @@ example:
    Addition<T> operator+(const Expression<T>& lhs, const Expression<T>& rhs);
    CholeskyVectors<T> cholesky(const Expression<T>& A);
 
-The definitions will 
+The definitions will
 One of the key properties of any ``Expression<T>`` object is that when assigned
 to an object of type ``Indexed<T>`` it can produce an object of type ``T``.
 
@@ -219,43 +219,43 @@ to an object of type ``Indexed<T>`` it can produce an object of type ``T``.
    to be taken in defining copy/move assignment operators.
 
 Nary
-----
+====
 
-Deriving from ``Expression<T>`` is the ``Nary<N,T>`` class (n-ary being the 
+Deriving from ``Expression<T>`` is the ``Nary<N,T>`` class (n-ary being the
 generalization of unary, binary, trinary, etc. to n objects). This class serves
-as code-factorization for objects which must hold pointers/references to ``N`` 
+as code-factorization for objects which must hold pointers/references to ``N``
 objects of type ``T``. We have opted to specify ``N`` statically since it is
 almost always known ahead of time. While ``N==1`` and ``N==2`` scenarios are
 most common, we can envision optimizations which may be enabled by having
 higher values of ``N`` (for example triple products).
 
 Unary
------
+=====
 
 Most of the tensor algebra falling under the :ref:`ec_non_einstein_math`
-consideration involves operations on a single object. 
+consideration involves operations on a single object.
 
-- For taking slices/chips of the object we respectively have the ``Slice<T>``/ 
+- For taking slices/chips of the object we respectively have the ``Slice<T>``/
   ``Chip<T>`` classes.
-- ``Permuation<T>`` represents permutations of the modes. 
-- ``EigenVectors<T>`` and ``EigenValues<T>`` respectively represent the 
-  eigenvectors and eigenvalues resulting from an eigen decomposition. 
-- Similarly, ``CholeskyVectors<T>`` represents the Cholesky vectors resulting 
-  from a Cholesky decomposition. 
-- ``Scale<T>`` scales an ``Expression<T>`` by a constant.  
-- ``Pow<T>`` represents taking a matrix power (could template on the power too 
+- ``Permuation<T>`` represents permutations of the modes.
+- ``EigenVectors<T>`` and ``EigenValues<T>`` respectively represent the
+  eigenvectors and eigenvalues resulting from an eigen decomposition.
+- Similarly, ``CholeskyVectors<T>`` represents the Cholesky vectors resulting
+  from a Cholesky decomposition.
+- ``Scale<T>`` scales an ``Expression<T>`` by a constant.
+- ``Pow<T>`` represents taking a matrix power (could template on the power too
   since I think it's usually known at compile time also).
 
-The last unary class is ``Indexed<T>`` which is a bit of a special class. Given 
-a series of objects of type ``T``, the objects are promoted to the 
-expression layer by annotating the modes (providing string labels). The object 
-which results from annotating the modes is an instance of ``Indexed<T>``. The 
+The last unary class is ``Indexed<T>`` which is a bit of a special class. Given
+a series of objects of type ``T``, the objects are promoted to the
+expression layer by annotating the modes (providing string labels). The object
+which results from annotating the modes is an instance of ``Indexed<T>``. The
 reason this class is special is that the only way to get back to objects of type
-``T``, *i.e.*, to leave the expression layer is by assigning an 
+``T``, *i.e.*, to leave the expression layer is by assigning an
 ``Expression<T>`` object to an ``Indexed<T>`` object.
 
 Binary
-------
+======
 
 Members of the binary series of classes involve combining two objects. Most
 tensor algebra which can be expressed using generalized Einstein summation
@@ -266,7 +266,7 @@ this category.
 - ``Subtraction<T>`` results from subtracting two ``Expression<T>`` objects.
 - ``Multiplication<T>`` results from multiplying two ``Expression<T>`` objects
 - ``Division<T>`` results from dividing two ``Expression<T>`` objects
-- ``AssignTo<T>`` results from assigning an ``Expression<T>`` to an 
+- ``AssignTo<T>`` results from assigning an ``Expression<T>`` to an
   ``Indexed<T>`` object. These objects are only ever created for generating
   nodes of the :ref:`term_ast`.
 
@@ -298,8 +298,8 @@ Einstein summation convention. Some examples:
 
 Since these lines all involve unnamed temporary intermediates, each line must
 be treated as a separate expression, *i.e.*, there is no way to preserve the
-lifetime of the intermediates from one line to another. Hence, in order to 
-satisfy :ref:`ec_reusable_intermediates`, we require that the user assigns at 
+lifetime of the intermediates from one line to another. Hence, in order to
+satisfy :ref:`ec_reusable_intermediates`, we require that the user assigns at
 least one of the common intermediates (recall an intermediate is as simple as
 ``a("i,j,k")``) to a named variable, *e.g.*:
 
@@ -311,22 +311,22 @@ least one of the common intermediates (recall an intermediate is as simple as
       d("i,j,k")  = aijk / b("i,j,k");
    }
 
-In practice the way this will work is that the ``Buffer`` objects actually 
-assigned to ``c`` and ``d`` are ``FutureBuffer`` objects (see 
-:ref:`tw_designing_the_buffer`). The ``FutureBuffer`` objects will be tied to 
+In practice the way this will work is that the ``Buffer`` objects actually
+assigned to ``c`` and ``d`` are ``FutureBuffer`` objects (see
+:ref:`tw_designing_the_buffer`). The ``FutureBuffer`` objects will be tied to
 the lifetime of the expression layer which generated them. When all expression-
-layer objects involved in creating the ``FutureBuffer`` objects go out of scope 
-evaluation begins. So if we want to ensure that the above two equations are 
-treated as a set of equations, and not two individual equations, we need to make 
-sure at least one of the expression-layer objects is present in each equation 
-(the ``{}`` are needed to establish a scope for ``aijk``, ensuring it goes out 
-scope after the second equation). 
+layer objects involved in creating the ``FutureBuffer`` objects go out of scope
+evaluation begins. So if we want to ensure that the above two equations are
+treated as a set of equations, and not two individual equations, we need to make
+sure at least one of the expression-layer objects is present in each equation
+(the ``{}`` are needed to establish a scope for ``aijk``, ensuring it goes out
+scope after the second equation).
 
-While it is theoretically possible for TensorWrapper to correctly identify the 
-two temporary objects in the previous code block that result from ``b("i,j,k")`` 
-as identical, it is unlikely that TensorWrapper will contain such optimizations 
-in the near future. Hence best practice will be to assign each common 
-intermediate to a named variable, *i.e.*, the above code block should really be 
+While it is theoretically possible for TensorWrapper to correctly identify the
+two temporary objects in the previous code block that result from ``b("i,j,k")``
+as identical, it is unlikely that TensorWrapper will contain such optimizations
+in the near future. Hence best practice will be to assign each common
+intermediate to a named variable, *i.e.*, the above code block should really be
 written as:
 
 .. code-block:: c++
@@ -359,14 +359,14 @@ track an CST). Proposed user APIs are:
       // as shown, but it should be possible to get something close.
 
       // A = LLt
-      L("i,j") = cholesky(Aij); 
-   
+      L("i,j") = cholesky(Aij);
+
       // Av = λBv (no argument needed if B is 1)
       std::make_pair(v("i,j"), λ("j")]  = eigen_solve(Aij, B("i,j"));
 
       // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
       a10_10("i,j") = slice(Aij, {0, 0}, {10, 10});
-   
+
       // Raise A to the power 2
       a2("i,j") = pow(Aij, 2);
   }
@@ -397,9 +397,9 @@ any element of the expression layer, *e.g.*,
 
 The above registers two sparse maps: one which for a given offset along modes
 labeled with ``"i"`` gives non-zero offsets along modes labeled with ``j"`` and
-a similar sparse map for modes labeled with ``"i"`` to modes labeled with 
+a similar sparse map for modes labeled with ``"i"`` to modes labeled with
 ``"k"``. Note that for this API to work the user MUST use indices consistently,
-which is to say ``i"``, ``"j"``, and ``"k"`` must be indexing the same modes 
+which is to say ``i"``, ``"j"``, and ``"k"`` must be indexing the same modes
 each time they appear.
 
 
@@ -498,18 +498,18 @@ objects:
    T L, Lt, v, λ, a10_10, a2;
 
    // A = LLt
-   CholeskyVectors<T> L = cholesky(Aij); 
-   
+   CholeskyVectors<T> L = cholesky(Aij);
+
    // Av = λBv (argument only needed for generalized eigen_solves)
    std::pair<EigenVectors<T>, EigenValues<T>> vλ = Aij.eigen_solve(Bij);
 
    // Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.
    Slice<T> a10_10 = slice(Aij, {0, 0}, {10, 10});
-   
+
    // Raise A to the power 2
    Pow<T> a2 = pow(Aij, 2);
-  
-The trick to satisfying :ref:`ec_non_einstein_math` consideration is that we 
+
+The trick to satisfying :ref:`ec_non_einstein_math` consideration is that we
 require the various operations to involve tensors which are already wrapped in
 expression-layer constructs. While this is a bit more verbose, it also allows
 us to, in some cases (like the ``slice`` operation), support transposing the
@@ -614,4 +614,4 @@ Other Notes
 
 At some point we'll probably need a way of applying arbitrary functions to
 slices of one or more tensor. Such an operation could conceivably be built into
-the ``Nary<N,T>`` class and the classes which derive from it 
+the ``Nary<N,T>`` class and the classes which derive from it
