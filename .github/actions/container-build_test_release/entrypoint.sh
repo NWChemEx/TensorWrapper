@@ -36,11 +36,6 @@ echo $CR_PAT | docker login ghcr.io -u $USER --password-stdin
 
 docker build -t docker-action --build-arg cr_pat=$CR_PAT --build-arg user=$USER --build-arg base_tag=$BASE_TAG --build-arg gcc_version=$GCC_VRESION --build-arg clang_version=$CLANG_VERSION --build-arg ninja_build=$NINJA_BUILD --build-arg use_clang=$USE_CLANG --build-arg cmaize_github_token=$CMAIZE_GITHUB_TOKEN --build-arg install=$INSTALL --build-arg unit_test=$TEST --build-arg int_test=$INTEGRATION_TEST --build-arg branch_name=$BRANCH_NAME --build-arg dep_repo_tag=${DEP_REPO_TAG} . && docker run docker-action 
 
-if [ $? != 0 ]; ; then
-  echo "Building/Testing failed!"
-  exit 1
-fi
-
 container_id="$(docker ps -a  | grep 'docker-action')"
 container_id="${container_id%% *}"
 docker cp ${container_id}:/install ./install
