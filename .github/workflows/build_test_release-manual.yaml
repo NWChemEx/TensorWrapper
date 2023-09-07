@@ -11,9 +11,7 @@
 name: Build test release
 
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   # TODO: obtain package version info
@@ -23,45 +21,13 @@ jobs:
   #
   # A job to retrieve all package versions and output
   ###
-  docker-file-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      build_dockfile: ${{ steps.changes.outputs.bdfile }}
-    steps:
-    - uses: actions/checkout@v3
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        filters: |
-          bdfile:
-            - '.github/Dockerfile/**'
-
   update-base-image:
-    needs: docker-file-changes
-    if: ${{ needs.docker-file-changes.outputs.build_dockfile == 'true' }}
     uses: NWChemEx-Project/TensorWrapper/.github/workflows/build_base.yaml@image-build_test_release
     secrets: inherit
 
-  build_update_check:
-    runs-on: ubuntu-latest
-    needs: docker-file-changes
-    outputs:
-      bi_check: ${{ steps.building-image-update.outputs.tag }}
-    steps:
-      - name: Check if the building image has been updated
-        id: building-image-update
-        run: |
-          if [ ${{ needs.docker-file-changes.outputs.build_dockfile == 'true' }} ]; then
-             tag="latest"
-          else
-             tag="stable"
-          fi
-          echo "tag=$tag" >> $GITHUB_OUTPUT
-
   build_test_release-gcc:
     runs-on: ubuntu-latest
-    needs: [update-base-image, build_update_check]
-    if: always() && (needs.update-base-image.result == 'success' || needs.update-base-image.result == 'skipped')
+    needs: update-base-image
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -80,7 +46,7 @@ jobs:
           test: true
           integration_test: false
           INSTALL: true
-          base_tag: ${{needs.build_update_check.outputs.bi_check}}
+          base_tag: latest
           dep_repo_tag: gcc-stable
           token: ${{ secrets.CONTAINER_REPO_TOKEN }}
           user: ${{ github.actor }}
@@ -89,14 +55,7 @@ jobs:
           use_clang: false
           CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
           branch_name: ${{ steps.branch-name.outputs.current_branch }} 
-      - name: Check stable release image
-        id: image_exists
-        shell: /usr/bin/bash {0}
-        run: |
-          docker manifest inspect ghcr.io/nwchemex-project/release_tensorwrapper:gcc-stable > /dev/null
-          echo "conclusion=$?" >> "$GITHUB_OUTPUT"
-      - name: Push stable release image if not exist
-        if: ${{ steps.image_exists.outputs.conclusion != 0 }}
+      - name: Push stable release image 
         run: |
           docker pull ghcr.io/nwchemex-project/release_tensorwrapper:gcc-latest
           docker tag ghcr.io/nwchemex-project/release_tensorwrapper:gcc-latest ghcr.io/nwchemex-project/release_tensorwrapper:gcc-stable
@@ -107,8 +66,7 @@ jobs:
           #
           #  build_test_release-clang:
           #    runs-on: ubuntu-latest
-          #    needs: [update-base-image, build_update_check]
-          #    if: always() && (needs.update-base-image.result == 'success' || needs.update-base-image.result == 'skipped')
+          #    needs: update-base-image
           #    steps:
           #      - name: Login to GitHub Container Registry
           #        uses: docker/login-action@v1
@@ -127,7 +85,7 @@ jobs:
           #          test: true
           #          integration_test: false
           #          INSTALL: true
-          #          base_tag: ${{needs.build_update_check.outputs.bi_check}}
+          #          base_tag: latest
           #          dep_repo_tag: clang-stable
           #          token: ${{ secrets.CONTAINER_REPO_TOKEN }}
           #          user: ${{ github.actor }}
@@ -136,14 +94,7 @@ jobs:
           #          use_clang: true
           #          CMAIZE_GITHUB_TOKEN: ${{ secrets.CMAIZE_GITHUB_TOKEN }}
           #          branch_name: ${{ steps.branch-name.outputs.current_branch }}
-          #      - name: Check stable release image
-          #        id: image_exists
-          #        shell: /usr/bin/bash {0}
-          #        run: |
-          #          docker manifest inspect ghcr.io/nwchemex-project/release_tensorwrapper:clang-stable > /dev/null
-          #          echo "conclusion=$?" >> "$GITHUB_OUTPUT"
-          #      - name: Push stable release image if not exist
-          #        if: ${{ steps.image_exists.outputs.conclusion != 0 }}
+          #      - name: Push stable release image
           #        run: |
           #          docker pull ghcr.io/nwchemex-project/release_tensorwrapper:clang-latest
           #          docker tag ghcr.io/nwchemex-project/release_tensorwrapper:clang-latest ghcr.io/nwchemex-project/release_tensorwrapper:clang-stable
