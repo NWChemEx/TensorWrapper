@@ -28,7 +28,7 @@ using std::cout;
 using namespace tensorwrapper;
 using namespace tensorwrapper::tensor;
 
-TEST_CASE("TA_vs_TW_ADD", "[ptest]") {
+TEST_CASE("TA_vs_TW_ADD", "[.ptest]") {
     const int kmatsize  = 1000;
     const int tile_size = 100;
     auto& world         = TA::get_default_world();
