@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Designing the Expression Component &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -109,18 +108,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="designing-the-expression-component">
-<span id="id1"></span><h1>Designing the Expression Component<a class="headerlink" href="#designing-the-expression-component" title="Permalink to this heading"></a></h1>
+  <section id="designing-the-expression-component">
+<span id="id1"></span><h1>Designing the Expression Component<a class="headerlink" href="#designing-the-expression-component" title="Permalink to this headline"></a></h1>
 <p>This page documents the process of designing the expression component of
 TensorWrapper.</p>
-<div class="section" id="what-is-the-expression-component">
-<h2>What is the expression component?<a class="headerlink" href="#what-is-the-expression-component" title="Permalink to this heading"></a></h2>
+<section id="what-is-the-expression-component">
+<h2>What is the expression component?<a class="headerlink" href="#what-is-the-expression-component" title="Permalink to this headline"></a></h2>
 <p>Users of a tensor library have two main needs: to create tensors and to solve
 tensor expressions involving those tensors. The expression component contains
 the pieces of the <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> required to write succinct tensor expressions.</p>
-</div>
-<div class="section" id="why-do-we-need-an-expression-component">
-<h2>Why do we need an expression component?<a class="headerlink" href="#why-do-we-need-an-expression-component" title="Permalink to this heading"></a></h2>
+</section>
+<section id="why-do-we-need-an-expression-component">
+<h2>Why do we need an expression component?<a class="headerlink" href="#why-do-we-need-an-expression-component" title="Permalink to this headline"></a></h2>
 <p>Most libraries tend to be eagerly evaluated, meaning code is evaluated as it is
 encountered. For simple, easily optimized code such a strategy is fine.
 Unfortunately, tensor expressions tend to be significantly harder to optimize,
@@ -132,9 +131,9 @@ is played back.</p>
 evaluating tensor computations we can register the user’s intention and
 optimize our evaluation strategy accordingly. The point of the expression layer
 is to provide a user-friendly DSL for lazy evaluation of tensors.</p>
-</div>
-<div class="section" id="expression-component-considerations">
-<span id="ec-considerations"></span><h2>Expression Component Considerations<a class="headerlink" href="#expression-component-considerations" title="Permalink to this heading"></a></h2>
+</section>
+<section id="expression-component-considerations">
+<span id="ec-considerations"></span><h2>Expression Component Considerations<a class="headerlink" href="#expression-component-considerations" title="Permalink to this headline"></a></h2>
 <dl class="simple" id="ec-compose-multiple-objects">
 <dt>compose multiple objects</dt><dd><p>While our goal is to ultimately be able to compose <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects,
 we can decompose the work needed to do so by ensuring we can compose the
@@ -225,8 +224,8 @@ pointer.</p></li>
 </ul>
 </dd>
 </dl>
-<div class="section" id="out-of-scope">
-<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Permalink to this heading"></a></h3>
+<section id="out-of-scope">
+<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Permalink to this headline"></a></h3>
 <dl class="simple">
 <dt>expression optimization</dt><dd><p>The goal of the expression layer is simply to capture the information needed
 to perform the calculation, not to optimize the calculation, or to perform
@@ -235,7 +234,7 @@ it. Optimizing the calculation can be done using the OpGraph component (see
 backend of the Buffer component, given an OpGraph object (see
 <a class="reference internal" href="buffer.html#tw-designing-the-buffer"><span class="std std-ref">Designing the Buffer</span></a>).</p>
 </dd>
-<dt>finding common intermediates</dt><dd><p>While consideration <a class="reference internal" href="#ec-reusable-intermediates"><span class="std std-ref">reusable intermediates</span></a> concerns the expression
+<dt>finding common intermediates</dt><dd><p>While consideration <span class="xref std std-ref">ec_reusable_intermediates</span> concerns the expression
 layer being able to annotate common intermediates, actually finding said
 common intermediates is much harder. For now it is the user’s job to identify
 common intermediates.</p>
@@ -245,38 +244,40 @@ objects in the sparsity component (see <a class="reference internal" href="spars
 the sparse map is left to the user.</p>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="expression-component-design">
-<h2>Expression Component Design<a class="headerlink" href="#expression-component-design" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id4">
+</section>
+</section>
+<section id="expression-component-design">
+<h2>Expression Component Design<a class="headerlink" href="#expression-component-design" title="Permalink to this headline"></a></h2>
+<figure class="align-center" id="id4">
 <span id="fig-expression-component"></span><img alt="../../_images/expressions.png" src="../../_images/expressions.png" />
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Overall inheritance diagram for the classes comprising the expression
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Overall inheritance diagram for the classes comprising the expression
 component of TensorWrapper.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
-</div>
+</figcaption>
+</figure>
 <p><a class="reference internal" href="#fig-expression-component"><span class="std std-numref">Fig. 14</span></a> shows the classes involved in TensorWrapper’s
 expression component and how they are related. The following subsections
 describe the main highlights of the hierarchy in more detail.</p>
-<div class="section" id="expression">
-<h3>Expression<a class="headerlink" href="#expression" title="Permalink to this heading"></a></h3>
+<section id="expression">
+<h3>Expression<a class="headerlink" href="#expression" title="Permalink to this headline"></a></h3>
 <p>The base of the class hierarchy
 is <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> which is templated on the type of object being composed.
 For example viable options for <code class="docutils literal notranslate"><span class="pre">T</span></code> are <code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>.
 Templating on the object being composed addresses
-<a class="reference internal" href="#ec-compose-multiple-objects"><span class="std std-ref">compose multiple objects</span></a>. The <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> object will also
-contain a pointer to the linked state (see consideration <a class="reference internal" href="#ec-linked"><span class="std std-ref">linked</span></a>).</p>
+<span class="xref std std-ref">ec_compose_multiple_objects</span>. The <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> object will also
+contain a pointer to the linked state (see consideration <span class="xref std std-ref">ec_linked</span>).</p>
 <p>The main motivation for this class is to define the API all derived classes
 must obey and then to interact with those classes through the base class. In
 particular this approach relies on dynamic polymorphism, not the static
 polymorphism usually leveraged in expression templates. This paves the way for
-addressing <a class="reference internal" href="#ec-template-meta-programming-cost"><span class="std std-ref">template meta-programming cost</span></a>.</p>
+addressing <span class="xref std std-ref">ec_template_meta_programming_cost</span>.</p>
 <p>As a note, since the API for composing expression objects will involve
 taking objects by their base class and returning them wrapped in a derived
 class, to avoid loops in the hierarchy where the base class depends on the
 derived class, most operations will need to be defined as free functions. For
 example:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Addition</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">);</span>
-<span class="n">CholeskyVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">A</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Addition</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">);</span><span class="w"></span>
+<span class="n">CholeskyVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">A</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The definitions will
@@ -287,9 +288,9 @@ to an object of type <code class="docutils literal notranslate"><span class="pre
 <p>Because assigning to <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> has to be treated specially care needs
 to be taken in defining copy/move assignment operators.</p>
 </div>
-</div>
-<div class="section" id="nary">
-<h3>Nary<a class="headerlink" href="#nary" title="Permalink to this heading"></a></h3>
+</section>
+<section id="nary">
+<h3>Nary<a class="headerlink" href="#nary" title="Permalink to this headline"></a></h3>
 <p>Deriving from <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> is the <code class="docutils literal notranslate"><span class="pre">Nary&lt;N,T&gt;</span></code> class (n-ary being the
 generalization of unary, binary, trinary, etc. to n objects). This class serves
 as code-factorization for objects which must hold pointers/references to <code class="docutils literal notranslate"><span class="pre">N</span></code>
@@ -297,10 +298,10 @@ objects of type <code class="docutils literal notranslate"><span class="pre">T</
 almost always known ahead of time. While <code class="docutils literal notranslate"><span class="pre">N==1</span></code> and <code class="docutils literal notranslate"><span class="pre">N==2</span></code> scenarios are
 most common, we can envision optimizations which may be enabled by having
 higher values of <code class="docutils literal notranslate"><span class="pre">N</span></code> (for example triple products).</p>
-</div>
-<div class="section" id="unary">
-<h3>Unary<a class="headerlink" href="#unary" title="Permalink to this heading"></a></h3>
-<p>Most of the tensor algebra falling under the <a class="reference internal" href="#ec-non-einstein-math"><span class="std std-ref">non-Einstein math</span></a>
+</section>
+<section id="unary">
+<h3>Unary<a class="headerlink" href="#unary" title="Permalink to this headline"></a></h3>
+<p>Most of the tensor algebra falling under the <span class="xref std std-ref">ec_non_einstein_math</span>
 consideration involves operations on a single object.</p>
 <ul class="simple">
 <li><p>For taking slices/chips of the object we respectively have the <code class="docutils literal notranslate"><span class="pre">Slice&lt;T&gt;</span></code>/
@@ -321,12 +322,12 @@ which results from annotating the modes is an instance of <code class="docutils 
 reason this class is special is that the only way to get back to objects of type
 <code class="docutils literal notranslate"><span class="pre">T</span></code>, <em>i.e.</em>, to leave the expression layer is by assigning an
 <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> object to an <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> object.</p>
-</div>
-<div class="section" id="binary">
-<h3>Binary<a class="headerlink" href="#binary" title="Permalink to this heading"></a></h3>
+</section>
+<section id="binary">
+<h3>Binary<a class="headerlink" href="#binary" title="Permalink to this headline"></a></h3>
 <p>Members of the binary series of classes involve combining two objects. Most
 tensor algebra which can be expressed using generalized Einstein summation
-convention (consideration <a class="reference internal" href="#ec-generalized-einstein-notation"><span class="std std-ref">generalized Einstein notation</span></a>) falls under
+convention (consideration <span class="xref std std-ref">ec_generalized_einstein_notation</span>) falls under
 this category.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Addition&lt;T&gt;</span></code> results from adding two <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> objects together.</p></li>
@@ -337,37 +338,37 @@ this category.</p>
 <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> object. These objects are only ever created for generating
 nodes of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a>.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="user-api">
-<span id="expression-user-api"></span><h2>User API<a class="headerlink" href="#user-api" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+<section id="user-api">
+<span id="expression-user-api"></span><h2>User API<a class="headerlink" href="#user-api" title="Permalink to this headline"></a></h2>
 <p>This section focuses on what the user actually writes. The next section looks
 at how the DSL works in more detail, by filling in the blanks regarding the
 many unnamed temporary objects these code snippets hide.</p>
-<div class="section" id="construction">
-<h3>Construction<a class="headerlink" href="#construction" title="Permalink to this heading"></a></h3>
+<section id="construction">
+<h3>Construction<a class="headerlink" href="#construction" title="Permalink to this headline"></a></h3>
 <p>Most tensor operations will look like tensor math written using the generalized
 Einstein summation convention. Some examples:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fill_in_a_and_b</span><span class="p">();</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fill_in_a_and_b</span><span class="p">();</span><span class="w"></span>
 <span class="n">T</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">;</span><span class="w"> </span><span class="c1">// No &quot;f&quot; to make connection to the example API section</span>
 
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">e</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">g</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">e</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">g</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Since these lines all involve unnamed temporary intermediates, each line must
 be treated as a separate expression, <em>i.e.</em>, there is no way to preserve the
 lifetime of the intermediates from one line to another. Hence, in order to
-satisfy <a class="reference internal" href="#ec-reusable-intermediates"><span class="std std-ref">reusable intermediates</span></a>, we require that the user assigns at
+satisfy <span class="xref std std-ref">ec_reusable_intermediates</span>, we require that the user assigns at
 least one of the common intermediates (recall an intermediate is as simple as
 <code class="docutils literal notranslate"><span class="pre">a(&quot;i,j,k&quot;)</span></code>) to a named variable, <em>e.g.</em>:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>In practice the way this will work is that the <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> objects actually
@@ -386,63 +387,63 @@ as identical, it is unlikely that TensorWrapper will contain such optimizations
 in the near future. Hence best practice will be to assign each common
 intermediate to a named variable, <em>i.e.</em>, the above code block should really be
 written as:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">bijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span>
-<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">bijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>so that the expression layer will identify <code class="docutils literal notranslate"><span class="pre">b(&quot;i,j,k&quot;)</span></code> as evaluating to the
 same intermediate.</p>
-</div>
-<div class="section" id="non-einstein-algebra">
-<h3>Non-Einstein Algebra<a class="headerlink" href="#non-einstein-algebra" title="Permalink to this heading"></a></h3>
+</section>
+<section id="non-einstein-algebra">
+<h3>Non-Einstein Algebra<a class="headerlink" href="#non-einstein-algebra" title="Permalink to this headline"></a></h3>
 <p>In order to perform operations which involve tensor algebra that can not be
 expressed using generalized Einstein summation convention, we still require
 the user to annotate the modes of the tensor (this is so we can generate and
 track an CST). Proposed user APIs are:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">Lt</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">λ</span><span class="p">,</span><span class="w"> </span><span class="n">a10_10</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span>
-<span class="w"> </span><span class="p">{</span>
-<span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">Aij</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">Lt</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">λ</span><span class="p">,</span><span class="w"> </span><span class="n">a10_10</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span><span class="w"></span>
+<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="n">Aij</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// disclaimer, I&#39;m not 100% sure the cholesky/eigen_solve APIs will work</span>
 <span class="w">    </span><span class="c1">// as shown, but it should be possible to get something close.</span>
 
 <span class="w">    </span><span class="c1">// A = LLt</span>
-<span class="w">    </span><span class="n">L</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="n">Aij</span><span class="p">);</span>
+<span class="w">    </span><span class="n">L</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="n">Aij</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Av = λBv (no argument needed if B is 1)</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">λ</span><span class="p">(</span><span class="s">&quot;j&quot;</span><span class="p">)]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">eigen_solve</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">λ</span><span class="p">(</span><span class="s">&quot;j&quot;</span><span class="p">)]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">eigen_solve</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">));</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.</span>
-<span class="w">    </span><span class="n">a10_10</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slice</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
+<span class="w">    </span><span class="n">a10_10</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slice</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Raise A to the power 2</span>
-<span class="w">    </span><span class="n">a2</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="n">a2</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The above code actually would create one set of expressions since <code class="docutils literal notranslate"><span class="pre">Aij</span></code> is
 used in all of the expressions.</p>
-</div>
-<div class="section" id="sparse-maps">
-<h3>Sparse Maps<a class="headerlink" href="#sparse-maps" title="Permalink to this heading"></a></h3>
+</section>
+<section id="sparse-maps">
+<h3>Sparse Maps<a class="headerlink" href="#sparse-maps" title="Permalink to this headline"></a></h3>
 <p>Each element of a particular set of expressions will necessarily have access to
 the same graph. The user should thus be able to set the sparse maps through
 any element of the expression layer, <em>e.g.</em>,</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p">{</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">Lij</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_sparse_map_from_mode_i_to_mode_j</span><span class="p">();</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">Lik</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">get_sparse_map_from_mode_i_to_mode_k</span><span class="p">();</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">Lij</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_sparse_map_from_mode_i_to_mode_j</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">Lik</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">get_sparse_map_from_mode_i_to_mode_k</span><span class="p">();</span><span class="w"></span>
 
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">bijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span>
-<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span>
-<span class="w">   </span><span class="n">aijk</span><span class="p">.</span><span class="n">set_sparse_map</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;j&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Lij</span><span class="p">);</span>
-<span class="w">   </span><span class="n">aijk</span><span class="p">.</span><span class="n">set_sparse_map</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;k&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Lik</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">auto</span><span class="w"> </span><span class="n">bijk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">aijk</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bijk</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">aijk</span><span class="p">.</span><span class="n">set_sparse_map</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;j&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Lij</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">aijk</span><span class="p">.</span><span class="n">set_sparse_map</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;k&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Lik</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The above registers two sparse maps: one which for a given offset along modes
@@ -451,10 +452,10 @@ a similar sparse map for modes labeled with <code class="docutils literal notran
 <code class="docutils literal notranslate"><span class="pre">&quot;k&quot;</span></code>. Note that for this API to work the user MUST use indices consistently,
 which is to say <code class="docutils literal notranslate"><span class="pre">i&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;j&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;k&quot;</span></code> must be indexing the same modes
 each time they appear.</p>
-</div>
-</div>
-<div class="section" id="example-api">
-<h2>Example API<a class="headerlink" href="#example-api" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+<section id="example-api">
+<h2>Example API<a class="headerlink" href="#example-api" title="Permalink to this headline"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The examples in this section purposely use the real types from the expression
@@ -465,35 +466,35 @@ later (see <a class="reference internal" href="#expression-user-api"><span class
 type <code class="docutils literal notranslate"><span class="pre">T</span></code> (<code class="docutils literal notranslate"><span class="pre">T</span></code> being things like <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>, <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>)
 so we avoid specifying the value of <code class="docutils literal notranslate"><span class="pre">T</span></code>. The APIs shown in this section are
 more to flesh out how the unnamed temporaries actually interact.</p>
-<div class="section" id="expression-construction">
-<span id="id2"></span><h3>Construction<a class="headerlink" href="#expression-construction" title="Permalink to this heading"></a></h3>
-<p>Following from the <a class="reference internal" href="#ec-generalized-einstein-notation"><span class="std std-ref">generalized Einstein notation</span></a> consideration we
+<section id="expression-construction">
+<span id="id2"></span><h3>Construction<a class="headerlink" href="#expression-construction" title="Permalink to this headline"></a></h3>
+<p>Following from the <span class="xref std std-ref">ec_generalized_einstein_notation</span> consideration we
 expect that most users will enter into the expression layer by adding dummy
 indices to an object. This looks like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Assume we have some T objects</span>
 <span class="n">T</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">;</span><span class="w"> </span><span class="c1">// No f b/c variable would be &quot;if&quot;</span>
 
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
-<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Indexed</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> objects will then be composed pair-wise to form
 <code class="docutils literal notranslate"><span class="pre">BinaryExpression&lt;T&gt;</span></code> objects.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// continues from last code block</span>
-<span class="n">Addition</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iapib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span>
-<span class="n">Multiplication</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iatib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span>
-<span class="n">Subtraction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iasib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span>
-<span class="n">Division</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iadib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span>
+<span class="n">Addition</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iapib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span><span class="w"></span>
+<span class="n">Multiplication</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iatib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span><span class="w"></span>
+<span class="n">Subtraction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iasib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span><span class="w"></span>
+<span class="n">Division</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iadib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ib</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Note that unlike traditional expression templates which would end up with
 types like <code class="docutils literal notranslate"><span class="pre">Addition&lt;Indexed&lt;T&gt;,</span> <span class="pre">Indexed&lt;T&gt;&gt;</span></code> we rely on the fact
 the all of the pieces derive from <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code>, which helps us address
-consideration <a class="reference internal" href="#ec-template-meta-programming-cost"><span class="std std-ref">template meta-programming cost</span></a>.</p>
+consideration <span class="xref std std-ref">ec_template_meta_programming_cost</span>.</p>
 <p>Once we have built up terms they get assigned to an <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;</span></code> object like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// continues from last two code blocks</span>
 
@@ -504,7 +505,7 @@ consideration <a class="reference internal" href="#ec-template-meta-programming-
 </pre></div>
 </div>
 <p>It is worth noting, that it is somewhat trivial to satisfy consideration
-<a class="reference internal" href="#ec-reusable-intermediates"><span class="std std-ref">reusable intermediates</span></a> when interacting with the expression layer
+<span class="xref std std-ref">ec_reusable_intermediates</span> when interacting with the expression layer
 directly. This is because each expression object is actually a node in the
 <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>, so by reusing the literal nodes we reuse the intermediates.</p>
 <p>From this we can see that <code class="docutils literal notranslate"><span class="pre">c(&quot;i,j&quot;)</span> <span class="pre">=</span> <span class="pre">a(&quot;i,j&quot;)</span> <span class="pre">+</span> <span class="pre">b(&quot;i,j&quot;);</span></code> actually works
@@ -518,57 +519,57 @@ temporary objects resulting in a third temporary of type <code class="docutils l
 <li><p>Finally <code class="docutils literal notranslate"><span class="pre">Indexed&lt;T&gt;::operator=</span></code> is called assigning the <code class="docutils literal notranslate"><span class="pre">Addition&lt;T&gt;</span></code>
 object to the the temporary resulting from <code class="docutils literal notranslate"><span class="pre">c(&quot;i,j,k&quot;)</span></code>.</p></li>
 </ul>
-</div>
-<div class="section" id="id3">
-<h3>Non-Einstein Algebra<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+</section>
+<section id="id3">
+<h3>Non-Einstein Algebra<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
 <p>The previous section showed how to write tensor algebra for operations which can
 be expressed using generalized Einstein summation convention. Consideration
-<a class="reference internal" href="#ec-non-einstein-math"><span class="std std-ref">non-Einstein math</span></a> means that the expression layer must be able to
+<span class="xref std std-ref">ec_non_einstein_math</span> means that the expression layer must be able to
 support other tensor algebra operations as well. In terms of expression-layer
 objects:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_filled_matrices</span><span class="p">();</span>
-<span class="n">T</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">Lt</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">λ</span><span class="p">,</span><span class="w"> </span><span class="n">a10_10</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_filled_matrices</span><span class="p">();</span><span class="w"></span>
+<span class="n">T</span><span class="w"> </span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">Lt</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">λ</span><span class="p">,</span><span class="w"> </span><span class="n">a10_10</span><span class="p">,</span><span class="w"> </span><span class="n">a2</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">// A = LLt</span>
-<span class="n">CholeskyVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="n">Aij</span><span class="p">);</span>
+<span class="n">CholeskyVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cholesky</span><span class="p">(</span><span class="n">Aij</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// Av = λBv (argument only needed for generalized eigen_solves)</span>
-<span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">EigenVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">EigenValues</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">vλ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Aij</span><span class="p">.</span><span class="n">eigen_solve</span><span class="p">(</span><span class="n">Bij</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">EigenVectors</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">EigenValues</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">vλ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Aij</span><span class="p">.</span><span class="n">eigen_solve</span><span class="p">(</span><span class="n">Bij</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// Get the  slice of A starting a 0,0 and extending to 10,10 exclusive.</span>
-<span class="n">Slice</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a10_10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slice</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
+<span class="n">Slice</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a10_10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slice</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
 
 <span class="c1">// Raise A to the power 2</span>
-<span class="n">Pow</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">Pow</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">Aij</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The trick to satisfying <a class="reference internal" href="#ec-non-einstein-math"><span class="std std-ref">non-Einstein math</span></a> consideration is that we
+<p>The trick to satisfying <span class="xref std std-ref">ec_non_einstein_math</span> consideration is that we
 require the various operations to involve tensors which are already wrapped in
 expression-layer constructs. While this is a bit more verbose, it also allows
 us to, in some cases (like the <code class="docutils literal notranslate"><span class="pre">slice</span></code> operation), support transposing the
 result.</p>
-</div>
-<div class="section" id="obtaining-an-opgraph">
-<h3>Obtaining an OpGraph<a class="headerlink" href="#obtaining-an-opgraph" title="Permalink to this heading"></a></h3>
+</section>
+<section id="obtaining-an-opgraph">
+<h3>Obtaining an OpGraph<a class="headerlink" href="#obtaining-an-opgraph" title="Permalink to this headline"></a></h3>
 <p>The trick to avoid the nasty nested expression templates is to obtain the final
 <code class="docutils literal notranslate"><span class="pre">OpGraph</span></code> object via the base class’s <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> API. This can be
 done via the visitor pattern and looks something like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// In practice e would be a pointer b/c Expression is an abstract base class</span>
-<span class="n">Expression</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_expression</span><span class="p">();</span>
+<span class="n">Expression</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_expression</span><span class="p">();</span><span class="w"></span>
 
-<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">OpGraph</span><span class="p">{});</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">graph</span><span class="p">,</span><span class="w"> </span><span class="n">node</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">OpGraph</span><span class="p">{});</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Then internally the <code class="docutils literal notranslate"><span class="pre">add_to_graph</span></code> method of the most derived class,
 <code class="docutils literal notranslate"><span class="pre">Derived&lt;T&gt;</span></code>, is implemented something like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">OpGraph</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Derived</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">OpGraph</span><span class="w"> </span><span class="n">g</span><span class="p">){</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">OpGraph</span><span class="p">,</span><span class="w"> </span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Derived</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">OpGraph</span><span class="w"> </span><span class="n">g</span><span class="p">){</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Assume Derived&lt;T&gt; inherits from Base&lt;T&gt;</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">subgraph</span><span class="p">,</span><span class="w"> </span><span class="n">parent_node</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Base</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">subgraph</span><span class="p">,</span><span class="w"> </span><span class="n">parent_node</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Base</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">add_to_graph</span><span class="p">(</span><span class="n">g</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Create node corresponding to Derived&lt;T&gt; add to parent_node</span>
 
 <span class="w">    </span><span class="c1">// Return new graph and new node</span>
-<span class="p">}</span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This works because <code class="docutils literal notranslate"><span class="pre">Expression&lt;T&gt;</span></code> defines a virtual function
@@ -577,61 +578,61 @@ of the derived classes. Each derived class calls the base class’s
 <code class="docutils literal notranslate"><span class="pre">add_to_graph</span></code> method, which in turn returns the graph and the node just
 added. Exactly what the nodes look like, and what information they contain is
 punted to the OpGraph component (see <a class="reference internal" href="op_graph.html#tw-designing-the-opgraph"><span class="std std-ref">Designing the OpGraph</span></a>).</p>
-</div>
-</div>
-<div class="section" id="understanding-the-linked-state">
-<span id="ec-understanding-the-linked-state"></span><h2>Understanding the Linked State<a class="headerlink" href="#understanding-the-linked-state" title="Permalink to this heading"></a></h2>
-<p>Pursuant to the <a class="reference internal" href="#ec-linked"><span class="std std-ref">linked</span></a> consideration, expression component objects
+</section>
+</section>
+<section id="understanding-the-linked-state">
+<span id="ec-understanding-the-linked-state"></span><h2>Understanding the Linked State<a class="headerlink" href="#understanding-the-linked-state" title="Permalink to this headline"></a></h2>
+<p>Pursuant to the <span class="xref std std-ref">ec_linked</span> consideration, expression component objects
 belong to the same set of expressions must share a common state. The purpose of
 this section will be to work out the lifetime semantics and shared behavior of
 this state.</p>
 <p>TODO: We can punt on this until we’re ready to implement it.</p>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <p>The above design satisfies the considerations raised in <a class="reference internal" href="#ec-considerations"><span class="std std-ref">Expression Component Considerations</span></a>
 by:</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#ec-compose-multiple-objects"><span class="std std-ref">compose multiple objects</span></a></dt><dd><p>The entire expression layer is templated on the type of the object being
+<dt><span class="xref std std-ref">ec_compose_multiple_objects</span></dt><dd><p>The entire expression layer is templated on the type of the object being
 composed. This allows the expression layer to be reused with various pieces
 of the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class (<em>e.g.</em>, the <code class="docutils literal notranslate"><span class="pre">Shape</span></code> class) in addition to
 the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class itself.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-generalized-einstein-notation"><span class="std std-ref">generalized Einstein notation</span></a></dt><dd><p>The entry pont to the expression layer is, for most operations, is assigning
+<dt><span class="xref std std-ref">ec_generalized_einstein_notation</span></dt><dd><p>The entry pont to the expression layer is, for most operations, is assigning
 indices to a tensor’s modes. The resulting objects can then be composed using
 generalized Einstein notation.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-non-einstein-math"><span class="std std-ref">non-Einstein math</span></a></dt><dd><p>Tensor operations which can not be expressed using generalized Einstein
+<dt><span class="xref std std-ref">ec_non_einstein_math</span></dt><dd><p>Tensor operations which can not be expressed using generalized Einstein
 summation convention are supported, but in order to ensure they interact
 with the expression layer we still require the tensors to have their modes
 annotated.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-template-meta-programming-cost"><span class="std std-ref">template meta-programming cost</span></a></dt><dd><p>Instead of templating the various pieces of the expression layer on the
+<dt><span class="xref std std-ref">ec_template_meta_programming_cost</span></dt><dd><p>Instead of templating the various pieces of the expression layer on the
 types of the sub-expressions, as is usually done, we only template the
 expression layer pieces on the types of the object being composed, <em>e.g.</em>,
 the template type parameter would be something like <code class="docutils literal notranslate"><span class="pre">Shape</span></code> or
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> instead of say a type like
 <code class="docutils literal notranslate"><span class="pre">Addition&lt;Indexed&lt;Shape&gt;,</span> <span class="pre">Indexed&lt;Shape&gt;&gt;</span></code>.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-reusable-intermediates"><span class="std std-ref">reusable intermediates</span></a></dt><dd><p>Each object in the expression layer is a node of a CST. Reusing the same
+<dt><span class="xref std std-ref">ec_reusable_intermediates</span></dt><dd><p>Each object in the expression layer is a node of a CST. Reusing the same
 object in multiple places reuses the same node of the CST.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-sparse-maps"><span class="std std-ref">sparse maps</span></a></dt><dd><p>The objects associated with a particular set of expressions are linked.
+<dt><span class="xref std std-ref">ec_sparse_maps</span></dt><dd><p>The objects associated with a particular set of expressions are linked.
 Using any of these objects the user can set one or more sparse maps which
 will then work out the sparsity for the set of equations.</p>
 </dd>
-<dt><a class="reference internal" href="#ec-linked"><span class="std std-ref">linked</span></a></dt><dd><p>The linked state of the expression component is described in the
+<dt><span class="xref std std-ref">ec_linked</span></dt><dd><p>The linked state of the expression component is described in the
 <a class="reference internal" href="#ec-understanding-the-linked-state"><span class="std std-ref">Understanding the Linked State</span></a> section.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="other-notes">
-<h2>Other Notes<a class="headerlink" href="#other-notes" title="Permalink to this heading"></a></h2>
+</section>
+<section id="other-notes">
+<h2>Other Notes<a class="headerlink" href="#other-notes" title="Permalink to this headline"></a></h2>
 <p>At some point we’ll probably need a way of applying arbitrary functions to
 slices of one or more tensor. Such an operation could conceivably be built into
 the <code class="docutils literal notranslate"><span class="pre">Nary&lt;N,T&gt;</span></code> class and the classes which derive from it</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

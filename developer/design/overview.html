@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Overview of TensorWrapper &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -104,20 +103,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="overview-of-tensorwrapper">
-<span id="tensor-wrapper-overview"></span><h1>Overview of TensorWrapper<a class="headerlink" href="#overview-of-tensorwrapper" title="Permalink to this heading"></a></h1>
+  <section id="overview-of-tensorwrapper">
+<span id="tensor-wrapper-overview"></span><h1>Overview of TensorWrapper<a class="headerlink" href="#overview-of-tensorwrapper" title="Permalink to this headline"></a></h1>
 <p>This section provides a high-level overview of TensorWrapper’s architecture.</p>
-<div class="section" id="what-is-tensorwrapper">
-<h2>What is TensorWrapper?<a class="headerlink" href="#what-is-tensorwrapper" title="Permalink to this heading"></a></h2>
+<section id="what-is-tensorwrapper">
+<h2>What is TensorWrapper?<a class="headerlink" href="#what-is-tensorwrapper" title="Permalink to this headline"></a></h2>
 <p>There are a number of existing tensor libraries, with a variety of useful
 features; however, to our knowledge no existing tensor library has all the
 tensor features a high-performance physics or chemistry code may encounter. TensorWrapper is
 designed to provide a high-level, user-friendly, <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> on top of
 existing tensor libraries, while abstracting away as much complexity as
 possible.</p>
-</div>
-<div class="section" id="why-do-we-need-tensorwrapper">
-<h2>Why do we need TensorWrapper?<a class="headerlink" href="#why-do-we-need-tensorwrapper" title="Permalink to this heading"></a></h2>
+</section>
+<section id="why-do-we-need-tensorwrapper">
+<h2>Why do we need TensorWrapper?<a class="headerlink" href="#why-do-we-need-tensorwrapper" title="Permalink to this headline"></a></h2>
 <p>Tensors are the “DSL of physics” because nearly every law of physics is
 succinctly summarized by a tensor equation. That said, naively creating arrays
 of floating-point values and then subjecting them to the mathematical operations
@@ -136,9 +135,9 @@ break API complicates the use of those libraries and places much onus on the
 programmer. The goal of TensorWrapper is to provide a middle layer between
 existing tensor libraries and the user. By adding a middle layer we can better
 decouple the interface from the details.</p>
-</div>
-<div class="section" id="architecture-considerations">
-<span id="atw-architecture-considerations"></span><h2>Architecture Considerations<a class="headerlink" href="#architecture-considerations" title="Permalink to this heading"></a></h2>
+</section>
+<section id="architecture-considerations">
+<span id="atw-architecture-considerations"></span><h2>Architecture Considerations<a class="headerlink" href="#architecture-considerations" title="Permalink to this headline"></a></h2>
 <p>TensorWrapper’s overall architecture is motivated by the workflow we expect
 our users to adopt and the workflow we expect TensorWrapper to actually follow
 in order to performantly meet our user’s needs.</p>
@@ -195,8 +194,8 @@ operations.</p>
 able to have the operations evaluated - hopefully, in an efficient manner.</p>
 </dd>
 </dl>
-<div class="section" id="performance-considerations">
-<span id="atw-performance-considerations"></span><h3>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this heading"></a></h3>
+<section id="performance-considerations">
+<span id="atw-performance-considerations"></span><h3>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this headline"></a></h3>
 <p>While the end-user considerations afford a nice user workflow, the reality is
 more needs to go into the tensor workflow to accomplish what the user wants in
 a performant manner. These “performance” steps should be interlaced between
@@ -239,11 +238,11 @@ generated on-the-fly.</p></li>
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="out-of-scope-considerations">
-<h3>Out of Scope Considerations<a class="headerlink" href="#out-of-scope-considerations" title="Permalink to this heading"></a></h3>
+</section>
+<section id="out-of-scope-considerations">
+<h3>Out of Scope Considerations<a class="headerlink" href="#out-of-scope-considerations" title="Permalink to this headline"></a></h3>
 <dl class="simple">
-<dt>Static expression optimization</dt><dd><p><a class="reference internal" href="#atw-runtime-expression-optimization"><span class="std std-ref">Runtime expression optimization</span></a> brought up the fact that some
+<dt>Static expression optimization</dt><dd><p><span class="xref std std-ref">atw_runtime_expression_optimization</span> brought up the fact that some
 expression optimizations can happen simply given the equations. Such
 optimizations can be decoupled from TensorWrapper by using code generators
 to write expressions using TensorWrapper’s DSL.</p>
@@ -262,39 +261,43 @@ sparsity and symmetry) are in scope.</p></li>
 </ul>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="architecture-design">
-<h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id1">
+</section>
+</section>
+<section id="architecture-design">
+<h2>Architecture Design<a class="headerlink" href="#architecture-design" title="Permalink to this headline"></a></h2>
+<figure class="align-center" id="id1">
 <span id="fig-tw-workflows"></span><img alt="../../_images/workflows.png" src="../../_images/workflows.png" />
-<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Left. The ideal user-based workflow for using TensorWrapper. Right. The
 user-based workflow with performance-inspired steps interjected.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</div>
+</figcaption>
+</figure>
 <p>Section <a class="reference internal" href="#atw-architecture-considerations"><span class="std std-ref">Architecture Considerations</span></a> presented two workflows: a
 user-based and a performance-based workflow. <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a>
 illustrates these workflows using the major pieces of TensorWrapper. As
 mentioned in the previous section, the end goal is to have the
 performance-focused workflow be an implementation detail. For example, the
-<a class="reference internal" href="#atw-runtime-aware-properties"><span class="std std-ref">Runtime aware properties</span></a> and <a class="reference internal" href="#atw-runtime-aware-allocation"><span class="std std-ref">Runtime aware allocation</span></a>
+<span class="xref std std-ref">atw_runtime_aware_properties</span> and <span class="xref std std-ref">atw_runtime_aware_allocation</span>
 steps could occur within the constructor of the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class.
-Similarly, the <a class="reference internal" href="#atw-runtime-expression-optimization"><span class="std std-ref">Runtime expression optimization</span></a> step could be
+Similarly, the <span class="xref std std-ref">atw_runtime_expression_optimization</span> step could be
 triggered when a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object is initialized by an <code class="docutils literal notranslate"><span class="pre">Expression</span></code>
 object.</p>
-<div class="figure align-center" id="id2">
+<figure class="align-center" id="id2">
 <span id="fig-tw-architecture"></span><img alt="../../_images/architecture.png" src="../../_images/architecture.png" />
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The architecture of TensorWrapper.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 <p><a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 5</span></a> shows the major components of TensorWrapper. The
 components are organized into four categories, based on whether they are part
 of TensorWrapper or a dependency and whether they are user-facing or
 implementation-facing.</p>
-<div class="section" id="user-facing-classes">
-<h3>User-Facing Classes<a class="headerlink" href="#user-facing-classes" title="Permalink to this heading"></a></h3>
+<section id="user-facing-classes">
+<h3>User-Facing Classes<a class="headerlink" href="#user-facing-classes" title="Permalink to this headline"></a></h3>
 <p>As motivated by <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a>, users of TensorWrapper primarily
 interact with four components:</p>
-<div class="section" id="shape">
-<h4>Shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h4>
+<section id="shape">
+<h4>Shape<a class="headerlink" href="#shape" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="shape.html#shape-design"><span class="std std-ref">Tensor Shape Design</span></a>.</p>
 <p>Tensors are thought of as hyper-rectangular arrays of elements. The <code class="docutils literal notranslate"><span class="pre">Shape</span></code>
 component is responsible for describing this array of values. In particular
@@ -305,9 +308,9 @@ the <code class="docutils literal notranslate"><span class="pre">Shape</span></c
 <li><p>nesting structure of the hyper-rectangular arrays</p></li>
 <li><p>converting indices from one shape to indices in another shape</p></li>
 </ul>
-</div>
-<div class="section" id="symmetry">
-<h4>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this heading"></a></h4>
+</section>
+<section id="symmetry">
+<h4>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="symmetry.html#tw-designing-the-symmetry-component"><span class="std std-ref">Designing the Symmetry Component</span></a>.</p>
 <p>In practice many of the tensors commonly encountered have some sort of
 permutational symmetry. While such symmetry could be discovered by inspecting
@@ -320,9 +323,9 @@ responsible for:</p>
 <li><p>Hermitian and anti-Hermitian (complex elements)</p></li>
 <li><p>Other symmetry mappings</p></li>
 </ul>
-</div>
-<div class="section" id="sparsity">
-<h4>Sparsity<a class="headerlink" href="#sparsity" title="Permalink to this heading"></a></h4>
+</section>
+<section id="sparsity">
+<h4>Sparsity<a class="headerlink" href="#sparsity" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="sparsity.html#sparsity-design"><span class="std std-ref">Tensor Sparsity Design</span></a>.</p>
 <p>While symmetry deals with telling us which elements must be the same (up to a
 sign), sparsity deals with telling us which elements are zero. The <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code>
@@ -338,9 +341,9 @@ sparsity is actually element-sparsity, just for non-scalar elements. The point
 is, even though we anticipate tile-sparsity to be the most important sparsity
 we think that TensorWrapper needs to be designed with element-sparsity in mind
 from the get go.</p>
-</div>
-<div class="section" id="tensorwrapper">
-<h4><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code><a class="headerlink" href="#tensorwrapper" title="Permalink to this heading"></a></h4>
+</section>
+<section id="tensorwrapper">
+<h4><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code><a class="headerlink" href="#tensorwrapper" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="tensor_wrapper.html#designing-tensor-wrapper-class"><span class="std std-ref">Designing TensorWrapper Class</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class is the tensor-like object that users interact with.
 The DSL uses <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects as the leaf nodes of an
@@ -350,22 +353,22 @@ The DSL uses <code class="docutils literal notranslate"><span class="pre">Tensor
 <li><p>storing the data</p></li>
 <li><p>providing an entry point into the DSL.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="user-facing-external-dependencies">
-<h3>User-Facing External Dependencies<a class="headerlink" href="#user-facing-external-dependencies" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="user-facing-external-dependencies">
+<h3>User-Facing External Dependencies<a class="headerlink" href="#user-facing-external-dependencies" title="Permalink to this headline"></a></h3>
 <p>TensorWrapper additionally needs a description of the runtime. For this
 purpose we have elected to build upon
 <a class="reference external" href="https://github.com/NWChemEx-Project/ParallelZone">ParallelZone</a>.</p>
-</div>
-<div class="section" id="implementation-facing-classes">
-<h3>Implementation-Facing Classes<a class="headerlink" href="#implementation-facing-classes" title="Permalink to this heading"></a></h3>
+</section>
+<section id="implementation-facing-classes">
+<h3>Implementation-Facing Classes<a class="headerlink" href="#implementation-facing-classes" title="Permalink to this headline"></a></h3>
 <p>As shown in <a class="reference internal" href="#fig-tw-workflows"><span class="std std-numref">Fig. 4</span></a> and <a class="reference internal" href="#fig-tw-architecture"><span class="std std-numref">Fig. 5</span></a>, the
 <a class="reference internal" href="#atw-performance-considerations"><span class="std std-ref">Performance Considerations</span></a> lead <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> to have several
 additional components. These components are required to convey additional
 state necessary for performance.</p>
-<div class="section" id="allocator">
-<h4>Allocator<a class="headerlink" href="#allocator" title="Permalink to this heading"></a></h4>
+<section id="allocator">
+<h4>Allocator<a class="headerlink" href="#allocator" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="allocator.html#tw-designing-the-allocator"><span class="std std-ref">Designing the Allocator</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> component wraps the process of going from the actual
 <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code>, and <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> for the tensor to an object of the
@@ -376,9 +379,9 @@ as:</p>
 <li><p>Vectorization strategy (row-major vs. column-major)</p></li>
 <li><p>Value location: distribution, RAM, disk, on-the-fly, GPU</p></li>
 </ul>
-</div>
-<div class="section" id="buffer">
-<h4>Buffer<a class="headerlink" href="#buffer" title="Permalink to this heading"></a></h4>
+</section>
+<section id="buffer">
+<h4>Buffer<a class="headerlink" href="#buffer" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="buffer.html#tw-designing-the-buffer"><span class="std std-ref">Designing the Buffer</span></a>.</p>
 <p>To the extent possible <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> strives to avoid needing to reimplement
 tensor math routines. Key to these efforts are the already existing tensor
@@ -390,9 +393,9 @@ the buffer are:</p>
 <li><p>Record data runtime location</p></li>
 <li><p>Opaquely move data</p></li>
 </ul>
-</div>
-<div class="section" id="layout">
-<h4>Layout<a class="headerlink" href="#layout" title="Permalink to this heading"></a></h4>
+</section>
+<section id="layout">
+<h4>Layout<a class="headerlink" href="#layout" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="layout.html#layout-design"><span class="std std-ref">Designing the Layout Component</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Shape</span></code> provided by the user is the shape of the tensor’s values based on
 the problem. The <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object tells us which of those values are
@@ -406,9 +409,9 @@ describing the runtime properties of the tensor:</p>
 <li><p>Actual sparsity of the tensor (accounting for symmetry)</p></li>
 <li><p>Distribution for distributed tensors</p></li>
 </ul>
-</div>
-<div class="section" id="expression">
-<h4>Expression<a class="headerlink" href="#expression" title="Permalink to this heading"></a></h4>
+</section>
+<section id="expression">
+<h4>Expression<a class="headerlink" href="#expression" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="expression.html#designing-the-expression-component"><span class="std std-ref">Designing the Expression Component</span></a>.</p>
 <p>Like most tensor libraries, TensorWrapper will rely on an expression layer for
 composing tensor expressions. Strictly, speaking this layer is entered into
@@ -421,9 +424,9 @@ which is why we consider it an implementation detail. Responsibilities include:<
 <li><p>Express binary operations</p></li>
 <li><p>Represent branching nodes of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
 </ul>
-</div>
-<div class="section" id="opgraph">
-<h4>OpGraph<a class="headerlink" href="#opgraph" title="Permalink to this heading"></a></h4>
+</section>
+<section id="opgraph">
+<h4>OpGraph<a class="headerlink" href="#opgraph" title="Permalink to this headline"></a></h4>
 <p>Main discussion: <a class="reference internal" href="op_graph.html#tw-designing-the-opgraph"><span class="std std-ref">Designing the OpGraph</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Expression</span></code> component contains a user-friendly mechanism for composing
 tensors using TensorWrapper’s DSL. The result is a <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>. In practice,
@@ -437,17 +440,17 @@ used to drive executing the backends. Responsibilities include:</p>
 <li><p>Converting the <a class="reference internal" href="../../background/terminology.html#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a> to an <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
 <li><p>Runtime optimizations of the <a class="reference internal" href="../../background/terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="implementation-facing-external-dependencies">
-<h3>Implementation-Facing External Dependencies<a class="headerlink" href="#implementation-facing-external-dependencies" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="implementation-facing-external-dependencies">
+<h3>Implementation-Facing External Dependencies<a class="headerlink" href="#implementation-facing-external-dependencies" title="Permalink to this headline"></a></h3>
 <p>TensorWrapper is designed to wrap existing high-performance tensor libraries
 into a common <a class="reference internal" href="../../background/terminology.html#term-dsl"><span class="std std-ref">domain specific language (DSL)</span></a> and to exploit the advantages of each of these libraries in
 an interoperable manner. The interfaces to these various backends live in this
 component.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Key Features of TensorWrapper &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -102,21 +101,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="key-features-of-tensorwrapper">
-<h1>Key Features of TensorWrapper<a class="headerlink" href="#key-features-of-tensorwrapper" title="Permalink to this heading"></a></h1>
+  <section id="key-features-of-tensorwrapper">
+<h1>Key Features of TensorWrapper<a class="headerlink" href="#key-features-of-tensorwrapper" title="Permalink to this headline"></a></h1>
 <p>There are a lot of tensor libraries out there, the point of this page is to
 keep track of what sets TensorWrapper a part.</p>
-<div class="section" id="design-features">
-<h2>Design Features<a class="headerlink" href="#design-features" title="Permalink to this heading"></a></h2>
-<div class="section" id="wrapping">
-<h3>Wrapping<a class="headerlink" href="#wrapping" title="Permalink to this heading"></a></h3>
+<section id="design-features">
+<h2>Design Features<a class="headerlink" href="#design-features" title="Permalink to this headline"></a></h2>
+<section id="wrapping">
+<h3>Wrapping<a class="headerlink" href="#wrapping" title="Permalink to this headline"></a></h3>
 <p>To the extent possible, TensorWrapper aims to graft the other features on this
 list on to existing tensor libraries. Admittedly, this requires TensorWrapper
 to “factor out” (in practice we have to reimplement since said features are
 usually not modularized) some functionality.</p>
-</div>
-<div class="section" id="decoupled-expression-layer">
-<h3>Decoupled Expression Layer<a class="headerlink" href="#decoupled-expression-layer" title="Permalink to this heading"></a></h3>
+</section>
+<section id="decoupled-expression-layer">
+<h3>Decoupled Expression Layer<a class="headerlink" href="#decoupled-expression-layer" title="Permalink to this headline"></a></h3>
 <p>Most C++ tensor libraries have an expression layer, which relies on
 meta-template programming to build up a representation of what the user wants
 before actually running the computation. From a computer language perspective,
@@ -130,9 +129,9 @@ DSL). TensorWrapper follows usual parsing procedures and converts the CST into
 an <a class="reference internal" href="terminology.html#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a> before optimization and executing occur. In turn, the AST
 serves as an intermediate representation which is not tied to the tensor
 front end.</p>
-</div>
-<div class="section" id="logical-vs-actual-layout">
-<h3>Logical vs Actual Layout<a class="headerlink" href="#logical-vs-actual-layout" title="Permalink to this heading"></a></h3>
+</section>
+<section id="logical-vs-actual-layout">
+<h3>Logical vs Actual Layout<a class="headerlink" href="#logical-vs-actual-layout" title="Permalink to this headline"></a></h3>
 <p>Most distributed tensors have a concept of tiling because ultimately
 operations on distributed data are done differently than on local data. In
 practice tiling a tensor increases its rank, <em>e.g.</em>, if we tile a matrix along
@@ -144,12 +143,12 @@ because the tiling modes need to be treated differently than the original modes.
 TensorWrapper’s solution is to distinguish between the logical layout of the
 tensor (<em>i.e.</em>, how the user declared it) and the actual layout of the tensor
 (<em>i.e.</em>, including any additional modes added for performance reasons).</p>
-</div>
-</div>
-<div class="section" id="math-features">
-<h2>Math Features<a class="headerlink" href="#math-features" title="Permalink to this heading"></a></h2>
-<div class="section" id="native-support-for-nested-tensors">
-<h3>Native Support for Nested Tensors<a class="headerlink" href="#native-support-for-nested-tensors" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="math-features">
+<h2>Math Features<a class="headerlink" href="#math-features" title="Permalink to this headline"></a></h2>
+<section id="native-support-for-nested-tensors">
+<h3>Native Support for Nested Tensors<a class="headerlink" href="#native-support-for-nested-tensors" title="Permalink to this headline"></a></h3>
 <p>While we have a propensity to think of tensors as having scalar elements, this
 need not be the case. For example, a matrix can also be thought of as a vector
 of vectors. The key difference between these views is that in the second
@@ -159,9 +158,9 @@ and map them to the more traditional view (in the matrix vs. vector of vector
 example the user would have to request a particular slice of the tensor).
 Native support for nesting allows slicing to be treated more naturally, it also
 opens up the door for…</p>
-</div>
-<div class="section" id="native-support-for-jagged-tensors">
-<h3>Native Support for Jagged Tensors<a class="headerlink" href="#native-support-for-jagged-tensors" title="Permalink to this heading"></a></h3>
+</section>
+<section id="native-support-for-jagged-tensors">
+<h3>Native Support for Jagged Tensors<a class="headerlink" href="#native-support-for-jagged-tensors" title="Permalink to this headline"></a></h3>
 <p>We can think of an <span class="math notranslate nohighlight">\(n\)</span> by <span class="math notranslate nohighlight">\(m\)</span> element matrix as an <span class="math notranslate nohighlight">\(n\)</span>
 element vector containing <span class="math notranslate nohighlight">\(m\)</span> element vectors. In this scenario, each of
 the inner vectors has the same shape. One can also imagine having a vector of
@@ -169,9 +168,9 @@ vectors where the inner vectors do not all have the same shape. If we view
 such a vector of vectors as a matrix, the resulting matrix will have rows of
 different lengths, <em>i.e.</em>, it is a “jagged” matrix. While jagged tensors may
 seem exotic they occur quite naturally with sparse data with implicit zeros.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

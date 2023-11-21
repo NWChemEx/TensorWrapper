@@ -1,0 +1,4 @@
+<map id="tensorwrapper::tensor::SparseShape&lt; FieldType &gt;" name="tensorwrapper::tensor::SparseShape&lt; FieldType &gt;">
+<area shape="rect" id="node1" title="Describes a tensor&#39;s shape when there&#39;s sparsity." alt="" coords="5,95,211,136"/>
+<area shape="rect" id="node2" href="$classtensorwrapper_1_1tensor_1_1Shape.html" title="Object describing a tensor&#39;s elemental layout." alt="" coords="25,5,191,47"/>
+</map>

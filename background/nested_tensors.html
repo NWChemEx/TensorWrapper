@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Understanding Nested Tensors &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -94,21 +93,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="understanding-nested-tensors">
-<span id="nested-tensors"></span><h1>Understanding Nested Tensors<a class="headerlink" href="#understanding-nested-tensors" title="Permalink to this heading"></a></h1>
+  <section id="understanding-nested-tensors">
+<span id="nested-tensors"></span><h1>Understanding Nested Tensors<a class="headerlink" href="#understanding-nested-tensors" title="Permalink to this headline"></a></h1>
 <p>Mathematically tensors can be very confusing objects because of the many
 <a class="reference internal" href="terminology.html#term-isomorphism"><span class="std std-ref">isomorphism</span></a>s that exist among them. While mathematics may be fine
 treating isomorphic structures as equivalent, most tensor libraries are not. By
 introducing the concept of a nested tensor we are better able
 to distinguish among mathematical ambiguities which arise because of the
 isomorphic nature of the structures.</p>
-<div class="section" id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id1">
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline"></a></h2>
+<figure class="align-center" id="id1">
 <span id="fig-rank0-v-rank123"></span><img alt="../_images/rank0_v_rank1_v_rank2_v_rank3.png" src="../_images/rank0_v_rank1_v_rank2_v_rank3.png" />
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Illustration of a scalar (the blue square), can equivalently be thought of
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Illustration of a scalar (the blue square), can equivalently be thought of
 as a vector, a matrix, and a rank 3 tensor.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</div>
+</figcaption>
+</figure>
 <p>Consider a tensor <span class="math notranslate nohighlight">\(A\)</span> with a single element in it. <span class="math notranslate nohighlight">\(A\)</span> is arguably best
 represented as a scalar (rank 0 tensor); however, if we wanted to, we could
 also represent <span class="math notranslate nohighlight">\(A\)</span> as a single element vector (rank 1 tensor), or a
@@ -121,12 +122,14 @@ declared as a vector, the user will need to provide one offset to access the
 single element. By requiring users to declare the rank of a tensor before use,
 the tensor library is able to avoid ambiguity and know how many indices to
 expect.</p>
-<div class="figure align-center" id="id2">
+<figure class="align-center" id="id2">
 <span id="fig-matrix-v-vov"></span><img alt="../_images/matrix_v_vov.png" src="../_images/matrix_v_vov.png" />
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">While it is conventional to view a rank 2 tensor as having rank 0 elements,
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">While it is conventional to view a rank 2 tensor as having rank 0 elements,
 one can equivalently view it as having rank 1 elements, <em>i.e.</em> a vector of
 vectors.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
-</div>
+</figcaption>
+</figure>
 <p>Unfortunately, rank alone is not sufficient to remove all of the
 ambiguity. Another point of ambiguity comes from the fact that vectors,
 matrices, etc. are actually isomorphic with scalars. <a class="reference internal" href="#fig-matrix-v-vov"><span class="std std-numref">Fig. 3</span></a>
@@ -137,12 +140,12 @@ than 0, we say that <span class="math notranslate nohighlight">\(A\)</span> is a
 for a rank <span class="math notranslate nohighlight">\(r\)</span> tensor to have up to <span class="math notranslate nohighlight">\(r\)</span> layers of nesting, which is to say
 that nesting is not limited to a tensor of tensors, but can also include tensors
 of tensors of tensors, etc.</p>
-</div>
-<div class="section" id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading"></a></h2>
+</section>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline"></a></h2>
 <p>So why does the ambiguity from nesting matter? The short answer is performance.
 In TensorWrapper, the nesting of the physical layout (see
-<a class="reference internal" href="../developer/design/tensor_wrapper.html#tw-logical-v-physical"><span class="std std-ref">Logical versus physical</span></a> for the distinction between the logical and
+<span class="xref std std-ref">tw_logical_v_physical</span> for the distinction between the logical and
 physical layouts) is used to determine how a tensor is physically stored. If
 the physical layout of the tensor has no nesting then TensorWrapper can store
 the tensor however it wants. If the physical layout has a nesting like that
@@ -164,15 +167,15 @@ expressed in terms of equations which rely on partitioned tensors, then the user
 may opt to express the logical layout of the tensor as being nested. As an
 example, in many physics applications partitioned equations result from
 forces, energies, etc. that contain several identifiable components.</p>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <p>There are many different representations of the same tensor. While the results
 of formal tensor algebra are indifferent to the representation, numerical
 performance may change. To distinguish among the various ways of partitioning
 a tensor we introduce the concept of a nested tensor.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

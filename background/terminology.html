@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TensorWrapper Terminology &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -120,24 +119,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="tensorwrapper-terminology">
-<span id="tw-terminology"></span><h1>TensorWrapper Terminology<a class="headerlink" href="#tensorwrapper-terminology" title="Permalink to this heading"></a></h1>
+  <section id="tensorwrapper-terminology">
+<span id="tw-terminology"></span><h1>TensorWrapper Terminology<a class="headerlink" href="#tensorwrapper-terminology" title="Permalink to this headline"></a></h1>
 <p>When discussing tensors, different researchers use different terminology. This
 section provides a glossary of the tensor terminology we will use throughout
 TensorWrapper. The terminology is inspired by the initial tensor interface
 efforts of the MolSSI organization (see
 <a class="reference external" href="https://github.com/MolSSI/tensor-interfaces">here</a>).</p>
-<div class="section" id="tensor-terminology">
-<h2>Tensor Terminology<a class="headerlink" href="#tensor-terminology" title="Permalink to this heading"></a></h2>
+<section id="tensor-terminology">
+<h2>Tensor Terminology<a class="headerlink" href="#tensor-terminology" title="Permalink to this headline"></a></h2>
 <p>Terms are listed alphabetically.</p>
-<div class="section" id="block">
-<span id="term-block"></span><h3>block<a class="headerlink" href="#block" title="Permalink to this heading"></a></h3>
+<section id="block">
+<span id="term-block"></span><h3>block<a class="headerlink" href="#block" title="Permalink to this headline"></a></h3>
 <p>We use the term block to generically refer to a sub-tensor. Blocks can
 be either <a class="reference internal" href="#term-chip"><span class="std std-ref">chip</span></a> or <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> depending on how their rank
 compares to that of the parent tensor.</p>
-</div>
-<div class="section" id="chip">
-<span id="term-chip"></span><h3>chip<a class="headerlink" href="#chip" title="Permalink to this heading"></a></h3>
+</section>
+<section id="chip">
+<span id="term-chip"></span><h3>chip<a class="headerlink" href="#chip" title="Permalink to this headline"></a></h3>
 <p>A chip of a tensor is similar to a <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a>, but the resulting tensor
 has lower rank. The distinction between chip and slice is important because of
 the ambiguity associated with taking slices with extents of length one along
@@ -146,9 +145,9 @@ one or more modes. For example, say we ask for the first row of a matrix with
 vs. slice resolves this ambiguity. If the user asked for the row as a slice,
 they get back a matrix, if they asked for the row as a chip they get back a
 vector.</p>
-</div>
-<div class="section" id="element">
-<span id="term-element"></span><h3>element<a class="headerlink" href="#element" title="Permalink to this heading"></a></h3>
+</section>
+<section id="element">
+<span id="term-element"></span><h3>element<a class="headerlink" href="#element" title="Permalink to this headline"></a></h3>
 <p>Tensors are typically thought of as hyper-rectangular arrays of floating-point
 values. These individual values are termed “elements”. Elements do not need to
 be floating-point values; they can be integers, strings, or even other tensors.
@@ -156,24 +155,24 @@ The important part is that the elements form a mathematical <a class="reference 
 For a rank <span class="math notranslate nohighlight">\(n\)</span> tensor, an individual element can be specified by providing the
 offset along each of the <span class="math notranslate nohighlight">\(n\)</span> modes. Other common names for elements include
 “components”.</p>
-</div>
-<div class="section" id="extent">
-<span id="term-extent"></span><h3>extent<a class="headerlink" href="#extent" title="Permalink to this heading"></a></h3>
+</section>
+<section id="extent">
+<span id="term-extent"></span><h3>extent<a class="headerlink" href="#extent" title="Permalink to this headline"></a></h3>
 <p>The number of elements along a <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>. For a vector, the extent of
 the vector is the total number of elements in the vector. A matrix has two
 extents: the number of rows and the number of columns. Outside TensorWrapper
 other common names for extent are length, dimension, and size.</p>
-</div>
-<div class="section" id="jagged">
-<span id="term-jagged"></span><h3>jagged<a class="headerlink" href="#jagged" title="Permalink to this heading"></a></h3>
+</section>
+<section id="jagged">
+<span id="term-jagged"></span><h3>jagged<a class="headerlink" href="#jagged" title="Permalink to this headline"></a></h3>
 <p>Elements of a <a class="reference internal" href="#term-nested"><span class="std std-ref">nested</span></a> tensor <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> are tensors themselves. If the
 shapes of the elements of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> differ, then <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is jagged. Put another way, let
 <span class="math notranslate nohighlight">\(j_i\)</span> and <span class="math notranslate nohighlight">\(k_i\)</span> be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> along the
 <span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,  then if for any mode of <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> there exists
 a <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span> with different shapes, <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is jagged.</p>
-</div>
-<div class="section" id="mode">
-<span id="term-mode"></span><h3>mode<a class="headerlink" href="#mode" title="Permalink to this heading"></a></h3>
+</section>
+<section id="mode">
+<span id="term-mode"></span><h3>mode<a class="headerlink" href="#mode" title="Permalink to this headline"></a></h3>
 <p>We typically think of vectors as a column (or row) of numbers, matrices are
 thought of as tables of numbers (thus each entry has a row and a column
 associated with it), etc. The point is typically we think of tensors as hyper-
@@ -190,9 +189,9 @@ array.” This is because when referring to literal geometric shapes (<em>i.e.</
 rectangles, squares, rectangular prisms, cubes, etc.) the use of
 “mode” is not standard practice.</p>
 </div>
-</div>
-<div class="section" id="nested">
-<span id="term-nested"></span><h3>nested<a class="headerlink" href="#nested" title="Permalink to this heading"></a></h3>
+</section>
+<section id="nested">
+<span id="term-nested"></span><h3>nested<a class="headerlink" href="#nested" title="Permalink to this headline"></a></h3>
 <p>Mathematically speaking a tensor is a multilinear map over a field. Practically,
 the field defines the set of values the elements of a tensor may have. While we
 usually assume that field associated with a tensor is the field of real (or
@@ -201,92 +200,92 @@ sometimes find it useful to use other fields (such as fields whose elements
 are tensors of a <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a> greater than 0). We say a tensor is nested
 if its elements are tensors of rank greater than 0. Nesting can be confusing
 and is covered in more detail on the <a class="reference internal" href="nested_tensors.html#nested-tensors"><span class="std std-ref">Understanding Nested Tensors</span></a> page.</p>
-</div>
-<div class="section" id="on-demand">
-<span id="term-on-demand"></span><h3>on-demand<a class="headerlink" href="#on-demand" title="Permalink to this heading"></a></h3>
+</section>
+<section id="on-demand">
+<span id="term-on-demand"></span><h3>on-demand<a class="headerlink" href="#on-demand" title="Permalink to this headline"></a></h3>
 <p>A tensor, or more typically a slice of a tensor, is on-demand if the elements of
 the tensor are computed when needed, then discarded. On-demand tensors typically
 store a callback which is capable of building a specified slice of a tensor.
 The slice will exist in memory, but will not be stored in the tensor.</p>
-</div>
-<div class="section" id="rank">
-<span id="term-rank"></span><h3>rank<a class="headerlink" href="#rank" title="Permalink to this heading"></a></h3>
+</section>
+<section id="rank">
+<span id="term-rank"></span><h3>rank<a class="headerlink" href="#rank" title="Permalink to this headline"></a></h3>
 <p>The number of <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a> s a tensor has. A scalar is a rank 0 tensor, a
 vector is rank 1 tensor, a matrix is a rank 2 tensor, etc. Outside TensorWrapper
 other common names are dimensionality and order.</p>
-</div>
-<div class="section" id="reshape">
-<span id="term-reshape"></span><h3>reshape<a class="headerlink" href="#reshape" title="Permalink to this heading"></a></h3>
+</section>
+<section id="reshape">
+<span id="term-reshape"></span><h3>reshape<a class="headerlink" href="#reshape" title="Permalink to this headline"></a></h3>
 <p>The hyper-rectangular layout of a tensor is not unique. We can just as easily
 treat an <span class="math notranslate nohighlight">\(m\)</span> by <span class="math notranslate nohighlight">\(n\)</span> matrix as a vector with <span class="math notranslate nohighlight">\(nm\)</span> elements. When converting
 a tensor into a vector, the process is usually termed vectorization. More
 generally, this process is termed reshaping as it changes the shape of the
 tensor from an <span class="math notranslate nohighlight">\(m\)</span>-dimensional hyper-rectangular array to an <span class="math notranslate nohighlight">\(n\)</span>-dimensional
 hyper-rectangular array (<span class="math notranslate nohighlight">\(m\neq n\)</span>).</p>
-</div>
-<div class="section" id="shape">
-<span id="term-shape"></span><h3>shape<a class="headerlink" href="#shape" title="Permalink to this heading"></a></h3>
+</section>
+<section id="shape">
+<span id="term-shape"></span><h3>shape<a class="headerlink" href="#shape" title="Permalink to this headline"></a></h3>
 <p>The shape of a tensor is the set containing the <a class="reference internal" href="#term-extent"><span class="std std-ref">extent</span></a> of each
 <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>. The shape defines the edge lengths of the hyper-rectangular
 array the elements are stored in. Since the number of edge lengths is the
 <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a> of the tensor, the shape also contains that information.</p>
-</div>
-<div class="section" id="slice">
-<span id="term-slice"></span><h3>slice<a class="headerlink" href="#slice" title="Permalink to this heading"></a></h3>
+</section>
+<section id="slice">
+<span id="term-slice"></span><h3>slice<a class="headerlink" href="#slice" title="Permalink to this headline"></a></h3>
 <p>A sub-tensor of a tensor. A “proper” slice contains less elements than the
 tensor it originates from. We require slices to have the same <a class="reference internal" href="#term-rank"><span class="std std-ref">rank</span></a>
 as the original tensor. If a sub-tensor has a lower rank it is referred to as
 a <a class="reference internal" href="#term-chip"><span class="std std-ref">chip</span></a>.</p>
-</div>
-<div class="section" id="smooth">
-<span id="term-smooth"></span><h3>smooth<a class="headerlink" href="#smooth" title="Permalink to this heading"></a></h3>
+</section>
+<section id="smooth">
+<span id="term-smooth"></span><h3>smooth<a class="headerlink" href="#smooth" title="Permalink to this headline"></a></h3>
 <p>While not a widely used term, it is helpful to introduce a term to contrast
 with <a class="reference internal" href="#term-jagged"><span class="std std-ref">jagged</span></a>. We define a “smooth” <a class="reference internal" href="#term-nested"><span class="std std-ref">nested</span></a> tensor to be
 a tensor which is not jagged.  Put another way, let <span class="math notranslate nohighlight">\(j_i\)</span> and <span class="math notranslate nohighlight">\(k_i\)</span>
 be <a class="reference internal" href="#term-slice"><span class="std std-ref">slice</span></a> s of <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> along the <span class="math notranslate nohighlight">\(i\)</span>-th <a class="reference internal" href="#term-mode"><span class="std std-ref">mode</span></a>,
 then if for all modes of <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> every pair <span class="math notranslate nohighlight">\(j_i\)</span> and a <span class="math notranslate nohighlight">\(k_i\)</span>
 has the same shape, <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> is smooth.</p>
-</div>
-</div>
-<div class="section" id="computer-science-terminology">
-<h2>Computer Science Terminology<a class="headerlink" href="#computer-science-terminology" title="Permalink to this heading"></a></h2>
-<div class="section" id="arity">
-<span id="term-arity"></span><h3>arity<a class="headerlink" href="#arity" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="computer-science-terminology">
+<h2>Computer Science Terminology<a class="headerlink" href="#computer-science-terminology" title="Permalink to this headline"></a></h2>
+<section id="arity">
+<span id="term-arity"></span><h3>arity<a class="headerlink" href="#arity" title="Permalink to this headline"></a></h3>
 <p>The “arity” of a function indicates the number of arguments it takes. Functions
 taking zero arguments are called “nullary”. Functions taking one argument are
 “unary”. Functions taking two, three, and four arguments respectively are:
 “binary”, “ternary”, and “quaternary”.</p>
-</div>
-<div class="section" id="abstract-syntax-tree-ast">
-<span id="term-ast"></span><h3>abstract syntax tree (AST)<a class="headerlink" href="#abstract-syntax-tree-ast" title="Permalink to this heading"></a></h3>
+</section>
+<section id="abstract-syntax-tree-ast">
+<span id="term-ast"></span><h3>abstract syntax tree (AST)<a class="headerlink" href="#abstract-syntax-tree-ast" title="Permalink to this headline"></a></h3>
 <p>With respect to source code, an abstract syntax tree (AST) is a representation
 of the structure of what the programmer wrote, whereas a <a class="reference internal" href="#term-cst"><span class="std std-ref">concrete syntax tree (CST)</span></a>
 contains the literal representation of what the programmer wrote. Carrying out
 the programmed instructions is easier by traversing an AST, versus a CST,
 because extraneous information has been removed.</p>
-</div>
-<div class="section" id="concrete-syntax-tree-cst">
-<span id="term-cst"></span><h3>concrete syntax tree (CST)<a class="headerlink" href="#concrete-syntax-tree-cst" title="Permalink to this heading"></a></h3>
+</section>
+<section id="concrete-syntax-tree-cst">
+<span id="term-cst"></span><h3>concrete syntax tree (CST)<a class="headerlink" href="#concrete-syntax-tree-cst" title="Permalink to this headline"></a></h3>
 <p>With respect to source code, a concrete syntax tree (CST) is a representation
 of the literal source code the programmer wrote. The CST contains all details
 of the source code, including how the programmer chose to represent a
 particular concept. Distilling out the essential concepts leads to an
 <a class="reference internal" href="#term-ast"><span class="std std-ref">abstract syntax tree (AST)</span></a>.</p>
-</div>
-<div class="section" id="domain-specific-language-dsl">
-<span id="term-dsl"></span><h3>domain specific language (DSL)<a class="headerlink" href="#domain-specific-language-dsl" title="Permalink to this heading"></a></h3>
+</section>
+<section id="domain-specific-language-dsl">
+<span id="term-dsl"></span><h3>domain specific language (DSL)<a class="headerlink" href="#domain-specific-language-dsl" title="Permalink to this headline"></a></h3>
 <p>A domain specific language (DSL) is a coding language targeted at a particular
 domain of applications. Compared to general-purpose coding languages, DSLs
 tend to contain fewer language primitives on account of the DSL only concerning
 itself with being general enough to express operations within the target
 domain. The DSL in <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> targets the domain of tensor math and is
 designed to makes it easy to express tensor operations in a performant manner.</p>
-</div>
-</div>
-<div class="section" id="mathematics-terminology">
-<h2>Mathematics Terminology<a class="headerlink" href="#mathematics-terminology" title="Permalink to this heading"></a></h2>
-<div class="section" id="directed-acyclic-graph-dag">
-<span id="term-dag"></span><h3>directed acyclic graph (DAG)<a class="headerlink" href="#directed-acyclic-graph-dag" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="mathematics-terminology">
+<h2>Mathematics Terminology<a class="headerlink" href="#mathematics-terminology" title="Permalink to this headline"></a></h2>
+<section id="directed-acyclic-graph-dag">
+<span id="term-dag"></span><h3>directed acyclic graph (DAG)<a class="headerlink" href="#directed-acyclic-graph-dag" title="Permalink to this headline"></a></h3>
 <p>A graph is a series of nodes and edges which represents what pieces of a system
 are connected (nodes being the pieces of the system and edges being the
 connections). An acyclic graph is one where there are no cycles, <em>i.e.</em>, if node
@@ -294,9 +293,9 @@ connections). An acyclic graph is one where there are no cycles, <em>i.e.</em>, 
 connected to node 0. Finally, a directed graph has edges with directionality,
 <em>i.e.</em>, edges are arrows where the tail points from the calling node to the
 callee.</p>
-</div>
-<div class="section" id="field">
-<span id="term-field"></span><h3>field<a class="headerlink" href="#field" title="Permalink to this heading"></a></h3>
+</section>
+<section id="field">
+<span id="term-field"></span><h3>field<a class="headerlink" href="#field" title="Permalink to this headline"></a></h3>
 <p>A field is a set of elements along with two operations, usually termed
 addition and multiplication. Addition and multiplication behave like the
 traditional addition and multiplication operations, <em>i.e.</em>, both addition and
@@ -304,9 +303,9 @@ multiplication are commutative and associative, and multiplication distributes
 over addition. Finally, each non-zero element in the set must also posses an
 additive and multiplicative inverse (zero elements will have only an additive
 inverse).</p>
-</div>
-<div class="section" id="isomorphism">
-<span id="term-isomorphism"></span><h3>isomorphism<a class="headerlink" href="#isomorphism" title="Permalink to this heading"></a></h3>
+</section>
+<section id="isomorphism">
+<span id="term-isomorphism"></span><h3>isomorphism<a class="headerlink" href="#isomorphism" title="Permalink to this headline"></a></h3>
 <p>Two mathematical objects (<em>e.g.</em>, spaces, fields, sets of numbers) are said to
 be isomorphic if there exists an invertible, bijective map from one object to
 the other. Practically, isomorphisms can be thought of as a generalization
@@ -314,9 +313,9 @@ of equality. Whereas equality usually requires two objects to be
 indistinguishable, isomorphism only requires the objects to behave the same,
 <em>i.e.</em>, the two objects can be thought of as different representations of a more
 fundamental object.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

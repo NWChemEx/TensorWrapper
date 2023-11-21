@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logical Versus Physical: Understanding the Tensor Layout &mdash; TensorWrapper 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -13,9 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -93,14 +92,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="logical-versus-physical-understanding-the-tensor-layout">
-<span id="logical-vs-physical"></span><h1>Logical Versus Physical: Understanding the Tensor Layout<a class="headerlink" href="#logical-versus-physical-understanding-the-tensor-layout" title="Permalink to this heading"></a></h1>
+  <section id="logical-versus-physical-understanding-the-tensor-layout">
+<span id="logical-vs-physical"></span><h1>Logical Versus Physical: Understanding the Tensor Layout<a class="headerlink" href="#logical-versus-physical-understanding-the-tensor-layout" title="Permalink to this headline"></a></h1>
 <p>Most tensor libraries conceptually support what we call physical and logical
 layouts; however, they often do not distinguish among them. The point of this
 page is to introduce the logical vs. physical concept, provide some examples,
 and explain why the explicit distinction is important.</p>
-<div class="section" id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading"></a></h2>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline"></a></h2>
 <p>Ideally, users of a tensor library should only have to specify the properties
 of the tensor as they relate to the problem being modeled. Roughly speaking,
 this amounts to the literal values of the tensor, the symmetry of the tensor,
@@ -113,13 +112,15 @@ implementation-/hardware-specific structure we term the former the “logical”
 structure and the latter the “physical” structure. Generally speaking, the
 physical structure will describe how the tensor is actually structured, whereas
 the logical structure describes how the user thinks the tensor is structured.</p>
-</div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="figure align-center" id="id1">
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<figure class="align-center" id="id1">
 <span id="fig-logical-v-physical"></span><img alt="../_images/logical_v_physical.png" src="../_images/logical_v_physical.png" />
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Illustration of how tiling a tensor effectively changes its rank.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
-</div>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Illustration of how tiling a tensor effectively changes its rank.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 <p>The motivation for introducing the logical vs. physical distinction is tiling
 of a tensor. <a class="reference internal" href="#fig-logical-v-physical"><span class="std std-numref">Fig. 1</span></a> illustrates this process for a
 matrix. The left side of <a class="reference internal" href="#fig-logical-v-physical"><span class="std std-numref">Fig. 1</span></a> shows the logical view
@@ -134,9 +135,9 @@ column offsets in the outer matrix are used to select a tile. Row and column
 offsets in a tile are used to select an element. In turn, when interacting with
 the physical tensor a user needs to provide four indices. Clearly the logical
 and physical views are not compatible without knowing the mapping.</p>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Ideally users will interact with tensors in a manner dictated by the problem
 being modeled. This “logical” interaction will ideally be performance
@@ -152,8 +153,8 @@ and physical representations.</p></li>
 infrastructure in terms of the physical views we can move towards ideality by
 having the logical views dispatch to the physical views.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
