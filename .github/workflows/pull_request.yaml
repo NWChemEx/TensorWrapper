@@ -11,18 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-ARG PARENT_IMAGE_NAME
+name: .github Pull Request Workflow
 
-FROM ${PARENT_IMAGE_NAME}:latest
+on:
+  pull_request:
+    branches:
+      - master
 
-ARG CATCH2_VERSION
-
-# Install catch2 ##
-RUN cd /tmp \
-    && git clone -b v${CATCH2_VERSION} https://github.com/catchorg/Catch2.git \
-    && cd Catch2 \
-    && cmake -Bbuild -H. -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/install \
-    && cmake --build build \
-    && cmake --build build --target install \
-    && rm -rf /tmp/Catch2
+jobs:
+  Common-Pull-Request:
+    uses: NWChemEx-Project/.github/.github/workflows/common_pull_request.yaml@master
+    with:
+      config_file: '.github/.licenserc.yaml'
+      source_dir: 'include src tests'
+      compilers: '["gcc-11"]'
+      doc_target: 'tensorwrapper_cxx_api'
+    secrets: inherit
