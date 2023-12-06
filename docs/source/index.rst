@@ -24,4 +24,4 @@ TensorWrapper
    developer/index
    sparse_maps/index
    bibliography/bibliography
-   C++ API <https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html>
+   C++ API <https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html>

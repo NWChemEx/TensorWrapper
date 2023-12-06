@@ -14,8 +14,8 @@
   ~ limitations under the License.
 -->
 
-[![Actions](https://github.com/NWChemEx-Project/TensorWrapper/workflows/C_C++_CI/badge.svg)](https://github.com/NWChemEx-Project/TensorWrapper)
+[![Actions](https://github.com/NWChemEx/TensorWrapper/workflows/C_C++_CI/badge.svg)](https://github.com/NWChemEx/TensorWrapper)
 
-[![Codecov](https://codecov.io/github/NWChemEx-Project/TensorWrapper/branch/master/graphs/sunburst.svg?token=MwvRQD5eUW)](https://codecov.io/github/NWChemEx-Project/TensorWrapper/branch/master)
+[![Codecov](https://codecov.io/github/NWChemEx/TensorWrapper/branch/master/graphs/sunburst.svg?token=MwvRQD5eUW)](https://codecov.io/github/NWChemEx/TensorWrapper/branch/master)
 
 # TensorWrapper
