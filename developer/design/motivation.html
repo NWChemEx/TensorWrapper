@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Motivating TensorWrapper &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -74,7 +77,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
         </div>
@@ -95,7 +98,7 @@
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
       <li class="breadcrumb-item active">Motivating TensorWrapper</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/motivation.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/developer/design/motivation.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -104,9 +107,9 @@
            <div itemprop="articleBody">
              
   <section id="motivating-tensorwrapper">
-<h1>Motivating TensorWrapper<a class="headerlink" href="#motivating-tensorwrapper" title="Permalink to this headline"></a></h1>
+<h1>Motivating TensorWrapper<a class="headerlink" href="#motivating-tensorwrapper" title="Link to this heading"></a></h1>
 <section id="why-tensors">
-<h2>Why Tensors?<a class="headerlink" href="#why-tensors" title="Permalink to this headline"></a></h2>
+<h2>Why Tensors?<a class="headerlink" href="#why-tensors" title="Link to this heading"></a></h2>
 <p>TensorWrapper defines a tensor as a multi-dimensional array of values. The
 values are usually scalars, but in general can be other tensors. In practice
 this means that more-or-less any indexed quantity is a tensor (according to
@@ -124,22 +127,22 @@ few people would actually code this up as a tensor equation, which brings us
 to…</p>
 </section>
 <section id="are-tensors-a-sufficient-dsl">
-<h2>Are tensors a sufficient DSL?<a class="headerlink" href="#are-tensors-a-sufficient-dsl" title="Permalink to this headline"></a></h2>
+<h2>Are tensors a sufficient DSL?<a class="headerlink" href="#are-tensors-a-sufficient-dsl" title="Link to this heading"></a></h2>
 <p>In practice, most people would compute <span class="math notranslate nohighlight">\(E\)</span> something like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">){</span><span class="w"></span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">r0</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="w">    </span><span class="n">e</span><span class="o">+=</span><span class="w"> </span><span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-<span class="k">return</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">e</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">){</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">r0</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="n">e</span><span class="o">+=</span><span class="w"> </span><span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">return</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>That is they’d use a for-loop. Why? Consider pseudo code for the tensor-based
 version:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="w"> </span><span class="n">dr</span><span class="p">,</span><span class="w"> </span><span class="n">dr2</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">;</span><span class="w"></span>
-<span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">r0</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">dr2</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr2</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="w"> </span><span class="n">dr</span><span class="p">,</span><span class="w"> </span><span class="n">dr2</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
+<span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">r0</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span>
+<span class="n">dr2</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span>
+<span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dr2</span><span class="p">(</span><span class="s">&quot;i&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Ignoring compiler optimizations, and taking the code at face value the
@@ -167,7 +170,7 @@ potentially be a lot of work if multiple loop-based implementations need to be
 rewritten.</p>
 </section>
 <section id="why-tensorwrapper">
-<h2>Why TensorWrapper?<a class="headerlink" href="#why-tensorwrapper" title="Permalink to this headline"></a></h2>
+<h2>Why TensorWrapper?<a class="headerlink" href="#why-tensorwrapper" title="Link to this heading"></a></h2>
 <p>In short, there’s no tensor library out there (that we can find) that really
 strives to achieve the full-featured DSL we want. While a number of tensor
 libraries have a DSL, the libraries assume you’re willing to drop out of the

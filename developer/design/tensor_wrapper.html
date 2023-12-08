@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Designing TensorWrapper Class &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -76,7 +79,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
         </div>
@@ -97,7 +100,7 @@
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
       <li class="breadcrumb-item active">Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/tensor_wrapper.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/developer/design/tensor_wrapper.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -106,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="designing-tensorwrapper-class">
-<span id="designing-tensor-wrapper-class"></span><h1>Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class<a class="headerlink" href="#designing-tensorwrapper-class" title="Permalink to this headline"></a></h1>
+<span id="designing-tensor-wrapper-class"></span><h1>Designing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Class<a class="headerlink" href="#designing-tensorwrapper-class" title="Link to this heading"></a></h1>
 <p>The point of this page is to document the design process of the
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class. Since <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> is the namesake class of the
 TensorWrapper project, and since the project and the class are two distinct
@@ -114,14 +117,14 @@ entities, we establish the convention that when referring to the class we
 will use <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> whereas TensorWrapper denotes the project. This
 convention is used throughout the documentation not just on this page.</p>
 <section id="what-is-the-tensorwrapper-class">
-<h2>What is the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class?<a class="headerlink" href="#what-is-the-tensorwrapper-class" title="Permalink to this headline"></a></h2>
+<h2>What is the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class?<a class="headerlink" href="#what-is-the-tensorwrapper-class" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class is TensorWrapper’s tensor class. Assuming most
 users of TensorWrapper are using TensorWrapper for tensor algebra, we
 anticipate that the bulk of user interactions with TensorWrapper will be
 through the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class (and technically the expression layer).</p>
 </section>
 <section id="why-do-we-need-the-tensorwrapper-class">
-<h2>Why do we need the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class?<a class="headerlink" href="#why-do-we-need-the-tensorwrapper-class" title="Permalink to this headline"></a></h2>
+<h2>Why do we need the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class?<a class="headerlink" href="#why-do-we-need-the-tensorwrapper-class" title="Link to this heading"></a></h2>
 <p>As an object-oriented tensor library, it is perhaps no surprise that
 TensorWrapper needs an object to represent a tensor. It is also worth noting
 that we have opted for the class to be named <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> instead of say
@@ -129,7 +132,7 @@ that we have opted for the class to be named <code class="docutils literal notra
 have a class named <code class="docutils literal notranslate"><span class="pre">Tensor</span></code> (or some variation on it).</p>
 </section>
 <section id="tensorwrapper-considerations">
-<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Considerations<a class="headerlink" href="#tensorwrapper-considerations" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Considerations<a class="headerlink" href="#tensorwrapper-considerations" title="Link to this heading"></a></h2>
 <dl class="simple" id="tw-data-storage">
 <dt>Data storage</dt><dd><p><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects ultimately hold all of the tensor’s state in some
 form or another.</p>
@@ -172,51 +175,51 @@ be publicly accessible, if explicitly wanted.</p></li>
 </dl>
 </section>
 <section id="tensorwrapper-design">
-<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Design<a class="headerlink" href="#tensorwrapper-design" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Design<a class="headerlink" href="#tensorwrapper-design" title="Link to this heading"></a></h2>
 <figure class="align-center" id="id1">
 <span id="fig-tensor-wrapper"></span><img alt="../../_images/tensor_wrapper.png" src="../../_images/tensor_wrapper.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Illustration of a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object’s state.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Illustration of a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object’s state.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>As <a class="reference internal" href="#fig-tensor-wrapper"><span class="std std-numref">Fig. 13</span></a> illustrates, the state of a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>
-object is spread out over a number of objects. The <span class="xref std std-ref">tw_data_storage</span>
+object is spread out over a number of objects. The <a class="reference internal" href="#tw-data-storage"><span class="std std-ref">Data storage</span></a>
 consideration is ultimately satisfied by <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects
 containing a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object. The <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object, specifically the
 <code class="docutils literal notranslate"><span class="pre">Layout</span></code> object underlying it, accounts for the “physical” portion of
-the <span class="xref std std-ref">tw_logical_v_physical</span> consideration. The “logical” portion of
-<span class="xref std std-ref">tw_logical_v_physical</span> is addressed by <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> also containing
+the <a class="reference internal" href="#tw-logical-v-physical"><span class="std std-ref">Logical versus physical</span></a> consideration. The “logical” portion of
+<a class="reference internal" href="#tw-logical-v-physical"><span class="std std-ref">Logical versus physical</span></a> is addressed by <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> also containing
 a <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code>, and <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object. Finally, the
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class can be composed by creating <code class="docutils literal notranslate"><span class="pre">Indexed&lt;TensorWrapper&gt;</span></code>
-objects, satisfying the <span class="xref std std-ref">tw_dsl_entry_point</span> consideration.</p>
-<p>To address <span class="xref std std-ref">tw_special_tensors</span> we derive from <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> two
+objects, satisfying the <a class="reference internal" href="#tw-dsl-entry-point"><span class="std std-ref">DSL entry point</span></a> consideration.</p>
+<p>To address <a class="reference internal" href="#tw-special-tensors"><span class="std std-ref">Special tensors</span></a> we derive from <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> two
 classes, <code class="docutils literal notranslate"><span class="pre">Zero</span></code> and <code class="docutils literal notranslate"><span class="pre">Identity</span></code>. Respectively these classes are intended to
 be strong types representing a zero tensor and an identity tensor. If needed,
 additional special tensors (such as the tensor representing a particular
 Levi-Civita symbol) could be added in an analogous manner.</p>
 </section>
 <section id="proposed-apis">
-<h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this headline"></a></h2>
+<h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Link to this heading"></a></h2>
 <section id="constructing-tensorwrapper-objects">
-<h3>Constructing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Objects<a class="headerlink" href="#constructing-tensorwrapper-objects" title="Permalink to this headline"></a></h3>
+<h3>Constructing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Objects<a class="headerlink" href="#constructing-tensorwrapper-objects" title="Link to this heading"></a></h3>
 <p>Particularly for tutorials and unit testing we often want to create objects
 quickly. To this end we propose an initializer list constructor which
 operates like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Makes a scalar</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">s</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">s</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
 <span class="c1">// Makes a 3 element vector with elements 1, 2, 3</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">v</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">v</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
 
 <span class="c1">// Makes a 1 element vector with element 1</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">v1</span><span class="p">({</span><span class="mi">1</span><span class="p">});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">v1</span><span class="p">({</span><span class="mi">1</span><span class="p">});</span>
 
 <span class="c1">// Makes a 3 by 4 matrix</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">m</span><span class="p">({{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">}});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">m</span><span class="p">({{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">}});</span>
 
 <span class="c1">// A jagged matrix where rows 0, 1, and 2 respectively have 2, 3, and</span>
 <span class="c1">// 4 elements each</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">jm</span><span class="p">({{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">}});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">jm</span><span class="p">({{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">}});</span>
 </pre></div>
 </div>
 <p>The generalization to rank 3 tensors and other jagged tensors should hopefully
@@ -233,8 +236,8 @@ objects.</p></li>
 <p>Thus the most general constructor for a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> is:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Note: that the actual constructors have overloads for cv-qualifiers,</span>
 <span class="c1">// pointer vs reference semantics, etc.</span>
-<span class="n">TensorWrapper</span><span class="p">(</span><span class="n">Shape</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Symmetry</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">Sparsity</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span><span class="w"></span>
-<span class="w">              </span><span class="n">AllocatorBase</span><span class="w"> </span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">Buffer</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="p">(</span><span class="n">Shape</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">Symmetry</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">Sparsity</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span>
+<span class="w">              </span><span class="n">AllocatorBase</span><span class="w"> </span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">Buffer</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Where the first three arguments define the logical layout of the tensor,
@@ -242,20 +245,20 @@ objects.</p></li>
 which actually made <code class="docutils literal notranslate"><span class="pre">buffer</span></code>. In the early stages of development we suspect
 that actually creating a tensor will look like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get runtime and logical layout</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">rv</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime_view</span><span class="p">();</span><span class="w"></span>
-<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_logical_layout</span><span class="p">();</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">rv</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime_view</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_logical_layout</span><span class="p">();</span>
 
 <span class="c1">// Generate physical layout</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_layout</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_layout</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">);</span>
 
 <span class="c1">// Choose an allocator compatible with the physical layout</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">choose_allocator</span><span class="p">(</span><span class="n">rv</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">choose_allocator</span><span class="p">(</span><span class="n">rv</span><span class="p">);</span>
 
 <span class="c1">// Use the allocator and a lambda to fill in the buffer</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocator</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocator</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span>
 
 <span class="c1">// Create the TensorWrapper object</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">allocator</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Where the opaque functions <code class="docutils literal notranslate"><span class="pre">get_runtime_view</span></code> and <code class="docutils literal notranslate"><span class="pre">get_logical_layout</span></code>
@@ -267,48 +270,48 @@ manually creating the layout and selecting an allocator. The end goal of tensor
 wrapper is to automate these two steps and ideally construction of a
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object will actually look like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get runtime and logical layout</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">rv</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime_view</span><span class="p">();</span><span class="w"></span>
-<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_logical_layout</span><span class="p">();</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">rv</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime_view</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_logical_layout</span><span class="p">();</span>
 
 <span class="c1">// Create a TensorWrapper object which has symmetry and sparsity</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">symmetry</span><span class="p">,</span><span class="w"> </span><span class="n">sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span>
 
 <span class="c1">// or create a TensorWrapper object which has no symmetry and is dense</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t2</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="nf">t2</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">rv</span><span class="p">,</span><span class="w"> </span><span class="p">[](){...});</span>
 </pre></div>
 </div>
 <p>We note that the actual signatures of the lambda function are dictated by the
 allocator component (see <a class="reference internal" href="allocator.html#a-proposed-apis"><span class="std std-ref">Proposed APIs</span></a> for more information).</p>
 </section>
 <section id="composing-tensorwrapper-objects">
-<h3>Composing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Objects<a class="headerlink" href="#composing-tensorwrapper-objects" title="Permalink to this headline"></a></h3>
+<h3>Composing <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Objects<a class="headerlink" href="#composing-tensorwrapper-objects" title="Link to this heading"></a></h3>
 <p>We anticipate that after construction, the next most common interaction with
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> objects will be composing them. Composition, for the most
 part, will rely on generalized Einstein summation convention:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Assume that a and b are rank 3 tensors and extents of all operations below</span>
 <span class="c1">// work out</span>
-<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_initialized_tensor_wrapper_objects</span><span class="p">();</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_initialized_tensor_wrapper_objects</span><span class="p">();</span>
 
 <span class="c1">// Assignment is usually done into a default-initialized object</span>
-<span class="n">TensorWrapper</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="n">TensorWrapper</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
 
 <span class="c1">// Tensor addition:</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span>
 
 <span class="c1">// Tensor subtraction with summation over k:</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span>
 
 <span class="c1">// Scaled, element-wise multiplication</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
 
 <span class="c1">// Tensor contraction over k</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">);</span>
 
 <span class="c1">// Element-wise division</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
 
 <span class="c1">// Once a tensor has a state, can accumulate into it, e.g.,</span>
-<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">c</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Not all tensor algebra is expressed nicely using generalized Einstein summation
@@ -323,20 +326,20 @@ extends to other tensor algebra needs is described in
 </section>
 </section>
 <section id="tensorwrapper-summary">
-<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Summary<a class="headerlink" href="#tensorwrapper-summary" title="Permalink to this headline"></a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> Summary<a class="headerlink" href="#tensorwrapper-summary" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt><span class="xref std std-ref">tw_data_storage</span></dt><dd><p>This consideration is addressed by having the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class contain
+<dt><a class="reference internal" href="#tw-data-storage"><span class="std std-ref">Data storage</span></a></dt><dd><p>This consideration is addressed by having the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class contain
 a <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object.</p>
 </dd>
-<dt><span class="xref std std-ref">tw_logical_v_physical</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object contains the physical layout of the tensor. The logical
+<dt><a class="reference internal" href="#tw-logical-v-physical"><span class="std std-ref">Logical versus physical</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Buffer</span></code> object contains the physical layout of the tensor. The logical
 layout is spread across the <code class="docutils literal notranslate"><span class="pre">Shape</span></code>, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code> objects
 which reside inside the <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> class.</p>
 </dd>
-<dt><span class="xref std std-ref">tw_dsl_entry_point</span></dt><dd><p>Annotating a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object with indices creates an
+<dt><a class="reference internal" href="#tw-dsl-entry-point"><span class="std std-ref">DSL entry point</span></a></dt><dd><p>Annotating a <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code> object with indices creates an
 <code class="docutils literal notranslate"><span class="pre">Indexed&lt;TensorWrapper&gt;</span></code> object. The <code class="docutils literal notranslate"><span class="pre">Indexed&lt;TensorWrapper&gt;</span></code> object
 is part of the expression layer which defines the DSL.</p>
 </dd>
-<dt><span class="xref std std-ref">tw_special_tensors</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Zero</span></code> and <code class="docutils literal notranslate"><span class="pre">Identity</span></code> classes are added which derive from
+<dt><a class="reference internal" href="#tw-special-tensors"><span class="std std-ref">Special tensors</span></a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Zero</span></code> and <code class="docutils literal notranslate"><span class="pre">Identity</span></code> classes are added which derive from
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>. Since these special tensors are represented by separate
 classes, the expression layer can use template meta-programming to optimize
 them out.</p>

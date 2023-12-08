@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logical Versus Physical: Understanding the Tensor Layout &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -64,7 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
         </div>
@@ -84,7 +87,7 @@
           <li class="breadcrumb-item"><a href="index.html">TensorWrapper Background</a></li>
       <li class="breadcrumb-item active">Logical Versus Physical: Understanding the Tensor Layout</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/background/logical_v_physical.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/background/logical_v_physical.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -93,13 +96,13 @@
            <div itemprop="articleBody">
              
   <section id="logical-versus-physical-understanding-the-tensor-layout">
-<span id="logical-vs-physical"></span><h1>Logical Versus Physical: Understanding the Tensor Layout<a class="headerlink" href="#logical-versus-physical-understanding-the-tensor-layout" title="Permalink to this headline"></a></h1>
+<span id="logical-vs-physical"></span><h1>Logical Versus Physical: Understanding the Tensor Layout<a class="headerlink" href="#logical-versus-physical-understanding-the-tensor-layout" title="Link to this heading"></a></h1>
 <p>Most tensor libraries conceptually support what we call physical and logical
 layouts; however, they often do not distinguish among them. The point of this
 page is to introduce the logical vs. physical concept, provide some examples,
 and explain why the explicit distinction is important.</p>
 <section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline"></a></h2>
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading"></a></h2>
 <p>Ideally, users of a tensor library should only have to specify the properties
 of the tensor as they relate to the problem being modeled. Roughly speaking,
 this amounts to the literal values of the tensor, the symmetry of the tensor,
@@ -114,11 +117,11 @@ physical structure will describe how the tensor is actually structured, whereas
 the logical structure describes how the user thinks the tensor is structured.</p>
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <figure class="align-center" id="id1">
 <span id="fig-logical-v-physical"></span><img alt="../_images/logical_v_physical.png" src="../_images/logical_v_physical.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Illustration of how tiling a tensor effectively changes its rank.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Illustration of how tiling a tensor effectively changes its rank.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The motivation for introducing the logical vs. physical distinction is tiling
@@ -137,7 +140,7 @@ the physical tensor a user needs to provide four indices. Clearly the logical
 and physical views are not compatible without knowing the mapping.</p>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Ideally users will interact with tensors in a manner dictated by the problem
 being modeled. This “logical” interaction will ideally be performance

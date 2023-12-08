@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tensor Shape Design &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -78,7 +81,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
         </div>
@@ -99,7 +102,7 @@
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
       <li class="breadcrumb-item active">Tensor Shape Design</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/shape.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/developer/design/shape.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -108,10 +111,10 @@
            <div itemprop="articleBody">
              
   <section id="tensor-shape-design">
-<span id="shape-design"></span><h1>Tensor Shape Design<a class="headerlink" href="#tensor-shape-design" title="Permalink to this headline"></a></h1>
+<span id="shape-design"></span><h1>Tensor Shape Design<a class="headerlink" href="#tensor-shape-design" title="Link to this heading"></a></h1>
 <p>This page captures the design process of TensorWrapper’s <code class="docutils literal notranslate"><span class="pre">Shape</span></code> class.</p>
 <section id="what-is-a-tensor-s-shape">
-<h2>What is a tensor’s shape?<a class="headerlink" href="#what-is-a-tensor-s-shape" title="Permalink to this headline"></a></h2>
+<h2>What is a tensor’s shape?<a class="headerlink" href="#what-is-a-tensor-s-shape" title="Link to this heading"></a></h2>
 <p>For computing purposes, tensors are really nothing more than a bunch of floating
 point values and meta-data associated with those values. Conceptually, the
 floating point values are typically arranged into <span class="math notranslate nohighlight">\(n\)</span>-dimensional rectangular
@@ -119,13 +122,13 @@ arrays, where <span class="math notranslate nohighlight">\(n\)</span> is the num
 shape describes this hyper-rectangular array’s layout.</p>
 </section>
 <section id="why-do-we-need-a-tensor-s-shape">
-<h2>Why do we need a tensor’s shape?<a class="headerlink" href="#why-do-we-need-a-tensor-s-shape" title="Permalink to this headline"></a></h2>
+<h2>Why do we need a tensor’s shape?<a class="headerlink" href="#why-do-we-need-a-tensor-s-shape" title="Link to this heading"></a></h2>
 <p>A tensor’s shape is arguably the most primitive meta-data associated with the
 tensor. Without the shape of the tensor we do not know how to access elements
 or lay them out in memory.</p>
 </section>
 <section id="shape-considerations">
-<h2>Shape Considerations<a class="headerlink" href="#shape-considerations" title="Permalink to this headline"></a></h2>
+<h2>Shape Considerations<a class="headerlink" href="#shape-considerations" title="Link to this heading"></a></h2>
 <dl class="simple" id="shape-rank-and-extents">
 <dt>Basic operations</dt><dd><p>The unifying theme of objects in the shape component is that they describe
 the layout of the hyper-rectangular array of values. This means they need to
@@ -192,7 +195,7 @@ other times we only want the offsets (always relative to zero).</p></li>
 </dd>
 </dl>
 <section id="not-in-scope">
-<h3>Not in Scope<a class="headerlink" href="#not-in-scope" title="Permalink to this headline"></a></h3>
+<h3>Not in Scope<a class="headerlink" href="#not-in-scope" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>Sparsity</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Shape</span></code> component is targeted at describing the conceptual layout of
 the hyper-rectangular array of values. The conceptual layout is independent
@@ -231,7 +234,7 @@ of the allocator component (see <a class="reference internal" href="allocator.ht
 </section>
 </section>
 <section id="id1">
-<h2>Shape Design<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<h2>Shape Design<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p>In designing the class hierarchy we note the following:</p>
 <ul class="simple">
 <li><p>An algorithm which works for a jagged shape should work for a smooth shape
@@ -244,21 +247,21 @@ shape is still an instance of the underlying shape.</p></li>
 <figure class="align-center" id="id2">
 <span id="fig-shape-design"></span><img alt="../../_images/shape.png" src="../../_images/shape.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The architecture of TensorWrapper’s Shape component.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The architecture of TensorWrapper’s Shape component.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-shape-design"><span class="std std-numref">Fig. 6</span></a> shows the classes primarily responsible for
 implementing the shape component. Most end users will deal with the <code class="docutils literal notranslate"><span class="pre">Shape</span></code>
 class.</p>
 <section id="shapebase">
-<h3>ShapeBase<a class="headerlink" href="#shapebase" title="Permalink to this headline"></a></h3>
+<h3>ShapeBase<a class="headerlink" href="#shapebase" title="Link to this heading"></a></h3>
 <p>The unifying features of all shapes were summarized in the
-<span class="xref std std-ref">shape_rank_and_extents</span> consideration. <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> provides the API
+<a class="reference internal" href="#shape-rank-and-extents"><span class="std std-ref">Basic operations</span></a> consideration. <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> provides the API
 that all shapes must minimally satisfy because they are shapes. The actual
 class serves primarily as code factorization.</p>
 </section>
 <section id="shape">
-<h3>Shape<a class="headerlink" href="#shape" title="Permalink to this headline"></a></h3>
+<h3>Shape<a class="headerlink" href="#shape" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">Shape</span></code> class describes a (smooth) hyper-rectangular array of data and
 can be used for “traditional” tensors (those which are not nested or jagged).
 Most end users will simply create <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects and pass them on to
@@ -266,8 +269,8 @@ Most end users will simply create <code class="docutils literal notranslate"><sp
 aimed at TensorWrapper developers.</p>
 </section>
 <section id="jaggedshape">
-<h3>JaggedShape<a class="headerlink" href="#jaggedshape" title="Permalink to this headline"></a></h3>
-<p>To satisfy the <span class="xref std std-ref">shape_jagged</span> consideration we introduce <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>.
+<h3>JaggedShape<a class="headerlink" href="#jaggedshape" title="Link to this heading"></a></h3>
+<p>To satisfy the <a class="reference internal" href="#shape-jagged"><span class="std std-ref">Jagged-ness</span></a> consideration we introduce <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>.
 <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">Shape</span></code> except that users must explicitly
 provide the shape of the slices. Generally speaking <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects of
 rank <span class="math notranslate nohighlight">\(r\)</span> will contain a series of rank <span class="math notranslate nohighlight">\(s\)</span> <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects. The
@@ -277,13 +280,13 @@ primarily be concerned with construction. Again, manipulations of the
 <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> will be primarily of interest to TensorWrapper developers.</p>
 </section>
 <section id="tiledshape">
-<h3>TiledShape<a class="headerlink" href="#tiledshape" title="Permalink to this headline"></a></h3>
+<h3>TiledShape<a class="headerlink" href="#tiledshape" title="Link to this heading"></a></h3>
 <p>Introduced primarily as a convenience for constructing <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects
 by tiling.</p>
 </section>
 <section id="nested">
-<h3>Nested<a class="headerlink" href="#nested" title="Permalink to this headline"></a></h3>
-<p>To address the <span class="xref std std-ref">shape_nested</span> consideration, we have added a <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code>
+<h3>Nested<a class="headerlink" href="#nested" title="Link to this heading"></a></h3>
+<p>To address the <a class="reference internal" href="#shape-nested"><span class="std std-ref">Nested</span></a> consideration, we have added a <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code>
 class which is templated on the type of the tensor’s overall shape.</p>
 <p>With objects like <code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>, TensorWrapper can’t tell how
 the user is thinking of the tensor. For example, they could be thinking of a
@@ -295,8 +298,8 @@ properties of the tensor; however, when we are physically laying the tensor out
 on the computer, how we view the tensor can affect physical layout.</p>
 </section>
 <section id="indexedshape">
-<h3>IndexedShape<a class="headerlink" href="#indexedshape" title="Permalink to this headline"></a></h3>
-<p>Consideration <span class="xref std std-ref">shape_combining_shapes</span> requires us to be able to compose
+<h3>IndexedShape<a class="headerlink" href="#indexedshape" title="Link to this heading"></a></h3>
+<p>Consideration <a class="reference internal" href="#shape-combining-shapes"><span class="std std-ref">Combining shapes</span></a> requires us to be able to compose
 the various shape objects. To do this, we rely on the same mechanism used for
 <code class="docutils literal notranslate"><span class="pre">TensorWrapper</span></code>, <em>i.e.</em>, an expression layer. More specifically,
 <code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> objects result from indexing a shape like <code class="docutils literal notranslate"><span class="pre">s(&quot;i,j,k&quot;)</span></code>. While
@@ -305,9 +308,9 @@ oblivious to its existence.</p>
 </section>
 </section>
 <section id="proposed-shape-apis">
-<h2>Proposed Shape APIs<a class="headerlink" href="#proposed-shape-apis" title="Permalink to this headline"></a></h2>
+<h2>Proposed Shape APIs<a class="headerlink" href="#proposed-shape-apis" title="Link to this heading"></a></h2>
 <section id="constructing-a-shape">
-<h3>Constructing a <code class="docutils literal notranslate"><span class="pre">Shape</span></code><a class="headerlink" href="#constructing-a-shape" title="Permalink to this headline"></a></h3>
+<h3>Constructing a <code class="docutils literal notranslate"><span class="pre">Shape</span></code><a class="headerlink" href="#constructing-a-shape" title="Link to this heading"></a></h3>
 <p>Creating a non-nested shape just requires knowing the extent of each mode:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">null_shape</span><span class="p">;</span><span class="w">              </span><span class="c1">// No rank and no elements</span>
 <span class="n">Shape</span><span class="w"> </span><span class="n">rank0_shape</span><span class="p">{};</span><span class="w">           </span><span class="c1">// A scalar</span>
@@ -321,68 +324,68 @@ different constructors (default ctor vs. initializer list). Using an initializer
 list requires us to know the rank at compile time. If we want to determine the
 rank at runtime we can use iterators:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Somehow create a vector of extents</span>
-<span class="k">using</span><span class="w"> </span><span class="n">size_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Shape</span><span class="o">::</span><span class="n">size_type</span><span class="p">;</span><span class="w"></span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">size_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">extents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_extents</span><span class="p">();</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="n">size_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Shape</span><span class="o">::</span><span class="n">size_type</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">size_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">extents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_extents</span><span class="p">();</span>
 
 <span class="c1">// Construct Shape from iterator pair</span>
-<span class="n">Shape</span><span class="w"> </span><span class="nf">runtime_rank_shape</span><span class="p">(</span><span class="n">extents</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">extents</span><span class="p">.</span><span class="n">end</span><span class="p">());</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">runtime_rank_shape</span><span class="p">(</span><span class="n">extents</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">extents</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
 </pre></div>
 </div>
 </section>
 <section id="jagged-shape-construction">
-<h3>Jagged Shape Construction<a class="headerlink" href="#jagged-shape-construction" title="Permalink to this headline"></a></h3>
+<h3>Jagged Shape Construction<a class="headerlink" href="#jagged-shape-construction" title="Link to this heading"></a></h3>
 <p>For a <code class="docutils literal notranslate"><span class="pre">Shape</span></code> we need to specify the extents of each mode. <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>
 declaration is done in terms of <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects and looks like:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// For brevity define variables</span>
-<span class="n">Shape</span><span class="w"> </span><span class="n">s10</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">s20</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30</span><span class="p">{</span><span class="mi">30</span><span class="p">};</span><span class="w"></span>
-<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30_40</span><span class="p">{</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">},</span><span class="w"> </span><span class="n">s50_60</span><span class="p">{</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span><span class="w"></span>
-<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20_30</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">{</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">s20</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30</span><span class="p">{</span><span class="mi">30</span><span class="p">};</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">s30_40</span><span class="p">{</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">},</span><span class="w"> </span><span class="n">s50_60</span><span class="p">{</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s10_20_30</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">{</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">};</span>
 
 <span class="c1">// No elements, no rank</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">null_shape</span><span class="p">;</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">null_shape</span><span class="p">;</span>
 
 <span class="c1">// Smooth scalar viewed as a JaggedShape (note () not {})</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth0_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{});</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth0_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{});</span>
 
 <span class="c1">// Smooth vector viewed as a JaggedShape (note () not {})</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth1_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth1_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// Smooth matrix viewed as a JaggedShape (note () not {})</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth2_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">smooth2_shape</span><span class="p">(</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// A &quot;jagged&quot; vector with no elements</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank0_shape</span><span class="p">{};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank0_shape</span><span class="p">{};</span>
 
 <span class="c1">// A jagged matrix with 1 row, note the {}</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank2_shape</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank2_shape</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span>
 
 <span class="c1">// A jagged matrix with 3 rows; row 0 has 10 elements, row 1 has 20, row 2 30</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank2_shape2</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank2_shape2</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
 
 <span class="c1">// A jagged rank 3 tensor with smooth matrices. Matrix 0 is 10 by 20,</span>
 <span class="c1">// matrix 1 is 30 by 40, and matrix 2 is 50 by 60</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape</span><span class="p">{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape</span><span class="p">{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">};</span>
 
 <span class="c1">// A jagged rank 3 tensor where elements are jagged matrices. Matrix 0 is</span>
 <span class="c1">// 1 by 10, matrix 2 has 20 columns in row 0 and 30 columns in row 2, and</span>
 <span class="c1">// matrix 3 has 30 columns in row 0, 10 columns in row 1, and 20 columns in</span>
 <span class="c1">// row 2</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape2</span><span class="p">{{</span><span class="n">s10</span><span class="p">},</span><span class="w"></span>
-<span class="w">                         </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span><span class="w"></span>
-<span class="w">                         </span><span class="p">{</span><span class="n">s30</span><span class="p">,</span><span class="w"> </span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">}};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank3_shape2</span><span class="p">{{</span><span class="n">s10</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s30</span><span class="p">,</span><span class="w"> </span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">}};</span>
 
 <span class="w"> </span><span class="c1">// A jagged rank 4 tensor where the 0-th element of the 0-th mode is a</span>
 <span class="w"> </span><span class="c1">// 10 by 20 by 30 smooth tensor and the 1-st element is a 40 by 50 by 60</span>
 <span class="w"> </span><span class="c1">// smooth tensor</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">s10_20_30</span><span class="p">,</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">s10_20_30</span><span class="p">,</span><span class="w"> </span><span class="n">s40_50_60</span><span class="p">};</span>
 
 <span class="c1">// A jagged rank 4 tensor where the elements are jagged rank 3 tensors.</span>
 <span class="c1">// Taking slices along the 0 and 1-st modes, the (0,0)-th slice is a 10 by 20</span>
 <span class="c1">// matrix, the (0,1)-th slice is a 30 by 40 matrix, the (1,0)-th slice is</span>
 <span class="c1">// a 30 by 40 matrix, the (1,1)-th slice is a 10 by 20 matrix, and the</span>
 <span class="c1">// (1,2)-th slice is a 50 by 60 matrix</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape2</span><span class="p">{{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">},</span><span class="w"></span>
-<span class="w">                         </span><span class="p">{</span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">}};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape2</span><span class="p">{{</span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s30_40</span><span class="p">},</span>
+<span class="w">                         </span><span class="p">{</span><span class="n">s30_40</span><span class="p">,</span><span class="w"> </span><span class="n">s10_20</span><span class="p">,</span><span class="w"> </span><span class="n">s50_60</span><span class="p">}};</span>
 
 <span class="c1">// A jagged rank 4 tensors where the elements are jagged rank 3 tensors,</span>
 <span class="c1">// which have jagged matrices for elements. Taking slices along the 0, 1, and</span>
@@ -396,8 +399,8 @@ declaration is done in terms of <code class="docutils literal notranslate"><span
 <span class="c1">// - (1,2,0) is a 10 element vector,</span>
 <span class="c1">// - (1,2,1) is a 20 element vector,</span>
 <span class="c1">// - (1,2,2) is a 30 element vector</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{{{</span><span class="n">s10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}},</span><span class="w"></span>
-<span class="w">                        </span><span class="p">{{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}}};</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{{{</span><span class="n">s10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}},</span>
+<span class="w">                        </span><span class="p">{{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">}}};</span>
 </pre></div>
 </div>
 <p>Consider the shape of the (0,1) slice of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code>. This slice is a
@@ -406,86 +409,86 @@ outer vector is a 10-element vector and element 1 is a  30-element vector. In
 other words the shape of the (0,1) slice of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code> describes a jagged
 matrix, which could have been initialized by <code class="docutils literal notranslate"><span class="pre">JaggedShape{s20,</span> <span class="pre">s30}</span></code>. In turn
 the above construction of <code class="docutils literal notranslate"><span class="pre">rank4_shape</span></code> is actually equivalent to:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">e00</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e01</span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e10</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e11</span><span class="p">{</span><span class="n">s20</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e12</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e0</span><span class="p">{</span><span class="n">e00</span><span class="p">,</span><span class="w"> </span><span class="n">e01</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e1</span><span class="p">{</span><span class="n">e10</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">,</span><span class="w"> </span><span class="n">e12</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">e0</span><span class="p">,</span><span class="w"> </span><span class="n">e1</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">e00</span><span class="p">{</span><span class="n">s10</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e01</span><span class="p">{</span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e10</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e11</span><span class="p">{</span><span class="n">s20</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e12</span><span class="p">{</span><span class="n">s10</span><span class="p">,</span><span class="w"> </span><span class="n">s20</span><span class="p">,</span><span class="w"> </span><span class="n">s30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e0</span><span class="p">{</span><span class="n">e00</span><span class="p">,</span><span class="w"> </span><span class="n">e01</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">e1</span><span class="p">{</span><span class="n">e10</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">,</span><span class="w"> </span><span class="n">e12</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">rank4_shape</span><span class="p">{</span><span class="n">e0</span><span class="p">,</span><span class="w"> </span><span class="n">e1</span><span class="p">};</span>
 </pre></div>
 </div>
 <p>And we see that <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is a recursive structure and thus the runtime
 mechanism for initializing a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is with iterators running over
 <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slice_shapes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_slices</span><span class="p">();</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">end</span><span class="p">());</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slice_shapes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_slices</span><span class="p">();</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">slice_shapes</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
 </pre></div>
 </div>
 <p>So far we have focused on the most general way to create a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> one
 of the most common ways to form a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> is by tiling. Consider a
 30 by 30 matrix where we tile each mode into 5, 15, and 10 element chunks.
 Using <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> this can be done by:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span><span class="w"></span>
-<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span><span class="w"></span>
-<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">}}};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span>
+<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">}},</span>
+<span class="w">               </span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">}}};</span>
 </pre></div>
 </div>
 <p>This is an admittedly verbose declaration. Thus for the special case of crating
 <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects which result from tiling smooth <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects we
 introduce the <code class="docutils literal notranslate"><span class="pre">TiledShape</span></code> class. Using <code class="docutils literal notranslate"><span class="pre">TiledShape</span></code> the same shape could
 be declared via:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TiledShape</span><span class="w"> </span><span class="n">s</span><span class="p">{{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">}};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TiledShape</span><span class="w"> </span><span class="n">s</span><span class="p">{{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">}};</span>
 </pre></div>
 </div>
 </section>
 <section id="constructing-nested-shapes">
-<h3>Constructing Nested Shapes<a class="headerlink" href="#constructing-nested-shapes" title="Permalink to this headline"></a></h3>
+<h3>Constructing Nested Shapes<a class="headerlink" href="#constructing-nested-shapes" title="Link to this heading"></a></h3>
 <p>Creating a <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code> object requires knowing the shape of the tensor and how
 the indices are partitioned into layers.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Zero layer scalar</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">({},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">({},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
 
 <span class="c1">// One layer scalar</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0</span><span class="p">({</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0</span><span class="p">({</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
 
 <span class="c1">// Two layer scalar</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_0</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_0</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
 
 <span class="c1">// One layer vector</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// Two layer vector (mode in layer 0)</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_0</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_0</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// Two layer vector (mode in layer 1)</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_1</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_1</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// One layer matrix</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1</span><span class="p">({</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// Two layer matrix (both modes in layer 0)</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_0</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_0</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// Two layer matrix (one mode per layer)</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// Two layer matrix (both modes in layer 1)</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_2</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s0_2</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// One layer rank 3</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s3</span><span class="p">({</span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s3</span><span class="p">({</span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
 
 <span class="c1">// Two layer rank 3 one mode in layer 0 two in layer 1</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
 
 <span class="c1">// Three layer rank 3, one mode per layer</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
 
 <span class="c1">// A two-layer shape where modes 0 and 1 are in layer 0 and modes 2 and 3</span>
 <span class="c1">// are layer 1</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>The general syntax for an <span class="math notranslate nohighlight">\(n\)</span> layer tensor is an <span class="math notranslate nohighlight">\(n\)</span> element
@@ -494,14 +497,14 @@ layer (ranks from the shape object are assigned to layers left to right; so
 permutations may be needed to line up with layering).</p>
 </section>
 <section id="basic-operations">
-<h3>Basic Operations<a class="headerlink" href="#basic-operations" title="Permalink to this headline"></a></h3>
+<h3>Basic Operations<a class="headerlink" href="#basic-operations" title="Link to this heading"></a></h3>
 <p>All shapes know their total rank and the total number of scalar elements:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js</span><span class="p">{</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}};</span>
 
 <span class="c1">// Total rank of the tensor</span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js</span><span class="p">.</span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
 
 <span class="c1">// Total number of elements in the tensor</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6000</span><span class="p">);</span><span class="w">  </span><span class="c1">// 10 * 20 * 30 = 6000</span>
@@ -509,60 +512,60 @@ permutations may be needed to line up with layering).</p>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Nested</span></code> additionally allows you to get this information per layer:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">js1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">js</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">JaggedShape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">js1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">js</span><span class="p">);</span>
 
-<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">n_layers</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
 
-<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">rank_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
 
-<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6000</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6200</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6000</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1_2</span><span class="p">.</span><span class="n">elements_in_layer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6200</span><span class="p">);</span>
 
 <span class="c1">// Get the shape of the 0,0-th element (returns a std::variant)</span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s3_3</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s3_3</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="shape-composition">
-<h3>Shape Composition<a class="headerlink" href="#shape-composition" title="Permalink to this headline"></a></h3>
+<h3>Shape Composition<a class="headerlink" href="#shape-composition" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">Shape</span></code> and <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects are composed similarly (with
 <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects having many more checks to ensure slices are of
 compatible sizes).</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s0</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span><span class="w"></span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}},</span><span class="w"> </span><span class="n">js1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s0</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">},</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="n">js0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}},</span><span class="w"> </span><span class="n">js1</span><span class="p">;</span>
 
 <span class="c1">// Since addition, subtraction, and element-wise multiplication only work out</span>
 <span class="c1">// the shape of the result, they often amount to copying the state on the</span>
 <span class="c1">// right side of the assignment operator (possibly with a permutation)</span>
-<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s0</span><span class="p">);</span><span class="w"></span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s0</span><span class="p">);</span>
 
-<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">js0</span><span class="p">);</span><span class="w"></span>
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">js0</span><span class="p">);</span>
 
 <span class="c1">// Permuting modes</span>
-<span class="n">s1</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;j,i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">});</span>
 
-<span class="n">js1</span><span class="p">(</span><span class="s">&quot;j,i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">}});</span><span class="w"></span>
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;j,i&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">}});</span>
 
 <span class="c1">// Contraction</span>
-<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
 
 <span class="c1">// js0 is a jagged matrix with 2 rows, contracting over the variable number</span>
 <span class="c1">// of columns gives a 2 by 2 matrix (represented as jagged matrix even though</span>
 <span class="c1">// it&#39;s smooth)</span>
-<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;k,j&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">}});</span><span class="w"></span>
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;k,j&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">}});</span>
 
 <span class="c1">// These would throw since contracted modes aren&#39;t the same length</span>
 <span class="c1">// s1(&quot;i,k&quot;) = s0(&quot;j,i,k&quot;) * s0(&quot;i,j,k&quot;);</span>
@@ -570,34 +573,34 @@ compatible sizes).</p>
 <span class="c1">// js1(&quot;i,k&quot;) = js0(&quot;i,j&quot;) * js0(&quot;j,k&quot;);</span>
 
 <span class="c1">// Direct product</span>
-<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k,l&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,l&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span><span class="w"></span>
+<span class="n">s1</span><span class="p">(</span><span class="s">&quot;i,j,k,l&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s0</span><span class="p">(</span><span class="s">&quot;i,j,l&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">});</span>
 
-<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">}});</span><span class="w"></span>
+<span class="n">js1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">js0</span><span class="p">(</span><span class="s">&quot;i,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">js1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">}});</span>
 </pre></div>
 </div>
 <p>Combining <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code> objects is conceptually done layer-by-layer. In practice
 we just combine the underlying <code class="docutils literal notranslate"><span class="pre">T</span></code> objects while preserving the layer
 assignments and ensuring layer shapes are compatible:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span><span class="w"></span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">s2_1</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">};</span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_2</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">s2_1</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
 
-<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s1_2</span><span class="p">);</span><span class="w"></span>
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s1_2</span><span class="p">);</span>
 
 <span class="c1">// Not allowed because we can&#39;t add rank 1 tensors to rank 2 tensors</span>
 <span class="c1">// result(&quot;i,j,k&quot;) = s1_2(&quot;i,j,k&quot;) + s2_1(&quot;i,j,k&quot;);</span>
 
-<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}));</span><span class="w"></span>
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;i,j&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}));</span>
 
-<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span><span class="w"></span>
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span>
 
 <span class="c1">// Layers only need compatible, not identical, shapes</span>
-<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s2_1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span><span class="w"></span>
+<span class="n">result</span><span class="p">(</span><span class="s">&quot;j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1_2</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s2_1</span><span class="p">(</span><span class="s">&quot;i,j,k&quot;</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">}));</span>
 </pre></div>
 </div>
 <p>We note that it’s quite likely that scenarios will arise where the user will
@@ -606,34 +609,34 @@ practice re-layering a shape is a trivial operation (swapping two small
 vectors of integers).</p>
 </section>
 <section id="slicing-and-chipping">
-<h3>Slicing and Chipping<a class="headerlink" href="#slicing-and-chipping" title="Permalink to this headline"></a></h3>
+<h3>Slicing and Chipping<a class="headerlink" href="#slicing-and-chipping" title="Link to this heading"></a></h3>
 <p>Slices of a shape have the same rank, chips have different ranks:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">};</span>
 
 <span class="c1">// Get the shape of row 0 as a matrix</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// Get the shape of column 0 as a matrix</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">sx0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">sx0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sx0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">sx0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
 
 <span class="c1">// Get the shape of the first five columns of the first five rows...</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">s05_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s05_05</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s05_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s05_05</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span>
 
 <span class="c1">// Note that this shape still refers to a rank 2 tensor even though the</span>
 <span class="c1">// first mode has a single element</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">s01_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s01_05</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s01_05</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s01_05</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">});</span>
 
 <span class="c1">// Get the shape of row 2 as a vector</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// Get the shape of column 2 as a vector</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">sx2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">chip</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">sx2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sx2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">chip</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">sx2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>For a rank <span class="math notranslate nohighlight">\(r\)</span> tensor, the general overload of <code class="docutils literal notranslate"><span class="pre">slice</span></code> and <code class="docutils literal notranslate"><span class="pre">chip</span></code> takes
@@ -643,22 +646,22 @@ For convenience we also provide an overload where the user may provide up to
 <span class="math notranslate nohighlight">\(r\)</span> integers. This overload pins the <span class="math notranslate nohighlight">\(i\)</span>-th mode to the <span class="math notranslate nohighlight">\(i\)</span>-th
 integer all other modes run their entire span.</p>
 <p>Slicing and chipping <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> objects is largely the same:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">js0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">JaggedShape</span><span class="w"> </span><span class="n">js0</span><span class="p">{</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}};</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">j0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">j0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape10</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">j0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">j0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">{</span><span class="n">Shape10</span><span class="p">});</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">j1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">j1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">({</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">}});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">j1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">js0</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">j1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JaggedShape</span><span class="p">({</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">}});</span>
 </pre></div>
 </div>
 <p>Because chipping selects a single element per mode per layer, chipping a
 <code class="docutils literal notranslate"><span class="pre">Nested</span></code> object is fairly straightforward:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_2</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">}));</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="n">e</span><span class="w"></span>
-<span class="nf">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_2</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">}));</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="n">e</span>
+<span class="nf">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">chip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Shape</span><span class="p">{});</span>
 </pre></div>
 </div>
 <p>Taking arbitrary slices of a <code class="docutils literal notranslate"><span class="pre">Nested&lt;T&gt;</span></code> object is significantly more
@@ -672,31 +675,31 @@ if we wanted the first 5 rows of outer element <code class="docutils literal not
 of outer element <code class="docutils literal notranslate"><span class="pre">{1,1}</span></code>? This request requires more than just a block range,
 it requires a <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code>. The above request can be requested by:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// The shape resulting from taking the first 5 rows of a 10 by 10 matrix</span>
-<span class="n">Shape</span><span class="w"> </span><span class="nf">e10</span><span class="p">({</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">e10</span><span class="p">({</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span>
 <span class="c1">// The shape resulting from taking the last 5 rows from a 10 by 10 matrix</span>
-<span class="n">Shape</span><span class="w"> </span><span class="nf">e11</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">e11</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span>
 <span class="c1">// A 1 row matrix with 2 columns whose elements are a 5 by 10 and a</span>
 <span class="c1">// 3 by 10 matrix, the origin of the outer tensor is {1,0}</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">slice</span><span class="p">({{</span><span class="n">e10</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">slice</span><span class="p">({{</span><span class="n">e10</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">});</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">requested_slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="n">slice</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">requested_slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="n">slice</span><span class="p">);</span>
 
-<span class="n">assert</span><span class="p">(</span><span class="n">requested_slice</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">slice</span><span class="p">);</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">requested_slice</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">slice</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>As this also shows, requesting such slices also completely negates the point of
 the <code class="docutils literal notranslate"><span class="pre">slice</span></code> member because the input is the result. As a result, we have not
 designed such an API. Instead the slicing APIs for a <code class="docutils literal notranslate"><span class="pre">Nested</span></code> object are:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_2</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
-<span class="n">Shape</span><span class="w"> </span><span class="nf">s01</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s2_2</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">s01</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span>
 
 <span class="c1">// Grabs the 0,1 element of the outer matrix preserving the rank</span>
-<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s01</span><span class="p">));</span><span class="w"></span>
+<span class="n">assert</span><span class="p">(</span><span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">s01</span><span class="p">));</span>
 
 <span class="c1">// Grabs the bottom row of the outer matrix, and the bottom 5 rows of</span>
 <span class="c1">// the inner matrices</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1050</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span><span class="w"></span>
-<span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1050</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">});</span>
+<span class="n">s2_2</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>Ultimately, bear in mind, chipping and slicing are little more than convenience
@@ -705,28 +708,28 @@ for complicated selections it should always be possible to build the resulting
 shape manually.</p>
 </section>
 <section id="iterating">
-<h3>Iterating<a class="headerlink" href="#iterating" title="Permalink to this headline"></a></h3>
+<h3>Iterating<a class="headerlink" href="#iterating" title="Link to this heading"></a></h3>
 <p>By default the origin of a freshly constructed shape is the zero vector. For
 slices and chips, the origin is the first element in the slice or chip (note
 that in the previous section we conveniently chose our slices/chips so the
 origin was the zero vector). By default, when iterating over a shape indices are
 returned as offsets from the origin, in lexicographical order. For example:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">print_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">){</span><span class="w"></span>
-<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;{&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;} &quot;</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">print_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">auto</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">){</span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">)</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;{&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;} &quot;</span><span class="p">;</span>
+<span class="p">};</span>
 
-<span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">};</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="n">s</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">};</span>
 <span class="n">print_shape</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w">  </span><span class="c1">// prints {0,0} {0,1} {0,2} {1,0} {1,1} {1,2}</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">s01_13</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">s01_13</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">slice</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
 <span class="n">print_shape</span><span class="p">(</span><span class="n">s01_13</span><span class="p">);</span><span class="w"> </span><span class="c1">// prints {0,1}, {0,2} NOT {0,0} {0,1}</span>
 
 <span class="c1">// If we wanted {0,0} {0,1}</span>
-<span class="n">print_shape</span><span class="p">(</span><span class="n">s01_13</span><span class="p">.</span><span class="n">offsets</span><span class="p">());</span><span class="w"></span>
+<span class="n">print_shape</span><span class="p">(</span><span class="n">s01_13</span><span class="p">.</span><span class="n">offsets</span><span class="p">());</span>
 
 <span class="c1">// We can move the origin</span>
-<span class="n">s</span><span class="p">.</span><span class="n">set_origin</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">s</span><span class="p">.</span><span class="n">set_origin</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
 <span class="n">print_shape</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="c1">// prints {10,10} {10,11} {10,12} {11,10} {11,11} {11,12}</span>
 </pre></div>
 </div>
@@ -734,39 +737,39 @@ returned as offsets from the origin, in lexicographical order. For example:</p>
 also take an origin. For <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> the origin needs to be specified for
 the internal shapes and the explicitly unrolled ranks.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Makes a shape for a 2 by 3 matrix whose first element is {10, 10}</span>
-<span class="n">Shape</span><span class="w"> </span><span class="nf">s</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">Shape</span><span class="w"> </span><span class="nf">s</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// Outer vector starts at 10, element 11 of the outer vector starts at 5,</span>
 <span class="c1">// element 12 of the outer vector starts at 6</span>
-<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">js</span><span class="p">({{</span><span class="n">Shape</span><span class="p">({</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">}),</span><span class="w"> </span><span class="n">Shape</span><span class="p">({</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">6</span><span class="p">})},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">});</span><span class="w"></span>
+<span class="n">JaggedShape</span><span class="w"> </span><span class="nf">js</span><span class="p">({{</span><span class="n">Shape</span><span class="p">({</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">}),</span><span class="w"> </span><span class="n">Shape</span><span class="p">({</span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">6</span><span class="p">})},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">});</span>
 
 <span class="c1">// Outer vector starts at 10, inner vectors start at 10.</span>
-<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w"></span>
+<span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s1_1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <p>The design of the shape component satisfies the considerations raised above
 by:</p>
 <dl class="simple">
-<dt><span class="xref std std-ref">shape_rank_and_extents</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> class will provide a common API for getting/setting basic
+<dt><a class="reference internal" href="#shape-rank-and-extents"><span class="std std-ref">Basic operations</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">ShapeBase</span></code> class will provide a common API for getting/setting basic
 information and performing common operations.</p>
 </dd>
-<dt><span class="xref std std-ref">shape_nested</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Nested</span></code> class tracks how the modes of a tensor are layered.</p>
+<dt><a class="reference internal" href="#shape-nested"><span class="std std-ref">Nested</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Nested</span></code> class tracks how the modes of a tensor are layered.</p>
 </dd>
-<dt><span class="xref std std-ref">shape_jagged</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> class is used to represent jagged shapes.</p>
+<dt><a class="reference internal" href="#shape-jagged"><span class="std std-ref">Jagged-ness</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> class is used to represent jagged shapes.</p>
 </dd>
-<dt><span class="xref std std-ref">shape_combining_shapes</span></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> class allows us to easily compose shapes.</p>
+<dt><a class="reference internal" href="#shape-combining-shapes"><span class="std std-ref">Combining shapes</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">IndexedShape</span></code> class allows us to easily compose shapes.</p>
 </dd>
-<dt><span class="xref std std-ref">shape_iterable</span></dt><dd><p>The various classes define iterators which allow users to iterate over the
+<dt><a class="reference internal" href="#shape-iterable"><span class="std std-ref">Iterable</span></a></dt><dd><p>The various classes define iterators which allow users to iterate over the
 indices contained in the shape.</p>
 </dd>
 </dl>
 </section>
 <section id="additional-notes">
-<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline"></a></h2>
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Slicing and chipping assume contiguous sub-tensors. For grabbing noncontiguous
 sub-blocks and using them as if they were contiguous, one needs a mask.</p></li>

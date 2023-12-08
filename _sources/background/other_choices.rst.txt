@@ -83,7 +83,7 @@ Tensor Algebra Compiler (TACO)
 Tensor Algebra for many-body methods(TAMM)
 ******************************************
 
-- `GitHub <https://github.com/NWChemEx-Project/TAMM>`__
+- `GitHub <https://github.com/NWChemEx/TAMM>`__
 
 
 **********************

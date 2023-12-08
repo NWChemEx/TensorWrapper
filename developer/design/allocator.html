@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Designing the Allocator &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -76,7 +79,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://nwchemex-project.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
 </ul>
 
         </div>
@@ -97,7 +100,7 @@
           <li class="breadcrumb-item"><a href="index.html">Design of TensorWrapper</a></li>
       <li class="breadcrumb-item active">Designing the Allocator</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/NWChemEx-Project/TensorWrapper/edit/master/docs/source/developer/design/allocator.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/developer/design/allocator.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -106,18 +109,18 @@
            <div itemprop="articleBody">
              
   <section id="designing-the-allocator">
-<span id="tw-designing-the-allocator"></span><h1>Designing the Allocator<a class="headerlink" href="#designing-the-allocator" title="Permalink to this headline"></a></h1>
+<span id="tw-designing-the-allocator"></span><h1>Designing the Allocator<a class="headerlink" href="#designing-the-allocator" title="Link to this heading"></a></h1>
 <p>The point of this page is to capture the design process of the allocator
 component of TensorWrapper.</p>
 <section id="what-is-an-allocator">
-<h2>What is an Allocator?<a class="headerlink" href="#what-is-an-allocator" title="Permalink to this headline"></a></h2>
+<h2>What is an Allocator?<a class="headerlink" href="#what-is-an-allocator" title="Link to this heading"></a></h2>
 <p>In C++, allocators are objects used by containers to secure uninitialized
 storage for the elements of the container. Optionally, the allocator may also
 initialize the storage. In TensorWrapper, an allocator is responsible for
 securing a (possibly uninitialized) instance of the backend’s tensor object.</p>
 </section>
 <section id="why-do-we-need-an-allocator-component">
-<h2>Why do We Need an Allocator Component?<a class="headerlink" href="#why-do-we-need-an-allocator-component" title="Permalink to this headline"></a></h2>
+<h2>Why do We Need an Allocator Component?<a class="headerlink" href="#why-do-we-need-an-allocator-component" title="Link to this heading"></a></h2>
 <p>Using TensorWrapper, users will create objects for describing a tensor’s shape,
 symmetries, and sparsity. Those objects will then be converted into a layout.
 Given the target layout, TensorWrapper will then create a tensor object from
@@ -127,7 +130,7 @@ component is needed to hide the process of constructing the backend’s buffer
 objects.</p>
 </section>
 <section id="allocator-considerations">
-<h2>Allocator Considerations<a class="headerlink" href="#allocator-considerations" title="Permalink to this headline"></a></h2>
+<h2>Allocator Considerations<a class="headerlink" href="#allocator-considerations" title="Link to this heading"></a></h2>
 <dl class="simple" id="a-backend-aware">
 <dt>Backend aware</dt><dd><p>The allocator’s primary purposes are to provide a mechanism for selecting
 the tensor backend and to wrap the process of creating instances for that
@@ -202,13 +205,13 @@ allocators to establish which backends the buffers contain.</p></li>
 </dl>
 </section>
 <section id="allocator-design">
-<h2>Allocator Design<a class="headerlink" href="#allocator-design" title="Permalink to this headline"></a></h2>
+<h2>Allocator Design<a class="headerlink" href="#allocator-design" title="Link to this heading"></a></h2>
 <figure class="align-center" id="id1">
 <span id="fig-allocator"></span><img alt="../../_images/allocator.png" src="../../_images/allocator.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 11 </span><span class="caption-text">The major components of the allocator. Classes in the diagram are meant to
 be representative of the backends and will not be kept up to date as
-support is added.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+support is added.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-allocator"><span class="std std-numref">Fig. 11</span></a> shows the major components of the allocator component.
@@ -222,29 +225,29 @@ it would derive two allocators, one for making <code class="docutils literal not
 and one for making <code class="docutils literal notranslate"><span class="pre">ReplicatedBuffer</span></code> objects.</p>
 </section>
 <section id="proposed-apis">
-<span id="a-proposed-apis"></span><h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Permalink to this headline"></a></h2>
+<span id="a-proposed-apis"></span><h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Link to this heading"></a></h2>
 <p>For the most part we expect that the bulk of interactions with <code class="docutils literal notranslate"><span class="pre">Allocator</span></code>
 objects will be construction and allocation:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Most allocators will only require a RuntimeView for construction</span>
-<span class="n">parallelzone</span><span class="o">::</span><span class="n">RuntimeView</span><span class="w"> </span><span class="n">rv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime</span><span class="p">();</span><span class="w"></span>
-<span class="n">Allocator</span><span class="o">&lt;</span><span class="n">ReplicatedBuffer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">alloc</span><span class="p">(</span><span class="n">rv</span><span class="p">);</span><span class="w"></span>
+<span class="n">parallelzone</span><span class="o">::</span><span class="n">RuntimeView</span><span class="w"> </span><span class="n">rv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_runtime</span><span class="p">();</span>
+<span class="n">Allocator</span><span class="o">&lt;</span><span class="n">ReplicatedBuffer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">alloc</span><span class="p">(</span><span class="n">rv</span><span class="p">);</span>
 
-<span class="n">Layout</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_tensor_layout</span><span class="p">();</span><span class="w"></span>
+<span class="n">Layout</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_tensor_layout</span><span class="p">();</span>
 
 <span class="c1">// Create an uninitialized buffer</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">ui_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">l</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">ui_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">l</span><span class="p">);</span>
 
 <span class="c1">// Create a buffer initialized with 0s</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">zero_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">zero_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 
 <span class="c1">// Fill buffer in using a function. The function should take a Shape (which</span>
 <span class="c1">// describes where the buffer goes in the overall tensor) and a LocalBuffer</span>
 <span class="c1">// object. The body of the function should fill the LocalBuffer in, and then</span>
 <span class="c1">// return the LocalBuffer object. The buffer may be left empty if it&#39;s zero.</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">fxn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">Shape</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">LocalBuffer</span><span class="w"> </span><span class="n">buffer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">fill_buffer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
-<span class="k">auto</span><span class="w"> </span><span class="n">fxn_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">fxn</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">fxn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">Shape</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">LocalBuffer</span><span class="w"> </span><span class="n">buffer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">fill_buffer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">fxn_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">fxn</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Here we note that names of the methods, <code class="docutils literal notranslate"><span class="pre">allocate</span></code> and <code class="docutils literal notranslate"><span class="pre">construct</span></code> are
@@ -252,52 +255,52 @@ taken from the analogously named methods comprising the C++ allocator concept.
 The difference is that <code class="docutils literal notranslate"><span class="pre">allocate</span></code> only allocates, whereas <code class="docutils literal notranslate"><span class="pre">construct</span></code>
 allocates and initializes.</p>
 <p>Allocators are used to create additional buffers which are compatible with the
-associated backend. Consideration <span class="xref std std-ref">a_rebind</span> raised the use case of
+associated backend. Consideration <a class="reference internal" href="#a-rebind"><span class="std std-ref">Rebind</span></a> raised the use case of
 needing to make buffers with different properties, but still maintain backend
 compatibility. For example, say we want to make a distributed TiledArray buffer
 into a replicated TiledArray buffer:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Somehow get a TADist object</span>
-<span class="n">TADist</span><span class="w"> </span><span class="nf">dist_alloc</span><span class="p">(</span><span class="n">get_runtime</span><span class="p">());</span><span class="w"></span>
+<span class="n">TADist</span><span class="w"> </span><span class="nf">dist_alloc</span><span class="p">(</span><span class="n">get_runtime</span><span class="p">());</span>
 
 <span class="c1">// Get an allocator, compatible with TA, that can make ReplicatedBuffer</span>
 <span class="c1">// objects</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_alloc</span><span class="p">.</span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">ReplicatedBuffer</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_alloc</span><span class="p">.</span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">ReplicatedBuffer</span><span class="o">&gt;</span><span class="p">();</span>
 
 <span class="c1">// Use the allocators to convert a distributed buffer to a replicated buffer</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">dist_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">get_layout</span><span class="p">(),</span><span class="w"> </span><span class="n">get_values</span><span class="p">());</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">dist_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dist_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">get_layout</span><span class="p">(),</span><span class="w"> </span><span class="n">get_values</span><span class="p">());</span>
 
 <span class="c1">// This would copy dist_buffer into rep_buffer</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">rep_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">dist_buffer</span><span class="p">);</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">rep_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">dist_buffer</span><span class="p">);</span>
 
 <span class="c1">// This would reuse dist_buffer to the extent possible</span>
-<span class="n">rep_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">dist_buffer</span><span class="p">));</span><span class="w"></span>
+<span class="n">rep_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">replicated_alloc</span><span class="p">.</span><span class="n">construct</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">dist_buffer</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>The motivation for relying on <code class="docutils literal notranslate"><span class="pre">construct</span></code> for conversions is that conceptually
 we are just calling conversion constructors of the new buffer.</p>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt><span class="xref std std-ref">a_backend_aware</span></dt><dd><p>This consideration is addressed by having the most derived classes in the
+<dt><a class="reference internal" href="#a-backend-aware"><span class="std std-ref">Backend aware</span></a></dt><dd><p>This consideration is addressed by having the most derived classes in the
 hierarchy backend specific. All such classes will actually be passed around
 via base classes, which type-erases the backend choice.</p>
 </dd>
-<dt><span class="xref std std-ref">a_runtime_aware</span></dt><dd><p>The constructor for non-default <code class="docutils literal notranslate"><span class="pre">AllocatorBase</span></code> objects requires a
+<dt><a class="reference internal" href="#a-runtime-aware"><span class="std std-ref">Runtime aware</span></a></dt><dd><p>The constructor for non-default <code class="docutils literal notranslate"><span class="pre">AllocatorBase</span></code> objects requires a
 <code class="docutils literal notranslate"><span class="pre">RuntimeView</span></code> object. This provides the allocator with access to the
 runtime environment.</p>
 </dd>
-<dt><span class="xref std std-ref">a_initialization</span></dt><dd><p>Allocators can allocate uninitialized buffers or they can allocate and
+<dt><a class="reference internal" href="#a-initialization"><span class="std std-ref">Initialization</span></a></dt><dd><p>Allocators can allocate uninitialized buffers or they can allocate and
 initialize buffers. The latter can be done by setting all elements to
 a single value or by running a function on local buffers.</p>
 </dd>
-<dt><span class="xref std std-ref">a_propagation</span></dt><dd><p>Like other TensorWrapper components, <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> objects will propagate
+<dt><a class="reference internal" href="#a-propagation"><span class="std std-ref">Propagation</span></a></dt><dd><p>Like other TensorWrapper components, <code class="docutils literal notranslate"><span class="pre">Allocator</span></code> objects will propagate
 through the expression layer.</p>
 </dd>
-<dt><span class="xref std std-ref">a_rebind</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Allocator</span></code> objects have a method <code class="docutils literal notranslate"><span class="pre">rebind</span></code> which allows users to get
+<dt><a class="reference internal" href="#a-rebind"><span class="std std-ref">Rebind</span></a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Allocator</span></code> objects have a method <code class="docutils literal notranslate"><span class="pre">rebind</span></code> which allows users to get
 pointers to allocators for different buffer types.</p>
 </dd>
-<dt><span class="xref std std-ref">a_downcasting</span></dt><dd><p>Converting between buffers can be done by passing an existing buffer into
+<dt><a class="reference internal" href="#a-downcasting"><span class="std std-ref">Downcasting</span></a></dt><dd><p>Converting between buffers can be done by passing an existing buffer into
 the <code class="docutils literal notranslate"><span class="pre">construct</span></code> function.</p>
 </dd>
 </dl>
