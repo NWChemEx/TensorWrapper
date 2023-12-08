@@ -301,7 +301,7 @@ User-Facing External Dependencies
 
 TensorWrapper additionally needs a description of the runtime. For this
 purpose we have elected to build upon
-`ParallelZone <https://github.com/NWChemEx-Project/ParallelZone>`__.
+`ParallelZone <https://github.com/NWChemEx/ParallelZone>`__.
 
 Implementation-Facing Classes
 =============================
