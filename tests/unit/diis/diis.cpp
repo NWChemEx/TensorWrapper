@@ -46,7 +46,17 @@ constexpr matrix_il o3{vector_il{15.35294118, 14.35294118},
 } // namespace
 
 TEST_CASE("DIIS") {
-    auto& world = TA::get_default_world();
+    using runtime_type = parallelzone::runtime::RuntimeView;
+    runtime_type m_runtime_{};
+    auto comm   = m_runtime_.mpi_comm();
+    auto& world = *madness::World::find_instance(SafeMPI::Intracomm(comm));
+
+    //int argc = 2;
+    //char** argv = nullptr;
+    //auto& world = TA::initialize(argc,argv);
+    //TA::set_default_world(world);
+    
+    //auto& world = TA::get_default_world();
 
     // Inputs and expected values for extrapolation
     using tensorwrapper::tensor::detail_::ta_to_tw;
