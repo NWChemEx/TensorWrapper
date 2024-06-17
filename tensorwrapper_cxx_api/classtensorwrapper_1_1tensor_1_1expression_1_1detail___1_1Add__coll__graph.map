@@ -1,5 +1,0 @@
-<map id="tensorwrapper::tensor::expression::detail_::Add&lt; FieldType &gt;" name="tensorwrapper::tensor::expression::detail_::Add&lt; FieldType &gt;">
-<area shape="rect" id="node1" title="Implements addition of two expressions." alt="" coords="42,199,207,255"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1tensor_1_1expression_1_1detail___1_1NNary.html" title="Code factorization for implementing ExpressionPIMPL derived classes." alt="" coords="46,109,203,151"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1tensor_1_1expression_1_1detail___1_1ExpressionPIMPL.html" title="Implements Expression." alt="" coords="5,5,244,61"/>
-</map>

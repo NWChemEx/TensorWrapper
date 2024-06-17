@@ -1,5 +1,0 @@
-<map id="tensorwrapper::tensor::allocator::Allocator&lt; FieldType &gt;" name="tensorwrapper::tensor::allocator::Allocator&lt; FieldType &gt;">
-<area shape="rect" id="node1" title="Abstracts away the details of how the TensorWrapper&#39;s internal tensor is formed." alt="" coords="5,45,171,101"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1tensor_1_1allocator_1_1DirectTiledArrayAllocator.html" title=" " alt="" coords="228,5,429,61"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1tensor_1_1allocator_1_1TiledArrayAllocator.html" title=" " alt="" coords="219,85,439,141"/>
-</map>
