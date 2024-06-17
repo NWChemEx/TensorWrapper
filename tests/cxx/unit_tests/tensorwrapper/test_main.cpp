@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2024 NWChemEx Community
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,14 @@
  * limitations under the License.
  */
 
-#pragma once
-#include <tensorwrapper/tensor/tensor_class.hpp>
+#define CATCH_CONFIG_RUNNER
+#include <catch2/catch.hpp>
+#include <parallelzone/runtime/runtime_view.hpp>
+
+int main(int argc, char* argv[]) {
+    auto rt = parallelzone::runtime::RuntimeView(argc, argv);
+
+    int res = Catch::Session().run(argc, argv);
+
+    return res;
+}

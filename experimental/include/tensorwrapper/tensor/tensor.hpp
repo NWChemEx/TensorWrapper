@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2022 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,4 +15,12 @@
  */
 
 #pragma once
-#include <tensorwrapper/tensor/tensor_class.hpp>
+#include "tensorwrapper/tensor/allclose.hpp"
+#include "tensorwrapper/tensor/apply_elementwise.hpp"
+#include "tensorwrapper/tensor/approximately_equal.hpp"
+#include "tensorwrapper/tensor/conversions.hpp"
+#include "tensorwrapper/tensor/creation.hpp"
+#include "tensorwrapper/tensor/fields.hpp"
+#include "tensorwrapper/tensor/linear_algebra.hpp"
+#include "tensorwrapper/tensor/remove_redundancy.hpp"
+#include "tensorwrapper/tensor/tensor_wrapper.hpp"
