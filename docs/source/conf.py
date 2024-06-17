@@ -46,7 +46,7 @@ needs_sphinx = '1.3'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc','sphinx.ext.mathjax', 'sphinx.ext.githubpages',
+    'sphinx.ext.autodoc', 'sphinx.ext.mathjax', 'sphinx.ext.githubpages',
     'sphinx.ext.autosummary', 'sphinx_rtd_theme', 'sphinxcontrib.bibtex'
 ]
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -91,15 +91,11 @@ html_theme = 'sphinx_rtd_theme'
 
 html_logo = "assets/logo_candybar.png"
 
-
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-    'vcs_pageview_mode' : 'edit',
-    'logo_only' : True
-}
+html_theme_options = {'vcs_pageview_mode': 'edit', 'logo_only': True}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -118,10 +114,10 @@ html_theme_options = {
 
 # Allows the edit on GitHub button to make editing the docs easier.
 html_context = {
-  'display_github': True,
-  'github_user': 'NWChemEx',
-  'github_repo': 'TensorWrapper',
-  'github_version': 'master/docs/source/',
+    'display_github': True,
+    'github_user': 'NWChemEx',
+    'github_repo': 'TensorWrapper',
+    'github_version': 'master/docs/source/',
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
