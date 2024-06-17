@@ -14,31 +14,29 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" VERSION)
-project(tensorwrapper VERSION "${VERSION}" LANGUAGES CXX)
+# Downloads common CMake modules used throughout NWChemEx
+include(cmake/get_nwx_cmake.cmake)
 
-include(FetchContent)
-FetchContent_Declare(
-    nwx_cmake
-    GIT_REPOSITORY https://github.com/NWChemEx/NWXCMake
-)
-FetchContent_MakeAvailable(nwx_cmake)
-list(APPEND CMAKE_MODULE_PATH "${nwx_cmake_SOURCE_DIR}/cmake")
+#Sets the version to whatever git thinks it is
+include(get_version_from_git)
+get_version_from_git(tensorwrapper_version "${CMAKE_CURRENT_LIST_DIR}")
+project(tensorwrapper VERSION "${tensorwrapper_version}" LANGUAGES CXX)
 
-set(
-    CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake"
-    CACHE STRING "" FORCE
-)
-
-include(get_cmaize)
 include(nwx_versions)
+include(get_cmaize)
+
+# Work out full paths to the project's include/src dirs
+set(project_inc_dir "${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}")
+set(project_src_dir "${CMAKE_CURRENT_LIST_DIR}/src/${PROJECT_NAME}")
+
 include(nwx_cxx_api_docs)
-nwx_cxx_api_docs("${CMAKE_CURRENT_SOURCE_DIR}/src" 
-                 "${CMAKE_CURRENT_SOURCE_DIR}/include")
+nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
 
 ### Options ###
-option(BUILD_TESTING "Should we build the tests?" OFF)
-option(BUILD_CPPYY_PYBINDINGS "Should we build Python3 bindings?" ON)
+cmaize_option_list(
+    BUILD_TESTING OFF "Should we build the tests?"
+    BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
+)
 
 cmaize_find_or_build_dependency(
     utilities
@@ -58,33 +56,19 @@ cmaize_find_or_build_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
 )
 
-# N.B. If you update the TA version, you may also need to update 
-#      the MADNESS version in the ParallelZone repo.
-cmaize_find_or_build_dependency(
-    tiledarray
-    URL github.com/ValeevGroup/tiledarray
-    VERSION ${NWX_TILEDARRAY_VERSION}
-    BUILD_TARGET tiledarray
-    FIND_TARGET tiledarray
-    CMAKE_ARGS TA_BUILD_UNITTEST=OFF
-               BUILD_TESTING=OFF 
-               BLAS_THREAD_LAYER=sequential
-               MADNESS_ENABLE_CEREAL=ON
-)
-
 find_package(Boost REQUIRED)
 
 cmaize_add_library(
-    tensorwrapper
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
-    INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include/tensorwrapper"
-    DEPENDS utilities parallelzone tiledarray Boost::boost
+    ${PROJECT_NAME}
+    SOURCE_DIR "${project_src_dir}"
+    INCLUDE_DIRS "${project_inc_dir}"
+    DEPENDS utilities parallelzone Boost::boost
 )
 
-include(nwx_python_mods)
-cppyy_make_python_package(PYTHONIZE MPI BLAS TILED PACKAGE tensorwrapper NAMESPACES tensorwrapper TA DEPPACKAGES parallelzone)
-
 if("${BUILD_TESTING}")
+    set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
+    set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
+
     cmaize_find_or_build_dependency(
         Catch2
         URL github.com/catchorg/Catch2
@@ -93,16 +77,10 @@ if("${BUILD_TESTING}")
         VERSION ${NWX_CATCH2_VERSION}
     )
     cmaize_add_tests(
-        test_unit_tensorwrapper
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/unit"
-        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
-        DEPENDS Catch2 tensorwrapper
-    )
-    cmaize_add_tests(
-        test_integration_tensorwrapper
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tests/integration"
-        INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/src/tensorwrapper"
-        DEPENDS Catch2 tensorwrapper
+        test_unit_${PROJECT_NAME}
+        SOURCE_DIR "${cxx_unit_test_dir}"
+        INCLUDE_DIRS "${project_src_dir}"
+        DEPENDS Catch2 ${PROJECT_NAME}
     )
 endif()
 
