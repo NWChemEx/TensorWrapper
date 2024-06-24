@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2024 NWChemEx Community
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,5 +15,9 @@
  */
 
 #pragma once
-#include <tensorwrapper/shape/shape.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
+#include <tensorwrapper/shape/shape_base.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
+
+/** @brief Sublibrary focused on describing the geometry of the tensor.
+ */
+namespace shape {}

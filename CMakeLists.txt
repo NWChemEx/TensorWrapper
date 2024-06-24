@@ -36,6 +36,7 @@ nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
+    ENABLE_EIGEN_SUPPORT ON "Should we enable Eigen support?"
 )
 
 cmaize_find_or_build_dependency(
@@ -58,11 +59,20 @@ cmaize_find_or_build_dependency(
 
 find_package(Boost REQUIRED)
 
+cmaize_find_or_build_optional_dependency(
+    eigen
+    ENABLE_EIGEN_SUPPORT
+    URL https://www.gitlab.com/libeigen/eigen
+    VERSION 3.4.0
+    BUILD_TARGET eigen
+    FIND_TARGET Eigen3::Eigen
+)
+
 cmaize_add_library(
     ${PROJECT_NAME}
     SOURCE_DIR "${project_src_dir}"
     INCLUDE_DIRS "${project_inc_dir}"
-    DEPENDS utilities parallelzone Boost::boost
+    DEPENDS utilities parallelzone Boost::boost eigen
 )
 
 if("${BUILD_TESTING}")
