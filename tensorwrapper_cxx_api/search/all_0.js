@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['parent_5ftype_0',['parent_type',['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#afedf21550433e084d745788de89c1d51',1,'tensorwrapper::detail_::TensorPIMPL']]],
-  ['pimpl_5fpointer_1',['pimpl_pointer',['../classtensorwrapper_1_1Tensor.html#a761be2f8023866d6b4dbcffb69d419be',1,'tensorwrapper::Tensor::pimpl_pointer()'],['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325',1,'tensorwrapper::detail_::TensorPIMPL::pimpl_pointer()']]],
-  ['pimpl_5ftype_2',['pimpl_type',['../classtensorwrapper_1_1Tensor.html#a272fea9e213b7be56e8e4feab18b53da',1,'tensorwrapper::Tensor']]]
+  ['get_5frank_5f_0',['get_rank_',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a76e6dddc1c8ce3384d4b56388d505198',1,'tensorwrapper::shape::ShapeBase::get_rank_()'],['../classtensorwrapper_1_1shape_1_1Smooth.html#a0eac7920cdc4fb2cb058ed49cad765b2',1,'tensorwrapper::shape::Smooth::get_rank_()']]],
+  ['get_5fsize_5f_1',['get_size_',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a58aa9830483dedc9687a9ea4d4629c29',1,'tensorwrapper::shape::ShapeBase::get_size_()'],['../classtensorwrapper_1_1shape_1_1Smooth.html#ae61342f4e0f5a8ca8de2620e7c93d729',1,'tensorwrapper::shape::Smooth::get_size_()']]]
 ];

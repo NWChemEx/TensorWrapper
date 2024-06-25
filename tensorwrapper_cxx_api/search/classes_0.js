@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tensor_6',['Tensor',['../classtensorwrapper_1_1Tensor.html',1,'tensorwrapper']]],
-  ['tensorpimpl_7',['TensorPIMPL',['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html',1,'tensorwrapper::detail_']]]
+  ['shapebase_20',['ShapeBase',['../classtensorwrapper_1_1shape_1_1ShapeBase.html',1,'tensorwrapper::shape']]],
+  ['smooth_21',['Smooth',['../classtensorwrapper_1_1shape_1_1Smooth.html',1,'tensorwrapper::shape']]]
 ];
