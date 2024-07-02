@@ -1,6 +1,6 @@
 #pragma once
 #include <set>
-#include <tensorwrapper/symmetry/relation.hpp>
+#include <tensorwrapper/symmetry/operation.hpp>
 #include <vector>
 
 namespace tensorwrapper::symmetry {
@@ -10,13 +10,20 @@ namespace tensorwrapper::symmetry {
  *  This class models a permutation made up of zero or more cycles. Non-trivial
  *  cycles (those which actually swap modes of the tensor) are stored
  *  explicitly all other cycles are stored implicitly.
+ *
+ *  @note Stored cycles will be canonicalized and sorted. "Canoicalized" means
+ *        that each cycle will be cyclically permuted until the smallest
+ *        element is first), e.g., the cycle 231 will be stored as 123. Sorting
+ *        will be done lexicographically, e.g., the cycle 012 will come before
+ *        the cycle 345.
  */
-class Permutation : public Relation {
+class Permutation : public Operation {
 public:
     /// Pull in types from the base class
-    using Relation::base_pointer;
-    using Relation::base_type;
-    using Relation::mode_index_type;
+    using Operation::base_pointer;
+    using Operation::base_type;
+    using Operation::const_base_reference;
+    using Operation::mode_index_type;
 
     /// Type used to hold a cycle
     using cycle_type = std::vector<mode_index_type>;
@@ -39,9 +46,42 @@ public:
      */
     Permutation() = default;
 
+    /** @brief Creates a Permutation containing a single cycle.
+     *
+     *  Many permutations involve a single cycle. For convenience this ctor has
+     *  been defined so that the user can construct the resulting Permutation
+     *  object with by only providing a single initialization list, i.e., no
+     *  need to do something like `Permutation p123{{1, 2, 3}};`. Ultimately,
+     *  this ctor dispatches to `Permutation(cycle_set_initializer_list)`.
+     *
+     *  @note If @p il is a trivial cycle it will NOT be explicitly stored.
+     *
+     *  @param[in] il The modes involved in the cycle. Modes need not be in
+     *                canonical order.
+     *
+     *  @throw std::runtime_error if a mode appears more than once in il. Strong
+     *                            throw guarantee.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the internal
+     *                        state. Strong throw guarantee.
+     */
     explicit Permutation(cycle_initializer_list il) :
       Permutation(cycle_container_type{cycle_type(il.begin(), il.end())}) {}
 
+    /** @brief Creates a Permutation by explicitly specifying the cycles.
+     *
+     *  Any arbitrary permutation can be specified by providing the cycles which
+     *  comprise it. This ctor takes a list of cycles (each of which is a list
+     *  of modes) and creates the resulting Permutation.
+     *
+     *  @param[in] cycles The cycles comprising the permutation.
+     *
+     *  @throw std::runtime_error if a mode appears more than once in a cycle,
+     *                            or if more than one cycle contains the same
+     *                            mode. Strong throw guarantee.
+     *  @throw std::bad_alloc if there is a problem allocating the internal
+     *                        state. Strong throw guarantee.
+     */
     explicit Permutation(cycle_set_initializer_list cycles);
 
     // -------------------------------------------------------------------------
@@ -67,7 +107,7 @@ public:
      *  @param[in] i The offset of the requested cycles. Must be in the range
      *               [0, size()).
      *
-     *  @return The requested cycle.
+     *  @return A copy of the requested cycle.
      *
      *  @throw None This method does not throw if @p i is invalid. Use `at` if
      *              you would like bounds checking. No throw guarantee.
@@ -102,6 +142,8 @@ public:
      *  *this.
      *
      *  @return The number of non-trivial cycles in the permutation.
+     *
+     *  @throw None No throw guarantee.
      */
     mode_index_type size() const noexcept { return m_cycles_.size(); }
 
@@ -109,12 +151,47 @@ public:
     // -- Utility methods
     // -------------------------------------------------------------------------
 
+    /** @brief Exchanges the state in *this with the state in @p other.
+     *
+     *  @param[in,out] other The object to swap state with. After this operation
+     *                       @p other will contain the state which was
+     *                       previously in *this.
+     *
+     *  @throw None No throw guarantee.
+     */
     void swap(Permutation& other) noexcept { m_cycles_.swap(other.m_cycles_); }
 
+    /** @brief Is *this value equal to @p rhs?
+     *
+     *  Two Permutation objects are the same if they contain the same number of
+     *  explicit cycles and if the i-th explicit cycle of the one is equal to
+     *  the i-th explicit cycle of the other. Notably this definition does not
+     *  account for different implicit cycles, e.g.,
+     * `Permutation{{0},{1,2},{3}}` is considered the same as
+     * `Permutation{{0},{1,2}}`.
+     *
+     *  @param[in] rhs The Permutation to compare to.
+     *
+     *  @return True if *this is value equal to @p rhs and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
     bool operator==(const Permutation& rhs) const noexcept {
         return m_cycles_ == rhs.m_cycles_;
     }
 
+    /** @brief Is *this different than @p rhs?
+     *
+     *  The Permutation class defines different as "not value equal". Hence this
+     *  method simply negates operator==. See the documentation for operator==
+     *  for the definition of value equal.
+     *
+     *  @param[in] rhs The Permutation to compare to.
+     *
+     *  @return False if *this is value equal to @p rhs and true otherwise.
+     *
+     *  @throw None No throw guarantee
+     */
     bool operator!=(const Permutation& rhs) const noexcept {
         return !(*this == rhs);
     }
@@ -123,6 +200,11 @@ protected:
     /// Implements clone by calling copy ctor
     base_pointer clone_() const override {
         return std::make_unique<Permutation>(*this);
+    }
+
+    /// Implements are_equal by using implementation provided by the base class.
+    bool are_equal_(const_base_reference other) const noexcept override {
+        return are_equal_impl_<Permutation>(other);
     }
 
 private:
