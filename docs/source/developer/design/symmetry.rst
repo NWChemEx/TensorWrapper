@@ -35,7 +35,7 @@ What is (tensor) symmetry?
 Consider a matrix |T|, we say |T| has symmetry if given element |tij| we know
 the value of a different element of |T|, say |tab|. One of the more common types
 of symmetry is when |T| is a symmetric matrix, in which case
-:math:`t_{ij} = t_{ab} = t_{ji}`.
+:math:`t_{ij} = t_{ji}`.
 
 For our purposes, given a tensor |T|, a symmetry |S| is a mapping of the
 elements comprising a slice of |T|, |t|, to those same elements (up to a sign)
@@ -55,10 +55,9 @@ Why do we need to consider symmetry?
 
 Performance. While we can always fill the tensor with the symmetrically
 equivalent elements and then subject the tensor to standard tensor operations
-without symmetry,
-doing so leads to a lot of wasted memory and also leads to a large amount of
-redundant work. By understanding the symmetry of the tensor we can avoid
-this additional work.
+without symmetry, doing so leads to a lot of wasted memory and also leads to a
+large amount of redundant work. By understanding the symmetry of the tensor we
+can avoid this additional work.
 
 ***********************
 Symmetry Considerations
@@ -153,11 +152,11 @@ Symmetry Design
    The major classes involved in the symmetry component.
 
 :numref:`fig_symmetry` shows the classes primarily responsible for defining
-the symmetry component. Ultimately the user assembles a ``Symmetry`` object,
-which describes all of the tensor's overall symmetries. It is the ``Symmetry``
+the symmetry component. Ultimately the user assembles a ``Group`` object,
+which describes all of the tensor's overall symmetries. It is the ``Group``
 object which is used by the rest of TensorWrapper. The remaining classes of
-the ``Symmetry`` class hierarchy exist primarily to help the user create the
-``Symmetry`` object in a straightforward manner.
+the ``Group`` class hierarchy exist primarily to help the user create the
+``Group`` object in a straightforward manner.
 
 - ``TotallySymmetric`` allows a user to declare a tensor as totally symmetric
   simply by providing the rank of the tensor.
@@ -166,21 +165,16 @@ the ``Symmetry`` class hierarchy exist primarily to help the user create the
 
 Ultimately the symmetry of a tensor is mathematically treated using group
 theory. The symmetry operations on the tensor being the members of the group.
-``Symmetry`` is thus a container filled with ``SymmetryOp`` objects.
-All symmetry operations derive from ``SymmetryOp``, which serves primarily to
+``Group`` is thus a container filled with ``Operation`` objects (``symmetry``
+namespace distinguishes between other ``Operation`` classes; in practice users
+interact with derived classes which have more descriptive names). All symmetry
+operations derive from ``Operation``, which serves primarily to
 provided a consistent API among the various operations and to provide some
 code factorization.
 
-Of the symmetry operations provided by TensorWrapper, ``Asymmetric`` is the
-simplest. By creating an instance of ``Asymmetric``, the user is stating that
-the modes in the resulting object exhibit no symmetry among themselves.
-``Asymmetric`` exists primarily to contrast with the other symmetry operations
-and is assumed by default.
-
-``Symmetric`` and ``Antisymmetric`` are the next simplest symmetry operations.
-When a user creates an instance of the ``Symmetric``/ ``Antisymmetric`` classes
-they are stating that the modes in the resulting object are pairwise symmetric
-or antisymmetric respectively.
+``Permutation`` is used to model both symmetry and antisymmetric permutations
+of modes (the difference being described by a scale factor). Internally
+``Permutation`` stores the cycle(s) comprising the permutation.
 
 The final symmetry operation is ``Translation``. The inputs to a ``Translation``
 object are two or more ``Shape`` objects (``JaggedShape`` and ``Nested`` work
@@ -198,103 +192,81 @@ Proposed APIs
 Constructing Permutational Symmetry Objects
 ===========================================
 
-Permutational symmetry requires minimally a rank 2 tensor. The ``Symmetry``
-object can still be constructed for ranks less than 2, but permutational
-symmetry categories (*i.e.*, symmetric, antisymmetric, or asymmetric) can NOT
-be provided to it. The relevant constructions are:
+Non-trivial permutational symmetry requires minimally a rank 2 tensor. The
+``Permutation`` object can still be constructed for ranks less than 2. The
+relevant ``Permutation`` ctors:
 
 .. code-block:: c++
 
-   // Null symmetry (no rank, no modes assigned to symmetry categories)
-   Symmetry s;
+   // Permutation of 0 modes
+   Permutation p0;
 
-   // Symmetry object for a scalar (no symmetry)
-   Symmetry(0);
+   // Permutation of the 0-th mode with itself (i.e., a fixed-point). p1 is the
+   // same as p0 an identity permutation
+   Permutation p1(0);
 
-   // Symmetry object for a vector (no symmetry)
-   Symmetry(1);
-
-Declaring non-trivial symmetric or antisymmetric tensors:
+Declaring non-trivial permutations:
 
 .. code-block:: c++
 
-   // Symmetric rank 2
-   Symmetry s01(Symmetric{0, 1});
+   // Permutes modes 0 and 1
+   Permutation p01{0, 1};
 
-   // Antisymmetric rank 2
-   Symmetry a01(Antisymmetric{0, 1});
+   // Cyclic permutation of modes 0, 1, and 2
+   Permutation p012{0, 1, 2};
 
-   // Totally symmetric rank 3
-   Symmetry s012(Symmetric{0, 1, 2});
+   // Permutations can be made up of multiple disjoint cycles, e.g.,  this
+   // permutation sends mode 0 to mode 2 and mode 1 to mode 3
+   Permutation p02_13{{0, 2}, {1,3}};
 
-   // Modes 0 and 1 are symmetric, mode 2 has no symmetry with 0 or 1
-   Symmetry s01_2(Symmetric{0, 1}, Asymmetric{0, 2}, Asymmetric{1, 2});
-
-   // Modes 0 and 2 are symmetric, mode 1 has no symmetry with 0 or 2
-   Symmetry s02_1(Symmetric{0, 2}, Asymmetric{0, 1}, Asymmetric{1, 2});
-
-   // Modes 1 and 2 are symmetric, mode 0 has no symmetry with 1 or 2
-   Symmetry s12_0(Symmetric{1, 2}, Asymmetric{0, 1}, Asymmetric{0, 2});
-
-   // Modes 0 and 1 are antisymmetric, mode 2 has no symmetry with 0 or 1
-   Symmetry a01_2(Antisymmetric{0, 1}, Asymmetric{0, 2}, Asymmetric{1, 2});
-
-   // Modes 0 and 2 are antisymmetric, mode 1 has no symmetry with 0 or 2
-   Symmetry a02_1(Antisymmetric{0, 2}, Asymmetric{0, 1}, Asymmetric{1, 2});
-
-   // Modes 1 and 2 are antisymmetric, mode 0 has no symmetry with 1 or 2
-   Symmetry a12_0(Antisymmetric{1, 2}, Asymmetric{0, 1}, Asymmetric{0, 2});
-
-Here it should be noted that something like:
+``Group`` objects are simply containers of ``Operation`` objects. So
+construction looks like:
 
 .. code-block:: c++
 
-   Symmetry s01_2(Symmetric{0, 1}, Asymmetric{0, 1, 2});
+   // Symmetry group of the empty set, i.e., the basis set of a scalar
+   Group g0;
 
-is not allowed because the first argument says that modes 0 and 1 are symmetric,
-but the second one declares them asymmetric. Having to specify all of the
-asymmetric pairs is tedious. Following from the declarations of scalars and
-vectors, one can also provide ``Symmetry`` with the overall tensor rank. When
-provided, ``Symmetry`` assumes all pairs not specified in the ctor are
-asymmetric, so we could have declared ``s01_2`` also like:
+   // Symmetry group of a vector (will be the same as g0 because Groups store
+   // identity operations implicitly)
+   Group g1(Permutation{0});
 
-.. code-block:: c++
+   // Symmetry group of a matrix with no permutational symmetry (same as  g0 and
+   // g1 because identity is not stored)
+   Group g2(Permutation{0}, Permutation{1});
 
-   Symmetry s01_2(3, Symmetric{0, 1});
+   // Symmetry group of a symmetric matrix
+   Group g2_symmetric(Permutation{0, 1});
 
-and we can declare an asymmetric rank 2 tensor like:
+   // Symmetry group of a tensor where modes 1 and 2 are symmetric (specifying
+   // Permutation{0} is NOT required)
+   Group g3(Permutation{0}, Permutation{1, 2});
 
-.. code-block:: c++
+.. note::
 
-   Symmetry as2(2);
+   Design from this point forward is speculative and not yet implemented.
 
-Note that for declaring the ``Symmetry`` object for a rank ``r`` tensor,
-specifying ``r`` is only necessary if ``(r-1)`` does not appear in a subset
-(which is why it was not needed for say ``s01``). Put another way, ``Symmetry``
-assumes a rank of ``(r+1)`` where ``r`` is the highest mode found in any of
-the provided symmetry categories.
-
-The remaining possible rank 3 constructions are:
+Other possible rank 3 constructions are:
 
 .. code-block:: c++
 
    // Modes 0 and 1 are symmetric, modes 0 and 2 are antisymmetric
-   Symmetry s01_a02(Symmetric{0, 1}, Antisymmetric{0, 2});
+   Group s01_a02(Symmetric{0, 1}, Antisymmetric{0, 2});
 
    // Modes 0 and 1 are symmetric, modes 1 and 2 are antisymmetric
-   Symmetry s01_a12(Symmetric{0, 1}, Antisymmetric{1, 2});
+   Group s01_a12(Symmetric{0, 1}, Antisymmetric{1, 2});
 
    // Modes 0 and 2 are symmetric, modes 0 and 1 are antisymmetric
-   Symmetry s02_a01(Symmetric{0, 2}, Antisymmetric{0, 1});
+   Group s02_a01(Symmetric{0, 2}, Antisymmetric{0, 1});
 
    // Modes 0 and 2 are symmetric, modes 1 and 2 are antisymmetric
-   Symmetry s02_a12(Symmetric{0, 2}, Antisymmetric{1, 2});
+   Group s02_a12(Symmetric{0, 2}, Antisymmetric{1, 2});
 
    // Modes 1 and 2 are symmetric, modes 0 and 1 are antisymmetric
-   Symmetry s12_a01(Symmetric{1, 2}, Antisymmetric{0, 1});
+   Group s12_a01(Symmetric{1, 2}, Antisymmetric{0, 1});
 
    // Modes 1 and 2 are symmetric, modes 0 and 2 are antisymmetric
-   Symmetry s12_a02(Symmetric{1, 2}, Antisymmetric{0, 2});
+   Group s12_a02(Symmetric{1, 2}, Antisymmetric{0, 2});
 
    // N.B. order of symmetric and antisymmetric in constructor does not matter
    // so the other 6 mixed symmetric/antisymmetric possibilities are the same
@@ -302,7 +274,7 @@ The remaining possible rank 3 constructions are:
    // second.
 
    // Totally antisymmetric rank 3
-   Symmetry a012(Antisymmetric{0, 1, 2});
+   Group a012(Antisymmetric{0, 1, 2});
 
 For the special cases of totally symmetric and totally antisymmetric additional
 classes exist which facilitate construction:
@@ -326,7 +298,7 @@ antisymmetric) categories, for example:
 
 .. code-block:: c++
 
-   Symmetry s01_s23(Symmetric{0, 1}, Symmetric{2, 3});
+   Group s01_s23(Symmetric{0, 1}, Symmetric{2, 3});
 
 A ``Symmetric``, ``Antisymmetric``, or ``Asymmetric`` object given ``n`` modes,
 stands for all ``n`` choose 2 possible mode pairs that can be formed from the
@@ -334,12 +306,12 @@ stands for all ``n`` choose 2 possible mode pairs that can be formed from the
 
 .. code-block:: c++
 
-   Symmetry s0123(Symmetric{0, 1, 2, 3});
+   Group s0123(Symmetric{0, 1, 2, 3});
 
 because ``s0123`` additionally has symmetries among 0 and 2, 0 and 3,
 1 and 2, and 1 and 3, which are not present in ``s01_s23``.
 
-Constructing Symmetry Objects with Translational Symmetry
+Constructing Group Objects with Translational Symmetry
 =========================================================
 
 For specifying permutational symmetry we needed to state the modes to permute.
@@ -353,18 +325,18 @@ For translational symmetry we need to specify which blocks are equivalent:
    Shape block0{10, 10}, block1({10, 10}, {10, 10}), block2({10, 10}, {20, 20});
 
    // matrix where block0 is the same as block1
-   Symmetry b0b1(Translation{block0, block1});
+   Group b0b1(Translation{block0, block1});
 
    // matrix where block0 is the same as block1 and block2
-   Symmetry b0b1b2(Translation{block0, block1, block2});
+   Group b0b1b2(Translation{block0, block1, block2});
 
    // Just like permutational symmetry where only some of the modes need to
    // be involved, we can have translational symmetry which only involves a
    // subset of the modes. In this case we need to specify which modes the
-   // indices are associated with. The following declares a Symmetry object
+   // indices are associated with. The following declares a Group object
    // for a rank 3 tensor where modes 0 and 1 have translational symmetry such
    // that the block0 slice is the same as the block1 slice
-   Symmetry b0b1(3, Translation({block0, block1}, {0, 1}));
+   Group b0b1(3, Translation({block0, block1}, {0, 1}));
 
 Translational symmetry can also be declared for more exotic ranges, such as
 those involving jagged and/or nested:
@@ -378,7 +350,7 @@ those involving jagged and/or nested:
    JaggedShape jblock1({Shape{10}, Shape{20}}, {2});
 
    // Symmetry for a jagged matrix where block0 and block1 must be the same
-   Symmetry b0b1(Translation{jblock0, jblock1});
+   Group b0b1(Translation{jblock0, jblock1});
 
    // Outer vector 10 elements long, inner are 20
    Nested<Shape> nblock0({1,1}, Shape{10, 20});
@@ -387,7 +359,7 @@ those involving jagged and/or nested:
    Nested<Shape> nblock1({1, 1}, Shape({10, 20}, {0, 20}));
 
    // Symmetry for a rank 4 tensor where modes 0 and 1 are nested
-   Symmetry nb0nb1(4, Translation{nblock0, nblock1}, {0, 1});
+   Group nb0nb1(4, Translation{nblock0, nblock1}, {0, 1});
 
 Note that the fact that ``Translation`` describes a symmetry operation means
 that the shapes in the symmetry operations must be the same up to a translation
@@ -402,7 +374,7 @@ combine all of these mechanisms:
 
    // Rank 4 tensor, slice is the same as the (1,1) slice and modes 2 and
    // 3 are symmetric
-   Symmetry sym(Translational({e00, e11}, {0, 1}), Symmetric{2, 3});
+   Group sym(Translational({e00, e11}, {0, 1}), Symmetric{2, 3});
 
 Basic Properties
 ================
@@ -416,15 +388,14 @@ Summary
 *******
 
 :ref:`sym_symmetric_and_antisymmetric`
-   The ``Symmetric``, ``AntiSymmetric``, and ``Asymmetric`` classes have been
-   introduced to facilitate expressing permutational symmetry. Cyclic
-   permutation classes could be added later if needed.
+   The ``Permutation`` class has been introduced to facilitate expressing
+   permutations.
 
 :ref:`sym_translational_symmetry`
    The ``Translation`` class describes slices of the tensor which are the same.
 
 :ref:`sym_basic_properties`
-   This is one of the primary responsibilities of the ``Symmetry`` class.
+   This is one of the primary responsibilities of the ``Group`` class.
 
 ****************
 Additional Notes
