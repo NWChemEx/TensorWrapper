@@ -202,6 +202,9 @@ protected:
         return std::make_unique<Permutation>(*this);
     }
 
+    /// If *this has no explicit cycles it is an identity permutation
+    bool is_identity_() const noexcept override { return size() == 0; }
+
     /// Implements are_equal by using implementation provided by the base class.
     bool are_equal_(const_base_reference other) const noexcept override {
         return are_equal_impl_<Permutation>(other);

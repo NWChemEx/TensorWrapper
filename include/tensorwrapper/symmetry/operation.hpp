@@ -45,6 +45,16 @@ public:
      */
     base_pointer clone() const { return clone_(); }
 
+    // -------------------------------------------------------------------------
+    // - Properties
+    // -------------------------------------------------------------------------
+
+    bool is_identity() const noexcept { return is_identity_(); }
+
+    // -------------------------------------------------------------------------
+    // -- Utility methods
+    // -------------------------------------------------------------------------
+
     /** @brief Determines if two Operation objects are polymorphically value
      *         equal.
      *
@@ -91,6 +101,9 @@ protected:
 
     /// Derived class should overwrite to implement clone()
     virtual base_pointer clone_() const = 0;
+
+    /// Derived class should overwrite to implement is_identity
+    virtual bool is_identity_() const noexcept = 0;
 
     /// Derived class should overwrite to implement are_equal()
     virtual bool are_equal_(const_base_reference rhs) const noexcept = 0;

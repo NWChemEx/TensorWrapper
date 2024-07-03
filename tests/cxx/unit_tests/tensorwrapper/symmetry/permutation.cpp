@@ -139,6 +139,20 @@ TEST_CASE("Permutation") {
             REQUIRE(pcopy_two_cycles->are_equal(as_base));
         }
 
+        SECTION("is_identity"){
+            const_base_reference defaulted_base = defaulted;
+            REQUIRE(defaulted.is_identity());
+            REQUIRE(defaulted_base.is_identity());
+
+            const_base_reference one_cycle_base = one_cycle;
+            REQUIRE_FALSE(one_cycle.is_identity());
+            REQUIRE_FALSE(one_cycle_base.is_identity());
+
+            const_base_reference two_cycles_base = two_cycles;
+            REQUIRE_FALSE(two_cycles.is_identity());
+            REQUIRE_FALSE(two_cycles_base.is_identity());
+        }
+
         SECTION("are_equal") {
             const_base_reference one_base = one_cycle;
             const_base_reference two_base = two_cycles;

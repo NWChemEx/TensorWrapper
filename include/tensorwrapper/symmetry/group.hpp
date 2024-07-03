@@ -39,6 +39,10 @@ public:
     /// Unsigned integral type used for indexing and offsets
     using size_type = std::size_t;
 
+    // -------------------------------------------------------------------------
+    // -- Ctors and assignment
+    // -------------------------------------------------------------------------
+
     /** @brief Initializes *this to an empty group.
      *
      *  This ctor creates a group describing the symmetries of an empty set
@@ -55,8 +59,8 @@ public:
      *               convertible to const_reference.
      *
      *  This ctor accepts one or more symmetry operations and stores them in
-     *  *this. Only unique operations are added, i.e., if @p op also appears in
-     *  @p ops only one instance of @p op is added.
+     *  *this. Only unique, non-identity operations are added, i.e., if @p op
+     *  also appears in @p ops only one instance of @p op is added.
      *
      *  @param[in] op A symmetry operation to initialize the group with.
      *  @param[in] ops The remaining symmetry operations.
@@ -67,8 +71,63 @@ public:
     template<typename... Args>
     explicit Group(const_reference op, Args&&... ops) :
       Group(std::forward<Args>(ops)...) {
-        if(!count(op)) m_relations_.emplace_front(op.clone());
+        if(!count(op) && !op.is_identity())
+            m_relations_.emplace_front(op.clone());
     }
+
+    /** @brief Deep copies the state of @p other.
+     *
+     *  The copy ctor will make deep (polymorphic) copies of each symmetry
+     *  operation in @p other and then initialize *this with those copies.
+     *
+     *  @param[in] other The Group to deep copy.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the new state.
+     *                        Strong throw guarantee.
+     */
+    Group(const Group& other) {
+        for(const auto& x : other.m_relations_)
+            m_relations_.push_back(x->clone());
+    }
+
+    /** @brief Transfers the state of @p other in to *this.
+     *
+     *  @param[in,out] other The Group to take the state of. After this method
+     *                       is called @p other will be in a valid, but
+     *                       otherwise undefined state.
+     *
+     *  @throw None No throw guarantee.
+     */
+    Group(Group&& other) noexcept = default;
+
+    /** @brief Replaces the state in *this with a copy of the state in @p rhs.
+     *
+     *  This method will release the state in *this and replace it with a deep
+     *  copy of the state in @p rhs.
+     *
+     *  @param[in] rhs The Group to deep copy.
+     *
+     *  @return *this after replacing its state.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the new state.
+     *                        Strong throw guarantee.
+     */
+    Group& operator=(const Group& rhs) {
+        if(this != &rhs) Group(rhs).swap(*this);
+        return *this;
+    }
+
+    /** @brief Replaces the state in *this with the state from @p rhs.
+     *
+     *  @param[in,out] rhs The Group to take the state of. After this method is
+     *                     called @p rhs will be in a valid, but otherwise
+     *                     undefined state.
+     *
+     *  @return *this after replacing its state with that of @p rhs.
+     *
+     *  @throw None No throw guarantee.
+     */
+    Group& operator=(Group&& rhs) noexcept = default;
 
     /** @brief Determines the number of times @p op appears in *this.
      *
