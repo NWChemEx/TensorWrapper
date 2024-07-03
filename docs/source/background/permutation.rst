@@ -95,6 +95,6 @@ Having to write "permute mode 0 with mode 1" is already tedious and becomes more
 tedious when more modes are involved. One common notation for writing a
 permutation is "cycle notation". For a :term:`cyclic permutation` involving
 :math:`n+1` objects the :term:`cycle` is written like
-:math:`(e_0, e_1,..., e_n)` where :math:`e_i` is the index of the :term:`i`-th
+:math:`(e_0, e_1,..., e_n)` where :math:`e_i` is the index of the :math:`i`-th
 object BEFORE the permutation and :math:`e_{i+1}` is the index of :math:`e_{i}`
 AFTER the permutation (except for :math:`e_{n}` which becomes :math:`e_0`).

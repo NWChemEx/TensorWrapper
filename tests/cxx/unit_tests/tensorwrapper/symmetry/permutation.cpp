@@ -26,7 +26,7 @@ using cycle_type      = Permutation::cycle_type;
 TEST_CASE("Permutation") {
     Permutation defaulted;
     Permutation one_cycle{0, 1};
-    Permutation two_cycles{{2, 1, 3}, {4, 5}};
+    Permutation two_cycles(cycle_type{2, 1, 3}, cycle_type{4, 5});
 
     cycle_type c01{0, 1};
     cycle_type c132{1, 3, 2};
@@ -53,11 +53,12 @@ TEST_CASE("Permutation") {
                 REQUIRE(one_trivial_cycle.size() == 0);
                 REQUIRE(one_trivial_cycle.minimum_rank() == 0);
 
-                Permutation two_trivial_cycles{{0}, {1}};
+                Permutation two_trivial_cycles(cycle_type{0}, cycle_type{1});
                 REQUIRE(two_trivial_cycles.size() == 0);
                 REQUIRE(two_trivial_cycles.minimum_rank() == 0);
 
-                Permutation one_trivial_one_real{{4}, {0, 1}};
+                Permutation one_trivial_one_real(cycle_type{4},
+                                                 cycle_type{0, 1});
                 REQUIRE(one_trivial_one_real.size() == 1);
                 REQUIRE(one_trivial_one_real.minimum_rank() == 2);
             }
@@ -69,7 +70,8 @@ TEST_CASE("Permutation") {
             }
 
             SECTION("Error if cycles overlap") {
-                REQUIRE_THROWS_AS((Permutation{{0, 1}, {1, 2}}), except);
+                REQUIRE_THROWS_AS(
+                  (Permutation(cycle_type{0, 1}, cycle_type{1, 2})), except);
             }
 
             test_copy_move_ctor_and_assignment(defaulted, one_cycle,
@@ -122,22 +124,25 @@ TEST_CASE("Permutation") {
 
         // Defaulted equals an object with only trivial cycles
         REQUIRE(defaulted == Permutation{1});
-        REQUIRE(defaulted == Permutation{{0}, {1}});
+        REQUIRE(defaulted == Permutation(cycle_type{0}, cycle_type{1}));
 
         // Defaulted does not equal an object with non-trivial cycles
         REQUIRE_FALSE(defaulted == one_cycle);
 
         // Values input in same order
-        REQUIRE(two_cycles == Permutation{{2, 1, 3}, {4, 5}});
+        REQUIRE(two_cycles ==
+                Permutation(cycle_type{2, 1, 3}, cycle_type{4, 5}));
 
         // Values input in different order
-        REQUIRE(two_cycles == Permutation{{4, 5}, {1, 3, 2}});
+        REQUIRE(two_cycles ==
+                Permutation(cycle_type{4, 5}, cycle_type{1, 3, 2}));
 
         // Different number of cycles
         REQUIRE_FALSE(one_cycle == two_cycles);
 
         // Different cycles
-        REQUIRE_FALSE(two_cycles == Permutation{{1, 2}, {3, 4, 5}});
+        REQUIRE_FALSE(two_cycles ==
+                      Permutation(cycle_type{1, 2}, cycle_type{3, 4, 5}));
     }
 
     SECTION("operator!=") {

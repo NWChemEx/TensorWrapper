@@ -16,20 +16,10 @@
 
 #include <algorithm>
 #include <iterator>
+#include <string>
 #include <tensorwrapper/symmetry/permutation.hpp>
 
 namespace tensorwrapper::symmetry {
-
-// -----------------------------------------------------------------------------
-// -- Ctors, assignment, and dtors
-// -----------------------------------------------------------------------------
-
-Permutation::Permutation(cycle_set_initializer_list cycles) :
-  Permutation([&]() {
-      cycle_container_type rv;
-      for(auto& cycle : cycles) rv.emplace(cycle.begin(), cycle.end());
-      return rv;
-  }()) {}
 
 // -----------------------------------------------------------------------------
 // -- Getters

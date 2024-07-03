@@ -87,8 +87,8 @@ public:
     /** @brief Creates a Permutation by explicitly specifying the cycles.
      *
      *  Any arbitrary permutation can be specified by providing the cycles which
-     *  comprise it. This ctor takes a list of cycles (each of which is a list
-     *  of modes) and creates the resulting Permutation.
+     *  comprise it. This ctor takes a list of cycles and creates the resulting
+     *  Permutation.
      *
      *  @param[in] cycles The cycles comprising the permutation.
      *
@@ -98,7 +98,10 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the internal
      *                        state. Strong throw guarantee.
      */
-    explicit Permutation(cycle_set_initializer_list cycles);
+    template<typename... Args>
+    explicit Permutation(cycle_type cycle0, Args&&... args) :
+      Permutation(cycle_container_type{
+        std::move(cycle0), cycle_type(std::forward<Args>(args))...}) {}
 
     // -------------------------------------------------------------------------
     // -- Getters
@@ -107,10 +110,10 @@ public:
     /** @brief Determines the minimum rank a tensor must be to apply *this.
      *
      *  Cycles stored in *this are expressed in terms of mode offsets. If for
-     *  example a cycle swaps modes 3 and 4 we know that we can only apply such
-     *  a permutation to a tensor with a minimum rank of 5 (otherwise it would
-     *  not have a mode with offset 4). This method analyzes the cycles stored
-     *  in *this and finds the largest mode offset.
+     *  example a cycle swaps modes 3 and 4 we know that we can only apply
+     * such a permutation to a tensor with a minimum rank of 5 (otherwise it
+     * would not have a mode with offset 4). This method analyzes the cycles
+     * stored in *this and finds the largest mode offset.
      *
      *  @return The maximum mode offset involved in any non-trivial cycle.
      *
