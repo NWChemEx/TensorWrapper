@@ -15,9 +15,9 @@
  */
 
 #pragma once
-#include <tensorwrapper/shape/shape_base.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
+#include <tensorwrapper/sparsity/pattern.hpp>
 
-/** @brief Sublibrary focused on describing the geometry of the tensor.
+/** @brief Namespace containing classes used to express the sparsity of a
+ *         tensor.
  */
-namespace tensorwrapper::shape {}
+namespace tensorwrapper::sparsity {}
