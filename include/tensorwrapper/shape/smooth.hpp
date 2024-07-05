@@ -134,6 +134,11 @@ public:
     }
 
 protected:
+    /// Implement clone() by calling copy ctor
+    base_pointer clone_() const override {
+        return std::make_unique<Smooth>(*this);
+    }
+
     /// Implement rank by counting number of extents held by *this
     rank_type get_rank_() const noexcept override {
         return rank_type(m_extents_.size());
@@ -143,6 +148,11 @@ protected:
     size_type get_size_() const noexcept override {
         return std::accumulate(m_extents_.begin(), m_extents_.end(),
                                size_type(1), std::multiplies<size_type>());
+    }
+
+    /// Implements are_equal by calling ShapeBase::are_equal_impl_
+    bool are_equal_(const ShapeBase& rhs) const noexcept override {
+        return are_equal_impl_<Smooth>(rhs);
     }
 
 private:

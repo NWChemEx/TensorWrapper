@@ -58,6 +58,13 @@ TEST_CASE("Smooth") {
     }
 
     SECTION("Virtual implementations") {
+        SECTION("clone") {
+            REQUIRE(scalar.clone()->are_equal(scalar));
+            REQUIRE(vector.clone()->are_equal(vector));
+            REQUIRE(matrix.clone()->are_equal(matrix));
+            REQUIRE(tensor.clone()->are_equal(tensor));
+        }
+
         SECTION("rank") {
             REQUIRE(scalar.rank() == rank_type(0));
             REQUIRE(vector.rank() == rank_type(1));
@@ -70,6 +77,12 @@ TEST_CASE("Smooth") {
             REQUIRE(vector.size() == size_type(1));
             REQUIRE(matrix.size() == size_type(6));
             REQUIRE(tensor.size() == size_type(60));
+        }
+
+        SECTION("are_equal_") {
+            // Relies on operator==, which is tested below. So just spot check.
+            REQUIRE(scalar.are_equal(Smooth{}));
+            REQUIRE_FALSE(vector.are_equal(matrix));
         }
     }
 

@@ -15,9 +15,7 @@
  */
 
 #pragma once
-#include <tensorwrapper/shape/shape_base.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
+#include <tensorwrapper/layout/tiled.hpp>
 
-/** @brief Sublibrary focused on describing the geometry of the tensor.
- */
-namespace tensorwrapper::shape {}
+/** @brief Namespace for classes used to spe */
+namespace tensorwrapper::layout {}
