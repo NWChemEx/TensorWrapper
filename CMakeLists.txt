@@ -39,6 +39,8 @@ cmaize_option_list(
     ENABLE_EIGEN_SUPPORT ON "Should we enable Eigen support?"
 )
 
+configure_file(cmake/config.hpp.in config.hpp @ONLY)
+
 cmaize_find_or_build_dependency(
     utilities
     URL github.com/NWChemEx/utilities
@@ -74,6 +76,7 @@ cmaize_add_library(
     INCLUDE_DIRS "${project_inc_dir}"
     DEPENDS utilities parallelzone Boost::boost eigen
 )
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 
 if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
@@ -95,3 +98,7 @@ if("${BUILD_TESTING}")
 endif()
 
 cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
+install(
+    FILES ${CMAKE_BINARY_DIR}/config.hpp
+    DESTINATION include/${PROJECT_NAME}
+)
