@@ -16,6 +16,7 @@
 
 #pragma once
 #include <cstddef>
+#include <memory>
 
 namespace tensorwrapper::shape {
 
@@ -35,6 +36,12 @@ namespace tensorwrapper::shape {
  */
 class ShapeBase {
 public:
+    /// Type all shapes inherit from
+    using shape_base = ShapeBase;
+
+    /// Type of a pointer to the base of a shape object
+    using base_pointer = std::unique_ptr<shape_base>;
+
     /// Type used to hold the rank of a tensor
     using rank_type = unsigned short;
 
@@ -46,6 +53,15 @@ public:
 
     /// Defaulted polymorphic dtor
     virtual ~ShapeBase() noexcept = default;
+
+    /** @brief Deep polymorphic copy of *this.
+     *
+     *  @return A pointer to a deep copy of *this.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
+    base_pointer clone() const { return clone_(); }
 
     /** @brief The total rank of of the tensor described by *this.
      *
@@ -76,7 +92,44 @@ public:
      */
     size_type size() const noexcept { return get_size_(); }
 
+    /** @brief Polymorphic value comparison.
+     *
+     *  This method is used to compare two ShapeBase objects polymorphically.
+     *  The instances will be cast to their most derived type. If the most
+     *  derived types are the same then the objects will be value compared as
+     *  derived objects.
+     *
+     *  @param[in] rhs The object to compare against.
+     *
+     *  @return True if *this is polymorphically value equal to @p rhs and false
+     *          otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool are_equal(const ShapeBase& rhs) const noexcept {
+        return are_equal_(rhs) && rhs.are_equal_(*this);
+    }
+
 protected:
+    /** @brief Used to implement clone()
+     *
+     *  Derived classes should override this method to implement clone. In
+     *  general, if the derived class's copy ctor is a deep copy, then one
+     *  simply needs to do:
+     *
+     *  @code
+     *  // Replace DerivedType with the actual type of the derived class
+     *  return std::make_unique<DerivedType>(*this);
+     *  @endcode
+     *
+     *  to implement clone_.
+     *
+     *  @return A deep copy of *this, done polymorphically.
+     *
+     *  @throw std::bad_alloc if the copy fails. Strong throw guarantee.
+     */
+    virtual base_pointer clone_() const = 0;
+
     /** @brief Used to implement rank().
      *
      *  The derived class is responsible for implementing this method so that
@@ -101,6 +154,47 @@ protected:
      *              subject to a no-throw guarantee.
      */
     virtual size_type get_size_() const noexcept = 0;
+
+    /** @brief Called by derived class to implement are_equal_
+     *
+     *  @tparam DerivedType The type of the derived class for which are_equal_
+     *                      is being implemented. Derived class must provide
+     *                      this value.
+     *
+     *  This method is a convience method for implementing are_equal_. Derived
+     *  classes need only call this method from their overload of are_equal_
+     *  to implement are_equal_.
+     *
+     *  @param[in] rhs The shape to compare to.
+     *
+     *  @return True if *this and @p rhs are convertible to DerivedType objects
+     *          and if, when viewed as DerivedType objects, *this and @p rhs
+     *          are value equal. False otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    template<typename DerivedType>
+    bool are_equal_impl_(const ShapeBase& rhs) const noexcept {
+        auto pthis = dynamic_cast<const DerivedType*>(this);
+        auto prhs  = dynamic_cast<const DerivedType*>(&rhs);
+        if(pthis == nullptr || prhs == nullptr) return false;
+        return (*pthis) == (*prhs);
+    }
+
+    /** @brief Derived class overrides to implement are_equal.
+     *
+     *  Derived classes should implement this method by calling are_equal_impl_.
+     *  This assumes that the derived class has implemented a non-polymorphic
+     *  value equality check via operator==.
+     *
+     *  @param[in] rhs The shape to compare to.
+     *
+     *  @return True if *this is value equal to @p rhs (when compared as objects
+     *          of *this most derived type) and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    virtual bool are_equal_(const ShapeBase& rhs) const noexcept = 0;
 };
 
 } // namespace tensorwrapper::shape
