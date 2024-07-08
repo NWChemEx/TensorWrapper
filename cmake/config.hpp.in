@@ -1,12 +1,10 @@
 #pragma once
-#cmakedefine ENABLE_EIGEN_SUPPORT
 
 #ifdef ENABLE_EIGEN_SUPPORT
 #define TENSORWRAPPER_HAS_EIGEN 1
 #else
 #define TENSORWRAPPER_HAS_EIGEN 0
 #endif
-#undef ENABLE_EIGEN_SUPPORT
 
 namespace tensorwrapper {
 

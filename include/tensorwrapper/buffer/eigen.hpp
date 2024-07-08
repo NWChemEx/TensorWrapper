@@ -5,53 +5,113 @@
 
 namespace tensorwrapper::buffer {
 
-template<typename FloatType>
+template<typename FloatType, unsigned short Rank>
 class Eigen : public Replicated {
 private:
     /// Type of *this
-    using my_type = Eigen<FloatType>;
+    using my_type = Eigen<FloatType, Rank>;
 
     /// Type *this derives from
-    using base_type = Replicated;
+    using my_base_type = Replicated;
 
 public:
     /// Pull in base class's types
-    using typename Replicated::const_layout_reference;
+    using typename my_base_type::buffer_base_pointer;
+    using typename my_base_type::const_buffer_base_reference;
+    using typename my_base_type::const_layout_reference;
 
-    template<unsigned short Rank>
+    /// Type of a rank @p Rank tensor using floats of type @p FloatType
     using tensor_type = eigen::tensor<FloatType, Rank>;
 
-    template<unsigned short Rank>
-    using tensor_reference = tensor_type<Rank>&;
+    /// Mutable reference to an object of type tensor_type
+    using tensor_reference = tensor_type&;
 
-    template<unsigned short Rank>
-    using const_tensor_reference = const tensor_type<Rank>&;
+    /// Read-only reference to an object of type tensor_type
+    using const_tensor_reference = const tensor_type&;
+
+    Eigen() noexcept = default;
 
     template<typename TensorType>
     Eigen(TensorType&& t, const_layout_reference layout) :
       Replicated(layout), m_tensor_(std::forward<TensorType>(t)) {}
 
-    template<unsigned short Rank>
-    auto& value() {
-        return std::get<Rank>(m_tensor_);
+    Eigen(const Eigen& other) = default;
+
+    Eigen(Eigen&& other) = default;
+
+    Eigen& operator=(const Eigen& rhs) = default;
+
+    Eigen& operator=(Eigen&& rhs) = default;
+
+    // -------------------------------------------------------------------------
+    // -- State accessors
+    // -------------------------------------------------------------------------
+
+    /** @brief Allows direct access to the wrapped tensor.
+     *
+     *
+     *  @return A mutable reference to the wrapped tensor.
+     *
+     *  @throw None No throw guarantee
+     */
+    auto& value() { return m_tensor_; }
+
+    /** @brief Provides direct access to the wrapped tensor.
+     *
+     *  @return A read-only reference to the wrapped tensor.
+     *
+     *  @throw None No throw guarantee.
+     */
+    const auto& value() const { return m_tensor_; }
+
+    // -------------------------------------------------------------------------
+    // -- Utility methods
+    // -------------------------------------------------------------------------
+
+    /** @brief Is *this value equal to @p rhs?
+     *
+     *  Two Eigen objects are value equal if they both have the same layout and
+     *  they both have the same values.
+     *
+     *  @param[in] rhs The object to compare against.
+     *
+     *  @return True if *this is value equal to @p rhs and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool operator==(const Eigen& rhs) const noexcept {
+        if(my_base_type::operator!=(rhs)) return false;
+        eigen::tensor<FloatType, 0> r = (m_tensor_ - rhs.m_tensor_).sum();
+        return r() == 0.0;
     }
 
-    template<unsigned short Rank>
-    const auto& value() const {
-        return std::get<Rank>(m_tensor_);
+    /** @brief Is *this different from @p rhs?
+     *
+     *  This class defines different as not value equal. See operator== for the
+     *  definition of value equal.
+     *
+     *  @param[in] rhs The object to compare *this to.
+     *
+     *  @return False if *this is value equal to @p rhs and true otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool operator!=(const Eigen& rhs) const noexcept { return !(*this == rhs); }
+
+protected:
+    /// Implements clone by calling copy ctor
+    buffer_base_pointer clone_() const override {
+        return std::make_unique<my_type>(*this);
+    }
+
+    /// Implements are_equal by calling are_equal_impl_
+    bool are_equal_(const_buffer_base_reference rhs) const noexcept override {
+        return my_base_type::are_equal_impl_<my_type>(rhs);
     }
 
 private:
-    using t0_t = tensor_type<0>;
-    using t1_t = tensor_type<1>;
-    using t2_t = tensor_type<2>;
-    using t3_t = tensor_type<3>;
-    using t4_t = tensor_type<4>;
-    using t5_t = tensor_type<5>;
-    using t6_t = tensor_type<6>;
-    using t7_t = tensor_type<7>;
-
-    std::variant<t0_t, t1_t, t2_t, t3_t, t4_t, t5_t, t6_t, t7_t> m_tensor_;
+    /// The actual Eigen tensor
+    tensor_type m_tensor_;
 };
 
 } // namespace tensorwrapper::buffer
