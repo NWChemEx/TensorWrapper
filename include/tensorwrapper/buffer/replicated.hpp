@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../helpers.hpp"
-#include <tensorwrapper/sparsity/pattern.hpp>
 
-using namespace tensorwrapper::testing;
-using namespace tensorwrapper::sparsity;
+#pragma once
+#include <tensorwrapper/buffer/local.hpp>
 
-TEST_CASE("Pattern") {
-    Pattern defaulted;
+namespace tensorwrapper::buffer {
 
-    SECTION("Ctors, assignment") {
-        SECTION("Default") {}
+/** @brief Denotes that a buffer is the same on all processes.
+ *
+ *  At the moment this class is a strong type and has no additional state over
+ *  its base class.
+ */
+class Replicated : public Local {
+private:
+    /// Type *this derives from
+    using my_base_type = Local;
 
-        test_copy_move_ctor_and_assignment(defaulted);
-    }
+public:
+    // Pull in base's ctors
+    using my_base_type::my_base_type;
+};
 
-    SECTION("operator==") { REQUIRE(defaulted == Pattern{}); }
-
-    SECTION("operator!=") {
-        // Just spot check because it is implemented in terms of operator==
-        REQUIRE_FALSE(defaulted != Pattern{});
-    }
-}
+} // namespace tensorwrapper::buffer

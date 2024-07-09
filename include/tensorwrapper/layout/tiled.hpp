@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
 #include <tensorwrapper/symmetry/group.hpp>
@@ -24,7 +25,7 @@ namespace tensorwrapper::layout {
 /** @brief Describes how the tensor is actually laid out.
  *
  */
-class Tiled {
+class Tiled : public detail_::PolymorphicBase<Tiled> {
 public:
     /// Type all layouts derive from
     using layout_base = Tiled;
@@ -91,14 +92,6 @@ public:
     /// Defaulted polymorphic dtor
     virtual ~Tiled() noexcept = default;
 
-    /** @brief Make a polymorphic deep copy of *this.
-     *
-     *  @return A pointer to the deep copy of *this.
-     *
-     *  @throw std::bad_alloc if allocating the copy fails.
-     */
-    layout_pointer clone() const { return clone_(); }
-
     // -------------------------------------------------------------------------
     // -- State methods
     // -------------------------------------------------------------------------
@@ -142,26 +135,6 @@ public:
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
-
-    /** @brief Is *this polymorphically value equal to @p rhs?
-     *
-     *  This method is used to compare *this to @p rhs polymorphically. More
-     *  specifically both *this and @p rhs will be downcasted to their most
-     *  derived class. If the most derived class of both *this and @p rhs is
-     *  the same, then *this will be compared to @p rhs via the most derived
-     *  class's value comparison operator. If *this and @p rhs do not have the
-     *  same most derived class this method returns false.
-     *
-     *  @param[in] rhs The object to compare to.
-     *
-     *  @return True if *this is polymorphically value equal to @p rhs and
-     *          false otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool are_equal(const layout_base& rhs) const noexcept {
-        return are_equal_(rhs) && rhs.are_equal_(*this);
-    }
 
     /** @brief Is *this value equal to @p rhs?
      *
@@ -213,18 +186,6 @@ protected:
       m_symmetry_(other.m_symmetry_),
       m_sparsity_(other.m_sparsity_) {}
 
-    /** @brief Implements clone
-     *
-     *  Derived classes should override this method so that it makes a deep
-     *  copy of *this via the derived class's copy ctor.
-     *
-     *  @return A deep copy of *this.
-     *
-     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
-     *                        throw guarantee.
-     */
-    virtual layout_pointer clone_() const = 0;
-
     /** @brief Implements tile_size.
      *
      *  For now this is an abstract method. When tiling is actually supported
@@ -236,44 +197,6 @@ protected:
      *  @throw None No throw guarantee.
      */
     virtual size_type tile_size_() const noexcept = 0;
-
-    /** @brief Helps derived classes implement are_equal.
-     *
-     *  @tparam DerivedClass Type of the class implementing are_equal. Must be
-     *                       provided by the caller.
-     *
-     *  This method wraps the process of downcasting *this and @p rhs to objects
-     *  of type @p DerivedClass and then comparing them. This method will also
-     *  handle the logic for when the downcasts fail.
-     *
-     *  @param[in] rhs The object to compare against.
-     *
-     *  @return True if *this and @p rhs compare value equal when compared as
-     *          objects of type @p DerivedClass and false otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    template<typename DerivedType>
-    bool are_equal_impl_(const layout_base& rhs) const noexcept {
-        auto plhs = dynamic_cast<const DerivedType*>(this);
-        auto prhs = dynamic_cast<const DerivedType*>(&rhs);
-        if(plhs == nullptr || prhs == nullptr) return false;
-        return (*plhs) == (*prhs);
-    }
-
-    /** @brief Implements are_equal
-     *
-     *  Derived classes should override this method so that it calls
-     *  are_equal_impl_.
-     *
-     *  @param[in] rhs The object to compare to.
-     *
-     *  @return True if *this compared via its most derived class is value equal
-     *          to @p rhs as its most derived class and false otherwise.
-     *
-     *  @throw None No throw guarantee
-     */
-    virtual bool are_equal_(const layout_base& rhs) const noexcept = 0;
 
 private:
     /// Ctor all other value ctors dispatch to

@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../helpers.hpp"
-#include <tensorwrapper/sparsity/pattern.hpp>
 
-using namespace tensorwrapper::testing;
-using namespace tensorwrapper::sparsity;
+#pragma once
+#include <tensorwrapper/buffer/buffer_base.hpp>
 
-TEST_CASE("Pattern") {
-    Pattern defaulted;
+namespace tensorwrapper::buffer {
 
-    SECTION("Ctors, assignment") {
-        SECTION("Default") {}
+/** @brief Establishes that the state in the buffer is obtainable without
+ *         communication.
+ *
+ *  For now this class is a strong type and does not impart any additional state
+ *  to the BufferBase class.
+ *
+ */
+class Local : public BufferBase {
+private:
+    /// Type *this inherits from
+    using my_base_type = BufferBase;
 
-        test_copy_move_ctor_and_assignment(defaulted);
-    }
+public:
+    // Pull in base's ctors
+    using my_base_type::my_base_type;
+};
 
-    SECTION("operator==") { REQUIRE(defaulted == Pattern{}); }
-
-    SECTION("operator!=") {
-        // Just spot check because it is implemented in terms of operator==
-        REQUIRE_FALSE(defaulted != Pattern{});
-    }
-}
+} // namespace tensorwrapper::buffer

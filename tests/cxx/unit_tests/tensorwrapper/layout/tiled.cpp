@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "../helpers.hpp"
 #include <tensorwrapper/layout/mono_tile.hpp>
 #include <tensorwrapper/shape/smooth.hpp>

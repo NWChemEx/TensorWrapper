@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../helpers.hpp"
-#include <tensorwrapper/sparsity/pattern.hpp>
 
-using namespace tensorwrapper::testing;
-using namespace tensorwrapper::sparsity;
+#pragma once
+#include "config.hpp"
+#ifdef TENSORWRAPPER_HAS_EIGEN
+#include <unsupported/Eigen/CXX11/Tensor>
+#endif
 
-TEST_CASE("Pattern") {
-    Pattern defaulted;
+namespace tensorwrapper::eigen {
 
-    SECTION("Ctors, assignment") {
-        SECTION("Default") {}
+#ifdef TENSORWRAPPER_HAS_EIGEN
 
-        test_copy_move_ctor_and_assignment(defaulted);
-    }
+template<typename FloatType, unsigned short Rank>
+using tensor = Eigen::Tensor<FloatType, int(Rank)>;
 
-    SECTION("operator==") { REQUIRE(defaulted == Pattern{}); }
+#else
 
-    SECTION("operator!=") {
-        // Just spot check because it is implemented in terms of operator==
-        REQUIRE_FALSE(defaulted != Pattern{});
-    }
-}
+template<typename, unsigned short>
+using tensor = std::nullptr_t;
+
+#endif
+
+} // namespace tensorwrapper::eigen
