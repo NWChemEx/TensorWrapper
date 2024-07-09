@@ -21,6 +21,7 @@ header:
     - .github/
     - docs/Makefile
     - LICENSE
+    - cmake/config.hpp.in
     - docs/requirements.txt
     - docs/source/bibliography/*.bib
     - version.txt
