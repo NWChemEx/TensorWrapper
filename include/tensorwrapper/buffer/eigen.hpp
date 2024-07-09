@@ -5,6 +5,12 @@
 
 namespace tensorwrapper::buffer {
 
+/** @brief A buffer which wraps an Eigen tensor.
+ *
+ *  @tparam FloatType The type used to store the elements of the tensor.
+ *  @tparam Rank The rank of the tensor.
+ *
+ */
 template<typename FloatType, unsigned short Rank>
 class Eigen : public Replicated {
 private:
@@ -29,18 +35,68 @@ public:
     /// Read-only reference to an object of type tensor_type
     using const_tensor_reference = const tensor_type&;
 
+    /** @brief Creates a buffer with no layout and a default initialized
+     *         tensor.
+     *
+     *  @throw None No throw guarantee.
+     */
     Eigen() noexcept = default;
 
+    /** @brief Wraps the provided tensor.
+     *
+     *  @tparam TensorType The type of the input tensor. Must be implicitly
+     *                     convertible to an object of type tensor_type.
+     *
+     *  @param[in] t The tensor to wrap.
+     *  @param[in] layout The physical layout of @p t.
+     *
+     *  @throw std::bad_alloc if there is a problem copying @p layout. Strong
+     *                        throw guarantee.
+     */
     template<typename TensorType>
     Eigen(TensorType&& t, const_layout_reference layout) :
       Replicated(layout), m_tensor_(std::forward<TensorType>(t)) {}
 
+    /** @brief Initializes *this with a copy of @p other.
+     *
+     *  @param[in] other The object to copy.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
     Eigen(const Eigen& other) = default;
 
+    /** @brief Initializes *this with the state from @p other.
+     *
+     *  @param[in,out] other The object to take the state from. After this call
+     *                       @p other will be in a valid, but otherwise
+     *                       undefined state.
+     *
+     *  @throw None No throw guarantee.
+     */
     Eigen(Eigen&& other) = default;
 
+    /** @brief Replaces the state in *this with a copy of the state in @p rhs.
+     *
+     *  @param[in] rhs The object to copy the state from.
+     *
+     *  @return *this after replacing its state with a copy of @p rhs.
+     *
+     *  @throw std::bad_alloc if the copy fails to allocate memory. Strong
+     *                        throw guarantee.
+     */
     Eigen& operator=(const Eigen& rhs) = default;
 
+    /** @brief Replaces the state in *this with the state in @p rhs.
+     *
+     *  @param[in,out] rhs The Eigen object to take the state from. After this
+     *                     method is called @p rhs will be in a valid, but
+     *                     otherwise undefined state.
+     *
+     *  @return *this after taking the state from @p rhs.
+     *
+     *  @throw None No throw guarantee.
+     */
     Eigen& operator=(Eigen&& rhs) = default;
 
     // -------------------------------------------------------------------------

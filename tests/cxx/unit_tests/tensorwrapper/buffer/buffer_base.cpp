@@ -50,5 +50,25 @@ TEST_CASE("BufferBase") {
             REQUIRE(scalar_base.layout().are_equal(scalar_layout));
             REQUIRE(vector_base.layout().are_equal(vector_layout));
         }
+
+        SECTION("operator==") {
+            // Defaulted layout == defaulted layout
+            REQUIRE(defaulted_base == scalar_buffer());
+
+            // Defaulted layout != non-defaulted layout
+            REQUIRE_FALSE(defaulted_base == scalar_base);
+
+            // Non-defaulted layout same value
+            REQUIRE(scalar_base == scalar_buffer(eigen_scalar, scalar_layout));
+
+            // Non-defaulted layout different value
+            REQUIRE_FALSE(scalar_base == vector_base);
+        }
+
+        SECTION("operator!=") {
+            // Just spot check because it negates operator==, which was tested
+            REQUIRE(defaulted_base != scalar_base);
+            REQUIRE_FALSE(defaulted_base != scalar_buffer());
+        }
     }
 }

@@ -73,7 +73,8 @@ public:
     /** @brief Is *this value equal to @p rhs?
      *
      *  Two BufferBase objects are value equal if the layouts they contain are
-     *  polymorphically value equal.
+     *  polymorphically value equal or if both BufferBase objects do not contain
+     *  a layout.
      *
      *  @param[in] rhs The object to compare to.
      *
@@ -82,8 +83,22 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator==(const BufferBase& rhs) const noexcept {
+        if(has_layout() != rhs.has_layout()) return false;
+        if(!has_layout()) return true;
         return m_layout_->are_equal(*rhs.m_layout_);
     }
+
+    /** @brief Is *this different from @p rhs?
+     *
+     *  This method defines "different from" as being "not value equal." See
+     *  the description of operator== for the definition of value equal.
+     *
+     *  @param[in] rhs The object to compare to.
+     *
+     *  @return False if *this is value equal to @p rhs and true otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
 
     bool operator!=(const BufferBase& rhs) const noexcept {
         return !(*this == rhs);
@@ -96,18 +111,53 @@ protected:
 
     /** @brief Creates a buffer with no layout.
      *
+     *  This ctor is protected because users should not directly construct
+     *  BufferBase objects. BufferBase objects are always created by derived
+     *  classes.
+     *
      *  @throw None No throw guarantee.
      */
     BufferBase() : BufferBase(nullptr) {}
 
+    /** @brief Creates a buffer initialized with a copy of @p layout.
+     *
+     *  @param[in] layout The physical layout of *this.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy of
+     *                        @p layout. Strong throw guarantee.
+     */
     explicit BufferBase(const_layout_reference layout) :
       BufferBase(layout.clone()) {}
+
+    /** @brief Creates a buffer which owns the layout pointed to by @p playout.
+     *
+     *  @param[in] playout A pointer to the layout for *this.
+     *
+     *  @throw None No throw guarantee.
+     */
 
     explicit BufferBase(layout_pointer playout) noexcept :
       m_layout_(std::move(playout)) {}
 
+    /** @brief Creates a buffer by deep copying @p other.
+     *
+     *  @param[in] other The buffer to copy.
+     *
+     *  @throw std::bad_alloc if there is a problem copying the state of
+     *                        @p other. Strong throw guarantee.
+     */
     BufferBase(const BufferBase& other) : m_layout_(other.m_layout_->clone()) {}
 
+    /** @brief Replaces the state in *this with a deep copy of the state in
+     *         @p rhs.
+     *
+     *  @param[in] rhs The buffer to copy the state of.
+     *
+     *  @return *this after replacing its state with a copy of @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
     BufferBase& operator=(const BufferBase& rhs) {
         if(this != &rhs) {
             auto temp = rhs.has_layout() ? rhs.m_layout_->clone() : nullptr;
