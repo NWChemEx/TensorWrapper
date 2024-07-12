@@ -53,10 +53,12 @@ TEST_CASE("Tiled") {
 
         SECTION("Value") {
             REQUIRE(matrix.has_shape());
+            REQUIRE(matrix.shape().are_equal(matrix_shape));
             REQUIRE(matrix.symmetry() == no_symm);
             REQUIRE(matrix.sparsity() == no_sparsity);
 
             REQUIRE(symm_matrix.has_shape());
+            REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
             REQUIRE(symm_matrix.symmetry() == symm);
             REQUIRE(symm_matrix.sparsity() == no_sparsity);
         }
@@ -66,6 +68,12 @@ TEST_CASE("Tiled") {
         REQUIRE_FALSE(defaulted.has_shape());
         REQUIRE(matrix.has_shape());
         REQUIRE(symm_matrix.has_shape());
+    }
+
+    SECTION("shape") {
+        REQUIRE_THROWS_AS(defaulted.shape(), std::runtime_error);
+        REQUIRE(matrix.shape().are_equal(matrix_shape));
+        REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
     }
 
     SECTION("symmetry") {

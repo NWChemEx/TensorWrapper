@@ -116,9 +116,21 @@ public:
      */
     bool has_shape() const noexcept { return m_shape_ != nullptr; }
 
+    /** @brief Provides read-only access to the shape of the layout.
+     *
+     *  @return A read-only reference to the shape of the layout.
+     *
+     *  @throw std::runtime_error if *this does not have a shape. Strong throw
+     *                            guarantee.
+     */
+    const_shape_reference shape() const {
+        if(!has_shape()) throw std::runtime_error("Layout's shape not set.");
+        return *m_shape_;
+    }
+
     /** @brief Provides read-only access to the symmetry of the layout.
      *
-     *  @return A red-only reference to the symmetry of the layout.
+     *  @return A read-only reference to the symmetry of the layout.
      *
      *  @throw None No throw guarantee.
      */
