@@ -82,6 +82,22 @@ public:
     ~Smooth() noexcept = default;
 
     // -------------------------------------------------------------------------
+    // -- Accessor methods
+    // -------------------------------------------------------------------------
+
+    /** @brief Returns the extent of the @p i -th mode.
+     *
+     *  @param[in] i The mode the user wants the extent of. @p i must be in the
+     *               range [0, rank()).
+     *
+     *  @return The extent of the requested mode.
+     *
+     *  @throw std::out_of_range if @p i is not in the range [0, range()).
+     *                           Strong throw guarantee.
+     */
+    rank_type extent(size_type i) const { return m_extents_.at(i); }
+
+    // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
 
