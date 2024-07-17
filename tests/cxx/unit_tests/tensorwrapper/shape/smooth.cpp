@@ -57,6 +57,22 @@ TEST_CASE("Smooth") {
         test_copy_move_ctor_and_assignment(scalar, vector, matrix, tensor);
     }
 
+    SECTION("extent") {
+        REQUIRE_THROWS_AS(scalar.extent(0), std::out_of_range);
+
+        REQUIRE(vector.extent(0) == 1);
+        REQUIRE_THROWS_AS(vector.extent(1), std::out_of_range);
+
+        REQUIRE(matrix.extent(0) == matrix_extents[0]);
+        REQUIRE(matrix.extent(1) == matrix_extents[1]);
+        REQUIRE_THROWS_AS(matrix.extent(2), std::out_of_range);
+
+        REQUIRE(tensor.extent(0) == 3);
+        REQUIRE(tensor.extent(1) == 4);
+        REQUIRE(tensor.extent(2) == 5);
+        REQUIRE_THROWS_AS(tensor.extent(3), std::out_of_range);
+    }
+
     SECTION("Virtual implementations") {
         SECTION("clone") {
             REQUIRE(scalar.clone()->are_equal(scalar));
