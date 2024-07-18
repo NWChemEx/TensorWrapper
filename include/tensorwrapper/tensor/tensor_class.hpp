@@ -15,27 +15,32 @@
  */
 
 #pragma once
-#include <memory>
+#include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 
 namespace tensorwrapper {
-namespace detail_ {
-class TensorPIMPL;
-}
 
 class Tensor {
+private:
+    /// Type of factory associated with *this
+    using factory_type = detail_::TensorFactory;
+
 public:
     /// Type of the object implementing *this
-    using pimpl_type = detail_::TensorPIMPL;
+    using pimpl_type = typename factory_type::pimpl_type;
 
     /// Type of a pointer to an object of type pimpl_type
-    using pimpl_pointer = std::unique_ptr<pimpl_type>;
+    using pimpl_pointer = typename factory_type::pimpl_pointer;
 
-    Tensor() noexcept;
+    template<typename... Args>
+    Tensor(Args... args) :
+      Tensor(detail_::construct(std::forward<Args>(args)...)) {}
 
     /// Defaulted no-throw dtor
     ~Tensor() noexcept;
 
 private:
+    Tensor(pimpl_pointer pimpl) noexcept;
+
     /// Does *this have a PIMPL?
     bool has_pimpl_() const noexcept;
 

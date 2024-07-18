@@ -22,13 +22,13 @@
 
 namespace tensorwrapper::layout {
 
-/** @brief Describes how the tensor is actually laid out.
+/** @brief Common base class for all layouts.
  *
  */
-class Tiled : public detail_::PolymorphicBase<Tiled> {
+class LayoutBase : public detail_::PolymorphicBase<LayoutBase> {
 public:
     /// Type all layouts derive from
-    using layout_base = Tiled;
+    using layout_base = LayoutBase;
 
     /// Type of a mutable reference to the base of a layout
     using layout_reference = layout_base&;
@@ -74,7 +74,7 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    Tiled() = default;
+    LayoutBase() = default;
 
     /** @brief Value ctor
      *
@@ -85,28 +85,16 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the new state.
      *                        Strong throw guarantee.
      */
-    Tiled(const_shape_reference shape, symmetry_type symmetry,
-          sparsity_type sparsity) :
-      Tiled(shape.clone(), std::move(symmetry), std::move(sparsity)) {}
+    LayoutBase(const_shape_reference shape, symmetry_type symmetry,
+               sparsity_type sparsity) :
+      LayoutBase(shape.clone(), std::move(symmetry), std::move(sparsity)) {}
 
     /// Defaulted polymorphic dtor
-    virtual ~Tiled() noexcept = default;
+    virtual ~LayoutBase() noexcept = default;
 
     // -------------------------------------------------------------------------
     // -- State methods
     // -------------------------------------------------------------------------
-
-    /** @brief How many tiles does *this have?
-     *
-     *  Layouts are in general tiled in some manner
-     *
-     *  @return The number of tiles in *this.
-     *
-     *  @throw None No throw guarantee.
-     */
-    size_type tile_size() const noexcept {
-        return has_shape() ? tile_size_() : 0;
-    }
 
     /** @brief Does *this have a shape set?
      *
@@ -150,8 +138,8 @@ public:
 
     /** @brief Is *this value equal to @p rhs?
      *
-     *  Two Tiled objects are value equal if they both don't have shapes or if
-     *  they have the same shapes, symmetry, and sparsity.
+     *  Two LayoutBase objects are value equal if they both don't have shapes or
+     * if they have the same shapes, symmetry, and sparsity.
      *
      *  @param[in] rhs The object to compare *this to.
      *
@@ -169,9 +157,9 @@ public:
 
     /** @brief Is *this different from @p rhs?
      *
-     *  Two Tiled objects are different if they are not value equal. This method
-     *  simply negates operator==. See the description of operator== for the
-     *  definition of value equal.
+     *  Two LayoutBase objects are different if they are not value equal. This
+     * method simply negates operator==. See the description of operator== for
+     * the definition of value equal.
      *
      *  @param[in] rhs The object to compare to.
      *
@@ -193,26 +181,15 @@ protected:
      *  @throw std::bad_alloc if there is a problem copying @p other. Strong
      *                        throw guarantee.
      */
-    Tiled(const Tiled& other) :
+    LayoutBase(const LayoutBase& other) :
       m_shape_(other.has_shape() ? other.m_shape_->clone() : nullptr),
       m_symmetry_(other.m_symmetry_),
       m_sparsity_(other.m_sparsity_) {}
 
-    /** @brief Implements tile_size.
-     *
-     *  For now this is an abstract method. When tiling is actually supported
-     *  this method will be implemented in this class. This method is only
-     *  called if m_shape_ is non-null (if it's null then we have no tiles).
-     *
-     *  @return The number of tiles in *this.
-     *
-     *  @throw None No throw guarantee.
-     */
-    virtual size_type tile_size_() const noexcept = 0;
-
 private:
     /// Ctor all other value ctors dispatch to
-    Tiled(shape_pointer shape, symmetry_type symmetry, sparsity_type sparsity) :
+    LayoutBase(shape_pointer shape, symmetry_type symmetry,
+               sparsity_type sparsity) :
       m_shape_(std::move(shape)),
       m_symmetry_(std::move(symmetry)),
       m_sparsity_(std::move(sparsity)) {}

@@ -15,16 +15,17 @@
  */
 
 #include "detail_/tensor_pimpl.hpp"
+#include <tensorwrapper/tensor/tensor_class.hpp>
 
 namespace tensorwrapper {
 
 // -- Ctors, assignment, and dtor
 
-Tensor::Tensor() noexcept = default;
-
 Tensor::~Tensor() noexcept = default;
 
 // -- Private methods
+
+Tensor::Tensor(pimpl_pointer pimpl) noexcept : m_pimpl_(std::move(pimpl)) {}
 
 bool Tensor::has_pimpl_() const noexcept { return static_cast<bool>(m_pimpl_); }
 

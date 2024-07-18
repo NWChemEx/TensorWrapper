@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include "../helpers.hpp"
-#include <tensorwrapper/layout/mono_tile.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
 #include <tensorwrapper/symmetry/permutation.hpp>
@@ -25,24 +25,24 @@ using namespace layout;
 
 /* Testing Notes:
  *
- * - Right now Tiled is an abstract class so we test methods implemented in it
- *   by creating MonoTile objects (which are not abstract).
+ * - Right now LayoutBase is an abstract class so we test methods implemented in
+ *   it by creating Physical objects (which are not abstract).
  */
 
-TEST_CASE("Tiled") {
+TEST_CASE("LayoutBase") {
     shape::Smooth matrix_shape{2, 3};
     symmetry::Permutation p01{0, 1};
     symmetry::Group no_symm, symm{p01};
     sparsity::Pattern no_sparsity;
 
-    MonoTile defaulted_mono;
-    MonoTile matrix_mono(matrix_shape, no_symm, no_sparsity);
-    MonoTile symm_matrix_mono(matrix_shape, symm, no_sparsity);
+    Physical defaulted_mono;
+    Physical matrix_mono(matrix_shape, no_symm, no_sparsity);
+    Physical symm_matrix_mono(matrix_shape, symm, no_sparsity);
 
     // Test via references to the base class
-    Tiled& defaulted   = defaulted_mono;
-    Tiled& matrix      = matrix_mono;
-    Tiled& symm_matrix = symm_matrix_mono;
+    LayoutBase& defaulted   = defaulted_mono;
+    LayoutBase& matrix      = matrix_mono;
+    LayoutBase& symm_matrix = symm_matrix_mono;
 
     SECTION("Ctors and assignment") {
         SECTION("Defaulted") {
@@ -90,7 +90,7 @@ TEST_CASE("Tiled") {
 
     SECTION("operator==") {
         // Defaulted v defaulted
-        REQUIRE(defaulted == MonoTile{});
+        REQUIRE(defaulted == Physical{});
 
         // Different shape
         REQUIRE_FALSE(defaulted == matrix);

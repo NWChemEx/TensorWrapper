@@ -45,6 +45,29 @@ typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
       *playout);
 }
 
+#define ALLOCATE_CONDITION(RANK) \
+    if(rank == RANK) return std::make_unique<Eigen<FloatType, RANK>>(rv)
+
+TPARAMS
+typename EIGEN::base_pointer Eigen::make_eigen_allocator(unsigned int rank,
+                                                         runtime_view_type rv) {
+    ALLOCATE_CONDITION(0);
+    else ALLOCATE_CONDITION(1);
+    else ALLOCATE_CONDITION(2);
+    else ALLOCATE_CONDITION(3);
+    else ALLOCATE_CONDITION(4);
+    else ALLOCATE_CONDITION(5);
+    else ALLOCATE_CONDITION(6);
+    else ALLOCATE_CONDITION(7);
+    else ALLOCATE_CONDITION(8);
+    else ALLOCATE_CONDITION(9);
+    else ALLOCATE_CONDITION(10);
+    throw std::runtime_error(
+      "Presently only support eigen tensors up to rank 10");
+}
+
+#undef ALLOCATE_CONDITION
+
 // -----------------------------------------------------------------------------
 // -- Protected methods
 // -----------------------------------------------------------------------------

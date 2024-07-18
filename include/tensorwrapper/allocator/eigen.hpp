@@ -17,7 +17,6 @@
 #pragma once
 #include <tensorwrapper/allocator/replicated.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
-#include <tensorwrapper/layout/mono_tile.hpp>
 
 namespace tensorwrapper::allocator {
 
@@ -54,7 +53,7 @@ public:
     using eigen_buffer_pointer = std::unique_ptr<eigen_buffer_type>;
 
     /// Type of a layout which can be used to create an Eigen tensor
-    using eigen_layout_type = layout::MonoTile;
+    using eigen_layout_type = layout::Physical;
 
     /// Type of a read-only reference to an object of type eigen_layout_type
     using const_eigen_layout_reference = const eigen_layout_type&;
@@ -183,6 +182,9 @@ public:
     bool operator!=(const Eigen<FloatType2, Rank2>& rhs) const noexcept {
         return !(*this == rhs);
     }
+
+    static base_pointer make_eigen_allocator(unsigned int rank,
+                                             runtime_view_type rv);
 
 protected:
     /** @brief Polymorphic allocation of a new buffer.

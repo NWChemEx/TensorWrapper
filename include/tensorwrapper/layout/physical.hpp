@@ -15,19 +15,21 @@
  */
 
 #pragma once
-#include <tensorwrapper/layout/tiled.hpp>
+#include <tensorwrapper/layout/layout_base.hpp>
 
 namespace tensorwrapper::layout {
 
-/** @brief Specializes a tiled layout to when there's a single tile.
+/** @brief Specializes a LayoutBase for a layout describing how a tensor is
+ *         actually laid out at runtime.
  *
- *  Non-distributed tensors typically have no tiling structure. This class
- *  makes it easier to define a tiled layout when there's only a single tile.
+ *  At present this class is largely a strong type, but eventually we expect it
+ *  to hold details such as row major vs column major that matter for the
+ *  physical layout, but not the logical layout.
  */
-class MonoTile : public Tiled {
+class Physical : public LayoutBase {
 private:
     /// Type *this derives from
-    using base_type = Tiled;
+    using base_type = LayoutBase;
 
 public:
     /// Pull in base class's types
@@ -40,15 +42,12 @@ public:
 protected:
     /// Implements clone by calling copy ctor
     layout_pointer clone_() const override {
-        return std::make_unique<MonoTile>(*this);
+        return std::make_unique<Physical>(*this);
     }
-
-    /// Hard-codes tile_size_ to return 1
-    size_type tile_size_() const noexcept override { return 1; }
 
     /// Implements are_equal by calling are_equal_impl_
     bool are_equal_(const layout_base& rhs) const noexcept override {
-        return are_equal_impl_<MonoTile>(rhs);
+        return are_equal_impl_<Physical>(rhs);
     }
 };
 

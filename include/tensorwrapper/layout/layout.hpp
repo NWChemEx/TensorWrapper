@@ -15,7 +15,8 @@
  */
 
 #pragma once
-#include <tensorwrapper/layout/tiled.hpp>
+#include <tensorwrapper/layout/logical.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 
 /** @brief Namespace for classes used to spe */
 namespace tensorwrapper::layout {}
