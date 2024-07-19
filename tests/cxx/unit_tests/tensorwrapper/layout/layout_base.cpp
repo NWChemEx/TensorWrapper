@@ -35,65 +35,73 @@ TEST_CASE("LayoutBase") {
     symmetry::Group no_symm, symm{p01};
     sparsity::Pattern no_sparsity;
 
-    Physical defaulted_mono;
     Physical matrix_mono(matrix_shape, no_symm, no_sparsity);
     Physical symm_matrix_mono(matrix_shape, symm, no_sparsity);
 
     // Test via references to the base class
-    LayoutBase& defaulted   = defaulted_mono;
     LayoutBase& matrix      = matrix_mono;
     LayoutBase& symm_matrix = symm_matrix_mono;
 
     SECTION("Ctors and assignment") {
-        SECTION("Defaulted") {
-            REQUIRE_FALSE(defaulted.has_shape());
-            REQUIRE(defaulted.symmetry() == no_symm);
-            REQUIRE(defaulted.sparsity() == no_sparsity);
-        }
-
-        SECTION("Value") {
-            REQUIRE(matrix.has_shape());
+        SECTION("Copy state") {
             REQUIRE(matrix.shape().are_equal(matrix_shape));
             REQUIRE(matrix.symmetry() == no_symm);
             REQUIRE(matrix.sparsity() == no_sparsity);
 
-            REQUIRE(symm_matrix.has_shape());
             REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
             REQUIRE(symm_matrix.symmetry() == symm);
             REQUIRE(symm_matrix.sparsity() == no_sparsity);
         }
-    }
 
-    SECTION("has_shape") {
-        REQUIRE_FALSE(defaulted.has_shape());
-        REQUIRE(matrix.has_shape());
-        REQUIRE(symm_matrix.has_shape());
+        SECTION("Move state") {
+            auto pshape  = matrix_shape.clone();
+            auto psymm   = std::make_unique<symmetry::Group>(no_symm);
+            auto psparse = std::make_unique<sparsity::Pattern>(no_sparsity);
+            SECTION("All non-null") {
+                Physical rhs(std::move(pshape), std::move(psymm),
+                             std::move(psparse));
+                REQUIRE(matrix == rhs);
+            }
+            SECTION("Shape is null") {
+                REQUIRE_THROWS_AS(
+                  Physical(nullptr, std::move(psymm), std::move(psparse)),
+                  std::runtime_error);
+            }
+            SECTION("Symmetry is null") {
+                REQUIRE_THROWS_AS(
+                  Physical(std::move(pshape), nullptr, std::move(psparse)),
+                  std::runtime_error);
+            }
+            SECTION("Sparsity is null") {
+                REQUIRE_THROWS_AS(
+                  Physical(std::move(pshape), std::move(psymm), nullptr),
+                  std::runtime_error);
+            }
+        }
     }
 
     SECTION("shape") {
-        REQUIRE_THROWS_AS(defaulted.shape(), std::runtime_error);
         REQUIRE(matrix.shape().are_equal(matrix_shape));
         REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
     }
 
     SECTION("symmetry") {
-        REQUIRE(defaulted.symmetry() == no_symm);
         REQUIRE(matrix.symmetry() == no_symm);
         REQUIRE(symm_matrix.symmetry() == symm);
     }
 
     SECTION("sparsity") {
-        REQUIRE(defaulted.sparsity() == no_sparsity);
         REQUIRE(matrix.sparsity() == no_sparsity);
         REQUIRE(symm_matrix.sparsity() == no_sparsity);
     }
 
     SECTION("operator==") {
-        // Defaulted v defaulted
-        REQUIRE(defaulted == Physical{});
+        // Same
+        REQUIRE(matrix == Physical(matrix_shape, no_symm, no_sparsity));
 
         // Different shape
-        REQUIRE_FALSE(defaulted == matrix);
+        shape::Smooth vector_shape{2};
+        REQUIRE_FALSE(matrix == Physical(vector_shape, no_symm, no_sparsity));
 
         // Different symmetry
         REQUIRE_FALSE(matrix == symm_matrix);

@@ -54,29 +54,29 @@ public:
     /// Read-only reference to the symmetry
     using const_symmetry_reference = const symmetry_type&;
 
+    /// Type of a pointer to an object of type symmetry_type
+    using symmetry_pointer = std::unique_ptr<symmetry_type>;
+
     /// Object holding sparsity patterns
     using sparsity_type = sparsity::Pattern;
 
     /// Read-only reference to the sparsity
     using const_sparsity_reference = const sparsity_type&;
 
+    /// Type of a pointer to an object of type sparsity_type
+    using sparsity_pointer = std::unique_ptr<sparsity_type>;
+
     /// Type used for indexing and offsets
     using size_type = std::size_t;
 
     // -------------------------------------------------------------------------
-    // -- Ctors, assignment, and dtor
+    // -- Ctors and dtor
     // -------------------------------------------------------------------------
 
-    /** @brief Creates the layout of a defaulted tensor.
+    /** @brief Initialize by copy ctor
      *
-     *  Defaulted layouts have no shape, defaulted symmetry, and defaulted
-     *  sparsity. Such a layout is consistent with a tensor with no state.
-     *
-     *  @throw None No throw guarantee.
-     */
-    LayoutBase() = default;
-
-    /** @brief Value ctor
+     *  This ctor is used when the user does not want to relinquish ownership of
+     *  the objects used to initialize *this. The inputs will be copied.
      *
      *  @param[in] shape The actual shape the tensor backend has.
      *  @param[in] symmetry The actual symmetry the backend has.
@@ -85,9 +85,30 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the new state.
      *                        Strong throw guarantee.
      */
-    LayoutBase(const_shape_reference shape, symmetry_type symmetry,
-               sparsity_type sparsity) :
-      LayoutBase(shape.clone(), std::move(symmetry), std::move(sparsity)) {}
+    LayoutBase(const_shape_reference shape, const_symmetry_reference symmetry,
+               const_sparsity_reference sparsity) :
+      LayoutBase(shape.clone(), std::make_unique<symmetry_type>(symmetry),
+                 std::make_unique<sparsity_type>(sparsity)) {}
+
+    /** @brief Initialize by move ctor
+     *
+     *  This ctor is used when the user wants *this to take ownership of the
+     *  objects being used to initialize * this.
+     *
+     *  @throw std::runtime_error if @p shape, @p symmetry, or @p sparsity is
+     *                            a nullptr. Strong throw guarantee.
+     */
+    LayoutBase(shape_pointer shape, symmetry_pointer symmetry,
+               sparsity_pointer sparsity) :
+      m_shape_(std::move(shape)),
+      m_symmetry_(std::move(symmetry)),
+      m_sparsity_(std::move(sparsity)) {
+        if(m_shape_ == nullptr) throw std::runtime_error("Shape can't be null");
+        if(m_symmetry_ == nullptr)
+            throw std::runtime_error("Symmetry can't be null");
+        if(m_sparsity_ == nullptr)
+            throw std::runtime_error("Sparsity can't be null");
+    }
 
     /// Defaulted polymorphic dtor
     virtual ~LayoutBase() noexcept = default;
@@ -96,33 +117,21 @@ public:
     // -- State methods
     // -------------------------------------------------------------------------
 
-    /** @brief Does *this have a shape set?
-     *
-     *  @return True if *this has a shape and false otherwise.
-     *
-     *  @throw None No throw guarantee
-     */
-    bool has_shape() const noexcept { return m_shape_ != nullptr; }
-
     /** @brief Provides read-only access to the shape of the layout.
      *
      *  @return A read-only reference to the shape of the layout.
      *
-     *  @throw std::runtime_error if *this does not have a shape. Strong throw
-     *                            guarantee.
+     *  @throw None No throw guarantee
      */
-    const_shape_reference shape() const {
-        if(!has_shape()) throw std::runtime_error("Layout's shape not set.");
-        return *m_shape_;
-    }
+    const_shape_reference shape() const { return *m_shape_; }
 
     /** @brief Provides read-only access to the symmetry of the layout.
      *
      *  @return A read-only reference to the symmetry of the layout.
      *
-     *  @throw None No throw guarantee.
+     *  @throw None No throw guarantee
      */
-    const_symmetry_reference symmetry() const noexcept { return m_symmetry_; }
+    const_symmetry_reference symmetry() const { return *m_symmetry_; }
 
     /** @brief Provides access to the sparsity of the layout.
      *
@@ -130,7 +139,7 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    const_sparsity_reference sparsity() const noexcept { return m_sparsity_; }
+    const_sparsity_reference sparsity() const { return *m_sparsity_; }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -148,8 +157,6 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator==(const layout_base& rhs) const noexcept {
-        if(has_shape() != rhs.has_shape()) return false;
-        if(!has_shape()) return true;
         if(!m_shape_->are_equal(*rhs.m_shape_)) return false;
         return std::tie(m_symmetry_, m_sparsity_) ==
                std::tie(rhs.m_symmetry_, rhs.m_sparsity_);
@@ -182,26 +189,22 @@ protected:
      *                        throw guarantee.
      */
     LayoutBase(const LayoutBase& other) :
-      m_shape_(other.has_shape() ? other.m_shape_->clone() : nullptr),
-      m_symmetry_(other.m_symmetry_),
-      m_sparsity_(other.m_sparsity_) {}
+      m_shape_(other.m_shape_->clone()),
+      m_symmetry_(std::make_unique<symmetry_type>(*other.m_symmetry_)),
+      m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
+
+    LayoutBase& operator=(const LayoutBase&) = delete;
+    LayoutBase& operator=(LayoutBase&&)      = delete;
 
 private:
-    /// Ctor all other value ctors dispatch to
-    LayoutBase(shape_pointer shape, symmetry_type symmetry,
-               sparsity_type sparsity) :
-      m_shape_(std::move(shape)),
-      m_symmetry_(std::move(symmetry)),
-      m_sparsity_(std::move(sparsity)) {}
-
     /// The actual shape of the tensor
     shape_pointer m_shape_;
 
     /// The actual symmetry of the tensor
-    symmetry_type m_symmetry_;
+    symmetry_pointer m_symmetry_;
 
     /// The actual sparsity of the tensor
-    sparsity_type m_sparsity_;
+    sparsity_pointer m_sparsity_;
 };
 
 } // namespace tensorwrapper::layout

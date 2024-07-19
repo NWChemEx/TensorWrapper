@@ -16,7 +16,7 @@
 
 #include "../helpers.hpp"
 #include <tensorwrapper/buffer/eigen.hpp>
-#include <tensorwrapper/layout/mono_tile.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 using namespace tensorwrapper;
@@ -57,9 +57,9 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
 
         symmetry::Group g;
         sparsity::Pattern p;
-        layout::MonoTile scalar_layout(shape::Smooth{}, g, p);
-        layout::MonoTile vector_layout(shape::Smooth{2}, g, p);
-        layout::MonoTile matrix_layout(shape::Smooth{2, 3}, g, p);
+        layout::Physical scalar_layout(shape::Smooth{}, g, p);
+        layout::Physical vector_layout(shape::Smooth{2}, g, p);
+        layout::Physical matrix_layout(shape::Smooth{2, 3}, g, p);
 
         scalar_buffer scalar(eigen_scalar, scalar_layout);
         vector_buffer vector(eigen_vector, vector_layout);

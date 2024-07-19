@@ -16,7 +16,7 @@
 
 #include <catch2/catch.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
-#include <tensorwrapper/layout/mono_tile.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 using namespace tensorwrapper;
@@ -44,8 +44,8 @@ TEST_CASE("BufferBase") {
 
         symmetry::Group g;
         sparsity::Pattern p;
-        layout::MonoTile scalar_layout(shape::Smooth{}, g, p);
-        layout::MonoTile vector_layout(shape::Smooth{2}, g, p);
+        layout::Physical scalar_layout(shape::Smooth{}, g, p);
+        layout::Physical vector_layout(shape::Smooth{2}, g, p);
 
         vector_buffer defaulted;
         scalar_buffer scalar(eigen_scalar, scalar_layout);

@@ -49,7 +49,7 @@ typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
     if(rank == RANK) return std::make_unique<Eigen<FloatType, RANK>>(rv)
 
 TPARAMS
-typename EIGEN::base_pointer Eigen::make_eigen_allocator(unsigned int rank,
+typename EIGEN::base_pointer EIGEN::make_eigen_allocator(unsigned int rank,
                                                          runtime_view_type rv) {
     ALLOCATE_CONDITION(0);
     else ALLOCATE_CONDITION(1);

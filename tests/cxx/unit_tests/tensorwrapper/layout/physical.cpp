@@ -36,23 +36,14 @@ TEST_CASE("Physical") {
     symmetry::Group no_symm, symm{p01};
     sparsity::Pattern no_sparsity;
 
-    Physical defaulted;
     Physical matrix(matrix_shape, no_symm, no_sparsity);
     Physical symm_matrix(matrix_shape, symm, no_sparsity);
 
     SECTION("Ctors and assignment") {
-        SECTION("Defaulted") {
-            REQUIRE_FALSE(defaulted.has_shape());
-            REQUIRE(defaulted.symmetry() == no_symm);
-            REQUIRE(defaulted.sparsity() == no_sparsity);
-        }
-
         SECTION("Value") {
-            REQUIRE(matrix.has_shape());
             REQUIRE(matrix.symmetry() == no_symm);
             REQUIRE(matrix.sparsity() == no_sparsity);
 
-            REQUIRE(symm_matrix.has_shape());
             REQUIRE(symm_matrix.symmetry() == symm);
             REQUIRE(symm_matrix.sparsity() == no_sparsity);
         }
@@ -61,19 +52,17 @@ TEST_CASE("Physical") {
     SECTION("Virtual method overrides") {
         using const_base_reference = Physical::const_layout_reference;
 
-        const_base_reference defaulted_base   = defaulted;
         const_base_reference matrix_base      = matrix;
         const_base_reference symm_matrix_base = symm_matrix;
 
         SECTION("clone_") {
-            REQUIRE(defaulted_base.clone()->are_equal(defaulted));
             REQUIRE(matrix_base.clone()->are_equal(matrix));
             REQUIRE(symm_matrix_base.clone()->are_equal(symm_matrix));
         }
 
         SECTION("are_equal") {
-            REQUIRE(defaulted_base.are_equal(defaulted_base));
-            REQUIRE_FALSE(defaulted_base.are_equal(matrix_base));
+            REQUIRE(matrix_base.are_equal(matrix_base));
+            REQUIRE_FALSE(symm_matrix_base.are_equal(matrix_base));
         }
     }
 }

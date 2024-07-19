@@ -15,20 +15,19 @@
  */
 
 #pragma once
-#include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
+#include <tensorwrapper/tensor/tensor_class.hpp>
 
 namespace tensorwrapper::detail_ {
 
 class TensorPIMPL {
 public:
-    /// Type which creates *this
-    using factory_type = TensorFactory;
+    /// Type *this implements
+    using parent_type = Tensor;
 
-    /// Pull in types from factory_type
-    using pimpl_pointer = typename factory_type::pimpl_pointer;
-    using logical_layout_pointer =
-      typename factory_type::logical_layout_pointer;
-    using buffer_pointer = typename factory_type::buffer_pointer;
+    /// Pull in types from parent_type
+    using pimpl_pointer          = typename parent_type::pimpl_pointer;
+    using logical_layout_pointer = typename parent_type::logical_layout_pointer;
+    using buffer_pointer         = typename parent_type::buffer_pointer;
 
     TensorPIMPL(logical_layout_pointer plogical, buffer_pointer pbuffer) :
       m_plogical_(std::move(plogical)), m_pbuffer_(std::move(pbuffer)) {}

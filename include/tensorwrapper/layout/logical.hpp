@@ -27,20 +27,27 @@ namespace tensorwrapper::layout {
 class Logical : public LayoutBase {
 private:
     /// Type *this derives from
-    using base_type = LayoutBase;
+    using my_base_type = LayoutBase;
 
 public:
     /// Pull in base class's types
-    using base_type::layout_pointer;
-    using base_type::shape_pointer;
-    using base_type::size_type;
-    using base_type::sparsity_pointer;
-    using base_type::symmetry_pointer;
+    using my_base_type::const_shape_reference;
+    using my_base_type::const_sparsity_reference;
+    using my_base_type::const_symmetry_reference;
+    using my_base_type::layout_pointer;
+    using my_base_type::shape_pointer;
+    using my_base_type::size_type;
+    using my_base_type::sparsity_pointer;
+    using my_base_type::symmetry_pointer;
+
+    Logical(const_shape_reference shape, const_symmetry_reference symmetry,
+            const_sparsity_reference sparsity) :
+      my_base_type(shape, symmetry, sparsity) {}
 
     Logical(shape_pointer pshape, symmetry_pointer psymmetry,
             sparsity_pointer psparsity) :
-      base_type(std::move(pshape), std::move(psymmetry), std::move(psparsity)) {
-    }
+      my_base_type(std::move(pshape), std::move(psymmetry),
+                   std::move(psparsity)) {}
 
 protected:
     /// Implements clone by calling copy ctor

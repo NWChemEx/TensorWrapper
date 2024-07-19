@@ -3,58 +3,108 @@
 #include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 namespace tensorwrapper::detail_ {
 
-using pimpl_pointer           = typename TensorFactory::pimpl_pointer;
-using shape_pointer           = typename TensorFactory::shape_pointer;
+using pimpl_pointer = typename Tensor::pimpl_pointer;
+
 using symmetry_pointer        = typename TensorFactory::symmetry_pointer;
 using sparsity_pointer        = typename TensorFactory::sparsity_pointer;
 using logical_layout_pointer  = typename TensorFactory::logical_layout_pointer;
 using physical_layout_pointer = typename TensorFactory::physical_layout_pointer;
+using allocator_pointer       = typename TensorFactory::allocator_pointer;
 using buffer_pointer          = typename TensorFactory::buffer_pointer;
 
-pimpl_pointer TensorFactory::construct(logical_layout_pointer plogical) {
-    // Check if this is a default construction, if so, early out
-    if(plogical == nullptr) return pimpl_pointer();
+// -----------------------------------------------------------------------------
+// -- Methods for determining reasonable defaults
+// -----------------------------------------------------------------------------
 
-    // For now the default physical layout is a copy of the logical layout
-    auto pphysical = std::make_unique<physical_layout_type>(
-      plogical->shape(), plogical->symmetry(), plogical->sparsity());
-
-    return construct(std::move(plogical), std::move(pphysical));
+symmetry_pointer TensorFactory::default_logical_symmetry(
+  const_shape_reference) {
+    // Symmetry is  at present NOT polymorphic
+    return std::make_unique<symmetry_base>();
 }
 
-pimpl_pointer TensorFactory::construct(logical_layout_pointer plogical,
-                                       physical_layout_pointer pphysical) {
-    // Check if this is a default construction, if so, early out
-    if(plogical == nullptr) return pimpl_pointer();
+sparsity_pointer TensorFactory::default_logical_sparsity(
+  const_shape_reference, const_symmetry_reference) {
+    // Sparsity is  at present NOT polymorphic
+    return std::make_unique<sparsity_base>();
+}
 
-    // Verify physical layout == logical (required for now)
-    using const_layout_base         = const layout::LayoutBase&;
-    const_layout_base logical_base  = *plogical;
-    const_layout_base physical_base = *pphysical;
+logical_layout_pointer TensorFactory::default_logical_layout(
+  shape_pointer pshape, symmetry_pointer psymmetry,
+  sparsity_pointer psparsity) {
+    using logical_type = input_type::logical_layout_type;
 
-    if(logical_base != physical_base)
-        throw std::runtime_error(
-          "For now logical and physical layouts can not differ.");
+    return std::make_unique<logical_type>(
+      std::move(pshape), std::move(psymmetry), std::move(psparsity));
+}
 
-    // Default allocator makes Eigen tensors filled with doubles
+physical_layout_pointer TensorFactory::default_physical_layout(
+  const_logical_reference logical) {
+    // For now the default physical layout is a copy of the logical layout
+    return std::make_unique<physical_layout_type>(
+      logical.shape(), logical.symmetry(), logical.sparsity());
+}
+
+allocator_pointer TensorFactory::default_allocator(
+  const_physical_reference physical) {
+    // For now, default allocator makes Eigen tensors filled with doubles
+    const auto rank = physical.shape().rank();
+
     // N.B. all specializations implement make_eigen_allocator the same
     using eigen_alloc = allocator::Eigen<double, 0>;
-
-    auto rank   = pphysical->shape().rank();
-    auto palloc = eigen_alloc::make_eigen_allocator(rank, m_rv_);
-
-    auto pbuffer = palloc->allocate(std::move(pphysical));
-
-    return construct(std::move(plogical), std::move(pbuffer));
+    return eigen_alloc::make_eigen_allocator(rank, m_rv_);
 }
 
-pimpl_pointer TensorFactory::construct(logical_layout_pointer plogical,
-                                       buffer_pointer pbuffer) {
-    // Check if this is a default construction, if so, early out
-    if(plogical == nullptr) return pimpl_pointer();
+// -----------------------------------------------------------------------------
+// -- Construct
+// -----------------------------------------------------------------------------
 
-    return std::make_unique<pimpl_type>(std::move(plogical),
-                                        std::move(pbuffer));
+pimpl_pointer TensorFactory::construct(TensorInput input) {
+    // N.B. Ultimately need a logical layout and a buffer. The former drives the
+    // later so we make that first (if we don't have it).
+
+    if(!input.has_logical_layout()) {
+        if(!input.has_shape()) {
+            // TODO: Could infer shape if given an initialization, but for now
+            // treat it as default initialization
+            return pimpl_pointer{};
+        }
+        const auto& shape = *input.m_pshape;
+
+        if(!input.has_symmetry()) {
+            input.m_psymmetry = default_logical_symmetry(shape);
+        }
+
+        if(!input.has_sparsity()) {
+            const auto& symm  = *input.m_psymmetry;
+            input.m_psparsity = default_logical_sparsity(shape, symm);
+        }
+
+        input.m_plogical = default_logical_layout(std::move(input.m_pshape),
+                                                  std::move(input.m_psymmetry),
+                                                  std::move(input.m_psparsity));
+    }
+
+    // We now have a logical layout. If we don't have a buffer we can make one
+    // now.
+
+    if(!input.has_buffer()) {
+        if(!input.has_physical_layout()) {
+            input.m_pphysical = default_physical_layout(*input.m_plogical);
+        }
+
+        if(!input.has_allocator()) {
+            input.m_palloc = default_allocator(*input.m_pphysical);
+        }
+
+        // TODO: Check if we have initialization criteria
+        input.m_pbuffer =
+          input.m_palloc->allocate(std::move(input.m_pphysical));
+    }
+
+    // Now we have both a logical layout and a buffer so we're done
+
+    return std::make_unique<pimpl_type>(std::move(input.m_plogical),
+                                        std::move(input.m_pbuffer));
 }
 
 } // namespace tensorwrapper::detail_
