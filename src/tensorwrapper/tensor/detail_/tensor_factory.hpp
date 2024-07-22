@@ -13,15 +13,21 @@ namespace tensorwrapper::detail_ {
  */
 class TensorFactory {
 public:
+    /// Type this will create PIMPLs for
     using tensor_type = Tensor;
-    using input_type  = TensorInput;
 
+    /// Type used to manage the myriad of possible inputs
+    using input_type = TensorInput;
+
+    /// Type powering an object of type tensor_type
     using pimpl_type = typename tensor_type::pimpl_type;
 
+    /// Type of a pointer to an object of type pimpl_type
     using pimpl_pointer = typename tensor_type::pimpl_pointer;
 
     // Pull types from input_type that we will need for our API
     using const_shape_reference    = input_type::const_shape_reference;
+    using shape_pointer            = input_type::shape_pointer;
     using const_symmetry_reference = input_type::const_symmetry_reference;
     using symmetry_pointer         = input_type::symmetry_pointer;
     using const_sparsity_reference = input_type::const_sparsity_reference;
@@ -30,6 +36,8 @@ public:
     using logical_layout_pointer   = input_type::logical_layout_pointer;
     using const_physical_reference = input_type::const_physical_reference;
     using physical_layout_pointer  = input_type::physical_layout_pointer;
+    using allocator_pointer        = input_type::allocator_pointer;
+    using runtime_view_type        = input_type::runtime_view_type;
 
     // -------------------------------------------------------------------------
     // -- Methods for determining reasonable defaults
@@ -48,9 +56,10 @@ public:
     static physical_layout_pointer default_physical_layout(
       const_logical_reference logical);
 
-    allocator_pointer default_allocator(const_physical_reference physical);
+    static allocator_pointer default_allocator(
+      const_physical_reference physical, runtime_view_type rv);
 
-    pimpl_pointer construct(input_type input);
+    static pimpl_pointer construct(input_type input);
 };
 
 } // namespace tensorwrapper::detail_

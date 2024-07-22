@@ -158,8 +158,8 @@ public:
      */
     bool operator==(const layout_base& rhs) const noexcept {
         if(!m_shape_->are_equal(*rhs.m_shape_)) return false;
-        return std::tie(m_symmetry_, m_sparsity_) ==
-               std::tie(rhs.m_symmetry_, rhs.m_sparsity_);
+        return std::tie(*m_symmetry_, *m_sparsity_) ==
+               std::tie(*rhs.m_symmetry_, *rhs.m_sparsity_);
     }
 
     /** @brief Is *this different from @p rhs?

@@ -16,7 +16,7 @@
 
 #pragma once
 #include <memory>
-
+#include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 namespace tensorwrapper::detail_ {
 
 /** @brief Defines the API polymorphic utility methods should use.
@@ -61,6 +61,12 @@ public:
      *                        throw guarantee.
      */
     base_pointer clone() const { return clone_(); }
+
+    template<typename DerivedType>
+    auto clone_as() const {
+        auto pbase = clone();
+        return detail_::static_pointer_cast<DerivedType>(pbase);
+    }
 
     /** @brief Determines if *this and @p rhs are polymorphically equal.
      *

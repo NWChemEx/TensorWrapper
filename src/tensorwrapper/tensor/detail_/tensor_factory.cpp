@@ -1,16 +1,17 @@
+#include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
 #include <tensorwrapper/allocator/eigen.hpp>
-#include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 namespace tensorwrapper::detail_ {
 
-using pimpl_pointer = typename Tensor::pimpl_pointer;
+using pimpl_type    = typename TensorFactory::pimpl_type;
+using pimpl_pointer = typename TensorFactory::pimpl_pointer;
 
 using symmetry_pointer        = typename TensorFactory::symmetry_pointer;
 using sparsity_pointer        = typename TensorFactory::sparsity_pointer;
 using logical_layout_pointer  = typename TensorFactory::logical_layout_pointer;
 using physical_layout_pointer = typename TensorFactory::physical_layout_pointer;
 using allocator_pointer       = typename TensorFactory::allocator_pointer;
-using buffer_pointer          = typename TensorFactory::buffer_pointer;
+using buffer_pointer          = typename pimpl_type::buffer_pointer;
 
 // -----------------------------------------------------------------------------
 // -- Methods for determining reasonable defaults
@@ -18,14 +19,14 @@ using buffer_pointer          = typename TensorFactory::buffer_pointer;
 
 symmetry_pointer TensorFactory::default_logical_symmetry(
   const_shape_reference) {
-    // Symmetry is  at present NOT polymorphic
-    return std::make_unique<symmetry_base>();
+    // Symmetry is at present NOT polymorphic
+    return std::make_unique<input_type::symmetry_base>();
 }
 
 sparsity_pointer TensorFactory::default_logical_sparsity(
   const_shape_reference, const_symmetry_reference) {
-    // Sparsity is  at present NOT polymorphic
-    return std::make_unique<sparsity_base>();
+    // Sparsity is at present NOT polymorphic
+    return std::make_unique<input_type::sparsity_base>();
 }
 
 logical_layout_pointer TensorFactory::default_logical_layout(
@@ -40,18 +41,19 @@ logical_layout_pointer TensorFactory::default_logical_layout(
 physical_layout_pointer TensorFactory::default_physical_layout(
   const_logical_reference logical) {
     // For now the default physical layout is a copy of the logical layout
+    using physical_layout_type = input_type::physical_layout_type;
     return std::make_unique<physical_layout_type>(
       logical.shape(), logical.symmetry(), logical.sparsity());
 }
 
 allocator_pointer TensorFactory::default_allocator(
-  const_physical_reference physical) {
+  const_physical_reference physical, runtime_view_type rv) {
     // For now, default allocator makes Eigen tensors filled with doubles
     const auto rank = physical.shape().rank();
 
     // N.B. all specializations implement make_eigen_allocator the same
     using eigen_alloc = allocator::Eigen<double, 0>;
-    return eigen_alloc::make_eigen_allocator(rank, m_rv_);
+    return eigen_alloc::make_eigen_allocator(rank, rv);
 }
 
 // -----------------------------------------------------------------------------
@@ -93,7 +95,7 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
         }
 
         if(!input.has_allocator()) {
-            input.m_palloc = default_allocator(*input.m_pphysical);
+            input.m_palloc = default_allocator(*input.m_pphysical, input.m_rv);
         }
 
         // TODO: Check if we have initialization criteria
