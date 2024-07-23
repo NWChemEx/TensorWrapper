@@ -34,6 +34,9 @@ public:
     /// Type of a pointer to an object of type pimpl_type
     using pimpl_pointer = std::unique_ptr<pimpl_type>;
 
+    /// Type of an object storing the logical layout of the tensor
+    using logical_layout_type = input_type::logical_layout_type;
+
     /// Type of a read-only reference to the tensor's logical layout
     using const_logical_reference = input_type::const_logical_reference;
 

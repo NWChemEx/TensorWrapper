@@ -56,11 +56,58 @@ allocator_pointer TensorFactory::default_allocator(
     return eigen_alloc::make_eigen_allocator(rank, rv);
 }
 
+bool TensorFactory::can_make_logical_layout(const input_type& input) noexcept {
+    return input.has_shape() || input.has_logical_layout();
+}
+
+void TensorFactory::assert_valid(const input_type& input) {
+    // Start with consistency, i.e., user didn't provide us more than one source
+    // of truth
+
+    if(input.has_logical_layout()) {
+        // Verify the user didn't give us shape, symmetry, and sparsity too. If
+        // they did they must match the ones in the layout.
+        if(input.has_shape()) {
+            if(input.m_plogical->shape().are_different(*input.m_pshape))
+                throw std::runtime_error(
+                  "Provided shape is not consistent with provided logical "
+                  "layout.");
+        }
+
+        if(input.has_symmetry()) {
+            if(input.m_plogical->symmetry() != *input.m_psymmetry)
+                throw std::runtime_error(
+                  "Provided symmetry group is not consistent with provided "
+                  " logical layout.");
+        }
+    }
+
+    if(input.has_buffer()) {
+        if(input.has_physical_layout()) {
+            if(input.m_pbuffer->layout().are_different(*input.m_pphysical))
+                throw std::runtime_error(
+                  "Provided physical layout is not consistent with provided "
+                  " buffer.");
+        }
+    }
+
+    if(input.has_buffer() || input.has_physical_layout()) {
+        if(can_make_logical_layout(input)) return;
+
+        // Getting here means we can't make a logical layout
+        throw std::runtime_error(
+          "When providing a physical layout or a buffer requires you to also "
+          "provide the logical layout or the shape.");
+    }
+}
+
 // -----------------------------------------------------------------------------
 // -- Construct
 // -----------------------------------------------------------------------------
 
 pimpl_pointer TensorFactory::construct(TensorInput input) {
+    assert_valid(input);
+
     // N.B. Ultimately need a logical layout and a buffer. The former drives the
     // later so we make that first (if we don't have it).
 

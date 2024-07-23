@@ -15,8 +15,10 @@ namespace tensorwrapper::detail_ {
  *  class. Conceptually this class is a std::tuple with one slot per valid
  *  input. We have added some small convenience functions on top of the tuple,
  *  but otherwise this class primarily exists to perform the template meta-
- *  programming necessary to get the input into a consistent order and to ensure
- *  the input is valid.
+ *  programming necessary to get the input into a consistent order. Validity
+ *  checks are not the responsibility of *this, but rather the TensorFactory
+ *  class (as it is the TensorFactory class which knows what it can compute
+ *  defaults for).
  *
  *  @note This class is an implementation detail and should NOT be created
  *        directly by the user.
@@ -196,6 +198,19 @@ struct TensorInput {
     }
     ///@}
 
+    /** @brief Does *this have non-null pointers for a particular property?
+     *
+     *  The methods in this section are convenience methods for determining if
+     *  a property of *this has been set. For example, `has_shape` checks if
+     *  `m_pshape` is non-null.
+     *
+     *  @return True if the namesake property's corresponding pointer is
+     *          non-null and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     *
+     */
+    ///@{
     bool has_shape() const noexcept { return m_pshape != nullptr; }
 
     bool has_symmetry() const noexcept { return m_psymmetry != nullptr; }
@@ -209,12 +224,7 @@ struct TensorInput {
     bool has_allocator() const noexcept { return m_palloc != nullptr; }
 
     bool has_buffer() const noexcept { return m_pbuffer != nullptr; }
-
-    /** @brief Throws if *this has been constructed in an invalid state.
-     *
-     *
-     */
-    void is_valid() const;
+    ///@}
 
     shape_pointer m_pshape;
 
@@ -232,11 +242,5 @@ struct TensorInput {
 
     runtime_view_type m_rv;
 };
-
-inline void TensorInput::is_valid() const {
-    if(has_buffer() && !has_logical_layout())
-        throw std::runtime_error(
-          "If providing a buffer, you must also provide a logical layout.");
-}
 
 } // namespace tensorwrapper::detail_

@@ -162,7 +162,8 @@ protected:
      *  @throw std::bad_alloc if there is a problem copying the state of
      *                        @p other. Strong throw guarantee.
      */
-    BufferBase(const BufferBase& other) : m_layout_(other.m_layout_->clone()) {}
+    BufferBase(const BufferBase& other) :
+      m_layout_(other.m_layout_ ? other.m_layout_->clone() : nullptr) {}
 
     /** @brief Replaces the state in *this with a deep copy of the state in
      *         @p rhs.

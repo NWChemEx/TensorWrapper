@@ -3,22 +3,30 @@
 
 using namespace tensorwrapper;
 
-/* There's a plethora of possible combinations. We can't test them all */
+/* Testing strategy:
+ *
+ * There's a plethora of possible states a ModuleInput object can be in. We're
+ * not going to test them all. Here we focus on testing ModuleInput objects
+ * with states we expect to see. The TensorFactory class is ultimately
+ * responsible for determining whether a particular ModuleInput state is valid
+ * or not (as only it knows what default values it can compute from a set of
+ * user-provided inputs).
+ */
 
 TEST_CASE("TensorInput") {
+    // We just test with some stub objects
     parallelzone::runtime::RuntimeView rv;
-
-    auto defaulted   = testing::default_input();
-    auto scalar      = testing::smooth_scalar();
-    auto symm_matrix = testing::smooth_symmetric_matrix();
-
-    // Until we have more features we test the remainder of the input class with
-    // the following "stub" objects
     shape::Smooth shape{3, 3};
     symmetry::Group g{symmetry::Permutation{0, 1}};
     sparsity::Pattern sparsity;
     layout::Logical logical(shape, g, sparsity);
     layout::Physical physical(shape, g, sparsity);
+    allocator::Eigen<double, 2> alloc(rv);
+    buffer::Eigen<double, 2> buffer;
+
+    detail_::TensorInput defaulted;
+    detail_::TensorInput scalar(shape::Smooth{});
+    detail_::TensorInput symm_matrix(shape, g);
 
     SECTION("Ctors") {
         SECTION("Default") {
@@ -41,6 +49,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(scalar.m_palloc == nullptr);
             REQUIRE(scalar.m_pbuffer == nullptr);
             REQUIRE(scalar.m_rv == rv);
+
+            REQUIRE(scalar.has_shape());
         }
 
         SECTION("Shape (by pointer)") {
@@ -48,7 +58,7 @@ TEST_CASE("TensorInput") {
             auto pscalar_shape        = scalar_shape.clone();
             auto scalar_shape_address = pscalar_shape.get();
             detail_::TensorInput i(std::move(pscalar_shape));
-            REQUIRE(scalar.m_pshape->are_equal(*i.m_pshape));
+            REQUIRE(scalar_shape.are_equal(*i.m_pshape));
             REQUIRE(i.m_pshape.get() == scalar_shape_address);
             REQUIRE(i.m_psymmetry == nullptr);
             REQUIRE(i.m_psparsity == nullptr);
@@ -57,6 +67,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(scalar.has_shape());
         }
 
         SECTION("Group (by value)") {
@@ -68,6 +80,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(symm_matrix.m_palloc == nullptr);
             REQUIRE(symm_matrix.m_pbuffer == nullptr);
             REQUIRE(symm_matrix.m_rv == rv);
+
+            REQUIRE(symm_matrix.has_symmetry());
         }
 
         SECTION("Group (by pointer)") {
@@ -83,6 +97,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_symmetry());
         }
 
         SECTION("Sparsity (by value)") {
@@ -95,6 +111,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_sparsity());
         }
 
         SECTION("Sparsity (by pointer)") {
@@ -110,6 +128,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_sparsity());
         }
 
         SECTION("Logical (by value)") {
@@ -122,6 +142,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_logical_layout());
         }
 
         SECTION("Logical (by pointer)") {
@@ -137,6 +159,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_logical_layout());
         }
 
         SECTION("Physical (by value)") {
@@ -149,6 +173,8 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_physical_layout());
         }
 
         SECTION("Physical (by pointer)") {
@@ -164,15 +190,84 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.m_palloc == nullptr);
             REQUIRE(i.m_pbuffer == nullptr);
             REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_physical_layout());
         }
 
-        SECTION("Allocator (by value)") {}
+        SECTION("Allocator (by value)") {
+            detail_::TensorInput i(physical, alloc, logical);
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_palloc->are_equal(alloc));
+            REQUIRE(i.m_pbuffer == nullptr);
+            REQUIRE(i.m_rv == rv);
 
-        SECTION("Allocator (by pointer)") {}
+            REQUIRE(i.has_allocator());
+        }
 
-        SECTION("Buffer (by value)") {}
+        SECTION("Allocator (by pointer)") {
+            auto palloc        = alloc.clone();
+            auto alloc_address = palloc.get();
+            detail_::TensorInput i(physical, std::move(palloc), logical);
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_palloc->are_equal(alloc));
+            REQUIRE(i.m_palloc.get() == alloc_address);
+            REQUIRE(i.m_pbuffer == nullptr);
+            REQUIRE(i.m_rv == rv);
 
-        SECTION("Buffer (by pointer)") {}
+            REQUIRE(i.has_allocator());
+        }
+
+        SECTION("Buffer (by value)") {
+            detail_::TensorInput i(physical, alloc, logical, buffer);
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_palloc->are_equal(alloc));
+            // REQUIRE(i.m_pbuffer->are_equal(buffer));
+            REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_buffer());
+        }
+
+        SECTION("Buffer (by pointer)") {
+            auto pbuffer        = buffer.clone();
+            auto buffer_address = pbuffer.get();
+            detail_::TensorInput i(physical, alloc, logical,
+                                   std::move(pbuffer));
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_palloc->are_equal(alloc));
+            // REQUIRE(i.m_pbuffer->are_equal(buffer));
+            REQUIRE(i.m_pbuffer.get() == buffer_address);
+            REQUIRE(i.m_rv == rv);
+
+            REQUIRE(i.has_buffer());
+        }
+
+        SECTION("RuntimeView") {
+            detail_::TensorInput i(rv);
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical == nullptr);
+            REQUIRE(i.m_pphysical == nullptr);
+            REQUIRE(i.m_palloc == nullptr);
+            REQUIRE(i.m_pbuffer == nullptr);
+            REQUIRE(i.m_rv == rv);
+        }
     }
 
     SECTION("has_shape") {
@@ -185,17 +280,38 @@ TEST_CASE("TensorInput") {
         REQUIRE(symm_matrix.has_symmetry());
     }
 
-    SECTION("has_sparsity") { REQUIRE_FALSE(defaulted.has_sparsity()); }
+    SECTION("has_sparsity") {
+        REQUIRE_FALSE(defaulted.has_sparsity());
+
+        detail_::TensorInput w_sparsity(sparsity);
+        REQUIRE(w_sparsity.has_sparsity());
+    }
 
     SECTION("has_logical_layout") {
         REQUIRE_FALSE(defaulted.has_logical_layout());
+
+        detail_::TensorInput w_logical(logical);
+        REQUIRE(w_logical.has_logical_layout());
     }
 
     SECTION("has_physical_layout") {
         REQUIRE_FALSE(defaulted.has_physical_layout());
+
+        detail_::TensorInput w_physical(physical);
+        REQUIRE(w_physical.has_physical_layout());
     }
 
-    SECTION("has_allocator") { REQUIRE_FALSE(defaulted.has_allocator()); }
+    SECTION("has_allocator") {
+        REQUIRE_FALSE(defaulted.has_allocator());
 
-    SECTION("has_buffer") { REQUIRE_FALSE(defaulted.has_buffer()); }
+        detail_::TensorInput w_allocator(alloc);
+        REQUIRE(w_allocator.has_allocator());
+    }
+
+    SECTION("has_buffer") {
+        REQUIRE_FALSE(defaulted.has_buffer());
+
+        detail_::TensorInput w_buffer(buffer);
+        REQUIRE(w_buffer.has_buffer());
+    }
 }
