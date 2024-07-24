@@ -21,28 +21,30 @@ Designing the Layout Component
 This page records the process of designing the layout component of
 TensorWrapper.
 
+.. note::
+
+   This page needs revisited when more features are implemented. In particular:
+   - Should C++ type representation live here or in the allocator?
+   - Similar question for the hardware backend.
+   - Tiled vs. not tiled is actually covered by looking at the shape. If it's
+     nested it's tiled (in a general sense). At the very least tiled could be
+     a class derived from physical
+
 **************************
 What is a (tensor) layout?
 **************************
 
-Tensors contain (hyper-) rectangular arrays of elements. The user interacts with
-the tensor object as if those arrays really exist; however, this is usually a
-software abstraction since modern memory is vector-based. Point being, providing
-users with software abstractions for tensors can require a fair bit of mental
-gymnastics to actually map the abstraction to the hardware. The layout
-component is responsible for representing those mental gymnastics.
+Tensors contain (hyper-) rectangular arrays of elements. A layout describes
+the properties of the (hyper-) rectangular array including its shape, symmetry,
+and sparsity. Layouts can be logical (how the user wants to interact with the
+tensor class) or physical (how the tensor is actually stored in memory).
 
 *********************************
 Why do we need a (tensor) layout?
 *********************************
 
-As mentioned in the previous section, only scalars and vectors map trivially to
-hardware (and even for vectors the user may opt for non-trivial layouts). The
-layout describes the mapping process, and will have substantial performance
-consequences as certain layouts favor certain operations. While we strive to
-ultimately isolate the user from the layout details, for the foreseeable
-future users will likely want some control over the layout, thus we need a
-user-friendly abstraction to represent the layout.
+The layout class is needed to couple the shape, symmetry, and sparsity together.
+Derived classes are needed to distinguish the logical and physical layouts.
 
 ****************************
 Tensor Layout Considerations
@@ -142,16 +144,9 @@ Layout Design
    The major pieces of the layout component.
 
 :numref:`fig_layout` illustrates the major pieces of the layout component. The
-base class of the component is the ``Tiled`` class. We have opted to
-make ``Tiled`` the base because a non-tiled layout can be viewed as having
-a single tile, whereas viewing a legitimately tiled layout as a single tile may
-hide information. Consistent with the :ref:`l_reshape` consideration, the
-``Tiled`` object contains ``Shape``, ``Symmetry``, and ``Sparsity``
-objects. To address the :ref:`l_representation` consideration the
-``Tiled`` class holds the desired representation per inner-most tile.
-Similarly, to address :ref:`l_ownership`, ``Tiled`` holds ParallelZone
-objects per tile to denote the process, memory bank, or accelerator where the
-tile lives.
+base class of the component is the ``LayoutBase`` class. This class defines the
+common API and contains ``Shape``, ``Symmetry``, and ``Sparsity``
+objects.
 
 *************
 Proposed APIs
