@@ -25,7 +25,24 @@ using const_buffer_reference  = typename Tensor::const_buffer_reference;
 
 // -- Ctors, assignment, and dtor
 
+Tensor::Tensor(detail_::TensorInput input) :
+  Tensor(detail_::TensorFactory::construct(std::move(input))) {}
+
+Tensor::Tensor(const Tensor& other) :
+  m_pimpl_(other.has_pimpl_() ? other.m_pimpl_->clone() : nullptr) {}
+
+Tensor::Tensor(Tensor&& other) noexcept = default;
+
+Tensor& Tensor::operator=(const Tensor& rhs) {
+    if(this != &rhs) Tensor(rhs).swap(*this);
+    return *this;
+}
+
+Tensor& Tensor::operator=(Tensor&& rhs) noexcept = default;
+
 Tensor::~Tensor() noexcept = default;
+
+// -- Accessors
 
 const_logical_reference Tensor::logical_layout() const {
     assert_pimpl_();
@@ -37,10 +54,20 @@ const_buffer_reference Tensor::buffer() const {
     return m_pimpl_->buffer();
 }
 
-// -- Private methods
+// -- Utility
 
-Tensor::Tensor(detail_::TensorInput input) :
-  Tensor(detail_::TensorFactory::construct(std::move(input))) {}
+void Tensor::swap(Tensor& other) noexcept { m_pimpl_.swap(other.m_pimpl_); }
+
+bool Tensor::operator==(const Tensor& rhs) const noexcept {
+    if(has_pimpl_() != rhs.has_pimpl_()) return false;
+    return (*m_pimpl_) == (*rhs.m_pimpl_);
+}
+
+bool Tensor::operator!=(const Tensor& rhs) const noexcept {
+    return !(*this == rhs);
+}
+
+// -- Private methods
 
 Tensor::Tensor(pimpl_pointer pimpl) noexcept : m_pimpl_(std::move(pimpl)) {}
 

@@ -11,7 +11,12 @@ inline auto default_input() { return detail_::TensorInput{}; }
 
 inline auto smooth_scalar() {
     shape::Smooth shape{};
-    return detail_::TensorInput(shape);
+    using buffer_type = buffer::Eigen<double, 0>;
+    using tensor_type = typename buffer_type::tensor_type;
+    tensor_type scalar;
+    scalar() = 42.0;
+    layout::Physical l(shape, symmetry::Group{}, sparsity::Pattern{});
+    return detail_::TensorInput(shape, buffer_type(scalar, l));
 }
 
 /// 5 element vector such that element i is i
