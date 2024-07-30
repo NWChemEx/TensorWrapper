@@ -24,6 +24,7 @@ TensorWrapper.
 .. note::
 
    This page needs revisited when more features are implemented. In particular:
+
    - Should C++ type representation live here or in the allocator?
    - Similar question for the hardware backend.
    - Tiled vs. not tiled is actually covered by looking at the shape. If it's
