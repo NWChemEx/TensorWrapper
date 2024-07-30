@@ -18,7 +18,7 @@
 #include <parallelzone/parallelzone.hpp>
 #include <tensorwrapper/buffer/buffer_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
-#include <tensorwrapper/layout/tiled.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 
 namespace tensorwrapper::allocator {
 
@@ -45,8 +45,8 @@ public:
     /// Type of a read-only reference to the runtime system
     using const_runtime_view_reference = const runtime_view_type&;
 
-    /// Type all layouts derive from
-    using layout_type = layout::Tiled;
+    /// Type all physical layouts derive from
+    using layout_type = layout::Physical;
 
     /// Type of a pointer to an object of type layout_type
     using layout_pointer = typename layout_type::layout_pointer;

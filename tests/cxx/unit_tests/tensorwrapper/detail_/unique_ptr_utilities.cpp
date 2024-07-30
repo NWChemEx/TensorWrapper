@@ -29,6 +29,22 @@ struct DerivedClass : public BaseClass {
 };
 } // namespace
 
+TEST_CASE("static_pointer_cast") {
+    auto pderived               = std::make_unique<DerivedClass>();
+    DerivedClass* pderived_corr = pderived.get();
+
+    std::unique_ptr<BaseClass> pbase(std::move(pderived));
+
+    SECTION("Good cast") {
+        auto pdowncast = static_pointer_cast<DerivedClass>(pbase);
+
+        REQUIRE(pbase.get() == nullptr);
+        REQUIRE(pdowncast.get() == pderived_corr);
+    }
+    // This next line shouldn't compile. Uncomment to test.
+    // SECTION("Bad cast") { static_pointer_cast<std::vector<double>>(pbase); }
+}
+
 TEST_CASE("dynamic_pointer_cast") {
     auto pderived               = std::make_unique<DerivedClass>();
     DerivedClass* pderived_corr = pderived.get();

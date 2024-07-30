@@ -16,7 +16,7 @@
 
 #pragma once
 #include <memory>
-
+#include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 namespace tensorwrapper::detail_ {
 
 /** @brief Defines the API polymorphic utility methods should use.
@@ -45,7 +45,7 @@ public:
     /// @brief Defaulted no-throw polymorphic dtor
     virtual ~PolymorphicBase() noexcept = default;
 
-    /** @brief Creates a deep polymorphic copy of *this.
+    /** @brief Creates a deep polymorphic copy of *this via the base class.
      *
      *  Calling the copy constructor of an object of type T is supposed to
      *  return a deep copy of the a T object. When T is polymorphic such a copy
@@ -61,6 +61,26 @@ public:
      *                        throw guarantee.
      */
     base_pointer clone() const { return clone_(); }
+
+    /** @brief Creates a deep polymorphic copy, but returns the pointer as a
+     *         class other than base_type.
+     *
+     *  @tparam DerivedType What type of object should the resulting pointer
+     *                      point to? This function will fail to compile if
+     *                      base_type can not be cast (either implicitly or
+     *                      explicitly) to a DerivedType object.
+     *
+     *  @return A deep copy of *this returned as a pointer to a @p DerivedType
+     *          object.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
+    template<typename DerivedType>
+    auto clone_as() const {
+        auto pbase = clone();
+        return detail_::static_pointer_cast<DerivedType>(pbase);
+    }
 
     /** @brief Determines if *this and @p rhs are polymorphically equal.
      *

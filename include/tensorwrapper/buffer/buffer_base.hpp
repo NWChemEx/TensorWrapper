@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
-#include <tensorwrapper/layout/tiled.hpp>
+#include <tensorwrapper/layout/layout_base.hpp>
 namespace tensorwrapper::buffer {
 
 /** @brief Common base class for all buffer objects.
@@ -43,7 +43,7 @@ public:
     using buffer_base_pointer = typename my_base_type::base_pointer;
 
     /// Type of the class describing the physical layout of the buffer
-    using layout_type = layout::Tiled;
+    using layout_type = layout::LayoutBase;
 
     /// Type of a read-only reference to a layout
     using const_layout_reference = const layout_type&;
@@ -162,7 +162,8 @@ protected:
      *  @throw std::bad_alloc if there is a problem copying the state of
      *                        @p other. Strong throw guarantee.
      */
-    BufferBase(const BufferBase& other) : m_layout_(other.m_layout_->clone()) {}
+    BufferBase(const BufferBase& other) :
+      m_layout_(other.m_layout_ ? other.m_layout_->clone() : nullptr) {}
 
     /** @brief Replaces the state in *this with a deep copy of the state in
      *         @p rhs.

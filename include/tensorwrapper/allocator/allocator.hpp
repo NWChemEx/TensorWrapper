@@ -15,15 +15,10 @@
  */
 
 #pragma once
-#include <tensorwrapper/allocator/allocator.hpp>
-#include <tensorwrapper/backends/backends.hpp>
-#include <tensorwrapper/buffer/buffer.hpp>
-#include <tensorwrapper/detail_/detail_.hpp>
-#include <tensorwrapper/layout/layout.hpp>
-#include <tensorwrapper/shape/shape.hpp>
-#include <tensorwrapper/sparsity/sparsity.hpp>
-#include <tensorwrapper/symmetry/symmetry.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
+#include <tensorwrapper/allocator/allocator_base.hpp>
+#include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/allocator/local.hpp>
+#include <tensorwrapper/allocator/replicated.hpp>
 
-/** @brief Contains the components of the TensorWrapper library. */
-namespace tensorwrapper {}
+/** @brief Contains classes related to allocating Buffer objects. */
+namespace tensorwrapper::allocator {}

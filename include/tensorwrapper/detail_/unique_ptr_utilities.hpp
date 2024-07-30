@@ -19,6 +19,36 @@
 
 namespace tensorwrapper::detail_ {
 
+/** @brief Implements a static cast of a unique_ptr.
+ *
+ *  @tparam T The object type to cast from.
+ *  @tparam U The object type to cast to.
+ *
+ *  The C++ standard library does not implement static cast for unique pointers
+ *  (because there is no way to do this without two variables thinking they own
+ *  the memory). This function implements static cast by essentially swapping
+ *  the raw pointers in two unique pointers (one of which is a nullptr). This
+ *  minimizes the time when the single owner violation occurs (and encapsulates
+ *  it to this function).
+ *
+ *  @note This method will fail to compile if T can not be converted to U.
+ *
+ *  @param[in,out] pbase The pointer we are static casting from. After this call
+ *                        @p pbase will set to the nullptr.
+ *
+ *  @return A new `std::unique_ptr<U>` object which owns the memory originally
+ *          owned by @p pbase, but now viewed as being a `U` object.
+ *
+ *  @throw None No throw guarantee.
+ */
+template<typename U, typename T>
+std::unique_ptr<U> static_pointer_cast(std::unique_ptr<T>& pbase) {
+    static_assert(std::is_convertible_v<T, U> || std::is_base_of_v<T, U>);
+    auto pderived_raw = static_cast<U*>(pbase.get());
+    pbase.release();
+    return std::unique_ptr<U>(pderived_raw);
+}
+
 /** @brief Implements a dynamic cast of a unique_ptr.
  *
  *  @tparam T The object type to cast from.

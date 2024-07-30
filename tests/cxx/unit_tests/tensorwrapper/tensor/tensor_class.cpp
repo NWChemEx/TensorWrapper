@@ -13,14 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include "../helpers.hpp"
+#include "../inputs.hpp"
 #include <catch2/catch.hpp>
+#include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
+#include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
-
 using namespace tensorwrapper;
 
 TEST_CASE("Tensor") {
-    Tensor defaulted;
+    using detail_::TensorFactory;
 
-    SECTION("Ctors and assignment") {}
+    Tensor defaulted;
+    Tensor scalar(testing::smooth_scalar());
+    Tensor vector(testing::smooth_vector());
+
+    // We know TensorFactory works from unit testing it
+    auto scalar_corr = TensorFactory::construct(testing::smooth_scalar());
+    auto& scalar_layout_corr = scalar_corr->logical_layout();
+    auto& scalar_buffer_corr = scalar_corr->buffer();
+
+    auto vector_corr = TensorFactory::construct(testing::smooth_vector());
+    auto& vector_layout_corr = vector_corr->logical_layout();
+    auto& vector_buffer_corr = vector_corr->buffer();
+
+    SECTION("Ctors") {
+        SECTION("Value") {
+            REQUIRE(scalar.logical_layout().are_equal(scalar_layout_corr));
+            REQUIRE(scalar.buffer().are_equal(scalar_buffer_corr));
+
+            REQUIRE(vector.logical_layout().are_equal(vector_layout_corr));
+            REQUIRE(vector.buffer().are_equal(vector_buffer_corr));
+        }
+
+        testing::test_copy_move_ctor_and_assignment(scalar, vector);
+    }
+
+    SECTION("logical_layout () const") {
+        auto& scalar_layout = std::as_const(scalar).logical_layout();
+        REQUIRE(scalar_layout.are_equal(scalar_layout_corr));
+
+        auto& vector_layout = std::as_const(vector).logical_layout();
+        REQUIRE(vector_layout.are_equal(vector_layout_corr));
+
+        const auto& const_defaulted = defaulted;
+        REQUIRE_THROWS_AS(const_defaulted.logical_layout(), std::runtime_error);
+    }
+
+    SECTION("buffer() const") {
+        auto& scalar_buffer = std::as_const(scalar).buffer();
+        REQUIRE(scalar_buffer.are_equal(scalar_buffer_corr));
+
+        auto& vector_buffer = std::as_const(vector).buffer();
+        REQUIRE(vector_buffer.are_equal(vector_buffer_corr));
+
+        const auto& const_defaulted = defaulted;
+        REQUIRE_THROWS_AS(const_defaulted.buffer(), std::runtime_error);
+    }
+
+    SECTION("swap") {
+        Tensor scalar_copy(scalar);
+        Tensor vector_copy(vector);
+
+        scalar.swap(vector);
+
+        REQUIRE(scalar == vector_copy);
+        REQUIRE(vector == scalar_copy);
+    }
+
+    SECTION("operator==") {
+        Tensor other_scalar(testing::smooth_scalar());
+        Tensor other_vector(testing::smooth_vector());
+        REQUIRE(scalar == other_scalar);
+        REQUIRE(vector == other_vector);
+
+        SECTION("Different layout") {
+            auto vector_input = testing::smooth_vector();
+            shape::Smooth alt_shape{5, 1};
+            symmetry::Group g;
+            sparsity::Pattern sparsity;
+            auto p = std::make_unique<layout::Logical>(alt_shape, g, sparsity);
+            vector_input.m_pshape = nullptr;
+            vector_input.m_plogical.swap(p);
+            REQUIRE_FALSE(vector == Tensor(std::move(vector_input)));
+        }
+
+        SECTION("Different buffer") {
+            Tensor vector_alt(testing::smooth_vector_alt());
+            REQUIRE_FALSE(vector == vector_alt);
+        }
+    }
+
+    SECTION("operator!=") {
+        // Implemented in terms of operator==, just spot check
+        Tensor other_scalar(testing::smooth_scalar());
+
+        REQUIRE_FALSE(scalar != other_scalar);
+        REQUIRE(scalar != vector);
+    }
 }
