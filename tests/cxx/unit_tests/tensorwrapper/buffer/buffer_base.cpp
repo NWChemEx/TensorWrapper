@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 #include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
