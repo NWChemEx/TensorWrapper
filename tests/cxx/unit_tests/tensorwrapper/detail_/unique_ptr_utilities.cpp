@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <catch2/catch.hpp>
+#include "../helpers.hpp"
 #include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 #include <vector>
 

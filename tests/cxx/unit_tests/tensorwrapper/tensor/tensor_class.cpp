@@ -15,7 +15,6 @@
  */
 #include "../helpers.hpp"
 #include "../inputs.hpp"
-#include <catch2/catch.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
