@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['rank_7',['rank',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788',1,'tensorwrapper::shape::ShapeBase']]],
-  ['rank_5ftype_8',['rank_type',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c',1,'tensorwrapper::shape::ShapeBase::rank_type()'],['../classtensorwrapper_1_1shape_1_1Smooth.html#a61ead3dcde2e5da70d902e29c83a6e5c',1,'tensorwrapper::shape::Smooth::rank_type()']]]
+  ['default_5fallocator_43',['default_allocator',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#af3bb8e1248e3589e9350a6065f1e83fc',1,'tensorwrapper::detail_::TensorFactory']]],
+  ['default_5flogical_5flayout_44',['default_logical_layout',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#aaad0148b7084815512bce51ebf89dd91',1,'tensorwrapper::detail_::TensorFactory']]],
+  ['default_5flogical_5fsparsity_45',['default_logical_sparsity',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#a6dea343bc661b15fe959531467dbd271',1,'tensorwrapper::detail_::TensorFactory']]],
+  ['default_5flogical_5fsymmetry_46',['default_logical_symmetry',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#aa44adf47c336864ae3bc56c05db76c5a',1,'tensorwrapper::detail_::TensorFactory']]],
+  ['default_5fphysical_5flayout_47',['default_physical_layout',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#ad1807b1096cd36c042bbf5e91c1eba79',1,'tensorwrapper::detail_::TensorFactory']]],
+  ['dynamic_5fpointer_5fcast_48',['dynamic_pointer_cast',['../namespacetensorwrapper_1_1detail__.html#a410419e18d9fa2a49ad7c7ed4509b317',1,'tensorwrapper::detail_']]]
 ];

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.32</span>
+   &#160;<span id="projectnumber">0.0.33</span>
    </div>
   </td>
  </tr>
@@ -62,17 +62,23 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><b>detail_</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacetensorwrapper.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="namespacetensorwrapper_1_1detail__.html">detail_</a></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">tensorwrapper::detail_::TensorPIMPL Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Actually implements a <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> object.  
+ <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="tensor__pimpl_8hpp_source.html">tensor_pimpl.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -82,9 +88,221 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:afedf21550433e084d745788de89c1d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cbb4afb1d15ae467484c02b2b735325"><td class="memItemLeft" align="right" valign="top"><a id="a5cbb4afb1d15ae467484c02b2b735325"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325">pimpl_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#a761be2f8023866d6b4dbcffb69d419be">parent_type::pimpl_pointer</a></td></tr>
-<tr class="memdesc:a5cbb4afb1d15ae467484c02b2b735325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to *this. <br /></td></tr>
+<tr class="memdesc:a5cbb4afb1d15ae467484c02b2b735325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pull in types from parent_type. <br /></td></tr>
 <tr class="separator:a5cbb4afb1d15ae467484c02b2b735325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf5126b17cc870dd06ccb52b919cc9a3"><td class="memItemLeft" align="right" valign="top"><a id="aaf5126b17cc870dd06ccb52b919cc9a3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>logical_layout_type</b> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#a2e1eae787afa93e13c30631326573432">parent_type::logical_layout_type</a></td></tr>
+<tr class="separator:aaf5126b17cc870dd06ccb52b919cc9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50594328eb490241e2de86516d290998"><td class="memItemLeft" align="right" valign="top"><a id="a50594328eb490241e2de86516d290998"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>logical_layout_pointer</b> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#a40d43088dce5da7fcaf93e981b273f1a">parent_type::logical_layout_pointer</a></td></tr>
+<tr class="separator:a50594328eb490241e2de86516d290998"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af31e03acf354f7a93fa5e9db6dc39de9"><td class="memItemLeft" align="right" valign="top"><a id="af31e03acf354f7a93fa5e9db6dc39de9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#a8bb33f6b728ebcefdeb05c9da8aab71f">parent_type::buffer_pointer</a></td></tr>
+<tr class="separator:af31e03acf354f7a93fa5e9db6dc39de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a61996e65e2affb60bb753e31eeed2e4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a61996e65e2affb60bb753e31eeed2e4a">TensorPIMPL</a> (logical_layout_pointer plogical, buffer_pointer pbuffer)</td></tr>
+<tr class="memdesc:a61996e65e2affb60bb753e31eeed2e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value constructor.  <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a61996e65e2affb60bb753e31eeed2e4a">More...</a><br /></td></tr>
+<tr class="separator:a61996e65e2affb60bb753e31eeed2e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657cdd37beb6d14a7a9df6043007cf33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a657cdd37beb6d14a7a9df6043007cf33">TensorPIMPL</a> (const <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a> &amp;other)</td></tr>
+<tr class="memdesc:a657cdd37beb6d14a7a9df6043007cf33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this to a deep copy of <code>other</code>.  <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a657cdd37beb6d14a7a9df6043007cf33">More...</a><br /></td></tr>
+<tr class="separator:a657cdd37beb6d14a7a9df6043007cf33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d69622826a9ad7352e984371e11193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325">pimpl_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a65d69622826a9ad7352e984371e11193">clone</a> () const</td></tr>
+<tr class="memdesc:a65d69622826a9ad7352e984371e11193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a deep copy of *this.  <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a65d69622826a9ad7352e984371e11193">More...</a><br /></td></tr>
+<tr class="separator:a65d69622826a9ad7352e984371e11193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083ae061ece5e4439294cfeadf1568b5"><td class="memItemLeft" align="right" valign="top"><a id="a083ae061ece5e4439294cfeadf1568b5"></a>
+auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a083ae061ece5e4439294cfeadf1568b5">logical_layout</a> ()</td></tr>
+<tr class="memdesc:a083ae061ece5e4439294cfeadf1568b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides mutable access to the logical layout. <br /></td></tr>
+<tr class="separator:a083ae061ece5e4439294cfeadf1568b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6847cef28ab23fdd781a5f98868d8bd7"><td class="memItemLeft" align="right" valign="top"><a id="a6847cef28ab23fdd781a5f98868d8bd7"></a>
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a6847cef28ab23fdd781a5f98868d8bd7">logical_layout</a> () const</td></tr>
+<tr class="memdesc:a6847cef28ab23fdd781a5f98868d8bd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides read-only access to the logical layout. <br /></td></tr>
+<tr class="separator:a6847cef28ab23fdd781a5f98868d8bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8398d69f1994ceb0a4a07f1d62efe211"><td class="memItemLeft" align="right" valign="top"><a id="a8398d69f1994ceb0a4a07f1d62efe211"></a>
+auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a8398d69f1994ceb0a4a07f1d62efe211">buffer</a> ()</td></tr>
+<tr class="memdesc:a8398d69f1994ceb0a4a07f1d62efe211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides mutable access to the buffer. <br /></td></tr>
+<tr class="separator:a8398d69f1994ceb0a4a07f1d62efe211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7813fcfb6cab382efdfd8a4cf391a2"><td class="memItemLeft" align="right" valign="top"><a id="aba7813fcfb6cab382efdfd8a4cf391a2"></a>
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#aba7813fcfb6cab382efdfd8a4cf391a2">buffer</a> () const</td></tr>
+<tr class="memdesc:aba7813fcfb6cab382efdfd8a4cf391a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides read-only access to the buffer. <br /></td></tr>
+<tr class="separator:aba7813fcfb6cab382efdfd8a4cf391a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa697a6068daaec7c5432142cb8da61ef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#aa697a6068daaec7c5432142cb8da61ef">operator==</a> (const <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:aa697a6068daaec7c5432142cb8da61ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this value equal to <code>rhs</code>?  <a href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#aa697a6068daaec7c5432142cb8da61ef">More...</a><br /></td></tr>
+<tr class="separator:aa697a6068daaec7c5432142cb8da61ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Actually implements a <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> object. </p>
+<p>At a high-level Tensors have two things: a logical layout and a buffer. This class wraps that state together. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a61996e65e2affb60bb753e31eeed2e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61996e65e2affb60bb753e31eeed2e4a">&#9670;&nbsp;</a></span>TensorPIMPL() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::detail_::TensorPIMPL::TensorPIMPL </td>
+          <td>(</td>
+          <td class="paramtype">logical_layout_pointer&#160;</td>
+          <td class="paramname"><em>plogical</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">buffer_pointer&#160;</td>
+          <td class="paramname"><em>pbuffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Value constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">plogical</td><td>A pointer to the logical layout of *this. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pbuffer</td><td>A pointer to the memory storing the elements of *this.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>plogical</code> or <code>pbuffer</code> is a nullptr. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a657cdd37beb6d14a7a9df6043007cf33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a657cdd37beb6d14a7a9df6043007cf33">&#9670;&nbsp;</a></span>TensorPIMPL() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::detail_::TensorPIMPL::TensorPIMPL </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializes *this to a deep copy of <code>other</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html" title="Actually implements a Tensor object.">TensorPIMPL</a> to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the copies. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a65d69622826a9ad7352e984371e11193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d69622826a9ad7352e984371e11193">&#9670;&nbsp;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325">pimpl_pointer</a> tensorwrapper::detail_::TensorPIMPL::clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a deep copy of *this. </p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a deep copy of *this.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem copying *this. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa697a6068daaec7c5432142cb8da61ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa697a6068daaec7c5432142cb8da61ef">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::detail_::TensorPIMPL::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html">TensorPIMPL</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is *this value equal to <code>rhs</code>? </p>
+<p>Two <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html" title="Actually implements a Tensor object.">TensorPIMPL</a> objects are value equal if their respective logical layouts and buffers compare value equal. Value equality of the layout and the buffer are done polymorphically.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The object to compare to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if *this is value equal to <code>rhs</code> and false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/tensorwrapper/tensor/detail_/<a class="el" href="tensor__pimpl_8hpp_source.html">tensor_pimpl.hpp</a></li>
 </ul>

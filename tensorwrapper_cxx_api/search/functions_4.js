@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['_7eshapebase_34',['~ShapeBase',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#aa4162d33ca58e8eaa4da1f4a883bf377',1,'tensorwrapper::shape::ShapeBase']]],
-  ['_7esmooth_35',['~Smooth',['../classtensorwrapper_1_1shape_1_1Smooth.html#a578dfa1e031e303eae82ea8611d7bb7f',1,'tensorwrapper::shape::Smooth']]],
-  ['_7etensor_36',['~Tensor',['../classtensorwrapper_1_1Tensor.html#a6a73c265b181e4030f01b575335a3855',1,'tensorwrapper::Tensor']]]
+  ['eigen_195',['Eigen',['../classtensorwrapper_1_1allocator_1_1Eigen.html#af36cf3612d242d81074bf2aab1a000cd',1,'tensorwrapper::allocator::Eigen::Eigen()'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#ab011a6123662907cf641e69993cf9903',1,'tensorwrapper::buffer::Eigen::Eigen() noexcept=default'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#ab9eb65ec61c8836404c16be8054771e9',1,'tensorwrapper::buffer::Eigen::Eigen(TensorType &amp;&amp;t, const_layout_reference layout)'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#afd77ce1bdc0bc8378641be442122f0e9',1,'tensorwrapper::buffer::Eigen::Eigen(const Eigen &amp;other)=default'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#a6a7bb19a18b5b949f84fd4aa53995959',1,'tensorwrapper::buffer::Eigen::Eigen(Eigen &amp;&amp;other)=default']]],
+  ['extent_196',['extent',['../classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514',1,'tensorwrapper::shape::Smooth']]]
 ];

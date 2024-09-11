@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.32</span>
+   &#160;<span id="projectnumber">0.0.33</span>
    </div>
   </td>
  </tr>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>tensorwrapper</b></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacetensorwrapper.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,6 +74,11 @@ $(function() {
 <div class="title">tensorwrapper::Tensor Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents a multi-dimensional array of values.  
+ <a href="classtensorwrapper_1_1Tensor.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="tensor__class_8hpp_source.html">tensor_class.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -85,14 +90,498 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a761be2f8023866d6b4dbcffb69d419be">pimpl_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#a272fea9e213b7be56e8e4feab18b53da">pimpl_type</a> &gt;</td></tr>
 <tr class="memdesc:a761be2f8023866d6b4dbcffb69d419be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type pimpl_type. <br /></td></tr>
 <tr class="separator:a761be2f8023866d6b4dbcffb69d419be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e1eae787afa93e13c30631326573432"><td class="memItemLeft" align="right" valign="top"><a id="a2e1eae787afa93e13c30631326573432"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a2e1eae787afa93e13c30631326573432">logical_layout_type</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a811127e0e61e256475682ab5a35ca7e1">input_type::logical_layout_type</a></td></tr>
+<tr class="memdesc:a2e1eae787afa93e13c30631326573432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an object storing the logical layout of the tensor. <br /></td></tr>
+<tr class="separator:a2e1eae787afa93e13c30631326573432"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f0826cf3a1b0b2241c728ecdf0ae84"><td class="memItemLeft" align="right" valign="top"><a id="ab9f0826cf3a1b0b2241c728ecdf0ae84"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">const_logical_reference</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a68c18d210e3f26d574fb76b477189945">input_type::const_logical_reference</a></td></tr>
+<tr class="memdesc:ab9f0826cf3a1b0b2241c728ecdf0ae84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the tensor's logical layout. <br /></td></tr>
+<tr class="separator:ab9f0826cf3a1b0b2241c728ecdf0ae84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d43088dce5da7fcaf93e981b273f1a"><td class="memItemLeft" align="right" valign="top"><a id="a40d43088dce5da7fcaf93e981b273f1a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a40d43088dce5da7fcaf93e981b273f1a">logical_layout_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aa7081ea44dacf0d8b5d59acc668bf82f">input_type::logical_layout_pointer</a></td></tr>
+<tr class="memdesc:a40d43088dce5da7fcaf93e981b273f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the tensor's logical layout. <br /></td></tr>
+<tr class="separator:a40d43088dce5da7fcaf93e981b273f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3837f8a61174ecf23a5be4917269a50c"><td class="memItemLeft" align="right" valign="top"><a id="a3837f8a61174ecf23a5be4917269a50c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">const_buffer_reference</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a6f1195780127ca59beb5ffde9f9796d1">input_type::const_buffer_reference</a></td></tr>
+<tr class="memdesc:a3837f8a61174ecf23a5be4917269a50c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the tensor's buffer. <br /></td></tr>
+<tr class="separator:a3837f8a61174ecf23a5be4917269a50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="memItemLeft" align="right" valign="top"><a id="a8bb33f6b728ebcefdeb05c9da8aab71f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a8bb33f6b728ebcefdeb05c9da8aab71f">buffer_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aaea587da44957ed1348f1f54c534a27c">input_type::buffer_pointer</a></td></tr>
+<tr class="memdesc:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the tensor's buffer. <br /></td></tr>
+<tr class="separator:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ad1e68d6937d1df0a3dc868096184d8bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ad1e68d6937d1df0a3dc868096184d8bc">Tensor</a> (<a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html">input_type</a> input)</td></tr>
+<tr class="memdesc:ad1e68d6937d1df0a3dc868096184d8bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this by processing the input provided in <code>input</code>.  <a href="classtensorwrapper_1_1Tensor.html#ad1e68d6937d1df0a3dc868096184d8bc">More...</a><br /></td></tr>
+<tr class="separator:ad1e68d6937d1df0a3dc868096184d8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae356ba656668267d37cf9379756ae3d7"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:ae356ba656668267d37cf9379756ae3d7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ae356ba656668267d37cf9379756ae3d7">Tensor</a> (disable_if_tensor_t&lt; Args &gt; &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ae356ba656668267d37cf9379756ae3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic value ctor.  <a href="classtensorwrapper_1_1Tensor.html#ae356ba656668267d37cf9379756ae3d7">More...</a><br /></td></tr>
+<tr class="separator:ae356ba656668267d37cf9379756ae3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb700692f2fa743a68734c440be08f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a8fb700692f2fa743a68734c440be08f9">Tensor</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;other)</td></tr>
+<tr class="memdesc:a8fb700692f2fa743a68734c440be08f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this with a deep copy of <code>other</code>.  <a href="classtensorwrapper_1_1Tensor.html#a8fb700692f2fa743a68734c440be08f9">More...</a><br /></td></tr>
+<tr class="separator:a8fb700692f2fa743a68734c440be08f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a278149eaa7b86551d4b3a81ef2c5876b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a278149eaa7b86551d4b3a81ef2c5876b">Tensor</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:a278149eaa7b86551d4b3a81ef2c5876b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this with the state in <code>other</code>.  <a href="classtensorwrapper_1_1Tensor.html#a278149eaa7b86551d4b3a81ef2c5876b">More...</a><br /></td></tr>
+<tr class="separator:a278149eaa7b86551d4b3a81ef2c5876b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4325a67ec34573a748491c32be7327"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aef4325a67ec34573a748491c32be7327">operator=</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;rhs)</td></tr>
+<tr class="memdesc:aef4325a67ec34573a748491c32be7327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the state of *this with a deep copy of <code>rhs</code>.  <a href="classtensorwrapper_1_1Tensor.html#aef4325a67ec34573a748491c32be7327">More...</a><br /></td></tr>
+<tr class="separator:aef4325a67ec34573a748491c32be7327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea9cde4c7f75f1ef28728341c580f84c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aea9cde4c7f75f1ef28728341c580f84c">operator=</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&amp;rhs) noexcept</td></tr>
+<tr class="memdesc:aea9cde4c7f75f1ef28728341c580f84c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the state of *this with the state of <code>rhs</code>.  <a href="classtensorwrapper_1_1Tensor.html#aea9cde4c7f75f1ef28728341c580f84c">More...</a><br /></td></tr>
+<tr class="separator:aea9cde4c7f75f1ef28728341c580f84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a73c265b181e4030f01b575335a3855"><td class="memItemLeft" align="right" valign="top"><a id="a6a73c265b181e4030f01b575335a3855"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a6a73c265b181e4030f01b575335a3855">~Tensor</a> () noexcept</td></tr>
 <tr class="memdesc:a6a73c265b181e4030f01b575335a3855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted no-throw dtor. <br /></td></tr>
 <tr class="separator:a6a73c265b181e4030f01b575335a3855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93eb1f54cba7139b2b22b66f7c60459"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">const_logical_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aa93eb1f54cba7139b2b22b66f7c60459">logical_layout</a> () const</td></tr>
+<tr class="memdesc:aa93eb1f54cba7139b2b22b66f7c60459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only access to the tensor's logical layout.  <a href="classtensorwrapper_1_1Tensor.html#aa93eb1f54cba7139b2b22b66f7c60459">More...</a><br /></td></tr>
+<tr class="separator:aa93eb1f54cba7139b2b22b66f7c60459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">const_buffer_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a4bebb4bd3a8937abfdec46320f5bbdf8">buffer</a> () const</td></tr>
+<tr class="memdesc:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only access to the tensor's buffer.  <a href="classtensorwrapper_1_1Tensor.html#a4bebb4bd3a8937abfdec46320f5bbdf8">More...</a><br /></td></tr>
+<tr class="separator:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f9907fce0daa1f797f275701f65236"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">swap</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;other) noexcept</td></tr>
+<tr class="memdesc:a47f9907fce0daa1f797f275701f65236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges the state of *this with the state of <code>other</code>.  <a href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">More...</a><br /></td></tr>
+<tr class="separator:a47f9907fce0daa1f797f275701f65236"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad163ce8eb5efbc96fba54a8a557d53cc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ad163ce8eb5efbc96fba54a8a557d53cc">operator==</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:ad163ce8eb5efbc96fba54a8a557d53cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this value equal to <code>rhs</code>?  <a href="classtensorwrapper_1_1Tensor.html#ad163ce8eb5efbc96fba54a8a557d53cc">More...</a><br /></td></tr>
+<tr class="separator:ad163ce8eb5efbc96fba54a8a557d53cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab063233acba20c6e07f46fb7222e9be3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab063233acba20c6e07f46fb7222e9be3">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:ab063233acba20c6e07f46fb7222e9be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this different from <code>rhs</code>?  <a href="classtensorwrapper_1_1Tensor.html#ab063233acba20c6e07f46fb7222e9be3">More...</a><br /></td></tr>
+<tr class="separator:ab063233acba20c6e07f46fb7222e9be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents a multi-dimensional array of values. </p>
+<p>The <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> class is envisioned as being the most user-facing class of TensorWrapper and forms the entry point into TensorWrapper's DSL. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad1e68d6937d1df0a3dc868096184d8bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1e68d6937d1df0a3dc868096184d8bc">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::Tensor::Tensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html">input_type</a>&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializes *this by processing the input provided in <code>input</code>. </p>
+<p>This ctor is only public to facilitate unit testing of the library. Users should ignore this ctor and focus on the variadic value ctor instead (which dispatches to this ctor).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>An implementation-defined object containing the inputs provided by the user.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the inputs in <code>input</code> are not valid. Strong throw guarantee.</td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the state for *this. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae356ba656668267d37cf9379756ae3d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae356ba656668267d37cf9379756ae3d7">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::Tensor::Tensor </td>
+          <td>(</td>
+          <td class="paramtype">disable_if_tensor_t&lt; Args &gt; &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Variadic value ctor. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Args</td><td>The types of the arguments.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The intent is to create a tutorial showcasing how to initialize the <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> object under different conditions and NOT for the user to have to reverse engineer the options. For now, <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html" title="Type capable of holding all valid inputs to a Tensor&#39;s ctor.">detail_::TensorInput</a> is the authority on what inputs are allowed and <a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html" title="Object which helps create tensor objects.">detail_::TensorFactory</a> is the authority on what combinations and values are allowed.</dd></dl>
+<p>This ctor is the default ctor (when <code>Args</code> is an empty parameter pack) and also the value ctor. Ultimately there are a lot of different ways to initialize a <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> object. To simplify the API of the <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> class we have defined a single ctor which works with all of them. Arguments to this ctor may be provided in any order and will be parsed by the backend. The backend is also responsible for determining appropriate defaults for the information given. While there are many valid input combinations, we anticipate users being most interested in the following use cases (for each use case the first phrase describes the inputs the ctor is invoked with and the remainder describes how *this will be initialized):</p>
+<ul>
+<li>No arguments. Creates an empty tensor. An empty tensor has no rank, and no elements. It is NOT a scalar. The resulting tensor primarily serves as a placeholder until it is initialized.</li>
+<li>Logical layout. This use case includes providing a class from the <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html" title="Specializes a LayoutBase for a layout describing how a user wants to view the tensor.">layout::Logical</a> family or the inputs necessary to build one (minimally a shape, but also optionally the symmetry and sparsity). This is the ctor we want users to eventually target. At present the mapping from the logical layout to the physical layout is naive and unlikely to result in good performance.</li>
+<li>Logical and physical layouts. We'll call this expert initialization. At present this is the use case to target if you are concerned with performance. Given both the logical and physical layouts the backend will dispatch to the tensor library designed for your use case.</li>
+<li>(NYI) A container of elements. Envisioned to be used primarily for testing, this use case allows you to provide the literal elements of the tensor and the backend will fill in the rest.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">args</td><td>Zero or more inputs to use to initialize *this. A compiler error will arise if a provided argument is not a valid input type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if at least one input is provided, but the provided input(s) are insufficient to initialize *this. Also raised if the provided inputs are inconsistent. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the state for *this. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8fb700692f2fa743a68734c440be08f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb700692f2fa743a68734c440be08f9">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::Tensor::Tensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes *this with a deep copy of <code>other</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The tensor to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem copying <code>other</code>. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a278149eaa7b86551d4b3a81ef2c5876b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a278149eaa7b86551d4b3a81ef2c5876b">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::Tensor::Tensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializes *this with the state in <code>other</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The tensor to take the state from. After the call <code>other</code> will be an empty tensor.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4bebb4bd3a8937abfdec46320f5bbdf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bebb4bd3a8937abfdec46320f5bbdf8">&#9670;&nbsp;</a></span>buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">const_buffer_reference</a> tensorwrapper::Tensor::buffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read-only access to the tensor's buffer. </p>
+<p>The buffer of a tensor contains the actual elements. Generally speaking, users should not have to interact with the buffer. The primary exception to this is if the user wants to interface TensorWrapper with another tensor solution.</p>
+<dl class="section return"><dt>Returns</dt><dd>A read-only reference to the buffer of the tensor.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa93eb1f54cba7139b2b22b66f7c60459"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa93eb1f54cba7139b2b22b66f7c60459">&#9670;&nbsp;</a></span>logical_layout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">const_logical_reference</a> tensorwrapper::Tensor::logical_layout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read-only access to the tensor's logical layout. </p>
+<p>The logical layout of a tensor is how the user is thinking about it. This is usually different from how the tensor is actually stored by the backend. When interacting with the <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> class it is always done assuming the tensor has the logical layout (to interact with the tensor in the way it is actually laid out go through the buffer).</p>
+<dl class="section return"><dt>Returns</dt><dd>A read-only reference to the logical layout of the tensor.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab063233acba20c6e07f46fb7222e9be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab063233acba20c6e07f46fb7222e9be3">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::Tensor::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is this different from <code>rhs</code>? </p>
+<p>Two tensors are defined to be different if they are not value equal. See operator== for the definition of value==.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The tensor to compare to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>False if *this is value equal to <code>rhs</code> and true otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aef4325a67ec34573a748491c32be7327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef4325a67ec34573a748491c32be7327">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp; tensorwrapper::Tensor::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overwrites the state of *this with a deep copy of <code>rhs</code>. </p>
+<p>This method will release the state currently owned by *this and overwrite it with a deep copy of <code>rhs</code>. The copy will occur through <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a>'s copy ctor, so see that method for more details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The tensor to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after replacing its state with a deep copy of <code>rhs</code>.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the copy. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aea9cde4c7f75f1ef28728341c580f84c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9cde4c7f75f1ef28728341c580f84c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp; tensorwrapper::Tensor::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Overwrites the state of *this with the state of <code>rhs</code>. </p>
+<p>This method will release the state currently owned by *this and overwrite it with the state of <code>rhs</code>. The move will occur through <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a>'s move ctor, so see that method for more details.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">rhs</td><td>The tensor to take the state from. After this call <code>rhs</code> will be an empty tensor.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after replacing its state with the state in <code>rhs</code>.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad163ce8eb5efbc96fba54a8a557d53cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad163ce8eb5efbc96fba54a8a557d53cc">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::Tensor::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is *this value equal to <code>rhs</code>? </p>
+<p>Two tensor objects are value equal if they are both empty tensors or if their respective logical layouts and buffers are polymorphically value equal. Of note this means that the floating point representation of the tensors' elements are compared for value equality and they must be exactly equal. It also means that even if two tensors have the same physical layout, if the user wants to think about them differently they will compare as not value equal.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The tensor to compare to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if *this is value equal to <code>rhs</code> and false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a47f9907fce0daa1f797f275701f65236"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47f9907fce0daa1f797f275701f65236">&#9670;&nbsp;</a></span>swap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::Tensor::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Exchanges the state of *this with the state of <code>other</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The tensor to take the state from. After this call <code>other</code> will contain the state which was previously in *this.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/tensorwrapper/tensor/<a class="el" href="tensor__class_8hpp_source.html">tensor_class.hpp</a></li>
 <li>src/tensorwrapper/tensor/tensor_class.cpp</li>

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['parent_5ftype_37',['parent_type',['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#afedf21550433e084d745788de89c1d51',1,'tensorwrapper::detail_::TensorPIMPL']]],
-  ['pimpl_5fpointer_38',['pimpl_pointer',['../classtensorwrapper_1_1Tensor.html#a761be2f8023866d6b4dbcffb69d419be',1,'tensorwrapper::Tensor::pimpl_pointer()'],['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325',1,'tensorwrapper::detail_::TensorPIMPL::pimpl_pointer()']]],
-  ['pimpl_5ftype_39',['pimpl_type',['../classtensorwrapper_1_1Tensor.html#a272fea9e213b7be56e8e4feab18b53da',1,'tensorwrapper::Tensor']]]
+  ['allocator_5fbase_233',['allocator_base',['../structtensorwrapper_1_1detail___1_1TensorInput.html#aac944677287e1537e88b287388423df6',1,'tensorwrapper::detail_::TensorInput']]],
+  ['allocator_5fpointer_234',['allocator_pointer',['../structtensorwrapper_1_1detail___1_1TensorInput.html#a3d1c2bdf9391585e8bba1362755b4762',1,'tensorwrapper::detail_::TensorInput']]]
 ];

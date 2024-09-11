@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Permutations &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logical Versus Physical: Understanding the Tensor Layout" href="logical_v_physical.html" />
+    <link rel="prev" title="Einstein Summation Convention" href="einstein_summation_convention.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_candybar.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">TensorWrapper Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">TensorWrapper Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="einstein_summation_convention.html">Einstein Summation Convention</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Permutations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notation">Notation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logical_v_physical.html">Logical Versus Physical: Understanding the Tensor Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nested_tensors.html">Understanding Nested Tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="key_features.html">Key Features of TensorWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_choices.html">Existing Tensor Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">TensorWrapper Background</a></li>
+      <li class="breadcrumb-item active">Permutations</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/background/permutation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="permutations">
+<span id="id1"></span><h1>Permutations<a class="headerlink" href="#permutations" title="Link to this heading"></a></h1>
+<p>Many tensors possess symmetry such that swapping two (or more modes) results in
+the same tensor. For example, consider the matrix <span class="math notranslate nohighlight">\(A\)</span> given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A = \begin{pmatrix}
+    1 &amp; 2\\
+    2 &amp; 3
+    \end{pmatrix}\end{split}\]</div>
+<p>If we declare another matrix, <span class="math notranslate nohighlight">\(B\)</span>, such that rows of <span class="math notranslate nohighlight">\(B\)</span> were the
+columns of <span class="math notranslate nohighlight">\(A\)</span> we get:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}B = \begin{pmatrix}
+    1 &amp; 2\\
+    2 &amp; 3
+    \end{pmatrix}\end{split}\]</div>
+<p>i.e., <span class="math notranslate nohighlight">\(A=B\)</span> and we say that <span class="math notranslate nohighlight">\(A\)</span> (or <span class="math notranslate nohighlight">\(B\)</span>) is symmetric with
+respect to permuting modes 0 (the rows) and 1 (the columns). Permutations are a
+key component of describing tensor symmetry and this page reviews the math
+behind them.</p>
+<section id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading"></a></h2>
+<p>Many of these definitions rely on the algorithm needed to reorder a set of
+objects <span class="math notranslate nohighlight">\(I\)</span> into <span class="math notranslate nohighlight">\(I'\)</span>. Assuming there are <span class="math notranslate nohighlight">\(n+1\)</span> elements in
+<span class="math notranslate nohighlight">\(I\)</span> the algorithm is:</p>
+<ol class="arabic simple">
+<li><p>Set <span class="math notranslate nohighlight">\(i\)</span> to 0.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(i\)</span> is <span class="math notranslate nohighlight">\(n+1\)</span> terminate.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(I_i\)</span> (the <span class="math notranslate nohighlight">\(i\)</span>-th element of <span class="math notranslate nohighlight">\(I\)</span>) is in the correct spot
+increment <span class="math notranslate nohighlight">\(i\)</span> and return to step 2.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(j\)</span> be the correct position for <span class="math notranslate nohighlight">\(I_i\)</span>, swap <span class="math notranslate nohighlight">\(I_i\)</span> and
+<span class="math notranslate nohighlight">\(I_j\)</span>. The element which was previously <span class="math notranslate nohighlight">\(I_i\)</span> is now in its
+correct spot. Return to step 3 with the realization that the current
+<span class="math notranslate nohighlight">\(I_i\)</span> is now the element which was <span class="math notranslate nohighlight">\(I_j\)</span>.</p></li>
+</ol>
+<dl class="simple glossary">
+<dt id="term-cycle">cycle<a class="headerlink" href="#term-cycle" title="Link to this term"></a></dt><dd><p>A “cycle” is a series of <a class="reference internal" href="#term-transposition"><span class="xref std std-term">transpositions</span></a> needed
+to get each element in a given <a class="reference internal" href="#term-orbit"><span class="xref std std-term">orbit</span></a> into its correct position.
+Cycles involving more than two elements are not unique as the transposes
+can be done in different orders.</p>
+</dd>
+<dt id="term-cyclic-permutation">cyclic permutation<a class="headerlink" href="#term-cyclic-permutation" title="Link to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-permutation"><span class="xref std std-term">permutation</span></a> which can be written as a single <a class="reference internal" href="#term-cycle"><span class="xref std std-term">cycle</span></a>. All
+permutations can be decomposed into one or more cyclic permutations.</p>
+</dd>
+<dt id="term-noncyclic-permutation">noncyclic permutation<a class="headerlink" href="#term-noncyclic-permutation" title="Link to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-permutation"><span class="xref std std-term">permutation</span></a> which can not be written as a single <a class="reference internal" href="#term-cycle"><span class="xref std std-term">cycle</span></a>.</p>
+</dd>
+<dt id="term-orbit">orbit<a class="headerlink" href="#term-orbit" title="Link to this term"></a></dt><dd><p>For a given <span class="math notranslate nohighlight">\(i\)</span> the algorithm above will cause one or more elements
+to be labeled as <span class="math notranslate nohighlight">\(I_i\)</span>. The set of elements which can be labeled as
+<span class="math notranslate nohighlight">\(I_i\)</span> defines the orbit of <span class="math notranslate nohighlight">\(I_i\)</span>.</p>
+</dd>
+<dt id="term-permutation">permutation<a class="headerlink" href="#term-permutation" title="Link to this term"></a></dt><dd><p>A particular ordering of a set of objects. “Permuting” is the act of going
+from one permutation to another.</p>
+</dd>
+<dt id="term-transposition">transposition<a class="headerlink" href="#term-transposition" title="Link to this term"></a></dt><dd><p>Swapping two objects.</p>
+</dd>
+</dl>
+</section>
+<section id="notation">
+<h2>Notation<a class="headerlink" href="#notation" title="Link to this heading"></a></h2>
+<p>Having to write “permute mode 0 with mode 1” is already tedious and becomes more
+tedious when more modes are involved. One common notation for writing a
+permutation is “cycle notation”. For a <a class="reference internal" href="#term-cyclic-permutation"><span class="xref std std-term">cyclic permutation</span></a> involving
+<span class="math notranslate nohighlight">\(n+1\)</span> objects the <a class="reference internal" href="#term-cycle"><span class="xref std std-term">cycle</span></a> is written like
+<span class="math notranslate nohighlight">\((e_0, e_1,..., e_n)\)</span> where <span class="math notranslate nohighlight">\(e_i\)</span> is the index of the <span class="math notranslate nohighlight">\(i\)</span>-th
+object BEFORE the permutation and <span class="math notranslate nohighlight">\(e_{i+1}\)</span> is the index of <span class="math notranslate nohighlight">\(e_{i}\)</span>
+AFTER the permutation (except for <span class="math notranslate nohighlight">\(e_{n}\)</span> which becomes <span class="math notranslate nohighlight">\(e_0\)</span>).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="einstein_summation_convention.html" class="btn btn-neutral float-left" title="Einstein Summation Convention" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logical_v_physical.html" class="btn btn-neutral float-right" title="Logical Versus Physical: Understanding the Tensor Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -21,28 +21,31 @@ Designing the Layout Component
 This page records the process of designing the layout component of
 TensorWrapper.
 
+.. note::
+
+   This page needs revisited when more features are implemented. In particular:
+
+   - Should C++ type representation live here or in the allocator?
+   - Similar question for the hardware backend.
+   - Tiled vs. not tiled is actually covered by looking at the shape. If it's
+     nested it's tiled (in a general sense). At the very least tiled could be
+     a class derived from physical
+
 **************************
 What is a (tensor) layout?
 **************************
 
-Tensors contain (hyper-) rectangular arrays of elements. The user interacts with
-the tensor object as if those arrays really exist; however, this is usually a
-software abstraction since modern memory is vector-based. Point being, providing
-users with software abstractions for tensors can require a fair bit of mental
-gymnastics to actually map the abstraction to the hardware. The layout
-component is responsible for representing those mental gymnastics.
+Tensors contain (hyper-) rectangular arrays of elements. A layout describes
+the properties of the (hyper-) rectangular array including its shape, symmetry,
+and sparsity. Layouts can be logical (how the user wants to interact with the
+tensor class) or physical (how the tensor is actually stored in memory).
 
 *********************************
 Why do we need a (tensor) layout?
 *********************************
 
-As mentioned in the previous section, only scalars and vectors map trivially to
-hardware (and even for vectors the user may opt for non-trivial layouts). The
-layout describes the mapping process, and will have substantial performance
-consequences as certain layouts favor certain operations. While we strive to
-ultimately isolate the user from the layout details, for the foreseeable
-future users will likely want some control over the layout, thus we need a
-user-friendly abstraction to represent the layout.
+The layout class is needed to couple the shape, symmetry, and sparsity together.
+Derived classes are needed to distinguish the logical and physical layouts.
 
 ****************************
 Tensor Layout Considerations
@@ -116,7 +119,7 @@ Out of Scope
 
 Tiling Process
    The actual process of tiling a shape is assumed to be done elsewhere. The
-   ``Layout`` class will hold the resulting tiled shape.
+   layout component will hold the resulting tiled shape.
 
    - The best tilings rely on properties of the basis set. Often these
      properties are not readily available to the tensor, which is why tiling
@@ -142,36 +145,29 @@ Layout Design
    The major pieces of the layout component.
 
 :numref:`fig_layout` illustrates the major pieces of the layout component. The
-base class of the component is the ``TiledLayout`` component. We have opted to
-make ``TiledLayout`` the base because a non-tiled layout can be viewed as having
-a single tile, whereas viewing a legitimately tiled layout as a single tile may
-hide information. Consistent with the :ref:`l_reshape` consideration, the
-``TiledLayout`` object contains a ``Shape``, ``Symmetry``, and ``Sparsity``
-object. To address the :ref:`l_representation` consideration the
-``TiledLayout`` class holds the desired representation per inner-most tile.
-Similarly, to address :ref:`l_ownership`, ``TiledLayout`` holds ParallelZone
-objects per tile to denote the process, memory bank, or accelerator where the
-tile lives.
+base class of the component is the ``LayoutBase`` class. This class defines the
+common API and contains ``Shape``, ``Symmetry``, and ``Sparsity``
+objects.
 
 *************
 Proposed APIs
 *************
 
 Since TensorWrapper will in general be used in distributed contexts we assume
-that users will typically be constructing ``TiledLayout`` objects, which are
+that users will typically be constructing ``Tiled`` objects, which are
 constructed by:
 
 .. code-block:: c++
 
    // Determining the actual shape is outside the concern of layout
-   TiledShape shape = get_actual_shape();
+   auto shape = get_actual_shape();
 
    // as is computing the symmetry and sparsity associated with it
    auto [symmetry, sparsity] = update_symmetry_and_sparsity(shape);
 
-   // We anticipate that most users will create a TiledLayout object then set
+   // We anticipate that most users will create a Tiled object then set
    // the tile properties
-   TiledLayout tl(shape, symmetry, sparsity);
+   Tiled tl(shape, symmetry, sparsity);
    tl.set_all_tiles(RowMajor); // All tiles will be vectorized in row-major
    tl.set({0, 1}, ScalarType<float>{}); // Only tile 0,1 will use floats
    tl.set({0, 1}, {10, 10}, GPU); // The {0,1} to {10,10} slice of tiles will be
@@ -191,7 +187,7 @@ based. The distribution of the tiles (which process gets which tile is left to
 the backend for now, but could eventually be set by mapping
 ``ParallelZone::ResourceSet`` objects to tile indices/ranges).
 
-Declaring a ``Layout`` object is conceptually similar except that the ``set``
+Declaring a ``MonoTile`` object is conceptually similar except that the ``set``
 member does not need tile indices or ranges:
 
 .. code-block:: c++
@@ -201,7 +197,7 @@ member does not need tile indices or ranges:
    auto [shape, symmetry, sparsity] = get_inputs();
 
 
-   Layout l(shape, symmetry, sparsity);
+   MonoTile l(shape, symmetry, sparsity);
    l.set(RowMajor);
    l.set(ScalarType<std::complex<double>>);
    l.set(GPU);
@@ -211,21 +207,21 @@ Summary
 *******
 
 :ref:`l_reshape`
-   The ``TiledLayout`` object holds a ``Shape`` object and is capable of storing
+   The ``Tiled`` object holds a ``Shape`` object and is capable of storing
    an enum representing the vectorization strategy on a per tile basis.
 
 :ref:`l_representation`
-   The ``TiledLayout`` object holds what C++ type the scalars are on a per
+   The ``Tiled`` object holds what C++ type the scalars are on a per
    tile basis.
 
 :ref:`l_ownership`
-   The ``TiledLayout`` object allows the user to specify what process owns
+   The ``Tiled`` object allows the user to specify what process owns
    each tile, as well as where the tile is stored (*e.g.*, RAM, disk, or GPU),
    and if it is even stored.
 
 :ref:`l_distinction`
-   This consideration is addressed by the existence of the ``TiledLayout`` and
-   ``Layout`` classes.
+   This consideration is addressed by the existence of the ``Tiled`` and
+   ``MonoTile`` classes.
 
 :ref:`l_basic_operations`
    The API examples above demonstrate how users can perform the considered

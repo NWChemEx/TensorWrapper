@@ -23,6 +23,7 @@ TensorWrapper Background
 
    terminology
    einstein_summation_convention
+   permutation
    logical_v_physical
    nested_tensors
    key_features

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Designing the Symmetry Component &mdash; TensorWrapper 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -16,7 +14,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -119,7 +117,7 @@ designing the symmetry component of TensorWrapper.</p>
 <p>Consider a matrix <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, we say <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> has symmetry if given element <span class="math notranslate nohighlight">\(t_{ij}\)</span> we know
 the value of a different element of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, say <span class="math notranslate nohighlight">\(t_{ab}\)</span>. One of the more common types
 of symmetry is when <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> is a symmetric matrix, in which case
-<span class="math notranslate nohighlight">\(t_{ij} = t_{ab} = t_{ji}\)</span>.</p>
+<span class="math notranslate nohighlight">\(t_{ij} = t_{ji}\)</span>.</p>
 <p>For our purposes, given a tensor <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, a symmetry <span class="math notranslate nohighlight">\(S\)</span> is a mapping of the
 elements comprising a slice of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>, to those same elements (up to a sign)
 in another slice <span class="math notranslate nohighlight">\(\mathbf{t'}\)</span>. We are specifically interested in non-trivial mappings
@@ -136,10 +134,9 @@ usually referred to as “sparsity” and is considered in <a class="reference i
 <h2>Why do we need to consider symmetry?<a class="headerlink" href="#why-do-we-need-to-consider-symmetry" title="Link to this heading"></a></h2>
 <p>Performance. While we can always fill the tensor with the symmetrically
 equivalent elements and then subject the tensor to standard tensor operations
-without symmetry,
-doing so leads to a lot of wasted memory and also leads to a large amount of
-redundant work. By understanding the symmetry of the tensor we can avoid
-this additional work.</p>
+without symmetry, doing so leads to a lot of wasted memory and also leads to a
+large amount of redundant work. By understanding the symmetry of the tensor we
+can avoid this additional work.</p>
 </section>
 <section id="symmetry-considerations">
 <h2>Symmetry Considerations<a class="headerlink" href="#symmetry-considerations" title="Link to this heading"></a></h2>
@@ -225,11 +222,11 @@ exploiting the symmetry of the tensor is left to the backend.</p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-symmetry"><span class="std std-numref">Fig. 7</span></a> shows the classes primarily responsible for defining
-the symmetry component. Ultimately the user assembles a <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object,
-which describes all of the tensor’s overall symmetries. It is the <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>
+the symmetry component. Ultimately the user assembles a <code class="docutils literal notranslate"><span class="pre">Group</span></code> object,
+which describes all of the tensor’s overall symmetries. It is the <code class="docutils literal notranslate"><span class="pre">Group</span></code>
 object which is used by the rest of TensorWrapper. The remaining classes of
-the <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> class hierarchy exist primarily to help the user create the
-<code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object in a straightforward manner.</p>
+the <code class="docutils literal notranslate"><span class="pre">Group</span></code> class hierarchy exist primarily to help the user create the
+<code class="docutils literal notranslate"><span class="pre">Group</span></code> object in a straightforward manner.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TotallySymmetric</span></code> allows a user to declare a tensor as totally symmetric
 simply by providing the rank of the tensor.</p></li>
@@ -238,19 +235,15 @@ antisymmetric simply by providing the rank of the tensor.</p></li>
 </ul>
 <p>Ultimately the symmetry of a tensor is mathematically treated using group
 theory. The symmetry operations on the tensor being the members of the group.
-<code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> is thus a container filled with <code class="docutils literal notranslate"><span class="pre">SymmetryOp</span></code> objects.
-All symmetry operations derive from <code class="docutils literal notranslate"><span class="pre">SymmetryOp</span></code>, which serves primarily to
+<code class="docutils literal notranslate"><span class="pre">Group</span></code> is thus a container filled with <code class="docutils literal notranslate"><span class="pre">Operation</span></code> objects (<code class="docutils literal notranslate"><span class="pre">symmetry</span></code>
+namespace distinguishes between other <code class="docutils literal notranslate"><span class="pre">Operation</span></code> classes; in practice users
+interact with derived classes which have more descriptive names). All symmetry
+operations derive from <code class="docutils literal notranslate"><span class="pre">Operation</span></code>, which serves primarily to
 provided a consistent API among the various operations and to provide some
 code factorization.</p>
-<p>Of the symmetry operations provided by TensorWrapper, <code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code> is the
-simplest. By creating an instance of <code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code>, the user is stating that
-the modes in the resulting object exhibit no symmetry among themselves.
-<code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code> exists primarily to contrast with the other symmetry operations
-and is assumed by default.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Symmetric</span></code> and <code class="docutils literal notranslate"><span class="pre">Antisymmetric</span></code> are the next simplest symmetry operations.
-When a user creates an instance of the <code class="docutils literal notranslate"><span class="pre">Symmetric</span></code>/ <code class="docutils literal notranslate"><span class="pre">Antisymmetric</span></code> classes
-they are stating that the modes in the resulting object are pairwise symmetric
-or antisymmetric respectively.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Permutation</span></code> is used to model both symmetry and antisymmetric permutations
+of modes (the difference being described by a scale factor). Internally
+<code class="docutils literal notranslate"><span class="pre">Permutation</span></code> stores the cycle(s) comprising the permutation.</p>
 <p>The final symmetry operation is <code class="docutils literal notranslate"><span class="pre">Translation</span></code>. The inputs to a <code class="docutils literal notranslate"><span class="pre">Translation</span></code>
 object are two or more <code class="docutils literal notranslate"><span class="pre">Shape</span></code> objects (<code class="docutils literal notranslate"><span class="pre">JaggedShape</span></code> and <code class="docutils literal notranslate"><span class="pre">Nested</span></code> work
 too). The input objects are treated as ranges, and indicate which slices or
@@ -264,89 +257,72 @@ objects, one for every pair of symmetry related elements).</p>
 <h2>Proposed APIs<a class="headerlink" href="#proposed-apis" title="Link to this heading"></a></h2>
 <section id="constructing-permutational-symmetry-objects">
 <h3>Constructing Permutational Symmetry Objects<a class="headerlink" href="#constructing-permutational-symmetry-objects" title="Link to this heading"></a></h3>
-<p>Permutational symmetry requires minimally a rank 2 tensor. The <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>
-object can still be constructed for ranks less than 2, but permutational
-symmetry categories (<em>i.e.</em>, symmetric, antisymmetric, or asymmetric) can NOT
-be provided to it. The relevant constructions are:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Null symmetry (no rank, no modes assigned to symmetry categories)</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<p>Non-trivial permutational symmetry requires minimally a rank 2 tensor. The
+<code class="docutils literal notranslate"><span class="pre">Permutation</span></code> object can still be constructed for ranks less than 2. The
+relevant <code class="docutils literal notranslate"><span class="pre">Permutation</span></code> ctors:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Permutation of 0 modes</span>
+<span class="n">Permutation</span><span class="w"> </span><span class="n">p0</span><span class="p">;</span>
 
-<span class="c1">// Symmetry object for a scalar (no symmetry)</span>
-<span class="n">Symmetry</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-
-<span class="c1">// Symmetry object for a vector (no symmetry)</span>
-<span class="n">Symmetry</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="c1">// Permutation of the 0-th mode with itself (i.e., a fixed-point). p1 is the</span>
+<span class="c1">// same as p0 an identity permutation</span>
+<span class="n">Permutation</span><span class="w"> </span><span class="nf">p1</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Declaring non-trivial symmetric or antisymmetric tensors:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Symmetric rank 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<p>Declaring non-trivial permutations:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Permutes modes 0 and 1</span>
+<span class="n">Permutation</span><span class="w"> </span><span class="n">p01</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">};</span>
 
-<span class="c1">// Antisymmetric rank 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">a01</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="c1">// Cyclic permutation of modes 0, 1, and 2</span>
+<span class="n">Permutation</span><span class="w"> </span><span class="n">p012</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">};</span>
 
-<span class="c1">// Totally symmetric rank 3</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s012</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 0 and 1 are symmetric, mode 2 has no symmetry with 0 or 1</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_2</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 0 and 2 are symmetric, mode 1 has no symmetry with 0 or 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s02_1</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 1 and 2 are symmetric, mode 0 has no symmetry with 1 or 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s12_0</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 0 and 1 are antisymmetric, mode 2 has no symmetry with 0 or 1</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">a01_2</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 0 and 2 are antisymmetric, mode 1 has no symmetry with 0 or 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">a02_1</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
-
-<span class="c1">// Modes 1 and 2 are antisymmetric, mode 0 has no symmetry with 1 or 2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">a12_0</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="c1">// Permutations can be made up of multiple disjoint cycles, e.g.,  this</span>
+<span class="c1">// permutation sends mode 0 to mode 2 and mode 1 to mode 3</span>
+<span class="n">Permutation</span><span class="w"> </span><span class="n">p02_13</span><span class="p">{{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">}};</span>
 </pre></div>
 </div>
-<p>Here it should be noted that something like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_2</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Asymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<p><code class="docutils literal notranslate"><span class="pre">Group</span></code> objects are simply containers of <code class="docutils literal notranslate"><span class="pre">Operation</span></code> objects. So
+construction looks like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Symmetry group of the empty set, i.e., the basis set of a scalar</span>
+<span class="n">Group</span><span class="w"> </span><span class="n">g0</span><span class="p">;</span>
+
+<span class="c1">// Symmetry group of a vector (will be the same as g0 because Groups store</span>
+<span class="c1">// identity operations implicitly)</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">g1</span><span class="p">(</span><span class="n">Permutation</span><span class="p">{</span><span class="mi">0</span><span class="p">});</span>
+
+<span class="c1">// Symmetry group of a matrix with no permutational symmetry (same as  g0 and</span>
+<span class="c1">// g1 because identity is not stored)</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">g2</span><span class="p">(</span><span class="n">Permutation</span><span class="p">{</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Permutation</span><span class="p">{</span><span class="mi">1</span><span class="p">});</span>
+
+<span class="c1">// Symmetry group of a symmetric matrix</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">g2_symmetric</span><span class="p">(</span><span class="n">Permutation</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+
+<span class="c1">// Symmetry group of a tensor where modes 1 and 2 are symmetric (specifying</span>
+<span class="c1">// Permutation{0} is NOT required)</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">g3</span><span class="p">(</span><span class="n">Permutation</span><span class="p">{</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="n">Permutation</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 </pre></div>
 </div>
-<p>is not allowed because the first argument says that modes 0 and 1 are symmetric,
-but the second one declares them asymmetric. Having to specify all of the
-asymmetric pairs is tedious. Following from the declarations of scalars and
-vectors, one can also provide <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> with the overall tensor rank. When
-provided, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> assumes all pairs not specified in the ctor are
-asymmetric, so we could have declared <code class="docutils literal notranslate"><span class="pre">s01_2</span></code> also like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Design from this point forward is speculative and not yet implemented.</p>
 </div>
-<p>and we can declare an asymmetric rank 2 tensor like:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">as2</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Note that for declaring the <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> object for a rank <code class="docutils literal notranslate"><span class="pre">r</span></code> tensor,
-specifying <code class="docutils literal notranslate"><span class="pre">r</span></code> is only necessary if <code class="docutils literal notranslate"><span class="pre">(r-1)</span></code> does not appear in a subset
-(which is why it was not needed for say <code class="docutils literal notranslate"><span class="pre">s01</span></code>). Put another way, <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code>
-assumes a rank of <code class="docutils literal notranslate"><span class="pre">(r+1)</span></code> where <code class="docutils literal notranslate"><span class="pre">r</span></code> is the highest mode found in any of
-the provided symmetry categories.</p>
-<p>The remaining possible rank 3 constructions are:</p>
+<p>Other possible rank 3 constructions are:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Modes 0 and 1 are symmetric, modes 0 and 2 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_a02</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s01_a02</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// Modes 0 and 1 are symmetric, modes 1 and 2 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_a12</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s01_a12</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// Modes 0 and 2 are symmetric, modes 0 and 1 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s02_a01</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s02_a01</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
 
 <span class="c1">// Modes 0 and 2 are symmetric, modes 1 and 2 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s02_a12</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s02_a12</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// Modes 1 and 2 are symmetric, modes 0 and 1 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s12_a01</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s12_a01</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
 
 <span class="c1">// Modes 1 and 2 are symmetric, modes 0 and 2 are antisymmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">s12_a02</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">s12_a02</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// N.B. order of symmetric and antisymmetric in constructor does not matter</span>
 <span class="c1">// so the other 6 mixed symmetric/antisymmetric possibilities are the same</span>
@@ -354,7 +330,7 @@ the provided symmetry categories.</p>
 <span class="c1">// second.</span>
 
 <span class="c1">// Totally antisymmetric rank 3</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">a012</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">a012</span><span class="p">(</span><span class="n">Antisymmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>For the special cases of totally symmetric and totally antisymmetric additional
@@ -374,20 +350,20 @@ classes exist which facilitate construction:</p>
 </div>
 <p>Once we consider rank 4 and higher we can also have multiple symmetric (or
 antisymmetric) categories, for example:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">s01_s23</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Group</span><span class="w"> </span><span class="nf">s01_s23</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">Symmetric</span></code>, <code class="docutils literal notranslate"><span class="pre">Antisymmetric</span></code>, or <code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code> object given <code class="docutils literal notranslate"><span class="pre">n</span></code> modes,
 stands for all <code class="docutils literal notranslate"><span class="pre">n</span></code> choose 2 possible mode pairs that can be formed from the
 <code class="docutils literal notranslate"><span class="pre">n</span></code> modes in it, <em>i.e.</em>, <code class="docutils literal notranslate"><span class="pre">s01_s23</span></code> is NOT the same as:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Symmetry</span><span class="w"> </span><span class="nf">s0123</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Group</span><span class="w"> </span><span class="nf">s0123</span><span class="p">(</span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>because <code class="docutils literal notranslate"><span class="pre">s0123</span></code> additionally has symmetries among 0 and 2, 0 and 3,
 1 and 2, and 1 and 3, which are not present in <code class="docutils literal notranslate"><span class="pre">s01_s23</span></code>.</p>
 </section>
-<section id="constructing-symmetry-objects-with-translational-symmetry">
-<h3>Constructing Symmetry Objects with Translational Symmetry<a class="headerlink" href="#constructing-symmetry-objects-with-translational-symmetry" title="Link to this heading"></a></h3>
+<section id="constructing-group-objects-with-translational-symmetry">
+<h3>Constructing Group Objects with Translational Symmetry<a class="headerlink" href="#constructing-group-objects-with-translational-symmetry" title="Link to this heading"></a></h3>
 <p>For specifying permutational symmetry we needed to state the modes to permute.
 For translational symmetry we need to specify which blocks are equivalent:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Block 0 starts at {0,0} and ends at {10,10}</span>
@@ -396,18 +372,18 @@ For translational symmetry we need to specify which blocks are equivalent:</p>
 <span class="n">Shape</span><span class="w"> </span><span class="n">block0</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">block1</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">}),</span><span class="w"> </span><span class="n">block2</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
 
 <span class="c1">// matrix where block0 is the same as block1</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">});</span>
 
 <span class="c1">// matrix where block0 is the same as block1 and block2</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">b0b1b2</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">,</span><span class="w"> </span><span class="n">block2</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">b0b1b2</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">,</span><span class="w"> </span><span class="n">block2</span><span class="p">});</span>
 
 <span class="c1">// Just like permutational symmetry where only some of the modes need to</span>
 <span class="c1">// be involved, we can have translational symmetry which only involves a</span>
 <span class="c1">// subset of the modes. In this case we need to specify which modes the</span>
-<span class="c1">// indices are associated with. The following declares a Symmetry object</span>
+<span class="c1">// indices are associated with. The following declares a Group object</span>
 <span class="c1">// for a rank 3 tensor where modes 0 and 1 have translational symmetry such</span>
 <span class="c1">// that the block0 slice is the same as the block1 slice</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">Translation</span><span class="p">({</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}));</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">Translation</span><span class="p">({</span><span class="n">block0</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}));</span>
 </pre></div>
 </div>
 <p>Translational symmetry can also be declared for more exotic ranges, such as
@@ -419,7 +395,7 @@ those involving jagged and/or nested:</p>
 <span class="n">JaggedShape</span><span class="w"> </span><span class="nf">jblock1</span><span class="p">({</span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">20</span><span class="p">}},</span><span class="w"> </span><span class="p">{</span><span class="mi">2</span><span class="p">});</span>
 
 <span class="c1">// Symmetry for a jagged matrix where block0 and block1 must be the same</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">jblock0</span><span class="p">,</span><span class="w"> </span><span class="n">jblock1</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">b0b1</span><span class="p">(</span><span class="n">Translation</span><span class="p">{</span><span class="n">jblock0</span><span class="p">,</span><span class="w"> </span><span class="n">jblock1</span><span class="p">});</span>
 
 <span class="c1">// Outer vector 10 elements long, inner are 20</span>
 <span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nblock0</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">});</span>
@@ -428,7 +404,7 @@ those involving jagged and/or nested:</p>
 <span class="n">Nested</span><span class="o">&lt;</span><span class="n">Shape</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nblock1</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Shape</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">}));</span>
 
 <span class="c1">// Symmetry for a rank 4 tensor where modes 0 and 1 are nested</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">nb0nb1</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">Translation</span><span class="p">{</span><span class="n">nblock0</span><span class="p">,</span><span class="w"> </span><span class="n">nblock1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">nb0nb1</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">Translation</span><span class="p">{</span><span class="n">nblock0</span><span class="p">,</span><span class="w"> </span><span class="n">nblock1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">});</span>
 </pre></div>
 </div>
 <p>Note that the fact that <code class="docutils literal notranslate"><span class="pre">Translation</span></code> describes a symmetry operation means
@@ -441,7 +417,7 @@ combine all of these mechanisms:</p>
 
 <span class="c1">// Rank 4 tensor, slice is the same as the (1,1) slice and modes 2 and</span>
 <span class="c1">// 3 are symmetric</span>
-<span class="n">Symmetry</span><span class="w"> </span><span class="nf">sym</span><span class="p">(</span><span class="n">Translational</span><span class="p">({</span><span class="n">e00</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
+<span class="n">Group</span><span class="w"> </span><span class="nf">sym</span><span class="p">(</span><span class="n">Translational</span><span class="p">({</span><span class="n">e00</span><span class="p">,</span><span class="w"> </span><span class="n">e11</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="n">Symmetric</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">});</span>
 </pre></div>
 </div>
 </section>
@@ -455,13 +431,12 @@ hood.</p>
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt><a class="reference internal" href="#sym-symmetric-and-antisymmetric"><span class="std std-ref">Symmetric and antisymmetric</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Symmetric</span></code>, <code class="docutils literal notranslate"><span class="pre">AntiSymmetric</span></code>, and <code class="docutils literal notranslate"><span class="pre">Asymmetric</span></code> classes have been
-introduced to facilitate expressing permutational symmetry. Cyclic
-permutation classes could be added later if needed.</p>
+<dt><a class="reference internal" href="#sym-symmetric-and-antisymmetric"><span class="std std-ref">Symmetric and antisymmetric</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Permutation</span></code> class has been introduced to facilitate expressing
+permutations.</p>
 </dd>
 <dt><a class="reference internal" href="#sym-translational-symmetry"><span class="std std-ref">Translational symmetry</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">Translation</span></code> class describes slices of the tensor which are the same.</p>
 </dd>
-<dt><a class="reference internal" href="#sym-basic-properties"><span class="std std-ref">Basic properties</span></a></dt><dd><p>This is one of the primary responsibilities of the <code class="docutils literal notranslate"><span class="pre">Symmetry</span></code> class.</p>
+<dt><a class="reference internal" href="#sym-basic-properties"><span class="std std-ref">Basic properties</span></a></dt><dd><p>This is one of the primary responsibilities of the <code class="docutils literal notranslate"><span class="pre">Group</span></code> class.</p>
 </dd>
 </dl>
 </section>

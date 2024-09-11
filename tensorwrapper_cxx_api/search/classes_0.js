@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['shapebase_20',['ShapeBase',['../classtensorwrapper_1_1shape_1_1ShapeBase.html',1,'tensorwrapper::shape']]],
-  ['smooth_21',['Smooth',['../classtensorwrapper_1_1shape_1_1Smooth.html',1,'tensorwrapper::shape']]]
+  ['allocatorbase_140',['AllocatorBase',['../classtensorwrapper_1_1allocator_1_1AllocatorBase.html',1,'tensorwrapper::allocator']]]
 ];
