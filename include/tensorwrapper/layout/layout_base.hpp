@@ -227,7 +227,7 @@ protected:
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
     LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&)      = delete;
+    LayoutBase& operator=(LayoutBase&&) = delete;
 
 private:
     /// The actual shape of the tensor

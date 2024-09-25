@@ -41,7 +41,7 @@ typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
 
     return std::make_unique<eigen_buffer_type>(
       unwrap_shape<eigen_data_type>(playout->shape(),
-                                      std::make_index_sequence<Rank>()),
+                                    std::make_index_sequence<Rank>()),
       *playout);
 }
 

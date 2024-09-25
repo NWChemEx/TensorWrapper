@@ -27,7 +27,7 @@ inline auto default_input() { return detail_::TensorInput{}; }
 
 inline auto smooth_scalar() {
     using buffer_type = buffer::Eigen<double, 0>;
-    using data_type = typename buffer_type::data_type;
+    using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{};
     layout::Physical l(shape);
     data_type scalar;
@@ -38,7 +38,7 @@ inline auto smooth_scalar() {
 /// 5 element vector such that element i is i
 inline auto smooth_vector() {
     using buffer_type = buffer::Eigen<double, 1>;
-    using data_type = typename buffer_type::data_type;
+    using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{5};
     layout::Physical l(shape);
     data_type vector(5);
@@ -49,7 +49,7 @@ inline auto smooth_vector() {
 /// 5 element vector internally stored as a 5 by 1 matrix
 inline auto smooth_vector_alt() {
     using buffer_type = buffer::Eigen<double, 2>;
-    using data_type = typename buffer_type::data_type;
+    using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{5};
     layout::Physical l(shape::Smooth{5, 1});
     data_type matrix(5, 1);
