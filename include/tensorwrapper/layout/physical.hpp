@@ -43,10 +43,14 @@ public:
              const_sparsity_reference sparsity) :
       my_base_type(shape, symmetry, sparsity) {}
 
+    Physical(const_shape_reference shape) : my_base_type(shape) {}
+
     Physical(shape_pointer pshape, symmetry_pointer psymmetry,
              sparsity_pointer psparsity) :
       my_base_type(std::move(pshape), std::move(psymmetry),
                    std::move(psparsity)) {}
+
+    Physical(shape_pointer pshape) : my_base_type(std::move(pshape)) {}
 
 protected:
     /// Implements clone by calling copy ctor

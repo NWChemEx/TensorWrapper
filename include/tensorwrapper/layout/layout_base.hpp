@@ -90,6 +90,20 @@ public:
       LayoutBase(shape.clone(), std::make_unique<symmetry_type>(symmetry),
                  std::make_unique<sparsity_type>(sparsity)) {}
 
+    /** @brief Initialize by shape copy ctor
+     *
+     *  This ctor is to create an instance with the provided shape and no
+     *  symmetry or sparsity. Will copy the shape.
+     *
+     *  @param[in] shape The actual shape the tensor backend has.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the new state.
+     *                        Strong throw guarantee.
+     */
+    LayoutBase(const_shape_reference shape) :
+      LayoutBase(shape.clone(), std::make_unique<symmetry_type>(),
+                 std::make_unique<sparsity_type>()) {}
+
     /** @brief Initialize by move ctor
      *
      *  This ctor is used when the user wants *this to take ownership of the
@@ -108,6 +122,25 @@ public:
             throw std::runtime_error("Symmetry can't be null");
         if(m_sparsity_ == nullptr)
             throw std::runtime_error("Sparsity can't be null");
+    }
+
+    /** @brief Initialize by shape move ctor
+     *
+     *  This ctor is to create an instance with the provided shape and no
+     *  symmetry or sparsity. Will move the shape, and default the symmetry
+     *  and sparsity.
+     *
+     *  @param[in] shape The actual shape the tensor backend has.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the new state.
+     *                        Strong throw guarantee.
+     *  @throw std::runtime_error if @p shape, is a nullptr. Strong throw
+     *                            guarantee.
+     */
+    LayoutBase(shape_pointer shape) : m_shape_(std::move(shape)) {
+        if(m_shape_ == nullptr) throw std::runtime_error("Shape can't be null");
+        m_symmetry_ = std::make_unique<symmetry_type>();
+        m_sparsity_ = std::make_unique<sparsity_type>();
     }
 
     /// Defaulted polymorphic dtor
@@ -194,7 +227,7 @@ protected:
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
     LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&) = delete;
+    LayoutBase& operator=(LayoutBase&&)      = delete;
 
 private:
     /// The actual shape of the tensor
