@@ -17,7 +17,6 @@
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
 #include <tensorwrapper/buffer/replicated.hpp>
-#include <variant>
 
 namespace tensorwrapper::buffer {
 
