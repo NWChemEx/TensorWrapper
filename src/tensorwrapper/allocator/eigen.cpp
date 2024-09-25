@@ -35,12 +35,12 @@ auto unwrap_shape(const ShapeType& shape, std::index_sequence<Is...>) {
 TPARAMS
 typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
   eigen_layout_pointer playout) {
-    using eigen_tensor_type = typename eigen_buffer_type::tensor_type;
+    using eigen_data_type = typename eigen_buffer_type::data_type;
     if(playout->shape().rank() != Rank)
         throw std::runtime_error("Rank of the layout is not compatible");
 
     return std::make_unique<eigen_buffer_type>(
-      unwrap_shape<eigen_tensor_type>(playout->shape(),
+      unwrap_shape<eigen_data_type>(playout->shape(),
                                       std::make_index_sequence<Rank>()),
       *playout);
 }

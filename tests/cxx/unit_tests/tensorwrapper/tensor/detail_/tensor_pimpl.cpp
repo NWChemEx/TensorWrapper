@@ -23,7 +23,6 @@
 
 using namespace tensorwrapper;
 using buffer_type = buffer::Eigen<double, 2>;
-using tensor_type = typename buffer_type::tensor_type;
 
 TEST_CASE("TensorPIMPL") {
     auto input = testing::smooth_vector();
