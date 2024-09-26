@@ -17,7 +17,6 @@
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
 #include <tensorwrapper/buffer/replicated.hpp>
-#include <variant>
 
 namespace tensorwrapper::buffer {
 
@@ -43,13 +42,13 @@ public:
     using typename my_base_type::const_layout_reference;
 
     /// Type of a rank @p Rank tensor using floats of type @p FloatType
-    using tensor_type = eigen::tensor<FloatType, Rank>;
+    using data_type = eigen::data_type<FloatType, Rank>;
 
-    /// Mutable reference to an object of type tensor_type
-    using tensor_reference = tensor_type&;
+    /// Mutable reference to an object of type data_type
+    using data_reference = data_type&;
 
-    /// Read-only reference to an object of type tensor_type
-    using const_tensor_reference = const tensor_type&;
+    /// Read-only reference to an object of type data_type
+    using const_data_reference = const data_type&;
 
     /** @brief Creates a buffer with no layout and a default initialized
      *         tensor.
@@ -60,8 +59,8 @@ public:
 
     /** @brief Wraps the provided tensor.
      *
-     *  @tparam TensorType The type of the input tensor. Must be implicitly
-     *                     convertible to an object of type tensor_type.
+     *  @tparam DataType The type of the input tensor. Must be implicitly
+     *                     convertible to an object of type data_type.
      *
      *  @param[in] t The tensor to wrap.
      *  @param[in] layout The physical layout of @p t.
@@ -69,9 +68,9 @@ public:
      *  @throw std::bad_alloc if there is a problem copying @p layout. Strong
      *                        throw guarantee.
      */
-    template<typename TensorType>
-    Eigen(TensorType&& t, const_layout_reference layout) :
-      Replicated(layout), m_tensor_(std::forward<TensorType>(t)) {}
+    template<typename DataType>
+    Eigen(DataType&& t, const_layout_reference layout) :
+      Replicated(layout), m_tensor_(std::forward<DataType>(t)) {}
 
     /** @brief Initializes *this with a copy of @p other.
      *
@@ -153,7 +152,7 @@ public:
      */
     bool operator==(const Eigen& rhs) const noexcept {
         if(my_base_type::operator!=(rhs)) return false;
-        eigen::tensor<FloatType, 0> r = (m_tensor_ - rhs.m_tensor_).sum();
+        eigen::data_type<FloatType, 0> r = (m_tensor_ - rhs.m_tensor_).sum();
         return r() == 0.0;
     }
 
@@ -183,7 +182,7 @@ protected:
 
 private:
     /// The actual Eigen tensor
-    tensor_type m_tensor_;
+    data_type m_tensor_;
 };
 
 } // namespace tensorwrapper::buffer

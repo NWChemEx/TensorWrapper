@@ -35,10 +35,10 @@ TEST_CASE("BufferBase") {
         using scalar_buffer = buffer::Eigen<float, 0>;
         using vector_buffer = buffer::Eigen<float, 1>;
 
-        typename scalar_buffer::tensor_type eigen_scalar;
+        typename scalar_buffer::data_type eigen_scalar;
         eigen_scalar() = 1.0;
 
-        typename vector_buffer::tensor_type eigen_vector(2);
+        typename vector_buffer::data_type eigen_vector(2);
         eigen_vector(0) = 1.0;
         eigen_vector(1) = 2.0;
 

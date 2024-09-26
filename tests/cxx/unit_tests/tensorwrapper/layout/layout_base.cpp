@@ -35,22 +35,28 @@ TEST_CASE("LayoutBase") {
     symmetry::Group no_symm, symm{p01};
     sparsity::Pattern no_sparsity;
 
-    Physical matrix_mono(matrix_shape, no_symm, no_sparsity);
-    Physical symm_matrix_mono(matrix_shape, symm, no_sparsity);
+    Physical phys_copy_no_sym(matrix_shape, no_symm, no_sparsity);
+    Physical phys_copy_has_sym(matrix_shape, symm, no_sparsity);
+    Physical phys_copy_just_shape(matrix_shape);
 
     // Test via references to the base class
-    LayoutBase& matrix      = matrix_mono;
-    LayoutBase& symm_matrix = symm_matrix_mono;
+    LayoutBase& base_copy_no_sym     = phys_copy_no_sym;
+    LayoutBase& base_copy_has_sym    = phys_copy_has_sym;
+    LayoutBase& base_copy_just_shape = phys_copy_just_shape;
 
     SECTION("Ctors and assignment") {
         SECTION("Copy state") {
-            REQUIRE(matrix.shape().are_equal(matrix_shape));
-            REQUIRE(matrix.symmetry() == no_symm);
-            REQUIRE(matrix.sparsity() == no_sparsity);
+            REQUIRE(base_copy_no_sym.shape().are_equal(matrix_shape));
+            REQUIRE(base_copy_no_sym.symmetry() == no_symm);
+            REQUIRE(base_copy_no_sym.sparsity() == no_sparsity);
 
-            REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
-            REQUIRE(symm_matrix.symmetry() == symm);
-            REQUIRE(symm_matrix.sparsity() == no_sparsity);
+            REQUIRE(base_copy_has_sym.shape().are_equal(matrix_shape));
+            REQUIRE(base_copy_has_sym.symmetry() == symm);
+            REQUIRE(base_copy_has_sym.sparsity() == no_sparsity);
+
+            REQUIRE(base_copy_just_shape.shape().are_equal(matrix_shape));
+            REQUIRE(base_copy_just_shape.symmetry() == no_symm);
+            REQUIRE(base_copy_just_shape.sparsity() == no_sparsity);
         }
 
         SECTION("Move state") {
@@ -60,12 +66,17 @@ TEST_CASE("LayoutBase") {
             SECTION("All non-null") {
                 Physical rhs(std::move(pshape), std::move(psymm),
                              std::move(psparse));
-                REQUIRE(matrix == rhs);
+                REQUIRE(base_copy_no_sym == rhs);
+            }
+            SECTION("Only Shape input") {
+                Physical rhs(std::move(pshape));
+                REQUIRE(base_copy_just_shape == rhs);
             }
             SECTION("Shape is null") {
                 REQUIRE_THROWS_AS(
                   Physical(nullptr, std::move(psymm), std::move(psparse)),
                   std::runtime_error);
+                REQUIRE_THROWS_AS(Physical(nullptr), std::runtime_error);
             }
             SECTION("Symmetry is null") {
                 REQUIRE_THROWS_AS(
@@ -81,29 +92,31 @@ TEST_CASE("LayoutBase") {
     }
 
     SECTION("shape") {
-        REQUIRE(matrix.shape().are_equal(matrix_shape));
-        REQUIRE(symm_matrix.shape().are_equal(matrix_shape));
+        REQUIRE(base_copy_no_sym.shape().are_equal(matrix_shape));
+        REQUIRE(base_copy_has_sym.shape().are_equal(matrix_shape));
     }
 
     SECTION("symmetry") {
-        REQUIRE(matrix.symmetry() == no_symm);
-        REQUIRE(symm_matrix.symmetry() == symm);
+        REQUIRE(base_copy_no_sym.symmetry() == no_symm);
+        REQUIRE(base_copy_has_sym.symmetry() == symm);
     }
 
     SECTION("sparsity") {
-        REQUIRE(matrix.sparsity() == no_sparsity);
-        REQUIRE(symm_matrix.sparsity() == no_sparsity);
+        REQUIRE(base_copy_no_sym.sparsity() == no_sparsity);
+        REQUIRE(base_copy_has_sym.sparsity() == no_sparsity);
     }
 
     SECTION("operator==") {
         // Same
-        REQUIRE(matrix == Physical(matrix_shape, no_symm, no_sparsity));
+        REQUIRE(base_copy_no_sym ==
+                Physical(matrix_shape, no_symm, no_sparsity));
 
         // Different shape
         shape::Smooth vector_shape{2};
-        REQUIRE_FALSE(matrix == Physical(vector_shape, no_symm, no_sparsity));
+        REQUIRE_FALSE(base_copy_no_sym ==
+                      Physical(vector_shape, no_symm, no_sparsity));
 
         // Different symmetry
-        REQUIRE_FALSE(matrix == symm_matrix);
+        REQUIRE_FALSE(base_copy_no_sym == base_copy_has_sym);
     }
 }

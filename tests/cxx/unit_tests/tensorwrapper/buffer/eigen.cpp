@@ -40,14 +40,14 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
         using vector_buffer = buffer::Eigen<TestType, 1>;
         using matrix_buffer = buffer::Eigen<TestType, 2>;
 
-        typename scalar_buffer::tensor_type eigen_scalar;
+        typename scalar_buffer::data_type eigen_scalar;
         eigen_scalar() = 1.0;
 
-        typename vector_buffer::tensor_type eigen_vector(2);
+        typename vector_buffer::data_type eigen_vector(2);
         eigen_vector(0) = 1.0;
         eigen_vector(1) = 2.0;
 
-        typename matrix_buffer::tensor_type eigen_matrix(2, 3);
+        typename matrix_buffer::data_type eigen_matrix(2, 3);
         eigen_matrix(0, 0) = 1.0;
         eigen_matrix(0, 1) = 2.0;
         eigen_matrix(0, 2) = 3.0;
@@ -101,7 +101,7 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
             // different everything, same tensor different layout, and different
             // tensor same layout.
 
-            typename scalar_buffer::tensor_type eigen_scalar2;
+            typename scalar_buffer::data_type eigen_scalar2;
             eigen_scalar2() = 1.0;
 
             // Everything the same
@@ -128,7 +128,7 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
         SECTION("operator!=") {
             // This just negates operator== so spot-checking is okay
 
-            typename scalar_buffer::tensor_type eigen_scalar2;
+            typename scalar_buffer::data_type eigen_scalar2;
             eigen_scalar2() = 1.0;
 
             // Everything the same

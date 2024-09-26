@@ -32,9 +32,9 @@ TEMPLATE_TEST_CASE("EigenAllocator", "", float, double) {
     using eigen_buffer_scalar = typename scalar_alloc_type::eigen_buffer_type;
     using eigen_buffer_vector = typename vector_alloc_type::eigen_buffer_type;
     using eigen_buffer_matrix = typename matrix_alloc_type::eigen_buffer_type;
-    using eigen_scalar        = typename eigen_buffer_scalar::tensor_type;
-    using eigen_vector        = typename eigen_buffer_vector::tensor_type;
-    using eigen_matrix        = typename eigen_buffer_matrix::tensor_type;
+    using eigen_scalar        = typename eigen_buffer_scalar::data_type;
+    using eigen_vector        = typename eigen_buffer_vector::data_type;
+    using eigen_matrix        = typename eigen_buffer_matrix::data_type;
 
     parallelzone::runtime::RuntimeView rv;
 

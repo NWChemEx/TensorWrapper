@@ -25,12 +25,12 @@ namespace tensorwrapper::eigen {
 #ifdef TENSORWRAPPER_HAS_EIGEN
 
 template<typename FloatType, unsigned short Rank>
-using tensor = Eigen::Tensor<FloatType, int(Rank)>;
+using data_type = Eigen::Tensor<FloatType, int(Rank)>;
 
 #else
 
 template<typename, unsigned short>
-using tensor = std::nullptr_t;
+using data_type = std::nullptr_t;
 
 #endif
 

@@ -36,33 +36,41 @@ TEST_CASE("Logical") {
     symmetry::Group no_symm, symm{p01};
     sparsity::Pattern no_sparsity;
 
-    Logical matrix(matrix_shape, no_symm, no_sparsity);
-    Logical symm_matrix(matrix_shape, symm, no_sparsity);
+    Logical logi_copy_no_sym(matrix_shape, no_symm, no_sparsity);
+    Logical logi_copy_has_sym(matrix_shape, symm, no_sparsity);
+    Logical logi_copy_just_shape(matrix_shape);
 
     SECTION("Ctors and assignment") {
         SECTION("Value") {
-            REQUIRE(matrix.symmetry() == no_symm);
-            REQUIRE(matrix.sparsity() == no_sparsity);
+            REQUIRE(logi_copy_no_sym.symmetry() == no_symm);
+            REQUIRE(logi_copy_no_sym.sparsity() == no_sparsity);
 
-            REQUIRE(symm_matrix.symmetry() == symm);
-            REQUIRE(symm_matrix.sparsity() == no_sparsity);
+            REQUIRE(logi_copy_has_sym.symmetry() == symm);
+            REQUIRE(logi_copy_has_sym.sparsity() == no_sparsity);
+
+            REQUIRE(logi_copy_just_shape.symmetry() == no_symm);
+            REQUIRE(logi_copy_just_shape.sparsity() == no_sparsity);
         }
     }
 
     SECTION("Virtual method overrides") {
         using const_base_reference = Logical::const_layout_reference;
 
-        const_base_reference matrix_base      = matrix;
-        const_base_reference symm_matrix_base = symm_matrix;
+        const_base_reference base_copy_no_sym     = logi_copy_no_sym;
+        const_base_reference base_copy_has_sym    = logi_copy_has_sym;
+        const_base_reference base_copy_just_shape = logi_copy_just_shape;
 
         SECTION("clone_") {
-            REQUIRE(matrix_base.clone()->are_equal(matrix));
-            REQUIRE(symm_matrix_base.clone()->are_equal(symm_matrix));
+            REQUIRE(base_copy_no_sym.clone()->are_equal(logi_copy_no_sym));
+            REQUIRE(base_copy_has_sym.clone()->are_equal(logi_copy_has_sym));
+            REQUIRE(
+              base_copy_just_shape.clone()->are_equal(logi_copy_just_shape));
         }
 
         SECTION("are_equal") {
-            REQUIRE(matrix_base.are_equal(matrix_base));
-            REQUIRE_FALSE(symm_matrix_base.are_equal(matrix_base));
+            REQUIRE(base_copy_no_sym.are_equal(base_copy_no_sym));
+            REQUIRE_FALSE(base_copy_has_sym.are_equal(base_copy_no_sym));
+            REQUIRE(base_copy_just_shape.are_equal(base_copy_no_sym));
         }
     }
 }
