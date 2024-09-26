@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_5ftype_291',['value_type',['../classtensorwrapper_1_1symmetry_1_1Group.html#a514bfe739fcb010c6848e72e145bdb88',1,'tensorwrapper::symmetry::Group']]]
+  ['tensor_5ftype_292',['tensor_type',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#abce3e31d7ddbdd503f9248fee94c3a7a',1,'tensorwrapper::detail_::TensorFactory']]]
 ];

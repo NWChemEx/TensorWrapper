@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['rank_5ftype_276',['rank_type',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c',1,'tensorwrapper::shape::ShapeBase::rank_type()'],['../classtensorwrapper_1_1shape_1_1Smooth.html#a61ead3dcde2e5da70d902e29c83a6e5c',1,'tensorwrapper::shape::Smooth::rank_type()']]],
-  ['reference_277',['reference',['../classtensorwrapper_1_1symmetry_1_1Group.html#acba7bb0bb27f57eda1d175af8bec59de',1,'tensorwrapper::symmetry::Group']]],
-  ['runtime_5fview_5freference_278',['runtime_view_reference',['../classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a42cd4f9c201c9727a70b7f20d061111a',1,'tensorwrapper::allocator::AllocatorBase']]],
-  ['runtime_5fview_5ftype_279',['runtime_view_type',['../classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a4823d9e8f030d8dd0bad75f71a64749e',1,'tensorwrapper::allocator::AllocatorBase::runtime_view_type()'],['../structtensorwrapper_1_1detail___1_1TensorInput.html#a1bdb6fd8f064ef8e99948dae219e67dc',1,'tensorwrapper::detail_::TensorInput::runtime_view_type()']]]
+  ['parent_5ftype_274',['parent_type',['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#afedf21550433e084d745788de89c1d51',1,'tensorwrapper::detail_::TensorPIMPL']]],
+  ['physical_5flayout_5fpointer_275',['physical_layout_pointer',['../structtensorwrapper_1_1detail___1_1TensorInput.html#a15d4dada36b1c63440c9e56fdf0da8ef',1,'tensorwrapper::detail_::TensorInput']]],
+  ['physical_5flayout_5ftype_276',['physical_layout_type',['../structtensorwrapper_1_1detail___1_1TensorInput.html#a7367d01d5c06f644efcbc85820f2f7a7',1,'tensorwrapper::detail_::TensorInput']]],
+  ['pimpl_5fpointer_277',['pimpl_pointer',['../classtensorwrapper_1_1Tensor.html#a761be2f8023866d6b4dbcffb69d419be',1,'tensorwrapper::Tensor::pimpl_pointer()'],['../classtensorwrapper_1_1detail___1_1TensorFactory.html#a8e14d73deada521aed7ecfd7d18066f9',1,'tensorwrapper::detail_::TensorFactory::pimpl_pointer()'],['../classtensorwrapper_1_1detail___1_1TensorPIMPL.html#a5cbb4afb1d15ae467484c02b2b735325',1,'tensorwrapper::detail_::TensorPIMPL::pimpl_pointer()']]],
+  ['pimpl_5ftype_278',['pimpl_type',['../classtensorwrapper_1_1Tensor.html#a272fea9e213b7be56e8e4feab18b53da',1,'tensorwrapper::Tensor::pimpl_type()'],['../classtensorwrapper_1_1detail___1_1TensorFactory.html#a5106718edcce3b88a13ccbecf247aae6',1,'tensorwrapper::detail_::TensorFactory::pimpl_type()']]]
 ];
