@@ -57,6 +57,21 @@ public:
     /// Type of a pointer to the tensor's buffer
     using buffer_pointer = input_type::buffer_pointer;
 
+    /// Type of an initializer list if *this is a scalar
+    using scalar_il_type = double;
+
+    /// Type of an initializer list if *this is a vector
+    using vector_il_type = std::initializer_list<scalar_il_type>;
+
+    /// Type of an initializer list if *this is a matrix
+    using matrix_il_type = std::initializer_list<vector_il_type>;
+
+    /// Type of an initializer list if *this is a rank 3 tensor
+    using tensor3_il_type = std::initializer_list<matrix_il_type>;
+
+    /// Type of an initializer list if *this is a rank 4 tensor
+    using tensor4_il_type = std::initializer_list<tensor3_il_type>;
+
     /** @brief Initializes *this by processing the input provided in @p input.
      *
      *  This ctor is only public to facilitate unit testing of the library.
@@ -129,6 +144,12 @@ public:
     template<typename... Args>
     Tensor(disable_if_tensor_t<Args>&&... args) :
       Tensor(input_type(std::forward<Args>(args)...)) {}
+
+    Tensor(scalar_il_type il);
+    Tensor(vector_il_type il);
+    Tensor(matrix_il_type il);
+    Tensor(tensor3_il_type il);
+    Tensor(tensor4_il_type il);
 
     /** @brief Initializes *this with a deep copy of @p other.
      *

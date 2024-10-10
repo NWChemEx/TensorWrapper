@@ -28,6 +28,21 @@ using const_buffer_reference  = typename Tensor::const_buffer_reference;
 Tensor::Tensor(detail_::TensorInput input) :
   Tensor(detail_::TensorFactory::construct(std::move(input))) {}
 
+Tensor::Tensor(scalar_il_type il) :
+  Tensor(detail_::TensorFactory::construct(il)) {}
+
+Tensor::Tensor(vector_il_type il) :
+  Tensor(detail_::TensorFactory::construct(il)) {}
+
+Tensor::Tensor(matrix_il_type il) :
+  Tensor(detail_::TensorFactory::construct(il)) {}
+
+Tensor::Tensor(tensor3_il_type il) :
+  Tensor(detail_::TensorFactory::construct(il)) {}
+
+Tensor::Tensor(tensor4_il_type il) :
+  Tensor(detail_::TensorFactory::construct(il)) {}
+
 Tensor::Tensor(const Tensor& other) :
   m_pimpl_(other.has_pimpl_() ? other.m_pimpl_->clone() : nullptr) {}
 

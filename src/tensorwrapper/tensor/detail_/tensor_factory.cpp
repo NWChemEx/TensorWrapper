@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+#include "il_utils.hpp"
 #include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
 #include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
+
 namespace tensorwrapper::detail_ {
 
 using pimpl_type    = typename TensorFactory::pimpl_type;
@@ -170,6 +173,57 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
 
     return std::make_unique<pimpl_type>(std::move(input.m_plogical),
                                         std::move(input.m_pbuffer));
+}
+
+namespace {
+
+template<typename T, std::size_t... I>
+auto fill_eigen(T il, std::index_sequence<I...>) {
+    auto [dims, data] = unwrap_il(il);
+
+    using buffer_type = buffer::Eigen<double, sizeof...(I)>;
+    using data_type   = typename buffer_type::data_type;
+
+    data_type eigen_tensor(dims[I]...);
+    auto pdata = eigen_tensor.data();
+    for(auto i = 0; i < data.size(); ++i) { pdata[i] = data[i]; }
+    shape::Smooth shape(dims.begin(), dims.end());
+    layout::Physical l(shape);
+    return TensorInput(shape, buffer_type(eigen_tensor, l));
+}
+
+} // namespace
+
+pimpl_pointer TensorFactory::construct(scalar_il_type il) {
+    return construct(fill_eigen(il, std::make_index_sequence<0>()));
+}
+
+pimpl_pointer TensorFactory::construct(vector_il_type il) {
+    // using buffer_type = buffer::Eigen<double, 1>;
+    // using data_type   = buffer_type::data_type;
+
+    // auto [dims, data] = unwrap_il(il);
+    // shape::Smooth shape(dims.begin(), dims.end());
+    // layout::Physical l(shape);
+    // data_type vector(dims[0]);
+
+    // scalar() = il;
+    // TensorInput input(shape, buffer_type(scalar, l));
+    // auto pimpl = construct(input);
+
+    return pimpl_pointer{};
+}
+
+pimpl_pointer TensorFactory::construct(matrix_il_type il) {
+    return pimpl_pointer{};
+}
+
+pimpl_pointer TensorFactory::construct(tensor3_il_type il) {
+    return pimpl_pointer{};
+}
+
+pimpl_pointer TensorFactory::construct(tensor4_il_type il) {
+    return pimpl_pointer{};
 }
 
 } // namespace tensorwrapper::detail_
