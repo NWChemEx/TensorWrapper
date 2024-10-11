@@ -177,8 +177,9 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
 
 namespace {
 
+/// Wraps the process of turning an initializer list into a TensorInput object
 template<typename T, std::size_t... I>
-auto fill_eigen(T il, std::index_sequence<I...>) {
+auto il_to_input(T il, std::index_sequence<I...>) {
     auto [dims, data] = unwrap_il(il);
 
     using buffer_type = buffer::Eigen<double, sizeof...(I)>;
@@ -195,35 +196,24 @@ auto fill_eigen(T il, std::index_sequence<I...>) {
 } // namespace
 
 pimpl_pointer TensorFactory::construct(scalar_il_type il) {
-    return construct(fill_eigen(il, std::make_index_sequence<0>()));
+    return construct(il_to_input(il, std::make_index_sequence<0>()));
 }
 
 pimpl_pointer TensorFactory::construct(vector_il_type il) {
-    // using buffer_type = buffer::Eigen<double, 1>;
-    // using data_type   = buffer_type::data_type;
-
-    // auto [dims, data] = unwrap_il(il);
-    // shape::Smooth shape(dims.begin(), dims.end());
-    // layout::Physical l(shape);
-    // data_type vector(dims[0]);
-
-    // scalar() = il;
-    // TensorInput input(shape, buffer_type(scalar, l));
-    // auto pimpl = construct(input);
-
-    return pimpl_pointer{};
+    return construct(il_to_input(il, std::make_index_sequence<1>()));
+    ;
 }
 
 pimpl_pointer TensorFactory::construct(matrix_il_type il) {
-    return pimpl_pointer{};
+    return construct(il_to_input(il, std::make_index_sequence<2>()));
 }
 
 pimpl_pointer TensorFactory::construct(tensor3_il_type il) {
-    return pimpl_pointer{};
+    return construct(il_to_input(il, std::make_index_sequence<3>()));
 }
 
 pimpl_pointer TensorFactory::construct(tensor4_il_type il) {
-    return pimpl_pointer{};
+    return construct(il_to_input(il, std::make_index_sequence<4>()));
 }
 
 } // namespace tensorwrapper::detail_

@@ -57,11 +57,79 @@ inline auto smooth_vector_alt() {
     return detail_::TensorInput(shape, buffer_type(matrix, l));
 }
 
+inline auto smooth_matrix() {
+    using buffer_type = buffer::Eigen<double, 2>;
+    using data_type   = typename buffer_type::data_type;
+    shape::Smooth shape{2, 2};
+    layout::Physical l(shape);
+    data_type matrix(2, 2);
+    matrix(0, 0) = 1.0;
+    matrix(0, 1) = 2.0;
+    matrix(1, 0) = 3.0;
+    matrix(1, 1) = 4.0;
+    return detail_::TensorInput(shape, buffer_type(matrix, l));
+}
+
 inline auto smooth_symmetric_matrix() {
+    using buffer_type = buffer::Eigen<double, 2>;
+    using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{3, 3};
+    layout::Physical l(shape);
+    data_type matrix(3, 3);
+    matrix(0, 0) = 1.0;
+    matrix(0, 1) = 2.0;
+    matrix(0, 2) = 3.0;
+    matrix(1, 0) = 2.0;
+    matrix(1, 1) = 4.0;
+    matrix(1, 2) = 5.0;
+    matrix(2, 0) = 3.0;
+    matrix(2, 1) = 5.0;
+    matrix(2, 2) = 6.0;
     symmetry::Permutation p01{0, 1};
     symmetry::Group g(p01);
-    return detail_::TensorInput(shape, g);
+    return detail_::TensorInput(shape, g, buffer_type(matrix, l));
+}
+
+inline auto smooth_tensor3() {
+    using buffer_type = buffer::Eigen<double, 3>;
+    using data_type   = typename buffer_type::data_type;
+    shape::Smooth shape{2, 2, 2};
+    layout::Physical l(shape);
+    data_type tensor(2, 2, 2);
+    tensor(0, 0, 0) = 1.0;
+    tensor(0, 0, 1) = 2.0;
+    tensor(0, 1, 0) = 3.0;
+    tensor(0, 1, 1) = 4.0;
+    tensor(1, 0, 0) = 5.0;
+    tensor(1, 0, 1) = 6.0;
+    tensor(1, 1, 0) = 7.0;
+    tensor(1, 1, 1) = 8.0;
+    return detail_::TensorInput(shape, buffer_type(tensor, l));
+}
+
+inline auto smooth_tensor4() {
+    using buffer_type = buffer::Eigen<double, 4>;
+    using data_type   = typename buffer_type::data_type;
+    shape::Smooth shape{2, 2, 2, 2};
+    layout::Physical l(shape);
+    data_type tensor(2, 2, 2, 2);
+    tensor(0, 0, 0, 0) = 1.0;
+    tensor(0, 0, 0, 1) = 2.0;
+    tensor(0, 0, 1, 0) = 3.0;
+    tensor(0, 0, 1, 1) = 4.0;
+    tensor(0, 1, 0, 0) = 5.0;
+    tensor(0, 1, 0, 1) = 6.0;
+    tensor(0, 1, 1, 0) = 7.0;
+    tensor(0, 1, 1, 1) = 8.0;
+    tensor(1, 0, 0, 0) = 9.0;
+    tensor(1, 0, 0, 1) = 10.0;
+    tensor(1, 0, 1, 0) = 11.0;
+    tensor(1, 0, 1, 1) = 12.0;
+    tensor(1, 1, 0, 0) = 13.0;
+    tensor(1, 1, 0, 1) = 14.0;
+    tensor(1, 1, 1, 0) = 15.0;
+    tensor(1, 1, 1, 1) = 16.0;
+    return detail_::TensorInput(shape, buffer_type(tensor, l));
 }
 
 } // namespace tensorwrapper::testing

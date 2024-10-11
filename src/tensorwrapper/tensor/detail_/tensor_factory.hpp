@@ -171,11 +171,26 @@ public:
      */
     static pimpl_pointer construct(input_type input);
 
+    /** @brief Creates a tensor from a (possibly) nested initializer list.
+     *
+     *  These methods implement the corresponding methods on the Tensor class.
+     *  see the description there for more details.
+     *
+     *  @param[in] il A (possibly) nested initializer list containing the
+     *                initial values for the tensor.
+     *
+     *  @return A pimpl containing a tensor consistent with @p il.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the return.
+     *                        Strong throw guarantee.
+     */
+    ///@{
     static pimpl_pointer construct(scalar_il_type il);
     static pimpl_pointer construct(vector_il_type il);
     static pimpl_pointer construct(matrix_il_type il);
     static pimpl_pointer construct(tensor3_il_type il);
     static pimpl_pointer construct(tensor4_il_type il);
+    ///@}
 
     // -------------------------------------------------------------------------
     // -- Assessing input validity

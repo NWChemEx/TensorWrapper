@@ -45,6 +45,47 @@ TEST_CASE("Tensor") {
             REQUIRE(vector.buffer().are_equal(vector_buffer_corr));
         }
 
+        SECTION("scalar_il_type") {
+            Tensor t(42.0);
+            Tensor corr(testing::smooth_scalar());
+            REQUIRE(t == corr);
+        }
+
+        SECTION("vector_il_type") {
+            using vector_il_type = typename Tensor::vector_il_type;
+            vector_il_type il{0.0, 1.0, 2.0, 3.0, 4.0};
+            Tensor t(il);
+            Tensor corr(testing::smooth_vector());
+            REQUIRE(t == corr);
+        }
+
+        SECTION("matrix_il_type") {
+            using matrix_il_type = typename Tensor::matrix_il_type;
+            matrix_il_type il{{1.0, 2.0}, {3.0, 4.0}};
+            Tensor t(il);
+            Tensor corr(testing::smooth_matrix());
+            REQUIRE(t == corr);
+        }
+
+        SECTION("tensor3_il_type") {
+            using tensor3_il_type = typename Tensor::tensor3_il_type;
+            tensor3_il_type il{{{1.0, 2.0}, {3.0, 4.0}},
+                               {{5.0, 6.0}, {7.0, 8.0}}};
+            Tensor t(il);
+            Tensor corr(testing::smooth_tensor3());
+            REQUIRE(t == corr);
+        }
+
+        SECTION("tensor4_il_type") {
+            using tensor4_il_type = typename Tensor::tensor4_il_type;
+            tensor4_il_type il{
+              {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}},
+              {{{9.0, 10.0}, {11.0, 12.0}}, {{13.0, 14.0}, {15.0, 16.0}}}};
+            Tensor t(il);
+            Tensor corr(testing::smooth_tensor4());
+            REQUIRE(t == corr);
+        }
+
         testing::test_copy_move_ctor_and_assignment(scalar, vector);
     }
 

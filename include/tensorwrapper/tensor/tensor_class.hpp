@@ -145,11 +145,40 @@ public:
     Tensor(disable_if_tensor_t<Args>&&... args) :
       Tensor(input_type(std::forward<Args>(args)...)) {}
 
-    Tensor(scalar_il_type il);
+    /** @brief Creates a tensor from a (possibly) nested initializer list.
+     *
+     *  By nesting initializer lists it is possible to specify the initial
+     *  values for a tensor and the logical layout. For example providing a
+     *  single floating-point value indicates that the tensor is a scalar.
+     *  Providing an initializer list of floating-point values indicates the
+     *  tensor is a  vector. Providing an initializer list of initializer lists
+     *  of floating-point values creates a matrix, or in general @f$r@f$ nested
+     *  initializer lists create a rank @f$r@f$ tensor.
+     *
+     *  @warning At present these methods do NOT support jagged tensors. It is
+     *           possible to extend these methods to jagged tensors, but it is
+     *           not yet implemented.
+     *
+     *  @note Because of how C++ resolves initializer lists we need to have the
+     *        public API overloaded for every rank tensor we want to support or
+     *        require the user to work out the il type themselves. All of these
+     *        dispatch to the same backend.
+     *
+     *  @param[in] il A (possibly) nested initializer list containing the
+     *                initial values for the tensor.
+     *
+     *  @throw std::runtime_error if @p il does not describe a smooth tensor.
+     *                            Strong throw guarantee.
+     *  @throw std::bad_alloc if there is a problem allocating the return.
+     *                        Strong throw guarantee.
+     */
+    ///@{
+    explicit Tensor(scalar_il_type il);
     Tensor(vector_il_type il);
     Tensor(matrix_il_type il);
     Tensor(tensor3_il_type il);
     Tensor(tensor4_il_type il);
+    ///@}
 
     /** @brief Initializes *this with a deep copy of @p other.
      *

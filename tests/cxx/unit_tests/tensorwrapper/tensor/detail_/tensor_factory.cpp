@@ -94,7 +94,7 @@ TEST_CASE("TensorFactory") {
         REQUIRE(result->are_equal(alloc));
     }
 
-    SECTION("construct") {
+    SECTION("construct(input)") {
         SECTION("Can create default pimpl") {
             auto pdefaulted = TensorFactory::construct(TensorInput{});
             REQUIRE(pdefaulted == nullptr);
@@ -112,6 +112,46 @@ TEST_CASE("TensorFactory") {
             using except_t = std::runtime_error;
             REQUIRE_THROWS_AS(TensorFactory::construct(std::move(i)), except_t);
         }
+    }
+
+    SECTION("construct(scalar_il_type)") {
+        auto ppimpl = TensorFactory::construct(42.0);
+        auto corr   = TensorFactory::construct(testing::smooth_scalar());
+        REQUIRE(*ppimpl == *corr);
+    }
+
+    SECTION("construct(vector_il_type)") {
+        using vector_il_type = typename TensorFactory::vector_il_type;
+        vector_il_type il{0.0, 1.0, 2.0, 3.0, 4.0};
+        auto ppimpl = TensorFactory::construct(il);
+        auto corr   = TensorFactory::construct(testing::smooth_vector());
+        REQUIRE(*ppimpl == *corr);
+    }
+
+    SECTION("construct(matrix_il_type)") {
+        using matrix_il_type = typename TensorFactory::matrix_il_type;
+        matrix_il_type il{{1.0, 2.0}, {3.0, 4.0}};
+        auto ppimpl = TensorFactory::construct(il);
+        auto corr   = TensorFactory::construct(testing::smooth_matrix());
+        REQUIRE(*ppimpl == *corr);
+    }
+
+    SECTION("construct(tensor3_il_type)") {
+        using tensor3_il_type = typename TensorFactory::tensor3_il_type;
+        tensor3_il_type il{{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}};
+        auto ppimpl = TensorFactory::construct(il);
+        auto corr   = TensorFactory::construct(testing::smooth_tensor3());
+        REQUIRE(*ppimpl == *corr);
+    }
+
+    SECTION("construct(tensor4_il_type)") {
+        using tensor4_il_type = typename TensorFactory::tensor4_il_type;
+        tensor4_il_type il{
+          {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}},
+          {{{9.0, 10.0}, {11.0, 12.0}}, {{13.0, 14.0}, {15.0, 16.0}}}};
+        auto ppimpl = TensorFactory::construct(il);
+        auto corr   = TensorFactory::construct(testing::smooth_tensor4());
+        REQUIRE(*ppimpl == *corr);
     }
 
     SECTION("can_make_logical_layout") {
