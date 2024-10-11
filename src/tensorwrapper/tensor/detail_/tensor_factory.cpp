@@ -188,7 +188,9 @@ auto il_to_input(T il, std::index_sequence<I...>) {
 
     data_type eigen_tensor(dims[I]...);
     auto pdata = eigen_tensor.data();
-    for(auto i = 0; i < data.size(); ++i) { pdata[i] = data[i]; }
+    for(decltype(data.size()) i = 0; i < data.size(); ++i) {
+        pdata[i] = data[i];
+    }
     shape::Smooth shape(dims.begin(), dims.end());
     layout::Physical l(shape);
     return TensorInput(shape, buffer_type(eigen_tensor, l));
