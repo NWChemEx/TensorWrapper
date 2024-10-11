@@ -17,6 +17,7 @@
 #include "il_utils.hpp"
 #include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
+#include <stdexcept>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
