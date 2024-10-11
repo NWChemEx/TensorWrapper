@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+#include "il_utils.hpp"
 #include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
+#include <stdexcept>
 #include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
+
 namespace tensorwrapper::detail_ {
 
 using pimpl_type    = typename TensorFactory::pimpl_type;
@@ -170,6 +174,49 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
 
     return std::make_unique<pimpl_type>(std::move(input.m_plogical),
                                         std::move(input.m_pbuffer));
+}
+
+namespace {
+
+/// Wraps the process of turning an initializer list into a TensorInput object
+template<typename T, std::size_t... I>
+auto il_to_input(T il, std::index_sequence<I...>) {
+    auto [dims, data] = unwrap_il(il);
+
+    using buffer_type = buffer::Eigen<double, sizeof...(I)>;
+    using data_type   = typename buffer_type::data_type;
+
+    data_type eigen_tensor(dims[I]...);
+    auto pdata = eigen_tensor.data();
+    for(decltype(data.size()) i = 0; i < data.size(); ++i) {
+        pdata[i] = data[i];
+    }
+    shape::Smooth shape(dims.begin(), dims.end());
+    layout::Physical l(shape);
+    return TensorInput(shape, buffer_type(eigen_tensor, l));
+}
+
+} // namespace
+
+pimpl_pointer TensorFactory::construct(scalar_il_type il) {
+    return construct(il_to_input(il, std::make_index_sequence<0>()));
+}
+
+pimpl_pointer TensorFactory::construct(vector_il_type il) {
+    return construct(il_to_input(il, std::make_index_sequence<1>()));
+    ;
+}
+
+pimpl_pointer TensorFactory::construct(matrix_il_type il) {
+    return construct(il_to_input(il, std::make_index_sequence<2>()));
+}
+
+pimpl_pointer TensorFactory::construct(tensor3_il_type il) {
+    return construct(il_to_input(il, std::make_index_sequence<3>()));
+}
+
+pimpl_pointer TensorFactory::construct(tensor4_il_type il) {
+    return construct(il_to_input(il, std::make_index_sequence<4>()));
 }
 
 } // namespace tensorwrapper::detail_

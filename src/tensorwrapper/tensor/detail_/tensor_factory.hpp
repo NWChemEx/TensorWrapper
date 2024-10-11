@@ -40,6 +40,21 @@ public:
     /// Type of a pointer to an object of type pimpl_type
     using pimpl_pointer = typename tensor_type::pimpl_pointer;
 
+    /// Type of an initializer list if Tensor is a scalar
+    using scalar_il_type = typename tensor_type::scalar_il_type;
+
+    /// Type of an initializer list if Tensor is a vector
+    using vector_il_type = typename tensor_type::vector_il_type;
+
+    /// Type of an initializer list if Tensor is a matrix
+    using matrix_il_type = typename tensor_type::matrix_il_type;
+
+    /// Type of an initializer list if Tensor is a rank 3 tensor
+    using tensor3_il_type = typename tensor_type::tensor3_il_type;
+
+    /// Type of an initializer list if Tensor is a rank 4 tensor
+    using tensor4_il_type = typename tensor_type::tensor4_il_type;
+
     // Pull types from input_type that we will need for our API
     using const_shape_reference    = input_type::const_shape_reference;
     using shape_pointer            = input_type::shape_pointer;
@@ -155,6 +170,27 @@ public:
      *                            Strong throw guarantee.
      */
     static pimpl_pointer construct(input_type input);
+
+    /** @brief Creates a tensor from a (possibly) nested initializer list.
+     *
+     *  These methods implement the corresponding methods on the Tensor class.
+     *  see the description there for more details.
+     *
+     *  @param[in] il A (possibly) nested initializer list containing the
+     *                initial values for the tensor.
+     *
+     *  @return A pimpl containing a tensor consistent with @p il.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the return.
+     *                        Strong throw guarantee.
+     */
+    ///@{
+    static pimpl_pointer construct(scalar_il_type il);
+    static pimpl_pointer construct(vector_il_type il);
+    static pimpl_pointer construct(matrix_il_type il);
+    static pimpl_pointer construct(tensor3_il_type il);
+    static pimpl_pointer construct(tensor4_il_type il);
+    ///@}
 
     // -------------------------------------------------------------------------
     // -- Assessing input validity
