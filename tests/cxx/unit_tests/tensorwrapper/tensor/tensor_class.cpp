@@ -122,6 +122,8 @@ TEST_CASE("Tensor") {
     }
 
     SECTION("operator==") {
+        REQUIRE(defaulted == Tensor{});
+
         Tensor other_scalar(testing::smooth_scalar());
         Tensor other_vector(testing::smooth_vector());
         REQUIRE(scalar == other_scalar);
