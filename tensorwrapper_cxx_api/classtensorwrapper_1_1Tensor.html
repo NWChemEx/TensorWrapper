@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.34</span>
+   &#160;<span id="projectnumber">0.0.35</span>
    </div>
   </td>
  </tr>
@@ -110,6 +110,26 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a8bb33f6b728ebcefdeb05c9da8aab71f">buffer_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aaea587da44957ed1348f1f54c534a27c">input_type::buffer_pointer</a></td></tr>
 <tr class="memdesc:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the tensor's buffer. <br /></td></tr>
 <tr class="separator:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85929ca1bb93159d162dbc8ab8104d77"><td class="memItemLeft" align="right" valign="top"><a id="a85929ca1bb93159d162dbc8ab8104d77"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a85929ca1bb93159d162dbc8ab8104d77">scalar_il_type</a> = double</td></tr>
+<tr class="memdesc:a85929ca1bb93159d162dbc8ab8104d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a scalar. <br /></td></tr>
+<tr class="separator:a85929ca1bb93159d162dbc8ab8104d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49549e657f4e223cfe7622f1b633e294"><td class="memItemLeft" align="right" valign="top"><a id="a49549e657f4e223cfe7622f1b633e294"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a49549e657f4e223cfe7622f1b633e294">vector_il_type</a> = std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#a85929ca1bb93159d162dbc8ab8104d77">scalar_il_type</a> &gt;</td></tr>
+<tr class="memdesc:a49549e657f4e223cfe7622f1b633e294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a vector. <br /></td></tr>
+<tr class="separator:a49549e657f4e223cfe7622f1b633e294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0b6193c6ac4a8620bd0e477afc3c58"><td class="memItemLeft" align="right" valign="top"><a id="acf0b6193c6ac4a8620bd0e477afc3c58"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#acf0b6193c6ac4a8620bd0e477afc3c58">matrix_il_type</a> = std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#a49549e657f4e223cfe7622f1b633e294">vector_il_type</a> &gt;</td></tr>
+<tr class="memdesc:acf0b6193c6ac4a8620bd0e477afc3c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a matrix. <br /></td></tr>
+<tr class="separator:acf0b6193c6ac4a8620bd0e477afc3c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ea66c7afb686eeab03b13f1791d4848"><td class="memItemLeft" align="right" valign="top"><a id="a2ea66c7afb686eeab03b13f1791d4848"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a2ea66c7afb686eeab03b13f1791d4848">tensor3_il_type</a> = std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#acf0b6193c6ac4a8620bd0e477afc3c58">matrix_il_type</a> &gt;</td></tr>
+<tr class="memdesc:a2ea66c7afb686eeab03b13f1791d4848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a rank 3 tensor. <br /></td></tr>
+<tr class="separator:a2ea66c7afb686eeab03b13f1791d4848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec53b217d9b03c0a4dafe6147dede129"><td class="memItemLeft" align="right" valign="top"><a id="aec53b217d9b03c0a4dafe6147dede129"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aec53b217d9b03c0a4dafe6147dede129">tensor4_il_type</a> = std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#a2ea66c7afb686eeab03b13f1791d4848">tensor3_il_type</a> &gt;</td></tr>
+<tr class="memdesc:aec53b217d9b03c0a4dafe6147dede129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a rank 4 tensor. <br /></td></tr>
+<tr class="separator:aec53b217d9b03c0a4dafe6147dede129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -151,13 +171,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab063233acba20c6e07f46fb7222e9be3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab063233acba20c6e07f46fb7222e9be3">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;rhs) const noexcept</td></tr>
 <tr class="memdesc:ab063233acba20c6e07f46fb7222e9be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this different from <code>rhs</code>?  <a href="classtensorwrapper_1_1Tensor.html#ab063233acba20c6e07f46fb7222e9be3">More...</a><br /></td></tr>
 <tr class="separator:ab063233acba20c6e07f46fb7222e9be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:abce1ee61e8a582fca8d457999a493eb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#abce1ee61e8a582fca8d457999a493eb9">Tensor</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html#a85929ca1bb93159d162dbc8ab8104d77">scalar_il_type</a> il)</td></tr>
+<tr class="memdesc:abce1ee61e8a582fca8d457999a493eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a tensor from a (possibly) nested initializer list.  <a href="classtensorwrapper_1_1Tensor.html#abce1ee61e8a582fca8d457999a493eb9">More...</a><br /></td></tr>
+<tr class="separator:abce1ee61e8a582fca8d457999a493eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade80d71ba9b98e3843dd73457902f6d0"><td class="memItemLeft" align="right" valign="top"><a id="ade80d71ba9b98e3843dd73457902f6d0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Tensor</b> (<a class="el" href="classtensorwrapper_1_1Tensor.html#a49549e657f4e223cfe7622f1b633e294">vector_il_type</a> il)</td></tr>
+<tr class="separator:ade80d71ba9b98e3843dd73457902f6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a120ab56ab40cab2ff4312429e987de"><td class="memItemLeft" align="right" valign="top"><a id="a9a120ab56ab40cab2ff4312429e987de"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Tensor</b> (<a class="el" href="classtensorwrapper_1_1Tensor.html#acf0b6193c6ac4a8620bd0e477afc3c58">matrix_il_type</a> il)</td></tr>
+<tr class="separator:a9a120ab56ab40cab2ff4312429e987de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab20854559fca1dcb490e05613933c746"><td class="memItemLeft" align="right" valign="top"><a id="ab20854559fca1dcb490e05613933c746"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Tensor</b> (<a class="el" href="classtensorwrapper_1_1Tensor.html#a2ea66c7afb686eeab03b13f1791d4848">tensor3_il_type</a> il)</td></tr>
+<tr class="separator:ab20854559fca1dcb490e05613933c746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621a5f5143e7d278c50c0cc0a91e6a72"><td class="memItemLeft" align="right" valign="top"><a id="a621a5f5143e7d278c50c0cc0a91e6a72"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Tensor</b> (<a class="el" href="classtensorwrapper_1_1Tensor.html#aec53b217d9b03c0a4dafe6147dede129">tensor4_il_type</a> il)</td></tr>
+<tr class="separator:a621a5f5143e7d278c50c0cc0a91e6a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a multi-dimensional array of values. </p>
 <p>The <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> class is envisioned as being the most user-facing class of TensorWrapper and forms the entry point into TensorWrapper's DSL. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad1e68d6937d1df0a3dc868096184d8bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1e68d6937d1df0a3dc868096184d8bc">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1e68d6937d1df0a3dc868096184d8bc">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +235,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ae356ba656668267d37cf9379756ae3d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae356ba656668267d37cf9379756ae3d7">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae356ba656668267d37cf9379756ae3d7">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,8 +291,52 @@ template&lt;typename... Args&gt; </div>
 
 </div>
 </div>
+<a id="abce1ee61e8a582fca8d457999a493eb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abce1ee61e8a582fca8d457999a493eb9">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::Tensor::Tensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#a85929ca1bb93159d162dbc8ab8104d77">scalar_il_type</a>&#160;</td>
+          <td class="paramname"><em>il</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a tensor from a (possibly) nested initializer list. </p>
+<p>By nesting initializer lists it is possible to specify the initial values for a tensor and the logical layout. For example providing a single floating-point value indicates that the tensor is a scalar. Providing an initializer list of floating-point values indicates the tensor is a vector. Providing an initializer list of initializer lists of floating-point values creates a matrix, or in general <img class="formulaInl" alt="$r$" src="form_3.png"/> nested initializer lists create a rank <img class="formulaInl" alt="$r$" src="form_3.png"/> tensor.</p>
+<dl class="section warning"><dt>Warning</dt><dd>At present these methods do NOT support jagged tensors. It is possible to extend these methods to jagged tensors, but it is not yet implemented.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Because of how C++ resolves initializer lists we need to have the public API overloaded for every rank tensor we want to support or require the user to work out the il type themselves. All of these dispatch to the same backend.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">il</td><td>A (possibly) nested initializer list containing the initial values for the tensor.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>il</code> does not describe a smooth tensor. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating the return. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8fb700692f2fa743a68734c440be08f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb700692f2fa743a68734c440be08f9">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb700692f2fa743a68734c440be08f9">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +368,7 @@ template&lt;typename... Args&gt; </div>
 </div>
 </div>
 <a id="a278149eaa7b86551d4b3a81ef2c5876b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a278149eaa7b86551d4b3a81ef2c5876b">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a278149eaa7b86551d4b3a81ef2c5876b">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
