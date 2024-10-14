@@ -18,6 +18,7 @@
 #include <cstddef>
 #include <memory>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
+#include <tensorwrapper/shape/shape_traits.hpp>
 namespace tensorwrapper::shape {
 
 /** @brief Code factorization for the various types of shapes.
@@ -34,19 +35,23 @@ namespace tensorwrapper::shape {
  *  - get_rank_()
  *  - get_size_()
  */
-class ShapeBase : public detail_::PolymorphicBase<ShapeBase> {
+class ShapeBase : public tensorwrapper::detail_::PolymorphicBase<ShapeBase> {
+private:
+    /// Type implementing the traits of this
+    using traits_type = ShapeTraits<ShapeBase>;
+
 public:
     /// Type all shapes inherit from
-    using shape_base = ShapeBase;
+    using shape_base = typename traits_type::shape_base;
 
     /// Type of a pointer to the base of a shape object
-    using base_pointer = std::unique_ptr<shape_base>;
+    using base_pointer = typename traits_type::base_pointer;
 
     /// Type used to hold the rank of a tensor
-    using rank_type = unsigned short;
+    using rank_type = typename traits_type::rank_type;
 
     /// Type used to specify the number of elements in the shape
-    using size_type = std::size_t;
+    using size_type = typename traits_type::size_type;
 
     /// No-op for ShapeBase because ShapeBase has no state
     ShapeBase() noexcept = default;
