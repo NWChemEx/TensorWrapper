@@ -75,6 +75,7 @@ void Tensor::swap(Tensor& other) noexcept { m_pimpl_.swap(other.m_pimpl_); }
 
 bool Tensor::operator==(const Tensor& rhs) const noexcept {
     if(has_pimpl_() != rhs.has_pimpl_()) return false;
+    if(!has_pimpl_()) return true; // Both don't have a PIMPL
     return (*m_pimpl_) == (*rhs.m_pimpl_);
 }
 
