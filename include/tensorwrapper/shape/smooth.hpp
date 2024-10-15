@@ -166,6 +166,12 @@ protected:
                                size_type(1), std::multiplies<size_type>());
     }
 
+    smooth_reference as_smooth_() override { return smooth_reference(*this); }
+
+    virtual const_smooth_reference as_smooth_() const override {
+        return const_smooth_reference(*this);
+    }
+
     /// Implements are_equal by calling ShapeBase::are_equal_impl_
     bool are_equal_(const ShapeBase& rhs) const noexcept override {
         return are_equal_impl_<Smooth>(rhs);

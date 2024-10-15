@@ -1,7 +1,6 @@
 #pragma once
 #include <tensorwrapper/detail_/view_traits.hpp>
 #include <tensorwrapper/shape/shape_traits.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::shape {
 
@@ -76,21 +75,113 @@ public:
              typename = enable_if_mutable_to_immutable_cast_t<SmoothType2>>
     SmoothView(const SmoothView<SmoothType2>& other);
 
+    /** @brief Creates a new view aliasing the same Smooth object as @p other.
+     *
+     *  Views alias their state. The view constructed by this copy ctor will
+     *  alias the same state that is aliased by @p other. In this sense it is
+     *  a shallow copy of the aliased state and a deep copy of @p other.
+     *
+     *  @param[in] other The view to copy.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
     SmoothView(const SmoothView& other);
+
+    /** @brief Creates a new view by taking the state of @p other.
+     *
+     *  This ctor initializes *this by taking the state from @p other. After
+     *  construction *this will alias the same object @p other did. It is worth
+     *  noting the aliased object is untouched after this operation.
+     *
+     *  @param[in,out] other The object to take the state from. After this
+     *                       operation @p other will be in a valid, but
+     *                       otherwise undefined state.
+     *
+     *  @throw None No throw guarantee.
+     */
     SmoothView(SmoothView&& other) noexcept;
+
+    /** @brief Overwrites *this to alias the same Smooth object as @p other.
+     *
+     *  This operator causes the state in *this to instead alias the Smooth
+     *  object in @p other. This does not release the state associated with the
+     *  aliased object.
+     *
+     *  @param[in] other The view to copy.
+     *
+     *  @return *this after making it alias the state in @p other.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     */
     SmoothView& operator=(const SmoothView& rhs);
+
+    /** @brief Overrides the state of *this with the state of @p other.
+     *
+     *  This operator causes the state to be replaced by the state in @p other.
+     *  This does not release the state associated with the aliased object nor
+     *  does it take state from the aliased object.
+     *
+     *  @param[in,out] other The object to take the state from. After this
+     *                       operation @p other will be in a valid, but
+     *                       otherwise undefined state.
+     *
+     *  @return *this after taking the state of @p other.
+     *
+     *  @throw None No throw guarantee.
+     */
     SmoothView& operator=(SmoothView&& rhs) noexcept;
 
     /// Nothrow defaulted dtor
     ~SmoothView() noexcept;
 
+    /** @brief What is the extent of the i-th mode of the tensor with the
+     *         aliased shape?
+     *
+     *  @param[in] i The offset of the requested mode. @p i must be in the
+     *               range [0, size()).
+     *
+     *  @return The length of the @p i-th mode in a tensor with the aliased
+     *          shape.
+     *
+     *  @throw std::out_of_range if @p i is not in the range [0, size()). Strong
+     *                           throw guarantee.
+     */
     rank_type extent(size_type i) const;
+
+    /** @brief What is the rank of the tensor the aliased shape describes?
+     *
+     *  @return The rank of the tensor with the aliased shape.
+     *
+     *  @throw None No throw guarantee.
+     */
     rank_type rank() const noexcept;
+
+    /** @brief How many elements are in the tensor the aliased shape describes?
+     *
+     *  @return The number of elements in a tensor with the aliased shape.
+     *
+     *  @throw None No throw guarantee.
+     */
     size_type size() const noexcept;
 
     /// Swaps the state of *this with that of @p rhs
     void swap(SmoothView& rhs) noexcept;
 
+    /** @brief Is the Smooth shape aliased by *this the same as that aliased by
+     *         @p rhs?
+     *
+     *  Two SmoothView objects are value equal if the Smooth objects they alias
+     *  compare value equal.
+     *
+     *  @param[in] rhs The view aliasing the shape to compare to.
+     *
+     *  @return True if *this aliases a Smooth object which is value equal to
+     *          that aliased by @p rhs and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
     bool operator==(const SmoothView<const SmoothType>& rhs) const noexcept;
 
     /** @brief Is *this different from @p rhs?

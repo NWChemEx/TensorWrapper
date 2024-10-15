@@ -16,6 +16,7 @@
 
 #include "../helpers.hpp"
 #include <set>
+#include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
 
 using namespace tensorwrapper::testing;
@@ -25,6 +26,7 @@ using rank_type = typename Smooth::rank_type;
 using size_type = typename Smooth::size_type;
 
 using types2test = std::pair<Smooth, const Smooth>;
+
 TEMPLATE_LIST_TEST_CASE("SmoothView", "", types2test) {
     using view_type       = SmoothView<TestType>;
     using const_view_type = SmoothView<const std::decay_t<TestType>>;

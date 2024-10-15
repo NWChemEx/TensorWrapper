@@ -1,5 +1,6 @@
 #pragma once
 #include "smooth_view_pimpl.hpp"
+#include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::shape::detail_ {
 

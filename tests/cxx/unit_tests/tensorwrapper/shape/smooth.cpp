@@ -94,6 +94,16 @@ TEST_CASE("Smooth") {
             REQUIRE(tensor.size() == size_type(60));
         }
 
+        SECTION("as_smooth()") {
+            REQUIRE(scalar.as_smooth() == scalar);
+            REQUIRE(vector.as_smooth() == vector);
+        }
+
+        SECTION("as_smooth() const") {
+            REQUIRE(std::as_const(scalar).as_smooth() == scalar);
+            REQUIRE(std::as_const(vector).as_smooth() == vector);
+        }
+
         SECTION("are_equal_") {
             // Relies on operator==, which is tested below. So just spot check.
             REQUIRE(scalar.are_equal(Smooth{}));
