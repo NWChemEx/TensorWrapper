@@ -1,4 +1,4 @@
-#include "detail_/smooth_view_pimpl.hpp"
+#include "detail_/smooth_alias.hpp"
 #include <tensorwrapper/shape/smooth_view.hpp>
 
 namespace tensorwrapper::shape {
@@ -8,7 +8,12 @@ namespace tensorwrapper::shape {
 
 TPARAMS
 SMOOTH_VIEW::SmoothView(smooth_reference smooth) :
-  m_pimpl_(std::make_unique<typename traits_type::pimpl_type>(smooth)) {}
+  m_pimpl_(std::make_unique<detail_::SmoothAlias<SmoothType>>(smooth)) {}
+
+TPARAMS
+template<typename SmoothType2, typename>
+SMOOTH_VIEW::SmoothView(const SmoothView<SmoothType2>& other) :
+  m_pimpl_(other.m_pimpl_->as_const()) {}
 
 TPARAMS
 SMOOTH_VIEW::SmoothView(const SmoothView& other) : m_pimpl_(other.clone_()) {}
@@ -49,10 +54,11 @@ void SMOOTH_VIEW::swap(SmoothView& rhs) noexcept {
 }
 
 TPARAMS
-bool SMOOTH_VIEW::operator==(const SmoothView& rhs) const noexcept {
+bool SMOOTH_VIEW::operator==(
+  const SmoothView<const SmoothType>& rhs) const noexcept {
     if(has_pimpl_() != rhs.has_pimpl_()) return false;
     if(!has_pimpl_()) return true;
-    return (*m_pimpl_) == (*rhs.m_pimpl_);
+    return m_pimpl_->as_const()->are_equal(*rhs.m_pimpl_);
 }
 
 TPARAMS
@@ -68,6 +74,7 @@ typename SMOOTH_VIEW::pimpl_pointer SMOOTH_VIEW::clone_() const {
 #undef SMOOTH_VIEW
 #undef TPARAMS
 
+template SmoothView<const Smooth>::SmoothView(const SmoothView<Smooth>&);
 template class SmoothView<Smooth>;
 template class SmoothView<const Smooth>;
 

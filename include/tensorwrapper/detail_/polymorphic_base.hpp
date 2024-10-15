@@ -103,8 +103,13 @@ public:
      *  @throw None No throw guarantee.
      */
     bool are_equal(const_base_reference rhs) const noexcept {
+        // Downcast *this so it can be passed to are_equal_
         const_base_reference plhs = static_cast<const_base_reference>(*this);
-        return are_equal_(rhs) && rhs.are_equal_(plhs);
+
+        // This line is necessary if are_equal_ is overriden in BaseType
+        const PolymorphicBase& rhs_upcast = rhs;
+
+        return are_equal_(rhs) && rhs_upcast.are_equal_(plhs);
     }
 
     /** @brief Determines if *this and @p rhs are polymorphically different.

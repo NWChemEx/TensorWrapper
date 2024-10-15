@@ -1,0 +1,44 @@
+#include "../../helpers.hpp"
+#include <tensorwrapper/shape/detail_/smooth_alias.hpp>
+
+using namespace tensorwrapper::shape;
+
+using types2test = std::pair<Smooth, const Smooth>;
+
+TEMPLATE_LIST_TEST_CASE("SmoothAlias", "", types2test) {
+    using pimpl_type = detail_::SmoothAlias<TestType>;
+    std::decay_t<TestType> scalar_shape{}, shape{1, 2, 3};
+
+    pimpl_type scalar(scalar_shape);
+    pimpl_type value(shape);
+
+    SECTION("CTor") {
+        REQUIRE(scalar.rank() == scalar_shape.rank());
+        REQUIRE(scalar.size() == scalar_shape.size());
+
+        REQUIRE(value.rank() == shape.rank());
+        REQUIRE(value.size() == shape.size());
+    }
+
+    SECTION("clone") {
+        REQUIRE(scalar.clone()->are_equal(scalar));
+        REQUIRE(value.clone()->are_equal(value));
+    }
+
+    SECTION("extent") {
+        REQUIRE_THROWS_AS(scalar.extent(0), std::out_of_range);
+        REQUIRE(value.extent(0) == 1);
+        REQUIRE(value.extent(1) == 2);
+        REQUIRE(value.extent(2) == 3);
+    }
+
+    SECTION("rank") {
+        REQUIRE(scalar.rank() == 0);
+        REQUIRE(value.rank() == 3);
+    }
+
+    SECTION("size") {
+        REQUIRE(scalar.size() == 1);
+        REQUIRE(value.size() == 6);
+    }
+}
