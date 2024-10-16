@@ -18,6 +18,9 @@
 #include <cstddef>
 #include <memory>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
+#include <tensorwrapper/shape/shape_traits.hpp>
+#include <tensorwrapper/shape/smooth_view.hpp>
+
 namespace tensorwrapper::shape {
 
 /** @brief Code factorization for the various types of shapes.
@@ -34,19 +37,29 @@ namespace tensorwrapper::shape {
  *  - get_rank_()
  *  - get_size_()
  */
-class ShapeBase : public detail_::PolymorphicBase<ShapeBase> {
+class ShapeBase : public tensorwrapper::detail_::PolymorphicBase<ShapeBase> {
+private:
+    /// Type implementing the traits of this
+    using traits_type = ShapeTraits<ShapeBase>;
+
 public:
     /// Type all shapes inherit from
-    using shape_base = ShapeBase;
+    using shape_base = typename traits_type::shape_base;
 
     /// Type of a pointer to the base of a shape object
-    using base_pointer = std::unique_ptr<shape_base>;
+    using base_pointer = typename traits_type::base_pointer;
 
     /// Type used to hold the rank of a tensor
-    using rank_type = unsigned short;
+    using rank_type = typename traits_type::rank_type;
 
     /// Type used to specify the number of elements in the shape
-    using size_type = std::size_t;
+    using size_type = typename traits_type::size_type;
+
+    /// Type of an object acting like a mutable reference to a Smooth shape
+    using smooth_reference = SmoothView<Smooth>;
+
+    /// Type of an object acting like a read-only reference to a Smooth shape
+    using const_smooth_reference = SmoothView<const Smooth>;
 
     /// No-op for ShapeBase because ShapeBase has no state
     ShapeBase() noexcept = default;
@@ -83,6 +96,34 @@ public:
      */
     size_type size() const noexcept { return get_size_(); }
 
+    /** @brief Returns a view of *this as a Smooth object.
+     *
+     *  It is possible to view any shape as a smooth shape. For more exotic
+     *  shapes this may require flattening nestings and padding dimensions.
+     *  This method ultimately dispatches to the as_smooth_ overload of the
+     *  derived class to control how to smooth the shape out.
+     *
+     *  @return A view of *this consistent with thinking of *this as a Smooth
+     *          object.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the view. Strong
+     *                        throw guarantee.
+     */
+    smooth_reference as_smooth() { return as_smooth_(); }
+
+    /** @brief Returns a read-only view of *this as a Smooth object.
+     *
+     *  This method works the same as the non-const version except that the
+     *  resulting view is read-only.
+     *
+     *  @return A read-only view of *this consistent with thinking of *this as
+     *          a Smooth object.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the view. Strong
+     *                        throw guarantee.
+     */
+    const_smooth_reference as_smooth() const { return as_smooth_(); }
+
 protected:
     /** @brief Used to implement rank().
      *
@@ -108,6 +149,12 @@ protected:
      *              subject to a no-throw guarantee.
      */
     virtual size_type get_size_() const noexcept = 0;
+
+    /// Derived class should override to be consistent with as_smooth()
+    virtual smooth_reference as_smooth_() = 0;
+
+    /// Derived class should override to be consistent with as_smooth() const
+    virtual const_smooth_reference as_smooth_() const = 0;
 };
 
 } // namespace tensorwrapper::shape
