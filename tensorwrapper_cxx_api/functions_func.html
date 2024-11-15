@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.35</span>
+   &#160;<span id="projectnumber">0.0.36</span>
    </div>
   </td>
  </tr>
@@ -88,11 +88,26 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#af8ee6d1b455b90cb25552ce6aec53d8f">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#a3bef0d7cf78e3919fa9f45b0466bc17a">tensorwrapper::layout::Logical</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a1fd72079e5ba66dec9acbf671adb083d">tensorwrapper::layout::Physical</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a9fe5860a29e83a487f969ba4b6e3d8ae">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ab7ca3a4130ba23645098e1cc77d8a342">tensorwrapper::shape::Smooth</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#aaf2f990b9a30fac0c3c60b6ed892f87e">tensorwrapper::symmetry::Permutation</a>
 </li>
 <li>are_equal_impl_()
 : <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a2223944f002e239a36207f6e5203b44b">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
+</li>
+<li>as_const()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a88e8fc72870c35043fca05e452da3032">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
+</li>
+<li>as_const_()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a6aaf7ed03e0afc1d94646b2b1cd7d85f">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a8bf1df7b57ef74a6b384e2f4d51e8028">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
+</li>
+<li>as_smooth()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ac416d9de13de18404af646efb60d1c6b">tensorwrapper::shape::ShapeBase</a>
+</li>
+<li>as_smooth_()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#abc1d89dcc40a397d5eff3e46828573db">tensorwrapper::shape::ShapeBase</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a5342c24b40c890838656a4c90e4a7b9f">tensorwrapper::shape::Smooth</a>
 </li>
 <li>assert_valid()
 : <a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html#af83a91c613e7d9b22d1682ef9098453d">tensorwrapper::detail_::TensorFactory</a>
@@ -128,6 +143,7 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad0ce72301f81d6ad7f6316e84dee80e5">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#a7ba14c956d52f3606a2a23d342a8336a">tensorwrapper::layout::Logical</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a38aee75a8072d1306b2f28cfaab44e40">tensorwrapper::layout::Physical</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a0824489bea9513ac0f1316105a15f3e2">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">tensorwrapper::shape::Smooth</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a01deb070f1bdb9e781269952cffb9d30">tensorwrapper::symmetry::Permutation</a>
 </li>
@@ -169,7 +185,13 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#ab011a6123662907cf641e69993cf9903">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>
 </li>
 <li>extent()
-: <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514">tensorwrapper::shape::Smooth</a>
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a278cf66ff7a1121db5b5734d0e0397d7">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514">tensorwrapper::shape::Smooth</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#a92e3465e55b472e01b3baa110e5cb2d1">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
+</li>
+<li>extent_()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#aa1a5f99a1db697084af7a7d65665a827">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a249def1e8c78d40bb39c88427073b125">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
 </li>
 </ul>
 
@@ -236,6 +258,7 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a2e16947f53a206be4abac5f2bfeaf3cf">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a241920da32354167c943e89a4e7bd475">tensorwrapper::layout::LayoutBase</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a2a77ec769b1286d4026a3be0cb2dec73">tensorwrapper::shape::Smooth</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#ad30e0c291ef1724aec4af5d57bdbafb2">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1sparsity_1_1Pattern.html#a11dd23cf1150db6098af7ecb4a568df5">tensorwrapper::sparsity::Pattern</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#a6c935052924a0f12afd9bcca7856b971">tensorwrapper::symmetry::Group</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a278addd95557f4e5e6994c1d35d61452">tensorwrapper::symmetry::Permutation</a>
@@ -244,7 +267,8 @@ $(function() {
 <li>operator=()
 : <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a00b12aad85b2094f9d34ea6584956a07">tensorwrapper::buffer::BufferBase</a>
 , <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#af2853117d5e331ab5b8155b970506bee">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>
-, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#a0474cb4db720e13dc724b8a111b9f7ba">tensorwrapper::symmetry::Group</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#a5c62b93f0495f387f3d427c4abc1da7f">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#a98d26cf01052eb923d4f342ac16da9c2">tensorwrapper::symmetry::Group</a>
 , <a class="el" href="classtensorwrapper_1_1Tensor.html#aef4325a67ec34573a748491c32be7327">tensorwrapper::Tensor</a>
 </li>
 <li>operator==()
@@ -255,6 +279,7 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html#aa697a6068daaec7c5432142cb8da61ef">tensorwrapper::detail_::TensorPIMPL</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#aaf53563c36179c63d04bed88ee3dd106">tensorwrapper::layout::LayoutBase</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a1c67955bce2b67eaef143a985f601b6c">tensorwrapper::shape::Smooth</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#a9ae9fd29b801d238bd6ef4567511dd17">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1sparsity_1_1Pattern.html#a41caa3dab4c9e3d359eaf6f4ec1ff2d5">tensorwrapper::sparsity::Pattern</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#aeae67a6f8a2abd7828bc31c864052b79">tensorwrapper::symmetry::Group</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#af759ae4f4de56b8a73adc9d4c8297949">tensorwrapper::symmetry::Permutation</a>
@@ -278,7 +303,13 @@ $(function() {
 
 <h3><a id="index_r"></a>- r -</h3><ul>
 <li>rank()
-: <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788">tensorwrapper::shape::ShapeBase</a>
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#af465cb6d5598c25b0d6844cdfd683542">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788">tensorwrapper::shape::ShapeBase</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#a8e951767e07b859826915b60ef098164">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
+</li>
+<li>rank_()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a966d17c35554198372baac1d7692c030">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a816b1412c6bff33d81e94131b2d6019b">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
 </li>
 <li>runtime()
 : <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a100f87f7c9f9a7ec05b2848e231fb52a">tensorwrapper::allocator::AllocatorBase</a>
@@ -294,17 +325,30 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab3d65ac8a2376f43a2d3cd2673680c30">tensorwrapper::shape::ShapeBase</a>
 </li>
 <li>size()
-: <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab19bb1434c3cbfef14a9fccbabcf8f2d">tensorwrapper::shape::ShapeBase</a>
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a8020b9114bce052f365219883b34b975">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab19bb1434c3cbfef14a9fccbabcf8f2d">tensorwrapper::shape::ShapeBase</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#ae92748899d693c668aba236a18f18f1d">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a0286ba85caa3a734626dc9fd30049fcd">tensorwrapper::symmetry::Permutation</a>
+</li>
+<li>size_()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a7b0e28639b1cb2672243ad1bc5943954">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#ad096d9458d33e864cb75f8ece2d558a1">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>
 </li>
 <li>Smooth()
 : <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ac8e62a5c15694d6d5be6f30b88dbf409">tensorwrapper::shape::Smooth</a>
+</li>
+<li>SmoothAlias()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a572a60e47738c2db58703b2c8b9fa762">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
+</li>
+<li>SmoothView()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#aae363bf931ccf150bf336f9334a4c157">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 </li>
 <li>sparsity()
 : <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a50440d727b8a08cd238a1ea919946b39">tensorwrapper::layout::LayoutBase</a>
 </li>
 <li>swap()
 : <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a262aa155a31f827209fa995497b8c128">tensorwrapper::shape::Smooth</a>
+, <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#adfa9caf3ac4180ff4612bdefac6a5187">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#a4de17dab88782bfec5b976f59b623771">tensorwrapper::symmetry::Group</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a4b5933bcbf912a9769abf6f071dcb340">tensorwrapper::symmetry::Permutation</a>
 , <a class="el" href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">tensorwrapper::Tensor</a>
@@ -350,6 +394,9 @@ $(function() {
 </li>
 <li>~Smooth()
 : <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a578dfa1e031e303eae82ea8611d7bb7f">tensorwrapper::shape::Smooth</a>
+</li>
+<li>~SmoothView()
+: <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html#a40e2e4f8b230bb3f42af6bca310f24f9">tensorwrapper::shape::SmoothView&lt; SmoothType &gt;</a>
 </li>
 <li>~Tensor()
 : <a class="el" href="classtensorwrapper_1_1Tensor.html#a6a73c265b181e4030f01b575335a3855">tensorwrapper::Tensor</a>

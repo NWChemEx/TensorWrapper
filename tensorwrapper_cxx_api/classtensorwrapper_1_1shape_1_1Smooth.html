@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.35</span>
+   &#160;<span id="projectnumber">0.0.36</span>
    </div>
   </td>
  </tr>
@@ -103,31 +103,39 @@ Collaboration diagram for tensorwrapper::shape::Smooth:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a61ead3dcde2e5da70d902e29c83a6e5c"><td class="memItemLeft" align="right" valign="top"><a id="a61ead3dcde2e5da70d902e29c83a6e5c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a> = unsigned short</td></tr>
-<tr class="memdesc:a61ead3dcde2e5da70d902e29c83a6e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to hold the rank of a tensor. <br /></td></tr>
-<tr class="separator:a61ead3dcde2e5da70d902e29c83a6e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394dfaf635744f01d4ee5fe0e3e6c691"><td class="memItemLeft" align="right" valign="top"><a id="a394dfaf635744f01d4ee5fe0e3e6c691"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a> = std::size_t</td></tr>
-<tr class="memdesc:a394dfaf635744f01d4ee5fe0e3e6c691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the number of elements in the shape. <br /></td></tr>
-<tr class="separator:a394dfaf635744f01d4ee5fe0e3e6c691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f619581ee8f80fdd77ecb961b116c5"><td class="memItemLeft" align="right" valign="top"><a id="a15f619581ee8f80fdd77ecb961b116c5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a> = typename traits_type::rank_type</td></tr>
+<tr class="memdesc:a15f619581ee8f80fdd77ecb961b116c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to hold the rank of a tensor. <br /></td></tr>
+<tr class="separator:a15f619581ee8f80fdd77ecb961b116c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51825e970bbb82230a789703532f9109"><td class="memItemLeft" align="right" valign="top"><a id="a51825e970bbb82230a789703532f9109"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a51825e970bbb82230a789703532f9109">size_type</a> = typename traits_type::size_type</td></tr>
+<tr class="memdesc:a51825e970bbb82230a789703532f9109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the number of elements in the shape. <br /></td></tr>
+<tr class="separator:a51825e970bbb82230a789703532f9109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1shape_1_1ShapeBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html">tensorwrapper::shape::ShapeBase</a></td></tr>
-<tr class="memitem:a61a87bf59429b8996f633e9b80096b8b inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a61a87bf59429b8996f633e9b80096b8b"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61a87bf59429b8996f633e9b80096b8b">shape_base</a> = <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html">ShapeBase</a></td></tr>
-<tr class="memdesc:a61a87bf59429b8996f633e9b80096b8b inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all shapes inherit from. <br /></td></tr>
-<tr class="separator:a61a87bf59429b8996f633e9b80096b8b inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a840f67d44840bb5090cbd32c12ec992c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a840f67d44840bb5090cbd32c12ec992c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a840f67d44840bb5090cbd32c12ec992c">base_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61a87bf59429b8996f633e9b80096b8b">shape_base</a> &gt;</td></tr>
-<tr class="memdesc:a840f67d44840bb5090cbd32c12ec992c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the base of a shape object. <br /></td></tr>
-<tr class="separator:a840f67d44840bb5090cbd32c12ec992c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61ead3dcde2e5da70d902e29c83a6e5c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a61ead3dcde2e5da70d902e29c83a6e5c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a> = unsigned short</td></tr>
-<tr class="memdesc:a61ead3dcde2e5da70d902e29c83a6e5c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to hold the rank of a tensor. <br /></td></tr>
-<tr class="separator:a61ead3dcde2e5da70d902e29c83a6e5c inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394dfaf635744f01d4ee5fe0e3e6c691 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a394dfaf635744f01d4ee5fe0e3e6c691"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a> = std::size_t</td></tr>
-<tr class="memdesc:a394dfaf635744f01d4ee5fe0e3e6c691 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the number of elements in the shape. <br /></td></tr>
-<tr class="separator:a394dfaf635744f01d4ee5fe0e3e6c691 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a941c3dce37f20546e7a7d34200975d90 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a941c3dce37f20546e7a7d34200975d90"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a941c3dce37f20546e7a7d34200975d90">shape_base</a> = typename <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html">traits_type::shape_base</a></td></tr>
+<tr class="memdesc:a941c3dce37f20546e7a7d34200975d90 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all shapes inherit from. <br /></td></tr>
+<tr class="separator:a941c3dce37f20546e7a7d34200975d90 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3acd75602fbd3d68f3578528cd5b211a inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a3acd75602fbd3d68f3578528cd5b211a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a3acd75602fbd3d68f3578528cd5b211a">base_pointer</a> = typename traits_type::base_pointer</td></tr>
+<tr class="memdesc:a3acd75602fbd3d68f3578528cd5b211a inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the base of a shape object. <br /></td></tr>
+<tr class="separator:a3acd75602fbd3d68f3578528cd5b211a inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f619581ee8f80fdd77ecb961b116c5 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a15f619581ee8f80fdd77ecb961b116c5"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a> = typename traits_type::rank_type</td></tr>
+<tr class="memdesc:a15f619581ee8f80fdd77ecb961b116c5 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to hold the rank of a tensor. <br /></td></tr>
+<tr class="separator:a15f619581ee8f80fdd77ecb961b116c5 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51825e970bbb82230a789703532f9109 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a51825e970bbb82230a789703532f9109"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a> = typename traits_type::size_type</td></tr>
+<tr class="memdesc:a51825e970bbb82230a789703532f9109 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to specify the number of elements in the shape. <br /></td></tr>
+<tr class="separator:a51825e970bbb82230a789703532f9109 inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b73c3f2152198e3d720bdb76aac806f inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a3b73c3f2152198e3d720bdb76aac806f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a3b73c3f2152198e3d720bdb76aac806f">smooth_reference</a> = <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html">SmoothView</a>&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">Smooth</a> &gt;</td></tr>
+<tr class="memdesc:a3b73c3f2152198e3d720bdb76aac806f inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an object acting like a mutable reference to a <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor.">Smooth</a> shape. <br /></td></tr>
+<tr class="separator:a3b73c3f2152198e3d720bdb76aac806f inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36d6f6490ad9a01b06e4dfbff6f423dc inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a id="a36d6f6490ad9a01b06e4dfbff6f423dc"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a36d6f6490ad9a01b06e4dfbff6f423dc">const_smooth_reference</a> = <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html">SmoothView</a>&lt; const <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">Smooth</a> &gt;</td></tr>
+<tr class="memdesc:a36d6f6490ad9a01b06e4dfbff6f423dc inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an object acting like a read-only reference to a <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor.">Smooth</a> shape. <br /></td></tr>
+<tr class="separator:a36d6f6490ad9a01b06e4dfbff6f423dc inherit pub_types_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; ShapeBase &gt;</a></td></tr>
 <tr class="memitem:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memItemLeft" align="right" valign="top"><a id="a7e74500695d4b9ef7768743fe6c1e29b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> = ShapeBase</td></tr>
@@ -148,7 +156,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac8e62a5c15694d6d5be6f30b88dbf409"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ac8e62a5c15694d6d5be6f30b88dbf409">Smooth</a> (std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a> &gt; il)</td></tr>
+<tr class="memitem:ac8e62a5c15694d6d5be6f30b88dbf409"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ac8e62a5c15694d6d5be6f30b88dbf409">Smooth</a> (std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a> &gt; il)</td></tr>
 <tr class="memdesc:ac8e62a5c15694d6d5be6f30b88dbf409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs *this with a statically specified number of extents.  <a href="classtensorwrapper_1_1shape_1_1Smooth.html#ac8e62a5c15694d6d5be6f30b88dbf409">More...</a><br /></td></tr>
 <tr class="separator:ac8e62a5c15694d6d5be6f30b88dbf409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adff2e0a992aab941cb5b40d0ceb482c5"><td class="memTemplParams" colspan="2">template&lt;typename BeginItrType , typename EndItrType &gt; </td></tr>
@@ -159,7 +167,7 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a578dfa1e031e303eae82ea8611d7bb7f">~Smooth</a> () noexcept=default</td></tr>
 <tr class="memdesc:a578dfa1e031e303eae82ea8611d7bb7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted no-throw dtor. <br /></td></tr>
 <tr class="separator:a578dfa1e031e303eae82ea8611d7bb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfd3c766b86aff5ba8bdc0aecfcf2514"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514">extent</a> (<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a> i) const</td></tr>
+<tr class="memitem:acfd3c766b86aff5ba8bdc0aecfcf2514"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514">extent</a> (<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a> i) const</td></tr>
 <tr class="memdesc:acfd3c766b86aff5ba8bdc0aecfcf2514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the extent of the <code>i</code> -th mode.  <a href="classtensorwrapper_1_1shape_1_1Smooth.html#acfd3c766b86aff5ba8bdc0aecfcf2514">More...</a><br /></td></tr>
 <tr class="separator:acfd3c766b86aff5ba8bdc0aecfcf2514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a262aa155a31f827209fa995497b8c128"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a262aa155a31f827209fa995497b8c128">swap</a> (<a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">Smooth</a> &amp;other) noexcept</td></tr>
@@ -180,12 +188,18 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#aa4162d33ca58e8eaa4da1f4a883bf377">~ShapeBase</a> () noexcept=default</td></tr>
 <tr class="memdesc:aa4162d33ca58e8eaa4da1f4a883bf377 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted polymorphic dtor. <br /></td></tr>
 <tr class="separator:aa4162d33ca58e8eaa4da1f4a883bf377 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1618a29098e0f6f6527de1879aaf9788 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788">rank</a> () const noexcept</td></tr>
+<tr class="memitem:a1618a29098e0f6f6527de1879aaf9788 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788">rank</a> () const noexcept</td></tr>
 <tr class="memdesc:a1618a29098e0f6f6527de1879aaf9788 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total rank of of the tensor described by *this.  <a href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a1618a29098e0f6f6527de1879aaf9788">More...</a><br /></td></tr>
 <tr class="separator:a1618a29098e0f6f6527de1879aaf9788 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab19bb1434c3cbfef14a9fccbabcf8f2d inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab19bb1434c3cbfef14a9fccbabcf8f2d">size</a> () const noexcept</td></tr>
+<tr class="memitem:ab19bb1434c3cbfef14a9fccbabcf8f2d inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab19bb1434c3cbfef14a9fccbabcf8f2d">size</a> () const noexcept</td></tr>
 <tr class="memdesc:ab19bb1434c3cbfef14a9fccbabcf8f2d inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of elements in the tensor described by *this.  <a href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ab19bb1434c3cbfef14a9fccbabcf8f2d">More...</a><br /></td></tr>
 <tr class="separator:ab19bb1434c3cbfef14a9fccbabcf8f2d inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac416d9de13de18404af646efb60d1c6b inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a3b73c3f2152198e3d720bdb76aac806f">smooth_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ac416d9de13de18404af646efb60d1c6b">as_smooth</a> ()</td></tr>
+<tr class="memdesc:ac416d9de13de18404af646efb60d1c6b inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view of *this as a <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor.">Smooth</a> object.  <a href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ac416d9de13de18404af646efb60d1c6b">More...</a><br /></td></tr>
+<tr class="separator:ac416d9de13de18404af646efb60d1c6b inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5246e07dcb76906588900f5cc8e265 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a36d6f6490ad9a01b06e4dfbff6f423dc">const_smooth_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#adc5246e07dcb76906588900f5cc8e265">as_smooth</a> () const</td></tr>
+<tr class="memdesc:adc5246e07dcb76906588900f5cc8e265 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a read-only view of *this as a <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor.">Smooth</a> object.  <a href="classtensorwrapper_1_1shape_1_1ShapeBase.html#adc5246e07dcb76906588900f5cc8e265">More...</a><br /></td></tr>
+<tr class="separator:adc5246e07dcb76906588900f5cc8e265 inherit pub_methods_classtensorwrapper_1_1shape_1_1ShapeBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; ShapeBase &gt;</a></td></tr>
 <tr class="memitem:a024e62fa649f93a0cd1039a136381b47 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memItemLeft" align="right" valign="top"><a id="a024e62fa649f93a0cd1039a136381b47"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a024e62fa649f93a0cd1039a136381b47">~PolymorphicBase</a> () noexcept=default</td></tr>
@@ -207,17 +221,25 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae638638ec86343c4d8a52864f6798b11"><td class="memItemLeft" align="right" valign="top"><a id="ae638638ec86343c4d8a52864f6798b11"></a>
-<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a840f67d44840bb5090cbd32c12ec992c">base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">clone_</a> () const override</td></tr>
+<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a3acd75602fbd3d68f3578528cd5b211a">base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">clone_</a> () const override</td></tr>
 <tr class="memdesc:ae638638ec86343c4d8a52864f6798b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a3b29b65a2f44ca721ce151a312a98521" title="Creates a deep polymorphic copy of *this via the base class.">clone()</a> by calling copy ctor. <br /></td></tr>
 <tr class="separator:ae638638ec86343c4d8a52864f6798b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eac7920cdc4fb2cb058ed49cad765b2"><td class="memItemLeft" align="right" valign="top"><a id="a0eac7920cdc4fb2cb058ed49cad765b2"></a>
-<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a0eac7920cdc4fb2cb058ed49cad765b2">get_rank_</a> () const noexcept override</td></tr>
+<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a0eac7920cdc4fb2cb058ed49cad765b2">get_rank_</a> () const noexcept override</td></tr>
 <tr class="memdesc:a0eac7920cdc4fb2cb058ed49cad765b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement rank by counting number of extents held by *this. <br /></td></tr>
 <tr class="separator:a0eac7920cdc4fb2cb058ed49cad765b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae61342f4e0f5a8ca8de2620e7c93d729"><td class="memItemLeft" align="right" valign="top"><a id="ae61342f4e0f5a8ca8de2620e7c93d729"></a>
-<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae61342f4e0f5a8ca8de2620e7c93d729">get_size_</a> () const noexcept override</td></tr>
+<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae61342f4e0f5a8ca8de2620e7c93d729">get_size_</a> () const noexcept override</td></tr>
 <tr class="memdesc:ae61342f4e0f5a8ca8de2620e7c93d729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement size by taking the product of the extents held by *this. <br /></td></tr>
 <tr class="separator:ae61342f4e0f5a8ca8de2620e7c93d729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5342c24b40c890838656a4c90e4a7b9f"><td class="memItemLeft" align="right" valign="top"><a id="a5342c24b40c890838656a4c90e4a7b9f"></a>
+<a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a3b73c3f2152198e3d720bdb76aac806f">smooth_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a5342c24b40c890838656a4c90e4a7b9f">as_smooth_</a> () override</td></tr>
+<tr class="memdesc:a5342c24b40c890838656a4c90e4a7b9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should override to be consistent with <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#ac416d9de13de18404af646efb60d1c6b" title="Returns a view of *this as a Smooth object.">as_smooth()</a> <br /></td></tr>
+<tr class="separator:a5342c24b40c890838656a4c90e4a7b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99985e68993900f30c6f28e8e4cc78c0"><td class="memItemLeft" align="right" valign="top"><a id="a99985e68993900f30c6f28e8e4cc78c0"></a>
+virtual <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a36d6f6490ad9a01b06e4dfbff6f423dc">const_smooth_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#a99985e68993900f30c6f28e8e4cc78c0">as_smooth_</a> () const override</td></tr>
+<tr class="memdesc:a99985e68993900f30c6f28e8e4cc78c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should override to be consistent with <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#adc5246e07dcb76906588900f5cc8e265" title="Returns a read-only view of *this as a Smooth object.">as_smooth() const</a>. <br /></td></tr>
+<tr class="separator:a99985e68993900f30c6f28e8e4cc78c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ca3a4130ba23645098e1cc77d8a342"><td class="memItemLeft" align="right" valign="top"><a id="ab7ca3a4130ba23645098e1cc77d8a342"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ab7ca3a4130ba23645098e1cc77d8a342">are_equal_</a> (const <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html">ShapeBase</a> &amp;rhs) const noexcept override</td></tr>
 <tr class="memdesc:ab7ca3a4130ba23645098e1cc77d8a342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements are_equal by calling <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a2223944f002e239a36207f6e5203b44b" title="Implements are_equal_ assuming the derived class implements operator==.">ShapeBase::are_equal_impl_</a>. <br /></td></tr>
@@ -252,7 +274,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">tensorwrapper::shape::Smooth::Smooth </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a> &gt;&#160;</td>
           <td class="paramname"><em>il</em></td><td>)</td>
           <td></td>
         </tr>
@@ -354,9 +376,9 @@ template&lt;typename BeginItrType , typename EndItrType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a61ead3dcde2e5da70d902e29c83a6e5c">rank_type</a> tensorwrapper::shape::Smooth::extent </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a15f619581ee8f80fdd77ecb961b116c5">rank_type</a> tensorwrapper::shape::Smooth::extent </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a394dfaf635744f01d4ee5fe0e3e6c691">size_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1shape_1_1ShapeBase.html#a51825e970bbb82230a789703532f9109">size_type</a>&#160;</td>
           <td class="paramname"><em>i</em></td><td>)</td>
           <td> const</td>
         </tr>

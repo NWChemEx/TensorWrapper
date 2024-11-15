@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.35</span>
+   &#160;<span id="projectnumber">0.0.36</span>
    </div>
   </td>
  </tr>
@@ -69,7 +69,8 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">tensorwrapper::detail_ Namespace Reference</div>  </div>
 </div><!--header-->
@@ -95,6 +96,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:aa6e3229f29de6317f20081b187503a29"><td class="memTemplParams" colspan="2">template&lt;typename FromType , typename ToType &gt; </td></tr>
+<tr class="memitem:aa6e3229f29de6317f20081b187503a29"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1detail__.html#aa6e3229f29de6317f20081b187503a29">enable_if_mutable_to_immutable_cast_t</a> = std::enable_if_t&lt; <a class="el" href="namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03">is_mutable_to_immutable_cast_v</a>&lt; FromType, ToType &gt; &gt;</td></tr>
+<tr class="memdesc:aa6e3229f29de6317f20081b187503a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables a templated function except when <code>is_mutable_to_immutable_cast_v&lt;FromType, ToType&gt;</code> evaluates to true.  <a href="namespacetensorwrapper_1_1detail__.html#aa6e3229f29de6317f20081b187503a29">More...</a><br /></td></tr>
+<tr class="separator:aa6e3229f29de6317f20081b187503a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33414c915fc33f0eabe804641f40abc7"><td class="memItemLeft" align="right" valign="top"><a id="a33414c915fc33f0eabe804641f40abc7"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>pimpl_type</b> = typename <a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html#a5106718edcce3b88a13ccbecf247aae6">TensorFactory::pimpl_type</a></td></tr>
 <tr class="separator:a33414c915fc33f0eabe804641f40abc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,10 +135,44 @@ Functions</h2></td></tr>
 <tr class="memitem:a410419e18d9fa2a49ad7c7ed4509b317"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; U &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1detail__.html#a410419e18d9fa2a49ad7c7ed4509b317">dynamic_pointer_cast</a> (std::unique_ptr&lt; T &gt; &amp;pbase)</td></tr>
 <tr class="memdesc:a410419e18d9fa2a49ad7c7ed4509b317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a dynamic cast of a unique_ptr.  <a href="namespacetensorwrapper_1_1detail__.html#a410419e18d9fa2a49ad7c7ed4509b317">More...</a><br /></td></tr>
 <tr class="separator:a410419e18d9fa2a49ad7c7ed4509b317"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a6a23574a75f8ab1de5e8f854c7263e03"><td class="memTemplParams" colspan="2">template&lt;typename FromType , typename ToType &gt; </td></tr>
+<tr class="memitem:a6a23574a75f8ab1de5e8f854c7263e03"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03">is_mutable_to_immutable_cast_v</a></td></tr>
+<tr class="memdesc:a6a23574a75f8ab1de5e8f854c7263e03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the cast from <code>FromType</code> to <code>ToType</code> just adding const?  <a href="namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03">More...</a><br /></td></tr>
+<tr class="separator:a6a23574a75f8ab1de5e8f854c7263e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Inline utilities and functions needed to implement the TensorWrapper library, but not considered part of the public API. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="aa6e3229f29de6317f20081b187503a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6e3229f29de6317f20081b187503a29">&#9670;&nbsp;</a></span>enable_if_mutable_to_immutable_cast_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FromType , typename ToType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacetensorwrapper_1_1detail__.html#aa6e3229f29de6317f20081b187503a29">tensorwrapper::detail_::enable_if_mutable_to_immutable_cast_t</a> = typedef std::enable_if_t&lt;<a class="el" href="namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03">is_mutable_to_immutable_cast_v</a>&lt;FromType, ToType&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disables a templated function except when <code>is_mutable_to_immutable_cast_v&lt;FromType, ToType&gt;</code> evaluates to true. </p>
+<p>If <code>View</code> is a template class with template parameter type <code>T</code>, we want the implicit conversion from <code>View&lt;T&gt;</code> to <code>View&lt;const T&gt;</code> to exist. In practice, this leaves us with two options: partial specialization of <code>View</code> for const-qualified types or use of SFINAE to disable the conversion. We prefer the latter as the former requires us to duplicate the entirety of the class. This template type will disable the accompanying function via SFINAE if <code>ToType</code> is not <code>const FromType</code>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FromType</td><td>The type we are converting from. Expected to be the template type parameter of the view we are casting from. </td></tr>
+    <tr><td class="paramname">ToType</td><td>The type we are converting to. Expected to be the template type parameter of the view we are casting to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a410419e18d9fa2a49ad7c7ed4509b317"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a410419e18d9fa2a49ad7c7ed4509b317">&#9670;&nbsp;</a></span>dynamic_pointer_cast()</h2>
 
@@ -215,6 +254,45 @@ template&lt;typename U , typename T &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a6a23574a75f8ab1de5e8f854c7263e03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a23574a75f8ab1de5e8f854c7263e03">&#9670;&nbsp;</a></span>is_mutable_to_immutable_cast_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FromType , typename ToType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool tensorwrapper::detail_::is_mutable_to_immutable_cast_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  !std::is_const_v&lt;FromType&gt; &amp;&amp;           </div>
+<div class="line">  std::is_const_v&lt;ToType&gt; &amp;&amp;              </div>
+<div class="line">  std::is_same_v&lt;const FromType, ToType&gt;</div>
+</div><!-- fragment -->
+<p>Is the cast from <code>FromType</code> to <code>ToType</code> just adding const? </p>
+<p>A common TMP pattern in implementing views is needing to convert mutable views to read-only views. This trait can be used to compare the template type parameters of two views (assuming the views are templated on what object they are acting like) in order to determine if they represent a conversion from <code>FromType</code> to <code>ToType</code> such that <code>ToType</code> is <code>const FromType</code>. If <code>ToType</code> is <code>const FromType</code> this template variable will be set to true, otherwise it will be set to false.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FromType</td><td>The type we are converting from. </td></tr>
+    <tr><td class="paramname">ToType</td><td>The type we are converting to. </td></tr>
   </table>
   </dd>
 </dl>
