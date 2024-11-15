@@ -26,8 +26,9 @@ namespace {
 
 template<typename FloatType, typename LHSType, typename RHSType>
 bool compare_eigen(const LHSType& lhs, const RHSType& rhs) {
-    auto d                        = lhs - rhs;
-    Eigen::Tensor<FloatType, 0> r = d.sum();
+    using r_type = Eigen::Tensor<FloatType, 0, Eigen::RowMajor>;
+    auto d       = lhs - rhs;
+    r_type r     = d.sum();
 
     return (r() == 0.0);
 }
