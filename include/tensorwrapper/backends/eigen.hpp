@@ -25,7 +25,7 @@ namespace tensorwrapper::eigen {
 #ifdef TENSORWRAPPER_HAS_EIGEN
 
 template<typename FloatType, unsigned short Rank>
-using data_type = Eigen::Tensor<FloatType, int(Rank)>;
+using data_type = Eigen::Tensor<FloatType, int(Rank), Eigen::RowMajor>;
 
 #else
 
