@@ -19,6 +19,7 @@
 #include <tensorwrapper/backends/backends.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/detail_/detail_.hpp>
+#include <tensorwrapper/dsl/dsl.hpp>
 #include <tensorwrapper/layout/layout.hpp>
 #include <tensorwrapper/shape/shape.hpp>
 #include <tensorwrapper/sparsity/sparsity.hpp>
