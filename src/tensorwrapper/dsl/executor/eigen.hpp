@@ -1,4 +1,5 @@
 #pragma once
+#include "detail_/eigen_dispatcher.hpp"
 #include <tensorwrapper/tensor/tensor_class.hpp>
 namespace tensorwrapper::dsl::executor {
 
@@ -8,15 +9,16 @@ namespace tensorwrapper::dsl::executor {
  */
 class Eigen {
 public:
-    using labeled_tensor = typename Tensor::labeled_tensor;
+    using labeled_tensor = typename tensorwrapper::Tensor::labeled_tensor_type;
 
     static labeled_tensor assign(labeled_tensor lhs, labeled_tensor rhs) {
-        if(lhs.labels() != rhs.labels()) { // Transpose needed
-        }
+        return lhs;
     }
 
     static labeled_tensor add(labeled_tensor result, labeled_tensor lhs,
-                              labeled_tensor rhs) {}
+                              labeled_tensor rhs) {
+        return rhs;
+    }
 };
 
 } // namespace tensorwrapper::dsl::executor

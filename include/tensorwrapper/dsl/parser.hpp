@@ -2,7 +2,9 @@
 #include <tensorwrapper/dsl/dsl_forward.hpp>
 #include <utilities/dsl/dsl.hpp>
 
-namespace tensorwrapper::dsl {
+namespace tensorwrapper {
+class Tensor;
+namespace dsl {
 
 /** @brief Object which walks the AST of an expression.
  *
@@ -35,4 +37,5 @@ protected:
 
 extern template class Parser<Tensor, std::string>;
 
-} // namespace tensorwrapper::dsl
+} // namespace dsl
+} // namespace tensorwrapper

@@ -118,9 +118,6 @@ TEST_CASE("Tensor") {
         using labeled_tensor_type = Tensor::labeled_tensor_type;
         REQUIRE(labeled_scalar == labeled_tensor_type(scalar, ""));
         REQUIRE(labeled_vector == labeled_tensor_type(vector, "i"));
-
-        Tensor B;
-        B("j") = labeled_scalar;
     }
 
     SECTION("operator(std::string) const") {

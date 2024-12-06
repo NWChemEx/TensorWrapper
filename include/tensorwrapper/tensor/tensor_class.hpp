@@ -52,11 +52,17 @@ public:
     /// Type of a pointer to the tensor's logical layout
     using logical_layout_pointer = input_type::logical_layout_pointer;
 
+    /// Type of a mutable reference to the tensor's buffer
+    using buffer_reference = input_type::buffer_reference;
+
     /// Type of a read-only reference to the tensor's buffer
     using const_buffer_reference = input_type::const_buffer_reference;
 
     /// Type of a pointer to the tensor's buffer
     using buffer_pointer = input_type::buffer_pointer;
+
+    /// Type of a pointer to a read-only buffer
+    using const_buffer_pointer = input_type::const_buffer_pointer;
 
     /// Type of an initializer list if *this is a scalar
     using scalar_il_type = double;
@@ -258,6 +264,8 @@ public:
      *                            guarantee.
      */
     const_logical_reference logical_layout() const;
+
+    buffer_reference buffer();
 
     /** @brief Read-only access to the tensor's buffer.
      *

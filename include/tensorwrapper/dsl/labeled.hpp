@@ -44,9 +44,6 @@ public:
         *this = p.dispatch(std::move(*this), std::forward<TermType>(other));
         return *this;
     }
-
-    decltype(auto) labels() { return rhs(); }
-    decltype(auto) labels() const { return rhs(); }
 };
 
 } // namespace tensorwrapper::dsl
