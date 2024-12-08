@@ -19,7 +19,7 @@ private:
               return std::visit(
                 [&l_lambda](auto&& r_lambda) {
                     Functor f;
-                    return f(l_lambda, r_lambda);
+                    return f.run(l_lambda, r_lambda);
                 },
                 r);
           },
