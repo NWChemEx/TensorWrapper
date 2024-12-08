@@ -42,6 +42,9 @@ public:
     /// Type of a pointer to an object of type buffer_base_type
     using buffer_base_pointer = typename my_base_type::base_pointer;
 
+    /// Type of a pointer to a read-only object of type buffer_base_type
+    using const_buffer_base_pointer = typename my_base_type::const_base_pointer;
+
     /// Type of the class describing the physical layout of the buffer
     using layout_type = layout::LayoutBase;
 

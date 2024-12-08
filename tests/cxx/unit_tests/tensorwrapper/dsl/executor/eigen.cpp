@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-#pragma once
-#include <tensorwrapper/allocator/allocator.hpp>
-#include <tensorwrapper/backends/backends.hpp>
-#include <tensorwrapper/buffer/buffer.hpp>
-#include <tensorwrapper/detail_/detail_.hpp>
-#include <tensorwrapper/dsl/dsl.hpp>
-#include <tensorwrapper/layout/layout.hpp>
-#include <tensorwrapper/shape/shape.hpp>
-#include <tensorwrapper/sparsity/sparsity.hpp>
-#include <tensorwrapper/symmetry/symmetry.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
+#include "../../helpers.hpp"
+#include "../../inputs.hpp"
+#include <tensorwrapper/dsl/executor/eigen.hpp>
+#include <tensorwrapper/dsl/labeled.hpp>
 
-/** @brief Contains the components of the TensorWrapper library. */
-namespace tensorwrapper {}
+using namespace tensorwrapper::dsl;
+using labeled_tensor = typename executor::Eigen::labeled_tensor;
+
+TEST_CASE("Eigen") {}

@@ -21,6 +21,7 @@
 namespace tensorwrapper {
 
 using const_logical_reference = typename Tensor::const_logical_reference;
+using buffer_reference        = typename Tensor::buffer_reference;
 using const_buffer_reference  = typename Tensor::const_buffer_reference;
 
 // -- Ctors, assignment, and dtor
@@ -62,6 +63,11 @@ Tensor::~Tensor() noexcept = default;
 const_logical_reference Tensor::logical_layout() const {
     assert_pimpl_();
     return m_pimpl_->logical_layout();
+}
+
+buffer_reference Tensor::buffer() {
+    assert_pimpl_();
+    return m_pimpl_->buffer();
 }
 
 const_buffer_reference Tensor::buffer() const {

@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/dsl/labeled.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_input.hpp>
 
 namespace tensorwrapper {
@@ -51,11 +52,17 @@ public:
     /// Type of a pointer to the tensor's logical layout
     using logical_layout_pointer = input_type::logical_layout_pointer;
 
+    /// Type of a mutable reference to the tensor's buffer
+    using buffer_reference = input_type::buffer_reference;
+
     /// Type of a read-only reference to the tensor's buffer
     using const_buffer_reference = input_type::const_buffer_reference;
 
     /// Type of a pointer to the tensor's buffer
     using buffer_pointer = input_type::buffer_pointer;
+
+    /// Type of a pointer to a read-only buffer
+    using const_buffer_pointer = input_type::const_buffer_pointer;
 
     /// Type of an initializer list if *this is a scalar
     using scalar_il_type = double;
@@ -71,6 +78,18 @@ public:
 
     /// Type of an initializer list if *this is a rank 4 tensor
     using tensor4_il_type = std::initializer_list<tensor3_il_type>;
+
+    /// Type of a label
+    using label_type = std::string;
+
+    /// Type of a read-only reference to an object of type label_type
+    using const_label_reference = const label_type&;
+
+    /// Type of a labeled tensor
+    using labeled_tensor_type = dsl::Labeled<Tensor, label_type>;
+
+    /// Type of a read-only labeled tensor
+    using const_labeled_tensor_type = dsl::Labeled<const Tensor, label_type>;
 
     /** @brief Initializes *this by processing the input provided in @p input.
      *
@@ -246,6 +265,8 @@ public:
      */
     const_logical_reference logical_layout() const;
 
+    buffer_reference buffer();
+
     /** @brief Read-only access to the tensor's buffer.
      *
      *  The buffer of a tensor contains the actual elements. Generally speaking,
@@ -259,6 +280,14 @@ public:
      *                            guarantee.
      */
     const_buffer_reference buffer() const;
+
+    labeled_tensor_type operator()(const_label_reference labels) {
+        return labeled_tensor_type(*this, labels);
+    }
+
+    const_labeled_tensor_type operator()(const_label_reference labels) const {
+        return const_labeled_tensor_type(*this, labels);
+    }
 
     // -------------------------------------------------------------------------
     // -- Utility methods

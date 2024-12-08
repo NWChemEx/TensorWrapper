@@ -42,6 +42,7 @@ public:
     // Pull in base class's types
     using my_base_type::base_pointer;
     using my_base_type::buffer_base_pointer;
+    using my_base_type::buffer_base_reference;
     using my_base_type::const_base_reference;
     using my_base_type::layout_pointer;
     using my_base_type::runtime_view_type;

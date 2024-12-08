@@ -42,6 +42,9 @@ public:
     /// Pointer to an object of type base_type
     using base_pointer = std::unique_ptr<base_type>;
 
+    /// Pointer to a read-only object of type base_type
+    using const_base_pointer = std::unique_ptr<const base_type>;
+
     /// @brief Defaulted no-throw polymorphic dtor
     virtual ~PolymorphicBase() noexcept = default;
 
