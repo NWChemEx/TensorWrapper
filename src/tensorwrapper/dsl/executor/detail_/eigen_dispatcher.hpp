@@ -11,8 +11,8 @@ private:
 
     template<typename LHSType, typename RHSType>
     auto dispatch(LHSType&& lhs, RHSType&& rhs) {
-        auto l = unwrapper::unwrap(std::forward<LHSType>(lhs));
-        auto r = unwrapper::unwrap(std::forward<RHSType>(rhs));
+        auto l = unwrapper::downcast(std::forward<LHSType>(lhs));
+        auto r = unwrapper::downcast(std::forward<RHSType>(rhs));
 
         return std::visit(
           [](auto&& l_lambda) {

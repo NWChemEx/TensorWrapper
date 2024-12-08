@@ -4,6 +4,19 @@
 
 namespace tensorwrapper::allocator::detail_ {
 
+/** @brief Unwraps a type-erased EigenBuffer object into a std::variant.
+ *
+ *  Eigen has templated their tensor class on the floating point type and the
+ *  rank of the tensor. The latter is particularly annoying to deal with because
+ *  TensorWrapper treats the rank as a runtime value. To get around this we
+ *  define a variant type, EigenBufferUnwrapper::variant_type, that is capable
+ *  of holding every EigenBuffer object from rank 0 to rank
+ *  "EigenBufferUnwrapper::max_rank". The TMP for working out the typedef
+ *  "EigneBufferUnwrapper::variant_type" lives within *this. The remainder of
+ *  *this contains a static method `downcast` which takes care of the downcast
+ *  into the variant.
+ *
+ */
 struct EigenBufferUnwrapper {
     /// The maximum Eigen rank we are considering
     static constexpr std::size_t max_rank = 10;
@@ -15,34 +28,85 @@ struct EigenBufferUnwrapper {
     template<typename FloatType, std::size_t I>
     using buffer_type = buffer::Eigen<FloatType, I>;
 
+    /// Used only to work out the variant_type for @p FloatType
     template<typename FloatType, std::size_t... I>
     static auto dummy(std::index_sequence<I...>)
       -> std::variant<buffer_type<FloatType, I>...>;
 
+    /// Concatenates variants with floating point types @p Args
     template<typename... Args>
-    using type_ = utilities::type_traits::variant::cat_t<decltype(dummy<Args>(
-      std::declval<sequence_type>()))...>;
+    using variant_type_ =
+      utilities::type_traits::variant::cat_t<decltype(dummy<Args>(
+        std::declval<sequence_type>()))...>;
 
-    using type = type_<float, double>;
+    /// The variant for the floating points we are considering
+    using variant_type = variant_type_<float, double>;
 
+    /** @brief API for downcasting a buffer and putting it into a variant.
+     *
+     *  @tparam BufferType The base type of the buffer we are downcasting.
+     *                     BufferType may be a reference and/or cv-qualified.
+     *
+     *  This method is a user-friendly API for the downcast. It wraps the
+     *  less friendly API which requires explicit template parameters.
+     *
+     *  @param[in] buffer The object to downcast.
+     *
+     *  @return A std::variant containing the downcast buffer.
+     *
+     *  @throw std::runtime_error if the rank of the tensor exceeds `max_rank`.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if the buffer contains a floating-point type
+     *                            *this does not support. See the definition of
+     *                            `variant_type` for the supported floating-
+     *                            point types. Strong throw guarantee.
+     */
     template<typename BufferType>
-    static type unwrap(BufferType&& buffer) {
-        return unwrap_<0>(std::forward<BufferType>(buffer));
+    static variant_type downcast(BufferType&& buffer) {
+        return downcast_<0>(std::forward<BufferType>(buffer));
     }
 
+private:
+    /** @brief Tries to downcast to EigenBuffer<T, Rank> for all known Ts.
+     *
+     *  This method implements downcast by recursion. At each level of recursion
+     *  we compare the runtime rank of `buffer` to the compile time rank of the
+     *  function (given by `Rank`). If they match we do the downcast; if they
+     *  don't match we recurse. The downcasts explicitly try each floating point
+     *  type we support.
+     *  @throw std::runtime_error if the rank of the tensor exceeds `max_rank`.
+     *                            Strong throw guarantee.
+     *  @throw std::runtime_error if the buffer contains a floating-point type
+     *                            *this does not support. See the definition of
+     *                            `variant_type` for the supported floating-
+     *                            point types. Strong throw guarantee.
+     *
+     */
     template<unsigned short Rank, typename BufferType>
-    static type unwrap_(BufferType&& buffer) {
+    static variant_type downcast_(BufferType&& buffer) {
+        // Prevents infinite recursion and provides a runtime error if the
+        // runtime rank of the tensor is too high.
         if constexpr(Rank == max_rank) {
             throw std::runtime_error("Please increase max_rank");
         } else {
+            // Does buffer have rank "Rank"?
             if(buffer.layout().shape().rank() == Rank) {
-                using eigen_type = buffer_type<double, Rank>;
-                auto pbuffer     = dynamic_cast<eigen_type*>(&buffer());
-                if(pbuffer == nullptr)
-                    throw std::runtime_error("Not convertible to Eigen");
-                return type{*pbuffer};
+                using eigend_type = buffer_type<double, Rank>;
+                using eigenf_type = buffer_type<float, Rank>;
+
+                auto pdouble_buffer = dynamic_cast<eigend_type*>(&buffer);
+                if(pdouble_buffer != nullptr)
+                    return variant_type(*pdouble_buffer);
+                else {
+                    auto pfloat_buffer = dynamic_cast<eigenf_type*>(&buffer);
+                    if(pfloat_buffer == nullptr)
+                        throw std::runtime_error("Not convertible.");
+                    return variant_type{*pfloat_buffer};
+                }
             }
-            return unwrap_<Rank + 1>(std::forward<BufferType>(buffer));
+
+            // Recurse and try the next rank
+            return downcast_<Rank + 1>(std::forward<BufferType>(buffer));
         }
     }
 };
