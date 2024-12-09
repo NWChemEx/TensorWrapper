@@ -38,6 +38,9 @@ public:
     /// Reuse the base class's ctor
     using op_type::op_type;
 
+    /// Type of the labels (useful for TMP)
+    using label_type = LabelType;
+
     template<typename TermType>
     my_type& operator=(TermType&& other) {
         Parser<ObjectType, LabelType> p;
