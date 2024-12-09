@@ -26,8 +26,15 @@
 
 namespace tensorwrapper::testing {
 
+// Typedefs of buffer::Eigen objects with various template parameters
+using ebufferf0 = buffer::Eigen<float, 0>;
+using ebufferf1 = buffer::Eigen<float, 1>;
+using ebufferf2 = buffer::Eigen<float, 2>;
+using ebufferf3 = buffer::Eigen<float, 3>;
 using ebufferd0 = buffer::Eigen<double, 0>;
 using ebufferd1 = buffer::Eigen<double, 1>;
+using ebufferd2 = buffer::Eigen<double, 2>;
+using ebufferd3 = buffer::Eigen<double, 3>;
 
 template<typename FloatType>
 auto eigen_scalar() {

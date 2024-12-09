@@ -17,9 +17,10 @@
 #include "../../../helpers.hpp"
 #include "../../../inputs.hpp"
 #include "../../../testing/eigen_buffers.hpp"
+#include <tensorwrapper/dsl/executor/detail_/eigen_assign.hpp>
 #include <tensorwrapper/dsl/executor/detail_/eigen_dispatcher.hpp>
-
 using namespace tensorwrapper;
+using namespace testing;
 
 namespace {
 
@@ -28,9 +29,15 @@ struct Checker {
     template<typename... Args2>
     Checker(Args2&&... args) : m_corr(std::forward<Args2>(args)...) {}
 
-    auto run(Args... args) {
-        auto inputs = std::tie(args...);
-        REQUIRE(inputs == m_corr);
+    template<typename... Args2>
+    auto run(Args2&&... args) {
+        using clean_t = std::tuple<std::decay_t<Args2>...>;
+        if constexpr(std::is_same_v<clean_t, std::tuple<Args...>>) {
+            auto inputs = std::tie(std::forward<Args2>(args)...);
+            REQUIRE(inputs == m_corr);
+        } else {
+            throw std::runtime_error("Unsupported tuple of buffers");
+        }
     }
 
     std::tuple<Args...> m_corr;
@@ -39,11 +46,34 @@ struct Checker {
 } // namespace
 
 TEST_CASE("EigenDispatcher") {
-    auto scalar = testing::eigen_scalar<double>();
-    auto vector = testing::eigen_vector<double>();
-    auto matrix = testing::eigen_matrix<double>();
+    auto scalar = eigen_scalar<double>();
+    auto vector = eigen_vector<double>();
+    auto matrix = eigen_matrix<double>();
 
-    SECTION("EigenBuffer<double,0>, EigenBuffer<double, 1>") {
-        Checker<testing::ebufferd0, testing::ebufferd1> c(scalar, vector);
+    SECTION("Eigen<double,0>") {
+        Checker<ebufferd0> c(scalar);
+        dsl::executor::detail_::EigenDispatcher d(std::move(c));
+        d.dispatch(scalar);
+    }
+
+    SECTION("Eigen<double,0>, Eigen<double,1>") {
+        Checker<ebufferd0, ebufferd1> c(scalar, vector);
+        dsl::executor::detail_::EigenDispatcher d(std::move(c));
+        d.dispatch(scalar, vector);
+    }
+
+    SECTION("Eigen<double,1>, Eigen<double,2>, Eigen<double,0>") {
+        Checker<ebufferd1, ebufferd2, ebufferd0> c(vector, matrix, scalar);
+        dsl::executor::detail_::EigenDispatcher d(std::move(c));
+        d.dispatch(vector, matrix, scalar);
+    }
+
+    SECTION("assignment") {
+        dsl::executor::detail_::EigenAssign c;
+        dsl::executor::detail_::EigenDispatcher d(std::move(c));
+        buffer::Eigen<double, 0> scalar2;
+        auto pscalar2 = &(d.dispatch(scalar2, scalar));
+        REQUIRE(pscalar2 == &scalar2);
+        REQUIRE(scalar2.value()() == 42.0);
     }
 }

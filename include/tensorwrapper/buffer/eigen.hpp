@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
-#include <tensorwrapper/buffer/replicated.hpp>
+#include <tensorwrapper/buffer/eigen_any.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -27,7 +27,7 @@ namespace tensorwrapper::buffer {
  *
  */
 template<typename FloatType, unsigned short Rank>
-class Eigen : public Replicated {
+class Eigen : public EigenAny {
 private:
     /// Type of *this
     using my_type = Eigen<FloatType, Rank>;
@@ -178,6 +178,26 @@ protected:
     /// Implements are_equal by calling are_equal_impl_
     bool are_equal_(const_buffer_base_reference rhs) const noexcept override {
         return my_base_type::are_equal_impl_<my_type>(rhs);
+    }
+
+    EigenAny& add_(const EigenAny& other) override {
+        auto& down_other = downcast_<FloatType, Rank>(other);
+        m_tensor_ += down_other.value();
+        return *this;
+    }
+
+    template<typename FloatType2, unsigned short Rank2>
+    static Eigen<FloatType2, N2>& downcast_(EigenAny& other) {
+        auto pother = dynamic_cast<Eigen<FloatType2, N2>*>(&other);
+        if(pother == nullptr) throw std::runtime_error("Not convertible");
+        return *pother;
+    }
+
+    template<typename FloatType2, unsigned short Rank2>
+    static const Eigen<FloatType2, N2>& downcast_(const EigenAny& other) {
+        auto pother = dynamic_cast<const Eigen<FloatType2, N2>*>(&other);
+        if(pother == nullptr) throw std::runtime_error("Not convertible");
+        return *pother;
     }
 
 private:
