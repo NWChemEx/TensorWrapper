@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/allocator/replicated.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/buffer/buffer_fwd.hpp>
 
 namespace tensorwrapper::allocator {
 
@@ -44,11 +44,18 @@ public:
     using my_base_type::buffer_base_pointer;
     using my_base_type::buffer_base_reference;
     using my_base_type::const_base_reference;
+    using my_base_type::const_buffer_base_reference;
     using my_base_type::layout_pointer;
     using my_base_type::runtime_view_type;
 
     /// Type of a buffer containing an Eigen tensor
     using eigen_buffer_type = buffer::Eigen<FloatType, Rank>;
+
+    /// Type of a mutable reference to an object of type eigen_buffer_type
+    using eigen_buffer_reference = eigen_buffer_type&;
+
+    /// Type of a read-only reference to an object of type eigen_buffer_type
+    using const_eigen_buffer_reference = const eigen_buffer_type&;
 
     /// Type of a pointer to an eigen_buffer_type object
     using eigen_buffer_pointer = std::unique_ptr<eigen_buffer_type>;
@@ -140,6 +147,53 @@ public:
         pbuffer->value().setConstant(value);
         return pbuffer;
     }
+
+    /** @brief Determines if @p buffer can be rebound as an Eigen buffer.
+     *
+     *  Rebinding a buffer allows the same memory to be viewed as a (possibly)
+     *  different type of buffer.
+     *
+     *  @param[in] buffer The tensor we are attempting to rebind.
+     *
+     *  @return True if @p buffer can be rebound to the type of buffer
+     *          associated with this allocator and false otherwise.
+     *
+     *  @throw None No throw guarantee
+     */
+    static bool can_rebind(const_buffer_base_reference buffer);
+
+    /** @brief Rebinds a buffer to the same type as *this.
+     *
+     *  This method will convert @p buffer into a buffer which could have been
+     *  allocated by *this. If @p buffer was allocated as such a buffer already,
+     *  then this method is simply a downcast.
+     *
+     *  @param[in] buffer The buffer to rebind.
+     *
+     *  @return A mutable reference to @p buffer viewed as a buffer that could
+     *          have been allocated by *this.
+     *
+     *  @throw std::runtime_error if can_rebind(buffer) is false. Strong throw
+     *                            guarantee.
+     */
+    static eigen_buffer_reference rebind(buffer_base_reference buffer);
+
+    /** @brief Rebinds a buffer to the same type as *this.
+     *
+     *  This method is the same as the non-const version except that the result
+     *  is read-only. See the description for the non-const version for more
+     *  details.
+     *
+     *  @param[in] buffer The buffer to rebind.
+     *
+     *  @return A read-only reference to @p buffer viewed as if it was
+     *          allocated by *this.
+     *
+     *  @throw std::runtime_error if can_rebind(buffer) is false. Strong throw
+     *                            guarantee.
+     */
+    static const_eigen_buffer_reference rebind(
+      const_buffer_base_reference buffer);
 
     /** @brief Is *this value equal to @p rhs?
      *
