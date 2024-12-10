@@ -106,11 +106,39 @@ public:
     // -- BLAS Operations
     // -------------------------------------------------------------------------
 
+    /** @brief Set this to the result of *this + rhs.
+     *
+     *  This method will overwrite the state of *this with the result of
+     *  adding the original state of *this to that of @p rhs. Depending on the
+     *  value @p this_labels compared to the labels associated with @p rhs,
+     *  it may be a permutation of @p rhs that is added to *this.
+     *
+     *  @param[in] this_labels The labels to associate with the modes of *this.
+     *  @param[in] rhs The buffer to add into *this.
+     *
+     *  @throws ??? Throws if the derived class's implementation throws. Same
+     *              throw guarantee.
+     */
     buffer_base_reference addition_assignment(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         return addition_assignment_(std::move(this_labels), rhs);
     }
 
+    /** @brief Returns the result of *this + rhs.
+     *
+     *  This method is the same as addition_assignment except that the result
+     *  is returned in a newly allocated buffer instead of overwriting *this.
+     *
+     *  @param[in] this_labels the labels for the modes of *this.
+     *  @param[in] rhs The buffer to add to *this.
+     *
+     *  @return The buffer resulting from adding *this to @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem copying *this. Strong throw
+     *                        guarantee.
+     *  @throw ??? If addition_assignment throws when adding @p rhs to the
+     *             copy of *this. Same throw guarantee.
+     */
     buffer_base_pointer addition(label_type this_labels,
                                  const_labeled_buffer_reference rhs) const {
         auto pthis = clone();
