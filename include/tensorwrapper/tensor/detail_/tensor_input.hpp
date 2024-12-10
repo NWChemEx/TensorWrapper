@@ -102,11 +102,17 @@ struct TensorInput {
     /// Type all buffer object's inherit from
     using buffer_base = typename allocator_base::buffer_base_type;
 
+    /// Type of a mutable reference to a buffer_base object
+    using buffer_reference = typename buffer_base::base_reference;
+
     /// Type of a read-only reference to an object of type buffer_base
     using const_buffer_reference = typename buffer_base::const_base_reference;
 
     /// Type of a pointer to an object of type buffer_base
     using buffer_pointer = typename buffer_base::base_pointer;
+
+    /// Type of a pointer to a read-only buffer_base object
+    using const_buffer_pointer = typename buffer_base::const_base_pointer;
 
     /// Type of a view of the runtime
     using runtime_view_type = typename allocator_base::runtime_view_type;

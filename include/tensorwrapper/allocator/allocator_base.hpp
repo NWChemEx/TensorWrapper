@@ -54,6 +54,12 @@ public:
     /// Type all buffers derive from
     using buffer_base_type = buffer::BufferBase;
 
+    /// Type of a mutable reference to an object of type buffer_base_type
+    using buffer_base_reference = buffer_base_type&;
+
+    /// Type of a read-only reference to an object of type buffer_base_type
+    using const_buffer_base_reference = const buffer_base_type&;
+
     /// Type of a pointer to an object of type buffer_base_type
     using buffer_base_pointer = typename buffer_base_type::buffer_base_pointer;
 
