@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include "detail_/eigen_dispatcher.hpp"
 #include <tensorwrapper/tensor/tensor_class.hpp>
 namespace tensorwrapper::dsl::executor {
 

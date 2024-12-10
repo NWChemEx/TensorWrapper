@@ -67,6 +67,26 @@ TEST_CASE("BufferBase") {
             REQUIRE(vector_base.layout().are_equal(vector_layout));
         }
 
+        SECTION("operator()(std::string)") {
+            auto labeled_scalar = scalar_base("");
+            REQUIRE(labeled_scalar.lhs().are_equal(scalar_base));
+            REQUIRE(labeled_scalar.rhs() == "");
+
+            auto labeled_vector = vector_base("i");
+            REQUIRE(labeled_vector.lhs().are_equal(vector_base));
+            REQUIRE(labeled_vector.rhs() == "i");
+        }
+
+        SECTION("operator()(std::string) const") {
+            auto labeled_scalar = std::as_const(scalar_base)("");
+            REQUIRE(labeled_scalar.lhs().are_equal(scalar_base));
+            REQUIRE(labeled_scalar.rhs() == "");
+
+            auto labeled_vector = std::as_const(vector_base)("i");
+            REQUIRE(labeled_vector.lhs().are_equal(vector_base));
+            REQUIRE(labeled_vector.rhs() == "i");
+        }
+
         SECTION("operator==") {
             // Defaulted layout == defaulted layout
             REQUIRE(defaulted_base == scalar_buffer());

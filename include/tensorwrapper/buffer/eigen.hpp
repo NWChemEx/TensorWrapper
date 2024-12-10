@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
-#include <tensorwrapper/buffer/eigen_any.hpp>
+#include <tensorwrapper/buffer/replicated.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -27,7 +27,7 @@ namespace tensorwrapper::buffer {
  *
  */
 template<typename FloatType, unsigned short Rank>
-class Eigen : public EigenAny {
+class Eigen : public Replicated {
 private:
     /// Type of *this
     using my_type = Eigen<FloatType, Rank>;
@@ -39,7 +39,9 @@ public:
     /// Pull in base class's types
     using typename my_base_type::buffer_base_pointer;
     using typename my_base_type::const_buffer_base_reference;
+    using typename my_base_type::const_labeled_buffer_reference;
     using typename my_base_type::const_layout_reference;
+    using typename my_base_type::label_type;
 
     /// Type of a rank @p Rank tensor using floats of type @p FloatType
     using data_type = eigen::data_type<FloatType, Rank>;
@@ -180,29 +182,31 @@ protected:
         return my_base_type::are_equal_impl_<my_type>(rhs);
     }
 
-    EigenAny& add_(const EigenAny& other) override {
-        auto& down_other = downcast_<FloatType, Rank>(other);
-        m_tensor_ += down_other.value();
-        return *this;
-    }
-
-    template<typename FloatType2, unsigned short Rank2>
-    static Eigen<FloatType2, N2>& downcast_(EigenAny& other) {
-        auto pother = dynamic_cast<Eigen<FloatType2, N2>*>(&other);
-        if(pother == nullptr) throw std::runtime_error("Not convertible");
-        return *pother;
-    }
-
-    template<typename FloatType2, unsigned short Rank2>
-    static const Eigen<FloatType2, N2>& downcast_(const EigenAny& other) {
-        auto pother = dynamic_cast<const Eigen<FloatType2, N2>*>(&other);
-        if(pother == nullptr) throw std::runtime_error("Not convertible");
-        return *pother;
-    }
+    /// Implements addition_assignment by rebinding rhs
+    buffer_base_reference addition_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) override;
 
 private:
     /// The actual Eigen tensor
     data_type m_tensor_;
 };
+
+#define DECLARE_EIGEN_BUFFER(RANK)            \
+    extern template class Eigen<float, RANK>; \
+    extern template class Eigen<double, RANK>
+
+DECLARE_EIGEN_BUFFER(0);
+DECLARE_EIGEN_BUFFER(1);
+DECLARE_EIGEN_BUFFER(2);
+DECLARE_EIGEN_BUFFER(3);
+DECLARE_EIGEN_BUFFER(4);
+DECLARE_EIGEN_BUFFER(5);
+DECLARE_EIGEN_BUFFER(6);
+DECLARE_EIGEN_BUFFER(7);
+DECLARE_EIGEN_BUFFER(8);
+DECLARE_EIGEN_BUFFER(9);
+DECLARE_EIGEN_BUFFER(10);
+
+#undef DECLARE_EIGEN_BUFFER
 
 } // namespace tensorwrapper::buffer

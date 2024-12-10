@@ -16,7 +16,9 @@
 
 #pragma once
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
+#include <tensorwrapper/dsl/labeled.hpp>
 #include <tensorwrapper/layout/layout_base.hpp>
+
 namespace tensorwrapper::buffer {
 
 /** @brief Common base class for all buffer objects.
@@ -34,6 +36,9 @@ private:
 public:
     /// Type all buffers inherit from
     using buffer_base_type = typename my_base_type::base_type;
+
+    /// Type of a mutable reference to a buffer_base_type object
+    using buffer_base_reference = typename my_base_type::base_reference;
 
     /// Type of a read-only reference to a buffer_base_type object
     using const_buffer_base_reference =
@@ -53,6 +58,18 @@ public:
 
     /// Type of a pointer to the layout
     using layout_pointer = typename layout_type::layout_pointer;
+
+    /// Type of labels for making a labeled buffer
+    using label_type = std::string;
+
+    /// Type of a labeled buffer
+    using labeled_buffer_type = dsl::Labeled<buffer_base_type, label_type>;
+
+    /// Type of a labeled read-only buffer (n.b. labels are mutable)
+    using labeled_const_buffer_type = dsl::Labeled<const buffer_base_type>;
+
+    /// Type of a read-only reference to a labeled_buffer_type object
+    using const_labeled_buffer_reference = const labeled_buffer_type&;
 
     // -------------------------------------------------------------------------
     // -- Accessors
@@ -86,8 +103,51 @@ public:
     }
 
     // -------------------------------------------------------------------------
+    // -- BLAS Operations
+    // -------------------------------------------------------------------------
+
+    buffer_base_reference addition_assignment(
+      label_type this_labels, const_labeled_buffer_reference rhs) {
+        return addition_assignment_(std::move(this_labels), rhs);
+    }
+
+    buffer_base_pointer addition(label_type this_labels,
+                                 const_labeled_buffer_reference rhs) const {
+        auto pthis = clone();
+        pthis->addition_assignment(std::move(this_labels), rhs);
+        return pthis;
+    }
+
+    // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
+
+    /** @brief Associates labels with the modes of *this.
+     *
+     *  This method is used to create a labeled buffer object by pairing *this
+     *  with the provided labels. The resulting object is capable of being
+     *  composed via the DSL.
+     *
+     *  @param[in] labels The indices to associate with the modes of *this.
+     *
+     *  @return A DSL term pairing *this with @p labels.
+     *
+     *  @throw None No throw guarantee.
+     */
+    labeled_buffer_type operator()(label_type labels);
+
+    /** @brief Associates labels with the modes of *this.
+     *
+     *  This method is the same as the non-const version except that the result
+     *  contains a read-only reference to *this.
+     *
+     *  @param[in] labels The labels to associate with *this.
+     *
+     *  @return A DSL term pairing *this with @p labels.
+     *
+     *  @throw None No throw guarantee.
+     */
+    labeled_const_buffer_type operator()(label_type labels) const;
 
     /** @brief Is *this value equal to @p rhs?
      *
@@ -184,6 +244,12 @@ protected:
             temp.swap(m_layout_);
         }
         return *this;
+    }
+
+    /// Derived class should overwrite to implement addition_assignment
+    virtual buffer_base_reference addition_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) {
+        throw std::runtime_error("Addition assignment NYI");
     }
 
 private:
