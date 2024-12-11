@@ -33,11 +33,9 @@ public:
 
     /** @brief Recursion end-point
      *
-     *
+     *  Evaluates @p rhs given that it will be evaluated into lhs
      */
-    auto dispatch(labeled_type lhs, labeled_type rhs) {
-        return assign(std::move(lhs), std::move(rhs));
-    }
+    auto dispatch(labeled_type lhs, labeled_type rhs) { return rhs; }
 
     template<typename T, typename U>
     auto dispatch(labeled_type lhs, const utilities::dsl::Add<T, U>& rhs) {
@@ -47,7 +45,6 @@ public:
     }
 
 protected:
-    labeled_type assign(labeled_type lhs, labeled_type rhs);
     labeled_type add(labeled_type result, labeled_type lhs, labeled_type rhs);
 };
 

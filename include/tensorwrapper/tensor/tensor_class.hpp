@@ -33,8 +33,19 @@ private:
     /// Type of a helper class which collects the inputs needed to make a tensor
     using input_type = detail_::TensorInput;
 
+    /// Type for determining if @p T is the type of a tensor?
     template<typename T>
-    using disable_if_tensor_t = std::enable_if_t<!std::is_same_v<T, Tensor>, T>;
+    using is_tensor_t = std::is_same<T, Tensor>;
+
+    /// Are any of the types in @p Args equal to Tensor?
+    template<typename... Args>
+    static constexpr bool are_any_tensors_v =
+      std::disjunction_v<is_tensor_t<Args>...>;
+
+    /// Enables a function so long as no type in @p Args is Tensor
+    template<typename... Args>
+    using enable_if_no_tensors_t =
+      std::enable_if_t<!are_any_tensors_v<Args...>>;
 
 public:
     /// Type of the object implementing *this
@@ -91,6 +102,8 @@ public:
     /// Type of a read-only labeled tensor
     using const_labeled_tensor_type = dsl::Labeled<const Tensor, label_type>;
 
+    // Tensor() : Tensor(input_type{}) {}
+
     /** @brief Initializes *this by processing the input provided in @p input.
      *
      *  This ctor is only public to facilitate unit testing of the library.
@@ -111,6 +124,9 @@ public:
     /** @brief Variadic value ctor.
      *
      *  @tparam Args The types of the arguments.
+     *  @tparam <Anonymous> Template parameter to disable this overload via
+     *                      SFINAE if any of the provided arguments are Tensor
+     *                      objects.
      *
      *  @note The intent is to create a tutorial showcasing how to initialize
      *        the Tensor object under different conditions and NOT for the user
@@ -160,9 +176,9 @@ public:
      *  @throw std::bad_alloc if there is a problem allocating the state for
      *                        *this. Strong throw guarantee.
      */
-    template<typename... Args>
-    Tensor(disable_if_tensor_t<Args>&&... args) :
-      Tensor(input_type(std::forward<Args>(args)...)) {}
+    template<typename... Args,
+             typename = enable_if_no_tensors_t<std::decay_t<Args>...>>
+    Tensor(Args&&... args) : Tensor(input_type{std::forward<Args>(args)...}) {}
 
     /** @brief Creates a tensor from a (possibly) nested initializer list.
      *
@@ -265,14 +281,24 @@ public:
      */
     const_logical_reference logical_layout() const;
 
-    buffer_reference buffer();
-
-    /** @brief Read-only access to the tensor's buffer.
+    /** @brief Mutable access to the tensor's buffer.
      *
      *  The buffer of a tensor contains the actual elements. Generally speaking,
      *  users should not have to interact with the buffer. The primary
      *  exception to this is if the user wants to interface TensorWrapper with
      *  another tensor solution.
+     *
+     *  @return A mutable reference to the buffer of the tensor.
+     *
+     *  @throw std::runtime_error if *this is an empty tensor. Strong throw
+     *                            guarantee.
+     */
+    buffer_reference buffer();
+
+    /** @brief Read-only access to the tensor's buffer.
+     *
+     *  This method is the same as the non-const version except that resulting
+     *  reference is read-only.
      *
      *  @return A read-only reference to the buffer of the tensor.
      *
@@ -281,10 +307,50 @@ public:
      */
     const_buffer_reference buffer() const;
 
+    /** @brief Associates @p labels with the modes of *this.
+     *
+     *  Expressing tensor operations is easier with the use of the Einstein
+     *  summation convention. Usage of this convention requires the user to be
+     *  able to associate dummy indices with the modes of the tensor. This
+     *  function pairs @p labels with the modes of *this such that the i-th
+     *  dummy index of @p labels is paired with the i-th mode of *this.
+     *
+     *
+     *  TODO: Put this somewhere that all operator()(std::string) can refer to.
+     *
+     *  Indices in @p labels are determined by splitting the string on commas.
+     *  If *this is non-default initialized, the number of commas in @p labels
+     *  must be equal to the rank of *this minus one (for default initialized
+     *  objects the number of commas depends on the operation).
+     *
+     *  Since @p labels is split on commas, each index can be multiple
+     *  characters, i.e., `"ij,ab"` defines indices for a matrix (rank 2
+     *  tensor). Spaces in @p labels are ignored, i.e., `"i,j"` is the same set
+     *  of indices as `"i, j"`. Indices are case-sensitive, i.e., `"I,j"` is NOT
+     *  the same as `"i,j"`.
+     *
+     *  Note that if *this is a rank 0 tensor @p labels should be the empty
+     *  string.
+     *
+     *  @param[in] labels The dummy indices to associate with each mode.
+     *
+     *  @return A DSL term pairing *this with @p labels.
+     *
+     */
     labeled_tensor_type operator()(const_label_reference labels) {
         return labeled_tensor_type(*this, labels);
     }
 
+    /** @brief Associates @p labels with the modes of *this.
+     *
+     *  This method is the same as the non-const version except that the
+     *  resulting DSL term contains a reference to an immutable tensor.
+     *
+     *  @param[in] labels The dummy indices to associate with each mode.
+     *
+     *  @return A DSL term pairing *this with @p labels.
+     *
+     */
     const_labeled_tensor_type operator()(const_label_reference labels) const {
         return const_labeled_tensor_type(*this, labels);
     }

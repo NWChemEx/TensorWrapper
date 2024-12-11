@@ -182,9 +182,16 @@ protected:
         return my_base_type::are_equal_impl_<my_type>(rhs);
     }
 
-    /// Implements addition_assignment by rebinding rhs
+    /// Implements addition_assignment by rebinding rhs to an Eigen buffer
     buffer_base_reference addition_assignment_(
       label_type this_labels, const_labeled_buffer_reference rhs) override;
+
+    /// Implements permute assignment by deferring to Eigen's shuffle command.
+    buffer_base_reference permute_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) override;
+
+    /// Implements to_string
+    typename my_base_type::string_type to_string_() const override;
 
 private:
     /// The actual Eigen tensor

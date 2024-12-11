@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
 
@@ -39,6 +40,19 @@ typename EIGEN::buffer_base_reference EIGEN::addition_assignment_(
 
     // TODO layouts
     return *this;
+}
+
+TPARAMS
+typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
+  label_type this_labels, const_labeled_buffer_reference rhs) {
+    return *this;
+}
+
+TPARAMS
+typename EIGEN::string_type EIGEN::to_string_() const {
+    std::stringstream ss;
+    ss << m_tensor_;
+    return ss.str();
 }
 
 #undef EIGEN

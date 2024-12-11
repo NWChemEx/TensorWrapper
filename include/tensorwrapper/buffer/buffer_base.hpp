@@ -69,7 +69,7 @@ public:
     using labeled_const_buffer_type = dsl::Labeled<const buffer_base_type>;
 
     /// Type of a read-only reference to a labeled_buffer_type object
-    using const_labeled_buffer_reference = const labeled_buffer_type&;
+    using const_labeled_buffer_reference = const labeled_const_buffer_type&;
 
     // -------------------------------------------------------------------------
     // -- Accessors
@@ -144,6 +144,11 @@ public:
         auto pthis = clone();
         pthis->addition_assignment(std::move(this_labels), rhs);
         return pthis;
+    }
+
+    buffer_base_reference permute_assignment(
+      label_type this_labels, const_labeled_buffer_reference rhs) {
+        return permute_assignment_(std::move(this_labels), rhs);
     }
 
     // -------------------------------------------------------------------------
@@ -278,6 +283,11 @@ protected:
     virtual buffer_base_reference addition_assignment_(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         throw std::runtime_error("Addition assignment NYI");
+    }
+
+    virtual buffer_base_reference permute_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) {
+        throw std::runtime_error("Permute assignment NYI");
     }
 
 private:
