@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-#pragma once
-#include <tensorwrapper/allocator/allocator.hpp>
-#include <tensorwrapper/backends/backends.hpp>
-#include <tensorwrapper/buffer/buffer.hpp>
-#include <tensorwrapper/detail_/detail_.hpp>
-#include <tensorwrapper/dsl/dsl.hpp>
-#include <tensorwrapper/layout/layout.hpp>
-#include <tensorwrapper/shape/shape.hpp>
-#include <tensorwrapper/sparsity/sparsity.hpp>
-#include <tensorwrapper/symmetry/symmetry.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
+#include <tensorwrapper/buffer/buffer_base.hpp>
 
-/** @brief Contains the components of the TensorWrapper library. */
-namespace tensorwrapper {}
+namespace tensorwrapper::buffer {
+
+typename BufferBase::labeled_buffer_type BufferBase::operator()(
+  label_type labels) {
+    return labeled_buffer_type(*this, std::move(labels));
+}
+
+typename BufferBase::labeled_const_buffer_type BufferBase::operator()(
+  label_type labels) const {
+    return labeled_const_buffer_type(*this, std::move(labels));
+}
+
+} // namespace tensorwrapper::buffer

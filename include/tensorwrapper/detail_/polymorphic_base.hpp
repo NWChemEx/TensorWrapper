@@ -16,7 +16,9 @@
 
 #pragma once
 #include <memory>
+#include <string>
 #include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
+
 namespace tensorwrapper::detail_ {
 
 /** @brief Defines the API polymorphic utility methods should use.
@@ -41,6 +43,12 @@ public:
 
     /// Pointer to an object of type base_type
     using base_pointer = std::unique_ptr<base_type>;
+
+    /// Pointer to a read-only object of type base_type
+    using const_base_pointer = std::unique_ptr<const base_type>;
+
+    /// Type used for representing *this as a string
+    using string_type = std::string;
 
     /// @brief Defaulted no-throw polymorphic dtor
     virtual ~PolymorphicBase() noexcept = default;
@@ -129,6 +137,19 @@ public:
         return !are_equal(rhs);
     }
 
+    /** @brief Returns a string representation of *this.
+     *
+     *  By default a polymorphic object is represented as `"{?}"`. Derived
+     *  classes are encouraged to override `to_string_` to provide more
+     *  helpful representations.
+     *
+     *  @note This method is meant primarily for logging/debugging and NOT for
+     *        serialization or archival.
+     *
+     *  @return *this represented as a string.
+     */
+    auto to_string() const { return to_string_(); }
+
 protected:
     /** @brief No-op default ctor
      *
@@ -200,6 +221,14 @@ protected:
      *           false otherwise.
      */
     virtual bool are_equal_(const_base_reference rhs) const noexcept = 0;
+
+    virtual string_type to_string_() const { return "{?}"; }
 };
+
+/// Implements printing via ostream for objects deriving from PolymorphicBase
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, const PolymorphicBase<T>& b) {
+    return os << b.to_string();
+}
 
 } // namespace tensorwrapper::detail_

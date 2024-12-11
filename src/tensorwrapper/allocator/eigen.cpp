@@ -15,6 +15,7 @@
  */
 
 #include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
@@ -43,6 +44,27 @@ typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
       unwrap_shape<eigen_data_type>(playout->shape(),
                                     std::make_index_sequence<Rank>()),
       *playout);
+}
+
+TPARAMS
+bool EIGEN::can_rebind(const_buffer_base_reference buffer) {
+    auto pbuffer = dynamic_cast<const eigen_buffer_type*>(&buffer);
+    return pbuffer != nullptr;
+}
+
+TPARAMS
+typename EIGEN::eigen_buffer_reference EIGEN::rebind(
+  buffer_base_reference buffer) {
+    if(can_rebind(buffer)) return static_cast<eigen_buffer_reference>(buffer);
+    throw std::runtime_error("Can not rebind buffer");
+}
+
+TPARAMS
+typename EIGEN::const_eigen_buffer_reference EIGEN::rebind(
+  const_buffer_base_reference buffer) {
+    if(can_rebind(buffer))
+        return dynamic_cast<const_eigen_buffer_reference>(buffer);
+    throw std::runtime_error("Can not rebind buffer");
 }
 
 #define ALLOCATE_CONDITION(RANK) \
