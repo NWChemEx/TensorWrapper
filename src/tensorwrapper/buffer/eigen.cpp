@@ -41,7 +41,8 @@ typename EIGEN::buffer_base_reference EIGEN::addition_assignment_(
 
     if(llabels != rlabels) {
         auto r_to_l = rlabels.permutation(llabels);
-        m_tensor_ += rhs_downcasted.value().shuffle(r_to_l);
+        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+        m_tensor_ += rhs_downcasted.value().shuffle(r_to_l2);
     } else {
         m_tensor_ += rhs_downcasted.value();
     }
