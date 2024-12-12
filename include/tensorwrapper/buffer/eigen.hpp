@@ -39,7 +39,9 @@ public:
     /// Pull in base class's types
     using typename my_base_type::buffer_base_pointer;
     using typename my_base_type::const_buffer_base_reference;
+    using typename my_base_type::const_labeled_buffer_reference;
     using typename my_base_type::const_layout_reference;
+    using typename my_base_type::label_type;
 
     /// Type of a rank @p Rank tensor using floats of type @p FloatType
     using data_type = eigen::data_type<FloatType, Rank>;
@@ -180,9 +182,38 @@ protected:
         return my_base_type::are_equal_impl_<my_type>(rhs);
     }
 
+    /// Implements addition_assignment by rebinding rhs to an Eigen buffer
+    buffer_base_reference addition_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) override;
+
+    /// Implements permute assignment by deferring to Eigen's shuffle command.
+    buffer_base_reference permute_assignment_(
+      label_type this_labels, const_labeled_buffer_reference rhs) override;
+
+    /// Implements to_string
+    typename my_base_type::string_type to_string_() const override;
+
 private:
     /// The actual Eigen tensor
     data_type m_tensor_;
 };
+
+#define DECLARE_EIGEN_BUFFER(RANK)            \
+    extern template class Eigen<float, RANK>; \
+    extern template class Eigen<double, RANK>
+
+DECLARE_EIGEN_BUFFER(0);
+DECLARE_EIGEN_BUFFER(1);
+DECLARE_EIGEN_BUFFER(2);
+DECLARE_EIGEN_BUFFER(3);
+DECLARE_EIGEN_BUFFER(4);
+DECLARE_EIGEN_BUFFER(5);
+DECLARE_EIGEN_BUFFER(6);
+DECLARE_EIGEN_BUFFER(7);
+DECLARE_EIGEN_BUFFER(8);
+DECLARE_EIGEN_BUFFER(9);
+DECLARE_EIGEN_BUFFER(10);
+
+#undef DECLARE_EIGEN_BUFFER
 
 } // namespace tensorwrapper::buffer

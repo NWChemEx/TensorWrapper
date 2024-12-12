@@ -17,6 +17,7 @@
 #include "../helpers.hpp"
 #include <parallelzone/parallelzone.hpp>
 #include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 using namespace tensorwrapper;
@@ -122,6 +123,29 @@ TEMPLATE_TEST_CASE("EigenAllocator", "", float, double) {
         // Throws if ranks don't match
         using except_t = std::runtime_error;
         REQUIRE_THROWS_AS(scalar_alloc.allocate(vector_layout), except_t);
+    }
+
+    SECTION("can_rebind") {
+        REQUIRE(scalar_alloc.can_rebind(scalar_corr));
+        REQUIRE_FALSE(scalar_alloc.can_rebind(vector_corr));
+    }
+
+    SECTION("rebind(non-const)") {
+        using type         = typename scalar_alloc_type::buffer_base_reference;
+        type scalar_base   = scalar_corr;
+        auto& eigen_buffer = scalar_alloc.rebind(scalar_base);
+        REQUIRE(&eigen_buffer == &scalar_corr);
+        REQUIRE_THROWS_AS(scalar_alloc.rebind(vector_corr), std::runtime_error);
+    }
+
+    SECTION("rebind(const)") {
+        using type = typename scalar_alloc_type::const_buffer_base_reference;
+        type scalar_base   = scalar_corr;
+        auto& eigen_buffer = scalar_alloc.rebind(scalar_base);
+        REQUIRE(&eigen_buffer == &scalar_corr);
+
+        type vector_base = vector_corr;
+        REQUIRE_THROWS_AS(scalar_alloc.rebind(vector_base), std::runtime_error);
     }
 
     SECTION("operator==") {

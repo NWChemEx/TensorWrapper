@@ -197,5 +197,12 @@ TEST_CASE("TensorFactory") {
             REQUIRE(i.has_physical_layout());
             REQUIRE_THROWS_AS(f.assert_valid(i), e_t);
         }
+
+        SECTION("logical layout and buffer (should work)") {
+            TensorInput i(std::move(logical), std::move(pbuffer));
+            REQUIRE(i.has_logical_layout());
+            REQUIRE(i.has_buffer());
+            REQUIRE_NOTHROW(f.assert_valid(i));
+        }
     }
 }

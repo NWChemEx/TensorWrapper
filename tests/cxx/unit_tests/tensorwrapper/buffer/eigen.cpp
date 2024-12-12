@@ -159,6 +159,98 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
                 REQUIRE(pscalar.are_equal(scalar2));
                 REQUIRE_FALSE(pmatrix.are_equal(scalar2));
             }
+
+            SECTION("addition_assignment") {
+                SECTION("scalar") {
+                    scalar_buffer scalar2(eigen_scalar, scalar_layout);
+                    scalar2.value()() = 42.0;
+
+                    auto s        = scalar("");
+                    auto pscalar2 = &(scalar2.addition_assignment("", s));
+
+                    scalar_buffer scalar_corr(eigen_scalar, scalar_layout);
+                    scalar_corr.value()() = 43.0;
+                    REQUIRE(pscalar2 == &scalar2);
+                    REQUIRE(scalar2 == scalar_corr);
+                }
+
+                SECTION("vector") {
+                    vector_buffer vector2(eigen_vector, vector_layout);
+
+                    auto vi       = vector("i");
+                    auto pvector2 = &(vector2.addition_assignment("i", vi));
+
+                    vector_buffer vector_corr(eigen_vector, vector_layout);
+                    vector_corr.value()(0) = 2.0;
+                    vector_corr.value()(1) = 4.0;
+
+                    REQUIRE(pvector2 == &vector2);
+                    REQUIRE(vector2 == vector_corr);
+                }
+
+                SECTION("matrix") {
+                    matrix_buffer matrix2(eigen_matrix, matrix_layout);
+
+                    auto mij      = matrix("i,j");
+                    auto pmatrix2 = &(matrix2.addition_assignment("i,j", mij));
+
+                    matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+
+                    matrix_corr.value()(0, 0) = 2.0;
+                    matrix_corr.value()(0, 1) = 4.0;
+                    matrix_corr.value()(0, 2) = 6.0;
+                    matrix_corr.value()(1, 0) = 8.0;
+                    matrix_corr.value()(1, 1) = 10.0;
+                    matrix_corr.value()(1, 2) = 12.0;
+
+                    REQUIRE(pmatrix2 == &matrix2);
+                    REQUIRE(matrix2 == matrix_corr);
+
+                    // SECTION("permutation") {
+                    //     layout::Physical l(shape::Smooth{3, 2}, g, p);
+                    //     std::array<unsigned short, 2> p10{1, 0};
+                    //     auto eigen_matrix_t = eigen_matrix.shuffle(p10);
+                    //     matrix_buffer matrix3(eigen_matrix_t, l);
+
+                    //     auto pmatrix3 =
+                    //       &(matrix3.addition_assignment("j,i", mij));
+
+                    //     matrix_buffer corr(eigen_matrix_t, l);
+                    //     corr.value()(0, 0) = 3.0;
+                    //     corr.value()(0, 1) = 6.0;
+                    //     corr.value()(1, 0) = 9.0;
+                    //     corr.value()(1, 1) = 12.0;
+                    //     corr.value()(2, 0) = 15.0;
+                    //     corr.value()(2, 1) = 18.0;
+
+                    //     REQUIRE(pmatrix3 == &matrix3);
+                    //     REQUIRE(matrix3 == corr);
+                    // }
+                }
+
+                // Can't cast
+                REQUIRE_THROWS_AS(vector.addition_assignment("", scalar("")),
+                                  std::runtime_error);
+
+                // Labels must match
+                REQUIRE_THROWS_AS(vector.addition_assignment("j", vector("i")),
+                                  std::runtime_error);
+            }
+
+            SECTION("permute_assignment") {
+                // layout::Physical l(shape::Smooth{3, 2}, g, p);
+                // std::array<unsigned short, 2> p10{1, 0};
+                // auto eigen_matrix_t = eigen_matrix.shuffle(p10);
+                // matrix_buffer corr(eigen_matrix_t, l);
+
+                // matrix_buffer matrix2;
+
+                // auto& mij     = matrix("i,j");
+                // auto pmatrix2 = &(matrix2.permute_assignment("j,i", mij));
+
+                // REQUIRE(pmatrix2 == &matrix2);
+                // REQUIRE(matrix2 == corr);
+            }
         }
     }
 }

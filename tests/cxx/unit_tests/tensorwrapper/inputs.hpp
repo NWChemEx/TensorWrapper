@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/tensorwrapper.hpp>
+#include <testing/eigen_buffers.hpp>
 
 // This file contains some functions for creating TensorInput objects that span
 // a number of use cases. This is meant to make it easier to test TensorWrapper
@@ -25,26 +26,24 @@ namespace tensorwrapper::testing {
 
 inline auto default_input() { return detail_::TensorInput{}; }
 
-inline auto smooth_scalar() {
-    using buffer_type = buffer::Eigen<double, 0>;
-    using data_type   = typename buffer_type::data_type;
+template<typename FloatType>
+inline auto smooth_scalar_() {
+    auto buffer = eigen_scalar<FloatType>();
     shape::Smooth shape{};
-    layout::Physical l(shape);
-    data_type scalar;
-    scalar() = 42.0;
-    return detail_::TensorInput(shape, buffer_type(scalar, l));
+    return detail_::TensorInput(shape, std::move(buffer));
 }
 
+inline auto smooth_scalar() { return smooth_scalar_<double>(); }
+
 /// 5 element vector such that element i is i
-inline auto smooth_vector() {
-    using buffer_type = buffer::Eigen<double, 1>;
-    using data_type   = typename buffer_type::data_type;
+template<typename FloatType>
+inline auto smooth_vector_() {
+    auto buffer = eigen_vector<FloatType>();
     shape::Smooth shape{5};
-    layout::Physical l(shape);
-    data_type vector(5);
-    for(std::size_t i = 0; i < 5; ++i) vector(i) = i;
-    return detail_::TensorInput(shape, buffer_type(vector, l));
+    return detail_::TensorInput(shape, std::move(buffer));
 }
+
+inline auto smooth_vector() { return smooth_vector_<double>(); }
 
 /// 5 element vector internally stored as a 5 by 1 matrix
 inline auto smooth_vector_alt() {
@@ -57,18 +56,14 @@ inline auto smooth_vector_alt() {
     return detail_::TensorInput(shape, buffer_type(matrix, l));
 }
 
-inline auto smooth_matrix() {
-    using buffer_type = buffer::Eigen<double, 2>;
-    using data_type   = typename buffer_type::data_type;
+template<typename FloatType>
+inline auto smooth_matrix_() {
+    auto buffer = eigen_matrix<FloatType>();
     shape::Smooth shape{2, 2};
-    layout::Physical l(shape);
-    data_type matrix(2, 2);
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(1, 0) = 3.0;
-    matrix(1, 1) = 4.0;
-    return detail_::TensorInput(shape, buffer_type(matrix, l));
+    return detail_::TensorInput(shape, std::move(buffer));
 }
+
+inline auto smooth_matrix() { return smooth_matrix_<double>(); }
 
 inline auto smooth_symmetric_matrix() {
     using buffer_type = buffer::Eigen<double, 2>;
@@ -90,22 +85,14 @@ inline auto smooth_symmetric_matrix() {
     return detail_::TensorInput(shape, g, buffer_type(matrix, l));
 }
 
-inline auto smooth_tensor3() {
-    using buffer_type = buffer::Eigen<double, 3>;
-    using data_type   = typename buffer_type::data_type;
+template<typename FloatType>
+inline auto smooth_tensor3_() {
+    auto buffer = eigen_tensor3<FloatType>();
     shape::Smooth shape{2, 2, 2};
-    layout::Physical l(shape);
-    data_type tensor(2, 2, 2);
-    tensor(0, 0, 0) = 1.0;
-    tensor(0, 0, 1) = 2.0;
-    tensor(0, 1, 0) = 3.0;
-    tensor(0, 1, 1) = 4.0;
-    tensor(1, 0, 0) = 5.0;
-    tensor(1, 0, 1) = 6.0;
-    tensor(1, 1, 0) = 7.0;
-    tensor(1, 1, 1) = 8.0;
-    return detail_::TensorInput(shape, buffer_type(tensor, l));
+    return detail_::TensorInput(shape, std::move(buffer));
 }
+
+inline auto smooth_tensor3() { return smooth_tensor3_<double>(); }
 
 inline auto smooth_tensor4() {
     using buffer_type = buffer::Eigen<double, 4>;

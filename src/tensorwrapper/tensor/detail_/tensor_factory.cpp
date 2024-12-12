@@ -19,6 +19,7 @@
 #include "tensor_pimpl.hpp"
 #include <stdexcept>
 #include <tensorwrapper/allocator/eigen.hpp>
+#include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::detail_ {

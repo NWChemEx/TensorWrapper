@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../helpers.hpp"
-#include "../inputs.hpp"
+#include "../testing/testing.hpp"
 #include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
@@ -99,6 +98,15 @@ TEST_CASE("Tensor") {
         const auto& const_defaulted = defaulted;
         REQUIRE_THROWS_AS(const_defaulted.logical_layout(), std::runtime_error);
     }
+    SECTION("buffer() const") {
+        auto& scalar_buffer = scalar.buffer();
+        REQUIRE(scalar_buffer.are_equal(scalar_buffer_corr));
+
+        auto& vector_buffer = vector.buffer();
+        REQUIRE(vector_buffer.are_equal(vector_buffer_corr));
+
+        REQUIRE_THROWS_AS(defaulted.buffer(), std::runtime_error);
+    }
 
     SECTION("buffer() const") {
         auto& scalar_buffer = std::as_const(scalar).buffer();
@@ -109,6 +117,24 @@ TEST_CASE("Tensor") {
 
         const auto& const_defaulted = defaulted;
         REQUIRE_THROWS_AS(const_defaulted.buffer(), std::runtime_error);
+    }
+
+    SECTION("operator(std::string)") {
+        auto labeled_scalar = scalar("");
+        auto labeled_vector = vector("i");
+
+        using labeled_tensor_type = Tensor::labeled_tensor_type;
+        REQUIRE(labeled_scalar == labeled_tensor_type(scalar, ""));
+        REQUIRE(labeled_vector == labeled_tensor_type(vector, "i"));
+    }
+
+    SECTION("operator(std::string) const") {
+        auto labeled_scalar = std::as_const(scalar)("");
+        auto labeled_vector = std::as_const(vector)("i");
+
+        using const_labeled_tensor_type = Tensor::const_labeled_tensor_type;
+        REQUIRE(labeled_scalar == const_labeled_tensor_type(scalar, ""));
+        REQUIRE(labeled_vector == const_labeled_tensor_type(vector, "i"));
     }
 
     SECTION("swap") {
@@ -152,5 +178,28 @@ TEST_CASE("Tensor") {
 
         REQUIRE_FALSE(scalar != other_scalar);
         REQUIRE(scalar != vector);
+    }
+
+    SECTION("DSL") {
+        // These are just spot checks to make sure the DSL works on the user
+        // side
+        SECTION("Scalar") {
+            Tensor rv;
+            rv("")           = scalar("") + scalar("");
+            auto buffer      = testing::eigen_scalar<double>();
+            buffer.value()() = 84.0;
+            Tensor corr(scalar.logical_layout(), std::move(buffer));
+            REQUIRE(rv == corr);
+        }
+
+        SECTION("Vector") {
+            Tensor rv;
+            rv("i") = vector("i") + vector("i");
+
+            auto buffer = testing::eigen_vector<double>();
+            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
+            Tensor corr(vector.logical_layout(), std::move(buffer));
+            REQUIRE(rv == corr);
+        }
     }
 }
