@@ -32,6 +32,9 @@ namespace tensorwrapper::shape {
 class Smooth : public ShapeBase {
 public:
     // Pull in base class's types
+    using ShapeBase::const_labeled_reference;
+    using ShapeBase::dsl_reference;
+    using ShapeBase::label_type;
     using ShapeBase::rank_type;
     using ShapeBase::size_type;
 
@@ -175,6 +178,22 @@ protected:
     /// Implements are_equal by calling ShapeBase::are_equal_impl_
     bool are_equal_(const ShapeBase& rhs) const noexcept override {
         return are_equal_impl_<Smooth>(rhs);
+    }
+
+    /// Implements addition_assignment by considering permutations
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements permute_assignment by permuting the extents in @p rhs.
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
+
+    /// Implements to_string
+    string_type to_string_() const override {
+        string_type buffer("{");
+        for(auto x : m_extents_) buffer += string_type(" ") + std::to_string(x);
+        buffer += string_type("}");
+        return buffer;
     }
 
 private:
