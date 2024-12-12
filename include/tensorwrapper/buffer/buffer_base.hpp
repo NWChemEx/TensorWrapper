@@ -146,9 +146,51 @@ public:
         return pthis;
     }
 
+    /** @brief Sets *this to a permutation of @p rhs.
+     *
+     *  `rhs.rhs()` are the dummy indices associated with the modes of the
+     *  buffer in @p rhs and @p this_labels are the dummy indices associated
+     *  with the buffer in *this. This method will permute @p rhs so that the
+     *  resulting buffer's modes are ordered consistently with @p this_labels,
+     *  i.e. the permutation is FROM the `rhs.rhs()` order TO the
+     *  @p this_labels order. This is seemingly backwards when described out,
+     *  but consistent with the intent of a DSL expression like
+     *  `t("i,j") = x("j,i");` where the intent is to set `t` equal to the
+     *  transpose of `x`.
+     *
+     *  @param[in] this_labels the dummy indices for the modes of *this.
+     *  @param[in] rhs The tensor to permute.
+     *
+     *  @return *this after setting it equal to a permutation of @p rhs.
+     *
+     *  @throw ??? If the derived class's implementation of permute_assignment_
+     *             throws. Same throw guarantee.
+     */
     buffer_base_reference permute_assignment(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         return permute_assignment_(std::move(this_labels), rhs);
+    }
+
+    /** @brief Returns a copy of *this obtained by permuting *this.
+     *
+     *  This method simply calls permute_assignment on a copy of *this. See the
+     *  description of permute_assignment for more details.
+     *
+     *  @param[in] this_labels dummy indices representing the modes of *this in
+     *                         its current state.
+     *  @param[in] out_labels how the user wants the modes of *this to be
+     *                        ordered.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the copy. Strong
+     *                        throw guarantee.
+     *  @throw ??? If the derived class's implementation of permute_assignment_
+     *             throws. Same throw guarantee.
+     */
+    buffer_base_pointer permute(label_type this_labels,
+                                label_type out_labels) const {
+        auto pthis = clone();
+        pthis->permute_assignment(std::move(out_labels), (*this)(this_labels));
+        return pthis;
     }
 
     // -------------------------------------------------------------------------
@@ -285,6 +327,7 @@ protected:
         throw std::runtime_error("Addition assignment NYI");
     }
 
+    /// Derived class should overwrite to implement permute_assignment
     virtual buffer_base_reference permute_assignment_(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         throw std::runtime_error("Permute assignment NYI");

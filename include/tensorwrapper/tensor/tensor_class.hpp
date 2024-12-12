@@ -315,19 +315,7 @@ public:
      *  function pairs @p labels with the modes of *this such that the i-th
      *  dummy index of @p labels is paired with the i-th mode of *this.
      *
-     *
-     *  TODO: Put this somewhere that all operator()(std::string) can refer to.
-     *
-     *  Indices in @p labels are determined by splitting the string on commas.
-     *  If *this is non-default initialized, the number of commas in @p labels
-     *  must be equal to the rank of *this minus one (for default initialized
-     *  objects the number of commas depends on the operation).
-     *
-     *  Since @p labels is split on commas, each index can be multiple
-     *  characters, i.e., `"ij,ab"` defines indices for a matrix (rank 2
-     *  tensor). Spaces in @p labels are ignored, i.e., `"i,j"` is the same set
-     *  of indices as `"i, j"`. Indices are case-sensitive, i.e., `"I,j"` is NOT
-     *  the same as `"i,j"`.
+     *  See dsl::DummyIndices for how the string is interpreted.
      *
      *  Note that if *this is a rank 0 tensor @p labels should be the empty
      *  string.

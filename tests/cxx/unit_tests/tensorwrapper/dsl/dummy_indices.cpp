@@ -63,6 +63,56 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(dummy_indices_type("i,i").unique_index_size() == 1);
     }
 
+    SECTION("has_repeated_indices") {
+        REQUIRE_FALSE(defaulted.has_repeated_indices());
+        REQUIRE_FALSE(scalar.has_repeated_indices());
+        REQUIRE_FALSE(vector.has_repeated_indices());
+        REQUIRE_FALSE(matrix.has_repeated_indices());
+        REQUIRE_FALSE(tensor.has_repeated_indices());
+        REQUIRE(dummy_indices_type("i,i").has_repeated_indices());
+    }
+
+    SECTION("permutation") {
+        using offset_vector = typename dummy_indices_type::offset_vector;
+
+        REQUIRE(scalar.permutation(scalar) == offset_vector{});
+
+        REQUIRE(vector.permutation(vector) == offset_vector{0});
+
+        dummy_indices_type matrix2("j,i");
+        REQUIRE(matrix.permutation(matrix) == offset_vector{0, 1});
+        REQUIRE(matrix.permutation(matrix2) == offset_vector{1, 0});
+        REQUIRE(matrix2.permutation(matrix) == offset_vector{1, 0});
+
+        dummy_indices_type tensor2("jk, i, l");
+        dummy_indices_type tensor3("l, jk, i");
+        dummy_indices_type tensor4("i,l,jk");
+        dummy_indices_type tensor5("l,i,jk");
+        dummy_indices_type tensor6("jk, l, i");
+        REQUIRE(tensor.permutation(tensor) == offset_vector{0, 1, 2});
+        REQUIRE(tensor.permutation(tensor2) == offset_vector{1, 0, 2});
+        REQUIRE(tensor.permutation(tensor3) == offset_vector{2, 1, 0});
+        REQUIRE(tensor.permutation(tensor4) == offset_vector{0, 2, 1});
+        REQUIRE(tensor.permutation(tensor5) == offset_vector{1, 2, 0});
+        REQUIRE(tensor.permutation(tensor6) == offset_vector{2, 0, 1});
+
+        dummy_indices_type repeated("i,i");
+
+        // Must have same number of indices
+        REQUIRE_THROWS_AS(scalar.permutation(vector), std::runtime_error);
+
+        // *this can't have repeated indics
+        REQUIRE_THROWS_AS(repeated.permutation(matrix), std::runtime_error);
+
+        // other can't have repeated indices
+        REQUIRE_THROWS_AS(matrix.permutation(repeated), std::runtime_error);
+
+        // error if index isn't in both
+        dummy_indices_type other("j");
+
+        REQUIRE_THROWS_AS(vector.permutation(other), std::runtime_error);
+    }
+
     SECTION("find(const_reference)") {
         using offset_vector = typename dummy_indices_type::offset_vector;
         REQUIRE(defaulted.find("") == offset_vector{});

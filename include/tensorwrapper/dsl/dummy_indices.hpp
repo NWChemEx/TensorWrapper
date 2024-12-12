@@ -125,11 +125,58 @@ public:
         return temp.size();
     }
 
+    /** @brief Does *this have repeated indices?
+     *
+     *  This method is used to determine if *this contains any index that
+     *  appears more than once.
+     *
+     *  @return True if *this contains a repeated index and false otherwise.
+     *
+     *  @throw std::bad_alloc if the internal call to unique_index_size()
+     *                        throws. Strong throw guarantee.
+     */
+    bool has_repeated_indices() const {
+        return unique_index_size() != this->size();
+    }
+
+    /** @brief Computes the permutation needed to convert *this into @p other.
+     *
+     *  Each DummyIndices object is viewed as an ordered set of objects. If
+     *  two DummyIndices objects contain the same objects, but in a different
+     *  order, we can convert either object into the other by permuting it.
+     *  This method computes the permutation needed to change *this into
+     *  @p other. More specifically the result of this method is a vector
+     *  of length `size()` such that the `i`-th element is the offset of
+     *  `(*this)[i]` in @p other, i.e., if `x` is the return then
+     *  `other[x[i]] ==  (*this)[i]`.
+     *
+     *  @param[in] other The order we want to permute *this to.
+     *
+     *  @return A vector such that the i-th element is the offset of
+     *          `(*this)[i]` in @p other.
+     *
+     *  @throw std::runtime_error if *this and @p other do not have the same
+     *                            size, or if either *this or @p other have
+     *                            repeated indices, or if an index in *this
+     *                            does not appear in @p other. Strong throw
+     *                            guarantee in each case.
+     *  @throw std::bad_alloc if there is a problem allocating the return.
+     *                        Strong throw guarantee.
+     */
     offset_vector permutation(const DummyIndices& other) const {
-        if(unique_index_size() != other.unique_index_size())
-            throw std::runtime_error("Must have same number of unique indices");
+        if(this->size() != other.size())
+            throw std::runtime_error("Must have same number of dummy indices.");
+
+        if(has_repeated_indices() || other.has_repeated_indices())
+            throw std::runtime_error("Must contain unique dummy indices.");
+
         offset_vector rv;
-        for(const auto& index : *this) rv.push_back(other.find(index));
+        for(const auto& index : *this) {
+            auto indices = other.find(index);
+            if(indices.empty())
+                throw std::runtime_error("Dummy index not found in other");
+            rv.push_back(indices[0]);
+        }
         return rv;
     }
 

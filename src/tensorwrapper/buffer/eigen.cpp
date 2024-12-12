@@ -17,8 +17,11 @@
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/dsl/dummy_indices.hpp>
 
 namespace tensorwrapper::buffer {
+
+using dummy_indices_type = dsl::DummyIndices<std::string>;
 
 #define TPARAMS template<typename FloatType, unsigned short Rank>
 #define EIGEN Eigen<FloatType, Rank>
@@ -26,25 +29,44 @@ namespace tensorwrapper::buffer {
 TPARAMS
 typename EIGEN::buffer_base_reference EIGEN::addition_assignment_(
   label_type this_labels, const_labeled_buffer_reference rhs) {
-    using allocator_type = allocator::Eigen<FloatType, Rank>;
-
-    if(this_labels != rhs.rhs())
-        throw std::runtime_error("Labels must match (for now)!");
-
+    // TODO layouts
     if(layout() != rhs.lhs().layout())
         throw std::runtime_error("Layouts must be the same (for now)");
 
+    dummy_indices_type llabels(this_labels);
+    dummy_indices_type rlabels(rhs.rhs());
+
+    using allocator_type       = allocator::Eigen<FloatType, Rank>;
     const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
 
-    m_tensor_ += rhs_downcasted.value();
+    if(llabels != rlabels) {
+        auto r_to_l = rlabels.permutation(llabels);
+        m_tensor_ += rhs_downcasted.value().shuffle(r_to_l);
+    } else {
+        m_tensor_ += rhs_downcasted.value();
+    }
 
-    // TODO layouts
     return *this;
 }
 
 TPARAMS
 typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
   label_type this_labels, const_labeled_buffer_reference rhs) {
+    dummy_indices_type llabels(this_labels);
+    dummy_indices_type rlabels(rhs.rhs());
+
+    using allocator_type       = allocator::Eigen<FloatType, Rank>;
+    const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+
+    if(llabels != rlabels) { // We need to permute rhs before assignment
+        auto r_to_l = rlabels.permutation(llabels);
+        m_tensor_   = rhs_downcasted.value().shuffle(r_to_l);
+    } else {
+        m_tensor_ = rhs_downcasted.value();
+    }
+
+    // TODO: permute layout
+
     return *this;
 }
 
