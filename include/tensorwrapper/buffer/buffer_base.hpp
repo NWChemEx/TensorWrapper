@@ -199,33 +199,6 @@ public:
     // -- Utility methods
     // -------------------------------------------------------------------------
 
-    /** @brief Associates labels with the modes of *this.
-     *
-     *  This method is used to create a labeled buffer object by pairing *this
-     *  with the provided labels. The resulting object is capable of being
-     *  composed via the DSL.
-     *
-     *  @param[in] labels The indices to associate with the modes of *this.
-     *
-     *  @return A DSL term pairing *this with @p labels.
-     *
-     *  @throw None No throw guarantee.
-     */
-    labeled_buffer_type operator()(label_type labels);
-
-    /** @brief Associates labels with the modes of *this.
-     *
-     *  This method is the same as the non-const version except that the result
-     *  contains a read-only reference to *this.
-     *
-     *  @param[in] labels The labels to associate with *this.
-     *
-     *  @return A DSL term pairing *this with @p labels.
-     *
-     *  @throw None No throw guarantee.
-     */
-    labeled_const_buffer_type operator()(label_type labels) const;
-
     /** @brief Is *this value equal to @p rhs?
      *
      *  Two BufferBase objects are value equal if the layouts they contain are
