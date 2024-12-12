@@ -35,7 +35,6 @@ decltype(auto) binary_op(ResultType&& result, LHSType&& lhs, RHSType&& rhs) {
     const auto& lhs_object = lhs.lhs();
     const auto& rhs_object = rhs.lhs();
 
-    auto& rv_labels        = result.rhs();
     const auto& lhs_labels = lhs.rhs();
     const auto& rhs_labels = rhs.rhs();
 
