@@ -15,4 +15,6 @@
  */
 
 #pragma once
+#include <tensorwrapper/dsl/dummy_indices.hpp>
 #include <tensorwrapper/dsl/labeled.hpp>
+#include <tensorwrapper/dsl/pairwise_parser.hpp>

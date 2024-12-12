@@ -17,7 +17,7 @@
 
 #pragma once
 #include <iostream>
-#include <tensorwrapper/dsl/parser.hpp>
+#include <tensorwrapper/dsl/pairwise_parser.hpp>
 #include <type_traits>
 #include <utilities/dsl/dsl.hpp>
 namespace tensorwrapper::dsl {
@@ -120,7 +120,7 @@ public:
     my_type& operator=(TermType&& other) {
         // TODO: other should be rolled into a tensor graph object that can be
         //       manipulated at runtime. Parser is then moved to the backend
-        Parser<ObjectType, LabelType> p;
+        PairwiseParser<ObjectType, LabelType> p;
         *this = p.dispatch(std::move(*this), std::forward<TermType>(other));
         return *this;
     }

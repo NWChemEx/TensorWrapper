@@ -15,15 +15,15 @@
  */
 
 #include "../testing/testing.hpp"
-#include <tensorwrapper/dsl/parser.hpp>
+#include <tensorwrapper/dsl/pairwise_parser.hpp>
 
 using namespace tensorwrapper;
 
-TEST_CASE("Parser<Tensor>") {
+TEST_CASE("PairwiseParser<Tensor>") {
     Tensor scalar(testing::smooth_scalar());
     Tensor vector(testing::smooth_vector());
 
-    dsl::Parser<Tensor, std::string> p;
+    dsl::PairwiseParser<Tensor, std::string> p;
 
     SECTION("add") {
         Tensor t;

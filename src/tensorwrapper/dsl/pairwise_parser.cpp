@@ -15,7 +15,7 @@
  */
 
 #include <stdexcept>
-#include <tensorwrapper/dsl/parser.hpp>
+#include <tensorwrapper/dsl/pairwise_parser.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
 
 namespace tensorwrapper::dsl {
@@ -66,7 +66,7 @@ decltype(auto) binary_op(ResultType&& result, LHSType&& lhs, RHSType&& rhs) {
 } // namespace
 
 #define TPARAMS template<typename ObjectType, typename LabelType>
-#define PARSER Parser<ObjectType, LabelType>
+#define PARSER PairwiseParser<ObjectType, LabelType>
 #define LABELED_TYPE typename PARSER::labeled_type
 
 TPARAMS LABELED_TYPE PARSER::add(labeled_type result, labeled_type lhs,
@@ -77,6 +77,6 @@ TPARAMS LABELED_TYPE PARSER::add(labeled_type result, labeled_type lhs,
 #undef PARSER
 #undef TPARAMS
 
-template class Parser<Tensor, std::string>;
+template class PairwiseParser<Tensor, std::string>;
 
 } // namespace tensorwrapper::dsl

@@ -60,7 +60,9 @@ typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
 
     if(llabels != rlabels) { // We need to permute rhs before assignment
         auto r_to_l = rlabels.permutation(llabels);
-        m_tensor_   = rhs_downcasted.value().shuffle(r_to_l);
+        // Eigen wants int objects
+        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
     } else {
         m_tensor_ = rhs_downcasted.value();
     }

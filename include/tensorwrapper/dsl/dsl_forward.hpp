@@ -22,6 +22,6 @@ template<typename ObjectType, typename LabelType>
 class Labeled;
 
 template<typename ObjectType, typename LabelType>
-class Parser;
+class PairwiseParser;
 
 } // namespace tensorwrapper::dsl
