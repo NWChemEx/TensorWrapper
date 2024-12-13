@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['input_5ftype_70',['input_type',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#ab3e36a2a29d025e2dd56507cb4bc528d',1,'tensorwrapper::detail_::TensorFactory']]],
-  ['is_5fidentity_5f_71',['is_identity_',['../classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f',1,'tensorwrapper::symmetry::Operation::is_identity_()'],['../classtensorwrapper_1_1symmetry_1_1Permutation.html#ac1cece2942c27d0409c2dba908b093a3',1,'tensorwrapper::symmetry::Permutation::is_identity_()']]],
-  ['is_5fmutable_5fto_5fimmutable_5fcast_5fv_72',['is_mutable_to_immutable_cast_v',['../namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03',1,'tensorwrapper::detail_']]]
+  ['has_5flayout_86',['has_layout',['../classtensorwrapper_1_1buffer_1_1BufferBase.html#a6623e82c5f3bef4b2fce767a55f55d40',1,'tensorwrapper::buffer::BufferBase']]],
+  ['has_5frepeated_5findices_87',['has_repeated_indices',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a1967c3a0f0ecb5a34fe3ea913d40d09a',1,'tensorwrapper::dsl::DummyIndices']]],
+  ['has_5fshape_88',['has_shape',['../structtensorwrapper_1_1detail___1_1TensorInput.html#acb1423af1f7c39ce8f21305a60a271eb',1,'tensorwrapper::detail_::TensorInput']]]
 ];

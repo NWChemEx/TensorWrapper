@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['group_173',['Group',['../classtensorwrapper_1_1symmetry_1_1Group.html',1,'tensorwrapper::symmetry']]]
+  ['eigen_216',['Eigen',['../classtensorwrapper_1_1allocator_1_1Eigen.html',1,'tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;'],['../classtensorwrapper_1_1buffer_1_1Eigen.html',1,'tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;']]]
 ];

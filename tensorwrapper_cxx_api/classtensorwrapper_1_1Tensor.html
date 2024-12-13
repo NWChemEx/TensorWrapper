@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.36</span>
+   &#160;<span id="projectnumber">0.0.37</span>
    </div>
   </td>
  </tr>
@@ -102,6 +102,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a40d43088dce5da7fcaf93e981b273f1a">logical_layout_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aa7081ea44dacf0d8b5d59acc668bf82f">input_type::logical_layout_pointer</a></td></tr>
 <tr class="memdesc:a40d43088dce5da7fcaf93e981b273f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the tensor's logical layout. <br /></td></tr>
 <tr class="separator:a40d43088dce5da7fcaf93e981b273f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c4e82268f2b91f0e8d6034830cf52a"><td class="memItemLeft" align="right" valign="top"><a id="a39c4e82268f2b91f0e8d6034830cf52a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a39c4e82268f2b91f0e8d6034830cf52a">buffer_reference</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a9eda2e42631e21ffac3f45f309e014bc">input_type::buffer_reference</a></td></tr>
+<tr class="memdesc:a39c4e82268f2b91f0e8d6034830cf52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a mutable reference to the tensor's buffer. <br /></td></tr>
+<tr class="separator:a39c4e82268f2b91f0e8d6034830cf52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3837f8a61174ecf23a5be4917269a50c"><td class="memItemLeft" align="right" valign="top"><a id="a3837f8a61174ecf23a5be4917269a50c"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">const_buffer_reference</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a6f1195780127ca59beb5ffde9f9796d1">input_type::const_buffer_reference</a></td></tr>
 <tr class="memdesc:a3837f8a61174ecf23a5be4917269a50c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the tensor's buffer. <br /></td></tr>
@@ -110,6 +114,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a8bb33f6b728ebcefdeb05c9da8aab71f">buffer_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aaea587da44957ed1348f1f54c534a27c">input_type::buffer_pointer</a></td></tr>
 <tr class="memdesc:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the tensor's buffer. <br /></td></tr>
 <tr class="separator:a8bb33f6b728ebcefdeb05c9da8aab71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18c9c4f79c37305d246e52cd5e43dda9"><td class="memItemLeft" align="right" valign="top"><a id="a18c9c4f79c37305d246e52cd5e43dda9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a18c9c4f79c37305d246e52cd5e43dda9">const_buffer_pointer</a> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a5a79f1c9c540e48097c66e1b8265fb0e">input_type::const_buffer_pointer</a></td></tr>
+<tr class="memdesc:a18c9c4f79c37305d246e52cd5e43dda9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to a read-only buffer. <br /></td></tr>
+<tr class="separator:a18c9c4f79c37305d246e52cd5e43dda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85929ca1bb93159d162dbc8ab8104d77"><td class="memItemLeft" align="right" valign="top"><a id="a85929ca1bb93159d162dbc8ab8104d77"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a85929ca1bb93159d162dbc8ab8104d77">scalar_il_type</a> = double</td></tr>
 <tr class="memdesc:a85929ca1bb93159d162dbc8ab8104d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a scalar. <br /></td></tr>
@@ -130,16 +138,32 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aec53b217d9b03c0a4dafe6147dede129">tensor4_il_type</a> = std::initializer_list&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html#a2ea66c7afb686eeab03b13f1791d4848">tensor3_il_type</a> &gt;</td></tr>
 <tr class="memdesc:aec53b217d9b03c0a4dafe6147dede129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an initializer list if *this is a rank 4 tensor. <br /></td></tr>
 <tr class="separator:aec53b217d9b03c0a4dafe6147dede129"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a7a298794744a9b9f9228935e63b407"><td class="memItemLeft" align="right" valign="top"><a id="a4a7a298794744a9b9f9228935e63b407"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a4a7a298794744a9b9f9228935e63b407">label_type</a> = std::string</td></tr>
+<tr class="memdesc:a4a7a298794744a9b9f9228935e63b407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a label. <br /></td></tr>
+<tr class="separator:a4a7a298794744a9b9f9228935e63b407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1281f1d61e3b18595be65b7c4b2ba3c4"><td class="memItemLeft" align="right" valign="top"><a id="a1281f1d61e3b18595be65b7c4b2ba3c4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">const_label_reference</a> = const <a class="el" href="classtensorwrapper_1_1Tensor.html#a4a7a298794744a9b9f9228935e63b407">label_type</a> &amp;</td></tr>
+<tr class="memdesc:a1281f1d61e3b18595be65b7c4b2ba3c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an object of type label_type. <br /></td></tr>
+<tr class="separator:a1281f1d61e3b18595be65b7c4b2ba3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a405c993d7b00c0fe1e2d13ba950016be"><td class="memItemLeft" align="right" valign="top"><a id="a405c993d7b00c0fe1e2d13ba950016be"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a405c993d7b00c0fe1e2d13ba950016be">labeled_tensor_type</a> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">dsl::Labeled</a>&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>, <a class="el" href="classtensorwrapper_1_1Tensor.html#a4a7a298794744a9b9f9228935e63b407">label_type</a> &gt;</td></tr>
+<tr class="memdesc:a405c993d7b00c0fe1e2d13ba950016be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a labeled tensor. <br /></td></tr>
+<tr class="separator:a405c993d7b00c0fe1e2d13ba950016be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285466a710320a14769271c0cd5704d1"><td class="memItemLeft" align="right" valign="top"><a id="a285466a710320a14769271c0cd5704d1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a285466a710320a14769271c0cd5704d1">const_labeled_tensor_type</a> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">dsl::Labeled</a>&lt; const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>, <a class="el" href="classtensorwrapper_1_1Tensor.html#a4a7a298794744a9b9f9228935e63b407">label_type</a> &gt;</td></tr>
+<tr class="memdesc:a285466a710320a14769271c0cd5704d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only labeled tensor. <br /></td></tr>
+<tr class="separator:a285466a710320a14769271c0cd5704d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1e68d6937d1df0a3dc868096184d8bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ad1e68d6937d1df0a3dc868096184d8bc">Tensor</a> (<a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html">input_type</a> input)</td></tr>
 <tr class="memdesc:ad1e68d6937d1df0a3dc868096184d8bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this by processing the input provided in <code>input</code>.  <a href="classtensorwrapper_1_1Tensor.html#ad1e68d6937d1df0a3dc868096184d8bc">More...</a><br /></td></tr>
 <tr class="separator:ad1e68d6937d1df0a3dc868096184d8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae356ba656668267d37cf9379756ae3d7"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:ae356ba656668267d37cf9379756ae3d7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ae356ba656668267d37cf9379756ae3d7">Tensor</a> (disable_if_tensor_t&lt; Args &gt; &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ae356ba656668267d37cf9379756ae3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic value ctor.  <a href="classtensorwrapper_1_1Tensor.html#ae356ba656668267d37cf9379756ae3d7">More...</a><br /></td></tr>
-<tr class="separator:ae356ba656668267d37cf9379756ae3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45966a20a0c7dd0b0ef96314ad1ab42d"><td class="memTemplParams" colspan="2">template&lt;typename... Args, typename  = enable_if_no_tensors_t&lt;std::decay_t&lt;Args&gt;...&gt;&gt; </td></tr>
+<tr class="memitem:a45966a20a0c7dd0b0ef96314ad1ab42d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a45966a20a0c7dd0b0ef96314ad1ab42d">Tensor</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a45966a20a0c7dd0b0ef96314ad1ab42d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic value ctor.  <a href="classtensorwrapper_1_1Tensor.html#a45966a20a0c7dd0b0ef96314ad1ab42d">More...</a><br /></td></tr>
+<tr class="separator:a45966a20a0c7dd0b0ef96314ad1ab42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fb700692f2fa743a68734c440be08f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a8fb700692f2fa743a68734c440be08f9">Tensor</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;other)</td></tr>
 <tr class="memdesc:a8fb700692f2fa743a68734c440be08f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this with a deep copy of <code>other</code>.  <a href="classtensorwrapper_1_1Tensor.html#a8fb700692f2fa743a68734c440be08f9">More...</a><br /></td></tr>
 <tr class="separator:a8fb700692f2fa743a68734c440be08f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,9 +183,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa93eb1f54cba7139b2b22b66f7c60459"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">const_logical_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aa93eb1f54cba7139b2b22b66f7c60459">logical_layout</a> () const</td></tr>
 <tr class="memdesc:aa93eb1f54cba7139b2b22b66f7c60459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only access to the tensor's logical layout.  <a href="classtensorwrapper_1_1Tensor.html#aa93eb1f54cba7139b2b22b66f7c60459">More...</a><br /></td></tr>
 <tr class="separator:aa93eb1f54cba7139b2b22b66f7c60459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399184a167a00c7b2a6a8c84d8286135"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a39c4e82268f2b91f0e8d6034830cf52a">buffer_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a399184a167a00c7b2a6a8c84d8286135">buffer</a> ()</td></tr>
+<tr class="memdesc:a399184a167a00c7b2a6a8c84d8286135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable access to the tensor's buffer.  <a href="classtensorwrapper_1_1Tensor.html#a399184a167a00c7b2a6a8c84d8286135">More...</a><br /></td></tr>
+<tr class="separator:a399184a167a00c7b2a6a8c84d8286135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">const_buffer_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a4bebb4bd3a8937abfdec46320f5bbdf8">buffer</a> () const</td></tr>
 <tr class="memdesc:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only access to the tensor's buffer.  <a href="classtensorwrapper_1_1Tensor.html#a4bebb4bd3a8937abfdec46320f5bbdf8">More...</a><br /></td></tr>
 <tr class="separator:a4bebb4bd3a8937abfdec46320f5bbdf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c3892974f03518459c6840631411f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a405c993d7b00c0fe1e2d13ba950016be">labeled_tensor_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#aa1c3892974f03518459c6840631411f2">operator()</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">const_label_reference</a> labels)</td></tr>
+<tr class="memdesc:aa1c3892974f03518459c6840631411f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates <code>labels</code> with the modes of *this.  <a href="classtensorwrapper_1_1Tensor.html#aa1c3892974f03518459c6840631411f2">More...</a><br /></td></tr>
+<tr class="separator:aa1c3892974f03518459c6840631411f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b0001c600e3540a0fd5d8aada45966"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a285466a710320a14769271c0cd5704d1">const_labeled_tensor_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ac0b0001c600e3540a0fd5d8aada45966">operator()</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">const_label_reference</a> labels) const</td></tr>
+<tr class="memdesc:ac0b0001c600e3540a0fd5d8aada45966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates <code>labels</code> with the modes of *this.  <a href="classtensorwrapper_1_1Tensor.html#ac0b0001c600e3540a0fd5d8aada45966">More...</a><br /></td></tr>
+<tr class="separator:ac0b0001c600e3540a0fd5d8aada45966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47f9907fce0daa1f797f275701f65236"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">swap</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;other) noexcept</td></tr>
 <tr class="memdesc:a47f9907fce0daa1f797f275701f65236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges the state of *this with the state of <code>other</code>.  <a href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">More...</a><br /></td></tr>
 <tr class="separator:a47f9907fce0daa1f797f275701f65236"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,13 +267,13 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae356ba656668267d37cf9379756ae3d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae356ba656668267d37cf9379756ae3d7">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[2/5]</span></h2>
+<a id="a45966a20a0c7dd0b0ef96314ad1ab42d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45966a20a0c7dd0b0ef96314ad1ab42d">&#9670;&nbsp;</a></span>Tensor() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Args&gt; </div>
+template&lt;typename... Args, typename  = enable_if_no_tensors_t&lt;std::decay_t&lt;Args&gt;...&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -248,7 +281,7 @@ template&lt;typename... Args&gt; </div>
         <tr>
           <td class="memname">tensorwrapper::Tensor::Tensor </td>
           <td>(</td>
-          <td class="paramtype">disable_if_tensor_t&lt; Args &gt; &amp;&amp;...&#160;</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em></td><td>)</td>
           <td></td>
         </tr>
@@ -263,7 +296,8 @@ template&lt;typename... Args&gt; </div>
 <p>Variadic value ctor. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Args</td><td>The types of the arguments.</td></tr>
+    <tr><td class="paramname">Args</td><td>The types of the arguments. </td></tr>
+    <tr><td class="paramname">&lt;Anonymous&gt;</td><td>Template parameter to disable this overload via SFINAE if any of the provided arguments are <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> objects.</td></tr>
   </table>
   </dd>
 </dl>
@@ -408,8 +442,35 @@ template&lt;typename... Args&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a399184a167a00c7b2a6a8c84d8286135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a399184a167a00c7b2a6a8c84d8286135">&#9670;&nbsp;</a></span>buffer() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#a39c4e82268f2b91f0e8d6034830cf52a">buffer_reference</a> tensorwrapper::Tensor::buffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mutable access to the tensor's buffer. </p>
+<p>The buffer of a tensor contains the actual elements. Generally speaking, users should not have to interact with the buffer. The primary exception to this is if the user wants to interface TensorWrapper with another tensor solution.</p>
+<dl class="section return"><dt>Returns</dt><dd>A mutable reference to the buffer of the tensor.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4bebb4bd3a8937abfdec46320f5bbdf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bebb4bd3a8937abfdec46320f5bbdf8">&#9670;&nbsp;</a></span>buffer()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bebb4bd3a8937abfdec46320f5bbdf8">&#9670;&nbsp;</a></span>buffer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,7 +485,7 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p>Read-only access to the tensor's buffer. </p>
-<p>The buffer of a tensor contains the actual elements. Generally speaking, users should not have to interact with the buffer. The primary exception to this is if the user wants to interface TensorWrapper with another tensor solution.</p>
+<p>This method is the same as the non-const version except that resulting reference is read-only.</p>
 <dl class="section return"><dt>Returns</dt><dd>A read-only reference to the buffer of the tensor.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -501,6 +562,80 @@ template&lt;typename... Args&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa1c3892974f03518459c6840631411f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1c3892974f03518459c6840631411f2">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#a405c993d7b00c0fe1e2d13ba950016be">labeled_tensor_type</a> tensorwrapper::Tensor::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">const_label_reference</a>&#160;</td>
+          <td class="paramname"><em>labels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associates <code>labels</code> with the modes of *this. </p>
+<p>Expressing tensor operations is easier with the use of the Einstein summation convention. Usage of this convention requires the user to be able to associate dummy indices with the modes of the tensor. This function pairs <code>labels</code> with the modes of *this such that the i-th dummy index of <code>labels</code> is paired with the i-th mode of *this.</p>
+<p>See <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html" title="Class to help deal with string-based dummy indices.">dsl::DummyIndices</a> for how the string is interpreted.</p>
+<p>Note that if *this is a rank 0 tensor <code>labels</code> should be the empty string.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">labels</td><td>The dummy indices to associate with each mode.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A DSL term pairing *this with <code>labels</code>. </dd></dl>
+
+</div>
+</div>
+<a id="ac0b0001c600e3540a0fd5d8aada45966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b0001c600e3540a0fd5d8aada45966">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#a285466a710320a14769271c0cd5704d1">const_labeled_tensor_type</a> tensorwrapper::Tensor::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">const_label_reference</a>&#160;</td>
+          <td class="paramname"><em>labels</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associates <code>labels</code> with the modes of *this. </p>
+<p>This method is the same as the non-const version except that the resulting DSL term contains a reference to an immutable tensor.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">labels</td><td>The dummy indices to associate with each mode.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A DSL term pairing *this with <code>labels</code>. </dd></dl>
 
 </div>
 </div>

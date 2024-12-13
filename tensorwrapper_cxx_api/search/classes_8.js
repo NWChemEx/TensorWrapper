@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['shapebase_189',['ShapeBase',['../classtensorwrapper_1_1shape_1_1ShapeBase.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_190',['ShapeTraits',['../structtensorwrapper_1_1shape_1_1ShapeTraits.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_3c_20const_20shapebase_20_3e_191',['ShapeTraits&lt; const ShapeBase &gt;',['../structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_3c_20const_20smooth_20_3e_192',['ShapeTraits&lt; const Smooth &gt;',['../structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01Smooth_01_4.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_3c_20shapebase_20_3e_193',['ShapeTraits&lt; ShapeBase &gt;',['../structtensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_3c_20smooth_20_3e_194',['ShapeTraits&lt; Smooth &gt;',['../structtensorwrapper_1_1shape_1_1ShapeTraits_3_01Smooth_01_4.html',1,'tensorwrapper::shape']]],
-  ['shapetraits_3c_20smoothview_3c_20t_20_3e_20_3e_195',['ShapeTraits&lt; SmoothView&lt; T &gt; &gt;',['../structtensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4.html',1,'tensorwrapper::shape']]],
-  ['smooth_196',['Smooth',['../classtensorwrapper_1_1shape_1_1Smooth.html',1,'tensorwrapper::shape']]],
-  ['smoothalias_197',['SmoothAlias',['../classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html',1,'tensorwrapper::shape::detail_']]],
-  ['smoothview_198',['SmoothView',['../classtensorwrapper_1_1shape_1_1SmoothView.html',1,'tensorwrapper::shape']]],
-  ['smoothviewpimpl_199',['SmoothViewPIMPL',['../classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html',1,'tensorwrapper::shape::detail_']]]
+  ['pairwiseparser_225',['PairwiseParser',['../classtensorwrapper_1_1dsl_1_1PairwiseParser.html',1,'tensorwrapper::dsl']]],
+  ['pattern_226',['Pattern',['../classtensorwrapper_1_1sparsity_1_1Pattern.html',1,'tensorwrapper::sparsity']]],
+  ['permutation_227',['Permutation',['../classtensorwrapper_1_1symmetry_1_1Permutation.html',1,'tensorwrapper::symmetry']]],
+  ['physical_228',['Physical',['../classtensorwrapper_1_1layout_1_1Physical.html',1,'tensorwrapper::layout']]],
+  ['polymorphicbase_229',['PolymorphicBase',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20allocatorbase_20_3e_230',['PolymorphicBase&lt; AllocatorBase &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20bufferbase_20_3e_231',['PolymorphicBase&lt; BufferBase &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20layoutbase_20_3e_232',['PolymorphicBase&lt; LayoutBase &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20operation_20_3e_233',['PolymorphicBase&lt; Operation &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20shapebase_20_3e_234',['PolymorphicBase&lt; ShapeBase &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
+  ['polymorphicbase_3c_20smoothviewpimpl_3c_20smoothtype_20_3e_20_3e_235',['PolymorphicBase&lt; SmoothViewPIMPL&lt; SmoothType &gt; &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]]
 ];

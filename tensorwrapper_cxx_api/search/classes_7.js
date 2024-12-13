@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['replicated_188',['Replicated',['../classtensorwrapper_1_1allocator_1_1Replicated.html',1,'tensorwrapper::allocator::Replicated'],['../classtensorwrapper_1_1buffer_1_1Replicated.html',1,'tensorwrapper::buffer::Replicated']]]
+  ['operation_224',['Operation',['../classtensorwrapper_1_1symmetry_1_1Operation.html',1,'tensorwrapper::symmetry']]]
 ];

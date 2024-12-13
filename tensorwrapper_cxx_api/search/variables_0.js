@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['is_5fmutable_5fto_5fimmutable_5fcast_5fv_283',['is_mutable_to_immutable_cast_v',['../namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03',1,'tensorwrapper::detail_']]]
+  ['base_5ftype_351',['base_type',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a42d5253d9f97cfbdb31dca92d456f64e',1,'tensorwrapper::dsl::DummyIndices']]]
 ];

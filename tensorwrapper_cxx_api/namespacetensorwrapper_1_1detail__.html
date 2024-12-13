@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.36</span>
+   &#160;<span id="projectnumber">0.0.37</span>
    </div>
   </td>
  </tr>
@@ -87,6 +87,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html">TensorInput</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type capable of holding all valid inputs to a <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a>'s ctor.  <a href="structtensorwrapper_1_1detail___1_1TensorInput.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1detail___1_1IsTuple.html">IsTuple</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorwrapper_1_1detail___1_1IsTuple_3_01std_1_1tuple_3_01Args_8_8_8_01_4_01_4.html">IsTuple&lt; std::tuple&lt; Args... &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html">TensorFactory</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object which helps create tensor objects.  <a href="classtensorwrapper_1_1detail___1_1TensorFactory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +131,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> =
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a6a52ed52f9381cb54bd6a1d4f9f3548c"><td class="memTemplParams" colspan="2"><a id="a6a52ed52f9381cb54bd6a1d4f9f3548c"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6a52ed52f9381cb54bd6a1d4f9f3548c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1detail__.html#a6a52ed52f9381cb54bd6a1d4f9f3548c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">PolymorphicBase</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memdesc:a6a52ed52f9381cb54bd6a1d4f9f3548c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements printing via ostream for objects deriving from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title="Defines the API polymorphic utility methods should use.">PolymorphicBase</a>. <br /></td></tr>
+<tr class="separator:a6a52ed52f9381cb54bd6a1d4f9f3548c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a010ea06c04faf4954a04395948b172d3"><td class="memTemplParams" colspan="2">template&lt;typename U , typename T &gt; </td></tr>
 <tr class="memitem:a010ea06c04faf4954a04395948b172d3"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; U &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1detail__.html#a010ea06c04faf4954a04395948b172d3">static_pointer_cast</a> (std::unique_ptr&lt; T &gt; &amp;pbase)</td></tr>
 <tr class="memdesc:a010ea06c04faf4954a04395948b172d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a static cast of a unique_ptr.  <a href="namespacetensorwrapper_1_1detail__.html#a010ea06c04faf4954a04395948b172d3">More...</a><br /></td></tr>

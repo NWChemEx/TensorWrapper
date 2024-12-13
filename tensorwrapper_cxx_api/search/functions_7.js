@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['is_5fidentity_5f_247',['is_identity_',['../classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f',1,'tensorwrapper::symmetry::Operation::is_identity_()'],['../classtensorwrapper_1_1symmetry_1_1Permutation.html#ac1cece2942c27d0409c2dba908b093a3',1,'tensorwrapper::symmetry::Permutation::is_identity_()']]]
+  ['has_5flayout_301',['has_layout',['../classtensorwrapper_1_1buffer_1_1BufferBase.html#a6623e82c5f3bef4b2fce767a55f55d40',1,'tensorwrapper::buffer::BufferBase']]],
+  ['has_5frepeated_5findices_302',['has_repeated_indices',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a1967c3a0f0ecb5a34fe3ea913d40d09a',1,'tensorwrapper::dsl::DummyIndices']]],
+  ['has_5fshape_303',['has_shape',['../structtensorwrapper_1_1detail___1_1TensorInput.html#acb1423af1f7c39ce8f21305a60a271eb',1,'tensorwrapper::detail_::TensorInput']]]
 ];

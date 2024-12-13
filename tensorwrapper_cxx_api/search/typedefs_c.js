@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['value_5ftype_352',['value_type',['../classtensorwrapper_1_1symmetry_1_1Group.html#a514bfe739fcb010c6848e72e145bdb88',1,'tensorwrapper::symmetry::Group']]],
-  ['vector_5fil_5ftype_353',['vector_il_type',['../classtensorwrapper_1_1Tensor.html#a49549e657f4e223cfe7622f1b633e294',1,'tensorwrapper::Tensor::vector_il_type()'],['../classtensorwrapper_1_1detail___1_1TensorFactory.html#aadb5a4c241ae0c9dab9bac63bdce12de',1,'tensorwrapper::detail_::TensorFactory::vector_il_type()']]]
+  ['tensor3_5fil_5ftype_437',['tensor3_il_type',['../classtensorwrapper_1_1Tensor.html#a2ea66c7afb686eeab03b13f1791d4848',1,'tensorwrapper::Tensor::tensor3_il_type()'],['../classtensorwrapper_1_1detail___1_1TensorFactory.html#a32dfc71f73f04982bdb78fac14b47311',1,'tensorwrapper::detail_::TensorFactory::tensor3_il_type()']]],
+  ['tensor4_5fil_5ftype_438',['tensor4_il_type',['../classtensorwrapper_1_1Tensor.html#aec53b217d9b03c0a4dafe6147dede129',1,'tensorwrapper::Tensor::tensor4_il_type()'],['../classtensorwrapper_1_1detail___1_1TensorFactory.html#aded3f81ed032278b437d4e20b45d4199',1,'tensorwrapper::detail_::TensorFactory::tensor4_il_type()']]],
+  ['tensor_5ftype_439',['tensor_type',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#abce3e31d7ddbdd503f9248fee94c3a7a',1,'tensorwrapper::detail_::TensorFactory']]]
 ];
