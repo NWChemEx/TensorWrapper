@@ -118,13 +118,13 @@ public:
      *  @param[in] this_labels The labels to associate with the modes of *this.
      *  @param[in] rhs The buffer to add into *this.
      *
+     *  @throws std::runtimer_error if *this does not have a layout. Strong
+     *                              throw guarantee.
      *  @throws ??? Throws if the derived class's implementation throws. Same
      *              throw guarantee.
      */
     buffer_base_reference addition_assignment(
-      label_type this_labels, const_labeled_buffer_reference rhs) {
-        return addition_assignment_(std::move(this_labels), rhs);
-    }
+      label_type this_labels, const_labeled_buffer_reference rhs);
 
     /** @brief Returns the result of *this + rhs.
      *
@@ -169,9 +169,7 @@ public:
      *             throws. Same throw guarantee.
      */
     buffer_base_reference permute_assignment(
-      label_type this_labels, const_labeled_buffer_reference rhs) {
-        return permute_assignment_(std::move(this_labels), rhs);
-    }
+      label_type this_labels, const_labeled_buffer_reference rhs);
 
     /** @brief Returns a copy of *this obtained by permuting *this.
      *
@@ -296,13 +294,47 @@ protected:
         return *this;
     }
 
-    /// Derived class should overwrite to implement addition_assignment
+    /** @brief Overridden by derived classes to implement addition_assignment
+     *
+     *  BufferBase will take care of addition_assignment on the layout member.
+     *  The derived class is responsible for performing the addition_assignment
+     *  on the actual tensor elements in a manner that is consistent with the
+     *  description of addition_assignment.
+     *
+     *  @param[in] this_labels The dummy indices for *this.
+     *  @param[in] rhs The labeled buffer to add into *this.
+     *
+     *  @return *this after the operation.
+     *
+     *  @throw std::runtime_error if the default implementation is called
+     *                            because the derived class does not overload it
+     *                            (or because the derived class directly called
+     *                            it). Strong throw guarantee (in the first
+     *                            scenario).
+     */
     virtual buffer_base_reference addition_assignment_(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         throw std::runtime_error("Addition assignment NYI");
     }
 
-    /// Derived class should overwrite to implement permute_assignment
+    /** @brief Overridden by derived classes to implement permute_assignment
+     *
+     *  BufferBase will take care of permute_assignment on the layout member.
+     *  The derived class is responsible for performing the permute_assignment
+     *  on the actual tensor elements in a manner that is consistent with the
+     *  description of permute_assignment.
+     *
+     *  @param[in] this_labels The dummy indices for *this.
+     *  @param[in] rhs The labeled buffer to permute into *this.
+     *
+     *  @return *this after the operation.
+     *
+     *  @throw std::runtime_error if the default implementation is called
+     *                            because the derived class does not overload it
+     *                            (or because the derived class directly called
+     *                            it). Strong throw guarantee (in the first
+     *                            scenario).
+     */
     virtual buffer_base_reference permute_assignment_(
       label_type this_labels, const_labeled_buffer_reference rhs) {
         throw std::runtime_error("Permute assignment NYI");

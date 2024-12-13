@@ -15,12 +15,25 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/dsl_base.hpp>
 
 namespace tensorwrapper::sparsity {
 
 /** @brief Base class for objects describing the sparsity of a tensor. */
-class Pattern {
+class Pattern : public detail_::DSLBase<Pattern> {
+private:
+    /// Type of *this
+    using my_type = Pattern;
+
+    /// Type of DSLBase
+    using dsl_base = detail_::DSLBase<my_type>;
+
 public:
+    /// Pull in base class types
+    using typename dsl_base::const_labeled_reference;
+    using typename dsl_base::dsl_reference;
+    using typename dsl_base::label_type;
+
     /** @brief Determines if *this and @p rhs describe the same sparsity
      *         pattern.
      *
@@ -49,6 +62,15 @@ public:
     bool operator!=(const Pattern& rhs) const noexcept {
         return !((*this) == rhs);
     }
+
+protected:
+    /// Implements addition assignment. Only works if empty (for now)
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements permutation assignment. Only works if empty (for now).
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 };
 
 } // namespace tensorwrapper::sparsity

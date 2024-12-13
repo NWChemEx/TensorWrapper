@@ -121,7 +121,10 @@ public:
         // TODO: other should be rolled into a tensor graph object that can be
         //       manipulated at runtime. Parser is then moved to the backend
         PairwiseParser<ObjectType, LabelType> p;
-        *this = p.dispatch(std::move(*this), std::forward<TermType>(other));
+        auto&& [labels, object] =
+          p.dispatch(std::move(*this), std::forward<TermType>(other));
+        this->lhs() = std::move(object);
+        this->rhs() = std::move(labels);
         return *this;
     }
 };

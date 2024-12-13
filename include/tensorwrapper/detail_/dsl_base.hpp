@@ -44,6 +44,9 @@ public:
     /// Type of a read-only reference to a labeled_type object
     using const_labeled_reference = const labeled_const_type&;
 
+    /// Polymorphic no-throw defaulted dtor
+    virtual ~DSLBase() noexcept = default;
+
     /** @brief Associates labels with the modes of *this.
      *
      *  This method is used to create a labeled object by pairing *this

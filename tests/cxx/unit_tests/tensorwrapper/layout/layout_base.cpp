@@ -119,4 +119,41 @@ TEST_CASE("LayoutBase") {
         // Different symmetry
         REQUIRE_FALSE(base_copy_no_sym == base_copy_has_sym);
     }
+
+    SECTION("addition_assignment_") {
+        Physical l0(matrix_shape, no_symm, no_sparsity);
+
+        auto pl0 = &(l0.addition_assignment("i,j", base_copy_no_sym("i,j")));
+        REQUIRE(pl0 == &l0);
+        REQUIRE(l0 == base_copy_no_sym);
+
+        shape::Smooth matrix_shape2{3, 2};
+        Physical l1(matrix_shape2, no_symm, no_sparsity);
+        auto pl1 = &(l1.addition_assignment("i,j", base_copy_no_sym("j,i")));
+        REQUIRE(pl1 == &l1);
+        REQUIRE(l1 == Physical(matrix_shape2, no_symm, no_sparsity));
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(l0.addition_assignment("i,j", base_copy_no_sym("i")),
+                          std::runtime_error);
+    }
+
+    SECTION("permute_assignment_") {
+        Physical l0(matrix_shape, no_symm, no_sparsity);
+
+        auto pl0 = &(l0.permute_assignment("i,j", base_copy_no_sym("i,j")));
+        REQUIRE(pl0 == &l0);
+        REQUIRE(l0 == base_copy_no_sym);
+
+        Physical l1(shape::Smooth{}, no_symm, no_sparsity);
+        auto pl1 = &(l1.permute_assignment("i,j", base_copy_no_sym("j,i")));
+        REQUIRE(pl1 == &l1);
+
+        Physical corr(shape::Smooth{3, 2}, no_symm, no_sparsity);
+        REQUIRE(l1 == corr);
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(l0.permute_assignment("i,j", base_copy_no_sym("i")),
+                          std::runtime_error);
+    }
 }

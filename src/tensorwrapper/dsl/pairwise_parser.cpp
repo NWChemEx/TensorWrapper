@@ -15,63 +15,65 @@
  */
 
 #include <stdexcept>
+#include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 #include <tensorwrapper/dsl/pairwise_parser.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
 
 namespace tensorwrapper::dsl {
 namespace {
+
+using detail_::static_pointer_cast;
+
+template<typename LHSType, typename RHSType>
+Tensor tensor_assign(LHSType&& lhs, RHSType&& rhs) {
+    auto playout = rhs.lhs().logical_layout().permute(rhs.rhs(), lhs.rhs());
+    auto pdown   = static_pointer_cast<layout::Logical>(playout);
+    auto pbuffer = rhs.lhs().buffer().permute(rhs.rhs(), lhs.rhs());
+    return Tensor(std::move(pdown), std::move(pbuffer));
+}
+
 struct CallAddition {
     template<typename LHSType, typename RHSType>
     static decltype(auto) run(LHSType&& lhs, RHSType&& rhs) {
-        const auto& llabels = lhs.rhs();
-        return lhs.lhs().addition(llabels, std::forward<RHSType>(rhs));
+        return lhs.lhs().addition(lhs.rhs(), std::forward<RHSType>(rhs));
     }
 };
 
 template<typename FunctorType, typename ResultType, typename LHSType,
          typename RHSType>
-decltype(auto) binary_op(ResultType&& result, LHSType&& lhs, RHSType&& rhs) {
-    auto& rv_object        = result.lhs();
-    const auto& lhs_object = lhs.lhs();
-    const auto& rhs_object = rhs.lhs();
+Tensor tensor_binary(ResultType&& result, LHSType&& lhs, RHSType&& rhs) {
+    Tensor buffer;
+    if(result.lhs() == Tensor{}) {
+        auto llayout = lhs.lhs().logical_layout()(lhs.rhs());
+        auto rlayout = rhs.lhs().logical_layout()(rhs.rhs());
+        auto playout = FunctorType::run(llayout, rlayout);
+        auto pdown   = static_pointer_cast<layout::Logical>(playout);
 
-    const auto& lhs_labels = lhs.rhs();
-    const auto& rhs_labels = rhs.rhs();
+        auto lbuffer = lhs.lhs().buffer()(lhs.rhs());
+        auto rbuffer = rhs.lhs().buffer()(rhs.rhs());
+        auto pbuffer = FunctorType::run(lbuffer, rbuffer);
 
-    using object_type = typename std::decay_t<ResultType>::object_type;
-
-    if constexpr(std::is_same_v<object_type, Tensor>) {
-        if(rv_object == Tensor{}) {
-            const auto& llayout = lhs_object.logical_layout();
-            // const auto& rlayout = rhs_object.logical_layout();
-            std::decay_t<decltype(llayout)> rv_layout(
-              llayout); // FunctorType::run(llayout(lhs_labels),
-                        // rlayout(rhs_labels));
-
-            auto lbuffer = lhs_object.buffer()(lhs_labels);
-            auto rbuffer = rhs_object.buffer()(rhs_labels);
-            auto buffer  = FunctorType::run(lbuffer, rbuffer);
-
-            // TODO figure out permutation
-            Tensor(std::move(rv_layout), std::move(buffer)).swap(rv_object);
-        } else {
-            throw std::runtime_error("Hints are not allowed yet!");
-        }
+        Tensor(std::move(pdown), std::move(pbuffer)).swap(buffer);
     } else {
-        // Getting here means the assert will fail
-        static_assert(std::is_same_v<object_type, Tensor>, "NYI");
+        throw std::runtime_error("Hints are not allowed yet!");
     }
-    return result;
+    return tensor_assign(std::forward<ResultType>(result), buffer(lhs.rhs()));
 }
+
 } // namespace
 
 #define TPARAMS template<typename ObjectType, typename LabelType>
 #define PARSER PairwiseParser<ObjectType, LabelType>
-#define LABELED_TYPE typename PARSER::labeled_type
 
-TPARAMS LABELED_TYPE PARSER::add(labeled_type result, labeled_type lhs,
-                                 labeled_type rhs) {
-    return binary_op<CallAddition>(result, lhs, rhs);
+TPARAMS
+ObjectType PARSER::assign(const_labeled_type lhs, const_labeled_type rhs) {
+    return tensor_assign(lhs, rhs);
+}
+
+TPARAMS
+ObjectType PARSER::add(const_labeled_type result, const_labeled_type lhs,
+                       const_labeled_type rhs) {
+    return tensor_binary<CallAddition>(result, lhs, rhs);
 }
 
 #undef PARSER

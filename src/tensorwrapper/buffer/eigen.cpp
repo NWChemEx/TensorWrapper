@@ -29,10 +29,6 @@ using dummy_indices_type = dsl::DummyIndices<std::string>;
 TPARAMS
 typename EIGEN::dsl_reference EIGEN::addition_assignment_(
   label_type this_labels, const_labeled_reference rhs) {
-    // TODO layouts
-    if(layout() != rhs.lhs().layout())
-        throw std::runtime_error("Layouts must be the same (for now)");
-
     dummy_indices_type llabels(this_labels);
     dummy_indices_type rlabels(rhs.rhs());
 

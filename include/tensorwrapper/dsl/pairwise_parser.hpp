@@ -40,10 +40,17 @@ public:
     /// Type of a leaf in the AST
     using labeled_type = Labeled<ObjectType, LabelType>;
 
+    /// Type of a read-only leaf in the AST
+    using const_labeled_type = Labeled<const ObjectType, LabelType>;
+
+    /// Type of a newly created object and the labels associated with it.
+    using label_pair = std::pair<LabelType, ObjectType>;
+
     /** @brief Recursion end-point
      *
      *  Evaluates @p rhs given that it will be evaluated into lhs.
      *  This is the natural end-point for recursion down a branch of the AST.
+     *  This method just returns the object in @p rhs.
      *
      *  N.b., this overload is only responsible for evaluating @p rhs NOT for
      *  assigning it to @p lhs.
@@ -51,11 +58,16 @@ public:
      *  @param[in] lhs The object that @p rhs will ultimately be assigned to.
      *  @param[in] rhs The "expression" that needs to be evaluated.
      *
-     *  @return @p rhs untouched.
+     *  @return A label_pair containing a copy of the object in @p rhs permuted
+     *          to match the ordering of @p lhs.
      *
-     *  @throw None No throw guarantee.
+     *  @throw std::bad_alloc if the copy fails. Strong throw guarantee.
+     *  @throw std::runtime_error if a permutation is needed and the permutation
+     *                            fails. Strong throw guarantee.
      */
-    auto dispatch(labeled_type lhs, labeled_type rhs) { return rhs; }
+    label_pair dispatch(const_labeled_type lhs, const_labeled_type rhs) {
+        return label_pair(lhs.rhs(), assign(lhs, rhs));
+    }
 
     /** @brief Handles adding two expressions together.
      *
@@ -65,19 +77,26 @@ public:
      *  @param[in] lhs The object that @p rhs will ultimately be assigned to.
      *  @param[in] rhs The expression to evaluate.
      *
+     *  @return A label_pair where the object is obtained by adding the objects
+     *          in @p lhs and @p rhs together.
      *
+     *  @throw std::bad_alloc if there is a problem copying. Strong throw
+     *                        guarantee.
+     *  @throw std::runtime_error if there is a problem doing the operation.
+     *                            Strong throw guarantee.
      */
     template<typename T, typename U>
-    auto dispatch(labeled_type lhs, const utilities::dsl::Add<T, U>& rhs) {
-        // TODO: This shouldn't be assigning to lhs, but letting the layer up
-        // do that
-        auto lA = dispatch(lhs, rhs.lhs());
-        auto lB = dispatch(lhs, rhs.rhs());
-        return add(std::move(lhs), std::move(lA), std::move(lB));
+    label_pair dispatch(const_labeled_type lhs,
+                        const utilities::dsl::Add<T, U>& rhs) {
+        auto&& [llabels, lA] = dispatch(lhs, rhs.lhs());
+        auto&& [rlabels, lB] = dispatch(lhs, rhs.rhs());
+        return label_pair(lhs.rhs(), add(lhs, lA(llabels), lB(rlabels)));
     }
 
 protected:
-    labeled_type add(labeled_type result, labeled_type lhs, labeled_type rhs);
+    ObjectType assign(const_labeled_type result, const_labeled_type rhs);
+    ObjectType add(const_labeled_type result, const_labeled_type lhs,
+                   const_labeled_type rhs);
 };
 
 extern template class PairwiseParser<Tensor, std::string>;

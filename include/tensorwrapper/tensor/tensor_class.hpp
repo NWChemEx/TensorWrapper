@@ -21,7 +21,13 @@
 namespace tensorwrapper {
 namespace detail_ {
 class TensorPIMPL;
-}
+
+template<typename T>
+struct IsTuple : std::false_type {};
+
+template<typename... Args>
+struct IsTuple<std::tuple<Args...>> : std::true_type {};
+} // namespace detail_
 
 /** @brief Represents a multi-dimensional array of values.
  *
@@ -39,8 +45,8 @@ private:
 
     /// Are any of the types in @p Args equal to Tensor?
     template<typename... Args>
-    static constexpr bool are_any_tensors_v =
-      std::disjunction_v<is_tensor_t<Args>...>;
+    static constexpr bool are_any_tensors_v = std::disjunction_v<
+      std::disjunction<is_tensor_t<Args>, detail_::IsTuple<Args>>...>;
 
     /// Enables a function so long as no type in @p Args is Tensor
     template<typename... Args>

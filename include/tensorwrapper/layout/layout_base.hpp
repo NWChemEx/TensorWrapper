@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
@@ -25,7 +26,15 @@ namespace tensorwrapper::layout {
 /** @brief Common base class for all layouts.
  *
  */
-class LayoutBase : public detail_::PolymorphicBase<LayoutBase> {
+class LayoutBase : public detail_::PolymorphicBase<LayoutBase>,
+                   public detail_::DSLBase<LayoutBase> {
+private:
+    /// Type of *this
+    using my_type = LayoutBase;
+
+    /// Type of DSL base class
+    using dsl_base = detail_::DSLBase<my_type>;
+
 public:
     /// Type all layouts derive from
     using layout_base = LayoutBase;
@@ -42,6 +51,9 @@ public:
     /// Common base type of all shape objects
     using shape_base = shape::ShapeBase;
 
+    /// Mutable reference to a shape_base object
+    using shape_reference = shape_base&;
+
     /// Read-only reference to a shape's base object.
     using const_shape_reference = const shape_base&;
 
@@ -50,6 +62,9 @@ public:
 
     /// Object holding symmetry operations
     using symmetry_type = symmetry::Group;
+
+    /// Mutable reference to an object of type symmetry_type
+    using symmetry_reference = symmetry_type&;
 
     /// Read-only reference to the symmetry
     using const_symmetry_reference = const symmetry_type&;
@@ -60,6 +75,9 @@ public:
     /// Object holding sparsity patterns
     using sparsity_type = sparsity::Pattern;
 
+    /// Mutable reference to an object of type sparsity_type
+    using sparsity_reference = sparsity_type&;
+
     /// Read-only reference to the sparsity
     using const_sparsity_reference = const sparsity_type&;
 
@@ -68,6 +86,11 @@ public:
 
     /// Type used for indexing and offsets
     using size_type = std::size_t;
+
+    /// Pull in base class types
+    using typename dsl_base::const_labeled_reference;
+    using typename dsl_base::dsl_reference;
+    using typename dsl_base::label_type;
 
     // -------------------------------------------------------------------------
     // -- Ctors and dtor
@@ -150,6 +173,8 @@ public:
     // -- State methods
     // -------------------------------------------------------------------------
 
+    shape_reference shape() { return *m_shape_; }
+
     /** @brief Provides read-only access to the shape of the layout.
      *
      *  @return A read-only reference to the shape of the layout.
@@ -158,6 +183,8 @@ public:
      */
     const_shape_reference shape() const { return *m_shape_; }
 
+    symmetry_reference symmetry() { return *m_symmetry_; }
+
     /** @brief Provides read-only access to the symmetry of the layout.
      *
      *  @return A read-only reference to the symmetry of the layout.
@@ -165,6 +192,8 @@ public:
      *  @throw None No throw guarantee
      */
     const_symmetry_reference symmetry() const { return *m_symmetry_; }
+
+    sparsity_reference sparsity() { return *m_sparsity_; }
 
     /** @brief Provides access to the sparsity of the layout.
      *
@@ -227,7 +256,15 @@ protected:
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
     LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&) = delete;
+    LayoutBase& operator=(LayoutBase&&)      = delete;
+
+    /// Implements addition assignment by calling += on members
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements permutation assignment by permuting members
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 
 private:
     /// The actual shape of the tensor
