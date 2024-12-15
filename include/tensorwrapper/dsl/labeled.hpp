@@ -122,9 +122,9 @@ public:
         //       manipulated at runtime. Parser is then moved to the backend
         PairwiseParser<ObjectType, LabelType> p;
         auto&& [labels, object] =
-          p.dispatch(std::move(*this), std::forward<TermType>(other));
+          p.dispatch(*this, std::forward<TermType>(other));
         this->lhs() = std::move(object);
-        this->rhs() = std::move(labels);
+        this->rhs() = labels;
         return *this;
     }
 };

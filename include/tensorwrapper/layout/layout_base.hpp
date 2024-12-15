@@ -173,35 +173,63 @@ public:
     // -- State methods
     // -------------------------------------------------------------------------
 
-    shape_reference shape() { return *m_shape_; }
+    bool has_shape() const noexcept { return static_cast<bool>(m_shape_); }
+    shape_reference shape() {
+        assert_shape_();
+        return *m_shape_;
+    }
 
     /** @brief Provides read-only access to the shape of the layout.
      *
      *  @return A read-only reference to the shape of the layout.
      *
-     *  @throw None No throw guarantee
+     *  @throw std::runtime_error if *this has no shape. Strong throw
+     *                            guarantee.
      */
-    const_shape_reference shape() const { return *m_shape_; }
+    const_shape_reference shape() const {
+        assert_shape_();
+        return *m_shape_;
+    }
 
-    symmetry_reference symmetry() { return *m_symmetry_; }
+    bool has_symmetry() const noexcept {
+        return static_cast<bool>(m_symmetry_);
+    }
+    symmetry_reference symmetry() {
+        assert_symmetry_();
+        return *m_symmetry_;
+    }
 
     /** @brief Provides read-only access to the symmetry of the layout.
      *
      *  @return A read-only reference to the symmetry of the layout.
      *
-     *  @throw None No throw guarantee
+     *  @throw std::runtimer_error if *this has no symmetry. Strong throw
+     *                             guarantee.
      */
-    const_symmetry_reference symmetry() const { return *m_symmetry_; }
+    const_symmetry_reference symmetry() const {
+        assert_symmetry_();
+        return *m_symmetry_;
+    }
 
-    sparsity_reference sparsity() { return *m_sparsity_; }
+    bool has_sparsity() const noexcept {
+        return static_cast<bool>(m_sparsity_);
+    }
+    sparsity_reference sparsity() {
+        assert_sparsity_();
+        return *m_sparsity_;
+    }
 
     /** @brief Provides access to the sparsity of the layout.
      *
      *  @return A read-only reference to the sparsity of the layout.
      *
-     *  @throw None No throw guarantee.
+     *  @throw std::runtime_error if *this has no sparsity. Strong throw
+     *                            guarantee.
      */
-    const_sparsity_reference sparsity() const { return *m_sparsity_; }
+    const_sparsity_reference sparsity() const {
+        assert_sparsity_();
+        return *m_sparsity_;
+    }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -267,6 +295,21 @@ protected:
                                       const_labeled_reference rhs) override;
 
 private:
+    void assert_shape_() const {
+        if(has_shape()) return;
+        throw std::runtime_error("Layout does not have shape");
+    }
+
+    void assert_symmetry_() const {
+        if(has_symmetry()) return;
+        throw std::runtime_error("Layout does not have symmetry");
+    }
+
+    void assert_sparsity_() const {
+        if(has_sparsity()) return;
+        throw std::runtime_error("Layout does not have sparsity");
+    }
+
     /// The actual shape of the tensor
     shape_pointer m_shape_;
 

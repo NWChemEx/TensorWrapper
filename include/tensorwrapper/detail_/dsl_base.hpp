@@ -186,10 +186,10 @@ protected:
 
 private:
     /// Wraps getting a mutable reference to the derived class
-    decltype(auto) downcast_() { return static_cast<DerivedType&>(*this); }
+    DerivedType& downcast_() { return static_cast<DerivedType&>(*this); }
 
     /// Wraps getting a read-only reference to the derived class
-    decltype(auto) downcast_() const {
+    const DerivedType& downcast_() const {
         return static_cast<const DerivedType&>(*this);
     }
 };

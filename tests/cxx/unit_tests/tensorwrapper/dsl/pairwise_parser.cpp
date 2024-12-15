@@ -30,9 +30,7 @@ TEST_CASE("PairwiseParser<Tensor>") {
         Tensor t;
 
         SECTION("scalar") {
-            auto&& [rlabels, rv] = p.dispatch(t(""), scalar("") + scalar(""));
-            REQUIRE(rlabels == "");
-
+            auto rv          = p.dispatch(t(""), scalar("") + scalar(""));
             auto buffer      = testing::eigen_scalar<double>();
             buffer.value()() = 84.0;
             Tensor corr(scalar.logical_layout(), std::move(buffer));
@@ -40,10 +38,8 @@ TEST_CASE("PairwiseParser<Tensor>") {
         }
 
         SECTION("Vector") {
-            auto vi              = vector("i");
-            auto&& [rlabels, rv] = p.dispatch(t("i"), vi + vi);
-            REQUIRE(rlabels == "i");
-
+            auto vi     = vector("i");
+            auto rv     = p.dispatch(t("i"), vi + vi);
             auto buffer = testing::eigen_vector<double>();
             for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
             Tensor corr(vector.logical_layout(), std::move(buffer));
@@ -51,10 +47,8 @@ TEST_CASE("PairwiseParser<Tensor>") {
         }
 
         SECTION("Matrix : no permutation") {
-            auto mij             = matrix("i,j");
-            auto&& [rlabels, rv] = p.dispatch(t("i,j"), mij + mij);
-            REQUIRE(rlabels == "i,j");
-
+            auto mij                  = matrix("i,j");
+            auto rv                   = p.dispatch(t("i,j"), mij + mij);
             auto matrix_corr          = testing::eigen_matrix<double>();
             matrix_corr.value()(0, 0) = 2.0;
             matrix_corr.value()(0, 1) = 4.0;
@@ -63,6 +57,7 @@ TEST_CASE("PairwiseParser<Tensor>") {
             matrix_corr.value()(1, 1) = 10.0;
             matrix_corr.value()(1, 2) = 12.0;
             Tensor corr(matrix.logical_layout(), std::move(matrix_corr));
+            std::cout << rv.buffer() << std::endl;
             REQUIRE(rv == corr);
         }
     }

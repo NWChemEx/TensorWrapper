@@ -43,9 +43,6 @@ public:
     /// Type of a read-only leaf in the AST
     using const_labeled_type = Labeled<const ObjectType, LabelType>;
 
-    /// Type of a newly created object and the labels associated with it.
-    using label_pair = std::pair<LabelType, ObjectType>;
-
     /** @brief Recursion end-point
      *
      *  Evaluates @p rhs given that it will be evaluated into lhs.
@@ -65,8 +62,8 @@ public:
      *  @throw std::runtime_error if a permutation is needed and the permutation
      *                            fails. Strong throw guarantee.
      */
-    label_pair dispatch(const_labeled_type lhs, const_labeled_type rhs) {
-        return label_pair(lhs.rhs(), assign(lhs, rhs));
+    ObjectType dispatch(const_labeled_type lhs, const_labeled_type rhs) {
+        return assign(lhs, rhs);
     }
 
     /** @brief Handles adding two expressions together.
@@ -86,11 +83,12 @@ public:
      *                            Strong throw guarantee.
      */
     template<typename T, typename U>
-    label_pair dispatch(const_labeled_type lhs,
+    ObjectType dispatch(const_labeled_type lhs,
                         const utilities::dsl::Add<T, U>& rhs) {
-        auto&& [llabels, lA] = dispatch(lhs, rhs.lhs());
-        auto&& [rlabels, lB] = dispatch(lhs, rhs.rhs());
-        return label_pair(lhs.rhs(), add(lhs, lA(llabels), lB(rlabels)));
+        auto labels = lhs.rhs();
+        auto lA     = dispatch(lhs, rhs.lhs());
+        auto lB     = dispatch(lhs, rhs.rhs());
+        return add(lhs, lA(labels), lB(labels));
     }
 
 protected:
