@@ -188,7 +188,7 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
                     REQUIRE(vector2 == vector_corr);
                 }
 
-                SECTION("matrix") {
+                SECTION("matrix : no permutation") {
                     matrix_buffer matrix2(eigen_matrix, matrix_layout);
 
                     auto mij      = matrix("i,j");
@@ -205,27 +205,26 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
 
                     REQUIRE(pmatrix2 == &matrix2);
                     REQUIRE(matrix2 == matrix_corr);
+                }
 
-                    // SECTION("permutation") {
-                    //     layout::Physical l(shape::Smooth{3, 2}, g, p);
-                    //     std::array<unsigned short, 2> p10{1, 0};
-                    //     auto eigen_matrix_t = eigen_matrix.shuffle(p10);
-                    //     matrix_buffer matrix3(eigen_matrix_t, l);
+                SECTION("matrix : permutation") {
+                    layout::Physical l(shape::Smooth{3, 2}, g, p);
+                    std::array<int, 2> p10{1, 0};
+                    auto eigen_matrix_t = eigen_matrix.shuffle(p10);
+                    matrix_buffer matrix2(eigen_matrix_t, l);
+                    auto mij      = matrix("i,j");
+                    auto pmatrix2 = &(matrix2.addition_assignment("j,i", mij));
 
-                    //     auto pmatrix3 =
-                    //       &(matrix3.addition_assignment("j,i", mij));
+                    matrix_buffer corr(eigen_matrix_t, l);
+                    corr.value()(0, 0) = 2.0;
+                    corr.value()(0, 1) = 8.0;
+                    corr.value()(1, 0) = 4.0;
+                    corr.value()(1, 1) = 10.0;
+                    corr.value()(2, 0) = 6.0;
+                    corr.value()(2, 1) = 12.0;
 
-                    //     matrix_buffer corr(eigen_matrix_t, l);
-                    //     corr.value()(0, 0) = 3.0;
-                    //     corr.value()(0, 1) = 6.0;
-                    //     corr.value()(1, 0) = 9.0;
-                    //     corr.value()(1, 1) = 12.0;
-                    //     corr.value()(2, 0) = 15.0;
-                    //     corr.value()(2, 1) = 18.0;
-
-                    //     REQUIRE(pmatrix3 == &matrix3);
-                    //     REQUIRE(matrix3 == corr);
-                    // }
+                    REQUIRE(pmatrix2 == &matrix2);
+                    REQUIRE(matrix2 == corr);
                 }
 
                 // Can't cast
@@ -238,18 +237,41 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
             }
 
             SECTION("permute_assignment") {
-                // layout::Physical l(shape::Smooth{3, 2}, g, p);
-                // std::array<unsigned short, 2> p10{1, 0};
-                // auto eigen_matrix_t = eigen_matrix.shuffle(p10);
-                // matrix_buffer corr(eigen_matrix_t, l);
+                SECTION("scalar") {
+                    scalar_buffer scalar2;
+                    auto s        = scalar("");
+                    auto pscalar2 = &(scalar2.permute_assignment("", s));
+                    REQUIRE(pscalar2 == &scalar2);
+                    REQUIRE(scalar2 == scalar);
+                }
 
-                // matrix_buffer matrix2;
+                SECTION("vector") {
+                    vector_buffer vector2;
+                    auto vi       = vector("i");
+                    auto pvector2 = &(vector2.permute_assignment("i", vi));
+                    REQUIRE(pvector2 == &vector2);
+                    REQUIRE(vector2 == vector);
+                }
 
-                // auto& mij     = matrix("i,j");
-                // auto pmatrix2 = &(matrix2.permute_assignment("j,i", mij));
+                SECTION("matrix : no permutation") {
+                    matrix_buffer matrix2;
+                    auto mij      = matrix("i,j");
+                    auto pmatrix2 = &(matrix2.permute_assignment("i,j", mij));
+                    REQUIRE(pmatrix2 == &matrix2);
+                    REQUIRE(matrix2 == matrix);
+                }
+                SECTION("matrix : permutation") {
+                    matrix_buffer matrix2;
+                    auto mij      = matrix("i,j");
+                    auto pmatrix2 = &(matrix2.permute_assignment("j,i", mij));
 
-                // REQUIRE(pmatrix2 == &matrix2);
-                // REQUIRE(matrix2 == corr);
+                    layout::Physical l(shape::Smooth{3, 2}, g, p);
+                    std::array<int, 2> p10{1, 0};
+                    auto eigen_matrix_t = eigen_matrix.shuffle(p10);
+                    matrix_buffer corr(eigen_matrix_t, l);
+                    REQUIRE(pmatrix2 == &matrix2);
+                    REQUIRE(matrix2 == corr);
+                }
             }
         }
     }

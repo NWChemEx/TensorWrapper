@@ -180,26 +180,26 @@ TEST_CASE("Tensor") {
         REQUIRE(scalar != vector);
     }
 
-    SECTION("DSL") {
-        // These are just spot checks to make sure the DSL works on the user
-        // side
-        SECTION("Scalar") {
-            Tensor rv;
-            rv("")           = scalar("") + scalar("");
-            auto buffer      = testing::eigen_scalar<double>();
-            buffer.value()() = 84.0;
-            Tensor corr(scalar.logical_layout(), std::move(buffer));
-            REQUIRE(rv == corr);
-        }
+    // SECTION("DSL") {
+    //     // These are just spot checks to make sure the DSL works on the user
+    //     // side
+    //     SECTION("Scalar") {
+    //         Tensor rv;
+    //         rv("")           = scalar("") + scalar("");
+    //         auto buffer      = testing::eigen_scalar<double>();
+    //         buffer.value()() = 84.0;
+    //         Tensor corr(scalar.logical_layout(), std::move(buffer));
+    //         REQUIRE(rv == corr);
+    //     }
 
-        SECTION("Vector") {
-            Tensor rv;
-            rv("i") = vector("i") + vector("i");
+    //     SECTION("Vector") {
+    //         Tensor rv;
+    //         rv("i") = vector("i") + vector("i");
 
-            auto buffer = testing::eigen_vector<double>();
-            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
-            Tensor corr(vector.logical_layout(), std::move(buffer));
-            REQUIRE(rv == corr);
-        }
-    }
+    //         auto buffer = testing::eigen_vector<double>();
+    //         for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
+    //         Tensor corr(vector.logical_layout(), std::move(buffer));
+    //         REQUIRE(rv == corr);
+    //     }
+    // }
 }

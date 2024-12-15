@@ -16,6 +16,7 @@
 
 #pragma once
 #include <deque>
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/symmetry/operation.hpp>
 #include <utilities/containers/indexable_container_base.hpp>
 
@@ -34,7 +35,8 @@ namespace tensorwrapper::symmetry {
  *        mathematically know that the permutation (0, 2, 1) is also a symmetry
  *        operation because it is the inverse of (0, 1, 2).
  */
-class Group : public utilities::IndexableContainerBase<Group> {
+class Group : public utilities::IndexableContainerBase<Group>,
+              public detail_::DSLBase<Group> {
 private:
     /// Type of *this
     using my_type = Group;
@@ -54,6 +56,11 @@ public:
 
     /// Unsigned integral type used for indexing and offsets
     using size_type = std::size_t;
+
+    /// Pull in base class types
+    using typename detail_::DSLBase<Group>::dsl_reference;
+    using typename detail_::DSLBase<Group>::label_type;
+    using typename detail_::DSLBase<Group>::const_labeled_reference;
 
     // -------------------------------------------------------------------------
     // -- Ctors and assignment
@@ -197,6 +204,15 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator!=(const Group& rhs) const noexcept { return !(*this == rhs); }
+
+protected:
+    /// Implements addition assignment. Only works if empty (for now)
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements permutation assignment. Only works if empty (for now).
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 
 private:
     /// Allow base class to access implementations

@@ -109,6 +109,84 @@ TEST_CASE("Smooth") {
             REQUIRE(scalar.are_equal(Smooth{}));
             REQUIRE_FALSE(vector.are_equal(matrix));
         }
+
+        SECTION("addition_assignment_") {
+            Smooth scalar2{};
+            auto pscalar2 = &(scalar2.addition_assignment("", scalar("")));
+            REQUIRE(pscalar2 == &scalar2);
+            REQUIRE(scalar2 == scalar);
+
+            Smooth vector2{1};
+            auto pvector2 = &(vector2.addition_assignment("i", vector("i")));
+            REQUIRE(pvector2 == &vector2);
+            REQUIRE(vector2 == vector);
+
+            SECTION("Matrix : No permute") {
+                Smooth matrix2(matrix_extents.begin(), matrix_extents.end());
+                auto pmatrix2 =
+                  &(matrix2.addition_assignment("i,j", matrix("i,j")));
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == matrix);
+            }
+
+            SECTION("Matrix : permute") {
+                Smooth matrix2{3, 2};
+                auto mij      = matrix("i,j"); // Is 2 by 3
+                auto pmatrix2 = &(matrix2.addition_assignment("j,i", mij));
+
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == Smooth{3, 2});
+            }
+
+            // Indices don't match
+            REQUIRE_THROWS_AS(scalar.addition_assignment("", vector("i")),
+                              std::runtime_error);
+
+            // Index rank doesn't match shape
+            REQUIRE_THROWS_AS(scalar.addition_assignment("", vector("")),
+                              std::runtime_error);
+
+            // Shapes aren't compatible
+            REQUIRE_THROWS_AS(matrix.addition_assignment("i,j", matrix("j,i")),
+                              std::runtime_error);
+        }
+
+        SECTION("permute_assignment_") {
+            Smooth scalar2{};
+            auto pscalar2 = &(scalar2.permute_assignment("", scalar("")));
+            REQUIRE(pscalar2 == &scalar2);
+            REQUIRE(scalar2 == scalar);
+
+            Smooth vector2{1};
+            auto pvector2 = &(vector2.permute_assignment("i", vector("i")));
+            REQUIRE(pvector2 == &vector2);
+            REQUIRE(vector2 == vector);
+
+            SECTION("Matrix : No permute") {
+                Smooth matrix2{2, 3};
+                auto mij      = matrix("i,j");
+                auto pmatrix2 = &(matrix2.permute_assignment("i,j", mij));
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == matrix);
+            }
+
+            SECTION("Matrix : permute") {
+                Smooth matrix2{};
+                auto mij      = matrix("i,j");
+                auto pmatrix2 = &(matrix2.permute_assignment("j,i", mij));
+                Smooth corr{3, 2};
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == corr);
+            }
+
+            // Indices don't match
+            REQUIRE_THROWS_AS(scalar.permute_assignment("", vector("i")),
+                              std::runtime_error);
+
+            // Index rank doesn't match shape
+            REQUIRE_THROWS_AS(scalar.permute_assignment("", vector("")),
+                              std::runtime_error);
+        }
     }
 
     SECTION("Utility methods") {

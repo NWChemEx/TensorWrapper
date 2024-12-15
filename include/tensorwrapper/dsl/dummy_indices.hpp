@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <set>
 #include <string>
 #include <utilities/containers/indexable_container_base.hpp>
 #include <utilities/strings/string_tools.hpp>

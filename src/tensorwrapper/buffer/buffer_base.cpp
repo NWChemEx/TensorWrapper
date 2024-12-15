@@ -18,14 +18,28 @@
 
 namespace tensorwrapper::buffer {
 
-typename BufferBase::labeled_buffer_type BufferBase::operator()(
-  label_type labels) {
-    return labeled_buffer_type(*this, std::move(labels));
+using dsl_reference = typename BufferBase::dsl_reference;
+
+dsl_reference BufferBase::addition_assignment(label_type this_labels,
+                                              const_labeled_reference rhs) {
+    const auto& rlayout = rhs.lhs().layout();
+    if(has_layout())
+        m_layout_->addition_assignment(this_labels, rlayout(rhs.rhs()));
+    else
+        throw std::runtime_error("For += result must be initialized");
+
+    return addition_assignment_(std::move(this_labels), rhs);
 }
 
-typename BufferBase::labeled_const_buffer_type BufferBase::operator()(
-  label_type labels) const {
-    return labeled_const_buffer_type(*this, std::move(labels));
+dsl_reference BufferBase::permute_assignment(label_type this_labels,
+                                             const_labeled_reference rhs) {
+    const auto& rlayout = rhs.lhs().layout();
+    if(has_layout())
+        m_layout_->permute_assignment(this_labels, rlayout(rhs.rhs()));
+    else
+        m_layout_ = rlayout.permute(rhs.rhs(), this_labels);
+
+    return permute_assignment_(std::move(this_labels), rhs);
 }
 
 } // namespace tensorwrapper::buffer
