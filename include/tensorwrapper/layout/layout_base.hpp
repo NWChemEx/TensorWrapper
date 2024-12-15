@@ -284,7 +284,7 @@ protected:
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
     LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&)      = delete;
+    LayoutBase& operator=(LayoutBase&&) = delete;
 
     /// Implements addition assignment by calling += on members
     dsl_reference addition_assignment_(label_type this_labels,
