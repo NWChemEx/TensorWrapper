@@ -97,6 +97,6 @@ endif()
 
 cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)
 install(
-    FILES ${CMAKE_BINARY_DIR}/config.hpp
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
     DESTINATION include/${PROJECT_NAME}
 )
