@@ -17,16 +17,21 @@
 
 #pragma once
 #include <iostream>
+#include <tensorwrapper/dsl/dummy_indices.hpp>
 #include <tensorwrapper/dsl/pairwise_parser.hpp>
 #include <type_traits>
 #include <utilities/dsl/dsl.hpp>
+
 namespace tensorwrapper::dsl {
 
 /** @brief Represents an object whose modes are assigned dummy indices.
+ *
+ *  @tparam ObjectType The object we are associating the labels with. Assumed
+ *                     to be Tensor or to derive from one of the following:
+ *                     ShapeBase, LayoutBase, or BufferBase.
  */
 template<typename ObjectType, typename LabelType = std::string>
-class Labeled : public utilities::dsl::BinaryOp<Labeled<ObjectType, LabelType>,
-                                                ObjectType, LabelType> {
+class Labeled : public utilities::dsl::Term<Labeled<ObjectType, LabelType>> {
 private:
     /// Type of *this
     using my_type = Labeled<ObjectType, LabelType>;
@@ -53,8 +58,28 @@ public:
     /// Type of the object (useful for TMP)
     using object_type = std::decay_t<ObjectType>;
 
-    /// Type of the labels (useful for TMP)
-    using label_type = LabelType;
+    /// Type of the parsed labels
+    using label_type = DummyIndices<LabelType>;
+
+    /// Type of a mutable reference to the labels
+    using label_reference = label_type&;
+
+    /// Type of a read-only reference to the labels
+    using const_label_reference = const label_type&;
+
+    /// Type of a read-only reference to an object of object_type
+    using const_object_reference = const object_type&;
+
+    /// Type of a (possibly) mutable reference to the object
+    using object_reference =
+      std::conditional_t<has_cv_object_v, const_object_reference, object_type&>;
+
+    /// Type of a read-only pointer to an object of object_type
+    using const_object_pointer = const object_type*;
+
+    /// Type of a pointer to a (possibly) mutable object_type object
+    using object_pointer =
+      std::conditional_t<has_cv_object_t, const_object_pointer, object_type*>;
 
     /** @brief Creates a Labeled object that does not alias an object or labels.
      *
@@ -85,8 +110,12 @@ public:
      */
     template<typename ObjectType2, typename LabelType2>
     Labeled(ObjectType2&& object, LabelType2&& labels) :
-      op_type(std::forward<ObjectType2>(object),
-              LabelType(std::forward<LabelType2>(labels))) {}
+      Labeled(std::forward<ObjectTyp2>(object),
+              label_type(std::forward<LabelType2>(labels))) {}
+
+    template<typename ObjectType2>
+    Labeled(ObjectType2&& object, label_type labels) :
+      m_object_(&object), m_labels_(std::move(labels)) {}
 
     /** @brief Allows implicit conversion from mutable objects to const objects
      *
@@ -102,7 +131,21 @@ public:
     template<typename ObjectType2,
              typename = enable_if_cv_conversion_t<ObjectType2>>
     Labeled(const Labeled<ObjectType2, LabelType>& input) :
-      Labeled(input.lhs(), input.rhs()) {}
+      Labeled(input.object(), input.labels()) {}
+
+    object_reference object() {
+        assert_object_();
+        return *m_object_;
+    }
+
+    const_object_reference object() const {
+        assert_object_();
+        return *m_object_;
+    }
+
+    label_reference labels() { return m_labels_; }
+
+    const_label_reference labels() const { return m_labels_; }
 
     /** @brief Assigns a DSL term to *this.
      *
@@ -123,10 +166,19 @@ public:
         PairwiseParser<ObjectType, LabelType> p;
         auto&& [labels, object] =
           p.dispatch(*this, std::forward<TermType>(other));
-        this->lhs() = std::move(object);
-        this->rhs() = labels;
+        this->object() = std::move(object);
+        this->labels() = labels;
         return *this;
     }
+
+private:
+    void assert_object_() const {
+        if(m_object_ != nullptr) return;
+        throw std::runtime_error("Labeled does not contain an object.");
+    }
+
+    object_pointer m_object_ = nullptr;
+    label_type m_labels_;
 };
 
 } // namespace tensorwrapper::dsl

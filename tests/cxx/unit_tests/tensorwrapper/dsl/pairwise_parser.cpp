@@ -48,7 +48,8 @@ TEST_CASE("PairwiseParser<Tensor>") {
 
         SECTION("Matrix : no permutation") {
             auto mij                  = matrix("i,j");
-            auto rv                   = p.dispatch(t("i,j"), mij + mij);
+            auto x                    = mij + mij;
+            auto rv                   = p.dispatch(t("i,j"), x);
             auto matrix_corr          = testing::eigen_matrix<double>();
             matrix_corr.value()(0, 0) = 2.0;
             matrix_corr.value()(0, 1) = 4.0;

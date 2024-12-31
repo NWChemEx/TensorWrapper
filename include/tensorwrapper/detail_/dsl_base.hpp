@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/dsl/labeled.hpp>
 
 namespace tensorwrapper::detail_ {
