@@ -22,9 +22,9 @@ using dsl_reference = typename BufferBase::dsl_reference;
 
 dsl_reference BufferBase::addition_assignment(label_type this_labels,
                                               const_labeled_reference rhs) {
-    const auto& rlayout = rhs.lhs().layout();
+    const auto& rlayout = rhs.object().layout();
     if(has_layout())
-        m_layout_->addition_assignment(this_labels, rlayout(rhs.rhs()));
+        m_layout_->addition_assignment(this_labels, rlayout(rhs.labels()));
     else
         throw std::runtime_error("For += result must be initialized");
 
@@ -33,11 +33,11 @@ dsl_reference BufferBase::addition_assignment(label_type this_labels,
 
 dsl_reference BufferBase::permute_assignment(label_type this_labels,
                                              const_labeled_reference rhs) {
-    const auto& rlayout = rhs.lhs().layout();
+    const auto& rlayout = rhs.object().layout();
     if(has_layout())
-        m_layout_->permute_assignment(this_labels, rlayout(rhs.rhs()));
+        m_layout_->permute_assignment(this_labels, rlayout(rhs.labels()));
     else
-        m_layout_ = rlayout.permute(rhs.rhs(), this_labels);
+        m_layout_ = rlayout.permute(rhs.labels(), this_labels);
 
     return permute_assignment_(std::move(this_labels), rhs);
 }

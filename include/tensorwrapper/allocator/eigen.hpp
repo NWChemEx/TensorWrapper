@@ -254,6 +254,10 @@ protected:
         return std::make_unique<my_type>(*this);
     }
 
+    base_reference assign_(const_base_reference rhs) override {
+        return my_base_type::assign_impl_<my_type>(rhs);
+    }
+
     /// Implements are_equal, by deferring to the base's operator==
     bool are_equal_(const_base_reference rhs) const noexcept override {
         return my_base_type::are_equal_impl_<my_type>(rhs);

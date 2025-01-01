@@ -203,6 +203,20 @@ public:
         return rv;
     }
 
+    bool operator==(const_reference s) const {
+        return operator==(DummyIndices(s));
+    }
+
+    bool operator==(const DummyIndices& rhs) const noexcept {
+        return m_dummy_indices_ == rhs.m_dummy_indices_;
+    }
+
+    bool operator!=(const_reference s) const { return !((*this) == s); }
+
+    bool operator!=(const DummyIndices& rhs) const noexcept {
+        return !((*this) == rhs);
+    }
+
 protected:
     /// Main ctor for setting the value, throws if any index is empty
     explicit DummyIndices(split_string_type split_dummy_indices) :

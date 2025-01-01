@@ -24,7 +24,7 @@ using dsl_reference = typename Pattern::dsl_reference;
 dsl_reference Pattern::addition_assignment_(label_type this_labels,
                                             const_labeled_reference rhs) {
     dsl::DummyIndices llabels(this_labels);
-    dsl::DummyIndices rlabels(rhs.rhs());
+    dsl::DummyIndices rlabels(rhs.labels());
 
     // Make sure labels are a permutation of one another.
     auto p = rlabels.permutation(llabels);
@@ -35,7 +35,7 @@ dsl_reference Pattern::addition_assignment_(label_type this_labels,
 dsl_reference Pattern::permute_assignment_(label_type this_labels,
                                            const_labeled_reference rhs) {
     dsl::DummyIndices llabels(this_labels);
-    dsl::DummyIndices rlabels(rhs.rhs());
+    dsl::DummyIndices rlabels(rhs.labels());
 
     // Make sure labels are a permutation of one another.
     auto p = rlabels.permutation(llabels);

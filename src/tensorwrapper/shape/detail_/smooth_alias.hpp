@@ -75,6 +75,10 @@ protected:
         return std::make_unique<const_my_type>(*m_pshape_);
     }
 
+    my_base& assign_(const my_base& rhs) override {
+        return this->template assign_impl_<SmoothAlias>(rhs);
+    }
+
 private:
     /// Shortens the keystrokes for dereferencing m_pshape_
     decltype(auto) shape_() const { return *m_pshape_; }

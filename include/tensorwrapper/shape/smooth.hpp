@@ -175,6 +175,10 @@ protected:
         return const_smooth_reference(*this);
     }
 
+    ShapeBase& assign_(const ShapeBase& rhs) override {
+        return assign_impl_<Smooth>(rhs);
+    }
+
     /// Implements are_equal by calling ShapeBase::are_equal_impl_
     bool are_equal_(const ShapeBase& rhs) const noexcept override {
         return are_equal_impl_<Smooth>(rhs);

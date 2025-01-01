@@ -32,16 +32,16 @@ TEMPLATE_LIST_TEST_CASE("Labeled", "", test_types) {
 
     SECTION("Ctor") {
         SECTION("Value") {
-            REQUIRE(labeled_default.lhs() == defaulted);
-            REQUIRE(labeled_default.rhs() == ij);
+            REQUIRE(labeled_default.object() == defaulted);
+            REQUIRE(labeled_default.labels() == ij);
         }
 
         SECTION("to const") {
             using const_labeled_type = dsl::Labeled<const TestType>;
             const_labeled_type const_labeled_default(labeled_default);
 
-            REQUIRE(const_labeled_default.lhs() == defaulted);
-            REQUIRE(const_labeled_default.rhs() == ij);
+            REQUIRE(const_labeled_default.object() == defaulted);
+            REQUIRE(const_labeled_default.labels() == ij);
         }
     }
 

@@ -79,7 +79,7 @@ public:
 
     /// Type of a pointer to a (possibly) mutable object_type object
     using object_pointer =
-      std::conditional_t<has_cv_object_t, const_object_pointer, object_type*>;
+      std::conditional_t<has_cv_object_v, const_object_pointer, object_type*>;
 
     /** @brief Creates a Labeled object that does not alias an object or labels.
      *
@@ -110,7 +110,7 @@ public:
      */
     template<typename ObjectType2, typename LabelType2>
     Labeled(ObjectType2&& object, LabelType2&& labels) :
-      Labeled(std::forward<ObjectTyp2>(object),
+      Labeled(std::forward<ObjectType2>(object),
               label_type(std::forward<LabelType2>(labels))) {}
 
     template<typename ObjectType2>
@@ -166,9 +166,17 @@ public:
         PairwiseParser<ObjectType, LabelType> p;
         auto&& [labels, object] =
           p.dispatch(*this, std::forward<TermType>(other));
-        this->object() = std::move(object);
+        object().assign(*object);
         this->labels() = labels;
         return *this;
+    }
+
+    bool operator==(const Labeled& rhs) const noexcept {
+        return object().are_equal(rhs.object()) && labels() == rhs.labels();
+    }
+
+    bool operator!=(const Labeled& rhs) const noexcept {
+        return !((*this) == rhs);
     }
 
 private:

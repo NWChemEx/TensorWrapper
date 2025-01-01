@@ -24,7 +24,7 @@ using dsl_reference = typename Smooth::dsl_reference;
 dsl_reference Smooth::addition_assignment_(label_type this_labels,
                                            const_labeled_reference rhs) {
     // Computes the permutation necessary to permute rhs into *this
-    auto ptemp = rhs.lhs().permute(rhs.rhs(), this_labels);
+    auto ptemp = rhs.object().permute(rhs.labels(), this_labels);
 
     // After permuting the shapes need to be equal for addition
     if(!ptemp->are_equal(*this))
@@ -39,14 +39,14 @@ dsl_reference Smooth::addition_assignment_(label_type this_labels,
 dsl_reference Smooth::permute_assignment_(label_type this_labels,
                                           const_labeled_reference rhs) {
     dsl::DummyIndices out_labels(this_labels);
-    dsl::DummyIndices in_labels(rhs.rhs());
+    dsl::DummyIndices in_labels(rhs.labels());
 
-    if(in_labels.size() != rhs.lhs().rank())
+    if(in_labels.size() != rhs.object().rank())
         throw std::runtime_error("Incorrect number of indices");
 
     // This checks that out_labels is consistent with in_labels
     auto p          = in_labels.permutation(out_labels);
-    auto smooth_rhs = rhs.lhs().as_smooth();
+    auto smooth_rhs = rhs.object().as_smooth();
 
     extents_type temp(p.size());
     for(typename extents_type::size_type i = 0; i < p.size(); ++i)

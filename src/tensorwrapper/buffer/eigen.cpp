@@ -30,10 +30,10 @@ TPARAMS
 typename EIGEN::dsl_reference EIGEN::addition_assignment_(
   label_type this_labels, const_labeled_reference rhs) {
     dummy_indices_type llabels(this_labels);
-    dummy_indices_type rlabels(rhs.rhs());
+    dummy_indices_type rlabels(rhs.labels());
 
     using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
 
     if(llabels != rlabels) {
         auto r_to_l = rlabels.permutation(llabels);
@@ -50,10 +50,10 @@ TPARAMS
 typename EIGEN::dsl_reference EIGEN::permute_assignment_(
   label_type this_labels, const_labeled_reference rhs) {
     dummy_indices_type llabels(this_labels);
-    dummy_indices_type rlabels(rhs.rhs());
+    dummy_indices_type rlabels(rhs.labels());
 
     using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
 
     if(llabels != rlabels) { // We need to permute rhs before assignment
         auto r_to_l = rlabels.permutation(llabels);

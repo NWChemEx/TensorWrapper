@@ -90,6 +90,8 @@ public:
         return detail_::static_pointer_cast<DerivedType>(pbase);
     }
 
+    base_reference assign(const_base_reference other) { return assign_(other); }
+
     /** @brief Determines if *this and @p rhs are polymorphically equal.
      *
      *  Calling operator== on an object of type T is supposed to compare the
@@ -184,6 +186,16 @@ protected:
      *                        Strong throw guarantee.
      */
     virtual base_pointer clone_() const = 0;
+
+    template<typename DerivedType>
+    base_reference assign_impl_(const_base_reference rhs) {
+        auto plhs = dynamic_cast<DerivedType*>(this);
+        auto prhs = dynamic_cast<const DerivedType*>(&rhs);
+        if(!plhs || !prhs) throw std::runtime_error("Can not assign");
+        return (*plhs) = (*prhs);
+    }
+
+    virtual base_reference assign_(const_base_reference other) = 0;
 
     /** @brief Implements are_equal_ assuming the derived class implements
      *         operator==.

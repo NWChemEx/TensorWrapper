@@ -52,10 +52,17 @@ public:
 
     Physical(shape_pointer pshape) : my_base_type(std::move(pshape)) {}
 
+    Physical(const Physical& other)            = default;
+    Physical& operator=(const Physical& other) = default;
+
 protected:
     /// Implements clone by calling copy ctor
     layout_pointer clone_() const override {
         return std::make_unique<Physical>(*this);
+    }
+
+    layout_base& assign_(const layout_base& rhs) override {
+        return assign_impl_<Physical>(rhs);
     }
 
     /// Implements are_equal by calling are_equal_impl_

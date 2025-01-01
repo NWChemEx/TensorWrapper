@@ -26,16 +26,17 @@ using detail_::static_pointer_cast;
 
 template<typename LHSType, typename RHSType>
 Tensor tensor_assign(LHSType lhs, RHSType rhs) {
-    auto playout = rhs.lhs().logical_layout().permute(rhs.rhs(), lhs.rhs());
+    auto playout =
+      rhs.object().logical_layout().permute(rhs.labels(), lhs.labels());
     auto pdown   = static_pointer_cast<layout::Logical>(playout);
-    auto pbuffer = rhs.lhs().buffer().permute(rhs.rhs(), lhs.rhs());
+    auto pbuffer = rhs.object().buffer().permute(rhs.labels(), lhs.labels());
     return Tensor(std::move(pdown), std::move(pbuffer));
 }
 
 struct CallAddition {
     template<typename LHSType, typename RHSType>
     static decltype(auto) run(LHSType&& lhs, RHSType&& rhs) {
-        return lhs.lhs().addition(lhs.rhs(), rhs);
+        return lhs.object().addition(lhs.labels(), rhs);
     }
 };
 
@@ -43,16 +44,16 @@ template<typename FunctorType, typename ResultType, typename LHSType,
          typename RHSType>
 Tensor tensor_binary(ResultType result, LHSType lhs, RHSType rhs) {
     Tensor buffer;
-    if(result.lhs() == Tensor{}) {
-        auto& llayout = lhs.lhs().logical_layout();
-        auto lllayout = llayout(lhs.rhs());
-        auto& rlayout = rhs.lhs().logical_layout();
-        auto lrlayout = rlayout(rhs.rhs());
+    if(result.object() == Tensor{}) {
+        auto& llayout = lhs.object().logical_layout();
+        auto lllayout = llayout(lhs.labels());
+        auto& rlayout = rhs.object().logical_layout();
+        auto lrlayout = rlayout(rhs.labels());
         auto playout  = FunctorType::run(lllayout, lrlayout);
         auto pdown    = static_pointer_cast<layout::Logical>(playout);
 
-        auto lbuffer = lhs.lhs().buffer()(lhs.rhs());
-        auto rbuffer = rhs.lhs().buffer()(rhs.rhs());
+        auto lbuffer = lhs.object().buffer()(lhs.labels());
+        auto rbuffer = rhs.object().buffer()(rhs.labels());
         auto pbuffer = FunctorType::run(lbuffer, rbuffer);
 
         Tensor(std::move(pdown), std::move(pbuffer)).swap(buffer);
@@ -60,7 +61,7 @@ Tensor tensor_binary(ResultType result, LHSType lhs, RHSType rhs) {
         throw std::runtime_error("Hints are not allowed yet!");
     }
     // No forwarding incase result appears multiple times in expression
-    return tensor_assign(result, buffer(lhs.rhs()));
+    return tensor_assign(result, buffer(lhs.labels()));
 }
 
 } // namespace

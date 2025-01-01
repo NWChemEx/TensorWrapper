@@ -48,14 +48,14 @@ template<typename FunctorType, typename LHSType, typename LHSLabels,
 void assignment_guts(LHSType&& lhs, LHSLabels&& this_labels, RHSType&& rhs) {
     FunctorType f;
 
-    const auto& rhs_shape = rhs.lhs().shape();
-    f.run(lhs.shape(), this_labels, rhs_shape(rhs.rhs()));
+    const auto& rhs_shape = rhs.object().shape();
+    f.run(lhs.shape(), this_labels, rhs_shape(rhs.labels()));
 
-    const auto& rhs_symmetry = rhs.lhs().symmetry();
-    f.run(lhs.symmetry(), this_labels, rhs_symmetry(rhs.rhs()));
+    const auto& rhs_symmetry = rhs.object().symmetry();
+    f.run(lhs.symmetry(), this_labels, rhs_symmetry(rhs.labels()));
 
-    const auto& rhs_sparsity = rhs.lhs().sparsity();
-    f.run(lhs.sparsity(), this_labels, rhs_sparsity(rhs.rhs()));
+    const auto& rhs_sparsity = rhs.object().sparsity();
+    f.run(lhs.sparsity(), this_labels, rhs_sparsity(rhs.labels()));
 }
 
 } // namespace

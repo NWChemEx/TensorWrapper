@@ -283,8 +283,26 @@ protected:
       m_symmetry_(std::make_unique<symmetry_type>(*other.m_symmetry_)),
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
-    LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&) = delete;
+    LayoutBase& operator=(const LayoutBase& rhs) {
+        if(this != &rhs) {
+            shape_pointer new_shape;
+            symmetry_pointer new_symmetry;
+            sparsity_pointer new_sparsity;
+            if(rhs.m_shape_) rhs.m_shape_->clone().swap(new_shape);
+            if(rhs.m_symmetry_)
+                std::make_unique<symmetry_type>(*rhs.m_symmetry_)
+                  .swap(new_symmetry);
+            if(rhs.m_sparsity_)
+                std::make_unique<sparsity_type>(*rhs.m_sparsity_)
+                  .swap(new_sparsity);
+            // At this point all allocations succeeded so now assign
+            m_shape_.swap(new_shape);
+            m_symmetry_.swap(new_symmetry);
+            m_sparsity_.swap(new_sparsity);
+        }
+        return *this;
+    }
+    LayoutBase& operator=(LayoutBase&&) = default;
 
     /// Implements addition assignment by calling += on members
     dsl_reference addition_assignment_(label_type this_labels,

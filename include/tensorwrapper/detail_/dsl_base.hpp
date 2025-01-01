@@ -50,19 +50,26 @@ public:
     using dsl_pointer = std::unique_ptr<dsl_value_type>;
 
     /// Type used for the dummy indices
-    using label_type = std::string;
+    using string_type = std::string;
 
     /// Type of a labeled object
-    using labeled_type = dsl::Labeled<dsl_value_type, label_type>;
+    using labeled_type = dsl::Labeled<dsl_value_type, string_type>;
 
     /// Type of a labeled read-only object (n.b. labels are mutable)
-    using labeled_const_type = dsl::Labeled<dsl_const_value_type, label_type>;
+    using labeled_const_type = dsl::Labeled<dsl_const_value_type, string_type>;
+
+    /// Type of parsed labels
+    using label_type = typename labeled_type::label_type;
 
     /// Type of a read-only reference to a labeled_type object
     using const_labeled_reference = const labeled_const_type&;
 
     /// Polymorphic no-throw defaulted dtor
     virtual ~DSLBase() noexcept = default;
+
+    labeled_type operator()(string_type labels) {
+        return (*this)(label_type(std::move(labels)));
+    }
 
     /** @brief Associates labels with the modes of *this.
      *
@@ -83,6 +90,10 @@ public:
         return labeled_type(downcast_(), std::move(labels));
     }
 
+    labeled_const_type operator()(string_type labels) const {
+        return (*this)(label_type(std::move(labels)));
+    }
+
     /** @brief Associates labels with the modes of *this.
      *
      *  This method is the same as the non-const version except that the result
@@ -99,8 +110,13 @@ public:
     }
 
     // -------------------------------------------------------------------------
-    // -- BLAS Operations
+    // -- BLAS-Like Operations
     // -------------------------------------------------------------------------
+
+    dsl_reference addition_assignment(string_type this_labels,
+                                      const_labeled_reference rhs) {
+        return addition_assignment(label_type(std::move(this_labels)), rhs);
+    }
 
     /** @brief Set this to the result of *this + rhs.
      *
@@ -118,6 +134,11 @@ public:
     dsl_reference addition_assignment(label_type this_labels,
                                       const_labeled_reference rhs) {
         return addition_assignment_(std::move(this_labels), rhs);
+    }
+
+    dsl_pointer addition(string_type this_labels,
+                         const_labeled_reference rhs) const {
+        return addition(label_type(std::move(this_labels)), rhs);
     }
 
     /** @brief Returns the result of *this + rhs.
@@ -140,6 +161,11 @@ public:
         auto pthis = downcast_().clone();
         pthis->addition_assignment(std::move(this_labels), rhs);
         return pthis;
+    }
+
+    dsl_reference permute_assignment(string_type this_labels,
+                                     const_labeled_reference rhs) {
+        return permute_assignment(label_type(std::move(this_labels)), rhs);
     }
 
     /** @brief Sets *this to a permutation of @p rhs.
@@ -165,6 +191,10 @@ public:
     dsl_reference permute_assignment(label_type this_labels,
                                      const_labeled_reference rhs) {
         return permute_assignment_(std::move(this_labels), rhs);
+    }
+
+    dsl_pointer permute(string_type this_labels, string_type out_labels) {
+        return permute(label_type(this_labels), label_type(out_labels));
     }
 
     /** @brief Returns a copy of *this obtained by permuting *this.

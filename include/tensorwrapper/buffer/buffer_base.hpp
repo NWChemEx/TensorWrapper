@@ -62,13 +62,16 @@ public:
     using layout_pointer = typename layout_type::layout_pointer;
 
     /// Type of labels for making a labeled buffer
-    using label_type = std::string;
+    using string_type = std::string;
 
     /// Type of a labeled buffer
-    using labeled_buffer_type = dsl::Labeled<buffer_base_type, label_type>;
+    using labeled_buffer_type = dsl::Labeled<buffer_base_type, string_type>;
 
     /// Type of a labeled read-only buffer (n.b. labels are mutable)
-    using labeled_const_buffer_type = dsl::Labeled<const buffer_base_type>;
+    using labeled_const_buffer_type =
+      dsl::Labeled<const buffer_base_type, string_type>;
+
+    using label_type = typename labeled_buffer_type::label_type;
 
     /// Type of a read-only reference to a labeled_buffer_type object
     using const_labeled_buffer_reference = const labeled_const_buffer_type&;
@@ -123,8 +126,8 @@ public:
      *  @throws ??? Throws if the derived class's implementation throws. Same
      *              throw guarantee.
      */
-    buffer_base_reference addition_assignment(
-      label_type this_labels, const_labeled_buffer_reference rhs);
+    // buffer_base_reference addition_assignment(
+    //   label_type this_labels, const_labeled_buffer_reference rhs);
 
     /** @brief Returns the result of *this + rhs.
      *
@@ -141,12 +144,12 @@ public:
      *  @throw ??? If addition_assignment throws when adding @p rhs to the
      *             copy of *this. Same throw guarantee.
      */
-    buffer_base_pointer addition(label_type this_labels,
-                                 const_labeled_buffer_reference rhs) const {
-        auto pthis = clone();
-        pthis->addition_assignment(std::move(this_labels), rhs);
-        return pthis;
-    }
+    // buffer_base_pointer addition(label_type this_labels,
+    //                              const_labeled_buffer_reference rhs) const {
+    //     auto pthis = clone();
+    //     pthis->addition_assignment(std::move(this_labels), rhs);
+    //     return pthis;
+    // }
 
     /** @brief Sets *this to a permutation of @p rhs.
      *
@@ -168,8 +171,8 @@ public:
      *  @throw ??? If the derived class's implementation of permute_assignment_
      *             throws. Same throw guarantee.
      */
-    buffer_base_reference permute_assignment(
-      label_type this_labels, const_labeled_buffer_reference rhs);
+    // buffer_base_reference permute_assignment(
+    //   label_type this_labels, const_labeled_buffer_reference rhs);
 
     /** @brief Returns a copy of *this obtained by permuting *this.
      *
@@ -186,12 +189,12 @@ public:
      *  @throw ??? If the derived class's implementation of permute_assignment_
      *             throws. Same throw guarantee.
      */
-    buffer_base_pointer permute(label_type this_labels,
-                                label_type out_labels) const {
-        auto pthis = clone();
-        pthis->permute_assignment(std::move(out_labels), (*this)(this_labels));
-        return pthis;
-    }
+    // buffer_base_pointer permute(label_type this_labels,
+    //                             label_type out_labels) const {
+    //     auto pthis = clone();
+    //     pthis->permute_assignment(std::move(out_labels),
+    //     (*this)(this_labels)); return pthis;
+    // }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -312,10 +315,10 @@ protected:
      *                            it). Strong throw guarantee (in the first
      *                            scenario).
      */
-    virtual buffer_base_reference addition_assignment_(
-      label_type this_labels, const_labeled_buffer_reference rhs) {
-        throw std::runtime_error("Addition assignment NYI");
-    }
+    // virtual buffer_base_reference addition_assignment_(
+    //   label_type this_labels, const_labeled_buffer_reference rhs) {
+    //     throw std::runtime_error("Addition assignment NYI");
+    // }
 
     /** @brief Overridden by derived classes to implement permute_assignment
      *
@@ -335,10 +338,10 @@ protected:
      *                            it). Strong throw guarantee (in the first
      *                            scenario).
      */
-    virtual buffer_base_reference permute_assignment_(
-      label_type this_labels, const_labeled_buffer_reference rhs) {
-        throw std::runtime_error("Permute assignment NYI");
-    }
+    // virtual buffer_base_reference permute_assignment_(
+    //   label_type this_labels, const_labeled_buffer_reference rhs) {
+    //     throw std::runtime_error("Permute assignment NYI");
+    // }
 
 private:
     /// Throws std::runtime_error when there is no layout

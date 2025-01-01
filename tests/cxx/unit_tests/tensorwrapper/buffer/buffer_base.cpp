@@ -84,22 +84,22 @@ TEST_CASE("BufferBase") {
 
         SECTION("operator()(std::string)") {
             auto labeled_scalar = scalar_base("");
-            REQUIRE(labeled_scalar.lhs().are_equal(scalar_base));
-            REQUIRE(labeled_scalar.rhs() == "");
+            REQUIRE(labeled_scalar.object().are_equal(scalar_base));
+            REQUIRE(labeled_scalar.labels() == "");
 
             auto labeled_vector = vector_base("i");
-            REQUIRE(labeled_vector.lhs().are_equal(vector_base));
-            REQUIRE(labeled_vector.rhs() == "i");
+            REQUIRE(labeled_vector.object().are_equal(vector_base));
+            REQUIRE(labeled_vector.labels() == "i");
         }
 
         SECTION("operator()(std::string) const") {
             auto labeled_scalar = std::as_const(scalar_base)("");
-            REQUIRE(labeled_scalar.lhs().are_equal(scalar_base));
-            REQUIRE(labeled_scalar.rhs() == "");
+            REQUIRE(labeled_scalar.object().are_equal(scalar_base));
+            REQUIRE(labeled_scalar.labels() == "");
 
             auto labeled_vector = std::as_const(vector_base)("i");
-            REQUIRE(labeled_vector.lhs().are_equal(vector_base));
-            REQUIRE(labeled_vector.rhs() == "i");
+            REQUIRE(labeled_vector.object().are_equal(vector_base));
+            REQUIRE(labeled_vector.labels() == "i");
         }
 
         SECTION("operator==") {

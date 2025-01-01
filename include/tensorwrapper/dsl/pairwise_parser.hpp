@@ -85,7 +85,7 @@ public:
     template<typename T, typename U>
     ObjectType dispatch(const_labeled_type lhs,
                         const utilities::dsl::Add<T, U>& rhs) {
-        auto labels = lhs.rhs();
+        auto labels = lhs.labels();
         auto lA     = dispatch(lhs, rhs.lhs());
         auto lB     = dispatch(lhs, rhs.rhs());
         return add(lhs, lA(labels), lB(labels));
