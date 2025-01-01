@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
@@ -25,7 +26,15 @@ namespace tensorwrapper::layout {
 /** @brief Common base class for all layouts.
  *
  */
-class LayoutBase : public detail_::PolymorphicBase<LayoutBase> {
+class LayoutBase : public detail_::PolymorphicBase<LayoutBase>,
+                   public detail_::DSLBase<LayoutBase> {
+private:
+    /// Type of *this
+    using my_type = LayoutBase;
+
+    /// Type of DSL base class
+    using dsl_base = detail_::DSLBase<my_type>;
+
 public:
     /// Type all layouts derive from
     using layout_base = LayoutBase;
@@ -42,6 +51,9 @@ public:
     /// Common base type of all shape objects
     using shape_base = shape::ShapeBase;
 
+    /// Mutable reference to a shape_base object
+    using shape_reference = shape_base&;
+
     /// Read-only reference to a shape's base object.
     using const_shape_reference = const shape_base&;
 
@@ -50,6 +62,9 @@ public:
 
     /// Object holding symmetry operations
     using symmetry_type = symmetry::Group;
+
+    /// Mutable reference to an object of type symmetry_type
+    using symmetry_reference = symmetry_type&;
 
     /// Read-only reference to the symmetry
     using const_symmetry_reference = const symmetry_type&;
@@ -60,6 +75,9 @@ public:
     /// Object holding sparsity patterns
     using sparsity_type = sparsity::Pattern;
 
+    /// Mutable reference to an object of type sparsity_type
+    using sparsity_reference = sparsity_type&;
+
     /// Read-only reference to the sparsity
     using const_sparsity_reference = const sparsity_type&;
 
@@ -68,6 +86,11 @@ public:
 
     /// Type used for indexing and offsets
     using size_type = std::size_t;
+
+    /// Pull in base class types
+    using typename dsl_base::const_labeled_reference;
+    using typename dsl_base::dsl_reference;
+    using typename dsl_base::label_type;
 
     // -------------------------------------------------------------------------
     // -- Ctors and dtor
@@ -150,29 +173,63 @@ public:
     // -- State methods
     // -------------------------------------------------------------------------
 
+    bool has_shape() const noexcept { return static_cast<bool>(m_shape_); }
+    shape_reference shape() {
+        assert_shape_();
+        return *m_shape_;
+    }
+
     /** @brief Provides read-only access to the shape of the layout.
      *
      *  @return A read-only reference to the shape of the layout.
      *
-     *  @throw None No throw guarantee
+     *  @throw std::runtime_error if *this has no shape. Strong throw
+     *                            guarantee.
      */
-    const_shape_reference shape() const { return *m_shape_; }
+    const_shape_reference shape() const {
+        assert_shape_();
+        return *m_shape_;
+    }
+
+    bool has_symmetry() const noexcept {
+        return static_cast<bool>(m_symmetry_);
+    }
+    symmetry_reference symmetry() {
+        assert_symmetry_();
+        return *m_symmetry_;
+    }
 
     /** @brief Provides read-only access to the symmetry of the layout.
      *
      *  @return A read-only reference to the symmetry of the layout.
      *
-     *  @throw None No throw guarantee
+     *  @throw std::runtimer_error if *this has no symmetry. Strong throw
+     *                             guarantee.
      */
-    const_symmetry_reference symmetry() const { return *m_symmetry_; }
+    const_symmetry_reference symmetry() const {
+        assert_symmetry_();
+        return *m_symmetry_;
+    }
+
+    bool has_sparsity() const noexcept {
+        return static_cast<bool>(m_sparsity_);
+    }
+    sparsity_reference sparsity() {
+        assert_sparsity_();
+        return *m_sparsity_;
+    }
 
     /** @brief Provides access to the sparsity of the layout.
      *
      *  @return A read-only reference to the sparsity of the layout.
      *
-     *  @throw None No throw guarantee.
+     *  @throw std::runtime_error if *this has no sparsity. Strong throw
+     *                            guarantee.
      */
-    const_sparsity_reference sparsity() const { return *m_sparsity_; }
+    const_sparsity_reference sparsity() const {
+        assert_sparsity_();
+        return *m_sparsity_;
+    }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -226,10 +283,51 @@ protected:
       m_symmetry_(std::make_unique<symmetry_type>(*other.m_symmetry_)),
       m_sparsity_(std::make_unique<sparsity_type>(*other.m_sparsity_)) {}
 
-    LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&) = delete;
+    LayoutBase& operator=(const LayoutBase& rhs) {
+        if(this != &rhs) {
+            shape_pointer new_shape;
+            symmetry_pointer new_symmetry;
+            sparsity_pointer new_sparsity;
+            if(rhs.m_shape_) rhs.m_shape_->clone().swap(new_shape);
+            if(rhs.m_symmetry_)
+                std::make_unique<symmetry_type>(*rhs.m_symmetry_)
+                  .swap(new_symmetry);
+            if(rhs.m_sparsity_)
+                std::make_unique<sparsity_type>(*rhs.m_sparsity_)
+                  .swap(new_sparsity);
+            // At this point all allocations succeeded so now assign
+            m_shape_.swap(new_shape);
+            m_symmetry_.swap(new_symmetry);
+            m_sparsity_.swap(new_sparsity);
+        }
+        return *this;
+    }
+    LayoutBase& operator=(LayoutBase&&) = default;
+
+    /// Implements addition assignment by calling += on members
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements permutation assignment by permuting members
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 
 private:
+    void assert_shape_() const {
+        if(has_shape()) return;
+        throw std::runtime_error("Layout does not have shape");
+    }
+
+    void assert_symmetry_() const {
+        if(has_symmetry()) return;
+        throw std::runtime_error("Layout does not have symmetry");
+    }
+
+    void assert_sparsity_() const {
+        if(has_sparsity()) return;
+        throw std::runtime_error("Layout does not have sparsity");
+    }
+
     /// The actual shape of the tensor
     shape_pointer m_shape_;
 

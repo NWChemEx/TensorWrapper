@@ -59,6 +59,10 @@ protected:
         return std::make_unique<Logical>(*this);
     }
 
+    layout_base& assign_(const layout_base& rhs) override {
+        return assign_impl_<Logical>(rhs);
+    }
+
     /// Implements are_equal by calling are_equal_impl_
     bool are_equal_(const layout_base& rhs) const noexcept override {
         return are_equal_impl_<Logical>(rhs);

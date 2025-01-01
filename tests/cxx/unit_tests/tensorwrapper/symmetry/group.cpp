@@ -95,4 +95,40 @@ TEST_CASE("Group") {
         REQUIRE(empty.size() == 0);
         REQUIRE(g.size() == 2);
     }
+
+    SECTION("addition_assignment_") {
+        Group g0;
+
+        auto pg0 = &(g0.addition_assignment("", empty("")));
+        REQUIRE(pg0 == &g0);
+        REQUIRE(g0 == empty);
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(g0.addition_assignment("", empty("i")),
+                          std::runtime_error);
+
+        // Throws if either actually have operations
+        REQUIRE_THROWS_AS(g0.addition_assignment("", g("")),
+                          std::runtime_error);
+
+        REQUIRE_THROWS_AS(g.addition_assignment("", g0("")),
+                          std::runtime_error);
+    }
+
+    SECTION("permute_assignment_") {
+        Group g0;
+
+        auto pg0 = &(g0.permute_assignment("", empty("")));
+        REQUIRE(pg0 == &g0);
+        REQUIRE(g0 == empty);
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(g0.permute_assignment("", empty("i")),
+                          std::runtime_error);
+
+        // Throws if either actually have operations
+        REQUIRE_THROWS_AS(g0.permute_assignment("", g("")), std::runtime_error);
+
+        REQUIRE_THROWS_AS(g.permute_assignment("", g0("")), std::runtime_error);
+    }
 }

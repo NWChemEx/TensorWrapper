@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <set>
 #include <string>
 #include <utilities/containers/indexable_container_base.hpp>
 #include <utilities/strings/string_tools.hpp>
@@ -200,6 +201,20 @@ public:
         for(size_type i = 0; i < this->size(); ++i)
             if(m_dummy_indices_[i] == index_to_find) rv.push_back(i);
         return rv;
+    }
+
+    bool operator==(const_reference s) const {
+        return operator==(DummyIndices(s));
+    }
+
+    bool operator==(const DummyIndices& rhs) const noexcept {
+        return m_dummy_indices_ == rhs.m_dummy_indices_;
+    }
+
+    bool operator!=(const_reference s) const { return !((*this) == s); }
+
+    bool operator!=(const DummyIndices& rhs) const noexcept {
+        return !((*this) == rhs);
     }
 
 protected:

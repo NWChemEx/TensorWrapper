@@ -224,6 +224,10 @@ protected:
     /// If *this has no explicit cycles it is an identity permutation
     bool is_identity_() const noexcept override { return size() == 0; }
 
+    base_reference assign_(const_base_reference other) override {
+        return assign_impl_<Permutation>(other);
+    }
+
     /// Implements are_equal by using implementation provided by the base class.
     bool are_equal_(const_base_reference other) const noexcept override {
         return are_equal_impl_<Permutation>(other);

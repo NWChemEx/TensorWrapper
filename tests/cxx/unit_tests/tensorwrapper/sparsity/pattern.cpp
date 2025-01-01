@@ -34,4 +34,28 @@ TEST_CASE("Pattern") {
         // Just spot check because it is implemented in terms of operator==
         REQUIRE_FALSE(defaulted != Pattern{});
     }
+
+    SECTION("addition_assignment_") {
+        Pattern p0;
+
+        auto pp0 = &(p0.addition_assignment("", defaulted("")));
+        REQUIRE(pp0 == &p0);
+        REQUIRE(p0 == defaulted);
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(p0.addition_assignment("", defaulted("i")),
+                          std::runtime_error);
+    }
+
+    SECTION("permute_assignment_") {
+        Pattern p0;
+
+        auto pp0 = &(p0.permute_assignment("", defaulted("")));
+        REQUIRE(pp0 == &p0);
+        REQUIRE(p0 == defaulted);
+
+        // Throws if labels aren't consistent
+        REQUIRE_THROWS_AS(p0.permute_assignment("", defaulted("i")),
+                          std::runtime_error);
+    }
 }

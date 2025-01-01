@@ -15,7 +15,7 @@
  */
 
 #pragma once
-#include <tensorwrapper/dsl/labeled.hpp>
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_input.hpp>
 
 namespace tensorwrapper {
@@ -34,7 +34,7 @@ struct IsTuple<std::tuple<Args...>> : std::true_type {};
  *  The Tensor class is envisioned as being the most user-facing class of
  *  TensorWrapper and forms the entry point into TensorWrapper's DSL.
  */
-class Tensor {
+class Tensor : public detail_::DSLBase<Tensor> {
 private:
     /// Type of a helper class which collects the inputs needed to make a tensor
     using input_type = detail_::TensorInput;
@@ -331,9 +331,9 @@ public:
      *  @return A DSL term pairing *this with @p labels.
      *
      */
-    labeled_tensor_type operator()(const_label_reference labels) {
-        return labeled_tensor_type(*this, labels);
-    }
+    // labeled_tensor_type operator()(const_label_reference labels) {
+    //     return labeled_tensor_type(*this, labels);
+    // }
 
     /** @brief Associates @p labels with the modes of *this.
      *
@@ -345,9 +345,10 @@ public:
      *  @return A DSL term pairing *this with @p labels.
      *
      */
-    const_labeled_tensor_type operator()(const_label_reference labels) const {
-        return const_labeled_tensor_type(*this, labels);
-    }
+    // const_labeled_tensor_type operator()(const_label_reference labels) const
+    // {
+    //     return const_labeled_tensor_type(*this, labels);
+    // }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
