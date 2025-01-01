@@ -25,14 +25,13 @@ namespace tensorwrapper::dsl {
 /** @brief Represents an object whose modes are assigned dummy indices.
  */
 template<typename ObjectType, typename LabelType = std::string>
-class Labeled : public utilities::dsl::BinaryOp<Labeled<ObjectType, LabelType>,
-                                                ObjectType, LabelType> {
+class Labeled : public utilities::dsl::Term<Labeled<ObjectType, LabelType>> {
 private:
     /// Type of *this
     using my_type = Labeled<ObjectType, LabelType>;
 
     /// Type *this inherits from
-    using op_type = utilities::dsl::BinaryOp<my_type, ObjectType, LabelType>;
+    using op_type = utilities::dsl::Term<my_type>;
 
     /// Is T cv-qualified?
     template<typename T>
@@ -116,14 +115,15 @@ public:
      *
      *  @return *this after assigning @p other to *this.
      */
-    template<typename TermType>
-    my_type& operator=(TermType&& other) {
-        // TODO: other should be rolled into a tensor graph object that can be
-        //       manipulated at runtime. Parser is then moved to the backend
-        PairwiseParser<ObjectType, LabelType> p;
-        *this = p.dispatch(std::move(*this), std::forward<TermType>(other));
-        return *this;
-    }
+    // template<typename TermType>
+    // my_type& operator=(TermType&& other) {
+    //     // TODO: other should be rolled into a tensor graph object that can
+    //     be
+    //     //       manipulated at runtime. Parser is then moved to the backend
+    //     PairwiseParser<ObjectType, LabelType> p;
+    //     *this = p.dispatch(std::move(*this), std::forward<TermType>(other));
+    //     return *this;
+    // }
 };
 
 } // namespace tensorwrapper::dsl

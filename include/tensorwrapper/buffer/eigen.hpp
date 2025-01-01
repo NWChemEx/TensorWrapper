@@ -39,9 +39,7 @@ public:
     /// Pull in base class's types
     using typename my_base_type::buffer_base_pointer;
     using typename my_base_type::const_buffer_base_reference;
-    using typename my_base_type::const_labeled_buffer_reference;
     using typename my_base_type::const_layout_reference;
-    using typename my_base_type::label_type;
 
     /// Type of a rank @p Rank tensor using floats of type @p FloatType
     using data_type = eigen::data_type<FloatType, Rank>;
@@ -181,14 +179,6 @@ protected:
     bool are_equal_(const_buffer_base_reference rhs) const noexcept override {
         return my_base_type::are_equal_impl_<my_type>(rhs);
     }
-
-    /// Implements addition_assignment by rebinding rhs to an Eigen buffer
-    buffer_base_reference addition_assignment_(
-      label_type this_labels, const_labeled_buffer_reference rhs) override;
-
-    /// Implements permute assignment by deferring to Eigen's shuffle command.
-    buffer_base_reference permute_assignment_(
-      label_type this_labels, const_labeled_buffer_reference rhs) override;
 
     /// Implements to_string
     typename my_base_type::string_type to_string_() const override;

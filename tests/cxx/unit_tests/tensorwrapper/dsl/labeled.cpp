@@ -22,56 +22,56 @@ using namespace tensorwrapper;
 using test_types = std::tuple<Tensor>;
 
 TEMPLATE_LIST_TEST_CASE("Labeled", "", test_types) {
-    using object_type  = TestType;
-    using labeled_type = dsl::Labeled<TestType>;
-    using labels_type  = typename labeled_type::label_type;
+    // using object_type  = TestType;
+    // using labeled_type = dsl::Labeled<TestType>;
+    // using labels_type  = typename labeled_type::label_type;
 
-    labels_type ij("i,j");
-    object_type defaulted{};
-    labeled_type labeled_default(defaulted, ij);
+    // labels_type ij("i,j");
+    // object_type defaulted{};
+    // labeled_type labeled_default(defaulted, ij);
 
-    SECTION("Ctor") {
-        SECTION("Value") {
-            REQUIRE(labeled_default.lhs() == defaulted);
-            REQUIRE(labeled_default.rhs() == ij);
-        }
+    // SECTION("Ctor") {
+    //     SECTION("Value") {
+    //         REQUIRE(labeled_default.lhs() == defaulted);
+    //         REQUIRE(labeled_default.rhs() == ij);
+    //     }
 
-        SECTION("to const") {
-            using const_labeled_type = dsl::Labeled<const TestType>;
-            const_labeled_type const_labeled_default(labeled_default);
+    //     SECTION("to const") {
+    //         using const_labeled_type = dsl::Labeled<const TestType>;
+    //         const_labeled_type const_labeled_default(labeled_default);
 
-            REQUIRE(const_labeled_default.lhs() == defaulted);
-            REQUIRE(const_labeled_default.rhs() == ij);
-        }
-    }
+    //         REQUIRE(const_labeled_default.lhs() == defaulted);
+    //         REQUIRE(const_labeled_default.rhs() == ij);
+    //     }
+    // }
 
-    SECTION("operator=") {
-        // At present this operator just calls Parser dispatch. We know that
-        // works from other tests so here we just spot check.
-        Tensor t;
+    // SECTION("operator=") {
+    //     // At present this operator just calls Parser dispatch. We know that
+    //     // works from other tests so here we just spot check.
+    //     Tensor t;
 
-        SECTION("scalar") {
-            Tensor scalar(testing::smooth_scalar());
-            auto labeled_t  = t("");
-            auto plabeled_t = &(labeled_t = scalar("") + scalar(""));
-            REQUIRE(plabeled_t == &labeled_t);
+    //     SECTION("scalar") {
+    //         Tensor scalar(testing::smooth_scalar());
+    //         auto labeled_t  = t("");
+    //         auto plabeled_t = &(labeled_t = scalar("") + scalar(""));
+    //         REQUIRE(plabeled_t == &labeled_t);
 
-            auto buffer      = testing::eigen_scalar<double>();
-            buffer.value()() = 84.0;
-            Tensor corr(scalar.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
-        }
+    //         auto buffer      = testing::eigen_scalar<double>();
+    //         buffer.value()() = 84.0;
+    //         Tensor corr(scalar.logical_layout(), std::move(buffer));
+    //         REQUIRE(t == corr);
+    //     }
 
-        SECTION("Vector") {
-            Tensor vector(testing::smooth_vector());
-            auto labeled_t  = t("i");
-            auto plabeled_t = &(labeled_t = vector("i") + vector("i"));
-            REQUIRE(plabeled_t == &labeled_t);
+    //     SECTION("Vector") {
+    //         Tensor vector(testing::smooth_vector());
+    //         auto labeled_t  = t("i");
+    //         auto plabeled_t = &(labeled_t = vector("i") + vector("i"));
+    //         REQUIRE(plabeled_t == &labeled_t);
 
-            auto buffer = testing::eigen_vector<double>();
-            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
-            Tensor corr(t.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
-        }
-    }
+    //         auto buffer = testing::eigen_vector<double>();
+    //         for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
+    //         Tensor corr(t.logical_layout(), std::move(buffer));
+    //         REQUIRE(t == corr);
+    //     }
+    // }
 }

@@ -96,20 +96,6 @@ public:
     /// Type of an initializer list if *this is a rank 4 tensor
     using tensor4_il_type = std::initializer_list<tensor3_il_type>;
 
-    /// Type of a label
-    using label_type = std::string;
-
-    /// Type of a read-only reference to an object of type label_type
-    using const_label_reference = const label_type&;
-
-    /// Type of a labeled tensor
-    using labeled_tensor_type = dsl::Labeled<Tensor, label_type>;
-
-    /// Type of a read-only labeled tensor
-    using const_labeled_tensor_type = dsl::Labeled<const Tensor, label_type>;
-
-    // Tensor() : Tensor(input_type{}) {}
-
     /** @brief Initializes *this by processing the input provided in @p input.
      *
      *  This ctor is only public to facilitate unit testing of the library.
@@ -312,42 +298,6 @@ public:
      *                            guarantee.
      */
     const_buffer_reference buffer() const;
-
-    /** @brief Associates @p labels with the modes of *this.
-     *
-     *  Expressing tensor operations is easier with the use of the Einstein
-     *  summation convention. Usage of this convention requires the user to be
-     *  able to associate dummy indices with the modes of the tensor. This
-     *  function pairs @p labels with the modes of *this such that the i-th
-     *  dummy index of @p labels is paired with the i-th mode of *this.
-     *
-     *  See dsl::DummyIndices for how the string is interpreted.
-     *
-     *  Note that if *this is a rank 0 tensor @p labels should be the empty
-     *  string.
-     *
-     *  @param[in] labels The dummy indices to associate with each mode.
-     *
-     *  @return A DSL term pairing *this with @p labels.
-     *
-     */
-    labeled_tensor_type operator()(const_label_reference labels) {
-        return labeled_tensor_type(*this, labels);
-    }
-
-    /** @brief Associates @p labels with the modes of *this.
-     *
-     *  This method is the same as the non-const version except that the
-     *  resulting DSL term contains a reference to an immutable tensor.
-     *
-     *  @param[in] labels The dummy indices to associate with each mode.
-     *
-     *  @return A DSL term pairing *this with @p labels.
-     *
-     */
-    const_labeled_tensor_type operator()(const_label_reference labels) const {
-        return const_labeled_tensor_type(*this, labels);
-    }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
