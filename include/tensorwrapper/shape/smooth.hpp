@@ -177,6 +177,33 @@ protected:
         return are_equal_impl_<Smooth>(rhs);
     }
 
+    /// Implements addition_assignment via permute_assignment
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements subtraction_assignment via permute_assignment
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+
+    /// Implements multiplication_assignment via permute_assignment
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    /// Implements permute_assignment by permuting the extents in @p rhs.
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
+
+    /// Implements to_string
+    string_type to_string_() const override {
+        string_type buffer("{");
+        for(auto x : m_extents_) buffer += string_type(" ") + std::to_string(x);
+        buffer += string_type("}");
+        return buffer;
+    }
+
 private:
     /// Type used to hold the extents of *this
     using extents_type = std::vector<size_type>;

@@ -72,6 +72,20 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(dummy_indices_type("i,i").has_repeated_indices());
     }
 
+    SECTION("is_permutation") {
+        REQUIRE(scalar.is_permutation(scalar));
+        REQUIRE_FALSE(scalar.is_permutation(vector));
+
+        REQUIRE(vector.is_permutation(vector));
+        REQUIRE_FALSE(vector.is_permutation(scalar));
+        REQUIRE_FALSE(vector.is_permutation(dummy_indices_type("j")));
+
+        REQUIRE(matrix.is_permutation(matrix));
+        REQUIRE(matrix.is_permutation(dummy_indices_type("j,i")));
+        REQUIRE_FALSE(matrix.is_permutation(scalar));
+        REQUIRE_FALSE(matrix.is_permutation(dummy_indices_type("i,k")));
+    }
+
     SECTION("permutation") {
         using offset_vector = typename dummy_indices_type::offset_vector;
 
@@ -132,30 +146,98 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(dummy_indices_type("i,i").find("i") == offset_vector{0, 1});
     }
 
-    SECTION("comparison") {
+    SECTION("count") {
+        REQUIRE(defaulted.count("") == 0);
+
+        REQUIRE(scalar.count("") == 0);
+
+        REQUIRE(vector.count("") == 0);
+        REQUIRE(vector.count("i") == 1);
+        REQUIRE(vector.count("j") == 0);
+
+        REQUIRE(matrix.count("") == 0);
+        REQUIRE(matrix.count("i") == 1);
+        REQUIRE(matrix.count("j") == 1);
+        REQUIRE(dummy_indices_type("i,i").count("i") == 2);
+    }
+
+    SECTION("operator==") {
         // Default construction is indistinguishable from scalar indices
         REQUIRE(defaulted == scalar);
+        REQUIRE(defaulted == "");
 
         // Different ranks are different
         REQUIRE_FALSE(defaulted == vector);
+        REQUIRE_FALSE(defaulted == "i");
 
         // Same vector indices
         REQUIRE(vector == dummy_indices_type("i"));
+        REQUIRE(vector == "i");
 
         // Different vector indices
         REQUIRE_FALSE(vector == dummy_indices_type("j"));
+        REQUIRE_FALSE(vector == "j");
 
         // Same matrix indices
         REQUIRE(matrix == dummy_indices_type("i,j"));
+        REQUIRE(matrix == "i,j");
 
         // Spaces aren't significant
         REQUIRE(matrix == dummy_indices_type("i, j"));
+        REQUIRE(matrix == "i, j");
         REQUIRE(matrix == dummy_indices_type(" i , j "));
+        REQUIRE(matrix == " i , j ");
 
         // Are case sensitive
         REQUIRE_FALSE(matrix == dummy_indices_type("I,j"));
+        REQUIRE_FALSE(matrix == "I,j");
 
         // Permutations are different
         REQUIRE_FALSE(matrix == dummy_indices_type("j,i"));
+        REQUIRE_FALSE(matrix == "j,i");
+    }
+
+    SECTION("operator!=") {
+        // Just negates operator== so spot checking is fine
+        REQUIRE_FALSE(vector != dummy_indices_type("i"));
+        REQUIRE_FALSE(vector != "i");
+        REQUIRE(vector != dummy_indices_type("j"));
+        REQUIRE(vector != "j");
+    }
+
+    SECTION("concatenation") {
+        dummy_indices_type matrix2("k,l");
+        REQUIRE(scalar.concatenation(scalar) == dummy_indices_type(""));
+        REQUIRE(scalar.concatenation(vector) == dummy_indices_type("i"));
+        REQUIRE(scalar.concatenation(matrix) == dummy_indices_type("i,j"));
+        REQUIRE(scalar.concatenation(matrix2) == dummy_indices_type("k,l"));
+
+        REQUIRE(vector.concatenation(scalar) == dummy_indices_type("i"));
+        REQUIRE(vector.concatenation(vector) == dummy_indices_type("i,i"));
+        REQUIRE(vector.concatenation(matrix) == dummy_indices_type("i,i,j"));
+        REQUIRE(vector.concatenation(matrix2) == dummy_indices_type("i,k,l"));
+
+        REQUIRE(matrix.concatenation(scalar) == dummy_indices_type("i,j"));
+        REQUIRE(matrix.concatenation(vector) == dummy_indices_type("i,j,i"));
+        REQUIRE(matrix.concatenation(matrix) == dummy_indices_type("i,j,i,j"));
+        REQUIRE(matrix.concatenation(matrix2) == dummy_indices_type("i,j,k,l"));
+    }
+
+    SECTION("intersection") {
+        dummy_indices_type matrix2("k,l");
+        REQUIRE(scalar.intersection(scalar) == dummy_indices_type(""));
+        REQUIRE(scalar.intersection(vector) == dummy_indices_type(""));
+        REQUIRE(scalar.intersection(matrix) == dummy_indices_type(""));
+        REQUIRE(scalar.intersection(matrix2) == dummy_indices_type(""));
+
+        REQUIRE(vector.intersection(scalar) == dummy_indices_type(""));
+        REQUIRE(vector.intersection(vector) == dummy_indices_type("i"));
+        REQUIRE(vector.intersection(matrix) == dummy_indices_type("i"));
+        REQUIRE(vector.intersection(matrix2) == dummy_indices_type(""));
+
+        REQUIRE(matrix.intersection(scalar) == dummy_indices_type(""));
+        REQUIRE(matrix.intersection(vector) == dummy_indices_type("i"));
+        REQUIRE(matrix.intersection(matrix) == dummy_indices_type("i,j"));
+        REQUIRE(matrix.intersection(matrix2) == dummy_indices_type(""));
     }
 }

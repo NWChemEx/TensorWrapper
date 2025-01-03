@@ -109,6 +109,155 @@ TEST_CASE("Smooth") {
             REQUIRE(scalar.are_equal(Smooth{}));
             REQUIRE_FALSE(vector.are_equal(matrix));
         }
+
+        SECTION("addition_assignment_") {
+            // Works by calling permute_assignment_ so just spot check
+            Smooth matrix2{};
+            auto mij      = matrix("i,j");
+            auto pmatrix2 = &(matrix2.addition_assignment("i,j", mij, mij));
+            REQUIRE(pmatrix2 == &matrix2);
+            REQUIRE(matrix2 == matrix);
+        }
+
+        SECTION("subtraction_assignment_") {
+            // Works by calling permute_assignment_ so just spot check
+            Smooth matrix2{};
+            auto mij      = matrix("i,j");
+            auto pmatrix2 = &(matrix2.subtraction_assignment("i,j", mij, mij));
+            REQUIRE(pmatrix2 == &matrix2);
+            REQUIRE(matrix2 == matrix);
+        }
+
+        SECTION("multiplication_assignment_") {
+            Smooth scalar2{};
+            auto s   = scalar("");
+            auto vi  = vector("i");
+            auto mij = matrix("i,j");
+
+            SECTION("Scalar times scalar") {
+                auto pscalar2 = &(scalar2.multiplication_assignment("", s, s));
+                REQUIRE(pscalar2 == &scalar2);
+                REQUIRE(scalar2 == scalar);
+            }
+
+            SECTION("Scalar times vector") {
+                scalar2.multiplication_assignment("i", s, vi);
+                REQUIRE(scalar2 == vector);
+
+                scalar2.multiplication_assignment("i", vi, s);
+                REQUIRE(scalar2 == vector);
+
+                scalar2.multiplication_assignment("", vi, s);
+                REQUIRE(scalar2 == scalar);
+            }
+
+            SECTION("Scalar times matrix") {
+                scalar2.multiplication_assignment("i,j", s, mij);
+                REQUIRE(scalar2 == matrix);
+
+                scalar2.multiplication_assignment("i,j", mij, s);
+                REQUIRE(scalar2 == matrix);
+
+                scalar2.multiplication_assignment("j,i", mij, s);
+                REQUIRE(scalar2 == Smooth{3, 2});
+
+                scalar2.multiplication_assignment("j,i", s, mij);
+                REQUIRE(scalar2 == Smooth{3, 2});
+
+                scalar2.multiplication_assignment("i", s, mij);
+                REQUIRE(scalar2 == Smooth{2});
+
+                scalar2.multiplication_assignment("i", mij, s);
+                REQUIRE(scalar2 == Smooth{2});
+
+                scalar2.multiplication_assignment("j", s, mij);
+                REQUIRE(scalar2 == Smooth{3});
+
+                scalar2.multiplication_assignment("j", mij, s);
+                REQUIRE(scalar2 == Smooth{3});
+
+                scalar2.multiplication_assignment("", mij, s);
+                REQUIRE(scalar2 == scalar);
+            }
+
+            SECTION("Vector times vector") {
+                scalar2.multiplication_assignment("i", vi, vi);
+                REQUIRE(scalar2 == vector);
+
+                scalar2.multiplication_assignment("i,j", vi, vector("j"));
+                REQUIRE(scalar2 == Smooth{1, 1});
+
+                scalar2.multiplication_assignment("", vi, vi);
+                REQUIRE(scalar2 == scalar);
+            }
+
+            SECTION("Vector times matrix") {
+                Smooth vector2{2};
+
+                scalar2.multiplication_assignment("i,j,k", vector2("k"), mij);
+                REQUIRE(scalar2 == Smooth{2, 3, 2});
+
+                scalar2.multiplication_assignment("i,j", vector2("i"), mij);
+                REQUIRE(scalar2 == matrix);
+
+                scalar2.multiplication_assignment("j,i", mij, vector2("i"));
+                REQUIRE(scalar2 == Smooth{3, 2});
+
+                scalar2.multiplication_assignment("j", vector2("i"), mij);
+                REQUIRE(scalar2 == Smooth{3});
+
+                scalar2.multiplication_assignment("j", mij, vector2("i"));
+                REQUIRE(scalar2 == Smooth{3});
+
+                scalar2.multiplication_assignment("", mij, vector2("i"));
+                REQUIRE(scalar2 == scalar);
+            }
+        }
+
+        SECTION("permute_assignment_") {
+            SECTION("assign to empty") {
+                Smooth scalar2{};
+                auto pscalar2 = &(scalar2.permute_assignment("", scalar("")));
+                REQUIRE(pscalar2 == &scalar2);
+                REQUIRE(scalar2 == scalar);
+
+                Smooth vector2{};
+                auto pvector2 = &(vector2.permute_assignment("i", vector("i")));
+                REQUIRE(pvector2 == &vector2);
+                REQUIRE(vector2 == vector);
+
+                Smooth matrix2{};
+                auto mij      = matrix("i,j");
+                auto pmatrix2 = &(matrix2.permute_assignment("i,j", mij));
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == matrix);
+
+                Smooth tensor2{};
+                auto tijk     = tensor("i,j,k");
+                auto ptensor2 = &(tensor2.permute_assignment("i,j,k", tijk));
+                REQUIRE(ptensor2 == &tensor2);
+                REQUIRE(tensor2 == tensor);
+            }
+
+            SECTION("assign with permute") {
+                Smooth matrix2{10, 10}; // Will double check it overwrites
+                auto mij      = matrix("i,j"); // n.b., it's a 2 by 3
+                auto pmatrix2 = &(matrix2.permute_assignment("j,i", mij));
+                Smooth corr{3, 2};
+                REQUIRE(pmatrix2 == &matrix2);
+                REQUIRE(matrix2 == corr);
+
+                Smooth tensor2{};
+                auto tijk     = tensor("i,j,k"); // n.b., it's 3 by 4 by 5
+                auto ptensor2 = &(tensor2.permute_assignment("k,j,i", tijk));
+                REQUIRE(ptensor2 == &tensor2);
+                REQUIRE(tensor2 == Smooth{5, 4, 3});
+            }
+
+            // Requesting a trace
+            REQUIRE_THROWS_AS(scalar.permute_assignment("", vector("i")),
+                              std::runtime_error);
+        }
     }
 
     SECTION("Utility methods") {
