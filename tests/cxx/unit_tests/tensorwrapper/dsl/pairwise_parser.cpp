@@ -79,6 +79,22 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
         }
     }
 
+    SECTION("multiplication") {
+        object_type rv{};
+        object_type corr{};
+        SECTION("scalar") {
+            p.dispatch(rv(""), value0("") * value0(""));
+            corr.multiplication_assignment("", value0(""), value0(""));
+            REQUIRE(corr.are_equal(rv));
+        }
+
+        SECTION("matrix") {
+            p.dispatch(rv("i,j"), value2("i,j") * value2("i,j"));
+            corr.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
+            REQUIRE(corr.are_equal(rv));
+        }
+    }
+
     SECTION("scalar_multiplication") {
         // N.b., only tensor and buffer will override so here we're checking
         // that other objects throw

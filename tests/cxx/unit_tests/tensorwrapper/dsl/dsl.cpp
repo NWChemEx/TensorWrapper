@@ -60,4 +60,12 @@ TEMPLATE_LIST_TEST_CASE("DSL", "", test_types) {
         corr.subtraction_assignment("i,j", value2("i,j"), value2("i,j"));
         REQUIRE(corr.are_equal(value0));
     }
+
+    SECTION("multiplication") {
+        value0("i,j") = value2("i,j") * value2("i,j");
+
+        object_type corr{};
+        corr.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
+        REQUIRE(corr.are_equal(value0));
+    }
 }

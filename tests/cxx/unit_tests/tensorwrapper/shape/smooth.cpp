@@ -129,6 +129,9 @@ TEST_CASE("Smooth") {
         }
 
         SECTION("multiplication_assignment_") {
+            // N.b., these are not exhaustive because there are a lot of
+            // possibilities.
+
             Smooth scalar2{};
             auto s   = scalar("");
             auto vi  = vector("i");
@@ -203,6 +206,12 @@ TEST_CASE("Smooth") {
                 scalar2.multiplication_assignment("j,i", mij, vector2("i"));
                 REQUIRE(scalar2 == Smooth{3, 2});
 
+                scalar2.multiplication_assignment("i", vector2("i"), mij);
+                REQUIRE(scalar2 == Smooth{2});
+
+                scalar2.multiplication_assignment("i", mij, vector2("i"));
+                REQUIRE(scalar2 == Smooth{2});
+
                 scalar2.multiplication_assignment("j", vector2("i"), mij);
                 REQUIRE(scalar2 == Smooth{3});
 
@@ -211,6 +220,29 @@ TEST_CASE("Smooth") {
 
                 scalar2.multiplication_assignment("", mij, vector2("i"));
                 REQUIRE(scalar2 == scalar);
+            }
+
+            SECTION("Matrix times matrix") {
+                Smooth matrix2{2, 3};
+                auto mkl = matrix2("k,l");
+
+                scalar2.multiplication_assignment("i,j,k,l", mkl, mij);
+                REQUIRE(scalar2 == Smooth{2, 3, 2, 3});
+
+                scalar2.multiplication_assignment("i,j,k", mkl, mij);
+                REQUIRE(scalar2 == Smooth{2, 3, 2});
+
+                scalar2.multiplication_assignment("i,j,l", mkl, mij);
+                REQUIRE(scalar2 == Smooth{2, 3, 3});
+
+                scalar2.multiplication_assignment("i,k,l", mkl, mij);
+                REQUIRE(scalar2 == Smooth{2, 2, 3});
+
+                scalar2.multiplication_assignment("j,k,l", mkl, mij);
+                REQUIRE(scalar2 == Smooth{3, 2, 3});
+
+                scalar2.multiplication_assignment("j,k", matrix2("i,k"), mij);
+                REQUIRE(scalar2 == Smooth{3, 3});
             }
         }
 
