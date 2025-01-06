@@ -198,9 +198,10 @@ protected:
 
     /// Implements to_string
     typename polymorphic_base_type::string_type to_string_() const override {
-        string_type buffer("{");
-        for(auto x : m_extents_) buffer += string_type(" ") + std::to_string(x);
-        buffer += string_type("}");
+        using str_type = typename polymorphic_base_type::string_type;
+        str_type buffer("{");
+        for(auto x : m_extents_) buffer += str_type(" ") + std::to_string(x);
+        buffer += str_type("}");
         return buffer;
     }
 
