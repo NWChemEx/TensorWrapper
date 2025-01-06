@@ -16,6 +16,7 @@
 
 #pragma once
 #include <deque>
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/symmetry/operation.hpp>
 #include <utilities/containers/indexable_container_base.hpp>
 
@@ -34,13 +35,17 @@ namespace tensorwrapper::symmetry {
  *        mathematically know that the permutation (0, 2, 1) is also a symmetry
  *        operation because it is the inverse of (0, 1, 2).
  */
-class Group : public utilities::IndexableContainerBase<Group> {
+class Group : public utilities::IndexableContainerBase<Group>,
+              public tensorwrapper::detail_::DSLBase<Group> {
 private:
     /// Type of *this
     using my_type = Group;
 
-    /// Type *this derives from
-    using base_type = utilities::IndexableContainerBase<my_type>;
+    /// Type *this derives from to become container-like
+    using container_type = utilities::IndexableContainerBase<my_type>;
+
+    /// Type *this derives from to interact with the DSL
+    // using dsl_type = tensorwrapper::detail_::DSLBase<Group>;
 
 public:
     /// The base type of each object in *this
@@ -55,18 +60,24 @@ public:
     /// Unsigned integral type used for indexing and offsets
     using size_type = std::size_t;
 
+    /// Type used for mode indices
+    using mode_index_type = typename value_type::mode_index_type;
+
     // -------------------------------------------------------------------------
     // -- Ctors and assignment
     // -------------------------------------------------------------------------
 
-    /** @brief Initializes *this to an empty group.
+    Group() noexcept = default;
+
+    /** @brief Initializes *this as the identity group of a rank @p rank tensor.
      *
-     *  This ctor creates a group describing the symmetries of an empty set
-     *  set. Such a set is also the symmetry group of a scalar.
+     *  This ctor creates a group representing the identity group of a rank
+     *  @p rank tensor. When used as
      *
      *  @throw None No throw guarantee.
      */
-    Group() noexcept = default;
+    explicit Group(mode_index_type rank) noexcept :
+      m_relations_{}, m_rank_(rank) {}
 
     /** @brief Creates a Group from the provided symmetry operations.
      *
@@ -87,6 +98,9 @@ public:
     template<typename... Args>
     explicit Group(const_reference op, Args&&... ops) :
       Group(std::forward<Args>(ops)...) {
+        if(m_rank_ && rank() != op.rank())
+            throw std::runtime_error("Ranks of operations are not consistent");
+        if(!m_rank_) m_rank_.emplace(op.rank());
         if(!count(op) && !op.is_identity())
             m_relations_.emplace_front(op.clone());
     }
@@ -104,6 +118,7 @@ public:
     Group(const Group& other) {
         for(const auto& x : other.m_relations_)
             m_relations_.push_back(x->clone());
+        m_rank_ = other.m_rank_;
     }
 
     /** @brief Transfers the state of @p other in to *this.
@@ -158,6 +173,13 @@ public:
      */
     bool count(const_reference op) const noexcept;
 
+    /** @brief The rank of the tensor these symmetries describe.
+     *
+     *  This is not the rank of the group, but rather the rank of the object
+     *  that the symmetries of the group describe.
+     */
+    mode_index_type rank() const noexcept { return m_rank_.value_or(0); }
+
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
@@ -170,7 +192,10 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    void swap(Group& other) noexcept { m_relations_.swap(other.m_relations_); }
+    void swap(Group& other) noexcept {
+        m_relations_.swap(other.m_relations_);
+        m_rank_.swap(other.m_rank_);
+    }
 
     /** @brief Determines if *this is value equal to @p rhs.
      *
@@ -198,9 +223,29 @@ public:
      */
     bool operator!=(const Group& rhs) const noexcept { return !(*this == rhs); }
 
+protected:
+    /// Implements addition_assignment via permute_assignment
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+
+    /// Implements subtraction_assignment via permute_assignment
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+
+    /// Implements multiplication_assignment via permute_assignment
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    /// Implements permute_assignment by permuting the extents in @p rhs.
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
+
 private:
     /// Allow base class to access implementations
-    friend base_type;
+    friend container_type;
 
     /// Base type common to all symmetry operations defining the API
     using value_pointer = value_type::base_pointer;
@@ -219,6 +264,9 @@ private:
 
     /// The symmetry operations of *this
     relation_container_type m_relations_;
+
+    /// The rank of the tensor these symmetries apply to
+    std::optional<mode_index_type> m_rank_;
 };
 
 // -- Out of line implementations
@@ -231,6 +279,7 @@ inline bool Group::count(const_reference op) const noexcept {
 }
 
 inline bool Group::operator==(const Group& rhs) const noexcept {
+    if(rank() != rhs.rank()) return false;
     if(size() != rhs.size()) return false;
     for(const auto& x : *this)
         if(!rhs.count(x)) return false;

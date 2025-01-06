@@ -22,27 +22,34 @@ using namespace tensorwrapper::testing;
 using namespace tensorwrapper::symmetry;
 
 TEST_CASE("Group") {
-    Permutation p01{0, 1};
-    Permutation p123{1, 2, 3};
+    using cycle_type = typename Permutation::cycle_type;
+    Permutation p01(4, cycle_type{0, 1});
+    Permutation p23(4, cycle_type{2, 3});
 
     Group empty;
-    Group g(p01, p123);
+    Group g(p01, p23);
 
     SECTION("Ctors and assignment") {
-        SECTION("Default") { REQUIRE(empty.size() == 0); }
+        SECTION("Default") {
+            REQUIRE(empty.size() == 0);
+            REQUIRE(empty.rank() == 0);
+        }
 
         SECTION("Value") {
+            REQUIRE(g.rank() == 4);
             REQUIRE(g.size() == 2);
             REQUIRE(g.at(0).are_equal(p01));
-            REQUIRE(g.at(1).are_equal(p123));
+            REQUIRE(g.at(1).are_equal(p23));
 
             // Removes duplicates
             Group g2(p01, p01);
+            REQUIRE(g2.rank() == 4);
             REQUIRE(g2.size() == 1);
             REQUIRE(g2.at(0).are_equal(p01));
 
             // Doesn't store identity operations
-            Group g3(p01, Permutation{}, Permutation{2});
+            Group g3(p01, Permutation{0, 1, 2, 3});
+            REQUIRE(g3.rank() == 4);
             REQUIRE(g3.size() == 1);
             REQUIRE(g3.at(0).are_equal(p01));
         }
@@ -52,8 +59,10 @@ TEST_CASE("Group") {
     SECTION("count") {
         REQUIRE_FALSE(empty.count(p01));
         REQUIRE(g.count(p01));
-        REQUIRE(g.count(p123));
+        REQUIRE(g.count(p23));
     }
+
+    SECTION("rank") { REQUIRE(empty.rank() == 0); }
 
     SECTION("swap") {
         Group copy_empty(empty);
@@ -68,11 +77,10 @@ TEST_CASE("Group") {
         REQUIRE(empty == Group{});
         REQUIRE_FALSE(empty == g);
 
-        REQUIRE(g == Group{p01, p123});
-        REQUIRE(g == Group{p123, p01}); // Order doesn't matter
+        REQUIRE(g == Group{p01, p23});
+        REQUIRE(g == Group{p23, p01}); // Order doesn't matter
 
         REQUIRE_FALSE(g == Group{p01});
-        REQUIRE_FALSE(g == Group{p01, p123, Permutation{4, 5}});
     }
 
     SECTION("operator!=") {
@@ -83,16 +91,24 @@ TEST_CASE("Group") {
 
     SECTION("at_()") {
         REQUIRE(g.at(0).are_equal(p01));
-        REQUIRE(g.at(1).are_equal(p123));
+        REQUIRE(g.at(1).are_equal(p23));
     }
 
     SECTION("at_() const") {
         REQUIRE(std::as_const(g).at(0).are_equal(p01));
-        REQUIRE(std::as_const(g).at(1).are_equal(p123));
+        REQUIRE(std::as_const(g).at(1).are_equal(p23));
     }
 
     SECTION("size_()") {
         REQUIRE(empty.size() == 0);
         REQUIRE(g.size() == 2);
+    }
+
+    SECTION("addition_assignment_") {
+        Group empty2;
+        auto e       = empty("");
+        auto pempty2 = &(empty2.addition_assignment("", e, e));
+        REQUIRE(pempty2 == &empty2);
+        REQUIRE(empty2 == empty);
     }
 }

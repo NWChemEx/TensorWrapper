@@ -27,7 +27,7 @@ namespace tensorwrapper::symmetry {
  *  cycles (those which actually swap modes of the tensor) are stored
  *  explicitly all other cycles are stored implicitly.
  *
- *  @note Stored cycles will be canonicalized and sorted. "Canoicalized" means
+ *  @note Stored cycles will be canonicalized and sorted. "Canonicalized" means
  *        that each cycle will be cyclically permuted until the smallest
  *        element is first), e.g., the cycle 231 will be stored as 123. Sorting
  *        will be done lexicographically, e.g., the cycle 012 will come before
@@ -53,44 +53,55 @@ public:
 
     /** @brief Creates an identity permutation.
      *
-     *  The default Permutation contains no explicit cycles making it equivalent
-     *  to storing only implicit fixed points for an arbitrary rank tensor.
-     *  Such a Permutation is equivalent to the identity permutation (i.e.,
-     *  do nothing).
+     *  The identity Permutation contains no explicit cycles making it
+     *  equivalent to a permutation containing only fixed points. Such a
+     *  Permutation is equivalent to the identity permutation (i.e.,
+     *  do nothing). By default this ctor will create the identity permutation
+     *  for a scalar (rank 0 tensor).
+     *
+     *  @param[in] rank The rank of the tensor this permutation represents.
+     *                  Default is 0.
      *
      *  @throw No throw guarantee.
      */
-    Permutation() = default;
+    explicit Permutation(mode_index_type rank = 0) : m_rank_(rank) {}
 
-    /** @brief Creates a Permutation containing a single cycle.
+    /** @brief Creates a Permutation from "one-line" notation.
      *
-     *  Many permutations involve a single cycle. For convenience this ctor has
-     *  been defined so that the user can construct the resulting Permutation
-     *  object with by only providing a single initialization list, i.e., no
-     *  need to do something like `Permutation p123{{1, 2, 3}};`. Ultimately,
-     *  this ctor dispatches to `Permutation(cycle_set_initializer_list)`.
+     *  One-line notation for a permutation of a rank `r` tensor is an ordered
+     *  set of the numbers [0, r) such that i-th number in the set is the
+     *  new mode offset of what was the `i`-th mode before the permutation,
+     *  e.g., the permutation (1, 0, 3, 2) means that after the permutation
+     *  mode 0 is now mode 1, mode 1 is now mode 0, mode 2 is now mode 3, and
+     *  mode 3 is now mode 2. In other words, one-line notation shows the new
+     *  mode order written in terms of the old mode offsets.
      *
      *  @note If @p il is a trivial cycle it will NOT be explicitly stored.
      *
-     *  @param[in] il The modes involved in the cycle. Modes need not be in
-     *                canonical order.
      *
-     *  @throw std::runtime_error if a mode appears more than once in il. Strong
-     *                            throw guarantee.
+     *  @throw std::runtime_error if @p il is not a valid one-line
+     *                            representation. Strong throw guarantee.
      *
      *  @throw std::bad_alloc if there is a problem allocating the internal
      *                        state. Strong throw guarantee.
      */
     explicit Permutation(cycle_initializer_list il) :
-      Permutation(cycle_container_type{cycle_type(il.begin(), il.end())}) {}
+      Permutation(il.size(),
+                  parse_one_line_(cycle_type(il.begin(), il.end()))) {}
 
     /** @brief Creates a Permutation by explicitly specifying the cycles.
      *
-     *  Any arbitrary permutation can be specified by providing the cycles which
-     *  comprise it. This ctor takes a list of cycles and creates the resulting
-     *  Permutation.
+     *  @tparam Args the qualified types of @p args. Each type in @p Args is
+     *               assumed to be implicitly convertible to cycle_type.
      *
-     *  @param[in] cycles The cycles comprising the permutation.
+     *  Any arbitrary permutation can be specified by providing the cycles which
+     *  comprise it. This ctor takes the rank of the tensor, and a list of one
+     *  or more cycles (zero cycles is handled by the identity constructor).
+     *  Any mode not appearing in @p cycle0 or @p args is assumed to be a
+     *  fixed point.
+     *
+     *  @param[in] cycle0 The first cycle in the permutation.
+     *  @param[in] args The remaining sizeof...(args) cycles in the permutation.
      *
      *  @throw std::runtime_error if a mode appears more than once in a cycle,
      *                            or if more than one cycle contains the same
@@ -99,27 +110,14 @@ public:
      *                        state. Strong throw guarantee.
      */
     template<typename... Args>
-    explicit Permutation(cycle_type cycle0, Args&&... args) :
-      Permutation(cycle_container_type{
-        std::move(cycle0), cycle_type(std::forward<Args>(args))...}) {}
+    Permutation(mode_index_type rank, cycle_type cycle0, Args&&... args) :
+      Permutation(
+        rank, cycle_container_type{std::move(cycle0),
+                                   cycle_type(std::forward<Args>(args))...}) {}
 
     // -------------------------------------------------------------------------
     // -- Getters
     // -------------------------------------------------------------------------
-
-    /** @brief Determines the minimum rank a tensor must be to apply *this.
-     *
-     *  Cycles stored in *this are expressed in terms of mode offsets. If for
-     *  example a cycle swaps modes 3 and 4 we know that we can only apply
-     * such a permutation to a tensor with a minimum rank of 5 (otherwise it
-     * would not have a mode with offset 4). This method analyzes the cycles
-     * stored in *this and finds the largest mode offset.
-     *
-     *  @return The maximum mode offset involved in any non-trivial cycle.
-     *
-     *  @throw None No throw guarantee.
-     */
-    mode_index_type minimum_rank() const noexcept;
 
     /** @brief Obtains the @p i -th non-trivial cycle in *this.
      *
@@ -178,7 +176,10 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    void swap(Permutation& other) noexcept { m_cycles_.swap(other.m_cycles_); }
+    void swap(Permutation& other) noexcept {
+        m_cycles_.swap(other.m_cycles_);
+        std::swap(m_rank_, other.m_rank_);
+    }
 
     /** @brief Is *this value equal to @p rhs?
      *
@@ -196,7 +197,8 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator==(const Permutation& rhs) const noexcept {
-        return m_cycles_ == rhs.m_cycles_;
+        return std::tie(m_rank_, m_cycles_) ==
+               std::tie(rhs.m_rank_, rhs.m_cycles_);
     }
 
     /** @brief Is *this different than @p rhs?
@@ -229,9 +231,14 @@ protected:
         return are_equal_impl_<Permutation>(other);
     }
 
+    /// Implements rank by returning the stored rank
+    mode_index_type rank_() const noexcept override { return m_rank_; }
+
 private:
     /// Type of container holding a set of cycles
     using cycle_container_type = std::set<cycle_type>;
+
+    cycle_container_type parse_one_line_(const cycle_type& one_line) const;
 
     void valid_offset_(mode_index_type i) const;
 
@@ -249,11 +256,20 @@ private:
       cycle_container_type input);
 
     /// Primary ctor for the class. All others dispatch here
-    explicit Permutation(cycle_container_type cycles) :
-      m_cycles_(remove_trivial_cycles_(std::move(cycles))) {}
+    Permutation(mode_index_type rank, cycle_container_type cycles) :
+      m_cycles_(remove_trivial_cycles_(std::move(cycles))), m_rank_(rank) {
+        for(const auto& x : m_cycles_)
+            for(auto xi : x)
+                if(xi >= m_rank_)
+                    throw std::runtime_error(
+                      "Offset is inconsistent with rank");
+    }
 
     /// The modes which can be freely permuted among each other
     cycle_container_type m_cycles_;
+
+    /// The overall rank of the tensor
+    mode_index_type m_rank_;
 };
 
 } // namespace tensorwrapper::symmetry

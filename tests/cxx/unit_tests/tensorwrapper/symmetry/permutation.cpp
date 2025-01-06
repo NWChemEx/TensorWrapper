@@ -24,43 +24,74 @@ using mode_index_type = Permutation::mode_index_type;
 using cycle_type      = Permutation::cycle_type;
 
 TEST_CASE("Permutation") {
-    Permutation defaulted;
-    Permutation one_cycle{0, 1};
-    Permutation two_cycles(cycle_type{2, 1, 3}, cycle_type{4, 5});
-
+    // Create some cycles to make permutations from
+    cycle_type c0{0};
+    cycle_type c1{1};
     cycle_type c01{0, 1};
     cycle_type c132{1, 3, 2};
+    cycle_type c213{2, 1, 3};
     cycle_type c45{4, 5};
+
+    Permutation defaulted;
+    Permutation one_cycle{1, 0};
+    Permutation two_cycles(6, c213, c45);
 
     SECTION("Ctors and assignment") {
         SECTION("Default") {
             REQUIRE(defaulted.size() == mode_index_type(0));
-            REQUIRE(defaulted.minimum_rank() == mode_index_type(0));
+            REQUIRE(defaulted.rank() == mode_index_type(0));
+        }
+
+        SECTION("Identity") {
+            Permutation p2(2);
+            REQUIRE(p2.size() == mode_index_type(0));
+            REQUIRE(p2.rank() == mode_index_type(2));
+        }
+
+        SECTION("One-line") {
+            REQUIRE(one_cycle.size() == mode_index_type(1));
+            REQUIRE(one_cycle.rank() == mode_index_type(2));
+            REQUIRE(one_cycle.at(0) == c01);
+
+            // Identity permutation via one-line
+            Permutation p5{0, 1, 2, 3, 4};
+            REQUIRE(p5.size() == mode_index_type(0));
+            REQUIRE(p5.rank() == mode_index_type(5));
+
+            // Two cycles via one-line
+            Permutation p01_23{1, 0, 3, 2};
+            REQUIRE(p01_23.size() == mode_index_type(2));
+            REQUIRE(p01_23.rank() == mode_index_type(4));
+            REQUIRE(p01_23.at(0) == c01);
+            REQUIRE(p01_23.at(1) == cycle_type{2, 3});
+
+            using error_t = std::runtime_error;
+            // Not all indices appear (or equivalently a mode index is too high)
+            REQUIRE_THROWS_AS(Permutation({0, 2}), error_t);
+
+            // Index appears multiple times
+            REQUIRE_THROWS_AS(Permutation({0, 0}), error_t);
         }
 
         SECTION("Cycle") {
-            REQUIRE(one_cycle.size() == mode_index_type(1));
-            REQUIRE(one_cycle.minimum_rank() == mode_index_type(2));
-            REQUIRE(one_cycle.at(0) == c01);
-
             REQUIRE(two_cycles.size() == mode_index_type(2));
-            REQUIRE(two_cycles.minimum_rank() == mode_index_type(6));
+            REQUIRE(two_cycles.rank() == mode_index_type(6));
             REQUIRE(two_cycles.at(0) == c132); // Canonicalization must work
             REQUIRE(two_cycles.at(1) == c45);
 
             SECTION("Removes trivial cycles") {
-                Permutation one_trivial_cycle{0};
+                Permutation one_trivial_cycle(1, cycle_type{0});
                 REQUIRE(one_trivial_cycle.size() == 0);
-                REQUIRE(one_trivial_cycle.minimum_rank() == 0);
+                REQUIRE(one_trivial_cycle.rank() == 1);
 
-                Permutation two_trivial_cycles(cycle_type{0}, cycle_type{1});
+                Permutation two_trivial_cycles(2, cycle_type{0}, cycle_type{1});
                 REQUIRE(two_trivial_cycles.size() == 0);
-                REQUIRE(two_trivial_cycles.minimum_rank() == 0);
+                REQUIRE(two_trivial_cycles.rank() == 2);
 
-                Permutation one_trivial_one_real(cycle_type{4},
+                Permutation one_trivial_one_real(5, cycle_type{4},
                                                  cycle_type{0, 1});
                 REQUIRE(one_trivial_one_real.size() == 1);
-                REQUIRE(one_trivial_one_real.minimum_rank() == 2);
+                REQUIRE(one_trivial_one_real.rank() == 5);
             }
 
             using except = std::runtime_error;
@@ -71,7 +102,7 @@ TEST_CASE("Permutation") {
 
             SECTION("Error if cycles overlap") {
                 REQUIRE_THROWS_AS(
-                  (Permutation(cycle_type{0, 1}, cycle_type{1, 2})), except);
+                  (Permutation(3, cycle_type{0, 1}, cycle_type{1, 2})), except);
             }
 
             test_copy_move_ctor_and_assignment(defaulted, one_cycle,
@@ -79,10 +110,10 @@ TEST_CASE("Permutation") {
         }
     }
 
-    SECTION("minimum_rank") {
-        REQUIRE(defaulted.minimum_rank() == 0);
-        REQUIRE(one_cycle.minimum_rank() == 2);
-        REQUIRE(two_cycles.minimum_rank() == 6);
+    SECTION("rank_") {
+        REQUIRE(defaulted.rank() == 0);
+        REQUIRE(one_cycle.rank() == 2);
+        REQUIRE(two_cycles.rank() == 6);
     }
 
     SECTION("operator[]") {
@@ -122,27 +153,31 @@ TEST_CASE("Permutation") {
         // Defaulted equals another defaulted object
         REQUIRE(defaulted == Permutation{});
 
-        // Defaulted equals an object with only trivial cycles
-        REQUIRE(defaulted == Permutation{1});
-        REQUIRE(defaulted == Permutation(cycle_type{0}, cycle_type{1}));
+        // Defaulted does not equal an object with only trivial cycles
+        REQUIRE_FALSE(defaulted == Permutation(1));
+        REQUIRE_FALSE(defaulted == Permutation(2, c0, c1));
 
         // Defaulted does not equal an object with non-trivial cycles
         REQUIRE_FALSE(defaulted == one_cycle);
 
+        /// Identity equals same rank identity
+        REQUIRE(Permutation(1) == Permutation(1));
+
+        /// Identity doe not equal different rank identity
+        REQUIRE_FALSE(Permutation(1) == Permutation(2));
+
         // Values input in same order
-        REQUIRE(two_cycles ==
-                Permutation(cycle_type{2, 1, 3}, cycle_type{4, 5}));
+        REQUIRE(two_cycles == Permutation(6, c213, c45));
 
         // Values input in different order
-        REQUIRE(two_cycles ==
-                Permutation(cycle_type{4, 5}, cycle_type{1, 3, 2}));
+        REQUIRE(two_cycles == Permutation(6, c45, c132));
 
         // Different number of cycles
         REQUIRE_FALSE(one_cycle == two_cycles);
 
         // Different cycles
         REQUIRE_FALSE(two_cycles ==
-                      Permutation(cycle_type{1, 2}, cycle_type{3, 4, 5}));
+                      Permutation(6, cycle_type{1, 2}, cycle_type{3, 4, 5}));
     }
 
     SECTION("operator!=") {
@@ -178,7 +213,7 @@ TEST_CASE("Permutation") {
             const_base_reference one_base = one_cycle;
             const_base_reference two_base = two_cycles;
             REQUIRE_FALSE(one_base.are_equal(two_base));
-            REQUIRE(Permutation{0, 1}.are_equal(one_base));
+            REQUIRE(Permutation{1, 0}.are_equal(one_base));
         }
     }
 }
