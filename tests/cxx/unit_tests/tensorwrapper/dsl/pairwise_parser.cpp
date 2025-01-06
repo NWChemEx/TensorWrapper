@@ -13,41 +13,92 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "../testing/testing.hpp"
-#include <tensorwrapper/dsl/pairwise_parser.hpp>
 
 using namespace tensorwrapper;
 
-TEST_CASE("PairwiseParser<Tensor>") {
-    Tensor scalar(testing::smooth_scalar());
-    Tensor vector(testing::smooth_vector());
+using test_types = std::tuple<shape::Smooth>;
 
-    dsl::PairwiseParser<Tensor, std::string> p;
+TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
+    using object_type = TestType;
 
-    SECTION("add") {
-        Tensor t;
+    test_types scalar_values{test_tensorwrapper::smooth_scalar()};
+    test_types matrix_values{test_tensorwrapper::smooth_matrix()};
 
+    auto value0 = std::get<object_type>(scalar_values);
+    auto value2 = std::get<object_type>(matrix_values);
+
+    dsl::PairwiseParser p;
+
+    SECTION("assignment") {
+        object_type rv{};
+        object_type corr{};
         SECTION("scalar") {
-            auto rv = p.dispatch(t(""), scalar("") + scalar(""));
-            REQUIRE(&rv.lhs() == &t);
-            REQUIRE(rv.rhs() == "");
-
-            auto buffer      = testing::eigen_scalar<double>();
-            buffer.value()() = 84.0;
-            Tensor corr(scalar.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
+            p.dispatch(rv(""), value0(""));
+            corr.permute_assignment("", value0(""));
+            REQUIRE(corr.are_equal(rv));
         }
 
-        SECTION("Vector") {
-            auto rv = p.dispatch(t("i"), vector("i") + vector("i"));
-            REQUIRE(&rv.lhs() == &t);
-            REQUIRE(rv.rhs() == "i");
-
-            auto buffer = testing::eigen_vector<double>();
-            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
-            Tensor corr(t.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
+        SECTION("matrix") {
+            p.dispatch(rv("i,j"), value2("i,j"));
+            corr.permute_assignment("i,j", value2("i,j"));
+            REQUIRE(corr.are_equal(rv));
         }
+    }
+
+    SECTION("addition") {
+        object_type rv{};
+        object_type corr{};
+        SECTION("scalar") {
+            p.dispatch(rv(""), value0("") + value0(""));
+            corr.addition_assignment("", value0(""), value0(""));
+            REQUIRE(corr.are_equal(rv));
+        }
+
+        SECTION("matrix") {
+            p.dispatch(rv("i,j"), value2("i,j") + value2("i,j"));
+            corr.addition_assignment("i,j", value2("i,j"), value2("i,j"));
+            REQUIRE(corr.are_equal(rv));
+        }
+    }
+
+    SECTION("subtraction") {
+        object_type rv{};
+        object_type corr{};
+        SECTION("scalar") {
+            p.dispatch(rv(""), value0("") - value0(""));
+            corr.subtraction_assignment("", value0(""), value0(""));
+            REQUIRE(corr.are_equal(rv));
+        }
+
+        SECTION("matrix") {
+            p.dispatch(rv("i,j"), value2("i,j") - value2("i,j"));
+            corr.subtraction_assignment("i,j", value2("i,j"), value2("i,j"));
+            REQUIRE(corr.are_equal(rv));
+        }
+    }
+
+    SECTION("multiplication") {
+        object_type rv{};
+        object_type corr{};
+        SECTION("scalar") {
+            p.dispatch(rv(""), value0("") * value0(""));
+            corr.multiplication_assignment("", value0(""), value0(""));
+            REQUIRE(corr.are_equal(rv));
+        }
+
+        SECTION("matrix") {
+            p.dispatch(rv("i,j"), value2("i,j") * value2("i,j"));
+            corr.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
+            REQUIRE(corr.are_equal(rv));
+        }
+    }
+
+    SECTION("scalar_multiplication") {
+        // N.b., only tensor and buffer will override so here we're checking
+        // that other objects throw
+        using error_t = std::runtime_error;
+
+        REQUIRE_THROWS_AS(p.dispatch(value0(""), value0("") * 1.0), error_t);
     }
 }

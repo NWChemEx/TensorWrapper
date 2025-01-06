@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <set>
 #include <string>
 #include <utilities/containers/indexable_container_base.hpp>
 #include <utilities/strings/string_tools.hpp>
@@ -139,6 +140,29 @@ public:
         return unique_index_size() != this->size();
     }
 
+    /** @brief Determines if *this is a permutation of @p other.
+     *
+     *  *this is a permutation of @p other if both *this and @p other contain
+     *  the same number of dummy indices and if each unique index in *this
+     *  appears the same number of times in *this and @p other.
+     *
+     *  @param[in] other The set of dummy indices to compare against.
+     *
+     *  @return True if *this is a permutation of @p other and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool is_permutation(const DummyIndices& other) const noexcept {
+        // Must be same size
+        if(this->size() != other.size()) return false;
+
+        // Each index in *this must show up the same number of times in other
+        for(const auto& index : *this) {
+            if(count(index) != other.count(index)) return false;
+        }
+        return true;
+    }
+
     /** @brief Computes the permutation needed to convert *this into @p other.
      *
      *  Each DummyIndices object is viewed as an ordered set of objects. If
@@ -199,6 +223,146 @@ public:
         offset_vector rv;
         for(size_type i = 0; i < this->size(); ++i)
             if(m_dummy_indices_[i] == index_to_find) rv.push_back(i);
+        return rv;
+    }
+
+    /** @brief Determines how many times @p index_to_find occurs in *this.
+     *
+     *  @param[in] index_to_find The dummy index to find.
+     *
+     *  @return The number of times dummy index occurs in *this.
+     *
+     *  @throw None No throw guarantee.
+     */
+    size_type count(const_reference index_to_find) const noexcept {
+        size_type rv = 0;
+        for(const auto& x : *this)
+            if(x == index_to_find) ++rv;
+        return rv;
+    }
+
+    /** @brief Determines if *this is value equal to @p rhs.
+     *
+     *  *this and @p rhs are value equal if they contain the same number of
+     *  indices and if the i-th dummy index of *this is value equal
+     *  to the i-th dummy index of @p rhs for all i in the range [0, size()).
+     *
+     *  @param[in] rhs The object to compare to.
+     *
+     *  @return True if *this is value equal to @p rhs and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool operator==(const DummyIndices& rhs) const noexcept {
+        return m_dummy_indices_ == rhs.m_dummy_indices_;
+    }
+
+    /** @brief Determines if *this is value equal to @p s.
+     *
+     *  This method is useful for comparing an already parsed DummyIndices
+     *  object to a string literal. This method works by converting @p s into a
+     *  DummyIndex object and then comparing the resulting DummyIndices object
+     *  to *this. See operator==(const DummyIndices&) for more details on the
+     *  comparison.
+     *
+     *  @param[in] s The string to compare to *this.
+     *
+     *  @return True if *this is value equal to @p s as a DummyIndices object
+     *          and false otherwise.
+     *
+     *  @throw std::bad_alloc if parsing @p s encounters an allocation problem.
+     *                        Strong throw guara
+     *  @throw std::runtime_error if parsing @p s throws. Strong throw
+     *                            guarantee.
+     */
+    bool operator==(const_reference s) const {
+        return operator==(DummyIndices(s));
+    }
+
+    /** @brief Determines if *this is different from @p rhs.
+     *
+     *  Two DummyIndices objects are different if they are not value equal. See
+     *  the description of operator==(const DummyIndices&) for the definition
+     *  of value equal.
+     *
+     *  @param[in] rhs The object to compare to.
+     *
+     *  @return false if *this and @p rhs are value equal and true otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool operator!=(const DummyIndices& rhs) const noexcept {
+        return !((*this) == rhs);
+    }
+
+    /** @brief Determines if *this is different than @p s.
+     *
+     *  This method is useful for comparing an already parsed DummyIndices
+     *  object to a string literal. It works by converting @p s into a
+     *  DummyIndices object and then comparing the resulting DummyIndices object
+     *  to *this. See operator!=(const DummyIndices&) for more details on the
+     *  comparison.
+     *
+     *  @param[in] s The string to compare to *this.
+     *
+     *  @return False if *this is value equal to @p s as a DummyIndices object
+     *          and true otherwise.
+     *
+     *  @throw std::bad_alloc if parsing @p s encounters an allocation problem.
+     *                        Strong throw guara
+     *  @throw std::runtime_error if parsing @p s throws. Strong throw
+     *                            guarantee.
+     */
+    bool operator!=(const_reference s) const { return !((*this) == s); }
+
+    /** @brief Computes the DummyIndices object formed by concatenating *this
+     *         with @p other.
+     *
+     *  This method will create a new DummyIndices object which contains
+     *  `this->size()` plus `other.size()` indices. The first `this->size()`
+     *  indices will be the indices of *this and the next `other.size()` indices
+     *  will be the indices of @p other.
+     *
+     *  @note This is in general NOT the union of *this with @p other, in
+     *        particular repeat indices may appear.
+     *
+     *  @param[in] other The indices to concatenate onto *this.
+     *
+     *  @return A new DummyIndices object formed by concatenating *this with
+     *          @p other.
+     *
+     *  @throw std::bad_alloc if allocating the return fails. Strong throw
+     *                        guarantee.
+     */
+    DummyIndices concatenation(const DummyIndices& other) const {
+        DummyIndices rv(*this);
+        for(const auto& x : other) rv.m_dummy_indices_.push_back(x);
+        return rv;
+    }
+
+    /** @brief Returns the unique indices of *this which appear in @p other.
+     *
+     *  This method retruns a new DummyIndices object containing the set of
+     *  indices in *this which also appear in @p other. The indices in the
+     *  result are unique (i.e., if an index is repeated in *this it is only
+     *  added to result once).
+     *
+     *  @param[in] other The object to compare *this to.
+     *
+     *  @return A DummyIndices object which contains the intersection of *this
+     *          with @p other.
+     *
+     *  @throw std::bad_alloc if allocation of the return fails. Strong throw
+     *                        guarantee.
+     */
+    DummyIndices intersection(const DummyIndices& other) const {
+        DummyIndices rv;
+        std::set<value_type> seen;
+        for(const auto& x : *this) {
+            if(seen.count(x)) continue;
+            seen.insert(x);
+            if(other.count(x)) rv.m_dummy_indices_.push_back(x);
+        }
         return rv;
     }
 

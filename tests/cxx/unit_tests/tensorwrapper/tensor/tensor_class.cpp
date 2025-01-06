@@ -119,24 +119,6 @@ TEST_CASE("Tensor") {
         REQUIRE_THROWS_AS(const_defaulted.buffer(), std::runtime_error);
     }
 
-    SECTION("operator(std::string)") {
-        auto labeled_scalar = scalar("");
-        auto labeled_vector = vector("i");
-
-        using labeled_tensor_type = Tensor::labeled_tensor_type;
-        REQUIRE(labeled_scalar == labeled_tensor_type(scalar, ""));
-        REQUIRE(labeled_vector == labeled_tensor_type(vector, "i"));
-    }
-
-    SECTION("operator(std::string) const") {
-        auto labeled_scalar = std::as_const(scalar)("");
-        auto labeled_vector = std::as_const(vector)("i");
-
-        using const_labeled_tensor_type = Tensor::const_labeled_tensor_type;
-        REQUIRE(labeled_scalar == const_labeled_tensor_type(scalar, ""));
-        REQUIRE(labeled_vector == const_labeled_tensor_type(vector, "i"));
-    }
-
     SECTION("swap") {
         Tensor scalar_copy(scalar);
         Tensor vector_copy(vector);
@@ -178,28 +160,5 @@ TEST_CASE("Tensor") {
 
         REQUIRE_FALSE(scalar != other_scalar);
         REQUIRE(scalar != vector);
-    }
-
-    SECTION("DSL") {
-        // These are just spot checks to make sure the DSL works on the user
-        // side
-        SECTION("Scalar") {
-            Tensor rv;
-            rv("")           = scalar("") + scalar("");
-            auto buffer      = testing::eigen_scalar<double>();
-            buffer.value()() = 84.0;
-            Tensor corr(scalar.logical_layout(), std::move(buffer));
-            REQUIRE(rv == corr);
-        }
-
-        SECTION("Vector") {
-            Tensor rv;
-            rv("i") = vector("i") + vector("i");
-
-            auto buffer = testing::eigen_vector<double>();
-            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
-            Tensor corr(vector.logical_layout(), std::move(buffer));
-            REQUIRE(rv == corr);
-        }
     }
 }

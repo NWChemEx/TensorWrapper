@@ -26,52 +26,52 @@ using dummy_indices_type = dsl::DummyIndices<std::string>;
 #define TPARAMS template<typename FloatType, unsigned short Rank>
 #define EIGEN Eigen<FloatType, Rank>
 
-TPARAMS
-typename EIGEN::buffer_base_reference EIGEN::addition_assignment_(
-  label_type this_labels, const_labeled_buffer_reference rhs) {
-    // TODO layouts
-    if(layout() != rhs.lhs().layout())
-        throw std::runtime_error("Layouts must be the same (for now)");
+// TPARAMS
+// typename EIGEN::buffer_base_reference EIGEN::addition_assignment_(
+//   label_type this_labels, const_labeled_buffer_reference rhs) {
+//     // TODO layouts
+//     if(layout() != rhs.lhs().layout())
+//         throw std::runtime_error("Layouts must be the same (for now)");
 
-    dummy_indices_type llabels(this_labels);
-    dummy_indices_type rlabels(rhs.rhs());
+//     dummy_indices_type llabels(this_labels);
+//     dummy_indices_type rlabels(rhs.rhs());
 
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+//     using allocator_type       = allocator::Eigen<FloatType, Rank>;
+//     const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
 
-    if(llabels != rlabels) {
-        auto r_to_l = rlabels.permutation(llabels);
-        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ += rhs_downcasted.value().shuffle(r_to_l2);
-    } else {
-        m_tensor_ += rhs_downcasted.value();
-    }
+//     if(llabels != rlabels) {
+//         auto r_to_l = rlabels.permutation(llabels);
+//         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+//         m_tensor_ += rhs_downcasted.value().shuffle(r_to_l2);
+//     } else {
+//         m_tensor_ += rhs_downcasted.value();
+//     }
 
-    return *this;
-}
+//     return *this;
+// }
 
-TPARAMS
-typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
-  label_type this_labels, const_labeled_buffer_reference rhs) {
-    dummy_indices_type llabels(this_labels);
-    dummy_indices_type rlabels(rhs.rhs());
+// TPARAMS
+// typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
+//   label_type this_labels, const_labeled_buffer_reference rhs) {
+//     dummy_indices_type llabels(this_labels);
+//     dummy_indices_type rlabels(rhs.rhs());
 
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+//     using allocator_type       = allocator::Eigen<FloatType, Rank>;
+//     const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
 
-    if(llabels != rlabels) { // We need to permute rhs before assignment
-        auto r_to_l = rlabels.permutation(llabels);
-        // Eigen wants int objects
-        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
-    } else {
-        m_tensor_ = rhs_downcasted.value();
-    }
+//     if(llabels != rlabels) { // We need to permute rhs before assignment
+//         auto r_to_l = rlabels.permutation(llabels);
+//         // Eigen wants int objects
+//         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+//         m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
+//     } else {
+//         m_tensor_ = rhs_downcasted.value();
+//     }
 
-    // TODO: permute layout
+//     // TODO: permute layout
 
-    return *this;
-}
+//     return *this;
+// }
 
 TPARAMS
 typename EIGEN::string_type EIGEN::to_string_() const {

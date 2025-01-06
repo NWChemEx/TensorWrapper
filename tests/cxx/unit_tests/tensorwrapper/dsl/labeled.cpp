@@ -19,59 +19,127 @@
 
 using namespace tensorwrapper;
 
-using test_types = std::tuple<Tensor>;
+using test_types = std::tuple<shape::Smooth>;
 
 TEMPLATE_LIST_TEST_CASE("Labeled", "", test_types) {
-    using object_type  = TestType;
-    using labeled_type = dsl::Labeled<TestType>;
-    using labels_type  = typename labeled_type::label_type;
+    using object_type        = TestType;
+    using labeled_type       = dsl::Labeled<TestType>;
+    using const_labeled_type = dsl::Labeled<const TestType>;
+    using labels_type        = typename labeled_type::label_type;
 
+    test_types defaulted_values{shape::Smooth{}};
+    test_types values{test_tensorwrapper::smooth_matrix()};
+
+    labels_type scalar;
     labels_type ij("i,j");
-    object_type defaulted{};
-    labeled_type labeled_default(defaulted, ij);
+    auto defaulted = std::get<object_type>(defaulted_values);
+    auto value     = std::get<object_type>(values);
+
+    labeled_type labeled_default(defaulted, scalar);
+    labeled_type labeled_value(value, ij);
+    const_labeled_type clabeled_default(defaulted, scalar);
+    const_labeled_type clabeled_value(value, ij);
 
     SECTION("Ctor") {
         SECTION("Value") {
-            REQUIRE(labeled_default.lhs() == defaulted);
-            REQUIRE(labeled_default.rhs() == ij);
+            // Taking label_type object
+            REQUIRE(&labeled_default.object() == &defaulted);
+            REQUIRE(labeled_default.labels() == scalar);
+
+            REQUIRE(&clabeled_default.object() == &defaulted);
+            REQUIRE(clabeled_default.labels() == scalar);
+
+            REQUIRE(&labeled_value.object() == &value);
+            REQUIRE(labeled_value.labels() == ij);
+
+            REQUIRE(&clabeled_value.object() == &value);
+            REQUIRE(clabeled_value.labels() == ij);
+
+            // Taking string literal object
+            labeled_type labeled2(value, "i,j");
+            REQUIRE(&labeled2.object() == &value);
+            REQUIRE(labeled2.labels() == ij);
         }
 
-        SECTION("to const") {
-            using const_labeled_type = dsl::Labeled<const TestType>;
+        SECTION("mutable to const conversion") {
             const_labeled_type const_labeled_default(labeled_default);
 
-            REQUIRE(const_labeled_default.lhs() == defaulted);
-            REQUIRE(const_labeled_default.rhs() == ij);
+            REQUIRE(&const_labeled_default.object() == &defaulted);
+            REQUIRE(const_labeled_default.labels() == scalar);
+        }
+
+        // N.b., there is no default ctor so we can't use the testing helpers
+        SECTION("Copy ctor") {
+            labeled_type labeled_copy(labeled_default);
+            REQUIRE(&labeled_copy.object() == &defaulted);
+            REQUIRE(&labeled_copy.labels() != &labeled_default.labels());
+            REQUIRE(labeled_copy.labels() == scalar);
+        }
+
+        SECTION("Move ctor") {
+            labeled_type labeled_move(std::move(labeled_value));
+            REQUIRE(&labeled_move.object() == &value);
+            REQUIRE(labeled_move.labels() == ij);
         }
     }
 
-    SECTION("operator=") {
-        // At present this operator just calls Parser dispatch. We know that
-        // works from other tests so here we just spot check.
-        Tensor t;
+    SECTION("evaluation, i.e., operator=") {
+        // copy-assignment-like operation
+        labeled_type other(defaulted, "i,j");
+        auto pother = &(other = labeled_value);
+        REQUIRE(pother == &other);
+        REQUIRE(other.object().are_equal(value));
+        REQUIRE(&other.labels() != &labeled_value.labels());
+        REQUIRE(other.labels() == "i,j");
+    }
 
-        SECTION("scalar") {
-            Tensor scalar(testing::smooth_scalar());
-            auto labeled_t  = t("");
-            auto plabeled_t = &(labeled_t = scalar("") + scalar(""));
-            REQUIRE(plabeled_t == &labeled_t);
+    SECTION("object()") {
+        REQUIRE(labeled_default.object().are_equal(defaulted));
+        REQUIRE(clabeled_default.object().are_equal(defaulted));
+        REQUIRE(labeled_value.object().are_equal(value));
+        REQUIRE(clabeled_value.object().are_equal(value));
+    }
 
-            auto buffer      = testing::eigen_scalar<double>();
-            buffer.value()() = 84.0;
-            Tensor corr(scalar.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
-        }
+    SECTION("object() const") {
+        REQUIRE(std::as_const(labeled_default).object().are_equal(defaulted));
+        REQUIRE(std::as_const(clabeled_default).object().are_equal(defaulted));
+        REQUIRE(std::as_const(labeled_value).object().are_equal(value));
+        REQUIRE(std::as_const(clabeled_value).object().are_equal(value));
+    }
 
-        SECTION("Vector") {
-            Tensor vector(testing::smooth_vector());
-            auto labeled_t  = t("i");
-            auto plabeled_t = &(labeled_t = vector("i") + vector("i"));
-            REQUIRE(plabeled_t == &labeled_t);
+    SECTION("labels()") {
+        REQUIRE(labeled_default.labels() == scalar);
+        REQUIRE(clabeled_default.labels() == scalar);
+        REQUIRE(labeled_value.labels() == ij);
+        REQUIRE(clabeled_value.labels() == ij);
+    }
 
-            auto buffer = testing::eigen_vector<double>();
-            for(std::size_t i = 0; i < 5; ++i) buffer.value()(i) = i + i;
-            Tensor corr(t.logical_layout(), std::move(buffer));
-            REQUIRE(t == corr);
-        }
+    SECTION("labels() const") {
+        REQUIRE(std::as_const(labeled_default).labels() == scalar);
+        REQUIRE(std::as_const(clabeled_default).labels() == scalar);
+        REQUIRE(std::as_const(labeled_value).labels() == ij);
+        REQUIRE(std::as_const(clabeled_value).labels() == ij);
+    }
+
+    SECTION("operator==") {
+        // Same values and const-ness
+        REQUIRE(labeled_default == labeled_type(defaulted, scalar));
+
+        // Same values different const-ness
+        REQUIRE(labeled_default == clabeled_default);
+        REQUIRE(clabeled_default == labeled_default);
+
+        // Different object, same labels
+        auto value2 = test_tensorwrapper::smooth_matrix(20, 10);
+        REQUIRE_FALSE(labeled_value == labeled_type(value2, ij));
+
+        // Same object, different labels
+        REQUIRE_FALSE(labeled_value == labeled_type(value, "j,i"));
+    }
+
+    SECTION("operator!=") {
+        // Just negates operator== so spot checking is fine
+        REQUIRE_FALSE(labeled_default != clabeled_default);
+        REQUIRE(labeled_value != labeled_type(value, "j,i"));
     }
 }

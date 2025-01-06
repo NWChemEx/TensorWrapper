@@ -41,6 +41,9 @@ public:
     /// Read-only reference to an object of type base_type
     using const_base_reference = const base_type&;
 
+    /// Mutable rvalue reference to an object of type base_type
+    using base_rvalue = base_type&&;
+
     /// Pointer to an object of type base_type
     using base_pointer = std::unique_ptr<base_type>;
 
@@ -93,13 +96,13 @@ public:
     /** @brief Determines if *this and @p rhs are polymorphically equal.
      *
      *  Calling operator== on an object of type T is supposed to compare the
-     *  state defined in class T as well as all state defined in parent classes.
-     *  If there is other classes which derived from T that possess state, use
-     *  of T::operator== will not consider such state in the comparison. This
-     *  method casts both *this and @p rhs to their most derived class and then
-     *  performs the value comparison to ensure that all state is considered. If
-     *  *this and @p rhs have different most derived classes this comparison
-     *  returns false.
+     *  state defined in class T as well as all state defined in parent
+     * classes. If there is other classes which derived from T that possess
+     * state, use of T::operator== will not consider such state in the
+     * comparison. This method casts both *this and @p rhs to their most
+     * derived class and then performs the value comparison to ensure that all
+     * state is considered. If *this and @p rhs have different most derived
+     * classes this comparison returns false.
      *
      *  Derived classes should override are_equal_ to implement this method.
      *
@@ -222,6 +225,7 @@ protected:
      */
     virtual bool are_equal_(const_base_reference rhs) const noexcept = 0;
 
+    /// Should be overridden by the derived class to provide logging details.
     virtual string_type to_string_() const { return "{?}"; }
 };
 

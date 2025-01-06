@@ -17,6 +17,7 @@
 #pragma once
 #include <cstddef>
 #include <memory>
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/shape/shape_traits.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
@@ -37,10 +38,19 @@ namespace tensorwrapper::shape {
  *  - get_rank_()
  *  - get_size_()
  */
-class ShapeBase : public tensorwrapper::detail_::PolymorphicBase<ShapeBase> {
+class ShapeBase : public tensorwrapper::detail_::PolymorphicBase<ShapeBase>,
+                  public tensorwrapper::detail_::DSLBase<ShapeBase> {
 private:
     /// Type implementing the traits of this
     using traits_type = ShapeTraits<ShapeBase>;
+
+protected:
+    /// Typedef of the PolymorphicBase class of *this
+    using polymorphic_base_type =
+      tensorwrapper::detail_::PolymorphicBase<ShapeBase>;
+
+    /// Typedef of the DSLBase class of *this
+    using dsl_base_type = tensorwrapper::detail_::PolymorphicBase<ShapeBase>;
 
 public:
     /// Type all shapes inherit from
