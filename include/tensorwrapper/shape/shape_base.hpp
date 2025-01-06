@@ -44,6 +44,14 @@ private:
     /// Type implementing the traits of this
     using traits_type = ShapeTraits<ShapeBase>;
 
+protected:
+    /// Typedef of the PolymorphicBase class of *this
+    using polymorphic_base_type =
+      tensorwrapper::detail_::PolymorphicBase<ShapeBase>;
+
+    /// Typedef of the DSLBase class of *this
+    using dsl_base_type = tensorwrapper::detail_::PolymorphicBase<ShapeBase>;
+
 public:
     /// Type all shapes inherit from
     using shape_base = typename traits_type::shape_base;
