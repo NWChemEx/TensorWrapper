@@ -21,7 +21,6 @@ using test_types = std::tuple<shape::Smooth>;
 
 TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
     using object_type = TestType;
-    using base_type   = typename object_type::dsl_value_type;
 
     test_types scalar_values{test_tensorwrapper::smooth_scalar()};
     test_types matrix_values{test_tensorwrapper::smooth_matrix()};

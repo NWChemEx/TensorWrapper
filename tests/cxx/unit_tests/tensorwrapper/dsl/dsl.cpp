@@ -22,10 +22,7 @@ using namespace tensorwrapper;
 using test_types = std::tuple<shape::Smooth>;
 
 TEMPLATE_LIST_TEST_CASE("DSL", "", test_types) {
-    using object_type        = TestType;
-    using labeled_type       = dsl::Labeled<TestType>;
-    using const_labeled_type = dsl::Labeled<const TestType>;
-    using labels_type        = typename labeled_type::label_type;
+    using object_type = TestType;
 
     test_types scalar_values{test_tensorwrapper::smooth_scalar()};
     test_types matrix_values{test_tensorwrapper::smooth_matrix()};
