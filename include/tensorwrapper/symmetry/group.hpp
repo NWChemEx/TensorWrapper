@@ -16,6 +16,7 @@
 
 #pragma once
 #include <deque>
+#include <optional>
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/symmetry/operation.hpp>
