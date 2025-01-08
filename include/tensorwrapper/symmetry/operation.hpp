@@ -56,6 +56,8 @@ public:
 
     bool is_identity() const noexcept { return is_identity_(); }
 
+    mode_index_type rank() const noexcept { return rank_(); }
+
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
@@ -63,6 +65,9 @@ public:
 protected:
     /// Derived class should overwrite to implement is_identity
     virtual bool is_identity_() const noexcept = 0;
+
+    /// Derived class should overwrite to implement rank()
+    virtual mode_index_type rank_() const noexcept = 0;
 };
 
 } // namespace tensorwrapper::symmetry

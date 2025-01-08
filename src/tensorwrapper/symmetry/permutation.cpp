@@ -20,29 +20,66 @@
 #include <tensorwrapper/symmetry/permutation.hpp>
 
 namespace tensorwrapper::symmetry {
+namespace {
+
+void assert_valid_one_line(const Permutation::cycle_type& one_line) {
+    auto n = one_line.size();
+    std::set<Permutation::mode_index_type> found;
+
+    // Make sure each index from 0 to n-1 appears once (and only once)
+    for(std::size_t i = 0; i < n; ++i) {
+        auto xi = one_line[i];
+        if(found.count(xi))
+            throw std::runtime_error("Mode offset: " + std::to_string(xi) +
+                                     " appears multiple times");
+        if(xi >= n)
+            throw std::runtime_error("Mode offset: " + std::to_string(xi) +
+                                     " is not in the range [0, " +
+                                     std::to_string(n) +
+                                     " ). Did you forget "
+                                     "one or more offsets?");
+        found.insert(xi);
+    }
+}
+
+} // namespace
 
 // -----------------------------------------------------------------------------
 // -- Getters
 // -----------------------------------------------------------------------------
-
-Permutation::mode_index_type Permutation::minimum_rank() const noexcept {
-    if(m_cycles_.empty()) return mode_index_type(0);
-
-    mode_index_type the_max(1);
-    for(const auto& cycle : m_cycles_) {
-        mode_index_type cycle_max =
-          *std::max_element(cycle.begin(), cycle.end());
-        mode_index_type cycle_max_plus_one(cycle_max + mode_index_type(1));
-        the_max = std::max(cycle_max_plus_one, the_max);
-    }
-    return the_max;
-}
 
 Permutation::cycle_type Permutation::operator[](
   mode_index_type i) const noexcept {
     auto itr = m_cycles_.begin();
     std::advance(itr, i);
     return *itr;
+}
+
+Permutation::cycle_container_type Permutation::parse_one_line_(
+  const cycle_type& one_line) const {
+    assert_valid_one_line(one_line);
+    auto n = one_line.size();
+    cycle_container_type rv;
+    std::set<mode_index_type> found;
+
+    for(std::size_t i = 0; i < n; ++i) {
+        auto xi = one_line[i];
+        if(found.count(xi)) continue;
+        found.insert(xi);
+        decltype(n) counter = 0;
+        auto xj             = one_line[i];
+        cycle_type cycle{xj};
+        while(counter < n) {
+            if(xi == one_line[xj]) {
+                rv.insert(cycle);
+                break;
+            }
+            xj = one_line[xj];
+            cycle.push_back(xj);
+            found.insert(xj);
+        }
+    }
+    return rv;
 }
 
 void Permutation::valid_offset_(mode_index_type i) const {
