@@ -17,6 +17,7 @@
 #pragma once
 #include <deque>
 #include <tensorwrapper/detail_/dsl_base.hpp>
+#include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/symmetry/operation.hpp>
 #include <utilities/containers/indexable_container_base.hpp>
 
@@ -36,7 +37,8 @@ namespace tensorwrapper::symmetry {
  *        operation because it is the inverse of (0, 1, 2).
  */
 class Group : public utilities::IndexableContainerBase<Group>,
-              public tensorwrapper::detail_::DSLBase<Group> {
+              public tensorwrapper::detail_::DSLBase<Group>,
+              public tensorwrapper::detail_::PolymorphicBase<Group> {
 private:
     /// Type of *this
     using my_type = Group;
@@ -44,8 +46,8 @@ private:
     /// Type *this derives from to become container-like
     using container_type = utilities::IndexableContainerBase<my_type>;
 
-    /// Type *this derives from to interact with the DSL
-    // using dsl_type = tensorwrapper::detail_::DSLBase<Group>;
+    /// Type *this derives from to behave like other polymorphic objects
+    using polymorphic_type = tensorwrapper::detail_::PolymorphicBase<Group>;
 
 public:
     /// The base type of each object in *this
@@ -67,12 +69,18 @@ public:
     // -- Ctors and assignment
     // -------------------------------------------------------------------------
 
+    /** @brief Initializes *this to be the identity group of a scalar.
+     *
+     *  @throw None No throw guarantee
+     */
     Group() noexcept = default;
 
     /** @brief Initializes *this as the identity group of a rank @p rank tensor.
      *
      *  This ctor creates a group representing the identity group of a rank
-     *  @p rank tensor. When used as
+     *  @p rank tensor.
+     *
+     *  @param[in] rank The rank of the tensor the identity group describes.
      *
      *  @throw None No throw guarantee.
      */
@@ -92,6 +100,8 @@ public:
      *  @param[in] op A symmetry operation to initialize the group with.
      *  @param[in] ops The remaining symmetry operations.
      *
+     *  @throw std::runtime_error if @p op and @p ops do not all have the same
+     *                            rank. Strong throw guarantee.
      *  @throw std::bad_alloc if there is a problem allocating the initial
      *                        state. Strong throw guarantee.
      */
@@ -175,8 +185,12 @@ public:
 
     /** @brief The rank of the tensor these symmetries describe.
      *
-     *  This is not the rank of the group, but rather the rank of the object
+     *  This is not the rank of the group, but rather the rank of the tensor
      *  that the symmetries of the group describe.
+     *
+     *  @return The rank of the tensor described by the symmetries in *this.
+     *
+     *  @throw None No throw guarantee.
      */
     mode_index_type rank() const noexcept { return m_rank_.value_or(0); }
 
@@ -200,7 +214,9 @@ public:
     /** @brief Determines if *this is value equal to @p rhs.
      *
      *  Two Group objects are value equal if they contain the same number of
-     *  operations and if each operation found in *this is also found in @p rhs.
+     *  operations, if each operation found in *this is also found in @p rhs,
+     *  and if the rank of the associated tensor is the same for *this as
+     *  @p rhs.
      *
      *  @param[in] rhs The Group object we are comparing against.
      *
@@ -224,6 +240,14 @@ public:
     bool operator!=(const Group& rhs) const noexcept { return !(*this == rhs); }
 
 protected:
+    typename polymorphic_type::base_pointer clone_() const override {
+        return std::make_unique<Group>(*this);
+    }
+
+    bool are_equal_(const_base_reference rhs) const noexcept override {
+        return (*this) == rhs;
+    }
+
     /// Implements addition_assignment via permute_assignment
     dsl_reference addition_assignment_(label_type this_labels,
                                        const_labeled_reference lhs,

@@ -53,11 +53,9 @@ public:
 
     /** @brief Creates an identity permutation.
      *
-     *  The identity Permutation contains no explicit cycles making it
-     *  equivalent to a permutation containing only fixed points. Such a
-     *  Permutation is equivalent to the identity permutation (i.e.,
-     *  do nothing). By default this ctor will create the identity permutation
-     *  for a scalar (rank 0 tensor).
+     *  The identity permutation for a rank `r` tensor contains `r` fixed
+     *  points. When used as a default ctor this will create the identity
+     *  permutation for a scalar (rank 0 tensor).
      *
      *  @param[in] rank The rank of the tensor this permutation represents.
      *                  Default is 0.
@@ -77,7 +75,6 @@ public:
      *  mode order written in terms of the old mode offsets.
      *
      *  @note If @p il is a trivial cycle it will NOT be explicitly stored.
-     *
      *
      *  @throw std::runtime_error if @p il is not a valid one-line
      *                            representation. Strong throw guarantee.

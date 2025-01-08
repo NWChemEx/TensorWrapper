@@ -17,13 +17,16 @@
 
 using namespace tensorwrapper;
 
-using test_types = std::tuple<shape::Smooth>;
+using test_types =
+  std::tuple<shape::Smooth, symmetry::Group, sparsity::Pattern>;
 
 TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
     using object_type = TestType;
 
-    test_types scalar_values{test_tensorwrapper::smooth_scalar()};
-    test_types matrix_values{test_tensorwrapper::smooth_matrix()};
+    test_types scalar_values{test_tensorwrapper::smooth_scalar(),
+                             symmetry::Group(0), sparsity::Pattern(0)};
+    test_types matrix_values{test_tensorwrapper::smooth_matrix(),
+                             symmetry::Group(2), sparsity::Pattern(2)};
 
     auto value0 = std::get<object_type>(scalar_values);
     auto value2 = std::get<object_type>(matrix_values);
