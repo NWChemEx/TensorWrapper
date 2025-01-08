@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.37</span>
+   &#160;<span id="projectnumber">0.0.38</span>
    </div>
   </td>
  </tr>
@@ -83,10 +83,15 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a38aee75a8072d1306b2f28cfaab44e40">tensorwrapper::layout::Physical</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a0824489bea9513ac0f1316105a15f3e2">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">tensorwrapper::shape::Smooth</a>
+, <a class="el" href="classtensorwrapper_1_1sparsity_1_1Pattern.html#a45adc598fd3dae7a33e06c3e1452bc70">tensorwrapper::sparsity::Pattern</a>
+, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#aaa1560f2e85c8c193f71a263af2e2532">tensorwrapper::symmetry::Group</a>
 , <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a01deb070f1bdb9e781269952cffb9d30">tensorwrapper::symmetry::Permutation</a>
 </li>
 <li>clone_as()
 : <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad4cdc663a4e292257ec6a63815c17cbe">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
+</li>
+<li>concatenation()
+: <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html#a7c4440bda43c5e60d31262e548213519">tensorwrapper::dsl::DummyIndices&lt; StringType &gt;</a>
 </li>
 <li>const_allocator_reference
 : <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a3410637a84157c16f3de59010c53c610">tensorwrapper::detail_::TensorInput</a>
@@ -126,13 +131,10 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a8a075c781dfc1d2eb234fb6ebe6695d3">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>
 </li>
 <li>const_label_reference
-: <a class="el" href="classtensorwrapper_1_1Tensor.html#a1281f1d61e3b18595be65b7c4b2ba3c4">tensorwrapper::Tensor</a>
+: <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aabcbcb1c8799a8edbfeaecb347f0adca">tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;</a>
 </li>
-<li>const_labeled_buffer_reference
-: <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#acf8920ddd75abce1a320421a72fc6ad2">tensorwrapper::buffer::BufferBase</a>
-</li>
-<li>const_labeled_tensor_type
-: <a class="el" href="classtensorwrapper_1_1Tensor.html#a285466a710320a14769271c0cd5704d1">tensorwrapper::Tensor</a>
+<li>const_labeled_reference
+: <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">tensorwrapper::detail_::DSLBase&lt; DerivedType, StringType &gt;</a>
 </li>
 <li>const_layout_reference
 : <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a9f1c648e0258595f1ff3fb731da2db0b">tensorwrapper::buffer::BufferBase</a>
@@ -141,6 +143,9 @@ $(function() {
 <li>const_logical_reference
 : <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a68c18d210e3f26d574fb76b477189945">tensorwrapper::detail_::TensorInput</a>
 , <a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">tensorwrapper::Tensor</a>
+</li>
+<li>const_object_reference
+: <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2787c22b108f45a90146e59c7b1fc31d">tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;</a>
 </li>
 <li>const_physical_reference
 : <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a2939acd15d8580ae2d0d5b3dc73c2b40">tensorwrapper::detail_::TensorInput</a>
@@ -182,7 +187,8 @@ $(function() {
 , <a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html#a8e58f1c0fa1724fb07ae084f141a441f">tensorwrapper::detail_::TensorFactory</a>
 </li>
 <li>count()
-: <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#aeb2f06717b4d2fc010396434288a5bf1">tensorwrapper::symmetry::Group</a>
+: <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html#aeefe6f2d8639c3132c73f60922ec02f2">tensorwrapper::dsl::DummyIndices&lt; StringType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#aeb2f06717b4d2fc010396434288a5bf1">tensorwrapper::symmetry::Group</a>
 </li>
 <li>cycle_initializer_list
 : <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#ac2ff36ee8fa1503dd5b8f78e7e560b62">tensorwrapper::symmetry::Permutation</a>

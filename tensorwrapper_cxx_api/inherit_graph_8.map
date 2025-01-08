@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,252,61"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html" title="Defines the API for all SmoothView PIMPLs." alt="" coords="300,5,503,61"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html" title="Implements SmoothView by wrapping a Smooth object." alt="" coords="551,5,715,61"/>
+<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,256,47"/>
+<area shape="rect" id="node2" href="$classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects." alt="" coords="304,5,467,47"/>
+<area shape="rect" id="node3" href="$classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,5,677,47"/>
+<area shape="rect" id="node4" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,5,888,47"/>
+<area shape="rect" id="node5" href="$classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor." alt="" coords="936,5,1136,47"/>
 </map>

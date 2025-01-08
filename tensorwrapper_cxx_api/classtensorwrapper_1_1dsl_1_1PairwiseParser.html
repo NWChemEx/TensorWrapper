@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: tensorwrapper::dsl::PairwiseParser&lt; ObjectType, LabelType &gt; Class Template Reference</title>
+<title>tensorwrapper: tensorwrapper::dsl::PairwiseParser Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.37</span>
+   &#160;<span id="projectnumber">0.0.38</span>
    </div>
   </td>
  </tr>
@@ -67,12 +67,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">tensorwrapper::dsl::PairwiseParser&lt; ObjectType, LabelType &gt; Class Template Reference</div>  </div>
+<div class="title">tensorwrapper::dsl::PairwiseParser Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -81,60 +79,101 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="pairwise__parser_8hpp_source.html">pairwise_parser.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:ab19f4fa0b3cb25336110380d70e74d1a"><td class="memItemLeft" align="right" valign="top"><a id="ab19f4fa0b3cb25336110380d70e74d1a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType, LabelType &gt;</td></tr>
-<tr class="memdesc:ab19f4fa0b3cb25336110380d70e74d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a leaf in the AST. <br /></td></tr>
-<tr class="separator:ab19f4fa0b3cb25336110380d70e74d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7fea83488e4e1e9be374d55b1662d277"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a7fea83488e4e1e9be374d55b1662d277">dispatch</a> (<a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> lhs, <a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> rhs)</td></tr>
-<tr class="memdesc:a7fea83488e4e1e9be374d55b1662d277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursion end-point.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a7fea83488e4e1e9be374d55b1662d277">More...</a><br /></td></tr>
-<tr class="separator:a7fea83488e4e1e9be374d55b1662d277"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a443ade8b8ec40b95a743e40098e160a0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
-<tr class="memitem:a443ade8b8ec40b95a743e40098e160a0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a443ade8b8ec40b95a743e40098e160a0">dispatch</a> (<a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> lhs, const utilities::dsl::Add&lt; T, U &gt; &amp;rhs)</td></tr>
-<tr class="memdesc:a443ade8b8ec40b95a743e40098e160a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles adding two expressions together.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a443ade8b8ec40b95a743e40098e160a0">More...</a><br /></td></tr>
-<tr class="separator:a443ade8b8ec40b95a743e40098e160a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa0ae157a6035416a173e1c7183df540f"><td class="memItemLeft" align="right" valign="top"><a id="aa0ae157a6035416a173e1c7183df540f"></a>
-<a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (<a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> result, <a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> lhs, <a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a> rhs)</td></tr>
-<tr class="separator:aa0ae157a6035416a173e1c7183df540f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ea143a04faeefb864ce2db41e58b1d"><td class="memTemplParams" colspan="2">template&lt;typename LHSType , typename RHSType &gt; </td></tr>
+<tr class="memitem:a19ea143a04faeefb864ce2db41e58b1d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">dispatch</a> (LHSType &amp;&amp;lhs, const RHSType &amp;rhs)</td></tr>
+<tr class="memdesc:a19ea143a04faeefb864ce2db41e58b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursion end-point.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">More...</a><br /></td></tr>
+<tr class="separator:a19ea143a04faeefb864ce2db41e58b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a16022c603dee623c1ff10e99afa81b"><td class="memTemplParams" colspan="2">template&lt;typename LHSType , typename T , typename U &gt; </td></tr>
+<tr class="memitem:a4a16022c603dee623c1ff10e99afa81b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a4a16022c603dee623c1ff10e99afa81b">dispatch</a> (LHSType &amp;&amp;lhs, const utilities::dsl::Add&lt; T, U &gt; &amp;rhs)</td></tr>
+<tr class="memdesc:a4a16022c603dee623c1ff10e99afa81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles adding two expressions together.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a4a16022c603dee623c1ff10e99afa81b">More...</a><br /></td></tr>
+<tr class="separator:a4a16022c603dee623c1ff10e99afa81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a149a3fed50ed25b5198d9d8be61c6091"><td class="memTemplParams" colspan="2">template&lt;typename LHSType , typename T , typename U &gt; </td></tr>
+<tr class="memitem:a149a3fed50ed25b5198d9d8be61c6091"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a149a3fed50ed25b5198d9d8be61c6091">dispatch</a> (LHSType &amp;&amp;lhs, const utilities::dsl::Subtract&lt; T, U &gt; &amp;rhs)</td></tr>
+<tr class="memdesc:a149a3fed50ed25b5198d9d8be61c6091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles subtracting two expressions together.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a149a3fed50ed25b5198d9d8be61c6091">More...</a><br /></td></tr>
+<tr class="separator:a149a3fed50ed25b5198d9d8be61c6091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca1b07872c3e754c1e83f68262a20ee3"><td class="memTemplParams" colspan="2">template&lt;typename LHSType , typename T , typename U &gt; </td></tr>
+<tr class="memitem:aca1b07872c3e754c1e83f68262a20ee3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#aca1b07872c3e754c1e83f68262a20ee3">dispatch</a> (LHSType &amp;&amp;lhs, const utilities::dsl::Multiply&lt; T, U &gt; &amp;rhs)</td></tr>
+<tr class="memdesc:aca1b07872c3e754c1e83f68262a20ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles multiplying two expressions together.  <a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#aca1b07872c3e754c1e83f68262a20ee3">More...</a><br /></td></tr>
+<tr class="separator:aca1b07872c3e754c1e83f68262a20ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename ObjectType, typename LabelType&gt;<br />
-class tensorwrapper::dsl::PairwiseParser&lt; ObjectType, LabelType &gt;</h3>
-
-<p>Object which evaluates the AST of an expression pairwise. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">ObjectType</td><td>The type of the objects associated with the dummy indices. Expected to be possibly cv-qualified versions of <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a>, buffers, shapes, etc. </td></tr>
-    <tr><td class="paramname">LabelType</td><td>The type of object used for the dummy indices.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>The easiest way to evaluate an abstract syntax tree which contains operations involving at most two objects is by splitting it into subtrees which contain at most two connected nodes, i.e., considering each operation pairwise. That's what this parser does. </p>
+<div class="textblock"><p>Object which evaluates the AST of an expression pairwise. </p>
+<p>The easiest way to evaluate a tensor network is as a series of assignments, i.e., things that look like <code>A = B</code> and binary operations coupled to assignments, i.e., things that look like <code>C = A + B</code>. That's what this parser does. It should be noted that this is not necessarily the most performant way to evaluate the AST, e.g., this prohibits detection of common intermediates across multiple equations.</p>
+<dl class="section note"><dt>Note</dt><dd>The <div class="fragment"><div class="line"><span class="keyword">auto</span> pA     = lhs.object().clone();</div>
+<div class="line"><span class="keyword">auto</span> pB     = lhs.object().clone();</div>
+<div class="line"><span class="keyword">auto</span> labels = lhs.labels();</div>
+<div class="line"><span class="keyword">auto</span> lA     = (*pA)(labels);</div>
+<div class="line"><span class="keyword">auto</span> lB     = (*pB)(labels);</div>
+<div class="line"><a class="code" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">dispatch</a>(lA, rhs.lhs());</div>
+<div class="line"><a class="code" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">dispatch</a>(lB, rhs.rhs());</div>
+<div class="ttc" id="aclasstensorwrapper_1_1dsl_1_1PairwiseParser_html_a19ea143a04faeefb864ce2db41e58b1d"><div class="ttname"><a href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">tensorwrapper::dsl::PairwiseParser::dispatch</a></div><div class="ttdeci">void dispatch(LHSType &amp;&amp;lhs, const RHSType &amp;rhs)</div><div class="ttdoc">Recursion end-point.</div><div class="ttdef"><b>Definition:</b> pairwise_parser.hpp:61</div></div>
+</div><!-- fragment --> are repetitive, but we need to keep pA and pB alive which inhibits factorization. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a443ade8b8ec40b95a743e40098e160a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a443ade8b8ec40b95a743e40098e160a0">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[1/2]</span></h2>
+<a id="a19ea143a04faeefb864ce2db41e58b1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ea143a04faeefb864ce2db41e58b1d">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType &gt; </div>
-<div class="memtemplate">
-template&lt;typename T , typename U &gt; </div>
+template&lt;typename LHSType , typename RHSType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html">tensorwrapper::dsl::PairwiseParser</a>&lt; ObjectType, LabelType &gt;::dispatch </td>
+          <td class="memname">void tensorwrapper::dsl::PairwiseParser::dispatch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a>&#160;</td>
+          <td class="paramtype">LHSType &amp;&amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RHSType &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursion end-point. </p>
+<p>Ternary operations like <code>C = A + B</code> are ultimately evaluated by assigning <code>A</code> and <code>B</code> to temporaries and then summing the temporaries. The assignment to the temporary ensures that if <code>A</code> or <code>B</code> is itself a term it gets evaluated down to an object before the addition happens. The assignment calls this overload of dispatch.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The object to assign <code>rhs</code> to. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The "expression" that needs to be evaluated. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4a16022c603dee623c1ff10e99afa81b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a16022c603dee623c1ff10e99afa81b">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename LHSType , typename T , typename U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::dsl::PairwiseParser::dispatch </td>
+          <td>(</td>
+          <td class="paramtype">LHSType &amp;&amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
@@ -159,6 +198,7 @@ template&lt;typename T , typename U &gt; </div>
 <p>Handles adding two expressions together. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
+    <tr><td class="paramname">LHSType</td><td>The type to assign the sum of <code>lhs</code> and <code>rhs</code> to. </td></tr>
     <tr><td class="paramname">T</td><td>The type of the expression on the left side of the "+" sign. </td></tr>
     <tr><td class="paramname">U</td><td>The type of the expression on the right side of the "+" sign.</td></tr>
   </table>
@@ -167,34 +207,40 @@ template&lt;typename T , typename U &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The object that <code>rhs</code> will ultimately be assigned to. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The expression to evaluate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The expression to evaluate.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if there is a problem doing the operation. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a7fea83488e4e1e9be374d55b1662d277"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fea83488e4e1e9be374d55b1662d277">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[2/2]</span></h2>
+<a id="aca1b07872c3e754c1e83f68262a20ee3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1b07872c3e754c1e83f68262a20ee3">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType &gt; </div>
+template&lt;typename LHSType , typename T , typename U &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html">tensorwrapper::dsl::PairwiseParser</a>&lt; ObjectType, LabelType &gt;::dispatch </td>
+          <td class="memname">void tensorwrapper::dsl::PairwiseParser::dispatch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a>&#160;</td>
+          <td class="paramtype">LHSType &amp;&amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#ab19f4fa0b3cb25336110380d70e74d1a">labeled_type</a>&#160;</td>
+          <td class="paramtype">const utilities::dsl::Multiply&lt; T, U &gt; &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
@@ -210,28 +256,93 @@ template&lt;typename ObjectType , typename LabelType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Recursion end-point. </p>
-<p>Evaluates <code>rhs</code> given that it will be evaluated into lhs. This is the natural end-point for recursion down a branch of the AST.</p>
-<p>N.b., this overload is only responsible for evaluating <code>rhs</code> NOT for assigning it to <code>lhs</code>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The object that <code>rhs</code> will ultimately be assigned to. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The "expression" that needs to be evaluated.</td></tr>
+<p>Handles multiplying two expressions together. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">LHSType</td><td>The type of the object the expression will be evaluated into. </td></tr>
+    <tr><td class="paramname">T</td><td>The type of the expression on the left side of the "*" sign. </td></tr>
+    <tr><td class="paramname">U</td><td>The type of the expression on the right side of the "*" sign.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>rhs</code> untouched.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The object that <code>rhs</code> will ultimately be assigned to. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The expression to evaluate.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if there is a problem doing the operation. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/tensorwrapper/dsl/<a class="el" href="dsl__forward_8hpp_source.html">dsl_forward.hpp</a></li>
+<a id="a149a3fed50ed25b5198d9d8be61c6091"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a149a3fed50ed25b5198d9d8be61c6091">&#9670;&nbsp;</a></span>dispatch() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename LHSType , typename T , typename U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::dsl::PairwiseParser::dispatch </td>
+          <td>(</td>
+          <td class="paramtype">LHSType &amp;&amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const utilities::dsl::Subtract&lt; T, U &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handles subtracting two expressions together. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">LHSType</td><td>The type of the object the expression will be evaluated into. </td></tr>
+    <tr><td class="paramname">T</td><td>The type of the expression on the left side of the "-" sign. </td></tr>
+    <tr><td class="paramname">U</td><td>The type of the expression on the right side of the "-" sign.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>The object that <code>rhs</code> will ultimately be assigned to. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The expression to evaluate.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if there is a problem doing the operation. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/tensorwrapper/dsl/<a class="el" href="pairwise__parser_8hpp_source.html">pairwise_parser.hpp</a></li>
 </ul>
 </div><!-- contents -->

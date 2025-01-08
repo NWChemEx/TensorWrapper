@@ -3,10 +3,11 @@ var indexSectionsWithContent =
   0: "abcdefghilmoprstuv~",
   1: "abdegiloprst",
   2: "t",
-  3: "abcdefghilmoprstuv~",
-  4: "bi",
-  5: "abcdeilmoprstv",
-  6: "s"
+  3: "d",
+  4: "abcdefghilmoprstuv~",
+  5: "bi",
+  6: "abcdeilmoprstv",
+  7: "s"
 };
 
 var indexSectionNames =
@@ -14,10 +15,11 @@ var indexSectionNames =
   0: "all",
   1: "classes",
   2: "namespaces",
-  3: "functions",
-  4: "variables",
-  5: "typedefs",
-  6: "related"
+  3: "files",
+  4: "functions",
+  5: "variables",
+  6: "typedefs",
+  7: "related"
 };
 
 var indexSectionLabels =
@@ -25,9 +27,10 @@ var indexSectionLabels =
   0: "All",
   1: "Classes",
   2: "Namespaces",
-  3: "Functions",
-  4: "Variables",
-  5: "Typedefs",
-  6: "Friends"
+  3: "Files",
+  4: "Functions",
+  5: "Variables",
+  6: "Typedefs",
+  7: "Friends"
 };
 

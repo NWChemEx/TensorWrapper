@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.37</span>
+   &#160;<span id="projectnumber">0.0.38</span>
    </div>
   </td>
  </tr>
@@ -95,6 +95,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">const_base_reference</a> = const <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &amp;</td></tr>
 <tr class="memdesc:a4d3ea0c25ad674f9796b74e2fe62a818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only reference to an object of type base_type. <br /></td></tr>
 <tr class="separator:a4d3ea0c25ad674f9796b74e2fe62a818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808afdcccc21b8ad1a6e4a8ee2296ae1"><td class="memItemLeft" align="right" valign="top"><a id="a808afdcccc21b8ad1a6e4a8ee2296ae1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a808afdcccc21b8ad1a6e4a8ee2296ae1">base_rvalue</a> = <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &amp;&amp;</td></tr>
+<tr class="memdesc:a808afdcccc21b8ad1a6e4a8ee2296ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable rvalue reference to an object of type base_type. <br /></td></tr>
+<tr class="separator:a808afdcccc21b8ad1a6e4a8ee2296ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5623524f9de386896bc7600f78d0250e"><td class="memItemLeft" align="right" valign="top"><a id="a5623524f9de386896bc7600f78d0250e"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a5623524f9de386896bc7600f78d0250e">base_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &gt;</td></tr>
 <tr class="memdesc:a5623524f9de386896bc7600f78d0250e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to an object of type base_type. <br /></td></tr>
@@ -150,7 +154,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:af8ee6d1b455b90cb25552ce6aec53d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived classes should override this method to implement are_equal.  <a href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#af8ee6d1b455b90cb25552ce6aec53d8f">More...</a><br /></td></tr>
 <tr class="separator:af8ee6d1b455b90cb25552ce6aec53d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75d7ed3d4cedc67950be4b532db2516e"><td class="memItemLeft" align="right" valign="top"><a id="a75d7ed3d4cedc67950be4b532db2516e"></a>
-virtual <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad9531ddf5e054a4c914b5f54dc981238">string_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>to_string_</b> () const</td></tr>
+virtual <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad9531ddf5e054a4c914b5f54dc981238">string_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a75d7ed3d4cedc67950be4b532db2516e">to_string_</a> () const</td></tr>
+<tr class="memdesc:a75d7ed3d4cedc67950be4b532db2516e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should be overridden by the derived class to provide logging details. <br /></td></tr>
 <tr class="separator:a75d7ed3d4cedc67950be4b532db2516e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -371,7 +376,7 @@ template&lt;typename BaseType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if *this and <code>rhs</code> are polymorphically value equal and false otherwise. </dd></dl>
 
-<p>Implemented in <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a1a5d451cf00ec7f568e0350c96a7064d">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a9fe5860a29e83a487f969ba4b6e3d8ae">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>, and <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a12eadc5645a6b4348bfad5c620e5e72a">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a1a5d451cf00ec7f568e0350c96a7064d">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>, <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html#a9fe5860a29e83a487f969ba4b6e3d8ae">tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;</a>, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#a5f21437b1938cdc2e87c7063c5b3c4a0">tensorwrapper::symmetry::Group</a>, <a class="el" href="classtensorwrapper_1_1sparsity_1_1Pattern.html#a5aec35076cae77ace77444e47b9edf61">tensorwrapper::sparsity::Pattern</a>, and <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a12eadc5645a6b4348bfad5c620e5e72a">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>.</p>
 
 </div>
 </div>
@@ -492,7 +497,7 @@ template&lt;typename BaseType &gt; </div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a0824489bea9513ac0f1316105a15f3e2">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a01deb070f1bdb9e781269952cffb9d30">tensorwrapper::symmetry::Permutation</a>, <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">tensorwrapper::shape::Smooth</a>, <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a38aee75a8072d1306b2f28cfaab44e40">tensorwrapper::layout::Physical</a>, <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#a7ba14c956d52f3606a2a23d342a8336a">tensorwrapper::layout::Logical</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#ab7879d4a3e1fb5aae1d08edf88aa769a">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>, and <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a097f6e36331c362231b34019a591a46d">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html#a0824489bea9513ac0f1316105a15f3e2">tensorwrapper::shape::detail_::SmoothAlias&lt; SmoothType &gt;</a>, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a01deb070f1bdb9e781269952cffb9d30">tensorwrapper::symmetry::Permutation</a>, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Group.html#aaa1560f2e85c8c193f71a263af2e2532">tensorwrapper::symmetry::Group</a>, <a class="el" href="classtensorwrapper_1_1sparsity_1_1Pattern.html#a45adc598fd3dae7a33e06c3e1452bc70">tensorwrapper::sparsity::Pattern</a>, <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae638638ec86343c4d8a52864f6798b11">tensorwrapper::shape::Smooth</a>, <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a38aee75a8072d1306b2f28cfaab44e40">tensorwrapper::layout::Physical</a>, <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#a7ba14c956d52f3606a2a23d342a8336a">tensorwrapper::layout::Logical</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#ab7879d4a3e1fb5aae1d08edf88aa769a">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>, and <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a097f6e36331c362231b34019a591a46d">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>.</p>
 
 </div>
 </div>

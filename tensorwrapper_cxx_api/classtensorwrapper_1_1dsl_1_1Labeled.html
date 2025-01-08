@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: tensorwrapper::dsl::Labeled&lt; ObjectType, LabelType &gt; Class Template Reference</title>
+<title>tensorwrapper: tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.37</span>
+   &#160;<span id="projectnumber">0.0.38</span>
    </div>
   </td>
  </tr>
@@ -71,7 +71,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classtensorwrapper_1_1dsl_1_1Labeled-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">tensorwrapper::dsl::Labeled&lt; ObjectType, LabelType &gt; Class Template Reference</div>  </div>
+<div class="title">tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -80,110 +80,132 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="labeled_8hpp_source.html">labeled.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for tensorwrapper::dsl::Labeled&lt; ObjectType, LabelType &gt;:</div>
+Inheritance diagram for tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classtensorwrapper_1_1dsl_1_1Labeled__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_inherit__map" id="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_inherit__map">
-<area shape="rect" title="Represents an object whose modes are assigned dummy indices." alt="" coords="244,13,416,69"/>
-<area shape="rect" title=" " alt="" coords="5,5,196,76"/>
+<div class="center"><img src="classtensorwrapper_1_1dsl_1_1Labeled__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_inherit__map" id="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_inherit__map">
+<area shape="rect" title="Represents an object whose modes are assigned dummy indices." alt="" coords="9,109,181,165"/>
+<area shape="rect" title=" " alt="" coords="5,5,184,61"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for tensorwrapper::dsl::Labeled&lt; ObjectType, LabelType &gt;:</div>
+Collaboration diagram for tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classtensorwrapper_1_1dsl_1_1Labeled__coll__graph.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_coll__map" id="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01LabelType_01_4_coll__map">
-<area shape="rect" title="Represents an object whose modes are assigned dummy indices." alt="" coords="244,13,416,69"/>
-<area shape="rect" title=" " alt="" coords="5,5,196,76"/>
+<div class="center"><img src="classtensorwrapper_1_1dsl_1_1Labeled__coll__graph.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_coll__map" id="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4_coll__map">
+<area shape="rect" title="Represents an object whose modes are assigned dummy indices." alt="" coords="9,109,181,165"/>
+<area shape="rect" title=" " alt="" coords="5,5,184,61"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a4c5b9c673ac16c166b9d0585a87971f9"><td class="memItemLeft" align="right" valign="top"><a id="a4c5b9c673ac16c166b9d0585a87971f9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a4c5b9c673ac16c166b9d0585a87971f9">object_type</a> = std::decay_t&lt; ObjectType &gt;</td></tr>
-<tr class="memdesc:a4c5b9c673ac16c166b9d0585a87971f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object (useful for TMP) <br /></td></tr>
-<tr class="separator:a4c5b9c673ac16c166b9d0585a87971f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93ff1763b1b516d804f47a5d0576c679"><td class="memItemLeft" align="right" valign="top"><a id="a93ff1763b1b516d804f47a5d0576c679"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a93ff1763b1b516d804f47a5d0576c679">label_type</a> = LabelType</td></tr>
-<tr class="memdesc:a93ff1763b1b516d804f47a5d0576c679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the labels (useful for TMP) <br /></td></tr>
-<tr class="separator:a93ff1763b1b516d804f47a5d0576c679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50740e4f3c8544efb8b3eb6089b4b030"><td class="memItemLeft" align="right" valign="top"><a id="a50740e4f3c8544efb8b3eb6089b4b030"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a50740e4f3c8544efb8b3eb6089b4b030">object_type</a> = std::decay_t&lt; ObjectType &gt;</td></tr>
+<tr class="memdesc:a50740e4f3c8544efb8b3eb6089b4b030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object (useful for TMP) <br /></td></tr>
+<tr class="separator:a50740e4f3c8544efb8b3eb6089b4b030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2787c22b108f45a90146e59c7b1fc31d"><td class="memItemLeft" align="right" valign="top"><a id="a2787c22b108f45a90146e59c7b1fc31d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2787c22b108f45a90146e59c7b1fc31d">const_object_reference</a> = const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a50740e4f3c8544efb8b3eb6089b4b030">object_type</a> &amp;</td></tr>
+<tr class="memdesc:a2787c22b108f45a90146e59c7b1fc31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an object of object_type. <br /></td></tr>
+<tr class="separator:a2787c22b108f45a90146e59c7b1fc31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa678cb1a3d21d4556f277e22e68f4e62"><td class="memItemLeft" align="right" valign="top"><a id="aa678cb1a3d21d4556f277e22e68f4e62"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aa678cb1a3d21d4556f277e22e68f4e62">object_reference</a> = if_cv_t&lt; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2787c22b108f45a90146e59c7b1fc31d">const_object_reference</a>, <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a50740e4f3c8544efb8b3eb6089b4b030">object_type</a> &amp; &gt;</td></tr>
+<tr class="memdesc:aa678cb1a3d21d4556f277e22e68f4e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a (possibly) mutable reference to an object of object_type. <br /></td></tr>
+<tr class="separator:aa678cb1a3d21d4556f277e22e68f4e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdb1cb245242b584dd2398c916dbe11f"><td class="memItemLeft" align="right" valign="top"><a id="acdb1cb245242b584dd2398c916dbe11f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#acdb1cb245242b584dd2398c916dbe11f">string_type</a> = StringType</td></tr>
+<tr class="memdesc:acdb1cb245242b584dd2398c916dbe11f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the string literal used for index labels. <br /></td></tr>
+<tr class="separator:acdb1cb245242b584dd2398c916dbe11f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a571ab75613584b5c4ccc1fc3a92fa"><td class="memItemLeft" align="right" valign="top"><a id="a24a571ab75613584b5c4ccc1fc3a92fa"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a24a571ab75613584b5c4ccc1fc3a92fa">label_type</a> = <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html">dsl::DummyIndices</a>&lt; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#acdb1cb245242b584dd2398c916dbe11f">string_type</a> &gt;</td></tr>
+<tr class="memdesc:a24a571ab75613584b5c4ccc1fc3a92fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the object managing the parsed index labels. <br /></td></tr>
+<tr class="separator:a24a571ab75613584b5c4ccc1fc3a92fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09f8f18b9b2c5ec4c149b3c6b7860627"><td class="memItemLeft" align="right" valign="top"><a id="a09f8f18b9b2c5ec4c149b3c6b7860627"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a09f8f18b9b2c5ec4c149b3c6b7860627">label_reference</a> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a24a571ab75613584b5c4ccc1fc3a92fa">label_type</a> &amp;</td></tr>
+<tr class="memdesc:a09f8f18b9b2c5ec4c149b3c6b7860627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable reference to an object of type label_type. <br /></td></tr>
+<tr class="separator:a09f8f18b9b2c5ec4c149b3c6b7860627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabcbcb1c8799a8edbfeaecb347f0adca"><td class="memItemLeft" align="right" valign="top"><a id="aabcbcb1c8799a8edbfeaecb347f0adca"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aabcbcb1c8799a8edbfeaecb347f0adca">const_label_reference</a> = const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a24a571ab75613584b5c4ccc1fc3a92fa">label_type</a> &amp;</td></tr>
+<tr class="memdesc:aabcbcb1c8799a8edbfeaecb347f0adca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only reference to an object of type label_type. <br /></td></tr>
+<tr class="separator:aabcbcb1c8799a8edbfeaecb347f0adca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac3e497da6c7737c71c2f355a6d61f8d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#ac3e497da6c7737c71c2f355a6d61f8d7">Labeled</a> ()=default</td></tr>
-<tr class="memdesc:ac3e497da6c7737c71c2f355a6d61f8d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object that does not alias an object or labels.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#ac3e497da6c7737c71c2f355a6d61f8d7">More...</a><br /></td></tr>
-<tr class="separator:ac3e497da6c7737c71c2f355a6d61f8d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45757e1ba3154e0da765da7952682692"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType2 , typename LabelType2 &gt; </td></tr>
-<tr class="memitem:a45757e1ba3154e0da765da7952682692"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a45757e1ba3154e0da765da7952682692">Labeled</a> (ObjectType2 &amp;&amp;object, LabelType2 &amp;&amp;labels)</td></tr>
-<tr class="memdesc:a45757e1ba3154e0da765da7952682692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensures labels are stored correctly.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a45757e1ba3154e0da765da7952682692">More...</a><br /></td></tr>
-<tr class="separator:a45757e1ba3154e0da765da7952682692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5e2895a45ce40ad2346c0e3933d602"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;ObjectType2&gt;&gt; </td></tr>
-<tr class="memitem:a0b5e2895a45ce40ad2346c0e3933d602"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a0b5e2895a45ce40ad2346c0e3933d602">Labeled</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType2, LabelType &gt; &amp;input)</td></tr>
-<tr class="memdesc:a0b5e2895a45ce40ad2346c0e3933d602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows implicit conversion from mutable objects to const objects.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a0b5e2895a45ce40ad2346c0e3933d602">More...</a><br /></td></tr>
-<tr class="separator:a0b5e2895a45ce40ad2346c0e3933d602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8f30c294f73ce4e6859afd8845c7983"><td class="memTemplParams" colspan="2">template&lt;typename TermType &gt; </td></tr>
-<tr class="memitem:aa8f30c294f73ce4e6859afd8845c7983"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">my_type</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aa8f30c294f73ce4e6859afd8845c7983">operator=</a> (TermType &amp;&amp;other)</td></tr>
-<tr class="memdesc:aa8f30c294f73ce4e6859afd8845c7983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a DSL term to *this.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#aa8f30c294f73ce4e6859afd8845c7983">More...</a><br /></td></tr>
-<tr class="separator:aa8f30c294f73ce4e6859afd8845c7983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a205e7e56f41976651ba8b60a33fa4ca5"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType2 , typename LabelType &gt; </td></tr>
+<tr class="memitem:a205e7e56f41976651ba8b60a33fa4ca5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a205e7e56f41976651ba8b60a33fa4ca5">Labeled</a> (ObjectType2 &amp;&amp;<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a88e0bae8d8743a9e9f3f9cbe7c9e4576">object</a>, LabelType &amp;&amp;<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2ca70fd68c2c5102b3dced45880ad796">labels</a>)</td></tr>
+<tr class="memdesc:a205e7e56f41976651ba8b60a33fa4ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a set of dummy indices with an object.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a205e7e56f41976651ba8b60a33fa4ca5">More...</a><br /></td></tr>
+<tr class="separator:a205e7e56f41976651ba8b60a33fa4ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab59556226536246570739dd024801270"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;ObjectType2&gt;&gt; </td></tr>
+<tr class="memitem:ab59556226536246570739dd024801270"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#ab59556226536246570739dd024801270">Labeled</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType2, StringType &gt; &amp;input)</td></tr>
+<tr class="memdesc:ab59556226536246570739dd024801270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows implicit conversion from mutable objects to const objects.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#ab59556226536246570739dd024801270">More...</a><br /></td></tr>
+<tr class="separator:ab59556226536246570739dd024801270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad70962adc3a9ac04e54ab1664f7be13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aad70962adc3a9ac04e54ab1664f7be13">Labeled</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;other)=default</td></tr>
+<tr class="memdesc:aad70962adc3a9ac04e54ab1664f7be13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object by copying <code>other</code>.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#aad70962adc3a9ac04e54ab1664f7be13">More...</a><br /></td></tr>
+<tr class="separator:aad70962adc3a9ac04e54ab1664f7be13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8725b10682cac824734b800dab8fbf65"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8725b10682cac824734b800dab8fbf65">Labeled</a> (<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;&amp;other) noexcept=default</td></tr>
+<tr class="memdesc:a8725b10682cac824734b800dab8fbf65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object by taking the state from <code>other</code>.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8725b10682cac824734b800dab8fbf65">More...</a><br /></td></tr>
+<tr class="separator:a8725b10682cac824734b800dab8fbf65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ab1730c75dde506d405e6468a40d533"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8ab1730c75dde506d405e6468a40d533">operator=</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a8ab1730c75dde506d405e6468a40d533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets *this equal to <code>rhs</code>.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8ab1730c75dde506d405e6468a40d533">More...</a><br /></td></tr>
+<tr class="separator:a8ab1730c75dde506d405e6468a40d533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8a38b1a6d4c19ebd3b243350549dfd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a9c8a38b1a6d4c19ebd3b243350549dfd">operator=</a> (<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> &amp;&amp;rhs)</td></tr>
+<tr class="memdesc:a9c8a38b1a6d4c19ebd3b243350549dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets *this equal to <code>rhs</code>.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a9c8a38b1a6d4c19ebd3b243350549dfd">More...</a><br /></td></tr>
+<tr class="separator:a9c8a38b1a6d4c19ebd3b243350549dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a804ffe4f6f3879f1598bb8db31eb1f72"><td class="memTemplParams" colspan="2">template&lt;typename TermType &gt; </td></tr>
+<tr class="memitem:a804ffe4f6f3879f1598bb8db31eb1f72"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">my_type</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a804ffe4f6f3879f1598bb8db31eb1f72">operator=</a> (TermType &amp;&amp;other)</td></tr>
+<tr class="memdesc:a804ffe4f6f3879f1598bb8db31eb1f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a DSL term to *this.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a804ffe4f6f3879f1598bb8db31eb1f72">More...</a><br /></td></tr>
+<tr class="separator:a804ffe4f6f3879f1598bb8db31eb1f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e0bae8d8743a9e9f3f9cbe7c9e4576"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aa678cb1a3d21d4556f277e22e68f4e62">object_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a88e0bae8d8743a9e9f3f9cbe7c9e4576">object</a> ()</td></tr>
+<tr class="memdesc:a88e0bae8d8743a9e9f3f9cbe7c9e4576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a (possibly) read-only reference to the object.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a88e0bae8d8743a9e9f3f9cbe7c9e4576">More...</a><br /></td></tr>
+<tr class="separator:a88e0bae8d8743a9e9f3f9cbe7c9e4576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb109ff1997c635acef48434c6e55354"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2787c22b108f45a90146e59c7b1fc31d">const_object_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#acb109ff1997c635acef48434c6e55354">object</a> () const</td></tr>
+<tr class="memdesc:acb109ff1997c635acef48434c6e55354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a read-only reference to the labeled object.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#acb109ff1997c635acef48434c6e55354">More...</a><br /></td></tr>
+<tr class="separator:acb109ff1997c635acef48434c6e55354"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ca70fd68c2c5102b3dced45880ad796"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a09f8f18b9b2c5ec4c149b3c6b7860627">label_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2ca70fd68c2c5102b3dced45880ad796">labels</a> () noexcept</td></tr>
+<tr class="memdesc:a2ca70fd68c2c5102b3dced45880ad796"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dummy indices associated with the object.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2ca70fd68c2c5102b3dced45880ad796">More...</a><br /></td></tr>
+<tr class="separator:a2ca70fd68c2c5102b3dced45880ad796"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29ef7af4ac0a8bc33bae443f4bdbf6d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aabcbcb1c8799a8edbfeaecb347f0adca">const_label_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a29ef7af4ac0a8bc33bae443f4bdbf6d1">labels</a> () const noexcept</td></tr>
+<tr class="memdesc:a29ef7af4ac0a8bc33bae443f4bdbf6d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a read-only reference to the dummy labels.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a29ef7af4ac0a8bc33bae443f4bdbf6d1">More...</a><br /></td></tr>
+<tr class="separator:a29ef7af4ac0a8bc33bae443f4bdbf6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ad5b68f450e36de28adb8836e329a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a26ad5b68f450e36de28adb8836e329a3">has_object</a> () const noexcept</td></tr>
+<tr class="memdesc:a26ad5b68f450e36de28adb8836e329a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does *this have an object?  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a26ad5b68f450e36de28adb8836e329a3">More...</a><br /></td></tr>
+<tr class="separator:a26ad5b68f450e36de28adb8836e329a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6fe8c36fe2f39e9cdc2f66eb0678921"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#ae6fe8c36fe2f39e9cdc2f66eb0678921">operator==</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">const_my_type</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:ae6fe8c36fe2f39e9cdc2f66eb0678921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if *this is value equal to <code>rhs</code>.  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#ae6fe8c36fe2f39e9cdc2f66eb0678921">More...</a><br /></td></tr>
+<tr class="separator:ae6fe8c36fe2f39e9cdc2f66eb0678921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a513a19c7ed85d459d4918f1fcf965c65"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a513a19c7ed85d459d4918f1fcf965c65">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">const_my_type</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:a513a19c7ed85d459d4918f1fcf965c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this different from <code>rhs</code>?  <a href="classtensorwrapper_1_1dsl_1_1Labeled.html#a513a19c7ed85d459d4918f1fcf965c65">More...</a><br /></td></tr>
+<tr class="separator:a513a19c7ed85d459d4918f1fcf965c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename ObjectType, typename LabelType = std::string&gt;<br />
-class tensorwrapper::dsl::Labeled&lt; ObjectType, LabelType &gt;</h3>
+<div class="textblock"><h3>template&lt;typename ObjectType, typename StringType = std::string&gt;<br />
+class tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;</h3>
 
 <p>Represents an object whose modes are assigned dummy indices. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac3e497da6c7737c71c2f355a6d61f8d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3e497da6c7737c71c2f355a6d61f8d7">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType  = std::string&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, LabelType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object that does not alias an object or labels. </p>
-<p>This ctor is needed because the base classes assume it is present. Users shouldn't actually need it.</p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ObjectType</td><td>the type of the object. Assumed to be a class from the shape, symmetry, sparsity, layout, buffer, or tensor class hierarchies. </td></tr>
+    <tr><td class="paramname">StringType</td><td>the type used for string literals. Default is std::string.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a45757e1ba3154e0da765da7952682692"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45757e1ba3154e0da765da7952682692">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[2/3]</span></h2>
+<p>This class is used to promote TensorWrapper objects into the DSL layer. Users will interact with this class somewhat transparently (usually via unnamed temporary objects). </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a205e7e56f41976651ba8b60a33fa4ca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a205e7e56f41976651ba8b60a33fa4ca5">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType  = std::string&gt; </div>
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
 <div class="memtemplate">
-template&lt;typename ObjectType2 , typename LabelType2 &gt; </div>
+template&lt;typename ObjectType2 , typename LabelType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, LabelType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
           <td>(</td>
           <td class="paramtype">ObjectType2 &amp;&amp;&#160;</td>
           <td class="paramname"><em>object</em>, </td>
@@ -191,7 +213,7 @@ template&lt;typename ObjectType2 , typename LabelType2 &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">LabelType2 &amp;&amp;&#160;</td>
+          <td class="paramtype">LabelType &amp;&amp;&#160;</td>
           <td class="paramname"><em>labels</em>&#160;</td>
         </tr>
         <tr>
@@ -207,11 +229,11 @@ template&lt;typename ObjectType2 , typename LabelType2 &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Ensures labels are stored correctly. </p>
+<p>Associates a set of dummy indices with an object. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">ObjectType2</td><td>The type of <code>object</code>. Must be implicitly convertible to <code>ObjectType</code>. </td></tr>
-    <tr><td class="paramname">LabelType2</td><td>The type of <code>labels</code>. Must be implicitly convertible to <code>LabelType</code>.</td></tr>
+    <tr><td class="paramname">LabelType2</td><td>The type of <code>labels</code>. Assumed to be implicitly convertible to either StringType or label_type.</td></tr>
   </table>
   </dd>
 </dl>
@@ -232,13 +254,13 @@ template&lt;typename ObjectType2 , typename LabelType2 &gt; </div>
 
 </div>
 </div>
-<a id="a0b5e2895a45ce40ad2346c0e3933d602"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5e2895a45ce40ad2346c0e3933d602">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[3/3]</span></h2>
+<a id="ab59556226536246570739dd024801270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab59556226536246570739dd024801270">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType  = std::string&gt; </div>
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
 <div class="memtemplate">
 template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;ObjectType2&gt;&gt; </div>
 <table class="mlabels">
@@ -246,9 +268,9 @@ template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;Obje
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, LabelType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType2, LabelType &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType2, StringType &gt; &amp;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
@@ -261,11 +283,103 @@ template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;Obje
 </div><div class="memdoc">
 
 <p>Allows implicit conversion from mutable objects to const objects. </p>
-<p><code>ObjectType</code> may have cv-qualifiers. This ctor allows <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> instances aliasing mutable objects to be used when <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> instances aliasing read-only objects are needed.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">ObjectType2</td><td>The object type stored in <code>input</code>. Must be equivalent to <code>const ObjectType</code>. </td></tr>
-    <tr><td class="paramname">&lt;anonymous&gt;</td><td>Used to disable this overload via SFINAE if ObjectType2 != <code>const ObjectType</code> or if </td></tr>
+    <tr><td class="paramname">&lt;anonymous&gt;</td><td>Used to disable this overload via SFINAE if ObjectType2 != <code>const ObjectType</code> or if <code>ObjectType</code> is not mutable.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><code>ObjectType</code> may have cv-qualifiers. This ctor allows <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> instances aliasing mutable objects to be used when <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> instances aliasing read-only objects are needed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>The <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object to convert. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aad70962adc3a9ac04e54ab1664f7be13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad70962adc3a9ac04e54ab1664f7be13">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType, StringType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object by copying <code>other</code>. </p>
+<p>The <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object created with this ctor will alias the same object as <code>other</code> did, but contain a deep copy of the labels associated with <code>other</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there's a problem allocating memory for the copy. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8725b10682cac824734b800dab8fbf65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8725b10682cac824734b800dab8fbf65">&#9670;&nbsp;</a></span>Labeled() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::<a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType, StringType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object by taking the state from <code>other</code>. </p>
+<p>The <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object created with this ctor will alias the same object as <code>other</code> did and take ownership of the labels which were previously associated with <code>other</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object to take the state from. After this operation <code>other</code> is in a valid, but otherwise undefined state.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
@@ -273,13 +387,331 @@ template&lt;typename ObjectType2 , typename  = enable_if_cv_conversion_t&lt;Obje
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa8f30c294f73ce4e6859afd8845c7983"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8f30c294f73ce4e6859afd8845c7983">&#9670;&nbsp;</a></span>operator=()</h2>
+<a id="a26ad5b68f450e36de28adb8836e329a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26ad5b68f450e36de28adb8836e329a3">&#9670;&nbsp;</a></span>has_object()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ObjectType , typename LabelType  = std::string&gt; </div>
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::has_object </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does *this have an object? </p>
+<p>Under most circumstances *this will be associated with an object. This method can be used to explicitly test that *this does have an object.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if *this has an object and false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a29ef7af4ac0a8bc33bae443f4bdbf6d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29ef7af4ac0a8bc33bae443f4bdbf6d1">&#9670;&nbsp;</a></span>labels() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aabcbcb1c8799a8edbfeaecb347f0adca">const_label_reference</a> <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::labels </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a read-only reference to the dummy labels. </p>
+<p>This method is identical to the non-const version, except that the resulting indices are guaranteed to be read-only. See the description for the non-const version for more details.</p>
+<dl class="section return"><dt>Returns</dt><dd>A read-only reference to the dummy indices.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2ca70fd68c2c5102b3dced45880ad796"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ca70fd68c2c5102b3dced45880ad796">&#9670;&nbsp;</a></span>labels() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a09f8f18b9b2c5ec4c149b3c6b7860627">label_reference</a> <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::labels </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The dummy indices associated with the object. </p>
+<p>This method is used to retrieve the dummy indices associated with the object.</p>
+<dl class="section return"><dt>Returns</dt><dd>A mutable reference to the dummy indices.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a88e0bae8d8743a9e9f3f9cbe7c9e4576"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e0bae8d8743a9e9f3f9cbe7c9e4576">&#9670;&nbsp;</a></span>object() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#aa678cb1a3d21d4556f277e22e68f4e62">object_reference</a> <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::object </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a (possibly) read-only reference to the object. </p>
+<p>This method is used to access the object associated with the dummy indices. The object is mutable if <code>ObjectType</code> is a mutable type and read-only if <code>ObjectType</code> is cv-qualified.</p>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the object.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this does not have an object associated with it. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acb109ff1997c635acef48434c6e55354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb109ff1997c635acef48434c6e55354">&#9670;&nbsp;</a></span>object() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a2787c22b108f45a90146e59c7b1fc31d">const_object_reference</a> <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::object </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a read-only reference to the labeled object. </p>
+<p>This method is identical to the non-const version except that the resulting object is guarantee to be read-only. See the description for the non-const version for more details.</p>
+<dl class="section return"><dt>Returns</dt><dd>A read-only reference to the labeled object.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this does not have an object associated with it. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a513a19c7ed85d459d4918f1fcf965c65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a513a19c7ed85d459d4918f1fcf965c65">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">const_my_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is *this different from <code>rhs</code>? </p>
+<p>This method simply negates operator==. See operator== for the definition of value equal.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The object to compare to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>False if *this is value equal to <code>rhs</code> and true otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8ab1730c75dde506d405e6468a40d533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ab1730c75dde506d405e6468a40d533">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&amp; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType, StringType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets *this equal to <code>rhs</code>. </p>
+<p>This method can be used as a copy assignment for the object *this aliases, but it is NOT copy assignment for *this. More specifically this method will call assign_ to do the actual assignment, which may result in permutations and or traces being taken of <code>rhs</code> before the assignment happens. Whether permutations/traces occur depends on the indices of *this.</p>
+<dl class="section note"><dt>Note</dt><dd>This method is needed because the compiler prefers the compiler generated version over the function template overload.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The object to assign to *this.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after assigning <code>rhs</code> to it and performing any operations specified by the dummy indices.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">???</td><td>Throws if assign_ throws. Same throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9c8a38b1a6d4c19ebd3b243350549dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c8a38b1a6d4c19ebd3b243350549dfd">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&amp; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">Labeled</a>&lt; ObjectType, StringType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets *this equal to <code>rhs</code>. </p>
+<p>This method behaves similar to <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8ab1730c75dde506d405e6468a40d533" title="Sets *this equal to rhs.">operator=(const Labeled&amp;)</a> except that the parser has the option of reusing <code>rhs</code> in the operation instead of copying it.</p>
+<dl class="section note"><dt>Note</dt><dd>This method is needed because the compiler prefers the compiler generated version over the function template overload.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">rhs</td><td>The object to assign to *this. After this operation <code>rhs</code> is in a valid, but otherwise undefined state.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">???</td><td>Throws if assign_ throws. Same throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a804ffe4f6f3879f1598bb8db31eb1f72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a804ffe4f6f3879f1598bb8db31eb1f72">&#9670;&nbsp;</a></span>operator=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
 <div class="memtemplate">
 template&lt;typename TermType &gt; </div>
 <table class="mlabels">
@@ -287,7 +719,7 @@ template&lt;typename TermType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, LabelType &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">my_type</a>&amp; <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::operator= </td>
           <td>(</td>
           <td class="paramtype">TermType &amp;&amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
@@ -308,14 +740,67 @@ template&lt;typename TermType &gt; </div>
   </table>
   </dd>
 </dl>
-<p>Under most circumstances execution of the DSL happens when an expression is assigned to <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> object. The assignment happens via this method.</p>
+<p>This method is the generalization of <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a8ab1730c75dde506d405e6468a40d533" title="Sets *this equal to rhs.">operator=(const Labeled&amp;)</a> to other leaves of the AST. Like the other operator= methods it is implemented by calling assign_.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The expression to assign to *this.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The object containing the AST to assign to *this.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>*this after assigning <code>other</code> to *this. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after assigning <code>other</code> to *this.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">???</td><td>If assign_ throws. Same throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae6fe8c36fe2f39e9cdc2f66eb0678921"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6fe8c36fe2f39e9cdc2f66eb0678921">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType , typename StringType  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a>&lt; ObjectType, StringType &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">const_my_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if *this is value equal to <code>rhs</code>. </p>
+<p>Two <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices.">Labeled</a> objects are value equal if their labels compare value equal and if they both:</p><ol type="1">
+<li>Contain objects which compare (polymorphically) value equal, or</li>
+<li>Do not contain objects.</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The object to compare to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if *this is value equal to <code>rhs</code> and false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.37</span>
+   &#160;<span id="projectnumber">0.0.38</span>
    </div>
   </td>
  </tr>
@@ -116,22 +116,27 @@ $(function() {
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> is_identity() const noexcept { <span class="keywordflow">return</span> <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">is_identity_</a>(); }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// -- Utility methods</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a18616cc4ebaef5efaa3d284f8f959141">mode_index_type</a> rank() const noexcept { <span class="keywordflow">return</span> <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a38101fa04fd4902c83ae1fdbab25045a">rank_</a>(); }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">   65</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">is_identity_</a>() const noexcept = 0;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace tensorwrapper::symmetry</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// -- Utility methods</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">   67</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">is_identity_</a>() const noexcept = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a38101fa04fd4902c83ae1fdbab25045a">   70</a></span>&#160;    virtual <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a18616cc4ebaef5efaa3d284f8f959141">mode_index_type</a> <a class="code" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a38101fa04fd4902c83ae1fdbab25045a">rank_</a>() const noexcept = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;};</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;} <span class="comment">// namespace tensorwrapper::symmetry</span></div>
 <div class="ttc" id="aclasstensorwrapper_1_1detail___1_1PolymorphicBase_html"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase</a></div><div class="ttdoc">Defines the API polymorphic utility methods should use.</div><div class="ttdef"><b>Definition:</b> polymorphic_base.hpp:33</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html">tensorwrapper::symmetry::Operation</a></div><div class="ttdoc">Common API for classes describing a symmetry operation.</div><div class="ttdef"><b>Definition:</b> operation.hpp:29</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html_a18616cc4ebaef5efaa3d284f8f959141"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html#a18616cc4ebaef5efaa3d284f8f959141">tensorwrapper::symmetry::Operation::mode_index_type</a></div><div class="ttdeci">unsigned short mode_index_type</div><div class="ttdoc">Type used to index tensor modes.</div><div class="ttdef"><b>Definition:</b> operation.hpp:44</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html_a20bb4513fbd3bae3535fe3283b20e82f"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html#a20bb4513fbd3bae3535fe3283b20e82f">tensorwrapper::symmetry::Operation::is_identity_</a></div><div class="ttdeci">virtual bool is_identity_() const noexcept=0</div><div class="ttdoc">Derived class should overwrite to implement is_identity.</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html_a38101fa04fd4902c83ae1fdbab25045a"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html#a38101fa04fd4902c83ae1fdbab25045a">tensorwrapper::symmetry::Operation::rank_</a></div><div class="ttdeci">virtual mode_index_type rank_() const noexcept=0</div><div class="ttdoc">Derived class should overwrite to implement rank()</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html_add0f9ec9c6e2118d3052b0ce41535be0"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html#add0f9ec9c6e2118d3052b0ce41535be0">tensorwrapper::symmetry::Operation::base_pointer</a></div><div class="ttdeci">std::unique_ptr&lt; base_type &gt; base_pointer</div><div class="ttdoc">Type of a pointer to a symmetry Operation's base class.</div><div class="ttdef"><b>Definition:</b> operation.hpp:41</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1symmetry_1_1Operation_html_af5199a31e0d06f0ca319d0416886dae3"><div class="ttname"><a href="classtensorwrapper_1_1symmetry_1_1Operation.html#af5199a31e0d06f0ca319d0416886dae3">tensorwrapper::symmetry::Operation::~Operation</a></div><div class="ttdeci">virtual ~Operation() noexcept=default</div><div class="ttdoc">Defaulted no-throw dtor.</div></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1symmetry_html"><div class="ttname"><a href="namespacetensorwrapper_1_1symmetry.html">tensorwrapper::symmetry</a></div><div class="ttdoc">Sublibrary providing classes for describing the symmetry of a tensor.</div><div class="ttdef"><b>Definition:</b> group.hpp:22</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1symmetry_html"><div class="ttname"><a href="namespacetensorwrapper_1_1symmetry.html">tensorwrapper::symmetry</a></div><div class="ttdoc">Sublibrary providing classes for describing the symmetry of a tensor.</div><div class="ttdef"><b>Definition:</b> group.hpp:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
