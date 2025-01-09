@@ -48,26 +48,26 @@ auto eigen_scalar() {
 }
 
 template<typename FloatType>
-auto eigen_vector() {
+auto eigen_vector(std::size_t n = 5) {
     using buffer_type = buffer::Eigen<FloatType, 1>;
     using data_type   = typename buffer_type::data_type;
     data_type vector(5);
-    for(std::size_t i = 0; i < 5; ++i) vector(i) = i;
-    shape::Smooth shape{5};
+    for(std::size_t i = 0; i < n; ++i) vector(i) = i;
+    shape::Smooth shape{n};
     layout::Physical l(shape);
     return buffer_type(vector, l);
 }
 
 template<typename FloatType>
-auto eigen_matrix() {
+auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
     using buffer_type = buffer::Eigen<FloatType, 2>;
     using data_type   = typename buffer_type::data_type;
-    data_type matrix(2, 2);
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(1, 0) = 3.0;
-    matrix(1, 1) = 4.0;
-    shape::Smooth shape{2, 2};
+    data_type matrix(n, m);
+    double counter = 1.0;
+    for(std::size_t i = 0; i < n; ++i)
+        for(std::size_t j = 0; j < m; ++j) matrix(i, j) = counter++;
+
+    shape::Smooth shape{n, m};
     layout::Physical l(shape);
     return buffer_type(matrix, l);
 }

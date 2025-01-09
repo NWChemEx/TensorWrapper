@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/helpers.hpp"
 #include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 #include <vector>
 

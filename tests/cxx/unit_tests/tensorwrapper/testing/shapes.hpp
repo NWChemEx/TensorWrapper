@@ -22,7 +22,7 @@
 #pragma once
 #include <tensorwrapper/tensorwrapper.hpp>
 
-namespace test_tensorwrapper {
+namespace tensorwrapper::testing {
 
 inline auto smooth_scalar() { return tensorwrapper::shape::Smooth{}; }
 
@@ -39,4 +39,4 @@ inline auto smooth_tensor(std::size_t i = 10, std::size_t j = 10,
     return tensorwrapper::shape::Smooth{i, j, k};
 }
 
-} // namespace test_tensorwrapper
+} // namespace tensorwrapper::testing

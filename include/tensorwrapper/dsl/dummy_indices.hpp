@@ -163,6 +163,51 @@ public:
         return true;
     }
 
+    /** @brief Is a thruple of DummyIndices consistent with a pure element-wise
+     *         product?
+     *
+     *  In generalized Einstein notation a pure element-wise (also commonly
+     *  termed Hadamard) product is denoted by *this, @p lhs, and @p rhs
+     *  having the same ordered set of dummy indices, up to permutation.
+     *  Additionally, the dummy indices associated with any given tensor may
+     *  not include a repeated index.
+     *
+     *  @param[in] lhs The dummy indices associated with the tensor to the
+     *                 left of the times operator.
+     *  @param[in] rhs The dummy indices associated with the tensor to the
+     *                 right of the times operator.
+     *
+     *  @return True If the dummy indices given by *this, @p lhs, and @p rhs
+     *          are consistent with a purely element-wise product of the tensors
+     *          that @p lhs and @p rhs label.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool is_hadamard_product(const DummyIndices& lhs,
+                             const DummyIndices& rhs) const noexcept;
+
+    /** @brief Does a thruple of DummyIndices indicate a product is a pure
+     *         contraction?
+     *
+     *  In generalized Einstein notation a pure contraction is an operation
+     *  where indices common to @p lhs and @p rhs are summed over and do NOT
+     *  appear in the result, i.e., *this. Additionally, we stipulate that
+     *  there must be at least one index summed over (if no index is summed over
+     *  the operation is a pure direct-product).
+     *
+     *  @param[in] lhs The dummy indices associated with the tensor to the
+     *                 left of the times operator.
+     *  @param[in] rhs The dummy indices associated with the tensor to the
+     *                 right of the times operator.
+     *
+     *  @return True if the indices associated with *this, @p lhs, and @p rhs
+     *          are consistent with a contraction and false otherwise.
+     *
+     *  @throw None No throw guarantee.
+     */
+    bool is_contraction(const DummyIndices& lhs,
+                        const DummyIndices& rhs) const noexcept;
+
     /** @brief Computes the permutation needed to convert *this into @p other.
      *
      *  Each DummyIndices object is viewed as an ordered set of objects. If
@@ -366,6 +411,31 @@ public:
         return rv;
     }
 
+    /** @brief Returns the  set difference of *this and @p other.
+     *
+     *  The set difference of *this with @p other is the set of indices which
+     *  appear in *this, but not in @p other. This method will return the set
+     *  (indices which appear more than once in *this will only appear once
+     *  in the result) which results from the set difference of *this with
+     *  @p other.
+     *
+     *  @param[in] other The set to remove from *this.
+     *
+     *  @return The set difference of *this and @p rhs.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the return.
+     *                        Strong throw guarantee.
+     */
+    DummyIndices difference(const DummyIndices& other) const {
+        DummyIndices rv;
+        for(const auto& x : *this) {
+            if(other.count(x)) continue;
+            if(rv.count(x)) continue;
+            rv.m_dummy_indices_.push_back(x);
+        }
+        return rv;
+    }
+
 protected:
     /// Main ctor for setting the value, throws if any index is empty
     explicit DummyIndices(split_string_type split_dummy_indices) :
@@ -400,5 +470,29 @@ private:
     /// The split dummy indices
     split_string_type m_dummy_indices_;
 };
+
+template<typename StringType>
+bool DummyIndices<StringType>::is_hadamard_product(
+  const DummyIndices& lhs, const DummyIndices& rhs) const noexcept {
+    if(has_repeated_indices()) return false;
+    if(lhs.has_repeated_indices()) return false;
+    if(rhs.has_repeated_indices()) return false;
+    if(!is_permutation(lhs)) return false;
+    if(!is_permutation(rhs)) return false;
+    return true;
+}
+
+template<typename StringType>
+bool DummyIndices<StringType>::is_contraction(
+  const DummyIndices& lhs, const DummyIndices& rhs) const noexcept {
+    if(has_repeated_indices()) return false;
+    if(lhs.has_repeated_indices()) return false;
+    if(rhs.has_repeated_indices()) return false;
+    auto lhs_cap_rhs = lhs.intersection(rhs);
+    if(lhs_cap_rhs.empty()) return false; // No common indices
+    if(!intersection(lhs_cap_rhs).empty())
+        return false; // Common index not summed
+    return true;
+}
 
 } // namespace tensorwrapper::dsl

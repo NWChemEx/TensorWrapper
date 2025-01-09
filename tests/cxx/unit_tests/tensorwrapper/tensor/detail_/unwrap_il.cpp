@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../../helpers.hpp"
+#include "../../testing/testing.hpp"
 #include <tensorwrapper/tensor/detail_/il_utils.hpp>
 
 TEST_CASE("unwrap_il") {

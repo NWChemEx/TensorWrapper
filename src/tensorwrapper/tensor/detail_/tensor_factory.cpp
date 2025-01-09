@@ -39,15 +39,15 @@ using buffer_pointer          = typename pimpl_type::buffer_pointer;
 // -----------------------------------------------------------------------------
 
 symmetry_pointer TensorFactory::default_logical_symmetry(
-  const_shape_reference) {
+  const_shape_reference shape) {
     // Symmetry is at present NOT polymorphic
-    return std::make_unique<input_type::symmetry_base>();
+    return std::make_unique<input_type::symmetry_base>(shape.rank());
 }
 
 sparsity_pointer TensorFactory::default_logical_sparsity(
-  const_shape_reference, const_symmetry_reference) {
+  const_shape_reference shape, const_symmetry_reference) {
     // Sparsity is at present NOT polymorphic
-    return std::make_unique<input_type::sparsity_base>();
+    return std::make_unique<input_type::sparsity_base>(shape.rank());
 }
 
 logical_layout_pointer TensorFactory::default_logical_layout(

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -45,10 +45,8 @@ TEST_CASE("BufferBase") {
         eigen_vector(0) = 1.0;
         eigen_vector(1) = 2.0;
 
-        symmetry::Group g;
-        sparsity::Pattern p;
-        layout::Physical scalar_layout(shape::Smooth{}, g, p);
-        layout::Physical vector_layout(shape::Smooth{2}, g, p);
+        auto scalar_layout = testing::scalar_physical();
+        auto vector_layout = testing::vector_physical(2);
 
         vector_buffer defaulted;
         scalar_buffer scalar(eigen_scalar, scalar_layout);

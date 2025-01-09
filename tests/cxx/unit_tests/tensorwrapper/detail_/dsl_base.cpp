@@ -43,7 +43,7 @@ TEMPLATE_LIST_TEST_CASE("DSLBase", "", test_types) {
     using label_type  = typename object_type::label_type;
 
     test_types default_values{shape::Smooth{}};
-    test_types values{test_tensorwrapper::smooth_matrix()};
+    test_types values{testing::smooth_matrix()};
 
     auto default_value = std::get<object_type>(default_values);
     auto value         = std::get<object_type>(values);

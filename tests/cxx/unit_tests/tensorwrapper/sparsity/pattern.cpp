@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <tensorwrapper/sparsity/pattern.hpp>
 
 using namespace tensorwrapper::testing;

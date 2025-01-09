@@ -151,8 +151,7 @@ struct TensorInput {
 
     template<typename... Args>
     TensorInput(const_symmetry_reference symmetry, Args&&... args) :
-      TensorInput(std::make_unique<symmetry_base>(symmetry),
-                  std::forward<Args>(args)...) {}
+      TensorInput(symmetry.clone(), std::forward<Args>(args)...) {}
 
     template<typename... Args>
     TensorInput(symmetry_pointer psymmetry, Args&&... args) :
@@ -162,8 +161,7 @@ struct TensorInput {
 
     template<typename... Args>
     TensorInput(const_sparsity_reference sparsity, Args&&... args) :
-      TensorInput(std::make_unique<sparsity_base>(),
-                  std::forward<Args>(args)...) {}
+      TensorInput(sparsity.clone(), std::forward<Args>(args)...) {}
 
     template<typename... Args>
     TensorInput(sparsity_pointer psparsity, Args&&... args) :

@@ -28,7 +28,7 @@ TEMPLATE_LIST_TEST_CASE("Labeled", "", test_types) {
     using labels_type        = typename labeled_type::label_type;
 
     test_types defaulted_values{shape::Smooth{}};
-    test_types values{test_tensorwrapper::smooth_matrix()};
+    test_types values{testing::smooth_matrix()};
 
     labels_type scalar;
     labels_type ij("i,j");
@@ -130,7 +130,7 @@ TEMPLATE_LIST_TEST_CASE("Labeled", "", test_types) {
         REQUIRE(clabeled_default == labeled_default);
 
         // Different object, same labels
-        auto value2 = test_tensorwrapper::smooth_matrix(20, 10);
+        auto value2 = testing::smooth_matrix(20, 10);
         REQUIRE_FALSE(labeled_value == labeled_type(value2, ij));
 
         // Same object, different labels

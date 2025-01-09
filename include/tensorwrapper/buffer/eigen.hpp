@@ -180,10 +180,36 @@ protected:
         return my_base_type::are_equal_impl_<my_type>(rhs);
     }
 
+    /// Implements addition_assignment by calling addition_assignment on state
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+
+    /// Calls subtraction_assignment on each member
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+
+    /// Calls multiplication_assignment on each member
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    /// Calls permute_assignment on each member
+    // dsl_reference permute_assignment_(label_type this_labels,
+    //                                   const_labeled_reference rhs) override;
+
     /// Implements to_string
     typename my_base_type::string_type to_string_() const override;
 
 private:
+    dsl_reference hadamard_(label_type this_labels, const_labeled_reference lhs,
+                            const_labeled_reference rhs);
+
+    dsl_reference contraction_(label_type this_labels,
+                               const_labeled_reference lhs,
+                               const_labeled_reference rhs);
+
     /// The actual Eigen tensor
     data_type m_tensor_;
 };

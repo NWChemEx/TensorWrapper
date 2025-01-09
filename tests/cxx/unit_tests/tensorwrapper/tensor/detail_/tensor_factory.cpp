@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "../../helpers.hpp"
-#include "../../inputs.hpp"
+#include "../../testing/testing.hpp"
 #include <tensorwrapper/tensor/detail_/tensor_factory.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>
 
@@ -59,16 +58,16 @@ TEST_CASE("TensorFactory") {
     SECTION("default_logical_symmetry") {
         // N.B. at moment default symmetry is no-symmetry, i.e., an empty Group
         symmetry::Group corr;
-        auto i      = testing::smooth_scalar();
+        auto i      = testing::smooth_scalar_input();
         auto result = TensorFactory::default_logical_symmetry(*i.m_pshape);
         REQUIRE((*result) == corr);
     }
 
     SECTION("default_logical_sparsity") {
         // N.B. at moment default symmetry is no sparsity
-        sparsity::Pattern corr;
+        sparsity::Pattern corr(2);
 
-        auto i = testing::smooth_symmetric_matrix();
+        auto i = testing::smooth_symmetric_matrix_input();
         auto result =
           TensorFactory::default_logical_sparsity(*i.m_pshape, *i.m_psymmetry);
         REQUIRE((*result) == corr);
@@ -116,7 +115,7 @@ TEST_CASE("TensorFactory") {
 
     SECTION("construct(scalar_il_type)") {
         auto ppimpl = TensorFactory::construct(42.0);
-        auto corr   = TensorFactory::construct(testing::smooth_scalar());
+        auto corr   = TensorFactory::construct(testing::smooth_scalar_input());
         REQUIRE(*ppimpl == *corr);
     }
 
@@ -124,7 +123,7 @@ TEST_CASE("TensorFactory") {
         using vector_il_type = typename TensorFactory::vector_il_type;
         vector_il_type il{0.0, 1.0, 2.0, 3.0, 4.0};
         auto ppimpl = TensorFactory::construct(il);
-        auto corr   = TensorFactory::construct(testing::smooth_vector());
+        auto corr   = TensorFactory::construct(testing::smooth_vector_input());
         REQUIRE(*ppimpl == *corr);
     }
 
@@ -132,7 +131,7 @@ TEST_CASE("TensorFactory") {
         using matrix_il_type = typename TensorFactory::matrix_il_type;
         matrix_il_type il{{1.0, 2.0}, {3.0, 4.0}};
         auto ppimpl = TensorFactory::construct(il);
-        auto corr   = TensorFactory::construct(testing::smooth_matrix());
+        auto corr   = TensorFactory::construct(testing::smooth_matrix_input());
         REQUIRE(*ppimpl == *corr);
     }
 
@@ -140,7 +139,7 @@ TEST_CASE("TensorFactory") {
         using tensor3_il_type = typename TensorFactory::tensor3_il_type;
         tensor3_il_type il{{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}};
         auto ppimpl = TensorFactory::construct(il);
-        auto corr   = TensorFactory::construct(testing::smooth_tensor3());
+        auto corr   = TensorFactory::construct(testing::smooth_tensor3_input());
         REQUIRE(*ppimpl == *corr);
     }
 
@@ -150,7 +149,7 @@ TEST_CASE("TensorFactory") {
           {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}},
           {{{9.0, 10.0}, {11.0, 12.0}}, {{13.0, 14.0}, {15.0, 16.0}}}};
         auto ppimpl = TensorFactory::construct(il);
-        auto corr   = TensorFactory::construct(testing::smooth_tensor4());
+        auto corr   = TensorFactory::construct(testing::smooth_tensor4_input());
         REQUIRE(*ppimpl == *corr);
     }
 
@@ -164,9 +163,10 @@ TEST_CASE("TensorFactory") {
 
     SECTION("assert_valid") {
         TensorFactory f;
-        REQUIRE_NOTHROW(f.assert_valid(testing::smooth_scalar()));
-        REQUIRE_NOTHROW(f.assert_valid(testing::smooth_vector()));
-        REQUIRE_NOTHROW(f.assert_valid(testing::smooth_symmetric_matrix()));
+        REQUIRE_NOTHROW(f.assert_valid(testing::smooth_scalar_input()));
+        REQUIRE_NOTHROW(f.assert_valid(testing::smooth_vector_input()));
+        REQUIRE_NOTHROW(
+          f.assert_valid(testing::smooth_symmetric_matrix_input()));
 
         using e_t = std::runtime_error;
 
@@ -182,7 +182,7 @@ TEST_CASE("TensorFactory") {
         }
 
         SECTION("Buffer with incompatible physical layout") {
-            layout::Physical p(shape::Smooth{3, 3}, g, sparsity);
+            layout::Physical p(shape::Smooth{3, 3});
             TensorInput i(std::move(pbuffer), p);
             REQUIRE_THROWS_AS(f.assert_valid(i), e_t);
         }

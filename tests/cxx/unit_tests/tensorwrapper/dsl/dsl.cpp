@@ -19,17 +19,15 @@
 
 using namespace tensorwrapper;
 
-using test_types =
-  std::tuple<shape::Smooth, symmetry::Group, sparsity::Pattern>;
-
-TEMPLATE_LIST_TEST_CASE("DSL", "", test_types) {
+TEMPLATE_LIST_TEST_CASE("DSL", "", testing::dsl_types) {
     using object_type = TestType;
 
-    test_types scalar_values{test_tensorwrapper::smooth_scalar(),
-                             symmetry::Group(0), sparsity::Pattern(0)};
-    test_types matrix_values{test_tensorwrapper::smooth_matrix(),
-                             symmetry::Group(2), sparsity::Pattern(2)};
+    auto scalar_values = testing::scalar_values();
+    auto vector_values = testing::vector_values();
+    auto matrix_values = testing::matrix_values();
+
     auto value0 = std::get<object_type>(scalar_values);
+    auto value1 = std::get<object_type>(vector_values);
     auto value2 = std::get<object_type>(matrix_values);
 
     SECTION("assignment") {
@@ -40,32 +38,28 @@ TEMPLATE_LIST_TEST_CASE("DSL", "", test_types) {
     SECTION("permutation") {
         value0("j,i") = value2("i,j");
 
-        object_type corr{};
-        corr.permute_assignment("i,j", value2("j,i"));
-        REQUIRE(corr.are_equal(value0));
+        value1.permute_assignment("i,j", value2("j,i"));
+        REQUIRE(value1.are_equal(value0));
     }
 
     SECTION("addition") {
         value0("i,j") = value2("i,j") + value2("i,j");
 
-        object_type corr{};
-        corr.addition_assignment("i,j", value2("i,j"), value2("i,j"));
-        REQUIRE(corr.are_equal(value0));
+        value1.addition_assignment("i,j", value2("i,j"), value2("i,j"));
+        REQUIRE(value1.are_equal(value0));
     }
 
     SECTION("subtraction") {
         value0("i,j") = value2("i,j") - value2("i,j");
 
-        object_type corr{};
-        corr.subtraction_assignment("i,j", value2("i,j"), value2("i,j"));
-        REQUIRE(corr.are_equal(value0));
+        value1.subtraction_assignment("i,j", value2("i,j"), value2("i,j"));
+        REQUIRE(value1.are_equal(value0));
     }
 
     SECTION("multiplication") {
         value0("i,j") = value2("i,j") * value2("i,j");
 
-        object_type corr{};
-        corr.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
-        REQUIRE(corr.are_equal(value0));
+        value1.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
+        REQUIRE(value1.are_equal(value0));
     }
 }

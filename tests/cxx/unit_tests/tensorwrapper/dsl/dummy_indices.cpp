@@ -86,6 +86,65 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE_FALSE(matrix.is_permutation(dummy_indices_type("i,k")));
     }
 
+    SECTION("is_hadamard_product") {
+        REQUIRE(scalar.is_hadamard_product(scalar, scalar));
+        REQUIRE(vector.is_hadamard_product(vector, vector));
+        REQUIRE(matrix.is_hadamard_product(matrix, matrix));
+        REQUIRE(tensor.is_hadamard_product(tensor, tensor));
+
+        // Permutations are fine
+        REQUIRE(matrix.is_hadamard_product(matrix, dummy_indices_type("j,i")));
+
+        // *this, LHS, and RHS can't have repeated index
+        dummy_indices_type ii("i,i");
+        REQUIRE_FALSE(ii.is_hadamard_product(matrix, matrix));
+        REQUIRE_FALSE(matrix.is_hadamard_product(ii, matrix));
+        REQUIRE_FALSE(matrix.is_hadamard_product(matrix, ii));
+
+        // Can't be contraction
+        dummy_indices_type ik("i,k");
+        dummy_indices_type kj("k,j");
+        REQUIRE_FALSE(matrix.is_hadamard_product(ik, kj));
+        REQUIRE_FALSE(matrix.is_hadamard_product(kj, ik));
+
+        // Can't be mixed Hadamard/contraction product
+        dummy_indices_type ijk("i,j,k");
+        dummy_indices_type ikj("i,k,j");
+        REQUIRE_FALSE(matrix.is_hadamard_product(ijk, ikj));
+
+        // Can't be direct product
+        dummy_indices_type kl("k,l");
+        dummy_indices_type ijkl("i,j,k,l");
+        REQUIRE_FALSE(ijkl.is_hadamard_product(matrix, kl));
+    }
+
+    SECTION("is_contraction") {
+        dummy_indices_type ik("i,k");
+        dummy_indices_type kj("k,j");
+        REQUIRE(matrix.is_contraction(ik, kj));
+        REQUIRE(matrix.is_contraction(kj, ik));
+
+        // Hadamard products are not contractions
+        REQUIRE_FALSE(matrix.is_contraction(matrix, matrix));
+        REQUIRE_FALSE(matrix.is_contraction(matrix, dummy_indices_type("j,i")));
+
+        // *this, LHS, and RHS can't have repeated index
+        dummy_indices_type ii("i,i");
+        REQUIRE_FALSE(ii.is_contraction(matrix, matrix));
+        REQUIRE_FALSE(matrix.is_contraction(ii, matrix));
+        REQUIRE_FALSE(matrix.is_contraction(matrix, ii));
+
+        // Can't be mixed Hadamard/contraction product
+        dummy_indices_type ijk("i,j,k");
+        dummy_indices_type ikj("i,k,j");
+        REQUIRE_FALSE(matrix.is_contraction(ijk, ikj));
+
+        // Can't be direct product
+        dummy_indices_type kl("k,l");
+        dummy_indices_type ijkl("i,j,k,l");
+        REQUIRE_FALSE(ijkl.is_contraction(matrix, kl));
+    }
+
     SECTION("permutation") {
         using offset_vector = typename dummy_indices_type::offset_vector;
 
@@ -239,5 +298,23 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(matrix.intersection(vector) == dummy_indices_type("i"));
         REQUIRE(matrix.intersection(matrix) == dummy_indices_type("i,j"));
         REQUIRE(matrix.intersection(matrix2) == dummy_indices_type(""));
+    }
+
+    SECTION("difference") {
+        dummy_indices_type matrix2("k,l");
+        REQUIRE(scalar.difference(scalar) == dummy_indices_type(""));
+        REQUIRE(scalar.difference(vector) == dummy_indices_type(""));
+        REQUIRE(scalar.difference(matrix) == dummy_indices_type(""));
+        REQUIRE(scalar.difference(matrix2) == dummy_indices_type(""));
+
+        REQUIRE(vector.difference(scalar) == dummy_indices_type("i"));
+        REQUIRE(vector.difference(vector) == dummy_indices_type(""));
+        REQUIRE(vector.difference(matrix) == dummy_indices_type(""));
+        REQUIRE(vector.difference(matrix2) == dummy_indices_type("i"));
+
+        REQUIRE(matrix.difference(scalar) == dummy_indices_type("i,j"));
+        REQUIRE(matrix.difference(vector) == dummy_indices_type("j"));
+        REQUIRE(matrix.difference(matrix) == dummy_indices_type(""));
+        REQUIRE(matrix.difference(matrix2) == dummy_indices_type("i,j"));
     }
 }

@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/dsl/labeled.hpp>
 #include <tensorwrapper/layout/layout_base.hpp>
@@ -25,30 +26,32 @@ namespace tensorwrapper::buffer {
  *
  *  All classes which wrap existing tensor libraries derive from this class.
  */
-class BufferBase : public detail_::PolymorphicBase<BufferBase> {
+class BufferBase : public detail_::PolymorphicBase<BufferBase>,
+                   public detail_::DSLBase<BufferBase> {
 private:
     /// Type of *this
     using my_type = BufferBase;
 
     /// Type *this inherits from
-    using my_base_type = detail_::PolymorphicBase<my_type>;
+    using polymorphic_base = detail_::PolymorphicBase<my_type>;
 
 public:
     /// Type all buffers inherit from
-    using buffer_base_type = typename my_base_type::base_type;
+    using buffer_base_type = typename polymorphic_base::base_type;
 
     /// Type of a mutable reference to a buffer_base_type object
-    using buffer_base_reference = typename my_base_type::base_reference;
+    using buffer_base_reference = typename polymorphic_base::base_reference;
 
     /// Type of a read-only reference to a buffer_base_type object
     using const_buffer_base_reference =
-      typename my_base_type::const_base_reference;
+      typename polymorphic_base::const_base_reference;
 
     /// Type of a pointer to an object of type buffer_base_type
-    using buffer_base_pointer = typename my_base_type::base_pointer;
+    using buffer_base_pointer = typename polymorphic_base::base_pointer;
 
     /// Type of a pointer to a read-only object of type buffer_base_type
-    using const_buffer_base_pointer = typename my_base_type::const_base_pointer;
+    using const_buffer_base_pointer =
+      typename polymorphic_base::const_base_pointer;
 
     /// Type of the class describing the physical layout of the buffer
     using layout_type = layout::LayoutBase;
@@ -58,6 +61,9 @@ public:
 
     /// Type of a pointer to the layout
     using layout_pointer = typename layout_type::layout_pointer;
+
+    /// Type used to represent the tensor's rank
+    using rank_type = typename layout_type::size_type;
 
     // -------------------------------------------------------------------------
     // -- Accessors
@@ -88,6 +94,10 @@ public:
     const_layout_reference layout() const {
         assert_layout_();
         return *m_layout_;
+    }
+
+    rank_type rank() const noexcept {
+        return has_layout() ? layout().rank() : 0;
     }
 
     // -------------------------------------------------------------------------
@@ -190,6 +200,21 @@ protected:
         }
         return *this;
     }
+
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 
 private:
     /// Throws std::runtime_error when there is no layout

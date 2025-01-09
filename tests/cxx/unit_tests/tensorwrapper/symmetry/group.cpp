@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <tensorwrapper/symmetry/group.hpp>
 #include <tensorwrapper/symmetry/permutation.hpp>
 

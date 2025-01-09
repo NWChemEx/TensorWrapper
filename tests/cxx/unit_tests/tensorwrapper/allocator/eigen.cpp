@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <parallelzone/parallelzone.hpp>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
@@ -26,10 +26,6 @@ TEMPLATE_TEST_CASE("EigenAllocator", "", float, double) {
     using scalar_alloc_type   = allocator::Eigen<TestType, 0>;
     using vector_alloc_type   = allocator::Eigen<TestType, 1>;
     using matrix_alloc_type   = allocator::Eigen<TestType, 2>;
-    using layout_type         = typename scalar_alloc_type::eigen_layout_type;
-    using shape_type          = typename shape::Smooth;
-    using symmetry_type       = typename layout_type::symmetry_type;
-    using sparsity_type       = typename layout_type::sparsity_type;
     using eigen_buffer_scalar = typename scalar_alloc_type::eigen_buffer_type;
     using eigen_buffer_vector = typename vector_alloc_type::eigen_buffer_type;
     using eigen_buffer_matrix = typename matrix_alloc_type::eigen_buffer_type;
@@ -39,11 +35,10 @@ TEMPLATE_TEST_CASE("EigenAllocator", "", float, double) {
 
     parallelzone::runtime::RuntimeView rv;
 
-    symmetry_type g;
-    sparsity_type sparsity;
-    layout_type scalar_layout(shape_type{}, g, sparsity);
-    layout_type vector_layout(shape_type{2}, g, sparsity);
-    layout_type matrix_layout(shape_type{2, 2}, g, sparsity);
+    auto scalar_layout = testing::scalar_physical();
+    auto vector_layout = testing::vector_physical(2);
+    auto matrix_layout = testing::matrix_physical(2, 2);
+    using layout_type  = decltype(scalar_layout);
 
     scalar_alloc_type scalar_alloc(rv);
     vector_alloc_type vector_alloc(rv);
