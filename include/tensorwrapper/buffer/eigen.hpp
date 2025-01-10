@@ -196,8 +196,8 @@ protected:
       const_labeled_reference rhs) override;
 
     /// Calls permute_assignment on each member
-    // dsl_reference permute_assignment_(label_type this_labels,
-    //                                   const_labeled_reference rhs) override;
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
 
     /// Implements to_string
     typename my_base_type::string_type to_string_() const override;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include "eigen_contraction.hpp"
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
@@ -128,28 +128,27 @@ typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
         throw std::runtime_error("Mixed products NYI");
 }
 
-// TPARAMS
-// typename EIGEN::buffer_base_reference EIGEN::permute_assignment_(
-//   label_type this_labels, const_labeled_buffer_reference rhs) {
-//     dummy_indices_type llabels(this_labels);
-//     dummy_indices_type rlabels(rhs.rhs());
+TPARAMS
+typename EIGEN::dsl_reference EIGEN::permute_assignment_(
+  label_type this_labels, const_labeled_reference rhs) {
+    BufferBase::permute_assignment_(this_labels, rhs);
 
-//     using allocator_type       = allocator::Eigen<FloatType, Rank>;
-//     const auto& rhs_downcasted = allocator_type::rebind(rhs.lhs());
+    using allocator_type       = allocator::Eigen<FloatType, Rank>;
+    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
 
-//     if(llabels != rlabels) { // We need to permute rhs before assignment
-//         auto r_to_l = rlabels.permutation(llabels);
-//         // Eigen wants int objects
-//         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-//         m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
-//     } else {
-//         m_tensor_ = rhs_downcasted.value();
-//     }
+    const auto& rlabels = rhs.labels();
 
-//     // TODO: permute layout
+    if(this_labels != rlabels) { // We need to permute rhs before assignment
+        auto r_to_l = rhs.labels().permutation(this_labels);
+        // Eigen wants int objects
+        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
+    } else {
+        m_tensor_ = rhs_downcasted.value();
+    }
 
-//     return *this;
-// }
+    return *this;
+}
 
 TPARAMS
 typename detail_::PolymorphicBase<BufferBase>::string_type EIGEN::to_string_()
@@ -204,23 +203,27 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
     const auto& llabels = lhs.labels();
+    const auto& lobject = lhs.object();
     const auto& rlabels = rhs.labels();
-    auto common         = llabels.intersection(rlabels);
-    auto result         = llabels.concatenation(rlabels).difference(common);
+    const auto& robject = rhs.object();
 
-    // const auto& lobject = lhs.object();
-    // const auto& robject = rhs.object();
+    // N.b. is a pure contraction, so common indices are summed over
+    auto common = llabels.intersection(rlabels);
 
-    using pair      = std::pair<int, int>;
-    using pair_list = std::vector<pair>;
-    pair_list contracted_pairs;
-    auto rank = result.size();
-    for(decltype(rank) i = 0; i < rank; ++rank) {
-        const auto& index_i = result.at(i);
-        contracted_pairs.push_back(pair(i, rlabels.find(index_i)[0]));
+    // -- This block converts string indices to mode offsets
+    using rank_type = unsigned short;
+    using pair_type = std::pair<rank_type, rank_type>;
+    std::vector<pair_type> modes;
+    auto rank = common.size();
+    for(decltype(rank) i = 0; i < rank; ++i) {
+        const auto& index_i = common.at(i);
+        // N.b., pure contraction so there's no repeats within a tensor's label
+        auto lindex = llabels.find(index_i)[0];
+        auto rindex = rlabels.find(index_i)[0];
+        modes.push_back(pair_type(lindex, rindex));
     }
 
-    return *this;
+    return eigen_contraction<FloatType>(*this, lobject, robject, modes);
 }
 
 #undef EIGEN

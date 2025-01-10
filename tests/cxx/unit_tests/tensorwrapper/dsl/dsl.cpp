@@ -63,3 +63,55 @@ TEMPLATE_LIST_TEST_CASE("DSL", "", testing::dsl_types) {
         REQUIRE(value1.are_equal(value0));
     }
 }
+
+// Since Eigen buffers are templated on the rank there isn't an easy way to
+// include them in dsl_types
+TEST_CASE("DSLr : buffer::Eigen") {
+    auto scalar0 = testing::eigen_scalar<float>();
+    auto scalar1 = testing::eigen_scalar<float>();
+    auto scalar2 = testing::eigen_scalar<float>();
+    auto corr    = testing::eigen_scalar<float>();
+
+    scalar0.value()() = 1.0;
+    scalar1.value()() = 2.0;
+    scalar2.value()() = 3.0;
+
+    SECTION("assignment") {
+        SECTION("scalar") {
+            scalar0("") = scalar1("");
+            corr.permute_assignment("", scalar1(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("addition") {
+        SECTION("scalar") {
+            scalar0("") = scalar1("") + scalar2("");
+            corr.addition_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("subtraction") {
+        SECTION("scalar") {
+            scalar0("") = scalar1("") - scalar2("");
+            corr.subtraction_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("multiplication") {
+        SECTION("scalar") {
+            scalar0("") = scalar1("") * scalar2("");
+            corr.multiplication_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("scalar_multiplication") {
+        // This should actually work. Will fix in a future PR
+        using error_t = std::runtime_error;
+
+        REQUIRE_THROWS_AS(scalar0("") = scalar0("") * 1.0, error_t);
+    }
+}
