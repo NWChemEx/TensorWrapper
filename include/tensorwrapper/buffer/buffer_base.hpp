@@ -32,6 +32,7 @@ private:
     /// Type of *this
     using my_type = BufferBase;
 
+protected:
     /// Type *this inherits from
     using polymorphic_base = detail_::PolymorphicBase<my_type>;
 

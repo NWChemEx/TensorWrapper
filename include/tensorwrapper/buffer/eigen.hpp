@@ -200,7 +200,7 @@ protected:
                                       const_labeled_reference rhs) override;
 
     /// Implements to_string
-    typename my_base_type::string_type to_string_() const override;
+    typename polymorphic_base::string_type to_string_() const override;
 
 private:
     dsl_reference hadamard_(label_type this_labels, const_labeled_reference lhs,
