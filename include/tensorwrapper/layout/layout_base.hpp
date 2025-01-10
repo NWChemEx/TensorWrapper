@@ -242,7 +242,7 @@ protected:
     /// Deleted to help avoid slicing
     ///@{
     LayoutBase& operator=(const LayoutBase&) = delete;
-    LayoutBase& operator=(LayoutBase&&)      = delete;
+    LayoutBase& operator=(LayoutBase&&) = delete;
     ///@}
 
     /// Implements addition_assignment by calling addition_assignment on state
