@@ -51,7 +51,7 @@ template<typename FloatType>
 auto eigen_vector(std::size_t n = 5) {
     using buffer_type = buffer::Eigen<FloatType, 1>;
     using data_type   = typename buffer_type::data_type;
-    data_type vector(5);
+    data_type vector(n);
     for(std::size_t i = 0; i < n; ++i) vector(i) = i;
     shape::Smooth shape{n};
     layout::Physical l(shape);

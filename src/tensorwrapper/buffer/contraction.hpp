@@ -6,13 +6,11 @@ namespace {
 static int max_rank = 6;
 }
 
-template<typename FloatType, unsigned short OutRank, unsigned short LHSRank,
-         unsigned short RHSRank, unsigned long N>
-BufferBase::dsl_reference contraction(
-  buffer::Eigen<FloatType, OutRank>& rv,
-  const buffer::Eigen<FloatType, LHSRank>& lhs,
-  const buffer::Eigen<FloatType, RHSRank>& rhs,
-  std::array<std::pair<int, int>, N> sum_modes) {
+/// Wraps the contraction once we've worked out all of the template params.
+template<typename RVType, typename LHSType, typename RHSType,
+         typename ModesType>
+BufferBase::dsl_reference contraction(RVType&& rv, LHSType&& lhs, RHSType&& rhs,
+                                      ModesType&& sum_modes) {
     rv.value() = lhs.value().contract(rhs.value(), sum_modes);
     return rv;
 }
