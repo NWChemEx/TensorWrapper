@@ -15,7 +15,9 @@
  */
 
 #pragma once
-#include "../helpers.hpp"
-#include "../inputs.hpp"
+#include "dsl.hpp"
 #include "eigen_buffers.hpp"
+#include "helpers.hpp"
+#include "inputs.hpp"
+#include "layouts.hpp"
 #include "shapes.hpp"

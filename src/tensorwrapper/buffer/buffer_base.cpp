@@ -16,4 +16,58 @@
 
 #include <tensorwrapper/buffer/buffer_base.hpp>
 
-namespace tensorwrapper::buffer {} // namespace tensorwrapper::buffer
+namespace tensorwrapper::buffer {
+
+using dsl_reference = typename BufferBase::dsl_reference;
+
+dsl_reference BufferBase::addition_assignment_(label_type this_labels,
+                                               const_labeled_reference lhs,
+                                               const_labeled_reference rhs) {
+    auto llayout = lhs.object().layout()(lhs.labels());
+    auto rlayout = rhs.object().layout()(rhs.labels());
+
+    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
+
+    m_layout_->addition_assignment(this_labels, llayout, rlayout);
+
+    return *this;
+}
+
+dsl_reference BufferBase::subtraction_assignment_(label_type this_labels,
+                                                  const_labeled_reference lhs,
+                                                  const_labeled_reference rhs) {
+    auto llayout = lhs.object().layout()(lhs.labels());
+    auto rlayout = rhs.object().layout()(rhs.labels());
+
+    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
+
+    m_layout_->subtraction_assignment(this_labels, llayout, rlayout);
+
+    return *this;
+}
+
+dsl_reference BufferBase::multiplication_assignment_(
+  label_type this_labels, const_labeled_reference lhs,
+  const_labeled_reference rhs) {
+    auto llayout = lhs.object().layout()(lhs.labels());
+    auto rlayout = rhs.object().layout()(rhs.labels());
+
+    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
+
+    m_layout_->multiplication_assignment(this_labels, llayout, rlayout);
+
+    return *this;
+}
+
+dsl_reference BufferBase::permute_assignment_(label_type this_labels,
+                                              const_labeled_reference rhs) {
+    auto rlayout = rhs.object().layout()(rhs.labels());
+
+    if(!has_layout()) m_layout_ = rhs.object().layout().clone();
+
+    m_layout_->permute_assignment(this_labels, rlayout);
+
+    return *this;
+}
+
+} // namespace tensorwrapper::buffer

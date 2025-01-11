@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "../../helpers.hpp"
-#include "../../inputs.hpp"
+#include "../../testing/testing.hpp"
 #include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/layout/logical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -25,9 +24,9 @@ using namespace tensorwrapper;
 using buffer_type = buffer::Eigen<double, 2>;
 
 TEST_CASE("TensorPIMPL") {
-    auto input = testing::smooth_vector();
-    symmetry::Group g;
-    sparsity::Pattern sparsity;
+    auto input = testing::smooth_vector_input();
+    symmetry::Group g(1);
+    sparsity::Pattern sparsity(1);
 
     layout::Logical logical_corr(*input.m_pshape, g, sparsity);
     auto pbuffer_corr    = input.m_pbuffer->clone();
@@ -90,7 +89,7 @@ TEST_CASE("TensorPIMPL") {
 
         SECTION("Different logical layout") {
             shape::Smooth scalar{};
-            auto pl2 = std::make_unique<layout::Logical>(scalar, g, sparsity);
+            auto pl2 = std::make_unique<layout::Logical>(scalar);
             detail_::TensorPIMPL diff(std::move(pl2), std::move(pbuffer2));
             REQUIRE_FALSE(value == diff);
         }

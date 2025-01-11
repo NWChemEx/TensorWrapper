@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <set>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>

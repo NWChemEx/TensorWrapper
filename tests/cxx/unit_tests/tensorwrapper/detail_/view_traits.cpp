@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/helpers.hpp"
 #include <tensorwrapper/detail_/view_traits.hpp>
 
 using namespace tensorwrapper::detail_;

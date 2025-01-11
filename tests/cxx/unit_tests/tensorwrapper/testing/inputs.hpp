@@ -33,7 +33,7 @@ inline auto smooth_scalar_() {
     return detail_::TensorInput(shape, std::move(buffer));
 }
 
-inline auto smooth_scalar() { return smooth_scalar_<double>(); }
+inline auto smooth_scalar_input() { return smooth_scalar_<double>(); }
 
 /// 5 element vector such that element i is i
 template<typename FloatType>
@@ -43,7 +43,7 @@ inline auto smooth_vector_() {
     return detail_::TensorInput(shape, std::move(buffer));
 }
 
-inline auto smooth_vector() { return smooth_vector_<double>(); }
+inline auto smooth_vector_input() { return smooth_vector_<double>(); }
 
 /// 5 element vector internally stored as a 5 by 1 matrix
 inline auto smooth_vector_alt() {
@@ -63,9 +63,9 @@ inline auto smooth_matrix_() {
     return detail_::TensorInput(shape, std::move(buffer));
 }
 
-inline auto smooth_matrix() { return smooth_matrix_<double>(); }
+inline auto smooth_matrix_input() { return smooth_matrix_<double>(); }
 
-inline auto smooth_symmetric_matrix() {
+inline auto smooth_symmetric_matrix_input() {
     using buffer_type = buffer::Eigen<double, 2>;
     using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{3, 3};
@@ -92,9 +92,9 @@ inline auto smooth_tensor3_() {
     return detail_::TensorInput(shape, std::move(buffer));
 }
 
-inline auto smooth_tensor3() { return smooth_tensor3_<double>(); }
+inline auto smooth_tensor3_input() { return smooth_tensor3_<double>(); }
 
-inline auto smooth_tensor4() {
+inline auto smooth_tensor4_input() {
     using buffer_type = buffer::Eigen<double, 4>;
     using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{2, 2, 2, 2};

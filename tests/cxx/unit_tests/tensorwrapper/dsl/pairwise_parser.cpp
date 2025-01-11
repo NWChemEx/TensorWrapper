@@ -17,25 +17,22 @@
 
 using namespace tensorwrapper;
 
-using test_types =
-  std::tuple<shape::Smooth, symmetry::Group, sparsity::Pattern>;
-
-TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
+TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", testing::dsl_types) {
     using object_type = TestType;
 
-    test_types scalar_values{test_tensorwrapper::smooth_scalar(),
-                             symmetry::Group(0), sparsity::Pattern(0)};
-    test_types matrix_values{test_tensorwrapper::smooth_matrix(),
-                             symmetry::Group(2), sparsity::Pattern(2)};
+    auto scalar_values = testing::scalar_values();
+    auto vector_values = testing::vector_values();
+    auto matrix_values = testing::matrix_values();
 
     auto value0 = std::get<object_type>(scalar_values);
+    auto value1 = std::get<object_type>(vector_values);
     auto value2 = std::get<object_type>(matrix_values);
 
     dsl::PairwiseParser p;
 
     SECTION("assignment") {
-        object_type rv{};
-        object_type corr{};
+        object_type rv(value1);
+        object_type corr(value1);
         SECTION("scalar") {
             p.dispatch(rv(""), value0(""));
             corr.permute_assignment("", value0(""));
@@ -50,8 +47,8 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
     }
 
     SECTION("addition") {
-        object_type rv{};
-        object_type corr{};
+        object_type rv(value1);
+        object_type corr(value1);
         SECTION("scalar") {
             p.dispatch(rv(""), value0("") + value0(""));
             corr.addition_assignment("", value0(""), value0(""));
@@ -66,8 +63,8 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
     }
 
     SECTION("subtraction") {
-        object_type rv{};
-        object_type corr{};
+        object_type rv(value1);
+        object_type corr(value1);
         SECTION("scalar") {
             p.dispatch(rv(""), value0("") - value0(""));
             corr.subtraction_assignment("", value0(""), value0(""));
@@ -82,8 +79,8 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
     }
 
     SECTION("multiplication") {
-        object_type rv{};
-        object_type corr{};
+        object_type rv(value1);
+        object_type corr(value1);
         SECTION("scalar") {
             p.dispatch(rv(""), value0("") * value0(""));
             corr.multiplication_assignment("", value0(""), value0(""));
@@ -103,5 +100,59 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", test_types) {
         using error_t = std::runtime_error;
 
         REQUIRE_THROWS_AS(p.dispatch(value0(""), value0("") * 1.0), error_t);
+    }
+}
+
+// Since Eigen buffers are templated on the rank there isn't an easy way to
+// include them in dsl_types
+TEST_CASE("PairwiseParser : buffer::Eigen") {
+    auto scalar0 = testing::eigen_scalar<float>();
+    auto scalar1 = testing::eigen_scalar<float>();
+    auto scalar2 = testing::eigen_scalar<float>();
+    auto corr    = testing::eigen_scalar<float>();
+
+    scalar0.value()() = 1.0;
+    scalar1.value()() = 2.0;
+    scalar2.value()() = 3.0;
+
+    dsl::PairwiseParser p;
+
+    SECTION("assignment") {
+        SECTION("scalar") {
+            p.dispatch(scalar0(""), scalar1(""));
+            corr.permute_assignment("", scalar1(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("addition") {
+        SECTION("scalar") {
+            p.dispatch(scalar0(""), scalar1("") + scalar2(""));
+            corr.addition_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("subtraction") {
+        SECTION("scalar") {
+            p.dispatch(scalar0(""), scalar1("") - scalar2(""));
+            corr.subtraction_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("multiplication") {
+        SECTION("scalar") {
+            p.dispatch(scalar0(""), scalar1("") * scalar2(""));
+            corr.multiplication_assignment("", scalar1(""), scalar2(""));
+            REQUIRE(corr.are_equal(scalar0));
+        }
+    }
+
+    SECTION("scalar_multiplication") {
+        // This should actually work. Will fix in a future PR
+        using error_t = std::runtime_error;
+
+        REQUIRE_THROWS_AS(p.dispatch(scalar0(""), scalar0("") * 1.0), error_t);
     }
 }

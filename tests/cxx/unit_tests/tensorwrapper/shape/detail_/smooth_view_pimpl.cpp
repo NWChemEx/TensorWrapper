@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../../helpers.hpp"
+#include "../../testing/testing.hpp"
 #include <tensorwrapper/shape/detail_/smooth_alias.hpp>
 
 /* Testing Strategy.

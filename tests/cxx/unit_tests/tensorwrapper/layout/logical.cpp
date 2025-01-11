@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "../helpers.hpp"
+#include "../testing/testing.hpp"
 #include <tensorwrapper/layout/logical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
@@ -32,9 +32,9 @@ using namespace layout;
  */
 TEST_CASE("Logical") {
     shape::Smooth matrix_shape{2, 3};
-    symmetry::Permutation p01{0, 1};
-    symmetry::Group no_symm, symm{p01};
-    sparsity::Pattern no_sparsity;
+    symmetry::Permutation p01{1, 0};
+    symmetry::Group no_symm(2), symm{p01};
+    sparsity::Pattern no_sparsity(2);
 
     Logical logi_copy_no_sym(matrix_shape, no_symm, no_sparsity);
     Logical logi_copy_has_sym(matrix_shape, symm, no_sparsity);

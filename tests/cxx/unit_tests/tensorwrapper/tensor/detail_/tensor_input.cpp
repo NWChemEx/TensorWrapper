@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "../../helpers.hpp"
-#include "../../inputs.hpp"
+#include "../../testing/testing.hpp"
 
 using namespace tensorwrapper;
 
@@ -34,7 +33,7 @@ TEST_CASE("TensorInput") {
     parallelzone::runtime::RuntimeView rv;
     shape::Smooth shape{3, 3};
     symmetry::Group g{symmetry::Permutation{0, 1}};
-    sparsity::Pattern sparsity;
+    sparsity::Pattern sparsity(2);
     layout::Logical logical(shape, g, sparsity);
     layout::Physical physical(shape, g, sparsity);
     allocator::Eigen<double, 2> alloc(rv);
