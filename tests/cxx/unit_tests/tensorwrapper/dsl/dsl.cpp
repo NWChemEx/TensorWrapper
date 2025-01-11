@@ -62,6 +62,17 @@ TEMPLATE_LIST_TEST_CASE("DSL", "", testing::dsl_types) {
         value1.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
         REQUIRE(value1.are_equal(value0));
     }
+
+    SECTION("scalar_multiplication") {
+        if constexpr(std::is_same_v<TestType, Tensor>) {
+        } else {
+            // N.b., only tensor and buffer will override so here we're checking
+            // that other objects throw
+            using error_t = std::runtime_error;
+
+            REQUIRE_THROWS_AS(value0("") = value0("") * 1.0, error_t);
+        }
+    }
 }
 
 // Since Eigen buffers are templated on the rank there isn't an easy way to
@@ -109,9 +120,8 @@ TEST_CASE("DSLr : buffer::Eigen") {
     }
 
     SECTION("scalar_multiplication") {
-        // This should actually work. Will fix in a future PR
-        using error_t = std::runtime_error;
-
-        REQUIRE_THROWS_AS(scalar0("") = scalar0("") * 1.0, error_t);
+        scalar0("") = scalar1("") * 1.0;
+        corr.scalar_multiplication("", 1.0, scalar1(""));
+        REQUIRE(corr.are_equal(scalar0));
     }
 }

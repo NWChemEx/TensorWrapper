@@ -151,6 +151,30 @@ typename EIGEN::dsl_reference EIGEN::permute_assignment_(
 }
 
 TPARAMS
+typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
+  label_type this_labels, double scalar, const_labeled_reference rhs) {
+    BufferBase::permute_assignment_(this_labels, rhs);
+
+    using allocator_type       = allocator::Eigen<FloatType, Rank>;
+    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
+
+    const auto& rlabels = rhs.labels();
+
+    FloatType c(scalar);
+
+    if(this_labels != rlabels) { // We need to permute rhs before assignment
+        auto r_to_l = rhs.labels().permutation(this_labels);
+        // Eigen wants int objects
+        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2) * c;
+    } else {
+        m_tensor_ = rhs_downcasted.value() * c;
+    }
+
+    return *this;
+}
+
+TPARAMS
 typename detail_::PolymorphicBase<BufferBase>::string_type EIGEN::to_string_()
   const {
     std::stringstream ss;

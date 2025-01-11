@@ -209,16 +209,18 @@ public:
      *  @tparam ScalarType The type of @p scalar. Assumed to be a floating-
      *                     point type.
      *
-     *  This method is responsible for scaling @p *this by @p scalar.
+     *  This method is responsible for scaling @p rhs by @p scalar and assigning
+     *  it to *this.
      *
      *  @note This method is templated on the scalar type to avoid limiting the
      *        API. That said, at present the backend converts @p scalar to
-     *        double precision.
+     *        double precision, but we could use a variant or something similar
+     *        to avoid this
      */
-    template<typename ScalarType>
-    dsl_reference scalar_multiplication(ScalarType&& scalar) {
-        return scalar_multiplication_(std::forward<ScalarType>(scalar));
-    }
+    template<typename LabelType, typename ScalarType>
+    dsl_reference scalar_multiplication(LabelType&& this_labels,
+                                        ScalarType&& scalar,
+                                        const_labeled_reference rhs);
 
 protected:
     /// Derived class should overwrite to implement addition_assignment
@@ -249,7 +251,9 @@ protected:
     }
 
     /// Derived class should overwrite to implement scalar_multiplication
-    dsl_reference scalar_multiplication_(double scalar) {
+    virtual dsl_reference scalar_multiplication_(label_type this_labels,
+                                                 double scalar,
+                                                 const_labeled_reference rhs) {
         throw std::runtime_error("Scalar multiplication NYI");
     }
 

@@ -163,4 +163,80 @@ TEST_CASE("Tensor") {
         REQUIRE_FALSE(scalar != other_scalar);
         REQUIRE(scalar != vector);
     }
+
+    SECTION("addition_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.addition_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(84.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.addition_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 2, 4, 6, 8});
+        }
+    }
+    SECTION("subtraction_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.subtraction_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor(0.0));
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.subtraction_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 0, 0, 0, 0});
+        }
+    }
+    SECTION("multiplication_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.multiplication_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(1764.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.multiplication_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 1, 4, 9, 16});
+        }
+    }
+    SECTION("permute_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.permute_assignment("", s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(42.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.permute_assignment("i", v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 1, 2, 3, 4});
+        }
+        SECTION("matrix") {
+            Tensor rv;
+            Tensor m0{{1, 2}, {3, 4}};
+            auto prv = &(rv.permute_assignment("j,i", m0("i,j")));
+            REQUIRE(prv == &rv);
+            Tensor corr{{1, 3}, {2, 4}};
+            REQUIRE(rv == corr);
+        }
+    }
 }

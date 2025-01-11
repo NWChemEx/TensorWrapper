@@ -95,11 +95,15 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", testing::dsl_types) {
     }
 
     SECTION("scalar_multiplication") {
-        // N.b., only tensor and buffer will override so here we're checking
-        // that other objects throw
-        using error_t = std::runtime_error;
+        if constexpr(std::is_same_v<TestType, Tensor>) {
+        } else {
+            // N.b., only tensor and buffer will override so here we're checking
+            // that other objects throw
+            using error_t = std::runtime_error;
 
-        REQUIRE_THROWS_AS(p.dispatch(value0(""), value0("") * 1.0), error_t);
+            REQUIRE_THROWS_AS(p.dispatch(value0(""), value0("") * 1.0),
+                              error_t);
+        }
     }
 }
 
@@ -150,9 +154,8 @@ TEST_CASE("PairwiseParser : buffer::Eigen") {
     }
 
     SECTION("scalar_multiplication") {
-        // This should actually work. Will fix in a future PR
-        using error_t = std::runtime_error;
-
-        REQUIRE_THROWS_AS(p.dispatch(scalar0(""), scalar0("") * 1.0), error_t);
+        p.dispatch(scalar0(""), scalar1("") * 1.0);
+        corr.scalar_multiplication("", 1.0, scalar1(""));
+        REQUIRE(corr.are_equal(scalar0));
     }
 }

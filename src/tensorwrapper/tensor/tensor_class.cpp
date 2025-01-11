@@ -75,6 +75,8 @@ const_buffer_reference Tensor::buffer() const {
     return m_pimpl_->buffer();
 }
 
+Tensor::rank_type Tensor::rank() const { return logical_layout().rank(); }
+
 // -- Utility
 
 void Tensor::swap(Tensor& other) noexcept { m_pimpl_.swap(other.m_pimpl_); }
@@ -87,6 +89,114 @@ bool Tensor::operator==(const Tensor& rhs) const noexcept {
 
 bool Tensor::operator!=(const Tensor& rhs) const noexcept {
     return !(*this == rhs);
+}
+
+// -- Protected methods
+
+Tensor::dsl_reference Tensor::addition_assignment_(
+  label_type this_labels, const_labeled_reference lhs,
+  const_labeled_reference rhs) {
+    const auto& lobject = lhs.object();
+    const auto& llabels = lhs.labels();
+    const auto& robject = rhs.object();
+    const auto& rlabels = rhs.labels();
+
+    auto llayout      = lobject.logical_layout();
+    auto rlayout      = robject.logical_layout();
+    auto pthis_layout = llayout.clone_as<logical_layout_type>();
+
+    pthis_layout->addition_assignment(this_labels, llayout(llabels),
+                                      rlayout(rlabels));
+
+    auto pthis_buffer = lobject.buffer().clone();
+    auto lbuffer      = lobject.buffer()(llabels);
+    auto rbuffer      = robject.buffer()(rlabels);
+    pthis_buffer->addition_assignment(this_labels, lbuffer, rbuffer);
+
+    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
+                                                  std::move(pthis_buffer));
+    new_pimpl.swap(m_pimpl_);
+
+    return *this;
+}
+
+Tensor::dsl_reference Tensor::subtraction_assignment_(
+  label_type this_labels, const_labeled_reference lhs,
+  const_labeled_reference rhs) {
+    const auto& lobject = lhs.object();
+    const auto& llabels = lhs.labels();
+    const auto& robject = rhs.object();
+    const auto& rlabels = rhs.labels();
+
+    auto llayout      = lobject.logical_layout();
+    auto rlayout      = robject.logical_layout();
+    auto pthis_layout = llayout.clone_as<logical_layout_type>();
+
+    pthis_layout->subtraction_assignment(this_labels, llayout(llabels),
+                                         rlayout(rlabels));
+
+    auto pthis_buffer = lobject.buffer().clone();
+    auto lbuffer      = lobject.buffer()(llabels);
+    auto rbuffer      = robject.buffer()(rlabels);
+    pthis_buffer->subtraction_assignment(this_labels, lbuffer, rbuffer);
+
+    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
+                                                  std::move(pthis_buffer));
+    new_pimpl.swap(m_pimpl_);
+
+    return *this;
+}
+
+Tensor::dsl_reference Tensor::multiplication_assignment_(
+  label_type this_labels, const_labeled_reference lhs,
+  const_labeled_reference rhs) {
+    const auto& lobject = lhs.object();
+    const auto& llabels = lhs.labels();
+    const auto& robject = rhs.object();
+    const auto& rlabels = rhs.labels();
+
+    auto llayout      = lobject.logical_layout();
+    auto rlayout      = robject.logical_layout();
+    auto pthis_layout = llayout.clone_as<logical_layout_type>();
+
+    pthis_layout->multiplication_assignment(this_labels, llayout(llabels),
+                                            rlayout(rlabels));
+
+    auto pthis_buffer = lobject.buffer().clone();
+    auto lbuffer      = lobject.buffer()(llabels);
+    auto rbuffer      = robject.buffer()(rlabels);
+    pthis_buffer->multiplication_assignment(this_labels, lbuffer, rbuffer);
+
+    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
+                                                  std::move(pthis_buffer));
+    new_pimpl.swap(m_pimpl_);
+
+    return *this;
+}
+
+Tensor::dsl_reference Tensor::permute_assignment_(label_type this_labels,
+                                                  const_labeled_reference rhs) {
+    const auto& robject = rhs.object();
+    const auto& rlabels = rhs.labels();
+
+    auto rlayout      = robject.logical_layout();
+    auto pthis_layout = rlayout.clone_as<logical_layout_type>();
+
+    pthis_layout->permute_assignment(this_labels, rlayout(rlabels));
+
+    auto pthis_buffer = robject.buffer().clone();
+    auto rbuffer      = robject.buffer()(rlabels);
+    pthis_buffer->permute_assignment(this_labels, rbuffer);
+
+    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
+                                                  std::move(pthis_buffer));
+    new_pimpl.swap(m_pimpl_);
+
+    return *this;
+}
+
+typename Tensor::polymorphic_base::string_type Tensor::to_string_() const {
+    return has_pimpl_() ? buffer().to_string() : "";
 }
 
 // -- Private methods
