@@ -174,6 +174,27 @@ Tensor::dsl_reference Tensor::multiplication_assignment_(
     return *this;
 }
 
+Tensor::dsl_reference Tensor::scalar_multiplication_(
+  label_type this_labels, double scalar, const_labeled_reference rhs) {
+    const auto& robject = rhs.object();
+    const auto& rlabels = rhs.labels();
+
+    auto rlayout      = robject.logical_layout();
+    auto pthis_layout = rlayout.clone_as<logical_layout_type>();
+
+    pthis_layout->permute_assignment(this_labels, rlayout(rlabels));
+
+    auto pthis_buffer = robject.buffer().clone();
+    auto rbuffer      = robject.buffer()(rlabels);
+    pthis_buffer->scalar_multiplication(this_labels, scalar, rbuffer);
+
+    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
+                                                  std::move(pthis_buffer));
+    new_pimpl.swap(m_pimpl_);
+
+    return *this;
+}
+
 Tensor::dsl_reference Tensor::permute_assignment_(label_type this_labels,
                                                   const_labeled_reference rhs) {
     const auto& robject = rhs.object();

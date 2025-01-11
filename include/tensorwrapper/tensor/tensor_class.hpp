@@ -306,6 +306,17 @@ public:
      */
     const_buffer_reference buffer() const;
 
+    /** @brief Returns the logical rank of the tensor.
+     *
+     *  Most users interacting with a tensor will be thinking of it in terms of
+     *  its logical rank. This function is a convenience function for calling
+     *  `rank()` on the logical layout.
+     *
+     *  @return The rank of the tensor, logically.
+     *
+     *  @throw std::runtime_error if *this does not have a logical layout.
+     *                            Strong throw guarantee.
+     */
     rank_type rank() const;
 
     // -------------------------------------------------------------------------
@@ -378,6 +389,10 @@ protected:
     dsl_reference multiplication_assignment_(
       label_type this_labels, const_labeled_reference lhs,
       const_labeled_reference rhs) override;
+
+    /// Calls scalar_multiplication on each member
+    dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
+                                         const_labeled_reference rhs) override;
 
     /// Calls permute_assignment on each member
     dsl_reference permute_assignment_(label_type this_labels,

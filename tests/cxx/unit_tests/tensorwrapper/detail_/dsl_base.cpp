@@ -170,12 +170,23 @@ TEMPLATE_LIST_TEST_CASE("DSLBase", "", test_types) {
     }
 
     SECTION("scalar_multiplication") {
+        using error_t = std::runtime_error;
         // N.b., only tensor and buffer will override so here we're checking
         // that other objects throw
         if constexpr(std::is_same_v<TestType, Tensor>) {
+            auto s   = default_value("");
+            auto sij = default_value("i,j");
+
+            // Input's indices mush match rank
+            REQUIRE_THROWS_AS(value.scalar_multiplication("i,j", 2.0, sij),
+                              error_t);
+
+            // Output must have <= number of dummy indices
+            REQUIRE_THROWS_AS(value.scalar_multiplication("i,j", 2.0, s),
+                              error_t);
+
         } else {
-            using error_t = std::runtime_error;
-            auto s        = default_value("");
+            auto s = default_value("");
             REQUIRE_THROWS_AS(value.scalar_multiplication("", 1.0, s), error_t);
         }
     }

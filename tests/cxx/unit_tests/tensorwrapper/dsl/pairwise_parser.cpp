@@ -96,6 +96,20 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", testing::dsl_types) {
 
     SECTION("scalar_multiplication") {
         if constexpr(std::is_same_v<TestType, Tensor>) {
+            object_type rv(value1);
+            object_type corr(value1);
+
+            SECTION("scalar") {
+                p.dispatch(rv(""), value0("") * 2.0);
+                corr.scalar_multiplication("", 2.0, value0(""));
+                REQUIRE(corr.are_equal(rv));
+            }
+            SECTION("matrix") {
+                p.dispatch(rv("i,j"), value2("i,j") * 2.0);
+                corr.scalar_multiplication("i,j", 2.0, value2("i,j"));
+                REQUIRE(corr.are_equal(rv));
+            }
+
         } else {
             // N.b., only tensor and buffer will override so here we're checking
             // that other objects throw
