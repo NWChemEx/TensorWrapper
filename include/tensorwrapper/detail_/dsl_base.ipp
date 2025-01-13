@@ -84,6 +84,18 @@ typename DSL_BASE::dsl_reference DSL_BASE::permute_assignment(
     return permute_assignment_(std::move(lhs_labels), rhs);
 }
 
+TPARAMS
+template<typename LabelType, typename FloatType>
+typename DSL_BASE::dsl_reference DSL_BASE::scalar_multiplication(
+  LabelType&& this_labels, FloatType&& scalar, const_labeled_reference rhs) {
+    assert_indices_match_rank_(rhs);
+
+    label_type lhs_labels(std::forward<LabelType>(this_labels));
+    assert_is_subset_(lhs_labels, rhs.labels());
+
+    return scalar_multiplication_(std::move(lhs_labels), scalar, rhs);
+}
+
 #undef DSL_BASE
 #undef TPARAMS
 

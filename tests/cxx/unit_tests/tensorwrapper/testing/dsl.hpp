@@ -25,24 +25,33 @@ namespace tensorwrapper::testing {
 using dsl_types =
   std::tuple<tensorwrapper::shape::Smooth, tensorwrapper::symmetry::Group,
              tensorwrapper::sparsity::Pattern, tensorwrapper::layout::Logical,
-             tensorwrapper::layout::Physical>;
+             tensorwrapper::layout::Physical, tensorwrapper::Tensor>;
 
 inline auto scalar_values() {
-    return dsl_types{smooth_scalar(), tensorwrapper::symmetry::Group(0),
-                     tensorwrapper::sparsity::Pattern(0), scalar_logical(),
-                     scalar_physical()};
+    return dsl_types{smooth_scalar(),
+                     tensorwrapper::symmetry::Group(0),
+                     tensorwrapper::sparsity::Pattern(0),
+                     scalar_logical(),
+                     scalar_physical(),
+                     Tensor(42.0)};
 }
 
 inline auto vector_values() {
-    return dsl_types{smooth_vector(), tensorwrapper::symmetry::Group(1),
-                     tensorwrapper::sparsity::Pattern(1), vector_logical(),
-                     vector_physical()};
+    return dsl_types{smooth_vector(),
+                     tensorwrapper::symmetry::Group(1),
+                     tensorwrapper::sparsity::Pattern(1),
+                     vector_logical(),
+                     vector_physical(),
+                     Tensor{1.0, 2.0, 3.0}};
 }
 
 inline auto matrix_values() {
-    return dsl_types{smooth_matrix(), tensorwrapper::symmetry::Group(2),
-                     tensorwrapper::sparsity::Pattern(2), matrix_logical(),
-                     matrix_physical()};
+    return dsl_types{smooth_matrix(),
+                     tensorwrapper::symmetry::Group(2),
+                     tensorwrapper::sparsity::Pattern(2),
+                     matrix_logical(),
+                     matrix_physical(),
+                     Tensor{{1.0, 2.0}, {3.0, 4.0}}};
 }
 
 } // namespace tensorwrapper::testing

@@ -59,11 +59,7 @@ public:
      */
     template<typename LHSType, typename RHSType>
     void dispatch(LHSType&& lhs, const RHSType& rhs) {
-        if constexpr(std::is_floating_point_v<std::decay_t<RHSType>>) {
-            lhs.object().scalar_multiplication(rhs);
-        } else {
-            lhs.object().permute_assignment(lhs.labels(), rhs);
-        }
+        lhs.object().permute_assignment(lhs.labels(), rhs);
     }
 
     /** @brief Handles adding two expressions together.
@@ -130,14 +126,29 @@ public:
      */
     template<typename LHSType, typename T, typename U>
     void dispatch(LHSType&& lhs, const utilities::dsl::Multiply<T, U>& rhs) {
-        auto pA     = lhs.object().clone();
-        auto pB     = lhs.object().clone();
-        auto labels = lhs.labels();
-        auto lA     = (*pA)(labels);
-        auto lB     = (*pB)(labels);
-        dispatch(lA, rhs.lhs());
-        dispatch(lB, rhs.rhs());
-        lhs.object().multiplication_assignment(labels, lA, lB);
+        constexpr bool t_is_float = std::is_floating_point_v<T>;
+        constexpr bool u_is_float = std::is_floating_point_v<U>;
+        static_assert(!(t_is_float && u_is_float), "Both can be float??");
+        if constexpr(t_is_float) {
+            auto pA = lhs.object().clone();
+            auto lA = (*pA)(lhs.labels());
+            dispatch(lA, rhs.rhs());
+            lhs.object().scalar_multiplication(lhs.labels(), rhs.lhs(), lA);
+        } else if constexpr(u_is_float) {
+            auto pA = lhs.object().clone();
+            auto lA = (*pA)(lhs.labels());
+            dispatch(lA, rhs.lhs());
+            lhs.object().scalar_multiplication(lhs.labels(), rhs.rhs(), lA);
+        } else {
+            auto pA     = lhs.object().clone();
+            auto pB     = lhs.object().clone();
+            auto labels = lhs.labels();
+            auto lA     = (*pA)(labels);
+            auto lB     = (*pB)(labels);
+            dispatch(lA, rhs.lhs());
+            dispatch(lB, rhs.rhs());
+            lhs.object().multiplication_assignment(labels, lA, lB);
+        }
     }
 };
 

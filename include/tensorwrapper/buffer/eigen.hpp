@@ -199,6 +199,9 @@ protected:
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
 
+    dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
+                                         const_labeled_reference rhs) override;
+
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
 

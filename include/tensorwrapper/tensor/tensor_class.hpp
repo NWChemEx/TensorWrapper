@@ -15,7 +15,8 @@
  */
 
 #pragma once
-#include <tensorwrapper/dsl/labeled.hpp>
+#include <tensorwrapper/detail_/dsl_base.hpp>
+#include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_input.hpp>
 
 namespace tensorwrapper {
@@ -34,7 +35,8 @@ struct IsTuple<std::tuple<Args...>> : std::true_type {};
  *  The Tensor class is envisioned as being the most user-facing class of
  *  TensorWrapper and forms the entry point into TensorWrapper's DSL.
  */
-class Tensor {
+class Tensor : public detail_::DSLBase<Tensor>,
+               public detail_::PolymorphicBase<Tensor> {
 private:
     /// Type of a helper class which collects the inputs needed to make a tensor
     using input_type = detail_::TensorInput;
@@ -52,6 +54,8 @@ private:
     template<typename... Args>
     using enable_if_no_tensors_t =
       std::enable_if_t<!are_any_tensors_v<Args...>>;
+
+    using polymorphic_base = detail_::PolymorphicBase<Tensor>;
 
 public:
     /// Type of the object implementing *this
@@ -80,6 +84,9 @@ public:
 
     /// Type of a pointer to a read-only buffer
     using const_buffer_pointer = input_type::const_buffer_pointer;
+
+    /// Type used to convey rank
+    using rank_type = typename logical_layout_type::size_type;
 
     /// Type of an initializer list if *this is a scalar
     using scalar_il_type = double;
@@ -299,6 +306,19 @@ public:
      */
     const_buffer_reference buffer() const;
 
+    /** @brief Returns the logical rank of the tensor.
+     *
+     *  Most users interacting with a tensor will be thinking of it in terms of
+     *  its logical rank. This function is a convenience function for calling
+     *  `rank()` on the logical layout.
+     *
+     *  @return The rank of the tensor, logically.
+     *
+     *  @throw std::runtime_error if *this does not have a logical layout.
+     *                            Strong throw guarantee.
+     */
+    rank_type rank() const;
+
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
@@ -343,6 +363,43 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator!=(const Tensor& rhs) const noexcept;
+
+protected:
+    /// Implements clone by calling copy ctor
+    polymorphic_base::base_pointer clone_() const override {
+        return std::make_unique<Tensor>(*this);
+    }
+
+    /// Implements are_equal by calling are_equal_impl_
+    bool are_equal_(const_base_reference rhs) const noexcept override {
+        return polymorphic_base::are_equal_impl_<Tensor>(rhs);
+    }
+
+    /// Implements addition_assignment by calling addition_assignment on state
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+
+    /// Calls subtraction_assignment on each member
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+
+    /// Calls multiplication_assignment on each member
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    /// Calls scalar_multiplication on each member
+    dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
+                                         const_labeled_reference rhs) override;
+
+    /// Calls permute_assignment on each member
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
+
+    /// Implements to_string
+    typename polymorphic_base::string_type to_string_() const override;
 
 private:
     /// All ctors ultimately dispatch to this ctor

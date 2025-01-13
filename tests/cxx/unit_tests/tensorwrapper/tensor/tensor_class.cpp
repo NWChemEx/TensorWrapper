@@ -121,6 +121,13 @@ TEST_CASE("Tensor") {
         REQUIRE_THROWS_AS(const_defaulted.buffer(), std::runtime_error);
     }
 
+    SECTION("rank") {
+        REQUIRE(scalar.rank() == 0);
+        REQUIRE(vector.rank() == 1);
+
+        REQUIRE_THROWS_AS(defaulted.rank(), std::runtime_error);
+    }
+
     SECTION("swap") {
         Tensor scalar_copy(scalar);
         Tensor vector_copy(vector);
@@ -162,5 +169,106 @@ TEST_CASE("Tensor") {
 
         REQUIRE_FALSE(scalar != other_scalar);
         REQUIRE(scalar != vector);
+    }
+
+    SECTION("addition_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.addition_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(84.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.addition_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 2, 4, 6, 8});
+        }
+    }
+    SECTION("subtraction_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.subtraction_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor(0.0));
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.subtraction_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 0, 0, 0, 0});
+        }
+    }
+    SECTION("multiplication_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.multiplication_assignment("", s0(""), s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(1764.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.multiplication_assignment("i", v0("i"), v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 1, 4, 9, 16});
+        }
+    }
+    SECTION("scalar_multiplication") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.scalar_multiplication("", 2.0, s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(84.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.scalar_multiplication("i", 2.0, v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0.0, 2.0, 4.0, 6.0, 8.0});
+        }
+        SECTION("matrix") {
+            Tensor rv;
+            Tensor m0{{1, 2}, {3, 4}};
+            auto prv = &(rv.scalar_multiplication("j,i", 2.0, m0("i,j")));
+            REQUIRE(prv == &rv);
+            Tensor corr{{2.0, 6.0}, {4.0, 8.0}};
+            REQUIRE(rv == corr);
+        }
+    }
+    SECTION("permute_assignment") {
+        SECTION("scalar") {
+            Tensor rv;
+            Tensor s0(42.0);
+            auto prv = &(rv.permute_assignment("", s0("")));
+            REQUIRE(prv == &rv);
+            Tensor corr(42.0);
+            REQUIRE(rv == corr);
+        }
+        SECTION("vector") {
+            Tensor rv;
+            Tensor v0{0, 1, 2, 3, 4};
+            auto prv = &(rv.permute_assignment("i", v0("i")));
+            REQUIRE(prv == &rv);
+            REQUIRE(rv == Tensor{0, 1, 2, 3, 4});
+        }
+        SECTION("matrix") {
+            Tensor rv;
+            Tensor m0{{1, 2}, {3, 4}};
+            auto prv = &(rv.permute_assignment("j,i", m0("i,j")));
+            REQUIRE(prv == &rv);
+            Tensor corr{{1, 3}, {2, 4}};
+            REQUIRE(rv == corr);
+        }
     }
 }
