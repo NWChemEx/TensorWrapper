@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_387',['value',['../classtensorwrapper_1_1buffer_1_1Eigen.html#a9b2fa5cd17d51787c52b228be181ef6a',1,'tensorwrapper::buffer::Eigen::value()'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#a75bd252214a3a7e12eef2df5445087a9',1,'tensorwrapper::buffer::Eigen::value() const']]]
+  ['unique_5findex_5fsize_410',['unique_index_size',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a5cc5d9056ed0d7c8b37dfdbf6d7c19c6',1,'tensorwrapper::dsl::DummyIndices']]]
 ];
