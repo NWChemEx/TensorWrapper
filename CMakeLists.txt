@@ -37,6 +37,7 @@ cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
     ENABLE_EIGEN_SUPPORT ON "Should we enable Eigen support?"
+    ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
 )
 
 configure_file(cmake/config.hpp.in config.hpp @ONLY)
@@ -68,11 +69,22 @@ cmaize_find_or_build_optional_dependency(
     FIND_TARGET Eigen3::Eigen
 )
 
+cmaize_find_or_build_optional_dependency(
+    sigma
+    ENABLE_SIGMA
+    URL github.com/QCUncertainty/sigma
+    VERSION ad74a8305c615a825919b3ad067fdcdf4e578ed0
+    BUILD_TARGET sigma
+    FIND_TARGET sigma::sigma
+    CMAKE_ARGS BUILD_TESTING=OFF
+               ENABLE_EIGEN_SUPPORT=${ENABLE_EIGEN_SUPPORT}
+)
+
 cmaize_add_library(
     ${PROJECT_NAME}
     SOURCE_DIR "${project_src_dir}"
     INCLUDE_DIRS "${project_inc_dir}"
-    DEPENDS utilities parallelzone Boost::boost eigen
+    DEPENDS utilities parallelzone Boost::boost eigen sigma
 )
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 
