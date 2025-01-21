@@ -107,21 +107,26 @@ typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
 
 // -- Explicit class template instantiation
 
-#define DEFINE_EIGEN_ALLOCATOR(RANK)   \
-    template class Eigen<float, RANK>; \
-    template class Eigen<double, RANK>
+#define DEFINE_EIGEN_ALLOCATOR(TYPE)        \
+    template class Eigen<TYPE, 0>; \
+    template class Eigen<TYPE, 1>; \
+    template class Eigen<TYPE, 2>; \
+    template class Eigen<TYPE, 3>; \
+    template class Eigen<TYPE, 4>; \
+    template class Eigen<TYPE, 5>; \
+    template class Eigen<TYPE, 6>; \
+    template class Eigen<TYPE, 7>; \
+    template class Eigen<TYPE, 8>; \
+    template class Eigen<TYPE, 9>; \
+    template class Eigen<TYPE, 10>
 
-DEFINE_EIGEN_ALLOCATOR(0);
-DEFINE_EIGEN_ALLOCATOR(1);
-DEFINE_EIGEN_ALLOCATOR(2);
-DEFINE_EIGEN_ALLOCATOR(3);
-DEFINE_EIGEN_ALLOCATOR(4);
-DEFINE_EIGEN_ALLOCATOR(5);
-DEFINE_EIGEN_ALLOCATOR(6);
-DEFINE_EIGEN_ALLOCATOR(7);
-DEFINE_EIGEN_ALLOCATOR(8);
-DEFINE_EIGEN_ALLOCATOR(9);
-DEFINE_EIGEN_ALLOCATOR(10);
+DEFINE_EIGEN_ALLOCATOR(float);
+DEFINE_EIGEN_ALLOCATOR(double);
+
+#ifdef TENSORWRAPPER_HAS_SIGMA
+DEFINE_EIGEN_ALLOCATOR(sigma::UFloat);
+DEFINE_EIGEN_ALLOCATOR(sigma::UDouble);
+#endif
 
 #undef DEFINE_EIGEN_ALLOCATOR
 

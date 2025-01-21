@@ -18,6 +18,10 @@
 #include <tensorwrapper/allocator/replicated.hpp>
 #include <tensorwrapper/buffer/buffer_fwd.hpp>
 
+#ifdef TENSORWRAPPER_HAS_SIGMA
+#include <sigma/sigma.hpp>
+#endif
+
 namespace tensorwrapper::allocator {
 
 /** @brief Used to allocate buffers which rely on Eigen tensors.
@@ -264,21 +268,26 @@ protected:
 // -- Explicit class template declarations
 // -----------------------------------------------------------------------------
 
-#define DECLARE_EIGEN_ALLOCATOR(RANK)         \
-    extern template class Eigen<float, RANK>; \
-    extern template class Eigen<double, RANK>
+#define DECLARE_EIGEN_ALLOCATOR(TYPE)        \
+    extern template class Eigen<TYPE, 0>; \
+    extern template class Eigen<TYPE, 1>; \
+    extern template class Eigen<TYPE, 2>; \
+    extern template class Eigen<TYPE, 3>; \
+    extern template class Eigen<TYPE, 4>; \
+    extern template class Eigen<TYPE, 5>; \
+    extern template class Eigen<TYPE, 6>; \
+    extern template class Eigen<TYPE, 7>; \
+    extern template class Eigen<TYPE, 8>; \
+    extern template class Eigen<TYPE, 9>; \
+    extern template class Eigen<TYPE, 10>
 
-DECLARE_EIGEN_ALLOCATOR(0);
-DECLARE_EIGEN_ALLOCATOR(1);
-DECLARE_EIGEN_ALLOCATOR(2);
-DECLARE_EIGEN_ALLOCATOR(3);
-DECLARE_EIGEN_ALLOCATOR(4);
-DECLARE_EIGEN_ALLOCATOR(5);
-DECLARE_EIGEN_ALLOCATOR(6);
-DECLARE_EIGEN_ALLOCATOR(7);
-DECLARE_EIGEN_ALLOCATOR(8);
-DECLARE_EIGEN_ALLOCATOR(9);
-DECLARE_EIGEN_ALLOCATOR(10);
+DECLARE_EIGEN_ALLOCATOR(float);
+DECLARE_EIGEN_ALLOCATOR(double);
+
+#ifdef TENSORWRAPPER_HAS_SIGMA
+DECLARE_EIGEN_ALLOCATOR(sigma::UFloat);
+DECLARE_EIGEN_ALLOCATOR(sigma::UDouble);
+#endif
 
 #undef DECLARE_EIGEN_ALLOCATOR
 

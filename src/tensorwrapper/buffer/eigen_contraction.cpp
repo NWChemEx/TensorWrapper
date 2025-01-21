@@ -132,6 +132,11 @@ return_type eigen_contraction(base_reference rv, const_base_reference lhs,
 EIGEN_CONTRACTION(float);
 EIGEN_CONTRACTION(double);
 
+#ifdef TENSORWRAPPER_HAS_SIGMA
+EIGEN_CONTRACTION(sigma::UFloat);
+EIGEN_CONTRACTION(sigma::UDouble);
+#endif
+
 #undef EIGEN_CONTRACTION
 
 } // namespace tensorwrapper::buffer
