@@ -22,7 +22,13 @@
 
 using namespace tensorwrapper;
 
-TEMPLATE_TEST_CASE("EigenAllocator", "", float, double) {
+#ifdef ENABLE_SIGMA
+using types2test = std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
+#else
+using types2test = std::tuple<float, double>;
+#endif
+
+TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
     using scalar_alloc_type   = allocator::Eigen<TestType, 0>;
     using vector_alloc_type   = allocator::Eigen<TestType, 1>;
     using matrix_alloc_type   = allocator::Eigen<TestType, 2>;

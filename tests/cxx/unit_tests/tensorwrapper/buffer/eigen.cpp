@@ -22,6 +22,12 @@
 using namespace tensorwrapper;
 using namespace testing;
 
+#ifdef ENABLE_SIGMA
+using types2test = std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
+#else
+using types2test = std::tuple<float, double>;
+#endif
+
 namespace {
 
 template<typename FloatType, typename LHSType, typename RHSType>
@@ -29,12 +35,19 @@ void compare_eigen(const LHSType& lhs, const RHSType& rhs) {
     using r_type = Eigen::Tensor<FloatType, 0, Eigen::RowMajor>;
     auto d       = lhs - rhs;
     r_type r     = d.sum();
-    REQUIRE_THAT(r() + 1.0, Catch::Matchers::WithinAbs(1.0, 1E-6));
+    // sigma's types are the only none fundamental options here currently
+    // This may need to be adjusted if other custom numeric types are added
+    if constexpr(std::is_fundamental_v<FloatType>) {
+        REQUIRE_THAT(r() + 1.0, Catch::Matchers::WithinAbs(1.0, 1E-6));
+    } else {
+        REQUIRE_THAT(r().mean() + 1.0, Catch::Matchers::WithinAbs(1.0, 1E-6));
+        REQUIRE_THAT(r().sd() + 1.0, Catch::Matchers::WithinAbs(1.0, 1E-6));
+    }
 }
 
 } // namespace
 
-TEMPLATE_TEST_CASE("Eigen", "", float, double) {
+TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
     using scalar_buffer = buffer::Eigen<TestType, 0>;
     using vector_buffer = buffer::Eigen<TestType, 1>;
     using matrix_buffer = buffer::Eigen<TestType, 2>;
@@ -679,7 +692,8 @@ TEMPLATE_TEST_CASE("Eigen", "", float, double) {
 
         SECTION("ij,i->j") {
             auto buffer1 = testing::eigen_vector<TestType>();
-            auto p       = &(buffer1.multiplication_assignment("j", mij, vi));
+            auto p       = &(buffer1.multiplication_assignment("j", mij,
+            vi));
 
             auto vector_corr       = testing::eigen_vector<TestType>(3);
             vector_corr.value()(0) = 900.0;  // 10(10) + 20(40)

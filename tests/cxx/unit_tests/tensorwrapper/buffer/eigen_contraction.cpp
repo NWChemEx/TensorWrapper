@@ -21,7 +21,13 @@
 using namespace tensorwrapper;
 using namespace buffer;
 
-TEMPLATE_TEST_CASE("eigen_contraction", "", float, double) {
+#ifdef ENABLE_SIGMA
+using types2test = std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
+#else
+using types2test = std::tuple<float, double>;
+#endif
+
+TEMPLATE_LIST_TEST_CASE("eigen_contraction", "", types2test) {
     using float_t    = TestType;
     using mode_type  = unsigned short;
     using pair_type  = std::pair<mode_type, mode_type>;
