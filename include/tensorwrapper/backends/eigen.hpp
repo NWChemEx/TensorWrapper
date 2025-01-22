@@ -15,23 +15,11 @@
  */
 
 #pragma once
-#include "config.hpp"
-#ifdef TENSORWRAPPER_HAS_EIGEN
 #include <unsupported/Eigen/CXX11/Tensor>
-#endif
 
 namespace tensorwrapper::eigen {
 
-#ifdef TENSORWRAPPER_HAS_EIGEN
-
 template<typename FloatType, unsigned short Rank>
 using data_type = Eigen::Tensor<FloatType, int(Rank), Eigen::RowMajor>;
-
-#else
-
-template<typename, unsigned short>
-using data_type = std::nullptr_t;
-
-#endif
 
 } // namespace tensorwrapper::eigen

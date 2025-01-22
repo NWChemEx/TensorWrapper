@@ -36,11 +36,8 @@ nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
-    ENABLE_EIGEN_SUPPORT ON "Should we enable Eigen support?"
     ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
 )
-
-configure_file(cmake/config.hpp.in config.hpp @ONLY)
 
 cmaize_find_or_build_dependency(
     utilities
@@ -60,9 +57,8 @@ cmaize_find_or_build_dependency(
 
 find_package(Boost REQUIRED)
 
-cmaize_find_or_build_optional_dependency(
+cmaize_find_or_build_dependency(
     eigen
-    ENABLE_EIGEN_SUPPORT
     URL https://www.gitlab.com/libeigen/eigen
     VERSION 2e76277bd049f7bec36b0f908c69734a42c5234f
     BUILD_TARGET eigen
@@ -77,7 +73,7 @@ cmaize_find_or_build_optional_dependency(
     BUILD_TARGET sigma
     FIND_TARGET sigma::sigma
     CMAKE_ARGS BUILD_TESTING=OFF
-               ENABLE_EIGEN_SUPPORT=${ENABLE_EIGEN_SUPPORT}
+               ENABLE_EIGEN_SUPPORT=ON
 )
 
 cmaize_add_library(
