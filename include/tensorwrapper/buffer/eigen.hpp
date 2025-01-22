@@ -18,7 +18,7 @@
 #include <tensorwrapper/backends/eigen.hpp>
 #include <tensorwrapper/buffer/replicated.hpp>
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
 #endif
 
@@ -241,7 +241,7 @@ private:
 DECLARE_EIGEN_BUFFER(float);
 DECLARE_EIGEN_BUFFER(double);
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 DECLARE_EIGEN_BUFFER(sigma::UFloat);
 DECLARE_EIGEN_BUFFER(sigma::UDouble);
 #endif

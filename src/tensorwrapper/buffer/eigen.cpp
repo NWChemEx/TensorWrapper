@@ -269,7 +269,7 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
 DEFINE_EIGEN_BUFFER(float);
 DEFINE_EIGEN_BUFFER(double);
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 DEFINE_EIGEN_BUFFER(sigma::UFloat);
 DEFINE_EIGEN_BUFFER(sigma::UDouble);
 #endif

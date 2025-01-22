@@ -18,7 +18,7 @@
 #include <tensorwrapper/allocator/replicated.hpp>
 #include <tensorwrapper/buffer/buffer_fwd.hpp>
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
 #endif
 
@@ -284,7 +284,7 @@ protected:
 DECLARE_EIGEN_ALLOCATOR(float);
 DECLARE_EIGEN_ALLOCATOR(double);
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 DECLARE_EIGEN_ALLOCATOR(sigma::UFloat);
 DECLARE_EIGEN_ALLOCATOR(sigma::UDouble);
 #endif

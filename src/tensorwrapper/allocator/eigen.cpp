@@ -123,7 +123,7 @@ typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
 DEFINE_EIGEN_ALLOCATOR(float);
 DEFINE_EIGEN_ALLOCATOR(double);
 
-#ifdef TENSORWRAPPER_HAS_SIGMA
+#ifdef ENABLE_SIGMA
 DEFINE_EIGEN_ALLOCATOR(sigma::UFloat);
 DEFINE_EIGEN_ALLOCATOR(sigma::UDouble);
 #endif
