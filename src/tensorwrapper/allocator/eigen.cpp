@@ -107,17 +107,17 @@ typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
 
 // -- Explicit class template instantiation
 
-#define DEFINE_EIGEN_ALLOCATOR(TYPE)        \
-    template class Eigen<TYPE, 0>; \
-    template class Eigen<TYPE, 1>; \
-    template class Eigen<TYPE, 2>; \
-    template class Eigen<TYPE, 3>; \
-    template class Eigen<TYPE, 4>; \
-    template class Eigen<TYPE, 5>; \
-    template class Eigen<TYPE, 6>; \
-    template class Eigen<TYPE, 7>; \
-    template class Eigen<TYPE, 8>; \
-    template class Eigen<TYPE, 9>; \
+#define DEFINE_EIGEN_ALLOCATOR(TYPE) \
+    template class Eigen<TYPE, 0>;   \
+    template class Eigen<TYPE, 1>;   \
+    template class Eigen<TYPE, 2>;   \
+    template class Eigen<TYPE, 3>;   \
+    template class Eigen<TYPE, 4>;   \
+    template class Eigen<TYPE, 5>;   \
+    template class Eigen<TYPE, 6>;   \
+    template class Eigen<TYPE, 7>;   \
+    template class Eigen<TYPE, 8>;   \
+    template class Eigen<TYPE, 9>;   \
     template class Eigen<TYPE, 10>
 
 DEFINE_EIGEN_ALLOCATOR(float);

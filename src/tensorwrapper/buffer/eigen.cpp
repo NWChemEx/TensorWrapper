@@ -253,7 +253,7 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
 #undef EIGEN
 #undef TPARAMS
 
-#define DEFINE_EIGEN_BUFFER(TYPE)        \
+#define DEFINE_EIGEN_BUFFER(TYPE)  \
     template class Eigen<TYPE, 0>; \
     template class Eigen<TYPE, 1>; \
     template class Eigen<TYPE, 2>; \

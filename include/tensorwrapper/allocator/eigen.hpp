@@ -268,7 +268,7 @@ protected:
 // -- Explicit class template declarations
 // -----------------------------------------------------------------------------
 
-#define DECLARE_EIGEN_ALLOCATOR(TYPE)        \
+#define DECLARE_EIGEN_ALLOCATOR(TYPE)     \
     extern template class Eigen<TYPE, 0>; \
     extern template class Eigen<TYPE, 1>; \
     extern template class Eigen<TYPE, 2>; \
