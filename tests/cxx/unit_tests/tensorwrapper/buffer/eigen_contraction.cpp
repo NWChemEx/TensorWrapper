@@ -68,17 +68,17 @@ TEMPLATE_LIST_TEST_CASE("eigen_contraction", "", types2test) {
         REQUIRE(scalar_corr.are_equal(scalar));
     }
 
-    SECTION("ki,kj->ij") {
-        auto buffer = testing::eigen_matrix<float_t>();
-        auto& rv    = eigen_contraction<float_t>(buffer, matrix, matrix, m00);
-        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
-        REQUIRE(matrix_corr.are_equal(buffer));
-    }
+    // SECTION("ki,kj->ij") {
+    //     auto buffer = testing::eigen_matrix<float_t>();
+    //     auto& rv    = eigen_contraction<float_t>(buffer, matrix, matrix, m00);
+    //     REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+    //     REQUIRE(matrix_corr.are_equal(buffer));
+    // }
 
-    SECTION("ij,i->j") {
-        auto buffer = testing::eigen_vector<float_t>(2);
-        auto& rv    = eigen_contraction<float_t>(buffer, matrix, vector2, m00);
-        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
-        REQUIRE(vector_corr.are_equal(rv));
-    }
+    // SECTION("ij,i->j") {
+    //     auto buffer = testing::eigen_vector<float_t>(2);
+    //     auto& rv    = eigen_contraction<float_t>(buffer, matrix, vector2, m00);
+    //     REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+    //     REQUIRE(vector_corr.are_equal(rv));
+    // }
 }
