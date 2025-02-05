@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "contraction_planner.hpp"
 #include "eigen_contraction.hpp"
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
@@ -23,6 +24,20 @@ namespace tensorwrapper::buffer {
 
 #define TPARAMS template<typename FloatType, unsigned short Rank>
 #define EIGEN Eigen<FloatType, Rank>
+
+template<typename FloatType, unsigned short Rank, typename TensorType>
+FloatType* get_data(TensorType& tensor) {
+    using allocator_type = allocator::Eigen<FloatType, Rank>;
+    if constexpr(Rank > 10) {
+        throw std::runtime_error("Tensors with rank > 10 are not supported");
+    } else {
+        if(tensor.layout().rank() == Rank) {
+            return allocator_type::rebind(tensor).data();
+        } else {
+            return get_data<FloatType, Rank + 1>(tensor);
+        }
+    }
+}
 
 using const_labeled_reference =
   typename Eigen<float, 0>::const_labeled_reference;
@@ -231,6 +246,48 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
     const auto& rlabels = rhs.labels();
     const auto& robject = rhs.object();
 
+    ContractionPlanner plan(this_labels, llabels, rlabels);
+    auto lt = lobject.clone();
+    auto rt = robject.clone();
+    lt->permute_assignment(plan.lhs_permutation(), lhs);
+    rt->permute_assignment(plan.rhs_permutation(), rhs);
+
+    const auto ndummy = plan.lhs_dummy().size();
+    const auto lshape = lt->layout().shape().as_smooth();
+    const auto rshape = rt->layout().shape().as_smooth();
+    const auto oshape = layout().shape().as_smooth();
+    const auto lfree  = lshape.rank() - ndummy;
+    std::size_t lrows = lshape.rank() ? 1 : 0;
+    std::size_t lcols = lshape.rank() ? 1 : 0;
+
+    for(std::size_t i = 0; i < lfree; ++i) lrows *= lshape.extent(i);
+    for(std::size_t i = lfree; i < lshape.rank(); ++i)
+        lcols *= lshape.extent(i);
+
+    std::size_t rrows = rshape.rank() ? 1 : 0;
+    std::size_t rcols = rshape.rank() ? 1 : 0;
+
+    for(std::size_t i = 0; i < ndummy; ++i) rrows *= rshape.extent(i);
+    for(std::size_t i = ndummy; i < rshape.rank(); ++i)
+        rcols *= rshape.extent(i);
+
+    using matrix_t = ::Eigen::Matrix<FloatType, ::Eigen::Dynamic,
+                                     ::Eigen::Dynamic, ::Eigen::RowMajor>;
+    using map_t    = ::Eigen::Map<matrix_t>;
+
+    typename Eigen<FloatType, 2>::data_type buffer(lrows, rcols);
+
+    map_t lmatrix(get_data<FloatType, 0>(*lt), lrows, lcols);
+    map_t rmatrix(get_data<FloatType, 0>(*rt), rrows, rcols);
+    map_t omatrix(buffer.data(), lrows, rcols);
+    omatrix = lmatrix * rmatrix;
+
+    std::array<int, Rank> out_size;
+    for(std::size_t i = 0; i < Rank; ++i) out_size[i] = oshape.extent(i);
+    m_tensor_ = buffer.reshape(out_size);
+    return *this;
+
+    /* Doesn't work with Sigma
     // N.b. is a pure contraction, so common indices are summed over
     auto common = llabels.intersection(rlabels);
 
@@ -248,6 +305,7 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
     }
 
     return eigen_contraction<FloatType>(*this, lobject, robject, modes);
+    */
 }
 
 #undef EIGEN

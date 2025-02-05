@@ -110,6 +110,15 @@ public:
       DummyIndices(
         utilities::strings::split_string(remove_spaces_(dummy_indices), ",")) {}
 
+    /// Main ctor for setting the value, throws if any index is empty
+    explicit DummyIndices(split_string_type split_dummy_indices) :
+      m_dummy_indices_(std::move(split_dummy_indices)) {
+        for(const auto& x : m_dummy_indices_)
+            if(x.empty())
+                throw std::runtime_error(
+                  "Dummy index is not allowed to be empty");
+    }
+
     /** @brief Determines the number of unique indices in *this.
      *
      *  A dummy index can be repeated if it is going to be summed over. This
@@ -437,15 +446,6 @@ public:
     }
 
 protected:
-    /// Main ctor for setting the value, throws if any index is empty
-    explicit DummyIndices(split_string_type split_dummy_indices) :
-      m_dummy_indices_(std::move(split_dummy_indices)) {
-        for(const auto& x : m_dummy_indices_)
-            if(x.empty())
-                throw std::runtime_error(
-                  "Dummy index is not allowed to be empty");
-    }
-
     /// Lets the base class get at these implementations
     friend base_type;
 

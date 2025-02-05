@@ -169,6 +169,9 @@ public:
      */
     bool operator!=(const Eigen& rhs) const noexcept { return !(*this == rhs); }
 
+    FloatType* data() { return m_tensor_.data(); };
+    const FloatType* data() const { return m_tensor_.data(); }
+
 protected:
     /// Implements clone by calling copy ctor
     buffer_base_pointer clone_() const override {
