@@ -39,21 +39,10 @@ cmaize_option_list(
     ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
 )
 
-cmaize_find_or_build_dependency(
-    utilities
-    URL github.com/NWChemEx/utilities
-    BUILD_TARGET utilities
-    FIND_TARGET nwx::utilities
-    CMAKE_ARGS BUILD_TESTING=OFF
-)
+### Dependendencies ###
+include(get_utilities)
 
-cmaize_find_or_build_dependency(
-    parallelzone
-    URL github.com/NWChemEx/ParallelZone
-    BUILD_TARGET parallelzone
-    FIND_TARGET nwx::parallelzone
-    CMAKE_ARGS BUILD_TESTING=OFF
-)
+include(get_parallelzone)
 
 find_package(Boost REQUIRED)
 
@@ -88,13 +77,8 @@ if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
 
-    cmaize_find_or_build_dependency(
-        Catch2
-        URL github.com/catchorg/Catch2
-        BUILD_TARGET Catch2
-        FIND_TARGET Catch2::Catch2
-        VERSION v3.6.0
-    )
+    include(get_catch2)
+    
     cmaize_add_tests(
         test_unit_${PROJECT_NAME}
         SOURCE_DIR "${cxx_unit_test_dir}"

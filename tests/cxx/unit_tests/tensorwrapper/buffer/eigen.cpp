@@ -676,31 +676,30 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             compare_eigen<TestType>(scalar_corr.value(), scalar.value());
         }
 
-        // SECTION("ki,kj->ij") {
-        //     auto buffer2 = testing::eigen_matrix<TestType>();
-        //     auto p = &(buffer2.multiplication_assignment("i,j", mik, mjk));
+        SECTION("ki,kj->ij") {
+            auto buffer2 = testing::eigen_matrix<TestType>();
+            auto p = &(buffer2.multiplication_assignment("i,j", mik, mjk));
 
-        //     auto matrix_corr          = testing::eigen_matrix<TestType>(2,
-        //     2); matrix_corr.value()(0, 0) = 1400.0; // 100 + 400 + 900
-        //     matrix_corr.value()(0, 1) = 3200.0; // 400 + 1000 + 1800
-        //     matrix_corr.value()(1, 0) = 3200.0; // 400 + 1000 + 1800
-        //     matrix_corr.value()(1, 1) = 7700.0; // 1600 + 2500 + 3600
+            auto matrix_corr          = testing::eigen_matrix<TestType>(2, 2);
+            matrix_corr.value()(0, 0) = 1400.0; // 100 + 400 + 900
+            matrix_corr.value()(0, 1) = 3200.0; // 400 + 1000 + 1800
+            matrix_corr.value()(1, 0) = 3200.0; // 400 + 1000 + 1800
+            matrix_corr.value()(1, 1) = 7700.0; // 1600 + 2500 + 3600
 
-        //     REQUIRE(p == &buffer2);
-        //     compare_eigen<TestType>(matrix_corr.value(), buffer2.value());
-        // }
+            REQUIRE(p == &buffer2);
+            compare_eigen<TestType>(matrix_corr.value(), buffer2.value());
+        }
 
-        // SECTION("ij,i->j") {
-        //     auto buffer1 = testing::eigen_vector<TestType>();
-        //     auto p       = &(buffer1.multiplication_assignment("j", mij,
-        //     vi));
+        SECTION("ij,i->j") {
+            auto buffer1 = testing::eigen_vector<TestType>();
+            auto p       = &(buffer1.multiplication_assignment("j", mij, vi));
 
-        //     auto vector_corr       = testing::eigen_vector<TestType>(3);
-        //     vector_corr.value()(0) = 900.0;  // 10(10) + 20(40)
-        //     vector_corr.value()(1) = 1200.0; // 10(20) + 20(50)
-        //     vector_corr.value()(2) = 1500.0; // 10(30) + 20(60)
-        //     REQUIRE(p == &buffer1);
-        //     compare_eigen<TestType>(vector_corr.value(), buffer1.value());
-        // }
+            auto vector_corr       = testing::eigen_vector<TestType>(3);
+            vector_corr.value()(0) = 900.0;  // 10(10) + 20(40)
+            vector_corr.value()(1) = 1200.0; // 10(20) + 20(50)
+            vector_corr.value()(2) = 1500.0; // 10(30) + 20(60)
+            REQUIRE(p == &buffer1);
+            compare_eigen<TestType>(vector_corr.value(), buffer1.value());
+        }
     }
 }
