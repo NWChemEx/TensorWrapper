@@ -15,7 +15,7 @@
  */
 
 #pragma once
-#include <tensorwrapper/buffer/buffer_base.hpp>
+#include <tensorwrapper/buffer/eigen.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -27,15 +27,11 @@ namespace tensorwrapper::buffer {
  *  instantiations for every combination of template parameters that Eigen may
  *  end up seeing, that's what the functions in this header do.
  *
-//  *  The entry point into this infrastructure is currently the return_rank
- *  method, which kicks the process off by working out the rank of the tensor
- *  which will
- *
  */
-template<typename FloatType>
+template<typename FloatType, unsigned short Rank>
 BufferBase::dsl_reference eigen_contraction(
-  BufferBase::base_reference rv, BufferBase::const_base_reference lhs,
-  BufferBase::const_base_reference rhs,
-  const std::vector<std::pair<unsigned short, unsigned short>>& sum_modes);
+  Eigen<FloatType, Rank>& result, BufferBase::label_type olabels,
+  BufferBase::const_labeled_reference lhs,
+  BufferBase::const_labeled_reference rhs);
 
 } // namespace tensorwrapper::buffer

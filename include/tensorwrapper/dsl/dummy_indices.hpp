@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <ostream>
 #include <set>
 #include <string>
 #include <utilities/containers/indexable_container_base.hpp>
@@ -109,6 +110,15 @@ public:
     explicit DummyIndices(const_reference dummy_indices) :
       DummyIndices(
         utilities::strings::split_string(remove_spaces_(dummy_indices), ",")) {}
+
+    /// Main ctor for setting the value, throws if any index is empty
+    explicit DummyIndices(split_string_type split_dummy_indices) :
+      m_dummy_indices_(std::move(split_dummy_indices)) {
+        for(const auto& x : m_dummy_indices_)
+            if(x.empty())
+                throw std::runtime_error(
+                  "Dummy index is not allowed to be empty");
+    }
 
     /** @brief Determines the number of unique indices in *this.
      *
@@ -212,12 +222,27 @@ public:
      *
      *  Each DummyIndices object is viewed as an ordered set of objects. If
      *  two DummyIndices objects contain the same objects, but in a different
-     *  order, we can convert either object into the other by permuting it.
-     *  This method computes the permutation needed to change *this into
-     *  @p other. More specifically the result of this method is a vector
-     *  of length `size()` such that the `i`-th element is the offset of
-     *  `(*this)[i]` in @p other, i.e., if `x` is the return then
-     *  `other[x[i]] ==  (*this)[i]`.
+     *  order, we can convert either object into the other by permuting it. This
+     *  method determines the permutation necessary to convert *this into other;
+     *  the reverse permutation, i.e., converting other to *this is obtained
+     *  by `other.permutation(*this)`.
+     *
+     *  For concreteness assume we have a set A=(i, j, k) and we want to
+     *  permute it into the set B=(j,k,i), then there are two subtly different
+     *  ways of writing the necessary permutation:
+     *  1. Write the target set in terms of the current offsets, e.g., A goes
+     *     to B is written as P1=(1, 2, 0)
+     *  2. Write the current set in terms of the target offsets, e.g., A goes
+     *     to B is written as P2=(2, 0, 1)
+     *
+     *  Option one maps offsets in B to offsets in A, e.g., A[P1[0]] == B[0],
+     *  whereas option two maps offsets in A to offsets in B, e.g.,
+     *  A[0] == B[P2[0]]. This method follows definition two.
+     *
+     *  @note The definitions are inverses of each other. So if you don't like
+     *  our definition, and want the other one, flip *this and @p other, e.g.,
+     *  Permuting B to A using definition 1 yields P1'=(2, 0, 1)=P2  and
+     *  permuting B to A using definition 1 yields P2'=(1, 2, 0)=P1.
      *
      *  @param[in] other The order we want to permute *this to.
      *
@@ -437,15 +462,6 @@ public:
     }
 
 protected:
-    /// Main ctor for setting the value, throws if any index is empty
-    explicit DummyIndices(split_string_type split_dummy_indices) :
-      m_dummy_indices_(std::move(split_dummy_indices)) {
-        for(const auto& x : m_dummy_indices_)
-            if(x.empty())
-                throw std::runtime_error(
-                  "Dummy index is not allowed to be empty");
-    }
-
     /// Lets the base class get at these implementations
     friend base_type;
 
@@ -470,6 +486,17 @@ private:
     /// The split dummy indices
     split_string_type m_dummy_indices_;
 };
+
+template<typename StringType>
+std::ostream& operator<<(std::ostream& os, const DummyIndices<StringType>& i) {
+    if(i.size() == 0) return os;
+    os << i.at(0);
+    for(std::size_t j = 1; j < i.size(); ++j) {
+        os << ",";
+        os << i.at(j);
+    }
+    return os;
+}
 
 template<typename StringType>
 bool DummyIndices<StringType>::is_hadamard_product(

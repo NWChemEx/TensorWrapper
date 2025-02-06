@@ -73,21 +73,40 @@ auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
 }
 
 template<typename FloatType>
-auto eigen_tensor3() {
+auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
     using buffer_type = buffer::Eigen<FloatType, 3>;
     using data_type   = typename buffer_type::data_type;
-    shape::Smooth shape{2, 2, 2};
-    layout::Physical l(shape);
-    data_type tensor(2, 2, 2);
-    tensor(0, 0, 0) = 1.0;
-    tensor(0, 0, 1) = 2.0;
-    tensor(0, 1, 0) = 3.0;
-    tensor(0, 1, 1) = 4.0;
-    tensor(1, 0, 0) = 5.0;
-    tensor(1, 0, 1) = 6.0;
-    tensor(1, 1, 0) = 7.0;
-    tensor(1, 1, 1) = 8.0;
-    return buffer_type(tensor, l);
+    int in            = static_cast<int>(n);
+    int im            = static_cast<int>(m);
+    int il            = static_cast<int>(l);
+    shape::Smooth shape{n, m, l};
+    layout::Physical layout(shape);
+    data_type e_tensor(in, im, il);
+    double counter = 1.0;
+    for(decltype(in) i = 0; i < in; ++i)
+        for(decltype(im) j = 0; j < im; ++j)
+            for(decltype(il) k = 0; k < il; ++k) e_tensor(i, j, k) = counter++;
+    return buffer_type(e_tensor, layout);
+}
+
+template<typename FloatType>
+auto eigen_tensor4(std::array<std::size_t, 4> extents = {2, 2, 2, 2}) {
+    auto constexpr Rank = 4;
+    using buffer_type   = buffer::Eigen<FloatType, Rank>;
+    using data_type     = typename buffer_type::data_type;
+    std::array<int, Rank> iextents;
+    for(std::size_t i = 0; i < Rank; ++i) iextents[i] = extents[i];
+    shape::Smooth shape{extents[0], extents[1], extents[2], extents[3]};
+    layout::Physical layout(shape);
+    data_type e_tensor(iextents[0], iextents[1], iextents[2], iextents[3]);
+    double counter = 1.0;
+    std::array<int, Rank> i;
+    for(i[0] = 0; i[0] < iextents[0]; ++i[0])
+        for(i[1] = 0; i[1] < iextents[1]; ++i[1])
+            for(i[2] = 0; i[2] < iextents[2]; ++i[2])
+                for(i[3] = 0; i[3] < iextents[3]; ++i[3])
+                    e_tensor(i[0], i[1], i[2], i[3]) = counter++;
+    return buffer_type(e_tensor, layout);
 }
 
 } // namespace tensorwrapper::testing
