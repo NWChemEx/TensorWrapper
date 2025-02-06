@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.41</span>
+   &#160;<span id="projectnumber">0.0.42</span>
    </div>
   </td>
  </tr>
@@ -762,6 +762,7 @@ template&lt;typename FloatType , unsigned short Rank&gt; </div>
 
 <p>Is *this value equal to <code>rhs</code>? </p>
 <p>Two <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> objects are value equal if they both have the same layout and they both have the same values.</p>
+<dl class="section note"><dt>Note</dt><dd>For tensors where the <code>FloatType</code> is an uncertain floating point number, the tensors are required to have the same sources of uncertainty.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The object to compare against.</td></tr>
