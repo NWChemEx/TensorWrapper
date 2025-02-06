@@ -61,6 +61,9 @@ public:
     /// Type of parsed labels
     using label_type = typename labeled_type::label_type;
 
+    /// Type of a mutable reference to a labeled_type object
+    using labeled_reference = labeled_type&;
+
     /// Type of a read-only reference to a labeled_type object
     using const_labeled_reference = const labeled_const_type&;
 

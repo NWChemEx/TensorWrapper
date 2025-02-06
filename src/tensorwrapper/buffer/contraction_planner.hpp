@@ -69,6 +69,20 @@ public:
         return label_type(std::move(rv));
     }
 
+    /** @brief Flattened result labels.
+     *
+     *  After applying lhs_permutation to LHS to get A, and rhs_permutation to
+     *  RHS to get B, A and B can be multiplied together with a gemm. The
+     *  resulting matrix has indices given by concatenating the free indices of
+     *  A with the free indices of B. This method returns those indices.
+     *
+     */
+    label_type result_matrix_labels() const {
+        const auto lhs = lhs_permutation();
+        const auto rhs = rhs_permutation();
+        return lhs.concatenation(rhs).difference(lhs_dummy());
+    }
+
 private:
     /// Ensures no tensor contains a repeated label
     void assert_no_repeated_indices_() const {

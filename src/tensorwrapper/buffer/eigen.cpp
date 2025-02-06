@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "contraction_planner.hpp"
+
 #include "eigen_contraction.hpp"
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
@@ -24,20 +24,6 @@ namespace tensorwrapper::buffer {
 
 #define TPARAMS template<typename FloatType, unsigned short Rank>
 #define EIGEN Eigen<FloatType, Rank>
-
-template<typename FloatType, unsigned short Rank, typename TensorType>
-FloatType* get_data(TensorType& tensor) {
-    using allocator_type = allocator::Eigen<FloatType, Rank>;
-    if constexpr(Rank > 10) {
-        throw std::runtime_error("Tensors with rank > 10 are not supported");
-    } else {
-        if(tensor.layout().rank() == Rank) {
-            return allocator_type::rebind(tensor).data();
-        } else {
-            return get_data<FloatType, Rank + 1>(tensor);
-        }
-    }
-}
 
 using const_labeled_reference =
   typename Eigen<float, 0>::const_labeled_reference;
@@ -154,7 +140,8 @@ typename EIGEN::dsl_reference EIGEN::permute_assignment_(
     const auto& rlabels = rhs.labels();
 
     if(this_labels != rlabels) { // We need to permute rhs before assignment
-        auto r_to_l = rhs.labels().permutation(this_labels);
+        // Eigen adopts the opposite definition of permutation from us.
+        auto r_to_l = this_labels.permutation(rlabels);
         // Eigen wants int objects
         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
         m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
@@ -241,71 +228,7 @@ typename EIGEN::dsl_reference EIGEN::hadamard_(label_type this_labels,
 TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
-    const auto& llabels = lhs.labels();
-    const auto& lobject = lhs.object();
-    const auto& rlabels = rhs.labels();
-    const auto& robject = rhs.object();
-
-    ContractionPlanner plan(this_labels, llabels, rlabels);
-    auto lt = lobject.clone();
-    auto rt = robject.clone();
-    lt->permute_assignment(plan.lhs_permutation(), lhs);
-    rt->permute_assignment(plan.rhs_permutation(), rhs);
-
-    const auto ndummy = plan.lhs_dummy().size();
-    const auto lshape = lt->layout().shape().as_smooth();
-    const auto rshape = rt->layout().shape().as_smooth();
-    const auto oshape = layout().shape().as_smooth();
-    const auto lfree  = lshape.rank() - ndummy;
-    std::size_t lrows = lshape.rank() ? 1 : 0;
-    std::size_t lcols = lshape.rank() ? 1 : 0;
-
-    for(std::size_t i = 0; i < lfree; ++i) lrows *= lshape.extent(i);
-    for(std::size_t i = lfree; i < lshape.rank(); ++i)
-        lcols *= lshape.extent(i);
-
-    std::size_t rrows = rshape.rank() ? 1 : 0;
-    std::size_t rcols = rshape.rank() ? 1 : 0;
-
-    for(std::size_t i = 0; i < ndummy; ++i) rrows *= rshape.extent(i);
-    for(std::size_t i = ndummy; i < rshape.rank(); ++i)
-        rcols *= rshape.extent(i);
-
-    using matrix_t = ::Eigen::Matrix<FloatType, ::Eigen::Dynamic,
-                                     ::Eigen::Dynamic, ::Eigen::RowMajor>;
-    using map_t    = ::Eigen::Map<matrix_t>;
-
-    typename Eigen<FloatType, 2>::data_type buffer(lrows, rcols);
-
-    map_t lmatrix(get_data<FloatType, 0>(*lt), lrows, lcols);
-    map_t rmatrix(get_data<FloatType, 0>(*rt), rrows, rcols);
-    map_t omatrix(buffer.data(), lrows, rcols);
-    omatrix = lmatrix * rmatrix;
-
-    std::array<int, Rank> out_size;
-    for(std::size_t i = 0; i < Rank; ++i) out_size[i] = oshape.extent(i);
-    m_tensor_ = buffer.reshape(out_size);
-    return *this;
-
-    /* Doesn't work with Sigma
-    // N.b. is a pure contraction, so common indices are summed over
-    auto common = llabels.intersection(rlabels);
-
-    // -- This block converts string indices to mode offsets
-    using rank_type = unsigned short;
-    using pair_type = std::pair<rank_type, rank_type>;
-    std::vector<pair_type> modes;
-    auto rank = common.size();
-    for(decltype(rank) i = 0; i < rank; ++i) {
-        const auto& index_i = common.at(i);
-        // N.b., pure contraction so there's no repeats within a tensor's label
-        auto lindex = llabels.find(index_i)[0];
-        auto rindex = rlabels.find(index_i)[0];
-        modes.push_back(pair_type(lindex, rindex));
-    }
-
-    return eigen_contraction<FloatType>(*this, lobject, robject, modes);
-    */
+    return eigen_contraction(*this, this_labels, lhs, rhs);
 }
 
 #undef EIGEN

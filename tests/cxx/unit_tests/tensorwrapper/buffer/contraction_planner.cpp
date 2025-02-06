@@ -42,6 +42,10 @@ TEST_CASE("ContractionPlanner") {
     ContractionPlanner cp_ij_ik_jk("i,j", "i,k", "j,k");
     ContractionPlanner cp_ji_ik_jk("j,i", "i,k", "j,k");
 
+    // Matrix times rank 3
+    ContractionPlanner cp_j_ki_jki("j", "k,i", "j,k,i");
+    ContractionPlanner cp_jil_ki_jkl("j,i,l", "k,i", "j,k,l");
+
     // 3 times 3
     ContractionPlanner cp__ijk_ijk("", "i,j,k", "i,j,k");
     ContractionPlanner cp__ijk_jik("", "i,j,k", "j,i,k");
@@ -79,6 +83,9 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ij_ik_jk.lhs_free() == "i");
         REQUIRE(cp_ji_ik_jk.lhs_free() == "i");
 
+        REQUIRE(cp_j_ki_jki.lhs_free() == "");
+        REQUIRE(cp_jil_ki_jkl.lhs_free() == "i");
+
         REQUIRE(cp__ijk_ijk.lhs_free() == "");
         REQUIRE(cp__ijk_jik.lhs_free() == "");
         REQUIRE(cp_il_ijk_jkl.lhs_free() == "i");
@@ -101,6 +108,9 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ji_ik_kj.rhs_free() == "j");
         REQUIRE(cp_ij_ik_jk.rhs_free() == "j");
         REQUIRE(cp_ji_ik_jk.rhs_free() == "j");
+
+        REQUIRE(cp_j_ki_jki.rhs_free() == "j");
+        REQUIRE(cp_jil_ki_jkl.rhs_free() == "j,l");
 
         REQUIRE(cp__ijk_ijk.rhs_free() == "");
         REQUIRE(cp__ijk_jik.rhs_free() == "");
@@ -125,6 +135,9 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ij_ik_jk.lhs_dummy() == "k");
         REQUIRE(cp_ji_ik_jk.lhs_dummy() == "k");
 
+        REQUIRE(cp_j_ki_jki.lhs_dummy() == "k,i");
+        REQUIRE(cp_jil_ki_jkl.lhs_dummy() == "k");
+
         REQUIRE(cp__ijk_ijk.lhs_dummy() == "i,j,k");
         REQUIRE(cp__ijk_jik.lhs_dummy() == "i,j,k");
         REQUIRE(cp_il_ijk_jkl.lhs_dummy() == "j,k");
@@ -147,6 +160,9 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ji_ik_kj.rhs_dummy() == "k");
         REQUIRE(cp_ij_ik_jk.rhs_dummy() == "k");
         REQUIRE(cp_ji_ik_jk.rhs_dummy() == "k");
+
+        REQUIRE(cp_j_ki_jki.rhs_dummy() == "k,i");
+        REQUIRE(cp_jil_ki_jkl.rhs_dummy() == "k");
 
         REQUIRE(cp__ijk_ijk.rhs_dummy() == "i,j,k");
         REQUIRE(cp__ijk_jik.rhs_dummy() == "j,i,k");
@@ -171,6 +187,9 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ij_ik_jk.lhs_permutation() == "i,k");
         REQUIRE(cp_ji_ik_jk.lhs_permutation() == "i,k");
 
+        REQUIRE(cp_j_ki_jki.lhs_permutation() == "k,i");
+        REQUIRE(cp_jil_ki_jkl.lhs_permutation() == "i,k");
+
         REQUIRE(cp__ijk_ijk.lhs_permutation() == "i,j,k");
         REQUIRE(cp__ijk_jik.lhs_permutation() == "i,j,k");
         REQUIRE(cp_il_ijk_jkl.lhs_permutation() == "i,j,k");
@@ -194,9 +213,38 @@ TEST_CASE("ContractionPlanner") {
         REQUIRE(cp_ij_ik_jk.rhs_permutation() == "k,j");
         REQUIRE(cp_ji_ik_jk.rhs_permutation() == "k,j");
 
+        REQUIRE(cp_j_ki_jki.rhs_permutation() == "k,i,j");
+        REQUIRE(cp_jil_ki_jkl.rhs_permutation() == "k,j,l");
+
         REQUIRE(cp__ijk_ijk.rhs_permutation() == "i,j,k");
         REQUIRE(cp__ijk_jik.rhs_permutation() == "i,j,k");
         REQUIRE(cp_il_ijk_jkl.rhs_permutation() == "j,k,l");
         REQUIRE(cp_il_ijk_klj.rhs_permutation() == "j,k,l");
+    }
+
+    SECTION("result_matrix_labels") {
+        REQUIRE(cp___.result_matrix_labels() == "");
+
+        REQUIRE(cp__i_i.result_matrix_labels() == "");
+        REQUIRE(cp_ij_i_j.result_matrix_labels() == "i,j");
+        REQUIRE(cp_ji_i_j.result_matrix_labels() == "i,j");
+
+        REQUIRE(cp_j_i_ij.result_matrix_labels() == "j");
+        REQUIRE(cp_j_i_ji.result_matrix_labels() == "j");
+        REQUIRE(cp_ijk_i_jk.result_matrix_labels() == "i,j,k");
+        REQUIRE(cp_ijk_i_kj.result_matrix_labels() == "i,j,k");
+
+        REQUIRE(cp_ij_ik_kj.result_matrix_labels() == "i,j");
+        REQUIRE(cp_ji_ik_kj.result_matrix_labels() == "i,j");
+        REQUIRE(cp_ij_ik_jk.result_matrix_labels() == "i,j");
+        REQUIRE(cp_ji_ik_jk.result_matrix_labels() == "i,j");
+
+        REQUIRE(cp_j_ki_jki.result_matrix_labels() == "j");
+        REQUIRE(cp_jil_ki_jkl.result_matrix_labels() == "i,j,l");
+
+        REQUIRE(cp__ijk_ijk.result_matrix_labels() == "");
+        REQUIRE(cp__ijk_jik.result_matrix_labels() == "");
+        REQUIRE(cp_il_ijk_jkl.result_matrix_labels() == "i,l");
+        REQUIRE(cp_il_ijk_klj.result_matrix_labels() == "i,l");
     }
 }
