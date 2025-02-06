@@ -96,8 +96,8 @@ return_type eigen_contraction(Eigen<FloatType, Rank>& result,
 
     auto m_to_o = olabels.permutation(mlabels); // N.b. Eigen def is inverse us
 
-    std::array<std::size_t, Rank> out_size;
-    std::array<std::size_t, Rank> m_to_o_array;
+    std::array<int, Rank> out_size;
+    std::array<int, Rank> m_to_o_array;
     for(std::size_t i = 0; i < Rank; ++i) {
         out_size[i]     = mshape.extent(i);
         m_to_o_array[i] = m_to_o[i];
@@ -132,6 +132,11 @@ return_type eigen_contraction(Eigen<FloatType, Rank>& result,
 
 EIGEN_CONTRACTION(float);
 EIGEN_CONTRACTION(double);
+
+#ifdef ENABLE_SIGMA
+EIGEN_CONTRACTION(sigma::UFloat);
+EIGEN_CONTRACTION(sigma::UDouble);
+#endif
 
 #undef EIGEN_CONTRACTION
 #undef EIGEN_CONTRACTION_
