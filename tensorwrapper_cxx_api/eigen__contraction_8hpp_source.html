@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.40</span>
+   &#160;<span id="projectnumber">0.0.41</span>
    </div>
   </td>
  </tr>
@@ -87,22 +87,22 @@ $(function() {
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;tensorwrapper/buffer/buffer_base.hpp&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;tensorwrapper/buffer/eigen.hpp&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a> {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> FloatType&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacetensorwrapper_1_1buffer.html#ac359c1fe4ba94bd207cfb4f879cc794c">   36</a></span>&#160;<a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a> <a class="code" href="namespacetensorwrapper_1_1buffer.html#abe0b329c629b6571af9db9dabb89e3b8">eigen_contraction</a>(</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d4cdbec8c20631c3bf9caf684f0fe1c">BufferBase::base_reference</a> rv, <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a> lhs,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a> rhs,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">const</span> std::vector&lt;std::pair&lt;unsigned short, unsigned short&gt;&gt;&amp; sum_modes);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> FloatType, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> Rank&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacetensorwrapper_1_1buffer.html#a92eca1aff5194048115ea5e6bf53349c">   32</a></span>&#160;<a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a> eigen_contraction(</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen&lt;FloatType, Rank&gt;</a>&amp; result, <a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">BufferBase::label_type</a> olabels,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> lhs,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> rhs);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html">tensorwrapper::buffer::Eigen</a></div><div class="ttdoc">A buffer which wraps an Eigen tensor.</div><div class="ttdef"><b>Definition:</b> eigen.hpp:30</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1detail___1_1DSLBase_html_aa0ae4d4cac26930cf8338c1a24b004c4"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;::label_type</a></div><div class="ttdeci">typename labeled_type::label_type label_type</div><div class="ttdoc">Type of parsed labels.</div><div class="ttdef"><b>Definition:</b> dsl_base.hpp:62</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1detail___1_1DSLBase_html_abdad86554aa99fe9b5111737f6bd8571"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;::dsl_reference</a></div><div class="ttdeci">dsl_value_type &amp; dsl_reference</div><div class="ttdoc">Type of a reference to an object of type dsl_value_type.</div><div class="ttdef"><b>Definition:</b> dsl_base.hpp:44</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1detail___1_1PolymorphicBase_html_a4d3ea0c25ad674f9796b74e2fe62a818"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;::const_base_reference</a></div><div class="ttdeci">const base_type &amp; const_base_reference</div><div class="ttdoc">Read-only reference to an object of type base_type.</div><div class="ttdef"><b>Definition:</b> polymorphic_base.hpp:42</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1detail___1_1PolymorphicBase_html_a4d4cdbec8c20631c3bf9caf684f0fe1c"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d4cdbec8c20631c3bf9caf684f0fe1c">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;::base_reference</a></div><div class="ttdeci">base_type &amp; base_reference</div><div class="ttdoc">Mutable reference to an object of type base_type.</div><div class="ttdef"><b>Definition:</b> polymorphic_base.hpp:39</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1detail___1_1DSLBase_html_af81286387b2df29588b36bf10a073048"><div class="ttname"><a href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;::const_labeled_reference</a></div><div class="ttdeci">const labeled_const_type &amp; const_labeled_reference</div><div class="ttdoc">Type of a read-only reference to a labeled_type object.</div><div class="ttdef"><b>Definition:</b> dsl_base.hpp:68</div></div>
 <div class="ttc" id="anamespacetensorwrapper_1_1buffer_html"><div class="ttname"><a href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a></div><div class="ttdoc">Contains classes need to wrap instances of the various backends.</div><div class="ttdef"><b>Definition:</b> buffer.hpp:24</div></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1buffer_html_abe0b329c629b6571af9db9dabb89e3b8"><div class="ttname"><a href="namespacetensorwrapper_1_1buffer.html#abe0b329c629b6571af9db9dabb89e3b8">tensorwrapper::buffer::eigen_contraction</a></div><div class="ttdeci">return_type eigen_contraction(RVType &amp;&amp;rv, LHSType &amp;&amp;lhs, RHSType &amp;&amp;rhs, ModesType &amp;&amp;sum_modes)</div><div class="ttdoc">Wraps the contraction once we've worked out all of the template params.</div><div class="ttdef"><b>Definition:</b> eigen_contraction.cpp:36</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

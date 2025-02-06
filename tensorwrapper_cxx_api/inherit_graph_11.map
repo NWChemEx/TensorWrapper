@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,249,47"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1symmetry_1_1Operation.html" title="Common API for classes describing a symmetry operation." alt="" coords="297,5,488,47"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1symmetry_1_1Permutation.html" title="Describes a permutation of a tensor&#39;s modes." alt="" coords="536,5,727,47"/>
+<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title="Defines the API polymorphic utility methods should use." alt="" coords="5,5,248,47"/>
 </map>

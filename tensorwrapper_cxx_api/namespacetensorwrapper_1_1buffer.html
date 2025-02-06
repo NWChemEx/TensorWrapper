@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.40</span>
+   &#160;<span id="projectnumber">0.0.41</span>
    </div>
   </td>
  </tr>
@@ -92,33 +92,27 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1Replicated.html">Replicated</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Denotes that a buffer is the same on all processes.  <a href="classtensorwrapper_1_1buffer_1_1Replicated.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1ContractionPlanner.html">ContractionPlanner</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for working out details pertaining to a tensor contraction.  <a href="classtensorwrapper_1_1buffer_1_1ContractionPlanner.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a998d6820244033782e1ff91329459c2d"><td class="memItemLeft" align="right" valign="top"><a id="a998d6820244033782e1ff91329459c2d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_reference</b> = typename <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a></td></tr>
 <tr class="separator:a998d6820244033782e1ff91329459c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa81bf62eb71309a1a940c080da105554"><td class="memItemLeft" align="right" valign="top"><a id="aa81bf62eb71309a1a940c080da105554"></a>
+<tr class="memitem:a2ce6329a0801adda175e347340923e21"><td class="memItemLeft" align="right" valign="top"><a id="a2ce6329a0801adda175e347340923e21"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_labeled_reference</b> = typename <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; float, 0 &gt;::const_labeled_reference</td></tr>
-<tr class="separator:aa81bf62eb71309a1a940c080da105554"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2ce6329a0801adda175e347340923e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4956468c57ce5a9081247c57ae24dad"><td class="memItemLeft" align="right" valign="top"><a id="aa4956468c57ce5a9081247c57ae24dad"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>rank_type</b> = unsigned short</td></tr>
 <tr class="separator:aa4956468c57ce5a9081247c57ae24dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6bc87a1719b6122cec2f2e23d9376cc"><td class="memItemLeft" align="right" valign="top"><a id="aa6bc87a1719b6122cec2f2e23d9376cc"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>base_reference</b> = BufferBase::base_reference</td></tr>
-<tr class="separator:aa6bc87a1719b6122cec2f2e23d9376cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a334ffdb314cccaf41074446036416a0b"><td class="memItemLeft" align="right" valign="top"><a id="a334ffdb314cccaf41074446036416a0b"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>const_base_reference</b> = BufferBase::const_base_reference</td></tr>
-<tr class="separator:a334ffdb314cccaf41074446036416a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bb4267c568267960cb484f42af305f"><td class="memItemLeft" align="right" valign="top"><a id="a03bb4267c568267960cb484f42af305f"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>return_type</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a></td></tr>
 <tr class="separator:a03bb4267c568267960cb484f42af305f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ce3850684297b570df79f871f106640"><td class="memItemLeft" align="right" valign="top"><a id="a7ce3850684297b570df79f871f106640"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>pair_type</b> = std::pair&lt; rank_type, rank_type &gt;</td></tr>
-<tr class="separator:a7ce3850684297b570df79f871f106640"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e909bfda2369b8fe4cf43939e50be9c"><td class="memItemLeft" align="right" valign="top"><a id="a0e909bfda2369b8fe4cf43939e50be9c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>vector_type</b> = std::vector&lt; pair_type &gt;</td></tr>
-<tr class="separator:a0e909bfda2369b8fe4cf43939e50be9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af17c251dba7484d9a50f4b66910796e1"><td class="memItemLeft" align="right" valign="top"><a id="af17c251dba7484d9a50f4b66910796e1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = BufferBase::label_type</td></tr>
+<tr class="separator:af17c251dba7484d9a50f4b66910796e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -188,80 +182,63 @@ Functions</h2></td></tr>
 <tr class="memitem:a0e7a629ee66437a0a0e7c129a1917bda"><td class="memItemLeft" align="right" valign="top"><a id="a0e7a629ee66437a0a0e7c129a1917bda"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_EIGEN_BUFFER</b> (10)</td></tr>
 <tr class="separator:a0e7a629ee66437a0a0e7c129a1917bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe0b329c629b6571af9db9dabb89e3b8"><td class="memTemplParams" colspan="2"><a id="abe0b329c629b6571af9db9dabb89e3b8"></a>
-template&lt;typename RVType , typename LHSType , typename RHSType , typename ModesType &gt; </td></tr>
-<tr class="memitem:abe0b329c629b6571af9db9dabb89e3b8"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#abe0b329c629b6571af9db9dabb89e3b8">eigen_contraction</a> (RVType &amp;&amp;rv, LHSType &amp;&amp;lhs, RHSType &amp;&amp;rhs, ModesType &amp;&amp;sum_modes)</td></tr>
-<tr class="memdesc:abe0b329c629b6571af9db9dabb89e3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the contraction once we've worked out all of the template params. <br /></td></tr>
-<tr class="separator:abe0b329c629b6571af9db9dabb89e3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4deeefdf8a6747d47d5c16e4790907a"><td class="memTemplParams" colspan="2"><a id="ab4deeefdf8a6747d47d5c16e4790907a"></a>
-template&lt;std::size_t N = 0ul, typename FloatType , rank_type RVRank, rank_type LHSRank, rank_type RHSRank&gt; </td></tr>
-<tr class="memitem:ab4deeefdf8a6747d47d5c16e4790907a"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#ab4deeefdf8a6747d47d5c16e4790907a">n_contraction_modes</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, RVRank &gt; &amp;rv, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, LHSRank &gt; &amp;lhs, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, RHSRank &gt; &amp;rhs, const vector_type &amp;sum_modes)</td></tr>
-<tr class="memdesc:ab4deeefdf8a6747d47d5c16e4790907a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts <code>sum_modes</code> to a statically sized array. <br /></td></tr>
-<tr class="separator:ab4deeefdf8a6747d47d5c16e4790907a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a899c3689fc725b22f3a6f14f880b1b8c"><td class="memTemplParams" colspan="2"><a id="a899c3689fc725b22f3a6f14f880b1b8c"></a>
-template&lt;rank_type RHSRank = 0ul, typename FloatType , rank_type RVRank, rank_type LHSRank&gt; </td></tr>
-<tr class="memitem:a899c3689fc725b22f3a6f14f880b1b8c"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#a899c3689fc725b22f3a6f14f880b1b8c">rhs_rank</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, RVRank &gt; &amp;rv, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, LHSRank &gt; &amp;lhs, const_base_reference rhs, const vector_type &amp;sum_modes)</td></tr>
-<tr class="memdesc:a899c3689fc725b22f3a6f14f880b1b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function works out the rank of RHS. <br /></td></tr>
-<tr class="separator:a899c3689fc725b22f3a6f14f880b1b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f537ae3617cae1dc3d2592d027209ca"><td class="memTemplParams" colspan="2"><a id="a5f537ae3617cae1dc3d2592d027209ca"></a>
-template&lt;rank_type LHSRank = 0ul, typename FloatType , rank_type RVRank&gt; </td></tr>
-<tr class="memitem:a5f537ae3617cae1dc3d2592d027209ca"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#a5f537ae3617cae1dc3d2592d027209ca">lhs_rank</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">buffer::Eigen</a>&lt; FloatType, RVRank &gt; &amp;rv, const_base_reference lhs, const_base_reference rhs, const vector_type &amp;sum_modes)</td></tr>
-<tr class="memdesc:a5f537ae3617cae1dc3d2592d027209ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function works out the rank of LHS. <br /></td></tr>
-<tr class="separator:a5f537ae3617cae1dc3d2592d027209ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a287ceb5e1af8d9b9fd942c2edfb9ffad"><td class="memTemplParams" colspan="2"><a id="a287ceb5e1af8d9b9fd942c2edfb9ffad"></a>
-template&lt;typename FloatType , rank_type RVRank&gt; </td></tr>
-<tr class="memitem:a287ceb5e1af8d9b9fd942c2edfb9ffad"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#a287ceb5e1af8d9b9fd942c2edfb9ffad">eigen_contraction_</a> (base_reference rv, const_base_reference lhs, const_base_reference rhs, const vector_type &amp;sum_modes)</td></tr>
-<tr class="memdesc:a287ceb5e1af8d9b9fd942c2edfb9ffad"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function works out the rank of rv. <br /></td></tr>
-<tr class="separator:a287ceb5e1af8d9b9fd942c2edfb9ffad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a000b9f82e1f75746e4b1e3fcad7965b2"><td class="memTemplParams" colspan="2"><a id="a000b9f82e1f75746e4b1e3fcad7965b2"></a>
-template&lt;typename FloatType &gt; </td></tr>
-<tr class="memitem:a000b9f82e1f75746e4b1e3fcad7965b2"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>eigen_contraction</b> (base_reference rv, const_base_reference lhs, const_base_reference rhs, const vector_type &amp;sum_modes)</td></tr>
-<tr class="separator:a000b9f82e1f75746e4b1e3fcad7965b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae807bf969b9fea5b96e7baa20967067"><td class="memTemplParams" colspan="2"><a id="aae807bf969b9fea5b96e7baa20967067"></a>
+template&lt;typename FloatType , rank_type Rank, typename TensorType &gt; </td></tr>
+<tr class="memitem:aae807bf969b9fea5b96e7baa20967067"><td class="memTemplItemLeft" align="right" valign="top">FloatType *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get_data</b> (TensorType &amp;tensor)</td></tr>
+<tr class="separator:aae807bf969b9fea5b96e7baa20967067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ebe9e8a83233660f5659cf95969389"><td class="memTemplParams" colspan="2"><a id="a52ebe9e8a83233660f5659cf95969389"></a>
+template&lt;typename TensorType &gt; </td></tr>
+<tr class="memitem:a52ebe9e8a83233660f5659cf95969389"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>matrix_size</b> (TensorType &amp;&amp;t, std::size_t row_ranks)</td></tr>
+<tr class="separator:a52ebe9e8a83233660f5659cf95969389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memTemplParams" colspan="2"><a id="a6f46c59626246f4e4195df0fbaaa2e64"></a>
+template&lt;typename FloatType , rank_type Rank&gt; </td></tr>
+<tr class="memitem:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>eigen_contraction</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;result, label_type olabels, const_labeled_reference lhs, const_labeled_reference rhs)</td></tr>
+<tr class="separator:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24aa856602c496e3ec610ac1789579bc"><td class="memItemLeft" align="right" valign="top"><a id="a24aa856602c496e3ec610ac1789579bc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>EIGEN_CONTRACTION</b> (float)</td></tr>
 <tr class="separator:a24aa856602c496e3ec610ac1789579bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af591e58a49e8655b27191573ea11ebd9"><td class="memItemLeft" align="right" valign="top"><a id="af591e58a49e8655b27191573ea11ebd9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>EIGEN_CONTRACTION</b> (double)</td></tr>
 <tr class="separator:af591e58a49e8655b27191573ea11ebd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac359c1fe4ba94bd207cfb4f879cc794c"><td class="memTemplParams" colspan="2">template&lt;typename FloatType &gt; </td></tr>
-<tr class="memitem:ac359c1fe4ba94bd207cfb4f879cc794c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#ac359c1fe4ba94bd207cfb4f879cc794c">eigen_contraction</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d4cdbec8c20631c3bf9caf684f0fe1c">BufferBase::base_reference</a> rv, <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a> rhs, const std::vector&lt; std::pair&lt; unsigned short, unsigned short &gt;&gt; &amp;sum_modes)</td></tr>
-<tr class="memdesc:ac359c1fe4ba94bd207cfb4f879cc794c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relatively template-free API for <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor contraction.  <a href="namespacetensorwrapper_1_1buffer.html#ac359c1fe4ba94bd207cfb4f879cc794c">More...</a><br /></td></tr>
-<tr class="separator:ac359c1fe4ba94bd207cfb4f879cc794c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92eca1aff5194048115ea5e6bf53349c"><td class="memTemplParams" colspan="2">template&lt;typename FloatType , unsigned short Rank&gt; </td></tr>
+<tr class="memitem:a92eca1aff5194048115ea5e6bf53349c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#a92eca1aff5194048115ea5e6bf53349c">eigen_contraction</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;result, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">BufferBase::label_type</a> olabels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a92eca1aff5194048115ea5e6bf53349c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relatively template-free API for <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor contraction.  <a href="namespacetensorwrapper_1_1buffer.html#a92eca1aff5194048115ea5e6bf53349c">More...</a><br /></td></tr>
+<tr class="separator:a92eca1aff5194048115ea5e6bf53349c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains classes need to wrap instances of the various backends. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ac359c1fe4ba94bd207cfb4f879cc794c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac359c1fe4ba94bd207cfb4f879cc794c">&#9670;&nbsp;</a></span>eigen_contraction()</h2>
+<a id="a92eca1aff5194048115ea5e6bf53349c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92eca1aff5194048115ea5e6bf53349c">&#9670;&nbsp;</a></span>eigen_contraction()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename FloatType &gt; </div>
+template&lt;typename FloatType , unsigned short Rank&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a> tensorwrapper::buffer::eigen_contraction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d4cdbec8c20631c3bf9caf684f0fe1c">BufferBase::base_reference</a>&#160;</td>
-          <td class="paramname"><em>rv</em>, </td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">BufferBase::label_type</a>&#160;</td>
+          <td class="paramname"><em>olabels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a>&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">BufferBase::const_base_reference</a>&#160;</td>
-          <td class="paramname"><em>rhs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::pair&lt; unsigned short, unsigned short &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>sum_modes</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a>&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -272,8 +249,7 @@ template&lt;typename FloatType &gt; </div>
 </div><div class="memdoc">
 
 <p>Relatively template-free API for <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor contraction. </p>
-<p><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a>'s tensor library relies on a heavy amount of template meta-programming to implement contract. TensorWrapper strives to do things at runtime. Ultimately, to have it both ways we need to create contraction dispatch instantiations for every combination of template parameters that <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> may end up seeing, that's what the functions in this header do.</p>
-<p>The entry point into this infrastructure is currently the return_rank method, which kicks the process off by working out the rank of the tensor which will </p>
+<p><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a>'s tensor library relies on a heavy amount of template meta-programming to implement contract. TensorWrapper strives to do things at runtime. Ultimately, to have it both ways we need to create contraction dispatch instantiations for every combination of template parameters that <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> may end up seeing, that's what the functions in this header do. </p>
 
 </div>
 </div>
