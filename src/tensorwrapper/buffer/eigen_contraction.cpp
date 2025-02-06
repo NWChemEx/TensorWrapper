@@ -14,120 +14,121 @@
  * limitations under the License.
  */
 
+#include "contraction_planner.hpp"
 #include "eigen_contraction.hpp"
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
 
 namespace tensorwrapper::buffer {
 
-using rank_type            = unsigned short;
-using base_reference       = BufferBase::base_reference;
-using const_base_reference = BufferBase::const_base_reference;
-using return_type          = BufferBase::dsl_reference;
-using pair_type            = std::pair<rank_type, rank_type>;
-using vector_type          = std::vector<pair_type>;
+using rank_type               = unsigned short;
+using return_type             = BufferBase::dsl_reference;
+using label_type              = BufferBase::label_type;
+using const_labeled_reference = BufferBase::const_labeled_reference;
 
-// N.b. will create about max_rank**3 instantiations of eigen_contraction
-static constexpr unsigned int max_rank = 6;
+static constexpr unsigned int max_rank = 10;
 
-/// Wraps the contraction once we've worked out all of the template params.
-template<typename RVType, typename LHSType, typename RHSType,
-         typename ModesType>
-return_type eigen_contraction(RVType&& rv, LHSType&& lhs, RHSType&& rhs,
-                              ModesType&& sum_modes) {
-    rv.value() = lhs.value().contract(rhs.value(), sum_modes);
-    return rv;
-}
-
-/// This function converts @p sum_modes to a statically sized array
-template<std::size_t N = 0ul, typename FloatType, rank_type RVRank,
-         rank_type LHSRank, rank_type RHSRank>
-return_type n_contraction_modes(buffer::Eigen<FloatType, RVRank>& rv,
-                                const buffer::Eigen<FloatType, LHSRank>& lhs,
-                                const buffer::Eigen<FloatType, RHSRank>& rhs,
-                                const vector_type& sum_modes) {
-    // Can't contract more modes than a tensor has (this is recursion end point)
-    constexpr auto max_n = std::min({LHSRank, RHSRank});
-    if constexpr(N == max_n + 1) {
-        throw std::runtime_error("Contracted more modes than a tensor has!!?");
+template<typename FloatType, rank_type Rank, typename TensorType>
+FloatType* get_data(TensorType& tensor) {
+    using allocator_type = allocator::Eigen<FloatType, Rank>;
+    if constexpr(Rank > max_rank) {
+        const auto sr  = std::to_string(max_rank);
+        const auto msg = "Tensors with rank > " + sr + " are not supported";
+        throw std::runtime_error(msg);
     } else {
-        if(N == sum_modes.size()) {
-            std::array<pair_type, N> temp;
-            for(std::size_t i = 0; i < temp.size(); ++i) temp[i] = sum_modes[i];
-            return eigen_contraction(rv, lhs, rhs, std::move(temp));
+        if(tensor.layout().rank() == Rank) {
+            return allocator_type::rebind(tensor).value().data();
         } else {
-            return n_contraction_modes<N + 1>(rv, lhs, rhs, sum_modes);
+            return get_data<FloatType, Rank + 1>(tensor);
         }
     }
 }
 
-/// This function works out the rank of RHS
-template<rank_type RHSRank = 0ul, typename FloatType, rank_type RVRank,
-         rank_type LHSRank>
-return_type rhs_rank(buffer::Eigen<FloatType, RVRank>& rv,
-                     const buffer::Eigen<FloatType, LHSRank>& lhs,
-                     const_base_reference rhs, const vector_type& sum_modes) {
-    if constexpr(RHSRank == max_rank + 1) {
-        throw std::runtime_error("RHS has rank > max_rank");
-    } else {
-        if(RHSRank == rhs.rank()) {
-            using allocator_type  = allocator::Eigen<FloatType, RHSRank>;
-            const auto& rhs_eigen = allocator_type::rebind(rhs);
-            return n_contraction_modes(rv, lhs, rhs_eigen, sum_modes);
-        } else {
-            return rhs_rank<RHSRank + 1>(rv, lhs, rhs, sum_modes);
-        }
+template<typename TensorType>
+auto matrix_size(TensorType&& t, std::size_t row_ranks) {
+    const auto shape  = t.layout().shape().as_smooth();
+    std::size_t nrows = 1;
+    for(std::size_t i = 0; i < row_ranks; ++i) nrows *= shape.extent(i);
+
+    std::size_t ncols = 1;
+    const auto rank   = shape.rank();
+    for(std::size_t i = row_ranks; i < rank; ++i) ncols *= shape.extent(i);
+    return std::make_pair(nrows, ncols);
+}
+
+template<typename FloatType, rank_type Rank>
+return_type eigen_contraction(Eigen<FloatType, Rank>& result,
+                              label_type olabels, const_labeled_reference lhs,
+                              const_labeled_reference rhs) {
+    const auto& llabels = lhs.labels();
+    const auto& lobject = lhs.object();
+    const auto& rlabels = rhs.labels();
+    const auto& robject = rhs.object();
+
+    ContractionPlanner plan(olabels, llabels, rlabels);
+    auto lt = lobject.clone();
+    auto rt = robject.clone();
+    lt->permute_assignment(plan.lhs_permutation(), lhs);
+    rt->permute_assignment(plan.rhs_permutation(), rhs);
+    const auto [lrows, lcols] = matrix_size(*lt, plan.lhs_free().size());
+    const auto [rrows, rcols] = matrix_size(*rt, plan.rhs_dummy().size());
+
+    // Work out the types of the matrix amd a map
+    constexpr auto e_dyn       = ::Eigen::Dynamic;
+    constexpr auto e_row_major = ::Eigen::RowMajor;
+    using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn, e_row_major>;
+    using map_t    = ::Eigen::Map<matrix_t>;
+
+    typename Eigen<FloatType, 2>::data_type buffer(lrows, rcols);
+
+    map_t lmatrix(get_data<FloatType, 0>(*lt), lrows, lcols);
+    map_t rmatrix(get_data<FloatType, 0>(*rt), rrows, rcols);
+    map_t omatrix(buffer.data(), lrows, rcols);
+    omatrix = lmatrix * rmatrix;
+
+    auto mlabels = plan.result_matrix_labels();
+    auto oshape  = result.layout().shape()(olabels);
+
+    // oshapes is the final shape, permute it to shape omatrix is currently in
+    auto temp_shape = result.layout().shape().clone();
+    temp_shape->permute_assignment(mlabels, oshape);
+    auto mshape = temp_shape->as_smooth();
+
+    auto m_to_o = olabels.permutation(mlabels); // N.b. Eigen def is inverse us
+
+    std::array<int, Rank> out_size;
+    std::array<int, Rank> m_to_o_array;
+    for(std::size_t i = 0; i < Rank; ++i) {
+        out_size[i]     = mshape.extent(i);
+        m_to_o_array[i] = m_to_o[i];
     }
-}
 
-/// This function works out the rank of LHS
-template<rank_type LHSRank = 0ul, typename FloatType, rank_type RVRank>
-return_type lhs_rank(buffer::Eigen<FloatType, RVRank>& rv,
-                     const_base_reference lhs, const_base_reference rhs,
-                     const vector_type& sum_modes) {
-    if constexpr(LHSRank == max_rank + 1) {
-        throw std::runtime_error("LHS has rank > max_rank");
+    auto tensor = buffer.reshape(out_size);
+    if constexpr(Rank > 0) {
+        result.value() = tensor.shuffle(m_to_o_array);
     } else {
-        if(LHSRank == lhs.rank()) {
-            using allocator_type  = allocator::Eigen<FloatType, LHSRank>;
-            const auto& lhs_eigen = allocator_type::rebind(lhs);
-            return rhs_rank(rv, lhs_eigen, rhs, sum_modes);
-        } else {
-            return lhs_rank<LHSRank + 1>(rv, lhs, rhs, sum_modes);
-        }
+        result.value() = tensor;
     }
+    return result;
 }
 
-/// This function works out the rank of rv
-template<typename FloatType, rank_type RVRank>
-return_type eigen_contraction_(base_reference rv, const_base_reference lhs,
-                               const_base_reference rhs,
-                               const vector_type& sum_modes) {
-    if constexpr(RVRank == max_rank + 1) {
-        throw std::runtime_error("Return has rank > max_rank");
-    } else {
-        if(RVRank == rv.rank()) {
-            using allocator_type = allocator::Eigen<FloatType, RVRank>;
-            auto& rv_eigen       = allocator_type::rebind(rv);
-            return lhs_rank(rv_eigen, lhs, rhs, sum_modes);
-        } else {
-            constexpr auto RVp1 = RVRank + 1;
-            return eigen_contraction_<FloatType, RVp1>(rv, lhs, rhs, sum_modes);
-        }
-    }
-}
+#define EIGEN_CONTRACTION_(FLOAT_TYPE, RANK)               \
+    template return_type eigen_contraction(                \
+      Eigen<FLOAT_TYPE, RANK>& result, label_type olabels, \
+      const_labeled_reference lhs, const_labeled_reference rhs)
 
-template<typename FloatType>
-return_type eigen_contraction(base_reference rv, const_base_reference lhs,
-                              const_base_reference rhs,
-                              const vector_type& sum_modes) {
-    return eigen_contraction_<FloatType, 0>(rv, lhs, rhs, sum_modes);
-}
-
-#define EIGEN_CONTRACTION(FLOAT_TYPE)                             \
-    template return_type eigen_contraction<FLOAT_TYPE>(           \
-      base_reference, const_base_reference, const_base_reference, \
-      const vector_type&)
+#define EIGEN_CONTRACTION(FLOAT_TYPE)  \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 0); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 1); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 2); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 3); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 4); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 5); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 6); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 7); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 8); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 9); \
+    EIGEN_CONTRACTION_(FLOAT_TYPE, 10)
 
 EIGEN_CONTRACTION(float);
 EIGEN_CONTRACTION(double);
@@ -138,5 +139,5 @@ EIGEN_CONTRACTION(sigma::UDouble);
 #endif
 
 #undef EIGEN_CONTRACTION
-
+#undef EIGEN_CONTRACTION_
 } // namespace tensorwrapper::buffer

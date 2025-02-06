@@ -29,19 +29,13 @@ using types2test = std::tuple<float, double>;
 
 TEMPLATE_LIST_TEST_CASE("eigen_contraction", "", types2test) {
     using float_t    = TestType;
-    using mode_type  = unsigned short;
-    using pair_type  = std::pair<mode_type, mode_type>;
-    using mode_array = std::vector<pair_type>;
+    using label_type = typename BufferBase::label_type;
 
     // Inputs
     auto scalar  = testing::eigen_scalar<float_t>();
     auto vector  = testing::eigen_vector<float_t>();
     auto vector2 = testing::eigen_vector<float_t>(2);
     auto matrix  = testing::eigen_matrix<float_t>();
-
-    mode_array m00{pair_type{0, 0}};
-    mode_array m11{pair_type{1, 1}};
-    mode_array m00_11{pair_type{0, 0}, pair_type{1, 1}};
 
     auto scalar_corr      = testing::eigen_scalar<float_t>();
     scalar_corr.value()() = 30.0;
@@ -56,29 +50,112 @@ TEMPLATE_LIST_TEST_CASE("eigen_contraction", "", types2test) {
     matrix_corr.value()(1, 0) = 14.0;
     matrix_corr.value()(1, 1) = 20.0;
 
+    label_type l("");
+    label_type j("j");
+    label_type ij("i,j");
+
+    auto mij = matrix("i,j");
     SECTION("vector with vector") {
-        auto& rv = eigen_contraction<float_t>(scalar, vector, vector, m00);
+        auto vi  = vector("i");
+        auto& rv = eigen_contraction(scalar, l, vi, vi);
         REQUIRE(&rv == static_cast<BufferBase*>(&scalar));
         REQUIRE(scalar_corr.are_equal(scalar));
     }
 
     SECTION("ij,ij->") {
-        auto& rv = eigen_contraction<float_t>(scalar, matrix, matrix, m00_11);
+        auto& rv = eigen_contraction(scalar, l, mij, mij);
         REQUIRE(&rv == static_cast<BufferBase*>(&scalar));
         REQUIRE(scalar_corr.are_equal(scalar));
     }
 
     SECTION("ki,kj->ij") {
+        auto mki    = matrix("k,i");
+        auto mkj    = matrix("k,j");
         auto buffer = testing::eigen_matrix<float_t>();
-        auto& rv    = eigen_contraction<float_t>(buffer, matrix, matrix, m00);
+        auto& rv    = eigen_contraction(buffer, ij, mki, mkj);
         REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
         REQUIRE(matrix_corr.are_equal(buffer));
     }
 
     SECTION("ij,i->j") {
+        auto vi     = vector2("i");
         auto buffer = testing::eigen_vector<float_t>(2);
-        auto& rv    = eigen_contraction<float_t>(buffer, matrix, vector2, m00);
+        auto& rv    = eigen_contraction(buffer, j, mij, vi);
         REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
         REQUIRE(vector_corr.are_equal(rv));
+    }
+
+    SECTION("ki,jki->j") {
+        auto tensor     = testing::eigen_tensor3<float_t>(2);
+        auto matrix2    = testing::eigen_matrix<float_t>(2);
+        auto buffer     = testing::eigen_vector<float_t>(2);
+        auto corr       = testing::eigen_vector<float_t>(2);
+        corr.value()(0) = 30;
+        corr.value()(1) = 70;
+
+        auto tjki = tensor("j,k,i");
+        auto mki  = matrix2("k,i");
+        auto& rv  = eigen_contraction(buffer, j, mki, tjki);
+        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+        REQUIRE(corr.are_equal(rv));
+    }
+
+    SECTION("ki,jkl->jil") {
+        auto tensor           = testing::eigen_tensor3<float_t>(2);
+        auto matrix2          = testing::eigen_matrix<float_t>(2);
+        auto buffer           = testing::eigen_tensor3<float_t>(2);
+        auto corr             = testing::eigen_tensor3<float_t>();
+        corr.value()(0, 0, 0) = 10;
+        corr.value()(0, 0, 1) = 14;
+        corr.value()(0, 1, 0) = 14;
+        corr.value()(0, 1, 1) = 20;
+
+        corr.value()(1, 0, 0) = 26;
+        corr.value()(1, 0, 1) = 30;
+        corr.value()(1, 1, 0) = 38;
+        corr.value()(1, 1, 1) = 44;
+
+        auto tjki = tensor("j,k,l");
+        auto mki  = matrix2("k,i");
+        label_type jil("j,i,l");
+        auto& rv = eigen_contraction(buffer, jil, mki, tjki);
+        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+        REQUIRE(corr.are_equal(rv));
+    }
+
+    SECTION("kl,ijkl->ij") {
+        auto tensor        = testing::eigen_tensor4<float_t>();
+        auto matrix2       = testing::eigen_matrix<float_t>(2);
+        auto buffer        = testing::eigen_matrix<float_t>(2);
+        auto corr          = testing::eigen_matrix<float_t>();
+        corr.value()(0, 0) = 30;
+        corr.value()(0, 1) = 70;
+        corr.value()(1, 0) = 110;
+        corr.value()(1, 1) = 150;
+
+        auto lt = tensor("i,j,k,l");
+        auto lm = matrix2("k,l");
+        label_type jil("i,j");
+        auto& rv = eigen_contraction(buffer, ij, lm, lt);
+        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+        REQUIRE(corr.are_equal(rv));
+    }
+
+    SECTION("kl,ilkj->ij") {
+        auto tensor        = testing::eigen_tensor4<float_t>();
+        auto matrix2       = testing::eigen_matrix<float_t>(2);
+        auto buffer        = testing::eigen_matrix<float_t>(2);
+        auto corr          = testing::eigen_matrix<float_t>();
+        corr.value()(0, 0) = 48;
+        corr.value()(0, 1) = 58;
+        corr.value()(1, 0) = 128;
+        corr.value()(1, 1) = 138;
+
+        auto lt = tensor("i,l,k,j");
+        auto lm = matrix2("k,l");
+        label_type jil("i,j");
+        auto& rv = eigen_contraction(buffer, ij, lm, lt);
+        REQUIRE(&rv == static_cast<BufferBase*>(&buffer));
+        REQUIRE(corr.are_equal(rv));
     }
 }
