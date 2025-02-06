@@ -18,6 +18,10 @@
 #include <tensorwrapper/backends/eigen.hpp>
 #include <tensorwrapper/buffer/replicated.hpp>
 
+#ifdef ENABLE_SIGMA
+#include <sigma/sigma.hpp>
+#endif
+
 namespace tensorwrapper::buffer {
 
 /** @brief A buffer which wraps an Eigen tensor.
@@ -144,6 +148,10 @@ public:
      *  Two Eigen objects are value equal if they both have the same layout and
      *  they both have the same values.
      *
+     *  @note For tensors where the @p FloatType is an uncertain floating point
+     *  number, the tensors are required to have the same sources of
+     *  uncertainty.
+     *
      *  @param[in] rhs The object to compare against.
      *
      *  @return True if *this is value equal to @p rhs and false otherwise.
@@ -153,7 +161,7 @@ public:
     bool operator==(const Eigen& rhs) const noexcept {
         if(my_base_type::operator!=(rhs)) return false;
         eigen::data_type<FloatType, 0> r = (m_tensor_ - rhs.m_tensor_).sum();
-        return r() == 0.0;
+        return r() == FloatType(0.0);
     }
 
     /** @brief Is *this different from @p rhs?
@@ -217,21 +225,26 @@ private:
     data_type m_tensor_;
 };
 
-#define DECLARE_EIGEN_BUFFER(RANK)            \
-    extern template class Eigen<float, RANK>; \
-    extern template class Eigen<double, RANK>
+#define DECLARE_EIGEN_BUFFER(TYPE)        \
+    extern template class Eigen<TYPE, 0>; \
+    extern template class Eigen<TYPE, 1>; \
+    extern template class Eigen<TYPE, 2>; \
+    extern template class Eigen<TYPE, 3>; \
+    extern template class Eigen<TYPE, 4>; \
+    extern template class Eigen<TYPE, 5>; \
+    extern template class Eigen<TYPE, 6>; \
+    extern template class Eigen<TYPE, 7>; \
+    extern template class Eigen<TYPE, 8>; \
+    extern template class Eigen<TYPE, 9>; \
+    extern template class Eigen<TYPE, 10>
 
-DECLARE_EIGEN_BUFFER(0);
-DECLARE_EIGEN_BUFFER(1);
-DECLARE_EIGEN_BUFFER(2);
-DECLARE_EIGEN_BUFFER(3);
-DECLARE_EIGEN_BUFFER(4);
-DECLARE_EIGEN_BUFFER(5);
-DECLARE_EIGEN_BUFFER(6);
-DECLARE_EIGEN_BUFFER(7);
-DECLARE_EIGEN_BUFFER(8);
-DECLARE_EIGEN_BUFFER(9);
-DECLARE_EIGEN_BUFFER(10);
+DECLARE_EIGEN_BUFFER(float);
+DECLARE_EIGEN_BUFFER(double);
+
+#ifdef ENABLE_SIGMA
+DECLARE_EIGEN_BUFFER(sigma::UFloat);
+DECLARE_EIGEN_BUFFER(sigma::UDouble);
+#endif
 
 #undef DECLARE_EIGEN_BUFFER
 

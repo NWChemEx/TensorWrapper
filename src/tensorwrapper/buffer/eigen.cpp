@@ -234,21 +234,26 @@ TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
 #undef EIGEN
 #undef TPARAMS
 
-#define DEFINE_EIGEN_BUFFER(RANK)      \
-    template class Eigen<float, RANK>; \
-    template class Eigen<double, RANK>
+#define DEFINE_EIGEN_BUFFER(TYPE)  \
+    template class Eigen<TYPE, 0>; \
+    template class Eigen<TYPE, 1>; \
+    template class Eigen<TYPE, 2>; \
+    template class Eigen<TYPE, 3>; \
+    template class Eigen<TYPE, 4>; \
+    template class Eigen<TYPE, 5>; \
+    template class Eigen<TYPE, 6>; \
+    template class Eigen<TYPE, 7>; \
+    template class Eigen<TYPE, 8>; \
+    template class Eigen<TYPE, 9>; \
+    template class Eigen<TYPE, 10>
 
-DEFINE_EIGEN_BUFFER(0);
-DEFINE_EIGEN_BUFFER(1);
-DEFINE_EIGEN_BUFFER(2);
-DEFINE_EIGEN_BUFFER(3);
-DEFINE_EIGEN_BUFFER(4);
-DEFINE_EIGEN_BUFFER(5);
-DEFINE_EIGEN_BUFFER(6);
-DEFINE_EIGEN_BUFFER(7);
-DEFINE_EIGEN_BUFFER(8);
-DEFINE_EIGEN_BUFFER(9);
-DEFINE_EIGEN_BUFFER(10);
+DEFINE_EIGEN_BUFFER(float);
+DEFINE_EIGEN_BUFFER(double);
+
+#ifdef ENABLE_SIGMA
+DEFINE_EIGEN_BUFFER(sigma::UFloat);
+DEFINE_EIGEN_BUFFER(sigma::UDouble);
+#endif
 
 #undef DEFINE_EIGEN_BUFFER
 

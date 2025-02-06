@@ -36,43 +36,40 @@ nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
-    ENABLE_EIGEN_SUPPORT ON "Should we enable Eigen support?"
+    ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
 )
 
-configure_file(cmake/config.hpp.in config.hpp @ONLY)
+### Dependendencies ###
+include(get_utilities)
 
-cmaize_find_or_build_dependency(
-    utilities
-    URL github.com/NWChemEx/utilities
-    BUILD_TARGET utilities
-    FIND_TARGET nwx::utilities
-    CMAKE_ARGS BUILD_TESTING=OFF
-)
-
-cmaize_find_or_build_dependency(
-    parallelzone
-    URL github.com/NWChemEx/ParallelZone
-    BUILD_TARGET parallelzone
-    FIND_TARGET nwx::parallelzone
-    CMAKE_ARGS BUILD_TESTING=OFF
-)
+include(get_parallelzone)
 
 find_package(Boost REQUIRED)
 
-cmaize_find_or_build_optional_dependency(
+cmaize_find_or_build_dependency(
     eigen
-    ENABLE_EIGEN_SUPPORT
     URL https://www.gitlab.com/libeigen/eigen
     VERSION 2e76277bd049f7bec36b0f908c69734a42c5234f
     BUILD_TARGET eigen
     FIND_TARGET Eigen3::Eigen
 )
 
+cmaize_find_or_build_optional_dependency(
+    sigma
+    ENABLE_SIGMA
+    URL github.com/QCUncertainty/sigma
+    VERSION ad74a8305c615a825919b3ad067fdcdf4e578ed0
+    BUILD_TARGET sigma
+    FIND_TARGET sigma::sigma
+    CMAKE_ARGS BUILD_TESTING=OFF
+               ENABLE_EIGEN_SUPPORT=ON
+)
+
 cmaize_add_library(
     ${PROJECT_NAME}
     SOURCE_DIR "${project_src_dir}"
     INCLUDE_DIRS "${project_inc_dir}"
-    DEPENDS utilities parallelzone Boost::boost eigen
+    DEPENDS utilities parallelzone Boost::boost eigen sigma
 )
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 
@@ -80,13 +77,8 @@ if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
 
-    cmaize_find_or_build_dependency(
-        Catch2
-        URL github.com/catchorg/Catch2
-        BUILD_TARGET Catch2
-        FIND_TARGET Catch2::Catch2
-        VERSION v3.6.0
-    )
+    include(get_catch2)
+    
     cmaize_add_tests(
         test_unit_${PROJECT_NAME}
         SOURCE_DIR "${cxx_unit_test_dir}"
