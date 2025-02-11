@@ -22,13 +22,15 @@ using namespace tensorwrapper;
 TEMPLATE_LIST_TEST_CASE("DSL", "", testing::dsl_types) {
     using object_type = TestType;
 
-    auto scalar_values = testing::scalar_values();
-    auto vector_values = testing::vector_values();
-    auto matrix_values = testing::matrix_values();
+    auto scalar_values  = testing::scalar_values();
+    auto vector_values  = testing::vector_values();
+    auto matrix_values  = testing::matrix_values();
+    auto tensor4_values = testing::tensor4_values();
 
     auto value0 = std::get<object_type>(scalar_values);
     auto value1 = std::get<object_type>(vector_values);
     auto value2 = std::get<object_type>(matrix_values);
+    auto value4 = std::get<object_type>(tensor4_values);
 
     SECTION("assignment") {
         value0("i,j") = value2("i,j");
@@ -60,6 +62,11 @@ TEMPLATE_LIST_TEST_CASE("DSL", "", testing::dsl_types) {
         value0("i,j") = value2("i,j") * value2("i,j");
 
         value1.multiplication_assignment("i,j", value2("i,j"), value2("i,j"));
+        REQUIRE(value1.are_equal(value0));
+
+        value0("m,n") = value2("l,s") * value4("m,n,s,l");
+        value1.multiplication_assignment("m,n", value2("l,s"),
+                                         value4("m,n,s,l"));
         REQUIRE(value1.are_equal(value0));
     }
 

@@ -36,9 +36,14 @@ inline auto matrix_logical(std::size_t i = 10, std::size_t j = 10) {
     return tensorwrapper::layout::Logical(smooth_matrix(i, j));
 }
 
-inline auto tensor_logical(std::size_t i = 10, std::size_t j = 10,
-                           std::size_t k = 10) {
-    return tensorwrapper::layout::Logical(smooth_tensor(i, j, k));
+inline auto tensor3_logical(std::size_t i = 10, std::size_t j = 10,
+                            std::size_t k = 10) {
+    return tensorwrapper::layout::Logical(smooth_tensor3(i, j, k));
+}
+
+inline auto tensor4_logical(std::size_t i = 10, std::size_t j = 10,
+                            std::size_t k = 10, std::size_t l = 10) {
+    return tensorwrapper::layout::Logical(smooth_tensor4(i, j, k, l));
 }
 
 // -----------------------------------------------------------------------------
@@ -57,9 +62,14 @@ inline auto matrix_physical(std::size_t i = 10, std::size_t j = 10) {
     return tensorwrapper::layout::Physical(smooth_matrix(i, j));
 }
 
-inline auto tensor_physical(std::size_t i = 10, std::size_t j = 10,
-                            std::size_t k = 10) {
-    return tensorwrapper::layout::Physical(smooth_tensor(i, j, k));
+inline auto tensor3_physical(std::size_t i = 10, std::size_t j = 10,
+                             std::size_t k = 10) {
+    return tensorwrapper::layout::Physical(smooth_tensor3(i, j, k));
+}
+
+inline auto tensor4_physical(std::size_t i = 10, std::size_t j = 10,
+                             std::size_t k = 10, std::size_t l = 10) {
+    return tensorwrapper::layout::Physical(smooth_tensor4(i, j, k, l));
 }
 
 } // namespace tensorwrapper::testing
