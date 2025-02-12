@@ -274,9 +274,11 @@ private:
     /// Checks that @p output is a subset of @p input
     void assert_is_subset_(const label_type& output,
                            const label_type& input) const {
-        if(output.intersection(input).size() < output.unique_index_size())
+        // Subset would have equality
+        if(output.intersection(input).size() < output.unique_index_size()) {
             throw std::runtime_error(
               "Output indices must be a subset of input indices");
+        }
     }
 
     /// Asserts that @p lhs is a permutation of @p rhs

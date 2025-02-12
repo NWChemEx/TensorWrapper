@@ -34,9 +34,14 @@ inline auto smooth_matrix(std::size_t i = 10, std::size_t j = 10) {
     return tensorwrapper::shape::Smooth{i, j};
 }
 
-inline auto smooth_tensor(std::size_t i = 10, std::size_t j = 10,
-                          std::size_t k = 10) {
+inline auto smooth_tensor3(std::size_t i = 10, std::size_t j = 10,
+                           std::size_t k = 10) {
     return tensorwrapper::shape::Smooth{i, j, k};
+}
+
+inline auto smooth_tensor4(std::size_t i = 10, std::size_t j = 10,
+                           std::size_t k = 10, std::size_t l = 10) {
+    return tensorwrapper::shape::Smooth{i, j, k, l};
 }
 
 } // namespace tensorwrapper::testing

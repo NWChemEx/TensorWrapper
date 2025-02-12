@@ -59,7 +59,12 @@ public:
      */
     template<typename LHSType, typename RHSType>
     void dispatch(LHSType&& lhs, const RHSType& rhs) {
-        lhs.object().permute_assignment(lhs.labels(), rhs);
+        if(lhs.labels().is_permutation(rhs.labels()))
+            lhs.object().permute_assignment(lhs.labels(), rhs);
+        else { // User just wants us to assign RHS to LHS
+            lhs.labels() = rhs.labels();
+            lhs.object().permute_assignment(rhs.labels(), rhs);
+        }
     }
 
     /** @brief Handles adding two expressions together.

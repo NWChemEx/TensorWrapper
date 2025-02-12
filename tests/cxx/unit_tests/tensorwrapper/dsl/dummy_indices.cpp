@@ -280,6 +280,9 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(matrix.concatenation(vector) == dummy_indices_type("i,j,i"));
         REQUIRE(matrix.concatenation(matrix) == dummy_indices_type("i,j,i,j"));
         REQUIRE(matrix.concatenation(matrix2) == dummy_indices_type("i,j,k,l"));
+
+        auto x = matrix.concatenation(dummy_indices_type("i,j,l,s"));
+        REQUIRE(x == dummy_indices_type("i,j,i,j,l,s"));
     }
 
     SECTION("intersection") {
@@ -298,6 +301,12 @@ TEST_CASE("DummyIndices<std::string>") {
         REQUIRE(matrix.intersection(vector) == dummy_indices_type("i"));
         REQUIRE(matrix.intersection(matrix) == dummy_indices_type("i,j"));
         REQUIRE(matrix.intersection(matrix2) == dummy_indices_type(""));
+
+        auto x = matrix.intersection(dummy_indices_type("i,j,l,s"));
+        REQUIRE(x == dummy_indices_type("i,j"));
+
+        auto y = matrix.intersection(dummy_indices_type("i,j,i,j,l,s"));
+        REQUIRE(x == dummy_indices_type("i,j"));
     }
 
     SECTION("difference") {

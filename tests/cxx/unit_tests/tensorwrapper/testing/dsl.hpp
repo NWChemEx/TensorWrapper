@@ -54,4 +54,25 @@ inline auto matrix_values() {
                      Tensor{{1.0, 2.0}, {3.0, 4.0}}};
 }
 
+inline auto tensor3_values() {
+    return dsl_types{
+      smooth_tensor3(),
+      tensorwrapper::symmetry::Group(3),
+      tensorwrapper::sparsity::Pattern(3),
+      tensor3_logical(),
+      tensor3_physical(),
+      Tensor{{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}}};
+}
+
+inline auto tensor4_values() {
+    return dsl_types{
+      smooth_tensor4(),
+      tensorwrapper::symmetry::Group(4),
+      tensorwrapper::sparsity::Pattern(4),
+      tensor4_logical(),
+      tensor4_physical(),
+      Tensor{{{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}},
+             {{{9.0, 10.0}, {11.0, 12.0}}, {{13.0, 14.0}, {15.0, 16.0}}}}};
+}
+
 } // namespace tensorwrapper::testing

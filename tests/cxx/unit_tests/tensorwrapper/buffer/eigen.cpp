@@ -79,7 +79,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
     auto scalar_layout = scalar_physical();
     auto vector_layout = vector_physical(2);
     auto matrix_layout = matrix_physical(2, 3);
-    auto tensor_layout = tensor_physical(1, 2, 3);
+    auto tensor_layout = tensor3_physical(1, 2, 3);
 
     scalar_buffer scalar(eigen_scalar, scalar_layout);
     vector_buffer vector(eigen_vector, vector_layout);
@@ -276,7 +276,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             auto tensor2 = testing::eigen_tensor3<TestType>();
 
             std::array<int, 3> p102{1, 0, 2};
-            auto l102 = testing::tensor_physical(2, 1, 3);
+            auto l102 = testing::tensor3_physical(2, 1, 3);
             tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
 
             auto tijk = tensor("i,j,k");
@@ -285,7 +285,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             tensor2.addition_assignment("k,j,i", tijk, tjik);
 
             std::array<int, 3> p210{2, 1, 0};
-            auto l210 = testing::tensor_physical(3, 2, 1);
+            auto l210 = testing::tensor3_physical(3, 2, 1);
             tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
             corr.value()(0, 0, 0) = 20.0;
             corr.value()(0, 1, 0) = 80.0;
@@ -392,7 +392,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             auto tensor2 = testing::eigen_tensor3<TestType>();
 
             std::array<int, 3> p102{1, 0, 2};
-            auto l102 = testing::tensor_physical(2, 1, 3);
+            auto l102 = testing::tensor3_physical(2, 1, 3);
             tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
 
             auto tijk = tensor("i,j,k");
@@ -401,7 +401,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             tensor2.subtraction_assignment("k,j,i", tijk, tjik);
 
             std::array<int, 3> p210{2, 1, 0};
-            auto l210 = testing::tensor_physical(3, 2, 1);
+            auto l210 = testing::tensor3_physical(3, 2, 1);
             tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
             corr.value()(0, 0, 0) = 0.0;
             corr.value()(0, 1, 0) = 0.0;
@@ -631,7 +631,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             auto tensor2 = testing::eigen_tensor3<TestType>();
 
             std::array<int, 3> p102{1, 0, 2};
-            auto l102 = testing::tensor_physical(2, 1, 3);
+            auto l102 = testing::tensor3_physical(2, 1, 3);
             tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
 
             auto tijk = tensor("i,j,k");
@@ -640,7 +640,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
             tensor2.multiplication_assignment("k,j,i", tijk, tjik);
 
             std::array<int, 3> p210{2, 1, 0};
-            auto l210 = testing::tensor_physical(3, 2, 1);
+            auto l210 = testing::tensor3_physical(3, 2, 1);
             tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
             corr.value()(0, 0, 0) = 100.0;
             corr.value()(0, 1, 0) = 1600.0;
