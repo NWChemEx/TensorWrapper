@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
-#include <tensorwrapper/buffer/replicated.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 
 #ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
@@ -31,13 +31,13 @@ namespace tensorwrapper::buffer {
  *
  */
 template<typename FloatType, unsigned short Rank>
-class Eigen : public Replicated {
+class Eigen : public Contiguous<FloatType> {
 private:
     /// Type of *this
     using my_type = Eigen<FloatType, Rank>;
 
     /// Type *this derives from
-    using my_base_type = Replicated;
+    using my_base_type = Contiguous<FloatType>;
 
 public:
     /// Pull in base class's types
@@ -209,6 +209,11 @@ protected:
 
     dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
                                          const_labeled_reference rhs) override;
+
+    ///
+    pointer data_() override { return m_tensor_.data(); }
+
+    const_pointer data_() override { return m_tensor_.data(); }
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
