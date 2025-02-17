@@ -73,6 +73,14 @@ cmaize_add_library(
 )
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 
+include(nwx_pybind11)
+nwx_add_pybind11_module(
+    ${PROJECT_NAME}
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/python"
+    DEPENDS "${PROJECT_NAME}"
+)
+
+
 if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
