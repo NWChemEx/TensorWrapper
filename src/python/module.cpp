@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "tensor/export_tensor.hpp"
 #include <pybind11/pybind11.h>
 #include <tensorwrapper/tensorwrapper.hpp>
 
@@ -21,6 +22,8 @@ namespace tensorwrapper {
 
 PYBIND11_MODULE(tensorwrapper, m) {
     m.doc() = "PyTensorWrapper : Python bindings for TensorWrapper";
+
+    export_tensor(m);
 }
 
 } // namespace tensorwrapper

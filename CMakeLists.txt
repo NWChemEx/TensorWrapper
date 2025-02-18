@@ -35,7 +35,7 @@ nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
 ### Options ###
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
-    BUILD_PYBIND11_PYBINDINGS OFF "Should we build Python3 bindings?"
+    BUILD_PYBIND11_PYBINDINGS ON "Should we build Python3 bindings?"
     ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
 )
 
@@ -84,6 +84,8 @@ nwx_add_pybind11_module(
 if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
+    set(python_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/python")
+    set(python_unit_test_dir "${python_test_dir}/unit_tests")
 
     include(get_catch2)
     
@@ -92,6 +94,11 @@ if("${BUILD_TESTING}")
         SOURCE_DIR "${cxx_unit_test_dir}"
         INCLUDE_DIRS "${project_src_dir}"
         DEPENDS Catch2 ${PROJECT_NAME}
+    )
+
+    nwx_pybind11_tests(
+        py_${PROJECT_NAME} ${python_unit_test_dir}/test_tensorwrapper.py
+        SUBMODULES parallelzone pluginplay
     )
 endif()
 
