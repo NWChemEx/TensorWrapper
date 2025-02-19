@@ -213,6 +213,7 @@ protected:
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
 
+    /// Implements like
     buffer_base_pointer like_(const_layout_reference layout) const override;
 
 private:

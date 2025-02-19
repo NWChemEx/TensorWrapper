@@ -139,6 +139,16 @@ public:
         return !(*this == rhs);
     }
 
+    /** @brief Creates a new buffer like *this, but with the provided layout.
+     *
+     *
+     *  Derived classes should override like_ to implement this method.
+     *
+     *  @return A buffer like *this with a new layout.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the buffer. 
+     *                        Strong throw guarantee.
+     */
     buffer_base_pointer like(const_layout_reference layout) const {
         return like_(layout);
     }
@@ -221,6 +231,13 @@ protected:
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
 
+    /** @brief Derived classes should override this method to implement like.
+     *
+     *  @return A buffer like *this with a new layout.
+     *
+     *  @throw std::bad_alloc if there is a problem allocating the buffer. 
+     *                        Strong throw guarantee.
+     */
     virtual buffer_base_pointer like_(const_layout_reference layout) const = 0;
 
 private:

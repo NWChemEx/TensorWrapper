@@ -162,9 +162,7 @@ Tensor::dsl_reference Tensor::multiplication_assignment_(
     pthis_layout->multiplication_assignment(this_labels, llayout(llabels),
                                             rlayout(rlabels));
 
-    // auto pthis_buffer = lobject.buffer().clone();
     physical_layout_type phys_layout(pthis_layout->shape());
-
     auto pthis_buffer = lobject.buffer().like(phys_layout);
     auto lbuffer      = lobject.buffer()(llabels);
     auto rbuffer      = robject.buffer()(rlabels);
