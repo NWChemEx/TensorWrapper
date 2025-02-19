@@ -96,9 +96,18 @@ if("${BUILD_TESTING}")
         DEPENDS Catch2 ${PROJECT_NAME}
     )
 
+    nwx_add_pybind11_module(
+        py_test_${PROJECT_NAME}
+        INSTALL OFF
+        SOURCE_DIR "${python_unit_test_dir}"
+        INCLUDE_DIRS "${project_inc_dir}"
+        DEPENDS ${PROJECT_NAME}
+    )
+
     nwx_pybind11_tests(
         py_${PROJECT_NAME} ${python_unit_test_dir}/test_tensorwrapper.py
         SUBMODULES parallelzone pluginplay
+        DEPENDS py_test_${PROJECT_NAME}
     )
 endif()
 

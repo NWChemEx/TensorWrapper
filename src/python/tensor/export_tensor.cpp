@@ -5,24 +5,44 @@
 
 namespace tensorwrapper {
 
-void export_tensor(py_module_reference m) {
-    py_class_type<Tensor>(m, "Tensor")
-      .def(pybind11::init<>())
-      .def(pybind11::init([](numpy_t& array) {
-          auto rank = array.ndim();
-          parallelzone::runtime::RuntimeView rv;
-          auto palloc = alloc_t::make_eigen_allocator(rank, rv);
+using float_type  = double;
+using buffer_type = buffer::Contiguous<float_type>;
 
-          auto pbuffer = palloc->(layout);
-      }))
+template<typename FloatType>
+auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
+    using size_type       = std::size_t;
+    constexpr auto nbytes = sizeof(FloatType);
+    const auto desc       = pybind11::format_descriptor<FloatType>::format();
+    const auto rank       = buffer.rank();
+
+    const auto smooth_shape = buffer.layout().shape().as_smooth();
+
+    std::vector<size_type> shape(rank);
+    std::vector<size_type> strides(rank);
+    for(size_type rank_i = 0; rank_i < rank; ++rank_i) {
+        shape[rank_i]      = smooth_shape.extent(rank_i);
+        size_type stride_i = 1;
+        for(size_type mode_i = rank_i + 1; mode_i < rank; ++mode_i)
+            stride_i *= smooth_shape.extent(mode_i);
+        strides[rank_i] = stride_i * nbytes;
+    }
+    return pybind11::buffer_info(buffer.data(), nbytes, desc, rank, shape,
+                                 strides);
+}
+
+void export_tensor(py_module_reference m) {
+    py_class_type<Tensor>(m, "Tensor", pybind11::buffer_protocol())
+      .def(pybind11::init<>())
       .def("rank", &Tensor::rank)
       .def(pybind11::self == pybind11::self)
       .def(pybind11::self != pybind11::self)
-      .def("__str__", [](Tensor& self) { return self.to_string(); });
-
-    m.def("to_ndarray", [](Tensor& t) {
-        t.buffer().data();
-    });
+      .def("__str__", [](Tensor& self) { return self.to_string(); })
+      .def_buffer([](Tensor& t) {
+          auto pbuffer = dynamic_cast<buffer_type*>(&t.buffer());
+          if(pbuffer == nullptr)
+              throw std::runtime_error("Expected buffer to hold doubles");
+          return make_buffer_info(*pbuffer);
+      });
 }
 
 } // namespace tensorwrapper
