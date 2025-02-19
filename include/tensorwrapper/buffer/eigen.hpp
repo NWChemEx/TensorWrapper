@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/backends/eigen.hpp>
-#include <tensorwrapper/buffer/replicated.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 
 #ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
@@ -31,19 +31,25 @@ namespace tensorwrapper::buffer {
  *
  */
 template<typename FloatType, unsigned short Rank>
-class Eigen : public Replicated {
+class Eigen : public Contiguous<FloatType> {
 private:
     /// Type of *this
     using my_type = Eigen<FloatType, Rank>;
 
     /// Type *this derives from
-    using my_base_type = Replicated;
+    using my_base_type = Contiguous<FloatType>;
 
 public:
     /// Pull in base class's types
     using typename my_base_type::buffer_base_pointer;
     using typename my_base_type::const_buffer_base_reference;
+    using typename my_base_type::const_labeled_reference;
     using typename my_base_type::const_layout_reference;
+    using typename my_base_type::const_pointer;
+    using typename my_base_type::dsl_reference;
+    using typename my_base_type::label_type;
+    using typename my_base_type::pointer;
+    using typename my_base_type::polymorphic_base;
 
     /// Type of a rank @p Rank tensor using floats of type @p FloatType
     using data_type = eigen::data_type<FloatType, Rank>;
@@ -74,7 +80,7 @@ public:
      */
     template<typename DataType>
     Eigen(DataType&& t, const_layout_reference layout) :
-      Replicated(layout), m_tensor_(std::forward<DataType>(t)) {}
+      my_base_type(layout), m_tensor_(std::forward<DataType>(t)) {}
 
     /** @brief Initializes *this with a copy of @p other.
      *
@@ -185,7 +191,7 @@ protected:
 
     /// Implements are_equal by calling are_equal_impl_
     bool are_equal_(const_buffer_base_reference rhs) const noexcept override {
-        return my_base_type::are_equal_impl_<my_type>(rhs);
+        return my_base_type::template are_equal_impl_<my_type>(rhs);
     }
 
     /// Implements addition_assignment by calling addition_assignment on state
@@ -209,6 +215,10 @@ protected:
 
     dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
                                          const_labeled_reference rhs) override;
+
+    pointer data_() noexcept override { return m_tensor_.data(); }
+
+    const_pointer data_() const noexcept override { return m_tensor_.data(); }
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
