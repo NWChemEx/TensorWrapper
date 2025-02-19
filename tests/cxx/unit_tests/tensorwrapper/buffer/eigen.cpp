@@ -22,12 +22,6 @@
 using namespace tensorwrapper;
 using namespace testing;
 
-#ifdef ENABLE_SIGMA
-using types2test = std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
-#else
-using types2test = std::tuple<float, double>;
-#endif
-
 namespace {
 
 template<typename FloatType, typename LHSType, typename RHSType>
@@ -47,7 +41,7 @@ void compare_eigen(const LHSType& lhs, const RHSType& rhs) {
 
 } // namespace
 
-TEMPLATE_LIST_TEST_CASE("Eigen", "", types2test) {
+TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
     using scalar_buffer = buffer::Eigen<TestType, 0>;
     using vector_buffer = buffer::Eigen<TestType, 1>;
     using matrix_buffer = buffer::Eigen<TestType, 2>;
