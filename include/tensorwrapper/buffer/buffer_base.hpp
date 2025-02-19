@@ -139,6 +139,10 @@ public:
         return !(*this == rhs);
     }
 
+    buffer_base_pointer like(const_layout_reference layout) const {
+        return like_(layout);
+    }
+
 protected:
     // -------------------------------------------------------------------------
     // -- Ctors, assignment
@@ -216,6 +220,8 @@ protected:
 
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
+
+    virtual buffer_base_pointer like_(const_layout_reference layout) const = 0;
 
 private:
     /// Throws std::runtime_error when there is no layout

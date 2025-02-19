@@ -213,6 +213,8 @@ protected:
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
 
+    buffer_base_pointer like_(const_layout_reference layout) const override;
+
 private:
     dsl_reference hadamard_(label_type this_labels, const_labeled_reference lhs,
                             const_labeled_reference rhs);

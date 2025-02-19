@@ -151,6 +151,7 @@ protected:
      *  @throw None No throw guarantee.
      */
     explicit AllocatorBase(runtime_view_type rv) : m_rv_(std::move(rv)) {}
+
     /** @brief Creates *this so that it uses the same runtime as @p other.
      *
      *  @param[in] other The allocator to make a copy of.

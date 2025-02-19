@@ -73,6 +73,15 @@ public:
     /// Type of a pointer to the tensor's logical layout
     using logical_layout_pointer = input_type::logical_layout_pointer;
 
+    /// Type of an object storing the physical layout of the tensor
+    using physical_layout_type = input_type::physical_layout_type;
+
+    /// Type of a read-only reference to the tensor's physical layout
+    using const_physical_reference = input_type::const_physical_reference;
+
+    /// Type of a pointer to the tensor's physical layout
+    using physical_layout_pointer = input_type::physical_layout_pointer;
+
     /// Type of a mutable reference to the tensor's buffer
     using buffer_reference = input_type::buffer_reference;
 

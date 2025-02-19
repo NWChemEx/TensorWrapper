@@ -185,6 +185,16 @@ typename detail_::PolymorphicBase<BufferBase>::string_type EIGEN::to_string_()
 }
 
 TPARAMS
+typename EIGEN::buffer_base_pointer EIGEN::like_(
+  const_layout_reference layout) const {
+    using allocator_type    = allocator::Eigen<FloatType, Rank>;
+    using runtime_view_type = typename allocator_type::runtime_view_type;
+    runtime_view_type rv;
+    auto allocator = allocator_type::make_eigen_allocator(layout.rank(), rv);
+    return allocator->allocate(layout.clone());
+}
+
+TPARAMS
 typename EIGEN::dsl_reference EIGEN::hadamard_(label_type this_labels,
                                                const_labeled_reference lhs,
                                                const_labeled_reference rhs) {
