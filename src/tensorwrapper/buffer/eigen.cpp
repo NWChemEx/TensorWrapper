@@ -177,8 +177,7 @@ typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
 }
 
 TPARAMS
-typename detail_::PolymorphicBase<BufferBase>::string_type EIGEN::to_string_()
-  const {
+typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {
     std::stringstream ss;
     ss << m_tensor_;
     return ss.str();
