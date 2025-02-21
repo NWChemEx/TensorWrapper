@@ -52,15 +52,15 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
 
     eigen_scalar scalar;
     scalar() = 0.0;
-    eigen_buffer_scalar scalar_corr(scalar, scalar_layout);
+    eigen_buffer_scalar scalar_corr(scalar, scalar_layout, scalar_alloc);
 
     eigen_vector vector(2);
     vector.setConstant(1);
-    eigen_buffer_vector vector_corr(vector, vector_layout);
+    eigen_buffer_vector vector_corr(vector, vector_layout, vector_alloc);
 
     eigen_matrix matrix(2, 2);
     matrix.setConstant(2);
-    eigen_buffer_matrix matrix_corr(matrix, matrix_layout);
+    eigen_buffer_matrix matrix_corr(matrix, matrix_layout, matrix_alloc);
 
     SECTION("Ctor") {
         SECTION("runtime") {
@@ -73,7 +73,7 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
                                           matrix_alloc);
     }
 
-    SECTION("allocate(MonoTile)") {
+    SECTION("allocate(Layout)") {
         // N.b. allocate doesn't initialize tensor, so only compare layouts
         auto pscalar = scalar_alloc.allocate(scalar_layout);
         REQUIRE(pscalar->layout().are_equal(scalar_layout));
@@ -84,12 +84,12 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
         auto pmatrix = matrix_alloc.allocate(matrix_layout);
         REQUIRE(pmatrix->layout().are_equal(matrix_layout));
 
-        // Throws if ranks don't match
-        using except_t = std::runtime_error;
-        REQUIRE_THROWS_AS(scalar_alloc.allocate(vector_layout), except_t);
+        // Works if ranks don't match
+        pvector = scalar_alloc.allocate(vector_layout);
+        REQUIRE(pvector->layout().are_equal(vector_layout));
     }
 
-    SECTION("allocate(std::unique_ptr<MonoTile>)") {
+    SECTION("allocate(std::unique_ptr<Layout>)") {
         // N.b. allocate doesn't initialize tensor, so only compare layouts
         auto pscalar_layout = std::make_unique<layout_type>(scalar_layout);
         auto pscalar        = scalar_alloc.allocate(std::move(pscalar_layout));
@@ -103,11 +103,10 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
         auto pmatrix        = matrix_alloc.allocate(std::move(pmatrix_layout));
         REQUIRE(pmatrix->layout().are_equal(matrix_layout));
 
-        // Throws if ranks don't match
-        using except_t       = std::runtime_error;
+        // Works if ranks don't match
         auto pvector_layout2 = std::make_unique<layout_type>(vector_layout);
-        REQUIRE_THROWS_AS(scalar_alloc.allocate(std::move(pvector_layout2)),
-                          except_t);
+        pvector = scalar_alloc.allocate(std::move(pvector_layout2));
+        REQUIRE(pvector->layout().are_equal(vector_layout));
     }
 
     SECTION("construct(value)") {
@@ -121,9 +120,9 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
         auto pmatrix = matrix_alloc.construct(std::move(pmatrix_layout), 2);
         REQUIRE(*pmatrix == matrix_corr);
 
-        // Throws if ranks don't match
-        using except_t = std::runtime_error;
-        REQUIRE_THROWS_AS(scalar_alloc.allocate(vector_layout), except_t);
+        // Works if ranks don't match
+        pvector = scalar_alloc.construct(vector_layout, 1);
+        REQUIRE(*pvector == vector_corr);
     }
 
     SECTION("can_rebind") {

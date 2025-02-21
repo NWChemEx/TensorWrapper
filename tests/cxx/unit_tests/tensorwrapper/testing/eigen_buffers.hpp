@@ -36,6 +36,12 @@ using ebufferd1 = buffer::Eigen<double, 1>;
 using ebufferd2 = buffer::Eigen<double, 2>;
 using ebufferd3 = buffer::Eigen<double, 3>;
 
+template<typename FloatType, unsigned short Rank>
+auto make_allocator() {
+    parallelzone::runtime::RuntimeView rv;
+    return allocator::Eigen<FloatType, Rank>(rv);
+}
+
 template<typename FloatType>
 auto eigen_scalar() {
     using buffer_type = buffer::Eigen<FloatType, 0>;
@@ -44,7 +50,7 @@ auto eigen_scalar() {
     scalar() = 42.0;
     shape::Smooth shape{};
     layout::Physical l(shape);
-    return buffer_type(scalar, l);
+    return buffer_type(scalar, l, make_allocator<FloatType, 0>());
 }
 
 template<typename FloatType>
@@ -55,7 +61,7 @@ auto eigen_vector(std::size_t n = 5) {
     for(std::size_t i = 0; i < n; ++i) vector(i) = i;
     shape::Smooth shape{n};
     layout::Physical l(shape);
-    return buffer_type(vector, l);
+    return buffer_type(vector, l, make_allocator<FloatType, 1>());
 }
 
 template<typename FloatType>
@@ -69,7 +75,7 @@ auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
 
     shape::Smooth shape{n, m};
     layout::Physical l(shape);
-    return buffer_type(matrix, l);
+    return buffer_type(matrix, l, make_allocator<FloatType, 2>());
 }
 
 template<typename FloatType>
@@ -86,7 +92,7 @@ auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
     for(decltype(in) i = 0; i < in; ++i)
         for(decltype(im) j = 0; j < im; ++j)
             for(decltype(il) k = 0; k < il; ++k) e_tensor(i, j, k) = counter++;
-    return buffer_type(e_tensor, layout);
+    return buffer_type(e_tensor, layout, make_allocator<FloatType, 3>());
 }
 
 template<typename FloatType>
@@ -106,7 +112,7 @@ auto eigen_tensor4(std::array<std::size_t, 4> extents = {2, 2, 2, 2}) {
             for(i[2] = 0; i[2] < iextents[2]; ++i[2])
                 for(i[3] = 0; i[3] < iextents[3]; ++i[3])
                     e_tensor(i[0], i[1], i[2], i[3]) = counter++;
-    return buffer_type(e_tensor, layout);
+    return buffer_type(e_tensor, layout, make_allocator<FloatType, 4>());
 }
 
 } // namespace tensorwrapper::testing

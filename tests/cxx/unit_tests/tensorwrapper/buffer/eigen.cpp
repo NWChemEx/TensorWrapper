@@ -75,10 +75,16 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
     auto matrix_layout = matrix_physical(2, 3);
     auto tensor_layout = tensor3_physical(1, 2, 3);
 
-    scalar_buffer scalar(eigen_scalar, scalar_layout);
-    vector_buffer vector(eigen_vector, vector_layout);
-    matrix_buffer matrix(eigen_matrix, matrix_layout);
-    tensor_buffer tensor(eigen_tensor, tensor_layout);
+    parallelzone::runtime::RuntimeView rv;
+    allocator::Eigen<TestType, 0> alloc0(rv);
+    allocator::Eigen<TestType, 1> alloc1(rv);
+    allocator::Eigen<TestType, 2> alloc2(rv);
+    allocator::Eigen<TestType, 3> alloc3(rv);
+
+    scalar_buffer scalar(eigen_scalar, scalar_layout, alloc0);
+    vector_buffer vector(eigen_vector, vector_layout, alloc1);
+    matrix_buffer matrix(eigen_matrix, matrix_layout, alloc2);
+    tensor_buffer tensor(eigen_tensor, tensor_layout, alloc3);
 
     SECTION("ctors, assignment") {
         SECTION("value ctor") {
@@ -120,22 +126,22 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
         eigen_scalar2() = 10.0;
 
         // Everything the same
-        REQUIRE(scalar == scalar_buffer(eigen_scalar2, scalar_layout));
+        REQUIRE(scalar == scalar_buffer(eigen_scalar2, scalar_layout, alloc0));
 
         SECTION("Different scalar") {
             eigen_scalar2() = 2.0;
-            scalar_buffer scalar2(eigen_scalar2, scalar_layout);
+            scalar_buffer scalar2(eigen_scalar2, scalar_layout, alloc0);
             REQUIRE_FALSE(scalar == scalar2);
         }
 
         SECTION("Different layout") {
-            scalar_buffer scalar2(eigen_scalar, vector_layout);
+            scalar_buffer scalar2(eigen_scalar, vector_layout, alloc1);
             REQUIRE_FALSE(scalar == scalar2);
         }
 
         SECTION("Different tensor and layout") {
             eigen_scalar2() = 2.0;
-            scalar_buffer scalar2(eigen_scalar2, vector_layout);
+            scalar_buffer scalar2(eigen_scalar2, vector_layout, alloc1);
             REQUIRE_FALSE(scalar == scalar2);
         }
     }
@@ -147,11 +153,11 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
         eigen_scalar2() = 10.0;
 
         // Everything the same
-        scalar_buffer scalar2(eigen_scalar2, scalar_layout);
+        scalar_buffer scalar2(eigen_scalar2, scalar_layout, alloc0);
         REQUIRE_FALSE(scalar != scalar2);
 
         eigen_scalar2() = 2.0;
-        scalar_buffer scalar3(eigen_scalar2, scalar_layout);
+        scalar_buffer scalar3(eigen_scalar2, scalar_layout, alloc0);
         REQUIRE(scalar3 != scalar);
     }
 
@@ -169,7 +175,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
         }
 
         SECTION("are_equal") {
-            scalar_buffer scalar2(eigen_scalar, scalar_layout);
+            scalar_buffer scalar2(eigen_scalar, scalar_layout, alloc0);
             REQUIRE(pscalar.are_equal(scalar2));
             REQUIRE_FALSE(pmatrix.are_equal(scalar2));
         }
@@ -177,13 +183,13 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
     SECTION("addition_assignment_") {
         SECTION("scalar") {
-            scalar_buffer scalar2(eigen_scalar, scalar_layout);
+            scalar_buffer scalar2(eigen_scalar, scalar_layout, alloc0);
             scalar2.value()() = 42.0;
 
             auto s        = scalar("");
             auto pscalar2 = &(scalar2.addition_assignment("", s, s));
 
-            scalar_buffer scalar_corr(eigen_scalar, scalar_layout);
+            scalar_buffer scalar_corr(eigen_scalar, scalar_layout, alloc0);
             scalar_corr.value()() = 20.0;
             REQUIRE(pscalar2 == &scalar2);
             REQUIRE(scalar2 == scalar_corr);
@@ -195,7 +201,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto vi       = vector("i");
             auto pvector2 = &(vector2.addition_assignment("i", vi, vi));
 
-            vector_buffer vector_corr(eigen_vector, vector_layout);
+            vector_buffer vector_corr(eigen_vector, vector_layout, alloc1);
             vector_corr.value()(0) = 20.0;
             vector_corr.value()(1) = 40.0;
 
@@ -209,7 +215,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto mij      = matrix("i,j");
             auto pmatrix2 = &(matrix2.addition_assignment("i,j", mij, mij));
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 20.0;
             matrix_corr.value()(0, 1) = 40.0;
@@ -227,12 +233,12 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto l       = testing::matrix_physical(3, 2);
             std::array<int, 2> p10{1, 0};
             auto eigen_matrix_t = eigen_matrix.shuffle(p10);
-            matrix_buffer matrix1(eigen_matrix_t, l);
+            matrix_buffer matrix1(eigen_matrix_t, l, alloc2);
 
             auto mij = matrix("i,j");
             auto mji = matrix1("j,i");
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 20.0;
             matrix_corr.value()(0, 1) = 40.0;
@@ -244,7 +250,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             SECTION("permute this") {
                 matrix2.addition_assignment("j,i", mij, mij);
 
-                matrix_buffer corr(eigen_matrix_t, l);
+                matrix_buffer corr(eigen_matrix_t, l, alloc2);
                 corr.value()(0, 0) = 20.0;
                 corr.value()(0, 1) = 80.0;
                 corr.value()(1, 0) = 40.0;
@@ -271,7 +277,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p102{1, 0, 2};
             auto l102 = testing::tensor3_physical(2, 1, 3);
-            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
+            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102, alloc3);
 
             auto tijk = tensor("i,j,k");
             auto tjik = tensor102("j,i,k");
@@ -280,7 +286,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p210{2, 1, 0};
             auto l210 = testing::tensor3_physical(3, 2, 1);
-            tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
+            tensor_buffer corr(eigen_tensor.shuffle(p210), l210, alloc3);
             corr.value()(0, 0, 0) = 20.0;
             corr.value()(0, 1, 0) = 80.0;
             corr.value()(1, 0, 0) = 40.0;
@@ -293,13 +299,13 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
     SECTION("subtraction_assignment_") {
         SECTION("scalar") {
-            scalar_buffer scalar2(eigen_scalar, scalar_layout);
+            scalar_buffer scalar2(eigen_scalar, scalar_layout, alloc0);
             scalar2.value()() = 42.0;
 
             auto s        = scalar("");
             auto pscalar2 = &(scalar2.subtraction_assignment("", s, s));
 
-            scalar_buffer scalar_corr(eigen_scalar, scalar_layout);
+            scalar_buffer scalar_corr(eigen_scalar, scalar_layout, alloc0);
             scalar_corr.value()() = 0.0;
             REQUIRE(pscalar2 == &scalar2);
             REQUIRE(scalar2 == scalar_corr);
@@ -311,7 +317,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto vi       = vector("i");
             auto pvector2 = &(vector2.subtraction_assignment("i", vi, vi));
 
-            vector_buffer vector_corr(eigen_vector, vector_layout);
+            vector_buffer vector_corr(eigen_vector, vector_layout, alloc1);
             vector_corr.value()(0) = 0.0;
             vector_corr.value()(1) = 0.0;
 
@@ -325,7 +331,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto mij      = matrix("i,j");
             auto pmatrix2 = &(matrix2.subtraction_assignment("i,j", mij, mij));
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 0.0;
             matrix_corr.value()(0, 1) = 0.0;
@@ -343,12 +349,12 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto l       = testing::matrix_physical(3, 2);
             std::array<int, 2> p10{1, 0};
             auto eigen_matrix_t = eigen_matrix.shuffle(p10);
-            matrix_buffer matrix1(eigen_matrix_t, l);
+            matrix_buffer matrix1(eigen_matrix_t, l, alloc2);
 
             auto mij = matrix("i,j");
             auto mji = matrix1("j,i");
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 0.0;
             matrix_corr.value()(0, 1) = 0.0;
@@ -360,7 +366,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             SECTION("permute this") {
                 matrix2.subtraction_assignment("j,i", mij, mij);
 
-                matrix_buffer corr(eigen_matrix_t, l);
+                matrix_buffer corr(eigen_matrix_t, l, alloc2);
                 corr.value()(0, 0) = 0.0;
                 corr.value()(0, 1) = 0.0;
                 corr.value()(1, 0) = 0.0;
@@ -387,7 +393,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p102{1, 0, 2};
             auto l102 = testing::tensor3_physical(2, 1, 3);
-            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
+            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102, alloc3);
 
             auto tijk = tensor("i,j,k");
             auto tjik = tensor102("j,i,k");
@@ -396,7 +402,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p210{2, 1, 0};
             auto l210 = testing::tensor3_physical(3, 2, 1);
-            tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
+            tensor_buffer corr(eigen_tensor.shuffle(p210), l210, alloc3);
             corr.value()(0, 0, 0) = 0.0;
             corr.value()(0, 1, 0) = 0.0;
             corr.value()(1, 0, 0) = 0.0;
@@ -531,13 +537,13 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
     SECTION("hadamard_") {
         SECTION("scalar") {
-            scalar_buffer scalar2(eigen_scalar, scalar_layout);
+            scalar_buffer scalar2(eigen_scalar, scalar_layout, alloc0);
             scalar2.value()() = 42.0;
 
             auto s        = scalar("");
             auto pscalar2 = &(scalar2.multiplication_assignment("", s, s));
 
-            scalar_buffer scalar_corr(eigen_scalar, scalar_layout);
+            scalar_buffer scalar_corr(eigen_scalar, scalar_layout, alloc0);
             scalar_corr.value()() = 100.0;
             REQUIRE(pscalar2 == &scalar2);
             REQUIRE(scalar2 == scalar_corr);
@@ -549,7 +555,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto vi       = vector("i");
             auto pvector2 = &(vector2.multiplication_assignment("i", vi, vi));
 
-            vector_buffer vector_corr(eigen_vector, vector_layout);
+            vector_buffer vector_corr(eigen_vector, vector_layout, alloc1);
             vector_corr.value()(0) = 100.0;
             vector_corr.value()(1) = 400.0;
 
@@ -564,7 +570,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto pmatrix2 =
               &(matrix2.multiplication_assignment("i,j", mij, mij));
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 100.0;
             matrix_corr.value()(0, 1) = 400.0;
@@ -582,12 +588,12 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             auto l       = testing::matrix_physical(3, 2);
             std::array<int, 2> p10{1, 0};
             auto eigen_matrix_t = eigen_matrix.shuffle(p10);
-            matrix_buffer matrix1(eigen_matrix_t, l);
+            matrix_buffer matrix1(eigen_matrix_t, l, alloc2);
 
             auto mij = matrix("i,j");
             auto mji = matrix1("j,i");
 
-            matrix_buffer matrix_corr(eigen_matrix, matrix_layout);
+            matrix_buffer matrix_corr(eigen_matrix, matrix_layout, alloc2);
 
             matrix_corr.value()(0, 0) = 100.0;
             matrix_corr.value()(0, 1) = 400.0;
@@ -599,7 +605,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
             SECTION("permute this") {
                 matrix2.multiplication_assignment("j,i", mij, mij);
 
-                matrix_buffer corr(eigen_matrix_t, l);
+                matrix_buffer corr(eigen_matrix_t, l, alloc2);
                 corr.value()(0, 0) = 100.0;
                 corr.value()(0, 1) = 1600.0;
                 corr.value()(1, 0) = 400.0;
@@ -626,7 +632,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p102{1, 0, 2};
             auto l102 = testing::tensor3_physical(2, 1, 3);
-            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102);
+            tensor_buffer tensor102(eigen_tensor.shuffle(p102), l102, alloc3);
 
             auto tijk = tensor("i,j,k");
             auto tjik = tensor102("j,i,k");
@@ -635,7 +641,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
 
             std::array<int, 3> p210{2, 1, 0};
             auto l210 = testing::tensor3_physical(3, 2, 1);
-            tensor_buffer corr(eigen_tensor.shuffle(p210), l210);
+            tensor_buffer corr(eigen_tensor.shuffle(p210), l210, alloc3);
             corr.value()(0, 0, 0) = 100.0;
             corr.value()(0, 1, 0) = 1600.0;
             corr.value()(1, 0, 0) = 400.0;

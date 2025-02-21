@@ -181,7 +181,8 @@ namespace {
 
 /// Wraps the process of turning an initializer list into a TensorInput object
 template<typename T, std::size_t... I>
-auto il_to_input(T il, std::index_sequence<I...>) {
+auto il_to_input(T il, std::index_sequence<I...>,
+                 parallelzone::runtime::RuntimeView rv = {}) {
     auto [dims, data] = unwrap_il(il);
 
     using buffer_type = buffer::Eigen<double, sizeof...(I)>;
@@ -194,7 +195,8 @@ auto il_to_input(T il, std::index_sequence<I...>) {
     }
     shape::Smooth shape(dims.begin(), dims.end());
     layout::Physical l(shape);
-    return TensorInput(shape, buffer_type(eigen_tensor, l));
+    allocator::Eigen<double, sizeof...(I)> alloc(rv);
+    return TensorInput(shape, buffer_type(eigen_tensor, l, alloc));
 }
 
 } // namespace

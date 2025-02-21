@@ -30,25 +30,12 @@ auto unwrap_shape(const ShapeType& shape, std::index_sequence<Is...>) {
 
 } // namespace
 
-#define TPARAMS template<typename FloatType, unsigned short Rank>
-#define EIGEN Eigen<FloatType, Rank>
-
-TPARAMS
-typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
-  eigen_layout_pointer playout) {
-    using eigen_data_type = typename eigen_buffer_type::data_type;
-    if(playout->shape().rank() != Rank)
-        throw std::runtime_error("Rank of the layout is not compatible");
-
-    return std::make_unique<eigen_buffer_type>(
-      unwrap_shape<eigen_data_type>(playout->shape(),
-                                    std::make_index_sequence<Rank>()),
-      *playout);
-}
+#define TPARAMS template<typename FloatType>
+#define EIGEN Eigen<FloatType>
 
 TPARAMS
 bool EIGEN::can_rebind(const_buffer_base_reference buffer) {
-    auto pbuffer = dynamic_cast<const eigen_buffer_type*>(&buffer);
+    auto pbuffer = dynamic_cast<const buffer::Eigen<FloatType>*>(&buffer);
     return pbuffer != nullptr;
 }
 
@@ -67,39 +54,57 @@ typename EIGEN::const_eigen_buffer_reference EIGEN::rebind(
     throw std::runtime_error("Can not rebind buffer");
 }
 
-#define ALLOCATE_CONDITION(RANK) \
-    if(rank == RANK) return std::make_unique<Eigen<FloatType, RANK>>(rv)
-
-TPARAMS
-typename EIGEN::base_pointer EIGEN::make_eigen_allocator(unsigned int rank,
-                                                         runtime_view_type rv) {
-    ALLOCATE_CONDITION(0);
-    else ALLOCATE_CONDITION(1);
-    else ALLOCATE_CONDITION(2);
-    else ALLOCATE_CONDITION(3);
-    else ALLOCATE_CONDITION(4);
-    else ALLOCATE_CONDITION(5);
-    else ALLOCATE_CONDITION(6);
-    else ALLOCATE_CONDITION(7);
-    else ALLOCATE_CONDITION(8);
-    else ALLOCATE_CONDITION(9);
-    else ALLOCATE_CONDITION(10);
-    throw std::runtime_error(
-      "Presently only support eigen tensors up to rank 10");
-}
-
-#undef ALLOCATE_CONDITION
-
 // -----------------------------------------------------------------------------
 // -- Protected methods
 // -----------------------------------------------------------------------------
 
 TPARAMS
 typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
-    auto pderived = detail_::dynamic_pointer_cast<eigen_layout_type>(playout);
-    if(pderived == nullptr) throw std::runtime_error("Unsupported layout");
+    using eigen_data_type = typename eigen_buffer_type::data_type;
+    if(playout->shape().rank() != Rank) {
+        auto palloc =
+          make_eigen_allocator(playout->shape().rank(), this->runtime());
+        return palloc->allocate(std::move(playout));
+    }
 
-    return allocate(std::move(pderived));
+    return std::make_unique<eigen_buffer_type>(
+      unwrap_shape<eigen_data_type>(playout->shape(),
+                                    std::make_index_sequence<Rank>()),
+      *playout, *this);
+}
+
+TPARAMS
+typename EIGEN::buffer_base_pointer EIGEN::construct_(layout_pointer playout,
+                                                      element_type value) {
+    auto pbuffer        = this->allocate(std::move(playout));
+    auto& contig_buffer = static_cast<buffer::Contiguous<FloatType>&>(*pbuffer);
+    auto* pdata         = contig_buffer.data();
+    std::fill(pdata, pdata + contig_buffer.size(), value);
+    return pbuffer;
+}
+
+TPARAMS
+typename EIGEN::dsl_reference EIGEN::addition_assignment_(
+  label_type this_labels, const_labeled_reference, const_labeled_reference) {
+    return make_eigen_allocator(this_labels.size(), this->runtime());
+}
+
+TPARAMS
+typename EIGEN::dsl_reference EIGEN::subtraction_assignment_(
+  label_type this_labels, const_labeled_reference, const_labeled_reference) {
+    return make_eigen_allocator(this_labels.size(), this->runtime());
+}
+
+TPARAMS
+typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
+  label_type this_labels, const_labeled_reference, const_labeled_reference) {
+    return make_eigen_allocator(this_labels.size(), this->runtime());
+}
+
+TPARAMS
+typename EIGEN::dsl_reference EIGEN::permute_assignment_(
+  label_type this_labels, const_labeled_reference) {
+    return make_eigen_allocator(this_labels.size(), this->runtime());
 }
 
 #undef EIGEN
@@ -107,26 +112,9 @@ typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
 
 // -- Explicit class template instantiation
 
-#define DEFINE_EIGEN_ALLOCATOR(TYPE) \
-    template class Eigen<TYPE, 0>;   \
-    template class Eigen<TYPE, 1>;   \
-    template class Eigen<TYPE, 2>;   \
-    template class Eigen<TYPE, 3>;   \
-    template class Eigen<TYPE, 4>;   \
-    template class Eigen<TYPE, 5>;   \
-    template class Eigen<TYPE, 6>;   \
-    template class Eigen<TYPE, 7>;   \
-    template class Eigen<TYPE, 8>;   \
-    template class Eigen<TYPE, 9>;   \
-    template class Eigen<TYPE, 10>
+#define DEFINE_EIGEN_ALLOCATOR(TYPE) template class Eigen<TYPE>
 
-DEFINE_EIGEN_ALLOCATOR(float);
-DEFINE_EIGEN_ALLOCATOR(double);
-
-#ifdef ENABLE_SIGMA
-DEFINE_EIGEN_ALLOCATOR(sigma::UFloat);
-DEFINE_EIGEN_ALLOCATOR(sigma::UDouble);
-#endif
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_EIGEN_ALLOCATOR);
 
 #undef DEFINE_EIGEN_ALLOCATOR
 

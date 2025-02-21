@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "eigen_contraction.hpp"
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
@@ -25,9 +23,57 @@ namespace tensorwrapper::buffer {
 #define TPARAMS template<typename FloatType, unsigned short Rank>
 #define EIGEN Eigen<FloatType, Rank>
 
-using const_labeled_reference =
-  typename Eigen<float, 0>::const_labeled_reference;
-using dsl_reference = typename Eigen<float, 0>::dsl_reference;
+// -- Public Methods
+
+TPARAMS
+EIGEN::Eigen() noexcept = default;
+
+TPARAMS
+EIGEN::Eigen(pimpl_pointer pimpl, const_layout_reference layout,
+             const_allocator_reference allocator) :
+  my_base_type(layout, allocator), m_pimpl_(std::move(pimpl)) {}
+
+TPARAMS
+EIGEN::Eigen(const Eigen& other) :
+  Eigen(other.has_pimpl_() ? other.m_pimpl_->clone() : nullptr, other.layout(),
+        other.allocator()) {}
+
+TPARAMS
+EIGEN::Eigen(Eigen&& other) noexcept = default;
+
+TPARAMS
+EIGEN& EIGEN::operator=(const Eigen& rhs) {
+    if(this != &rhs) Eigen(rhs).swap(*this);
+    return *this;
+}
+
+TPARAMS
+EIGEN& EIGEN::operator=(Eigen&& rhs) noexcept = default;
+
+TPARAMS
+EIGEN::~Eigen() noexcept = default;
+
+TPARAMS
+void EIGEN::swap(Eigen& other) noexcept { m_pimpl_.swap(other.m_pimpl_); }
+
+TPARAMS
+bool EIGEN::operator==(const Eigen& rhs) const noexcept {
+    if(has_pimpl_() != rhs.has_pimpl_()) return false;
+    if(!has_pimpl_()) return true;
+    return m_pimpl_->are_equal(*rhs.m_pimpl_);
+}
+
+// -- Protected Methods
+
+TPARAMS
+typename EIGEN::buffer_base_pointer EIGEN::clone_() const {
+    return has_pimpl_() ? m_pimpl_->clone() : nullptr;
+}
+
+TPARAMS
+bool EIGEN::are_equal_(const_buffer_base_reference rhs) const noexcept {
+    return my_base_type::template are_equal_impl_<my_type>(rhs);
+}
 
 TPARAMS
 typename EIGEN::dsl_reference EIGEN::addition_assignment_(
@@ -35,39 +81,8 @@ typename EIGEN::dsl_reference EIGEN::addition_assignment_(
   const_labeled_reference rhs) {
     BufferBase::addition_assignment_(this_labels, lhs, rhs);
 
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& lhs_downcasted = allocator_type::rebind(lhs.object());
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
-    const auto& lhs_eigen      = lhs_downcasted.value();
-    const auto& rhs_eigen      = rhs_downcasted.value();
-
-    const auto& lhs_labels = lhs.labels();
-    const auto& rhs_labels = rhs.labels();
-
-    bool this_matches_lhs = (this_labels == lhs_labels);
-    bool this_matches_rhs = (this_labels == rhs_labels);
-    bool lhs_matches_rhs  = (lhs_labels == rhs_labels);
-
-    auto get_permutation = [](auto&& lhs_, auto&& rhs_) {
-        auto l_to_r = lhs_.permutation(rhs_);
-        return std::vector<int>(l_to_r.begin(), l_to_r.end());
-    };
-
-    auto r_to_l    = get_permutation(rhs_labels, lhs_labels);
-    auto l_to_r    = get_permutation(lhs_labels, rhs_labels);
-    auto this_to_r = get_permutation(this_labels, rhs_labels);
-
-    if(this_matches_lhs && this_matches_rhs) { // No permutations
-        m_tensor_ = lhs_eigen + rhs_eigen;
-    } else if(this_matches_lhs) { // RHS needs permuted
-        m_tensor_ = lhs_eigen + rhs_eigen.shuffle(r_to_l);
-    } else if(this_matches_rhs) { // LHS needs permuted
-        m_tensor_ = lhs_eigen.shuffle(l_to_r) + rhs_eigen;
-    } else if(lhs_matches_rhs) { // This needs permuted
-        m_tensor_ = (lhs_eigen + rhs_eigen).shuffle(this_to_r);
-    } else { // Everything needs permuted
-        m_tensor_ = (lhs_eigen.shuffle(l_to_r) + rhs_eigen).shuffle(this_to_r);
-    }
+    m_pimpl_->addition_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                  lhs.value().m_pimpl_, rhs.value().m_pimpl_);
 
     return *this;
 }
@@ -78,40 +93,9 @@ typename EIGEN::dsl_reference EIGEN::subtraction_assignment_(
   const_labeled_reference rhs) {
     BufferBase::subtraction_assignment_(this_labels, lhs, rhs);
 
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& lhs_downcasted = allocator_type::rebind(lhs.object());
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
-    const auto& lhs_eigen      = lhs_downcasted.value();
-    const auto& rhs_eigen      = rhs_downcasted.value();
-
-    const auto& lhs_labels = lhs.labels();
-    const auto& rhs_labels = rhs.labels();
-
-    bool this_matches_lhs = (this_labels == lhs_labels);
-    bool this_matches_rhs = (this_labels == rhs_labels);
-    bool lhs_matches_rhs  = (lhs_labels == rhs_labels);
-
-    auto get_permutation = [](auto&& lhs_, auto&& rhs_) {
-        auto l_to_r = lhs_.permutation(rhs_);
-        return std::vector<int>(l_to_r.begin(), l_to_r.end());
-    };
-
-    auto r_to_l    = get_permutation(rhs_labels, lhs_labels);
-    auto l_to_r    = get_permutation(lhs_labels, rhs_labels);
-    auto this_to_r = get_permutation(this_labels, rhs_labels);
-
-    if(this_matches_lhs && this_matches_rhs) { // No permutations
-        m_tensor_ = lhs_eigen - rhs_eigen;
-    } else if(this_matches_lhs) { // RHS needs permuted
-        m_tensor_ = lhs_eigen - rhs_eigen.shuffle(r_to_l);
-    } else if(this_matches_rhs) { // LHS needs permuted
-        m_tensor_ = lhs_eigen.shuffle(l_to_r) - rhs_eigen;
-    } else if(lhs_matches_rhs) { // This needs permuted
-        m_tensor_ = (lhs_eigen - rhs_eigen).shuffle(this_to_r);
-    } else { // Everything needs permuted
-        m_tensor_ = (lhs_eigen.shuffle(l_to_r) - rhs_eigen).shuffle(this_to_r);
-    }
-
+    m_pimpl_->subtraction_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                     lhs.value().m_pimpl_,
+                                     rhs.value().m_pimpl_);
     return *this;
 }
 
@@ -122,11 +106,16 @@ typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
     BufferBase::multiplication_assignment_(this_labels, lhs, rhs);
 
     if(this_labels.is_hadamard_product(lhs.labels(), rhs.labels()))
-        return hadamard_(this_labels, lhs, rhs);
+        m_pimpl_->hadamard_assign(this_labels, lhs.labels(), rhs.labels(),
+                                  lhs.value().m_pimpl_, rhs.value().m_pimpl_);
     else if(this_labels.is_contraction(lhs.labels(), rhs.labels()))
-        return contraction_(this_labels, lhs, rhs);
+        m_pimpl_->contraction_assign(this_labels, lhs.labels(), rhs.labels(),
+                                     lhs.value().m_pimpl_,
+                                     rhs.value().m_pimpl_);
     else
         throw std::runtime_error("Mixed products NYI");
+
+    return *this;
 }
 
 TPARAMS
@@ -134,20 +123,8 @@ typename EIGEN::dsl_reference EIGEN::permute_assignment_(
   label_type this_labels, const_labeled_reference rhs) {
     BufferBase::permute_assignment_(this_labels, rhs);
 
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
-
-    const auto& rlabels = rhs.labels();
-
-    if(this_labels != rlabels) { // We need to permute rhs before assignment
-        // Eigen adopts the opposite definition of permutation from us.
-        auto r_to_l = this_labels.permutation(rlabels);
-        // Eigen wants int objects
-        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2);
-    } else {
-        m_tensor_ = rhs_downcasted.value();
-    }
+    m_pimpl_->permute_assignment(this_labels, rhs.labels(),
+                                 rhs.value().m_pimpl_);
 
     return *this;
 }
@@ -156,103 +133,55 @@ TPARAMS
 typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
   label_type this_labels, double scalar, const_labeled_reference rhs) {
     BufferBase::permute_assignment_(this_labels, rhs);
-
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
-
-    const auto& rlabels = rhs.labels();
-
-    FloatType c(scalar);
-
-    if(this_labels != rlabels) { // We need to permute rhs before assignment
-        auto r_to_l = rhs.labels().permutation(this_labels);
-        // Eigen wants int objects
-        std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_downcasted.value().shuffle(r_to_l2) * c;
-    } else {
-        m_tensor_ = rhs_downcasted.value() * c;
-    }
-
+    m_pimpl_->scalar_multiplication(this_labels, rhs.labels(), scalar,
+                                    rhs.value().m_pimpl_);
     return *this;
+}
+
+TPARAMS
+typename EIGEN::pointer EIGEN::data_() noexcept override {
+    return m_pimpl_ ? m_pimpl_->data() : nullptr;
+}
+
+TPARAMS
+typename EIGEN::const_pointer EIGEN::data_() const noexcept override {
+    return m_pimpl_ ? m_piml_->data() : nullptr;
 }
 
 TPARAMS
 typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {
-    std::stringstream ss;
-    ss << m_tensor_;
-    return ss.str();
+    return m_pimpl_ ? m_pimpl_->to_string() : "";
+}
+
+// -- Private methods
+
+TPARAMS
+bool EIGEN::has_pimpl_() const noexcept { return static_cast<bool>(m_pimpl_); }
+
+TPARAMS
+void EIGEN::assert_pimpl_() const {
+    if(has_pimpl_()) return;
+    throw std::runtimer_error("buffer::Eigen has no PIMPL!");
 }
 
 TPARAMS
-typename EIGEN::dsl_reference EIGEN::hadamard_(label_type this_labels,
-                                               const_labeled_reference lhs,
-                                               const_labeled_reference rhs) {
-    using allocator_type       = allocator::Eigen<FloatType, Rank>;
-    const auto& lhs_downcasted = allocator_type::rebind(lhs.object());
-    const auto& rhs_downcasted = allocator_type::rebind(rhs.object());
-    const auto& lhs_eigen      = lhs_downcasted.value();
-    const auto& rhs_eigen      = rhs_downcasted.value();
-
-    const auto& lhs_labels = lhs.labels();
-    const auto& rhs_labels = rhs.labels();
-
-    bool this_matches_lhs = (this_labels == lhs_labels);
-    bool this_matches_rhs = (this_labels == rhs_labels);
-    bool lhs_matches_rhs  = (lhs_labels == rhs_labels);
-
-    auto get_permutation = [](auto&& lhs_, auto&& rhs_) {
-        auto l_to_r = lhs_.permutation(rhs_);
-        return std::vector<int>(l_to_r.begin(), l_to_r.end());
-    };
-
-    auto r_to_l    = get_permutation(rhs_labels, lhs_labels);
-    auto l_to_r    = get_permutation(lhs_labels, rhs_labels);
-    auto this_to_r = get_permutation(this_labels, rhs_labels);
-
-    if(this_matches_lhs && this_matches_rhs) { // No permutations
-        m_tensor_ = lhs_eigen * rhs_eigen;
-    } else if(this_matches_lhs) { // RHS needs permuted
-        m_tensor_ = lhs_eigen * rhs_eigen.shuffle(r_to_l);
-    } else if(this_matches_rhs) { // LHS needs permuted
-        m_tensor_ = lhs_eigen.shuffle(l_to_r) * rhs_eigen;
-    } else if(lhs_matches_rhs) { // This needs permuted
-        m_tensor_ = (lhs_eigen * rhs_eigen).shuffle(this_to_r);
-    } else { // Everything needs permuted
-        m_tensor_ = (lhs_eigen.shuffle(l_to_r) * rhs_eigen).shuffle(this_to_r);
-    }
-
-    return *this;
+typename EIGEN::pimpl_reference EIGEN::pimpl_() {
+    assert_pimpl_();
+    return *m_pimpl_;
 }
 
-TPARAMS typename EIGEN::dsl_reference EIGEN::contraction_(
-  label_type this_labels, const_labeled_reference lhs,
-  const_labeled_reference rhs) {
-    return eigen_contraction(*this, this_labels, lhs, rhs);
+TPARAMS
+typename EIGEN::const_pimpl_reference EIGEN::pimpl_() const {
+    assert_pimpl_();
+    return *m_pimpl_;
 }
 
 #undef EIGEN
 #undef TPARAMS
 
-#define DEFINE_EIGEN_BUFFER(TYPE)  \
-    template class Eigen<TYPE, 0>; \
-    template class Eigen<TYPE, 1>; \
-    template class Eigen<TYPE, 2>; \
-    template class Eigen<TYPE, 3>; \
-    template class Eigen<TYPE, 4>; \
-    template class Eigen<TYPE, 5>; \
-    template class Eigen<TYPE, 6>; \
-    template class Eigen<TYPE, 7>; \
-    template class Eigen<TYPE, 8>; \
-    template class Eigen<TYPE, 9>; \
-    template class Eigen<TYPE, 10>
+#define DEFINE_EIGEN_BUFFER(TYPE) template class Eigen<TYPE>
 
-DEFINE_EIGEN_BUFFER(float);
-DEFINE_EIGEN_BUFFER(double);
-
-#ifdef ENABLE_SIGMA
-DEFINE_EIGEN_BUFFER(sigma::UFloat);
-DEFINE_EIGEN_BUFFER(sigma::UDouble);
-#endif
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_EIGEN_BUFFER);
 
 #undef DEFINE_EIGEN_BUFFER
 

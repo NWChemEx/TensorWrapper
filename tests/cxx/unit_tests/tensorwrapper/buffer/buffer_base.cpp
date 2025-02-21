@@ -34,6 +34,7 @@ using namespace buffer;
  */
 
 TEST_CASE("BufferBase") {
+    parallelzone::runtime::RuntimeView rv;
     using scalar_buffer = buffer::Eigen<float, 0>;
     using vector_buffer = buffer::Eigen<float, 1>;
 
@@ -48,8 +49,10 @@ TEST_CASE("BufferBase") {
     auto vector_layout = testing::vector_physical(2);
 
     vector_buffer defaulted;
-    scalar_buffer scalar(eigen_scalar, scalar_layout);
-    vector_buffer vector(eigen_vector, vector_layout);
+    allocator::Eigen<float, 0> alloc0(rv);
+    allocator::Eigen<float, 1> alloc1(rv);
+    scalar_buffer scalar(eigen_scalar, scalar_layout, alloc0);
+    vector_buffer vector(eigen_vector, vector_layout, alloc1);
 
     BufferBase& defaulted_base = defaulted;
     BufferBase& scalar_base    = scalar;
@@ -61,10 +64,21 @@ TEST_CASE("BufferBase") {
         REQUIRE(vector_base.has_layout());
     }
 
+    SECTION("has_allocator") { REQUIRE_FALSE(defaulted_base.has_allocator()); }
+
     SECTION("layout") {
         REQUIRE_THROWS_AS(defaulted_base.layout(), std::runtime_error);
         REQUIRE(scalar_base.layout().are_equal(scalar_layout));
         REQUIRE(vector_base.layout().are_equal(vector_layout));
+    }
+
+    SECTION("allocator()") {
+        REQUIRE_THROWS_AS(defaulted_base.allocator(), std::runtime_error);
+    }
+
+    SECTION("allocator() const") {
+        REQUIRE_THROWS_AS(std::as_const(defaulted_base).allocator(),
+                          std::runtime_error);
     }
 
     SECTION("operator==") {
@@ -75,7 +89,8 @@ TEST_CASE("BufferBase") {
         REQUIRE_FALSE(defaulted_base == scalar_base);
 
         // Non-defaulted layout same value
-        REQUIRE(scalar_base == scalar_buffer(eigen_scalar, scalar_layout));
+        REQUIRE(scalar_base ==
+                scalar_buffer(eigen_scalar, scalar_layout, alloc0));
 
         // Non-defaulted layout different value
         REQUIRE_FALSE(scalar_base == vector_base);

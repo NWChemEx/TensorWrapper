@@ -53,7 +53,8 @@ inline auto smooth_vector_alt() {
     layout::Physical l(shape::Smooth{5, 1});
     data_type matrix(5, 1);
     for(std::size_t i = 0; i < 5; ++i) matrix(i, 0) = i;
-    return detail_::TensorInput(shape, buffer_type(matrix, l));
+    allocator::Eigen<double, 2> alloc(parallelzone::runtime::RuntimeView{});
+    return detail_::TensorInput(shape, buffer_type(matrix, l, alloc));
 }
 
 template<typename FloatType>
@@ -82,7 +83,8 @@ inline auto smooth_symmetric_matrix_input() {
     matrix(2, 2) = 6.0;
     symmetry::Permutation p01{0, 1};
     symmetry::Group g(p01);
-    return detail_::TensorInput(shape, g, buffer_type(matrix, l));
+    allocator::Eigen<double, 2> alloc(parallelzone::runtime::RuntimeView{});
+    return detail_::TensorInput(shape, g, buffer_type(matrix, l, alloc));
 }
 
 template<typename FloatType>
@@ -116,7 +118,8 @@ inline auto smooth_tensor4_input() {
     tensor(1, 1, 0, 1) = 14.0;
     tensor(1, 1, 1, 0) = 15.0;
     tensor(1, 1, 1, 1) = 16.0;
-    return detail_::TensorInput(shape, buffer_type(tensor, l));
+    allocator::Eigen<double, 4> alloc(parallelzone::runtime::RuntimeView{});
+    return detail_::TensorInput(shape, buffer_type(tensor, l, alloc));
 }
 
 } // namespace tensorwrapper::testing
