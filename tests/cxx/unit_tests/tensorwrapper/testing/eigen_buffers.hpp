@@ -26,93 +26,64 @@
 
 namespace tensorwrapper::testing {
 
-// Typedefs of buffer::Eigen objects with various template parameters
-using ebufferf0 = buffer::Eigen<float, 0>;
-using ebufferf1 = buffer::Eigen<float, 1>;
-using ebufferf2 = buffer::Eigen<float, 2>;
-using ebufferf3 = buffer::Eigen<float, 3>;
-using ebufferd0 = buffer::Eigen<double, 0>;
-using ebufferd1 = buffer::Eigen<double, 1>;
-using ebufferd2 = buffer::Eigen<double, 2>;
-using ebufferd3 = buffer::Eigen<double, 3>;
-
-template<typename FloatType, unsigned short Rank>
+template<typename FloatType>
 auto make_allocator() {
     parallelzone::runtime::RuntimeView rv;
-    return allocator::Eigen<FloatType, Rank>(rv);
+    return allocator::Eigen<FloatType>(rv);
 }
 
 template<typename FloatType>
 auto eigen_scalar() {
-    using buffer_type = buffer::Eigen<FloatType, 0>;
-    using data_type   = typename buffer_type::data_type;
-    data_type scalar;
-    scalar() = 42.0;
-    shape::Smooth shape{};
-    layout::Physical l(shape);
-    return buffer_type(scalar, l, make_allocator<FloatType, 0>());
+    auto alloc = make_allocator<FloatType>();
+    return alloc.construct(42.0);
 }
 
 template<typename FloatType>
 auto eigen_vector(std::size_t n = 5) {
-    using buffer_type = buffer::Eigen<FloatType, 1>;
-    using data_type   = typename buffer_type::data_type;
-    data_type vector(n);
-    for(std::size_t i = 0; i < n; ++i) vector(i) = i;
-    shape::Smooth shape{n};
-    layout::Physical l(shape);
-    return buffer_type(vector, l, make_allocator<FloatType, 1>());
+    layout::Physical l(shape::Smooth{n});
+    auto alloc  = make_allocator<FloatType>();
+    auto buffer = alloc.allocate(l);
+    for(std::size_t i = 0; i < n; ++i) buffer->at(i) = i;
+    return buffer;
 }
 
 template<typename FloatType>
 auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
-    using buffer_type = buffer::Eigen<FloatType, 2>;
-    using data_type   = typename buffer_type::data_type;
-    data_type matrix(n, m);
+    layout::Physical l(shape::Smooth{n, m});
+    auto alloc     = make_allocator<FloatType>();
+    auto buffer    = alloc.allocate(l);
     double counter = 1.0;
-    for(std::size_t i = 0; i < n; ++i)
-        for(std::size_t j = 0; j < m; ++j) matrix(i, j) = counter++;
-
-    shape::Smooth shape{n, m};
-    layout::Physical l(shape);
-    return buffer_type(matrix, l, make_allocator<FloatType, 2>());
+    for(decltype(n) i = 0; i < n; ++i)
+        for(decltype(m) j = 0; j < m; ++j) buffer->at(i, j) = counter++;
+    return buffer;
 }
 
 template<typename FloatType>
 auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
-    using buffer_type = buffer::Eigen<FloatType, 3>;
-    using data_type   = typename buffer_type::data_type;
-    int in            = static_cast<int>(n);
-    int im            = static_cast<int>(m);
-    int il            = static_cast<int>(l);
-    shape::Smooth shape{n, m, l};
-    layout::Physical layout(shape);
-    data_type e_tensor(in, im, il);
+    layout::Physical layout(shape::Smooth{n, m, l});
+    auto alloc     = make_allocator<FloatType>();
+    auto buffer    = alloc.allocate(layout);
     double counter = 1.0;
-    for(decltype(in) i = 0; i < in; ++i)
-        for(decltype(im) j = 0; j < im; ++j)
-            for(decltype(il) k = 0; k < il; ++k) e_tensor(i, j, k) = counter++;
-    return buffer_type(e_tensor, layout, make_allocator<FloatType, 3>());
+    for(decltype(n) i = 0; i < n; ++i)
+        for(decltype(m) j = 0; j < m; ++j)
+            for(decltype(l) k = 0; k < l; ++k) buffer->at(i, j, k) = counter++;
+    return buffer;
 }
 
 template<typename FloatType>
 auto eigen_tensor4(std::array<std::size_t, 4> extents = {2, 2, 2, 2}) {
-    auto constexpr Rank = 4;
-    using buffer_type   = buffer::Eigen<FloatType, Rank>;
-    using data_type     = typename buffer_type::data_type;
-    std::array<int, Rank> iextents;
-    for(std::size_t i = 0; i < Rank; ++i) iextents[i] = extents[i];
     shape::Smooth shape{extents[0], extents[1], extents[2], extents[3]};
     layout::Physical layout(shape);
-    data_type e_tensor(iextents[0], iextents[1], iextents[2], iextents[3]);
+    auto alloc     = make_allocator<FloatType>();
+    auto buffer    = alloc.allocate(layout);
     double counter = 1.0;
-    std::array<int, Rank> i;
-    for(i[0] = 0; i[0] < iextents[0]; ++i[0])
-        for(i[1] = 0; i[1] < iextents[1]; ++i[1])
-            for(i[2] = 0; i[2] < iextents[2]; ++i[2])
-                for(i[3] = 0; i[3] < iextents[3]; ++i[3])
-                    e_tensor(i[0], i[1], i[2], i[3]) = counter++;
-    return buffer_type(e_tensor, layout, make_allocator<FloatType, 4>());
+    decltype(extents) i;
+    for(i[0] = 0; i[0] < extents[0]; ++i[0])
+        for(i[1] = 0; i[1] < extents[1]; ++i[1])
+            for(i[2] = 0; i[2] < extents[2]; ++i[2])
+                for(i[3] = 0; i[3] < extents[3]; ++i[3])
+                    buffer->at(i[0], i[1], i[2], i[3]) = counter++;
+    return buffer;
 }
 
 } // namespace tensorwrapper::testing

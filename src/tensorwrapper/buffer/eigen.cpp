@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "detail_/eigen_tensor.hpp"
 #include <sstream>
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
@@ -20,8 +21,8 @@
 
 namespace tensorwrapper::buffer {
 
-#define TPARAMS template<typename FloatType, unsigned short Rank>
-#define EIGEN Eigen<FloatType, Rank>
+#define TPARAMS template<typename FloatType>
+#define EIGEN Eigen<FloatType>
 
 // -- Public Methods
 
@@ -67,7 +68,7 @@ bool EIGEN::operator==(const Eigen& rhs) const noexcept {
 
 TPARAMS
 typename EIGEN::buffer_base_pointer EIGEN::clone_() const {
-    return has_pimpl_() ? m_pimpl_->clone() : nullptr;
+    return std::make_unique<my_type>(*this);
 }
 
 TPARAMS
@@ -80,9 +81,11 @@ typename EIGEN::dsl_reference EIGEN::addition_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
     BufferBase::addition_assignment_(this_labels, lhs, rhs);
-
-    m_pimpl_->addition_assignment(this_labels, lhs.labels(), rhs.labels(),
-                                  lhs.value().m_pimpl_, rhs.value().m_pimpl_);
+    using alloc_type     = allocator::Eigen<FloatType>;
+    const auto& lhs_down = alloc_type::rebind(lhs.object());
+    const auto& rhs_down = alloc_type::rebind(rhs.object());
+    pimpl_().addition_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                 lhs_down.pimpl_(), rhs_down.pimpl_());
 
     return *this;
 }
@@ -92,10 +95,12 @@ typename EIGEN::dsl_reference EIGEN::subtraction_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
     BufferBase::subtraction_assignment_(this_labels, lhs, rhs);
+    using alloc_type     = allocator::Eigen<FloatType>;
+    const auto& lhs_down = alloc_type::rebind(lhs.object());
+    const auto& rhs_down = alloc_type::rebind(rhs.object());
 
-    m_pimpl_->subtraction_assignment(this_labels, lhs.labels(), rhs.labels(),
-                                     lhs.value().m_pimpl_,
-                                     rhs.value().m_pimpl_);
+    pimpl_().subtraction_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                    lhs_down.pimpl_(), rhs_down.pimpl_());
     return *this;
 }
 
@@ -105,13 +110,17 @@ typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
   const_labeled_reference rhs) {
     BufferBase::multiplication_assignment_(this_labels, lhs, rhs);
 
+    using alloc_type     = allocator::Eigen<FloatType>;
+    const auto& lhs_down = alloc_type::rebind(lhs.object());
+    const auto& rhs_down = alloc_type::rebind(rhs.object());
+
     if(this_labels.is_hadamard_product(lhs.labels(), rhs.labels()))
-        m_pimpl_->hadamard_assign(this_labels, lhs.labels(), rhs.labels(),
-                                  lhs.value().m_pimpl_, rhs.value().m_pimpl_);
+        pimpl_().hadamard_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                     lhs_down.pimpl_(), rhs_down.pimpl_());
     else if(this_labels.is_contraction(lhs.labels(), rhs.labels()))
-        m_pimpl_->contraction_assign(this_labels, lhs.labels(), rhs.labels(),
-                                     lhs.value().m_pimpl_,
-                                     rhs.value().m_pimpl_);
+        pimpl_().contraction_assignment(this_labels, lhs.labels(), rhs.labels(),
+                                        this->layout().shape(),
+                                        lhs_down.pimpl_(), rhs_down.pimpl_());
     else
         throw std::runtime_error("Mixed products NYI");
 
@@ -122,9 +131,9 @@ TPARAMS
 typename EIGEN::dsl_reference EIGEN::permute_assignment_(
   label_type this_labels, const_labeled_reference rhs) {
     BufferBase::permute_assignment_(this_labels, rhs);
-
-    m_pimpl_->permute_assignment(this_labels, rhs.labels(),
-                                 rhs.value().m_pimpl_);
+    using alloc_type     = allocator::Eigen<FloatType>;
+    const auto& rhs_down = alloc_type::rebind(rhs.object());
+    pimpl_().permute_assignment(this_labels, rhs.labels(), rhs_down.pimpl_());
 
     return *this;
 }
@@ -133,21 +142,32 @@ TPARAMS
 typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
   label_type this_labels, double scalar, const_labeled_reference rhs) {
     BufferBase::permute_assignment_(this_labels, rhs);
-    m_pimpl_->scalar_multiplication(this_labels, rhs.labels(), scalar,
-                                    rhs.value().m_pimpl_);
+    using alloc_type     = allocator::Eigen<FloatType>;
+    const auto& rhs_down = alloc_type::rebind(rhs.object());
+    pimpl_().scalar_multiplication(this_labels, rhs.labels(), scalar,
+                                   rhs_down.pimpl_());
     return *this;
 }
 
 TPARAMS
-typename EIGEN::pointer EIGEN::data_() noexcept override {
+typename EIGEN::pointer EIGEN::data_() noexcept {
     return m_pimpl_ ? m_pimpl_->data() : nullptr;
 }
 
 TPARAMS
-typename EIGEN::const_pointer EIGEN::data_() const noexcept override {
-    return m_pimpl_ ? m_piml_->data() : nullptr;
+typename EIGEN::const_pointer EIGEN::data_() const noexcept {
+    return m_pimpl_ ? m_pimpl_->data() : nullptr;
 }
 
+TPARAMS
+typename EIGEN::reference EIGEN::get_elem_(index_vector index) {
+    return pimpl_().get_elem(std::move(index));
+}
+
+TPARAMS
+typename EIGEN::const_reference EIGEN::get_elem_(index_vector index) const {
+    return pimpl_().get_elem(std::move(index));
+}
 TPARAMS
 typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {
     return m_pimpl_ ? m_pimpl_->to_string() : "";
@@ -161,7 +181,7 @@ bool EIGEN::has_pimpl_() const noexcept { return static_cast<bool>(m_pimpl_); }
 TPARAMS
 void EIGEN::assert_pimpl_() const {
     if(has_pimpl_()) return;
-    throw std::runtimer_error("buffer::Eigen has no PIMPL!");
+    throw std::runtime_error("buffer::Eigen has no PIMPL!");
 }
 
 TPARAMS

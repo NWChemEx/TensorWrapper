@@ -47,10 +47,14 @@ public:
     using typename my_base_type::const_labeled_reference;
     using typename my_base_type::const_layout_reference;
     using typename my_base_type::const_pointer;
+    using typename my_base_type::const_reference;
     using typename my_base_type::dsl_reference;
+    using typename my_base_type::index_vector;
     using typename my_base_type::label_type;
     using typename my_base_type::pointer;
     using typename my_base_type::polymorphic_base;
+    using typename my_base_type::reference;
+    using typename my_base_type::size_type;
 
     using pimpl_type            = detail_::EigenPIMPL<FloatType>;
     using pimpl_pointer         = std::unique_ptr<pimpl_type>;
@@ -190,6 +194,12 @@ protected:
     pointer data_() noexcept override;
 
     const_pointer data_() const noexcept override;
+
+    /// Implements mutable element access
+    reference get_elem_(index_vector index) override;
+
+    /// Implements read-only element access
+    const_reference get_elem_(index_vector index) const override;
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;

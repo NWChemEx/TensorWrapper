@@ -34,26 +34,20 @@ using namespace buffer;
  */
 
 TEST_CASE("BufferBase") {
-    parallelzone::runtime::RuntimeView rv;
-    using scalar_buffer = buffer::Eigen<float, 0>;
-    using vector_buffer = buffer::Eigen<float, 1>;
+    auto pscalar = testing::eigen_scalar<double>();
+    auto& scalar = *pscalar;
+    scalar.at()  = 1.0;
 
-    typename scalar_buffer::data_type eigen_scalar;
-    eigen_scalar() = 1.0;
+    auto pvector = testing::eigen_vector<double>(2);
+    auto& vector = *pvector;
 
-    typename vector_buffer::data_type eigen_vector(2);
-    eigen_vector(0) = 1.0;
-    eigen_vector(1) = 2.0;
+    vector.at(0) = 1.0;
+    vector.at(1) = 2.0;
 
     auto scalar_layout = testing::scalar_physical();
     auto vector_layout = testing::vector_physical(2);
 
-    vector_buffer defaulted;
-    allocator::Eigen<float, 0> alloc0(rv);
-    allocator::Eigen<float, 1> alloc1(rv);
-    scalar_buffer scalar(eigen_scalar, scalar_layout, alloc0);
-    vector_buffer vector(eigen_vector, vector_layout, alloc1);
-
+    buffer::Eigen<double> defaulted;
     BufferBase& defaulted_base = defaulted;
     BufferBase& scalar_base    = scalar;
     BufferBase& vector_base    = vector;
@@ -83,14 +77,10 @@ TEST_CASE("BufferBase") {
 
     SECTION("operator==") {
         // Defaulted layout == defaulted layout
-        REQUIRE(defaulted_base == scalar_buffer());
+        REQUIRE(defaulted_base == buffer::Eigen<double>{});
 
         // Defaulted layout != non-defaulted layout
         REQUIRE_FALSE(defaulted_base == scalar_base);
-
-        // Non-defaulted layout same value
-        REQUIRE(scalar_base ==
-                scalar_buffer(eigen_scalar, scalar_layout, alloc0));
 
         // Non-defaulted layout different value
         REQUIRE_FALSE(scalar_base == vector_base);
@@ -99,6 +89,6 @@ TEST_CASE("BufferBase") {
     SECTION("operator!=") {
         // Just spot check because it negates operator==, which was tested
         REQUIRE(defaulted_base != scalar_base);
-        REQUIRE_FALSE(defaulted_base != scalar_buffer());
+        REQUIRE_FALSE(defaulted_base != buffer::Eigen<double>());
     }
 }

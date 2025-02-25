@@ -22,146 +22,107 @@
 
 using namespace tensorwrapper;
 
-#ifdef ENABLE_SIGMA
-using types2test = std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
-#else
-using types2test = std::tuple<float, double>;
-#endif
+using types2test = types::floating_point_types;
 
 TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
-    using scalar_alloc_type   = allocator::Eigen<TestType, 0>;
-    using vector_alloc_type   = allocator::Eigen<TestType, 1>;
-    using matrix_alloc_type   = allocator::Eigen<TestType, 2>;
-    using eigen_buffer_scalar = typename scalar_alloc_type::eigen_buffer_type;
-    using eigen_buffer_vector = typename vector_alloc_type::eigen_buffer_type;
-    using eigen_buffer_matrix = typename matrix_alloc_type::eigen_buffer_type;
-    using eigen_scalar        = typename eigen_buffer_scalar::data_type;
-    using eigen_vector        = typename eigen_buffer_vector::data_type;
-    using eigen_matrix        = typename eigen_buffer_matrix::data_type;
+    using alloc_type = allocator::Eigen<TestType>;
 
     parallelzone::runtime::RuntimeView rv;
-
     auto scalar_layout = testing::scalar_physical();
     auto vector_layout = testing::vector_physical(2);
     auto matrix_layout = testing::matrix_physical(2, 2);
     using layout_type  = decltype(scalar_layout);
 
-    scalar_alloc_type scalar_alloc(rv);
-    vector_alloc_type vector_alloc(rv);
-    matrix_alloc_type matrix_alloc(rv);
+    auto pscalar_corr = testing::eigen_scalar<TestType>();
+    auto& scalar_corr = *pscalar_corr;
+    scalar_corr.at()  = 0.0;
 
-    eigen_scalar scalar;
-    scalar() = 0.0;
-    eigen_buffer_scalar scalar_corr(scalar, scalar_layout, scalar_alloc);
+    auto pvector_corr = testing::eigen_vector<TestType>(2);
+    auto& vector_corr = *pvector_corr;
+    vector_corr.at(0) = 1;
+    vector_corr.at(1) = 1;
 
-    eigen_vector vector(2);
-    vector.setConstant(1);
-    eigen_buffer_vector vector_corr(vector, vector_layout, vector_alloc);
+    auto pmatrix_corr    = testing::eigen_matrix<TestType>(2, 2);
+    auto& matrix_corr    = *pmatrix_corr;
+    matrix_corr.at(0, 0) = 2;
+    matrix_corr.at(0, 1) = 2;
+    matrix_corr.at(1, 0) = 2;
+    matrix_corr.at(1, 1) = 2;
 
-    eigen_matrix matrix(2, 2);
-    matrix.setConstant(2);
-    eigen_buffer_matrix matrix_corr(matrix, matrix_layout, matrix_alloc);
+    alloc_type alloc(rv);
 
     SECTION("Ctor") {
-        SECTION("runtime") {
-            REQUIRE(scalar_alloc.runtime() == rv);
-            REQUIRE(vector_alloc.runtime() == rv);
-            REQUIRE(matrix_alloc.runtime() == rv);
-        }
-
-        testing::test_copy_and_move_ctors(scalar_alloc, vector_alloc,
-                                          matrix_alloc);
+        SECTION("runtime") { REQUIRE(alloc.runtime() == rv); }
+        testing::test_copy_and_move_ctors(alloc);
     }
 
     SECTION("allocate(Layout)") {
         // N.b. allocate doesn't initialize tensor, so only compare layouts
-        auto pscalar = scalar_alloc.allocate(scalar_layout);
+        auto pscalar = alloc.allocate(scalar_layout);
         REQUIRE(pscalar->layout().are_equal(scalar_layout));
 
-        auto pvector = vector_alloc.allocate(vector_layout);
+        auto pvector = alloc.allocate(vector_layout);
         REQUIRE(pvector->layout().are_equal(vector_layout));
 
-        auto pmatrix = matrix_alloc.allocate(matrix_layout);
+        auto pmatrix = alloc.allocate(matrix_layout);
         REQUIRE(pmatrix->layout().are_equal(matrix_layout));
 
         // Works if ranks don't match
-        pvector = scalar_alloc.allocate(vector_layout);
+        pvector = alloc.allocate(vector_layout);
         REQUIRE(pvector->layout().are_equal(vector_layout));
     }
 
     SECTION("allocate(std::unique_ptr<Layout>)") {
         // N.b. allocate doesn't initialize tensor, so only compare layouts
         auto pscalar_layout = std::make_unique<layout_type>(scalar_layout);
-        auto pscalar        = scalar_alloc.allocate(std::move(pscalar_layout));
+        auto pscalar        = alloc.allocate(std::move(pscalar_layout));
         REQUIRE(pscalar->layout().are_equal(scalar_layout));
 
         auto pvector_layout = std::make_unique<layout_type>(vector_layout);
-        auto pvector        = vector_alloc.allocate(std::move(pvector_layout));
+        auto pvector        = alloc.allocate(std::move(pvector_layout));
         REQUIRE(pvector->layout().are_equal(vector_layout));
 
         auto pmatrix_layout = std::make_unique<layout_type>(matrix_layout);
-        auto pmatrix        = matrix_alloc.allocate(std::move(pmatrix_layout));
+        auto pmatrix        = alloc.allocate(std::move(pmatrix_layout));
         REQUIRE(pmatrix->layout().are_equal(matrix_layout));
-
-        // Works if ranks don't match
-        auto pvector_layout2 = std::make_unique<layout_type>(vector_layout);
-        pvector = scalar_alloc.allocate(std::move(pvector_layout2));
-        REQUIRE(pvector->layout().are_equal(vector_layout));
     }
 
     SECTION("construct(value)") {
-        auto pscalar = scalar_alloc.construct(scalar_layout, 0);
+        auto pscalar = alloc.construct(scalar_layout, 0);
         REQUIRE(*pscalar == scalar_corr);
 
-        auto pvector = vector_alloc.construct(vector_layout, 1);
+        auto pvector = alloc.construct(vector_layout, 1);
         REQUIRE(*pvector == vector_corr);
 
         auto pmatrix_layout = std::make_unique<layout_type>(matrix_layout);
-        auto pmatrix = matrix_alloc.construct(std::move(pmatrix_layout), 2);
+        auto pmatrix        = alloc.construct(std::move(pmatrix_layout), 2);
         REQUIRE(*pmatrix == matrix_corr);
-
-        // Works if ranks don't match
-        pvector = scalar_alloc.construct(vector_layout, 1);
-        REQUIRE(*pvector == vector_corr);
     }
 
-    SECTION("can_rebind") {
-        REQUIRE(scalar_alloc.can_rebind(scalar_corr));
-        REQUIRE_FALSE(scalar_alloc.can_rebind(vector_corr));
-    }
+    SECTION("can_rebind") { REQUIRE(alloc.can_rebind(scalar_corr)); }
 
     SECTION("rebind(non-const)") {
-        using type         = typename scalar_alloc_type::buffer_base_reference;
+        using type         = typename alloc_type::buffer_base_reference;
         type scalar_base   = scalar_corr;
-        auto& eigen_buffer = scalar_alloc.rebind(scalar_base);
+        auto& eigen_buffer = alloc.rebind(scalar_base);
         REQUIRE(&eigen_buffer == &scalar_corr);
-        REQUIRE_THROWS_AS(scalar_alloc.rebind(vector_corr), std::runtime_error);
     }
 
     SECTION("rebind(const)") {
-        using type = typename scalar_alloc_type::const_buffer_base_reference;
+        using type         = typename alloc_type::const_buffer_base_reference;
         type scalar_base   = scalar_corr;
-        auto& eigen_buffer = scalar_alloc.rebind(scalar_base);
+        auto& eigen_buffer = alloc.rebind(scalar_base);
         REQUIRE(&eigen_buffer == &scalar_corr);
-
-        type vector_base = vector_corr;
-        REQUIRE_THROWS_AS(scalar_alloc.rebind(vector_base), std::runtime_error);
     }
 
-    SECTION("operator==") {
-        REQUIRE(scalar_alloc == scalar_alloc_type(rv));
-        REQUIRE_FALSE(scalar_alloc == vector_alloc);
-    }
+    SECTION("operator==") { REQUIRE(alloc == alloc_type(rv)); }
 
     SECTION("virtual_methods") {
         SECTION("clone") {
-            auto pscalar = scalar_alloc.clone();
-            REQUIRE(pscalar->are_equal(scalar_alloc));
+            auto pscalar = alloc.clone();
+            REQUIRE(pscalar->are_equal(alloc));
         }
 
-        SECTION("are_equal") {
-            REQUIRE(scalar_alloc.are_equal(scalar_alloc_type(rv)));
-            REQUIRE_FALSE(scalar_alloc.are_equal(vector_alloc));
-        }
+        SECTION("are_equal") { REQUIRE(alloc.are_equal(alloc_type(rv))); }
     }
 }

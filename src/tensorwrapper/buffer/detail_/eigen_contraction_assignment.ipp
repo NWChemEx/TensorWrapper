@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #pragma once
+#include "../../backends/eigen.hpp"
 #include "../contraction_planner.hpp"
 #include "eigen_tensor.hpp"
 
@@ -21,20 +22,20 @@ namespace tensorwrapper::buffer::detail_ {
 
 template<typename TensorType>
 auto matrix_size(TensorType&& t, std::size_t row_ranks) {
-    const auto shape  = t.layout().shape().as_smooth();
     std::size_t nrows = 1;
-    for(std::size_t i = 0; i < row_ranks; ++i) nrows *= shape.extent(i);
+    for(std::size_t i = 0; i < row_ranks; ++i) nrows *= t.extent(i);
 
     std::size_t ncols = 1;
-    const auto rank   = shape.rank();
-    for(std::size_t i = row_ranks; i < rank; ++i) ncols *= shape.extent(i);
+    const auto rank   = t.rank();
+    for(std::size_t i = row_ranks; i < rank; ++i) ncols *= t.extent(i);
     return std::make_pair(nrows, ncols);
 }
 
 template<typename FloatType, unsigned int Rank>
 void EigenTensor<FloatType, Rank>::contraction_assignment_(
   label_type olabels, label_type llabels, label_type rlabels,
-  const_pimpl_reference lhs, const_pimpl_reference rhs) {
+  const_shape_reference result_shape, const_pimpl_reference lhs,
+  const_pimpl_reference rhs) {
     ContractionPlanner plan(olabels, llabels, rlabels);
 
     auto lt = lhs.clone();
@@ -51,7 +52,7 @@ void EigenTensor<FloatType, Rank>::contraction_assignment_(
     using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn, e_row_major>;
     using map_t    = ::Eigen::Map<matrix_t>;
 
-    typename Eigen<FloatType, 2>::data_type buffer(lrows, rcols);
+    eigen::data_type<FloatType, 2> buffer(lrows, rcols);
 
     map_t lmatrix(lt->data(), lrows, lcols);
     map_t rmatrix(rt->data(), rrows, rcols);
@@ -59,10 +60,10 @@ void EigenTensor<FloatType, Rank>::contraction_assignment_(
     omatrix = lmatrix * rmatrix;
 
     auto mlabels = plan.result_matrix_labels();
-    auto oshape  = result.layout().shape()(olabels);
+    auto oshape  = result_shape(olabels);
 
     // oshapes is the final shape, permute it to shape omatrix is currently in
-    auto temp_shape = result.layout().shape().clone();
+    auto temp_shape = result_shape.clone();
     temp_shape->permute_assignment(mlabels, oshape);
     auto mshape = temp_shape->as_smooth();
 

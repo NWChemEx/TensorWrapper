@@ -4,7 +4,7 @@ namespace tensorwrapper::allocator {
 
 class AllocatorBase;
 
-template<typename FloatType, unsigned short Rank>
+template<typename FloatType>
 class Eigen;
 
 class Local;

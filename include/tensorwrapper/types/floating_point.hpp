@@ -10,22 +10,24 @@ namespace tensorwrapper::types {
 using ufloat  = sigma::UFloat;
 using udouble = sigma::UDouble;
 
+using floating_point_types = std::tuple<float, double, ufloat, udouble>;
+
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
-    MACRO_IN(ufloat);                           \
-    MACRO_IN(udouble)
+    MACRO_IN(types::ufloat);                    \
+    MACRO_IN(types::udouble)
 
 #else
 using ufloat  = float;
 using udouble = double;
+
+using floating_point_types = std::tuple<float, double>;
 
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double)
 
 #endif
-
-using floating_point_types = std::tuple<float, double, ufloat, udouble>;
 
 } // namespace tensorwrapper::types

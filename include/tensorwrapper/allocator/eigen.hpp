@@ -47,15 +47,20 @@ public:
     using typename my_base_type::const_base_reference;
     using typename my_base_type::const_buffer_base_reference;
     using typename my_base_type::const_labeled_reference;
+    using typename my_base_type::contiguous_pointer;
     using typename my_base_type::dsl_reference;
     using typename my_base_type::element_type;
     using typename my_base_type::label_type;
     using typename my_base_type::layout_pointer;
+    using typename my_base_type::rank0_il;
+    using typename my_base_type::rank1_il;
+    using typename my_base_type::rank2_il;
+    using typename my_base_type::rank3_il;
+    using typename my_base_type::rank4_il;
     using typename my_base_type::runtime_view_type;
 
     /// Type of a buffer containing an Eigen tensor
-    template<unsigned int Rank>
-    using eigen_buffer_type = buffer::Eigen<FloatType, Rank>;
+    using eigen_buffer_type = buffer::Eigen<FloatType>;
 
     /// Type of a mutable reference to an object of type eigen_buffer_type
     using eigen_buffer_reference = eigen_buffer_type&;
@@ -142,8 +147,14 @@ protected:
      */
     buffer_base_pointer allocate_(layout_pointer playout) override;
 
-    buffer_base_pointer construct_(layout_pointer playout,
-                                   element_type value) override;
+    contiguous_pointer construct_(rank0_il il) override;
+    contiguous_pointer construct_(rank1_il il) override;
+    contiguous_pointer construct_(rank2_il il) override;
+    contiguous_pointer construct_(rank3_il il) override;
+    contiguous_pointer construct_(rank4_il il) override;
+
+    contiguous_pointer construct_(layout_pointer playout,
+                                  element_type value) override;
 
     /// Implements clone by calling copy ctor
     base_pointer clone_() const override {
@@ -169,6 +180,10 @@ protected:
 
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
+
+private:
+    template<typename ILType>
+    contiguous_pointer il_construct_(ILType il);
 };
 
 // -----------------------------------------------------------------------------

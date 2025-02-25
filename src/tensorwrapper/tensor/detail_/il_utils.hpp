@@ -24,8 +24,9 @@
 namespace {
 
 /// Recursion end-point for unwrap_il
-auto unwrap_il(double il) {
-    return std::make_tuple(std::deque<int>{}, std::vector<double>{il});
+template<typename T>
+auto unwrap_il(T il) {
+    return std::make_tuple(std::deque<int>{}, std::vector<T>{il});
 }
 
 /** Unwraps a (possibly) recursive initializer list filled with doubles
@@ -38,7 +39,7 @@ auto unwrap_il(std::initializer_list<T> il) {
     using return_types = decltype(unwrap_il(std::declval<T>()));
 
     std::optional<std::tuple_element_t<0, return_types>> rv_dims;
-    std::vector<double> rv_data;
+    std::tuple_element_t<1, return_types> rv_data;
 
     for(auto b = il.begin(); b != il.end(); ++b) {
         auto [dims, data] = unwrap_il(*b);

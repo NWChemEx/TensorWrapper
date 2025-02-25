@@ -47,14 +47,9 @@ inline auto smooth_vector_input() { return smooth_vector_<double>(); }
 
 /// 5 element vector internally stored as a 5 by 1 matrix
 inline auto smooth_vector_alt() {
-    using buffer_type = buffer::Eigen<double, 2>;
-    using data_type   = typename buffer_type::data_type;
+    auto pbuffer = eigen_matrix<double>(5, 1);
     shape::Smooth shape{5};
-    layout::Physical l(shape::Smooth{5, 1});
-    data_type matrix(5, 1);
-    for(std::size_t i = 0; i < 5; ++i) matrix(i, 0) = i;
-    allocator::Eigen<double, 2> alloc(parallelzone::runtime::RuntimeView{});
-    return detail_::TensorInput(shape, buffer_type(matrix, l, alloc));
+    return detail_::TensorInput(shape, std::move(pbuffer));
 }
 
 template<typename FloatType>
@@ -67,24 +62,21 @@ inline auto smooth_matrix_() {
 inline auto smooth_matrix_input() { return smooth_matrix_<double>(); }
 
 inline auto smooth_symmetric_matrix_input() {
-    using buffer_type = buffer::Eigen<double, 2>;
-    using data_type   = typename buffer_type::data_type;
+    auto pmatrix      = eigen_matrix<double>(3, 3);
+    pmatrix->at(0, 0) = 1.0;
+    pmatrix->at(0, 1) = 2.0;
+    pmatrix->at(0, 2) = 3.0;
+    pmatrix->at(1, 0) = 2.0;
+    pmatrix->at(1, 1) = 4.0;
+    pmatrix->at(1, 2) = 5.0;
+    pmatrix->at(2, 0) = 3.0;
+    pmatrix->at(2, 1) = 5.0;
+    pmatrix->at(2, 2) = 6.0;
     shape::Smooth shape{3, 3};
-    layout::Physical l(shape);
-    data_type matrix(3, 3);
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(0, 2) = 3.0;
-    matrix(1, 0) = 2.0;
-    matrix(1, 1) = 4.0;
-    matrix(1, 2) = 5.0;
-    matrix(2, 0) = 3.0;
-    matrix(2, 1) = 5.0;
-    matrix(2, 2) = 6.0;
     symmetry::Permutation p01{0, 1};
     symmetry::Group g(p01);
-    allocator::Eigen<double, 2> alloc(parallelzone::runtime::RuntimeView{});
-    return detail_::TensorInput(shape, g, buffer_type(matrix, l, alloc));
+
+    return detail_::TensorInput(shape, g, std::move(pmatrix));
 }
 
 template<typename FloatType>
@@ -97,29 +89,9 @@ inline auto smooth_tensor3_() {
 inline auto smooth_tensor3_input() { return smooth_tensor3_<double>(); }
 
 inline auto smooth_tensor4_input() {
-    using buffer_type = buffer::Eigen<double, 4>;
-    using data_type   = typename buffer_type::data_type;
     shape::Smooth shape{2, 2, 2, 2};
-    layout::Physical l(shape);
-    data_type tensor(2, 2, 2, 2);
-    tensor(0, 0, 0, 0) = 1.0;
-    tensor(0, 0, 0, 1) = 2.0;
-    tensor(0, 0, 1, 0) = 3.0;
-    tensor(0, 0, 1, 1) = 4.0;
-    tensor(0, 1, 0, 0) = 5.0;
-    tensor(0, 1, 0, 1) = 6.0;
-    tensor(0, 1, 1, 0) = 7.0;
-    tensor(0, 1, 1, 1) = 8.0;
-    tensor(1, 0, 0, 0) = 9.0;
-    tensor(1, 0, 0, 1) = 10.0;
-    tensor(1, 0, 1, 0) = 11.0;
-    tensor(1, 0, 1, 1) = 12.0;
-    tensor(1, 1, 0, 0) = 13.0;
-    tensor(1, 1, 0, 1) = 14.0;
-    tensor(1, 1, 1, 0) = 15.0;
-    tensor(1, 1, 1, 1) = 16.0;
-    allocator::Eigen<double, 4> alloc(parallelzone::runtime::RuntimeView{});
-    return detail_::TensorInput(shape, buffer_type(tensor, l, alloc));
+    auto pbuffer = eigen_tensor4<double>();
+    return detail_::TensorInput(shape, std::move(pbuffer));
 }
 
 } // namespace tensorwrapper::testing
