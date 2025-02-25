@@ -21,7 +21,6 @@
 #include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>
 
 using namespace tensorwrapper;
-using buffer_type = buffer::Eigen<double, 2>;
 
 TEST_CASE("TensorPIMPL") {
     auto input = testing::smooth_vector_input();
@@ -98,7 +97,6 @@ TEST_CASE("TensorPIMPL") {
             auto other_vector = testing::smooth_vector_alt();
             detail_::TensorPIMPL diff(std::move(plogical2),
                                       std::move(other_vector.m_pbuffer));
-            buffer_type buffer2;
         }
     }
 }

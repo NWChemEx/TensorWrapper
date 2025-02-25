@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/buffer/replicated.hpp>
+#include <tensorwrapper/detail_/integer_utilities.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -39,6 +40,12 @@ public:
     /// Type of each element
     using element_type = FloatType;
 
+    /// Type of a mutable reference to an object of type element_type
+    using reference = element_type&;
+
+    /// Type of a read-only reference to an object of type element_type
+    using const_reference = const element_type&;
+
     /// Type of a pointer to a mutable element_type object
     using pointer = element_type*;
 
@@ -47,6 +54,9 @@ public:
 
     /// Type used for offsets and indexing
     using size_type = std::size_t;
+
+    /// Type of a multi-dimensional index
+    using index_vector = std::vector<size_type>;
 
     // Pull in base's ctors
     using my_base_type::my_base_type;
@@ -60,6 +70,18 @@ public:
     /// Returns a read-only pointer to the first element in contiguous memory
     const_pointer data() const noexcept { return data_(); }
 
+    template<typename... Args>
+    reference at(Args&&... args) {
+        return get_elem_(
+          index_vector{detail_::to_size_t(std::forward<Args>(args))...});
+    }
+
+    template<typename... Args>
+    const_reference at(Args&&... args) const {
+        return get_elem_(
+          index_vector{detail_::to_size_t(std::forward<Args>(args))...});
+    }
+
 protected:
     /// Derived class can override if it likes
     virtual size_type size_() const noexcept { return layout().shape().size(); }
@@ -69,6 +91,12 @@ protected:
 
     /// Derived class should implement according to data() const description
     virtual const_pointer data_() const noexcept = 0;
+
+    /// Derived class should implement according to operator()()
+    virtual reference get_elem_(index_vector index) = 0;
+
+    /// Derived class should implement according to operator()()const
+    virtual const_reference get_elem_(index_vector index) const = 0;
 };
 
 } // namespace tensorwrapper::buffer

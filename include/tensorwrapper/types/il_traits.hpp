@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2025 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,22 @@
  */
 
 #pragma once
+#include <cstddef>
 
-namespace tensorwrapper::buffer {
+namespace tensorwrapper::types {
 
-class BufferBase;
+template<typename FloatType, std::size_t Rank>
+struct ILTraits;
 
 template<typename FloatType>
-class Contiguous;
+struct ILTraits<FloatType, 0> {
+    using type = FloatType;
+};
 
-template<typename FloatType>
-class Eigen;
+template<typename FloatType, std::size_t Rank>
+struct ILTraits {
+    using type =
+      std::initializer_list<typename ILTraits<FloatType, Rank - 1>::type>;
+};
 
-class Local;
-
-class Replicated;
-
-} // namespace tensorwrapper::buffer
+} // namespace tensorwrapper::types

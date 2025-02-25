@@ -69,12 +69,7 @@ physical_layout_pointer TensorFactory::default_physical_layout(
 
 allocator_pointer TensorFactory::default_allocator(
   const_physical_reference physical, runtime_view_type rv) {
-    // For now, default allocator makes Eigen tensors filled with doubles
-    const auto rank = physical.shape().rank();
-
-    // N.B. all specializations implement make_eigen_allocator the same
-    using eigen_alloc = allocator::Eigen<double, 0>;
-    return eigen_alloc::make_eigen_allocator(rank, rv);
+    return std::make_unique<allocator::Eigen<double>>(rv);
 }
 
 bool TensorFactory::can_make_logical_layout(const input_type& input) noexcept {
@@ -180,44 +175,33 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
 namespace {
 
 /// Wraps the process of turning an initializer list into a TensorInput object
-template<typename T, std::size_t... I>
-auto il_to_input(T il, std::index_sequence<I...>) {
-    auto [dims, data] = unwrap_il(il);
-
-    using buffer_type = buffer::Eigen<double, sizeof...(I)>;
-    using data_type   = typename buffer_type::data_type;
-
-    data_type eigen_tensor(dims[I]...);
-    auto pdata = eigen_tensor.data();
-    for(decltype(data.size()) i = 0; i < data.size(); ++i) {
-        pdata[i] = data[i];
-    }
-    shape::Smooth shape(dims.begin(), dims.end());
-    layout::Physical l(shape);
-    return TensorInput(shape, buffer_type(eigen_tensor, l));
+template<typename T>
+auto il_to_input(T il, parallelzone::runtime::RuntimeView rv = {}) {
+    allocator::Eigen<double> alloc(rv);
+    auto pbuffer = alloc.construct(il);
+    return TensorInput(pbuffer->layout().shape(), std::move(pbuffer));
 }
 
 } // namespace
 
 pimpl_pointer TensorFactory::construct(scalar_il_type il) {
-    return construct(il_to_input(il, std::make_index_sequence<0>()));
+    return construct(il_to_input(il));
 }
 
 pimpl_pointer TensorFactory::construct(vector_il_type il) {
-    return construct(il_to_input(il, std::make_index_sequence<1>()));
-    ;
+    return construct(il_to_input(il));
 }
 
 pimpl_pointer TensorFactory::construct(matrix_il_type il) {
-    return construct(il_to_input(il, std::make_index_sequence<2>()));
+    return construct(il_to_input(il));
 }
 
 pimpl_pointer TensorFactory::construct(tensor3_il_type il) {
-    return construct(il_to_input(il, std::make_index_sequence<3>()));
+    return construct(il_to_input(il));
 }
 
 pimpl_pointer TensorFactory::construct(tensor4_il_type il) {
-    return construct(il_to_input(il, std::make_index_sequence<4>()));
+    return construct(il_to_input(il));
 }
 
 } // namespace tensorwrapper::detail_

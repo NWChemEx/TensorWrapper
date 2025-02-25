@@ -16,9 +16,10 @@
 
 #pragma once
 #include <parallelzone/parallelzone.hpp>
-#include <tensorwrapper/buffer/buffer_base.hpp>
+#include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/layout/physical.hpp>
+#include <tensorwrapper/types/buffer_traits.hpp>
 
 namespace tensorwrapper::allocator {
 
@@ -27,7 +28,8 @@ namespace tensorwrapper::allocator {
  *  The AllocatorBase class serves as type-erasure and a unified API for all
  *  allocators.
  */
-class AllocatorBase : public detail_::PolymorphicBase<AllocatorBase> {
+class AllocatorBase : public detail_::PolymorphicBase<AllocatorBase>,
+                      public detail_::DSLBase<AllocatorBase> {
 private:
     /// The type of *this
     using my_type = AllocatorBase;
@@ -51,17 +53,26 @@ public:
     /// Type of a pointer to an object of type layout_type
     using layout_pointer = typename layout_type::layout_pointer;
 
+    /// Type of a read-only reference to the layout
+    using const_layout_reference = const layout_type&;
+
     /// Type all buffers derive from
     using buffer_base_type = buffer::BufferBase;
 
+    /// Type of the class defining types for the buffer_base_type class
+    using buffer_base_traits = types::ClassTraits<buffer_base_type>;
+
     /// Type of a mutable reference to an object of type buffer_base_type
-    using buffer_base_reference = buffer_base_type&;
+    using buffer_base_reference =
+      typename buffer_base_traits::buffer_base_reference;
 
     /// Type of a read-only reference to an object of type buffer_base_type
-    using const_buffer_base_reference = const buffer_base_type&;
+    using const_buffer_base_reference =
+      typename buffer_base_traits::const_buffer_base_reference;
 
     /// Type of a pointer to an object of type buffer_base_type
-    using buffer_base_pointer = typename buffer_base_type::buffer_base_pointer;
+    using buffer_base_pointer =
+      typename buffer_base_traits::buffer_base_pointer;
 
     // -------------------------------------------------------------------------
     // -- Ctors and assignment
@@ -83,6 +94,10 @@ public:
      */
     buffer_base_pointer allocate(layout_pointer playout) {
         return allocate_(std::move(playout));
+    }
+
+    buffer_base_pointer allocate(const_layout_reference layout) {
+        return allocate(layout.clone_as<layout_type>());
     }
 
     /** @brief The runtime *this uses for allocating.
@@ -151,6 +166,7 @@ protected:
      *  @throw None No throw guarantee.
      */
     explicit AllocatorBase(runtime_view_type rv) : m_rv_(std::move(rv)) {}
+
     /** @brief Creates *this so that it uses the same runtime as @p other.
      *
      *  @param[in] other The allocator to make a copy of.

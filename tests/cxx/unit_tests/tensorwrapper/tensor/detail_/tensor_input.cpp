@@ -36,8 +36,9 @@ TEST_CASE("TensorInput") {
     sparsity::Pattern sparsity(2);
     layout::Logical logical(shape, g, sparsity);
     layout::Physical physical(shape, g, sparsity);
-    allocator::Eigen<double, 2> alloc(rv);
-    buffer::Eigen<double, 2> buffer;
+    allocator::Eigen<double> alloc(rv);
+    auto pbuffer = alloc.construct(42.0);
+    auto& buffer = *pbuffer;
 
     detail_::TensorInput defaulted;
     detail_::TensorInput scalar(shape::Smooth{});

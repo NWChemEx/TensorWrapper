@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2025 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,9 @@
 
 #pragma once
 
-namespace tensorwrapper::buffer {
+namespace tensorwrapper::allocator {
 
-class BufferBase;
-
-template<typename FloatType>
-class Contiguous;
+class AllocatorBase;
 
 template<typename FloatType>
 class Eigen;
@@ -30,4 +27,7 @@ class Local;
 
 class Replicated;
 
-} // namespace tensorwrapper::buffer
+template<typename FloatType>
+class Contiguous;
+
+} // namespace tensorwrapper::allocator

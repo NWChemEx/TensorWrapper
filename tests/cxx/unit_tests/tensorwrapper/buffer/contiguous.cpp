@@ -33,8 +33,10 @@ using namespace buffer;
 
 TEMPLATE_LIST_TEST_CASE("Contiguous", "", testing::floating_point_types) {
     using base_type = Contiguous<TestType>;
-    auto t0         = testing::eigen_scalar<TestType>();
-    auto t1         = testing::eigen_vector<TestType>();
+    auto pt0        = testing::eigen_scalar<TestType>();
+    auto pt1        = testing::eigen_vector<TestType>();
+    auto& t0        = *pt0;
+    auto& t1        = *pt1;
 
     auto& base0 = static_cast<base_type&>(t0);
     auto& base1 = static_cast<base_type&>(t1);
