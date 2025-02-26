@@ -5,6 +5,7 @@
 
 namespace tensorwrapper::buffer::detail_ {
 
+/// Common API that type-erases Eigen's many tensor classes.
 template<typename FloatType>
 class EigenPIMPL
   : public tensorwrapper::detail_::PolymorphicBase<EigenPIMPL<FloatType>> {
@@ -31,17 +32,22 @@ public:
 
     eigen_rank_type rank() const noexcept { return rank_(); }
 
-    size_type extent(eigen_rank_type i) const { return extent_(i); }
+    size_type extent(eigen_rank_type i) const {
+        assert(i < rank());
+        return extent_(i);
+    }
 
     pointer data() noexcept { return data_(); }
 
     const_pointer data() const noexcept { return data_(); }
 
     reference get_elem(index_vector index) {
+        assert(index.size() == rank());
         return get_elem_(std::move(index));
     }
 
     const_reference get_elem(index_vector index) const {
+        assert(index.size() == rank());
         return get_elem_(std::move(index));
     }
 

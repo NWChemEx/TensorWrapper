@@ -25,10 +25,12 @@ class EigenPIMPL;
 
 }
 
-/** @brief A buffer which wraps an Eigen tensor.
+/** @brief A buffer which wraps an Eigen object.
  *
- *  @tparam FloatType The type used to store the elements of the tensor.
+ *  @tparam FloatType The type used to store the elements of the object.
  *
+ *  Right now the backend is always an Eigen Tensor, but concievably it could
+ *  be generalized to be matrices or Eigen's map class.
  */
 template<typename FloatType>
 class Eigen : public Contiguous<FloatType> {
@@ -124,12 +126,19 @@ public:
      */
     Eigen& operator=(Eigen&& rhs) noexcept;
 
+    /// Defaulted no throw dtor
     ~Eigen() noexcept;
 
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
 
+    /** @brief Exchanges the contents of *this with @p other.
+     *
+     *  @param[in,out] other The buffer to swap state with.
+     *
+     *  @throw None No throw guarantee.
+     */
     void swap(Eigen& other) noexcept;
 
     /** @brief Is *this value equal to @p rhs?
@@ -188,11 +197,14 @@ protected:
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
 
+    /// Scales *this by @p scalar
     dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
                                          const_labeled_reference rhs) override;
 
+    /// Implements getting the raw pointer
     pointer data_() noexcept override;
 
+    /// Implements getting the raw pointer (read-only)
     const_pointer data_() const noexcept override;
 
     /// Implements mutable element access
@@ -205,12 +217,19 @@ protected:
     typename polymorphic_base::string_type to_string_() const override;
 
 private:
+    /// True if *this has a PIMPL
     bool has_pimpl_() const noexcept;
+
+    /// Throws std::runtime_error if *this has no PIMPL
     void assert_pimpl_() const;
 
+    /// Asserts *this has a PIMPL then returns it
     pimpl_reference pimpl_();
+
+    /// Assert *this has a PIMPL then returns it
     const_pimpl_reference pimpl_() const;
 
+    /// The object actually implementing *this
     pimpl_pointer m_pimpl_;
 };
 

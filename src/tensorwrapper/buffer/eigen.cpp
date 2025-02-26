@@ -84,6 +84,7 @@ typename EIGEN::dsl_reference EIGEN::addition_assignment_(
     using alloc_type     = allocator::Eigen<FloatType>;
     const auto& lhs_down = alloc_type::rebind(lhs.object());
     const auto& rhs_down = alloc_type::rebind(rhs.object());
+    if(!has_pimpl_()) m_pimpl_ = lhs_down.pimpl_().clone();
     pimpl_().addition_assignment(this_labels, lhs.labels(), rhs.labels(),
                                  lhs_down.pimpl_(), rhs_down.pimpl_());
 
@@ -98,7 +99,7 @@ typename EIGEN::dsl_reference EIGEN::subtraction_assignment_(
     using alloc_type     = allocator::Eigen<FloatType>;
     const auto& lhs_down = alloc_type::rebind(lhs.object());
     const auto& rhs_down = alloc_type::rebind(rhs.object());
-
+    if(!has_pimpl_()) m_pimpl_ = lhs_down.pimpl_().clone();
     pimpl_().subtraction_assignment(this_labels, lhs.labels(), rhs.labels(),
                                     lhs_down.pimpl_(), rhs_down.pimpl_());
     return *this;
@@ -114,6 +115,7 @@ typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
     const auto& lhs_down = alloc_type::rebind(lhs.object());
     const auto& rhs_down = alloc_type::rebind(rhs.object());
 
+    if(!has_pimpl_()) m_pimpl_ = lhs_down.pimpl_().clone();
     if(this_labels.is_hadamard_product(lhs.labels(), rhs.labels()))
         pimpl_().hadamard_assignment(this_labels, lhs.labels(), rhs.labels(),
                                      lhs_down.pimpl_(), rhs_down.pimpl_());
@@ -133,6 +135,7 @@ typename EIGEN::dsl_reference EIGEN::permute_assignment_(
     BufferBase::permute_assignment_(this_labels, rhs);
     using alloc_type     = allocator::Eigen<FloatType>;
     const auto& rhs_down = alloc_type::rebind(rhs.object());
+    if(!has_pimpl_()) m_pimpl_ = rhs_down.pimpl_().clone();
     pimpl_().permute_assignment(this_labels, rhs.labels(), rhs_down.pimpl_());
 
     return *this;
@@ -144,6 +147,7 @@ typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
     BufferBase::permute_assignment_(this_labels, rhs);
     using alloc_type     = allocator::Eigen<FloatType>;
     const auto& rhs_down = alloc_type::rebind(rhs.object());
+    if(!has_pimpl_()) m_pimpl_ = rhs_down.pimpl_().clone();
     pimpl_().scalar_multiplication(this_labels, rhs.labels(), scalar,
                                    rhs_down.pimpl_());
     return *this;
