@@ -38,7 +38,7 @@ public:
     using const_reference       = typename parent_type::const_reference;
     using pointer               = typename parent_type::pointer;
     using const_pointer         = typename parent_type::const_pointer;
-    using string_type           = typename parent_type::string_type;
+    using string_type           = typename polymorphic_base::string_type;
     using index_vector          = typename parent_type::index_vector;
     using size_type             = typename parent_type::size_type;
 
