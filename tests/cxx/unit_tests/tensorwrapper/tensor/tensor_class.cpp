@@ -235,6 +235,7 @@ TEST_CASE("Tensor") {
             Tensor corr{{{11.0, 14.0}, {17.0, 20.0}},
                         {{23.0, 30.0}, {37.0, 44.0}}};
 
+            REQUIRE(poutput == &output);
             REQUIRE(corr == output);
         }
     }
