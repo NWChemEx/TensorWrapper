@@ -56,8 +56,8 @@ typename EIGEN::const_eigen_buffer_reference EIGEN::rebind(
         using pimpl_type = buffer::detail_::EigenTensor<FloatType, Rank>; \
         auto ppimpl =                                                     \
           std::make_unique<pimpl_type>(playout->shape().as_smooth());     \
-        return std::make_unique<buffer_type>(std::move(ppimpl), *playout, \
-                                             *this);                      \
+        return std::make_unique<buffer_type>(                             \
+          std::move(ppimpl), std::move(playout), this->clone());          \
     }
 
 TPARAMS
@@ -103,30 +103,6 @@ typename EIGEN::contiguous_pointer EIGEN::construct_(layout_pointer playout,
     auto* pdata         = contig_buffer.data();
     std::fill(pdata, pdata + contig_buffer.size(), value);
     return pbuffer;
-}
-
-TPARAMS
-typename EIGEN::dsl_reference EIGEN::addition_assignment_(
-  label_type this_labels, const_labeled_reference, const_labeled_reference) {
-    return *this;
-}
-
-TPARAMS
-typename EIGEN::dsl_reference EIGEN::subtraction_assignment_(
-  label_type this_labels, const_labeled_reference, const_labeled_reference) {
-    return *this;
-}
-
-TPARAMS
-typename EIGEN::dsl_reference EIGEN::multiplication_assignment_(
-  label_type this_labels, const_labeled_reference, const_labeled_reference) {
-    return *this;
-}
-
-TPARAMS
-typename EIGEN::dsl_reference EIGEN::permute_assignment_(
-  label_type this_labels, const_labeled_reference) {
-    return *this;
 }
 
 // -- Private

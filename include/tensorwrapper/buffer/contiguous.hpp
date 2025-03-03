@@ -70,14 +70,52 @@ public:
     /// Returns a read-only pointer to the first element in contiguous memory
     const_pointer data() const noexcept { return data_(); }
 
+    /** @brief Retrieves a tensor element by offset.
+     *
+     *  @tparam Args The types of each offset. Must decay to integral types.
+     *
+     *  @param[in] args The offsets such that the i-th value in @p args is the
+     *                  offset of the element along the i-th mode of the tensor.
+     *
+     *  @return A mutable reference to the element.
+     *
+     *  @throw std::runtime_error if the number of indices does not match the
+     *                            rank of the tensor. Strong throw guarantee.
+     */
     template<typename... Args>
     reference at(Args&&... args) {
+        static_assert(
+          std::conjunction_v<std::is_integral<std::decay_t<Args>>...>,
+          "Offsets must be integral types");
+        if(sizeof...(Args) != this->rank())
+            throw std::runtime_error("Number of offsets must match rank");
         return get_elem_(
           index_vector{detail_::to_size_t(std::forward<Args>(args))...});
     }
 
+    /** @brief Retrieves a tensor element by offset.
+     *
+     *  @tparam Args The types of each offset. Must decay to integral types.
+     *
+     *  This method is the same as the non-const version except that the result
+     *  is read-only. See the documentation for the mutable version for more
+     *  details.
+     *
+     *  @param[in] args The offsets such that the i-th value in @p args is the
+     *                  offset of the element along the i-th mode of the tensor.
+     *
+     *  @return A read-only reference to the element.
+     *
+     *  @throw std::runtime_error if the number of indices does not match the
+     *                            rank of the tensor. Strong throw guarantee.
+     */
     template<typename... Args>
     const_reference at(Args&&... args) const {
+        static_assert(
+          std::conjunction_v<std::is_integral<std::decay_t<Args>>...>,
+          "Offsets must be integral types");
+        if(sizeof...(Args) != this->rank())
+            throw std::runtime_error("Number of offsets must match rank");
         return get_elem_(
           index_vector{detail_::to_size_t(std::forward<Args>(args))...});
     }

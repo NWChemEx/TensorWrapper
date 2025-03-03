@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "../layout/converter.hpp"
 #include "detail_/tensor_factory.hpp"
 #include "detail_/tensor_pimpl.hpp"
 #include <tensorwrapper/tensor/tensor_class.hpp>
@@ -92,10 +93,11 @@ bool Tensor::operator!=(const Tensor& rhs) const noexcept {
 }
 
 // -- Protected methods
-
-Tensor::dsl_reference Tensor::addition_assignment_(
-  label_type this_labels, const_labeled_reference lhs,
-  const_labeled_reference rhs) {
+template<typename FxnType>
+Tensor::dsl_reference Tensor::binary_common_(FxnType&& fxn,
+                                             label_type this_labels,
+                                             const_labeled_reference lhs,
+                                             const_labeled_reference rhs) {
     const auto& lobject = lhs.object();
     const auto& llabels = lhs.labels();
     const auto& robject = rhs.object();
@@ -103,75 +105,58 @@ Tensor::dsl_reference Tensor::addition_assignment_(
 
     auto llayout      = lobject.logical_layout();
     auto rlayout      = robject.logical_layout();
-    auto pthis_layout = llayout.clone_as<logical_layout_type>();
+    auto pthis_layout = std::make_unique<logical_layout_type>();
+    // auto pthis_layout = llayout.clone_as<logical_layout_type>();
 
-    pthis_layout->addition_assignment(this_labels, llayout(llabels),
-                                      rlayout(rlabels));
+    fxn(*pthis_layout, this_labels, llayout(llabels), rlayout(rlabels));
 
-    auto pthis_buffer = lobject.buffer().clone();
-    auto lbuffer      = lobject.buffer()(llabels);
-    auto rbuffer      = robject.buffer()(rlabels);
-    pthis_buffer->addition_assignment(this_labels, lbuffer, rbuffer);
+    layout::Converter c;
+    auto pphys_layout = c.convert(*pthis_layout);
+
+    const auto& lbuffer = lobject.buffer();
+    const auto& rbuffer = robject.buffer();
+
+    auto palloc       = lbuffer.allocator().clone();
+    auto pthis_buffer = palloc->allocate(std::move(pphys_layout));
+
+    fxn(*pthis_buffer, this_labels, lbuffer(llabels), rbuffer(rlabels));
 
     auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
                                                   std::move(pthis_buffer));
     new_pimpl.swap(m_pimpl_);
 
     return *this;
+}
+
+Tensor::dsl_reference Tensor::addition_assignment_(
+  label_type this_labels, const_labeled_reference lhs,
+  const_labeled_reference rhs) {
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.addition_assignment(result_labels, labeled_lhs, labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 Tensor::dsl_reference Tensor::subtraction_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
-    const auto& lobject = lhs.object();
-    const auto& llabels = lhs.labels();
-    const auto& robject = rhs.object();
-    const auto& rlabels = rhs.labels();
-
-    auto llayout      = lobject.logical_layout();
-    auto rlayout      = robject.logical_layout();
-    auto pthis_layout = llayout.clone_as<logical_layout_type>();
-
-    pthis_layout->subtraction_assignment(this_labels, llayout(llabels),
-                                         rlayout(rlabels));
-
-    auto pthis_buffer = lobject.buffer().clone();
-    auto lbuffer      = lobject.buffer()(llabels);
-    auto rbuffer      = robject.buffer()(rlabels);
-    pthis_buffer->subtraction_assignment(this_labels, lbuffer, rbuffer);
-
-    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
-                                                  std::move(pthis_buffer));
-    new_pimpl.swap(m_pimpl_);
-
-    return *this;
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.subtraction_assignment(result_labels, labeled_lhs, labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 Tensor::dsl_reference Tensor::multiplication_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
-    const auto& lobject = lhs.object();
-    const auto& llabels = lhs.labels();
-    const auto& robject = rhs.object();
-    const auto& rlabels = rhs.labels();
-
-    auto llayout      = lobject.logical_layout();
-    auto rlayout      = robject.logical_layout();
-    auto pthis_layout = llayout.clone_as<logical_layout_type>();
-
-    pthis_layout->multiplication_assignment(this_labels, llayout(llabels),
-                                            rlayout(rlabels));
-
-    auto pthis_buffer = lobject.buffer().clone();
-    auto lbuffer      = lobject.buffer()(llabels);
-    auto rbuffer      = robject.buffer()(rlabels);
-    pthis_buffer->multiplication_assignment(this_labels, lbuffer, rbuffer);
-
-    auto new_pimpl = std::make_unique<pimpl_type>(std::move(pthis_layout),
-                                                  std::move(pthis_buffer));
-    new_pimpl.swap(m_pimpl_);
-
-    return *this;
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.multiplication_assignment(result_labels, labeled_lhs,
+                                         labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 Tensor::dsl_reference Tensor::scalar_multiplication_(

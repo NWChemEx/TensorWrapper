@@ -28,8 +28,7 @@ namespace tensorwrapper::allocator {
  *  The AllocatorBase class serves as type-erasure and a unified API for all
  *  allocators.
  */
-class AllocatorBase : public detail_::PolymorphicBase<AllocatorBase>,
-                      public detail_::DSLBase<AllocatorBase> {
+class AllocatorBase : public detail_::PolymorphicBase<AllocatorBase> {
 private:
     /// The type of *this
     using my_type = AllocatorBase;
@@ -51,7 +50,7 @@ public:
     using layout_type = layout::Physical;
 
     /// Type of a pointer to an object of type layout_type
-    using layout_pointer = typename layout_type::layout_pointer;
+    using layout_pointer = std::unique_ptr<layout_type>;
 
     /// Type of a read-only reference to the layout
     using const_layout_reference = const layout_type&;

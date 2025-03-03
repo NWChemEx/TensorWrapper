@@ -35,7 +35,7 @@ dsl_reference Pattern::subtraction_assignment_(label_type this_labels,
 dsl_reference Pattern::multiplication_assignment_(label_type this_labels,
                                                   const_labeled_reference lhs,
                                                   const_labeled_reference rhs) {
-    return permute_assignment_(this_labels, lhs);
+    return *this = Pattern(this_labels.size());
 }
 
 dsl_reference Pattern::permute_assignment_(label_type this_labels,

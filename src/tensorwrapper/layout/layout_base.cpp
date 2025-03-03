@@ -20,55 +20,63 @@ namespace tensorwrapper::layout {
 
 using dsl_reference = typename LayoutBase::dsl_reference;
 
-dsl_reference LayoutBase::addition_assignment_(label_type this_labels,
-                                               const_labeled_reference lhs,
-                                               const_labeled_reference rhs) {
+template<typename FxnType>
+dsl_reference LayoutBase::binary_common_(FxnType&& fxn, label_type this_labels,
+                                         const_labeled_reference lhs,
+                                         const_labeled_reference rhs) {
     const auto& lobject = lhs.object();
     const auto& llabels = lhs.labels();
     const auto& robject = rhs.object();
     const auto& rlabels = rhs.labels();
 
-    m_shape_->addition_assignment(this_labels, lobject.shape()(llabels),
-                                  robject.shape()(rlabels));
-    m_sparsity_->addition_assignment(this_labels, lobject.sparsity()(llabels),
-                                     robject.sparsity()(rlabels));
-    m_symmetry_->addition_assignment(this_labels, lobject.symmetry()(llabels),
-                                     robject.symmetry()(rlabels));
+    const auto& lshape = lobject.shape();
+    const auto& rshape = robject.shape();
+
+    if(!m_shape_) m_shape_ = lshape.clone();
+    fxn(*m_shape_, this_labels, lshape(llabels), rshape(rlabels));
+
+    const auto& lsymm = lobject.symmetry();
+    const auto& rsymm = robject.symmetry();
+    if(!m_symmetry_) m_symmetry_ = lsymm.clone();
+    fxn(*m_symmetry_, this_labels, lsymm(llabels), rsymm(rlabels));
+
+    const auto& lsparsity = lobject.sparsity();
+    const auto& rsparsity = robject.sparsity();
+    if(!m_sparsity_) m_sparsity_ = lsparsity.clone();
+    fxn(*m_sparsity_, this_labels, lsparsity(llabels), rsparsity(rlabels));
+
     return *this;
+}
+
+dsl_reference LayoutBase::addition_assignment_(label_type this_labels,
+                                               const_labeled_reference lhs,
+                                               const_labeled_reference rhs) {
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.addition_assignment(result_labels, labeled_lhs, labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 dsl_reference LayoutBase::subtraction_assignment_(label_type this_labels,
                                                   const_labeled_reference lhs,
                                                   const_labeled_reference rhs) {
-    const auto& lobject = lhs.object();
-    const auto& llabels = lhs.labels();
-    const auto& robject = rhs.object();
-    const auto& rlabels = rhs.labels();
-
-    m_shape_->subtraction_assignment(this_labels, lobject.shape()(llabels),
-                                     robject.shape()(rlabels));
-    m_sparsity_->subtraction_assignment(
-      this_labels, lobject.sparsity()(llabels), robject.sparsity()(rlabels));
-    m_symmetry_->subtraction_assignment(
-      this_labels, lobject.symmetry()(llabels), robject.symmetry()(rlabels));
-    return *this;
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.subtraction_assignment(result_labels, labeled_lhs, labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 dsl_reference LayoutBase::multiplication_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
-    const auto& lobject = lhs.object();
-    const auto& llabels = lhs.labels();
-    const auto& robject = rhs.object();
-    const auto& rlabels = rhs.labels();
-
-    m_shape_->multiplication_assignment(this_labels, lobject.shape()(llabels),
-                                        robject.shape()(rlabels));
-    m_sparsity_->multiplication_assignment(
-      this_labels, lobject.sparsity()(llabels), robject.sparsity()(rlabels));
-    m_symmetry_->multiplication_assignment(
-      this_labels, lobject.symmetry()(llabels), robject.symmetry()(rlabels));
-    return *this;
+    auto lambda = [](auto&& result, auto&& result_labels, auto&& labeled_lhs,
+                     auto&& labeled_rhs) {
+        result.multiplication_assignment(result_labels, labeled_lhs,
+                                         labeled_rhs);
+    };
+    return binary_common_(lambda, this_labels, lhs, rhs);
 }
 
 dsl_reference LayoutBase::permute_assignment_(label_type this_labels,

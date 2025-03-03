@@ -20,50 +20,61 @@ namespace tensorwrapper::buffer {
 
 using dsl_reference = typename BufferBase::dsl_reference;
 
+template<typename FxnType>
+dsl_reference BufferBase::binary_op_common_(FxnType&& fxn,
+                                            label_type this_labels,
+                                            const_labeled_reference lhs,
+                                            const_labeled_reference rhs) {
+    const auto& lbuffer = lhs.object();
+    const auto& rbuffer = rhs.object();
+
+    auto llayout = lbuffer.layout()(lhs.labels());
+    auto rlayout = rbuffer.layout()(rhs.labels());
+
+    if(!has_layout()) m_layout_ = lbuffer.layout().clone_as<layout_type>();
+    if(!has_allocator()) m_allocator_ = lbuffer.allocator().clone();
+
+    fxn(m_layout_, this_labels, llayout, rlayout);
+
+    return *this;
+}
+
 dsl_reference BufferBase::addition_assignment_(label_type this_labels,
                                                const_labeled_reference lhs,
                                                const_labeled_reference rhs) {
-    auto llayout = lhs.object().layout()(lhs.labels());
-    auto rlayout = rhs.object().layout()(rhs.labels());
+    auto lambda = [](auto&& obj, label_type this_labels, auto&& l, auto&& r) {
+        obj->addition_assignment(this_labels, l, r);
+    };
 
-    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
-
-    m_layout_->addition_assignment(this_labels, llayout, rlayout);
-
-    return *this;
+    return binary_op_common_(lambda, std::move(this_labels), lhs, rhs);
 }
 
 dsl_reference BufferBase::subtraction_assignment_(label_type this_labels,
                                                   const_labeled_reference lhs,
                                                   const_labeled_reference rhs) {
-    auto llayout = lhs.object().layout()(lhs.labels());
-    auto rlayout = rhs.object().layout()(rhs.labels());
+    auto lambda = [](auto&& obj, label_type this_labels, auto&& l, auto&& r) {
+        obj->subtraction_assignment(this_labels, l, r);
+    };
 
-    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
-
-    m_layout_->subtraction_assignment(this_labels, llayout, rlayout);
-
-    return *this;
+    return binary_op_common_(lambda, std::move(this_labels), lhs, rhs);
 }
 
 dsl_reference BufferBase::multiplication_assignment_(
   label_type this_labels, const_labeled_reference lhs,
   const_labeled_reference rhs) {
-    auto llayout = lhs.object().layout()(lhs.labels());
-    auto rlayout = rhs.object().layout()(rhs.labels());
+    auto lambda = [](auto&& obj, label_type this_labels, auto&& l, auto&& r) {
+        obj->multiplication_assignment(this_labels, l, r);
+    };
 
-    if(!has_layout()) m_layout_ = lhs.object().layout().clone();
-
-    m_layout_->multiplication_assignment(this_labels, llayout, rlayout);
-
-    return *this;
+    return binary_op_common_(lambda, std::move(this_labels), lhs, rhs);
 }
 
 dsl_reference BufferBase::permute_assignment_(label_type this_labels,
                                               const_labeled_reference rhs) {
     auto rlayout = rhs.object().layout()(rhs.labels());
 
-    if(!has_layout()) m_layout_ = rhs.object().layout().clone();
+    if(!has_layout()) m_layout_ = rhs.object().layout().clone_as<layout_type>();
+    if(!has_allocator()) m_allocator_ = rhs.object().allocator().clone();
 
     m_layout_->permute_assignment(this_labels, rlayout);
 

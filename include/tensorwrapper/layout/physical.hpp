@@ -39,6 +39,8 @@ public:
     using my_base_type::layout_pointer;
     using my_base_type::size_type;
 
+    Physical() = default;
+
     Physical(const_shape_reference shape, const_symmetry_reference symmetry,
              const_sparsity_reference sparsity) :
       my_base_type(shape, symmetry, sparsity) {}

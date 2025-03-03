@@ -27,7 +27,7 @@ using shape_type = shape::Smooth;
 // Should be the same regardless of template parameters
 using label_type = typename pimpl_type<double, 0>::label_type;
 
-TEMPLATE_LIST_TEST_CASE("EigenTensor", "", testing::floating_point_types) {
+TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
     pimpl_type<TestType, 0> scalar(shape_type{});
     scalar.get_elem({}) = 1.0;
 
@@ -582,6 +582,28 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", testing::floating_point_types) {
             corr.get_elem({1, 1, 1, 1}) = 100.0;
 
             REQUIRE(output == corr);
+        }
+
+        SECTION("ij,jkl->ikl") {
+            pimpl_type<TestType, 3> output;
+
+            label_type o("i,k,l");
+            label_type l("i,j");
+            label_type r("j,k,l");
+            shape_type oshape{2, 2, 2};
+            output.contraction_assignment(o, l, r, oshape, matrix, tensor);
+
+            pimpl_type<TestType, 3> corr(oshape);
+            corr.get_elem({0, 0, 0}) = 11.0;
+            corr.get_elem({0, 0, 1}) = 14.0;
+            corr.get_elem({0, 1, 0}) = 17.0;
+            corr.get_elem({0, 1, 1}) = 20.0;
+            corr.get_elem({1, 0, 0}) = 23.0;
+            corr.get_elem({1, 0, 1}) = 30.0;
+            corr.get_elem({1, 1, 0}) = 37.0;
+            corr.get_elem({1, 1, 1}) = 44.0;
+
+            REQUIRE(corr == output);
         }
     }
 

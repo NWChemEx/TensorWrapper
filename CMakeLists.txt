@@ -84,6 +84,10 @@ nwx_add_pybind11_module(
 if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
+    set(
+        cxx_acceptance_test_dir 
+        "${cxx_test_dir}/acceptance_tests/${PROJECT_NAME}"
+    )
     set(python_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/python")
     set(python_unit_test_dir "${python_test_dir}/unit_tests")
 
@@ -95,6 +99,14 @@ if("${BUILD_TESTING}")
         INCLUDE_DIRS "${project_src_dir}"
         DEPENDS Catch2 ${PROJECT_NAME}
     )
+
+    cmaize_add_tests(
+        acceptance_test_${PROJECT_NAME}
+        SOURCE_DIR "${cxx_acceptance_test_dir}"
+        INCLUDE_DIRS "${project_src_dir}"
+        DEPENDS Catch2 ${PROJECT_NAME}
+    )
+
 
     nwx_add_pybind11_module(
         py_test_${PROJECT_NAME}

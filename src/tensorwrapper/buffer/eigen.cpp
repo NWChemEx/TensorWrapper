@@ -30,9 +30,10 @@ TPARAMS
 EIGEN::Eigen() noexcept = default;
 
 TPARAMS
-EIGEN::Eigen(pimpl_pointer pimpl, const_layout_reference layout,
-             const_allocator_reference allocator) :
-  my_base_type(layout, allocator), m_pimpl_(std::move(pimpl)) {}
+EIGEN::Eigen(pimpl_pointer pimpl, layout_pointer playout,
+             allocator_base_pointer pallocator) :
+  my_base_type(std::move(playout), std::move(pallocator)),
+  m_pimpl_(std::move(pimpl)) {}
 
 TPARAMS
 EIGEN::Eigen(const Eigen& other) :

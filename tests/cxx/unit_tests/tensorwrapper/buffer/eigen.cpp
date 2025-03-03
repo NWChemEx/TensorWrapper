@@ -22,7 +22,7 @@
 using namespace tensorwrapper;
 using namespace testing;
 
-TEMPLATE_LIST_TEST_CASE("Eigen", "", testing::floating_point_types) {
+TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
     // N.B. we actually get Contiguous<TestType> objects back
     using buffer_type = buffer::Eigen<TestType>;
 

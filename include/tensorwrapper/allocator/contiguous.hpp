@@ -38,6 +38,7 @@ public:
     ///@{
     using base_type::buffer_base_pointer;
     using base_type::const_layout_reference;
+    using base_type::layout_pointer;
     ///@}
 
     /// Type of each element in the tensor
@@ -59,10 +60,18 @@ public:
 
     /** @brief Allocates a contiguous pointer given @p layout.
      *
-     *  @note This method shadows the similar function in the base class. The
-     *        intent is to avoid needing to rebind a freshly allocated buffer
-     *         when the user already knows it is a Contiguous buffer
+     *  @note These methods shadow the function of the same name in the base
+     *        class. The intent is to avoid needing to rebind a freshly
+     *        allocated buffer when the user already knows it is a Contiguous
+     *        buffer.
+     *
+     *  @param[in] layout The layout of the tensor to allocate. May be passed as
+     *                    a unique_ptr or by reference. If passed by reference
+     *                    will be copied.
+     *
+     *  @return A pointer to the newly allocated buffer::Contiguous object.
      */
+    ///@{
     contiguous_pointer allocate(const_layout_reference layout) {
         return allocate(layout.clone_as<layout_type>());
     }
@@ -70,21 +79,34 @@ public:
         auto p = allocate_(std::move(layout));
         return detail_::static_pointer_cast<contiguous_buffer_type>(p);
     }
+    ///@}
 
+    /// Constructs a contiguous buffer from an initializer list
+    ///@{
     contiguous_pointer construct(rank0_il il) { return construct_(il); }
     contiguous_pointer construct(rank1_il il) { return construct_(il); }
     contiguous_pointer construct(rank2_il il) { return construct_(il); }
     contiguous_pointer construct(rank3_il il) { return construct_(il); }
     contiguous_pointer construct(rank4_il il) { return construct_(il); }
+    ///@}
 
+    /** @brief Constructs a contiguous buffer and sets all elements to @p value.
+     *
+     *  @param[in] layout The layout of the buffer to allocate. May be passed
+     *                    either by unique_ptr or reference. If passed by
+     *                    reference will be copied.
+     *
+     *  @return A pointer to the newly constructed buffer.
+     */
+    ///@{
+    contiguous_pointer construct(const_layout_reference layout,
+                                 element_type value) {
+        return construct(layout.clone_as<layout_type>(), std::move(value));
+    }
     contiguous_pointer construct(layout_pointer layout, element_type value) {
         return construct_(std::move(layout), std::move(value));
     }
-
-    contiguous_pointer construct(const_layout_reference layout,
-                                 element_type value) {
-        return construct(layout.clone(), std::move(value));
-    }
+    ///@}
 
 protected:
     virtual contiguous_pointer construct_(rank0_il il) = 0;

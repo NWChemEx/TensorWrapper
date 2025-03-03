@@ -60,13 +60,13 @@ public:
       typename my_traits::const_buffer_base_pointer;
 
     /// Type of the class describing the physical layout of the buffer
-    using layout_type = layout::LayoutBase;
+    using layout_type = layout::Physical;
 
     /// Type of a read-only reference to a layout
     using const_layout_reference = const layout_type&;
 
     /// Type of a pointer to the layout
-    using layout_pointer = typename layout_type::layout_pointer;
+    using layout_pointer = std::unique_ptr<layout_type>;
 
     /// Type all allocators inherit from
     using allocator_base_type = allocator::AllocatorBase;
@@ -228,7 +228,7 @@ protected:
      */
     explicit BufferBase(const_layout_reference layout,
                         const_allocator_reference allocator) :
-      BufferBase(layout.clone(), allocator.clone()) {}
+      BufferBase(layout.clone_as<layout_type>(), allocator.clone()) {}
 
     /** @brief Creates a buffer which owns the layout pointed to by @p playout.
      *
@@ -249,7 +249,8 @@ protected:
      *                        @p other. Strong throw guarantee.
      */
     BufferBase(const BufferBase& other) :
-      m_layout_(other.m_layout_ ? other.m_layout_->clone() : nullptr),
+      m_layout_(other.m_layout_ ? other.m_layout_->clone_as<layout_type>() :
+                                  nullptr),
       m_allocator_(other.m_allocator_ ? other.m_allocator_->clone() : nullptr) {
     }
 
@@ -265,8 +266,9 @@ protected:
      */
     BufferBase& operator=(const BufferBase& rhs) {
         if(this != &rhs) {
-            auto temp_layout =
-              rhs.has_layout() ? rhs.m_layout_->clone() : nullptr;
+            auto temp_layout = rhs.has_layout() ?
+                                 rhs.m_layout_->clone_as<layout_type>() :
+                                 nullptr;
             auto temp_allocator =
               rhs.has_allocator() ? rhs.m_allocator_->clone() : nullptr;
             temp_layout.swap(m_layout_);
@@ -291,6 +293,11 @@ protected:
                                       const_labeled_reference rhs) override;
 
 private:
+    template<typename FxnType>
+    dsl_reference binary_op_common_(FxnType&& fxn, label_type this_labels,
+                                    const_labeled_reference lhs,
+                                    const_labeled_reference rhs);
+
     /// Throws std::runtime_error when there is no layout
     void assert_layout_() const {
         if(has_layout()) return;

@@ -40,6 +40,8 @@ public:
     using my_base_type::sparsity_pointer;
     using my_base_type::symmetry_pointer;
 
+    Logical() = default;
+
     Logical(const_shape_reference shape, const_symmetry_reference symmetry,
             const_sparsity_reference sparsity) :
       my_base_type(shape, symmetry, sparsity) {}

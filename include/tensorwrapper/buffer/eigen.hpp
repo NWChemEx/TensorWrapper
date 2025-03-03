@@ -43,6 +43,7 @@ private:
 
 public:
     /// Pull in base class's types
+    using typename my_base_type::allocator_base_pointer;
     using typename my_base_type::buffer_base_pointer;
     using typename my_base_type::const_allocator_reference;
     using typename my_base_type::const_buffer_base_reference;
@@ -53,6 +54,8 @@ public:
     using typename my_base_type::dsl_reference;
     using typename my_base_type::index_vector;
     using typename my_base_type::label_type;
+    using typename my_base_type::layout_pointer;
+    using typename my_base_type::layout_type;
     using typename my_base_type::pointer;
     using typename my_base_type::polymorphic_base;
     using typename my_base_type::reference;
@@ -82,7 +85,12 @@ public:
      *                        throw guarantee.
      */
     Eigen(pimpl_pointer pimpl, const_layout_reference layout,
-          const_allocator_reference allocator);
+          const_allocator_reference allocator) :
+      Eigen(std::move(pimpl), layout.template clone_as<layout_type>(),
+            allocator.clone()) {}
+
+    Eigen(pimpl_pointer pimpl, layout_pointer playout,
+          allocator_base_pointer pallocator);
 
     /** @brief Initializes *this with a copy of @p other.
      *

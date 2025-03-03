@@ -46,11 +46,8 @@ public:
     using typename my_base_type::buffer_base_reference;
     using typename my_base_type::const_base_reference;
     using typename my_base_type::const_buffer_base_reference;
-    using typename my_base_type::const_labeled_reference;
     using typename my_base_type::contiguous_pointer;
-    using typename my_base_type::dsl_reference;
     using typename my_base_type::element_type;
-    using typename my_base_type::label_type;
     using typename my_base_type::layout_pointer;
     using typename my_base_type::rank0_il;
     using typename my_base_type::rank1_il;
@@ -165,21 +162,6 @@ protected:
     bool are_equal_(const_base_reference rhs) const noexcept override {
         return my_base_type::template are_equal_impl_<my_type>(rhs);
     }
-
-    dsl_reference addition_assignment_(label_type this_labels,
-                                       const_labeled_reference lhs,
-                                       const_labeled_reference rhs) override;
-
-    dsl_reference subtraction_assignment_(label_type this_labels,
-                                          const_labeled_reference lhs,
-                                          const_labeled_reference rhs) override;
-
-    dsl_reference multiplication_assignment_(
-      label_type this_labels, const_labeled_reference lhs,
-      const_labeled_reference rhs) override;
-
-    dsl_reference permute_assignment_(label_type this_labels,
-                                      const_labeled_reference rhs) override;
 
 private:
     template<typename ILType>

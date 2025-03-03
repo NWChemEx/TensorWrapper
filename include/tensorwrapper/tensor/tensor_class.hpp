@@ -402,6 +402,12 @@ protected:
     typename polymorphic_base::string_type to_string_() const override;
 
 private:
+    /// Code factorization for implementing binary operations
+    template<typename FxnType>
+    dsl_reference binary_common_(FxnType&& fxn, label_type this_labels,
+                                 const_labeled_reference lhs,
+                                 const_labeled_reference rhs);
+
     /// All ctors ultimately dispatch to this ctor
     Tensor(pimpl_pointer pimpl) noexcept;
 
