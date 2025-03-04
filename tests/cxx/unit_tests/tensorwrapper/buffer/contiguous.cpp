@@ -31,10 +31,12 @@ using namespace buffer;
  *
  */
 
-TEMPLATE_LIST_TEST_CASE("Contiguous", "", testing::floating_point_types) {
+TEMPLATE_LIST_TEST_CASE("buffer::Contiguous", "", types::floating_point_types) {
     using base_type = Contiguous<TestType>;
-    auto t0         = testing::eigen_scalar<TestType>();
-    auto t1         = testing::eigen_vector<TestType>();
+    auto pt0        = testing::eigen_scalar<TestType>();
+    auto pt1        = testing::eigen_vector<TestType>();
+    auto& t0        = *pt0;
+    auto& t1        = *pt1;
 
     auto& base0 = static_cast<base_type&>(t0);
     auto& base1 = static_cast<base_type&>(t1);
@@ -62,5 +64,31 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", testing::floating_point_types) {
         REQUIRE(*(std::as_const(base1).data() + 2) == TestType(2.0));
         REQUIRE(*(std::as_const(base1).data() + 3) == TestType(3.0));
         REQUIRE(*(std::as_const(base1).data() + 4) == TestType(4.0));
+    }
+
+    SECTION("at()") {
+        REQUIRE(base0.at() == TestType(42.0));
+
+        REQUIRE(base1.at(0) == TestType(0.0));
+        REQUIRE(base1.at(1) == TestType(1.0));
+        REQUIRE(base1.at(2) == TestType(2.0));
+        REQUIRE(base1.at(3) == TestType(3.0));
+        REQUIRE(base1.at(4) == TestType(4.0));
+
+        REQUIRE_THROWS_AS(base0.at(0), std::runtime_error);
+        REQUIRE_THROWS_AS(base1.at(0, 1), std::runtime_error);
+    }
+
+    SECTION("at()const") {
+        REQUIRE(std::as_const(base0).at() == TestType(42.0));
+
+        REQUIRE(std::as_const(base1).at(0) == TestType(0.0));
+        REQUIRE(std::as_const(base1).at(1) == TestType(1.0));
+        REQUIRE(std::as_const(base1).at(2) == TestType(2.0));
+        REQUIRE(std::as_const(base1).at(3) == TestType(3.0));
+        REQUIRE(std::as_const(base1).at(4) == TestType(4.0));
+
+        REQUIRE_THROWS_AS(std::as_const(base0).at(0), std::runtime_error);
+        REQUIRE_THROWS_AS(std::as_const(base1).at(0, 1), std::runtime_error);
     }
 }

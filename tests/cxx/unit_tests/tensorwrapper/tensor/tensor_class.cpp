@@ -220,6 +220,24 @@ TEST_CASE("Tensor") {
             REQUIRE(prv == &rv);
             REQUIRE(rv == Tensor{0, 1, 4, 9, 16});
         }
+
+        SECTION("ij,jkl->ikl") {
+            Tensor output;
+
+            Tensor matrix(testing::smooth_matrix_<double>());
+            Tensor tensor(testing::smooth_tensor3_<double>());
+
+            auto m = matrix("i,j");
+            auto t = tensor("j,k,l");
+
+            auto poutput = &(output.multiplication_assignment("i,k,l", m, t));
+
+            Tensor corr{{{11.0, 14.0}, {17.0, 20.0}},
+                        {{23.0, 30.0}, {37.0, 44.0}}};
+
+            REQUIRE(poutput == &output);
+            REQUIRE(corr == output);
+        }
     }
     SECTION("scalar_multiplication") {
         SECTION("scalar") {

@@ -47,7 +47,7 @@ dsl_reference Group::multiplication_assignment_(label_type this_labels,
                                                 const_labeled_reference lhs,
                                                 const_labeled_reference rhs) {
     assert_non_trivial(lhs, rhs);
-    return permute_assignment_(this_labels, lhs);
+    return *this = Group(this_labels.size());
 }
 
 dsl_reference Group::permute_assignment_(label_type this_labels,

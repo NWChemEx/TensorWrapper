@@ -20,7 +20,10 @@ namespace tensorwrapper::buffer {
 
 class BufferBase;
 
-template<typename FloatType, unsigned short Rank>
+template<typename FloatType>
+class Contiguous;
+
+template<typename FloatType>
 class Eigen;
 
 class Local;

@@ -22,13 +22,4 @@
 #include "layouts.hpp"
 #include "shapes.hpp"
 
-namespace tensorwrapper::testing {
-
-#ifdef ENABLE_SIGMA
-using floating_point_types =
-  std::tuple<float, double, sigma::UFloat, sigma::UDouble>;
-#else
-using floating_point_types = std::tuple<float, double>;
-#endif
-
-} // namespace tensorwrapper::testing
+namespace tensorwrapper::testing {} // namespace tensorwrapper::testing

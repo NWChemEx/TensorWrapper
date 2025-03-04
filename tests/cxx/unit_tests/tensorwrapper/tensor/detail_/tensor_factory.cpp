@@ -51,7 +51,7 @@ TEST_CASE("TensorFactory") {
     layout::Physical physical(shape, g, sparsity);
     auto pphysical = physical.clone_as<layout::Physical>();
 
-    allocator::Eigen<double, 0> alloc(rv);
+    allocator::Eigen<double> alloc(rv);
     auto pbuffer        = alloc.allocate(std::move(pphysical));
     auto buffer_address = pbuffer.get();
 

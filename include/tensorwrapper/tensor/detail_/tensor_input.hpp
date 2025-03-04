@@ -18,6 +18,7 @@
 #include <memory>
 #include <parallelzone/parallelzone.hpp>
 #include <tensorwrapper/allocator/allocator_base.hpp>
+#include <tensorwrapper/buffer/buffer_base.hpp>
 #include <tensorwrapper/layout/layout_base.hpp>
 #include <tensorwrapper/layout/logical.hpp>
 #include <tensorwrapper/layout/physical.hpp>

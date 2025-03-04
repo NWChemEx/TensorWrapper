@@ -14,41 +14,21 @@
  * limitations under the License.
  */
 
+#include "../buffer/detail_/eigen_tensor.hpp"
+#include "../tensor/detail_/il_utils.hpp"
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/detail_/unique_ptr_utilities.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::allocator {
-namespace {
-template<typename EigenTensorType, typename ShapeType, std::size_t... Is>
-auto unwrap_shape(const ShapeType& shape, std::index_sequence<Is...>) {
-    // XXX: This is a hack until we have a general Shape API in place
-    auto const_shape = static_cast<const shape::Smooth&>(shape);
-    return EigenTensorType(const_shape.extent(Is)...);
-}
 
-} // namespace
-
-#define TPARAMS template<typename FloatType, unsigned short Rank>
-#define EIGEN Eigen<FloatType, Rank>
-
-TPARAMS
-typename EIGEN::eigen_buffer_pointer EIGEN::allocate(
-  eigen_layout_pointer playout) {
-    using eigen_data_type = typename eigen_buffer_type::data_type;
-    if(playout->shape().rank() != Rank)
-        throw std::runtime_error("Rank of the layout is not compatible");
-
-    return std::make_unique<eigen_buffer_type>(
-      unwrap_shape<eigen_data_type>(playout->shape(),
-                                    std::make_index_sequence<Rank>()),
-      *playout);
-}
+#define TPARAMS template<typename FloatType>
+#define EIGEN Eigen<FloatType>
 
 TPARAMS
 bool EIGEN::can_rebind(const_buffer_base_reference buffer) {
-    auto pbuffer = dynamic_cast<const eigen_buffer_type*>(&buffer);
+    auto pbuffer = dynamic_cast<const buffer::Eigen<FloatType>*>(&buffer);
     return pbuffer != nullptr;
 }
 
@@ -67,39 +47,76 @@ typename EIGEN::const_eigen_buffer_reference EIGEN::rebind(
     throw std::runtime_error("Can not rebind buffer");
 }
 
-#define ALLOCATE_CONDITION(RANK) \
-    if(rank == RANK) return std::make_unique<Eigen<FloatType, RANK>>(rv)
-
-TPARAMS
-typename EIGEN::base_pointer EIGEN::make_eigen_allocator(unsigned int rank,
-                                                         runtime_view_type rv) {
-    ALLOCATE_CONDITION(0);
-    else ALLOCATE_CONDITION(1);
-    else ALLOCATE_CONDITION(2);
-    else ALLOCATE_CONDITION(3);
-    else ALLOCATE_CONDITION(4);
-    else ALLOCATE_CONDITION(5);
-    else ALLOCATE_CONDITION(6);
-    else ALLOCATE_CONDITION(7);
-    else ALLOCATE_CONDITION(8);
-    else ALLOCATE_CONDITION(9);
-    else ALLOCATE_CONDITION(10);
-    throw std::runtime_error(
-      "Presently only support eigen tensors up to rank 10");
-}
-
-#undef ALLOCATE_CONDITION
-
 // -----------------------------------------------------------------------------
 // -- Protected methods
 // -----------------------------------------------------------------------------
 
+#define ALLOCATE(Rank)                                                    \
+    if(playout->rank() == Rank) {                                         \
+        using pimpl_type = buffer::detail_::EigenTensor<FloatType, Rank>; \
+        auto ppimpl =                                                     \
+          std::make_unique<pimpl_type>(playout->shape().as_smooth());     \
+        return std::make_unique<buffer_type>(                             \
+          std::move(ppimpl), std::move(playout), this->clone());          \
+    }
+
 TPARAMS
 typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
-    auto pderived = detail_::dynamic_pointer_cast<eigen_layout_type>(playout);
-    if(pderived == nullptr) throw std::runtime_error("Unsupported layout");
+    using buffer_type = buffer::Eigen<FloatType>;
+    ALLOCATE(0)
+    else ALLOCATE(1) else ALLOCATE(2) else ALLOCATE(3) else ALLOCATE(4) else ALLOCATE(5) else ALLOCATE(
+      6) else ALLOCATE(7) else ALLOCATE(8) else ALLOCATE(9) else ALLOCATE(10) else {
+        throw std::runtime_error("Tensors with rank > 10 not supported.");
+    }
+}
 
-    return allocate(std::move(pderived));
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(rank0_il il) {
+    return il_construct_(il);
+}
+
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(rank1_il il) {
+    return il_construct_(il);
+}
+
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(rank2_il il) {
+    return il_construct_(il);
+}
+
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(rank3_il il) {
+    return il_construct_(il);
+}
+
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(rank4_il il) {
+    return il_construct_(il);
+}
+
+TPARAMS
+typename EIGEN::contiguous_pointer EIGEN::construct_(layout_pointer playout,
+                                                     element_type value) {
+    auto pbuffer        = this->allocate(std::move(playout));
+    auto& contig_buffer = static_cast<buffer::Contiguous<FloatType>&>(*pbuffer);
+    auto* pdata         = contig_buffer.data();
+    std::fill(pdata, pdata + contig_buffer.size(), value);
+    return pbuffer;
+}
+
+// -- Private
+
+TPARAMS
+template<typename ILType>
+typename EIGEN::contiguous_pointer EIGEN::il_construct_(ILType il) {
+    auto [extents, data] = unwrap_il(il);
+    shape::Smooth shape(extents.begin(), extents.end());
+    auto playout      = std::make_unique<layout::Physical>(std::move(shape));
+    auto pbuffer      = this->allocate(std::move(playout));
+    auto& buffer_down = rebind(*pbuffer);
+    std::copy(data.begin(), data.end(), buffer_down.data());
+    return pbuffer;
 }
 
 #undef EIGEN
@@ -107,26 +124,9 @@ typename EIGEN::buffer_base_pointer EIGEN::allocate_(layout_pointer playout) {
 
 // -- Explicit class template instantiation
 
-#define DEFINE_EIGEN_ALLOCATOR(TYPE) \
-    template class Eigen<TYPE, 0>;   \
-    template class Eigen<TYPE, 1>;   \
-    template class Eigen<TYPE, 2>;   \
-    template class Eigen<TYPE, 3>;   \
-    template class Eigen<TYPE, 4>;   \
-    template class Eigen<TYPE, 5>;   \
-    template class Eigen<TYPE, 6>;   \
-    template class Eigen<TYPE, 7>;   \
-    template class Eigen<TYPE, 8>;   \
-    template class Eigen<TYPE, 9>;   \
-    template class Eigen<TYPE, 10>
+#define DEFINE_EIGEN_ALLOCATOR(TYPE) template class Eigen<TYPE>
 
-DEFINE_EIGEN_ALLOCATOR(float);
-DEFINE_EIGEN_ALLOCATOR(double);
-
-#ifdef ENABLE_SIGMA
-DEFINE_EIGEN_ALLOCATOR(sigma::UFloat);
-DEFINE_EIGEN_ALLOCATOR(sigma::UDouble);
-#endif
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_EIGEN_ALLOCATOR);
 
 #undef DEFINE_EIGEN_ALLOCATOR
 

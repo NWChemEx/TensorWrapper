@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <cassert>
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
@@ -74,6 +75,8 @@ public:
     // -------------------------------------------------------------------------
     // -- Ctors and dtor
     // -------------------------------------------------------------------------
+
+    LayoutBase() = default;
 
     /** @brief Initialize by copy ctor
      *
@@ -156,7 +159,10 @@ public:
      *
      *  @throw None No throw guarantee
      */
-    const_shape_reference shape() const { return *m_shape_; }
+    const_shape_reference shape() const {
+        assert(m_shape_);
+        return *m_shape_;
+    }
 
     /** @brief Provides read-only access to the symmetry of the layout.
      *
@@ -164,7 +170,10 @@ public:
      *
      *  @throw None No throw guarantee
      */
-    const_symmetry_reference symmetry() const { return *m_symmetry_; }
+    const_symmetry_reference symmetry() const {
+        assert(m_symmetry_);
+        return *m_symmetry_;
+    }
 
     /** @brief Provides access to the sparsity of the layout.
      *
@@ -172,7 +181,10 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    const_sparsity_reference sparsity() const { return *m_sparsity_; }
+    const_sparsity_reference sparsity() const {
+        assert(m_sparsity_);
+        return *m_sparsity_;
+    }
 
     /** @brief The rank of the tensor this layout describes.
      *
@@ -184,7 +196,7 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    size_type rank() const noexcept { return m_shape_->rank(); }
+    size_type rank() const noexcept { return m_shape_ ? m_shape_->rank() : 0; }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -265,6 +277,12 @@ protected:
                                       const_labeled_reference rhs) override;
 
 private:
+    /// Factorized implementation for binary operations
+    template<typename FxnType>
+    dsl_reference binary_common_(FxnType&& fxn, label_type this_labels,
+                                 const_labeled_reference lhs,
+                                 const_labeled_reference rhs);
+
     /// Asserts that *this is in a valid state
     void assert_valid_state_() const;
 

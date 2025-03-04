@@ -124,14 +124,19 @@ TEMPLATE_LIST_TEST_CASE("PairwiseParser", "", testing::dsl_types) {
 // Since Eigen buffers are templated on the rank there isn't an easy way to
 // include them in dsl_types
 TEST_CASE("PairwiseParser : buffer::Eigen") {
-    auto scalar0 = testing::eigen_scalar<float>();
-    auto scalar1 = testing::eigen_scalar<float>();
-    auto scalar2 = testing::eigen_scalar<float>();
-    auto corr    = testing::eigen_scalar<float>();
+    auto pscalar0 = testing::eigen_scalar<float>();
+    auto pscalar1 = testing::eigen_scalar<float>();
+    auto pscalar2 = testing::eigen_scalar<float>();
+    auto pcorr    = testing::eigen_scalar<float>();
 
-    scalar0.value()() = 1.0;
-    scalar1.value()() = 2.0;
-    scalar2.value()() = 3.0;
+    auto& scalar0 = *pscalar0;
+    auto& scalar1 = *pscalar1;
+    auto& scalar2 = *pscalar2;
+    auto& corr    = *pcorr;
+
+    scalar0.at() = 1.0;
+    scalar1.at() = 2.0;
+    scalar2.at() = 3.0;
 
     dsl::PairwiseParser p;
 
