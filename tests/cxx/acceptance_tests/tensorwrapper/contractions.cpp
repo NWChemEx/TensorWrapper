@@ -17,7 +17,7 @@
 #include "acceptance_testing.hpp"
 
 using namespace tensorwrapper;
-
+using namespace operations;
 TEST_CASE("Contractions") {
     Tensor defaulted;
 
@@ -43,11 +43,18 @@ TEST_CASE("Contractions") {
 
     SECTION("LHS == matrix") {
         SECTION("RHS == tensor3") {
-            defaulted("i,k,l") = matrix_0("i,j") * tensor3_0("j,k,l");
-            Tensor corr{
-              {{14.222999999999999, 18.15}, {22.076999999999998, 26.004}},
-              {{28.875, 37.686}, {46.497, 55.308}}};
-            std::cout << defaulted << std::endl;
+            SECTION("ij,jkl->ikl") {
+                defaulted("i,k,l") = matrix_0("i,j") * tensor3_0("j,k,l");
+                Tensor corr{
+                  {{14.222999999999999, 18.15}, {22.076999999999998, 26.004}},
+                  {{28.875, 37.686}, {46.497, 55.308}}};
+                REQUIRE(approximately_equal(defaulted, corr, 1e-10));
+            }
+            SECTION("ij,ijk->k") {
+                defaulted("k") = matrix_0("i,j") * tensor3_0("i,j,k");
+                Tensor corr{63.162, 75.89999999999999};
+                REQUIRE(approximately_equal(defaulted, corr, 1e-10));
+            }
         }
     }
 }

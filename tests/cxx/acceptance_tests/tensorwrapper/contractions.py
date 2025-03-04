@@ -42,3 +42,4 @@ tensor4_1 = np.array([[[[17.17, 18.18], [19.19, 20.20]],
                        [[29.29, 30.30], [31.31, 32.32]]]])
 
 print_corr(np.einsum('ij,jkl->ikl', matrix_0, tensor3_0))
+print_corr(np.einsum('ij,ijk->k', matrix_0, tensor3_0))

@@ -20,6 +20,7 @@
 #include <tensorwrapper/detail_/detail_.hpp>
 #include <tensorwrapper/dsl/dsl.hpp>
 #include <tensorwrapper/layout/layout.hpp>
+#include <tensorwrapper/operations/operations.hpp>
 #include <tensorwrapper/shape/shape.hpp>
 #include <tensorwrapper/sparsity/sparsity.hpp>
 #include <tensorwrapper/symmetry/symmetry.hpp>
