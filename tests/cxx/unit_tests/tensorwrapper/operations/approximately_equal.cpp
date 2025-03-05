@@ -31,9 +31,6 @@ using namespace operations;
 
 TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
                         types::floating_point_types) {
-    constexpr bool is_double  = std::is_same_v<TestType, double>;
-    constexpr bool is_udouble = std::is_same_v<TestType, types::udouble>;
-
     auto pscalar   = testing::eigen_scalar<TestType>();
     pscalar->at()  = 42.0;
     auto pvector   = testing::eigen_vector<TestType>(2);
