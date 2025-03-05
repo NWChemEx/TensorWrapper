@@ -19,64 +19,99 @@
 using namespace tensorwrapper;
 using namespace operations;
 
-TEST_CASE("approximately_equal") {
-    Tensor scalar(42.0);
-    Tensor vector{1.23, 2.34};
+/* Notes on testing.
+ *
+ * - Because of how floating point conversions work, a difference of the
+ *   tolerance may be equal, slightly less than, or slightly more than the
+ *   tolerance converted to a different floating point type. We do not test for
+ *   exact equality to the tolerance.
+ * - We can test for positive and negative differences by flipping the order of
+ *   arguments.
+ */
+
+TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
+                        types::floating_point_types) {
+    constexpr bool is_double  = std::is_same_v<TestType, double>;
+    constexpr bool is_udouble = std::is_same_v<TestType, types::udouble>;
+
+    auto pscalar   = testing::eigen_scalar<TestType>();
+    pscalar->at()  = 42.0;
+    auto pvector   = testing::eigen_vector<TestType>(2);
+    pvector->at(0) = 1.23;
+    pvector->at(1) = 2.34;
+
+    auto pscalar2   = testing::eigen_scalar<TestType>();
+    pscalar2->at()  = 42.0;
+    auto pvector2   = testing::eigen_vector<TestType>(2);
+    pvector2->at(0) = 1.23;
+    pvector2->at(1) = 2.34;
+
+    shape::Smooth s0{};
+    shape::Smooth s1{2};
+
+    Tensor scalar(s0, std::move(pscalar));
+    Tensor vector(s1, std::move(pvector));
 
     SECTION("different ranks") {
         REQUIRE_FALSE(approximately_equal(scalar, vector));
+        REQUIRE_FALSE(approximately_equal(vector, scalar));
     }
 
     SECTION("Same values") {
-        REQUIRE(approximately_equal(scalar, Tensor(42.0)));
-        REQUIRE(approximately_equal(vector, Tensor{1.23, 2.34}));
-    }
+        Tensor scalar2(s0, std::move(pscalar2));
+        Tensor vector2(s1, std::move(pvector2));
 
-    SECTION("Differ by default tolerance") {
-        double value = 1e-16;
-        REQUIRE_FALSE(approximately_equal(Tensor(0.0), Tensor(value)));
-        REQUIRE_FALSE(
-          approximately_equal(Tensor{1.23, 0.0}, Tensor{1.23, value}));
-        REQUIRE_FALSE(
-          approximately_equal(Tensor{0.0, 2.34}, Tensor{value, 2.34}));
+        REQUIRE(approximately_equal(scalar, scalar2));
+        REQUIRE(approximately_equal(scalar2, scalar));
+        REQUIRE(approximately_equal(vector, vector2));
+        REQUIRE(approximately_equal(vector2, vector));
     }
 
     SECTION("Differ by more than default tolerance") {
-        double value = 1e-16;
-        REQUIRE_FALSE(approximately_equal(scalar, Tensor(value)));
-        REQUIRE_FALSE(approximately_equal(vector, Tensor{1.23, value}));
-        REQUIRE_FALSE(approximately_equal(vector, Tensor{value, 2.34}));
+        double value    = 1e-1;
+        pscalar2->at()  = 42.0 + value;
+        pvector2->at(0) = 1.23 + value;
+        Tensor scalar2(s0, std::move(pscalar2));
+        Tensor vector2(s1, std::move(pvector2));
+        REQUIRE_FALSE(approximately_equal(scalar, scalar2));
+        REQUIRE_FALSE(approximately_equal(scalar2, scalar));
+        REQUIRE_FALSE(approximately_equal(vector, vector2));
+        REQUIRE_FALSE(approximately_equal(vector2, vector));
     }
 
     SECTION("Differ by less than default tolerance") {
-        double value = 1e-17;
-        REQUIRE(approximately_equal(Tensor(0.0), Tensor(value)));
-        REQUIRE(approximately_equal(Tensor{1.23, 0.0}, Tensor{1.23, value}));
-        REQUIRE(approximately_equal(Tensor{0.0, 2.34}, Tensor{value, 2.34}));
-    }
-
-    SECTION("Differ by provided tolerance") {
-        double value = 1e-1;
-        REQUIRE_FALSE(approximately_equal(Tensor(0.0), Tensor(value), value));
-        REQUIRE_FALSE(
-          approximately_equal(Tensor{1.23, 0.0}, Tensor{1.23, value}, value));
-        REQUIRE_FALSE(
-          approximately_equal(Tensor{0.0, 2.34}, Tensor{value, 2.34}, value));
+        double value    = 1e-17;
+        pscalar2->at()  = 42.0 + value;
+        pvector2->at(0) = 1.23 + value;
+        Tensor scalar2(s0, std::move(pscalar2));
+        Tensor vector2(s1, std::move(pvector2));
+        REQUIRE(approximately_equal(scalar, scalar2));
+        REQUIRE(approximately_equal(scalar2, scalar));
+        REQUIRE(approximately_equal(vector, vector2));
+        REQUIRE(approximately_equal(vector2, vector));
     }
 
     SECTION("Differ by more than provided tolerance") {
-        double value = 1e-1;
-        REQUIRE_FALSE(approximately_equal(scalar, Tensor(value), value));
-        REQUIRE_FALSE(approximately_equal(vector, Tensor{1.23, value}, value));
-        REQUIRE_FALSE(approximately_equal(vector, Tensor{value, 2.34}, value));
+        float value     = 1e-1;
+        pscalar2->at()  = 43.0;
+        pvector2->at(0) = 2.23;
+        Tensor scalar2(s0, std::move(pscalar2));
+        Tensor vector2(s1, std::move(pvector2));
+        REQUIRE_FALSE(approximately_equal(scalar, scalar2, value));
+        REQUIRE_FALSE(approximately_equal(scalar2, scalar, value));
+        REQUIRE_FALSE(approximately_equal(vector, vector2, value));
+        REQUIRE_FALSE(approximately_equal(vector2, vector, value));
     }
 
     SECTION("Differ by less than provided tolerance") {
-        double value = 1e-2;
-        REQUIRE(approximately_equal(Tensor(0.0), Tensor(value), 1e-1));
-        REQUIRE(
-          approximately_equal(Tensor{1.23, 0.0}, Tensor{1.23, value}, 1e-1));
-        REQUIRE(
-          approximately_equal(Tensor{0.0, 2.34}, Tensor{value, 2.34}, 1e-1));
+        double value    = 1e-10;
+        pscalar2->at()  = 42.0 + value;
+        pvector2->at(0) = 1.23 + value;
+        Tensor scalar2(s0, std::move(pscalar2));
+        Tensor vector2(s1, std::move(pvector2));
+        REQUIRE(approximately_equal(scalar, scalar2, 1e-1));
+        REQUIRE(approximately_equal(scalar2, scalar, 1e-1));
+        REQUIRE(approximately_equal(vector, vector2, 1e-1));
+        REQUIRE(approximately_equal(vector2, vector, 1e-1));
     }
 }

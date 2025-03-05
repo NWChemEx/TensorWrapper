@@ -17,11 +17,31 @@
 #include <tensorwrapper/allocator/eigen.hpp>
 #include <tensorwrapper/buffer/eigen.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
+#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+
 namespace tensorwrapper::operations {
+namespace {
+
+struct Kernel {
+    template<typename FloatType>
+    bool run(const buffer::BufferBase& result, double tol) {
+        using allocator_type = allocator::Eigen<FloatType>;
+        const FloatType zero{0.0};
+        const FloatType ptol = static_cast<FloatType>(tol);
+        auto& buffer_down    = allocator_type::rebind(result);
+
+        for(std::size_t i = 0; i < buffer_down.size(); ++i) {
+            auto diff = *(buffer_down.data() + i);
+            if(diff < zero) diff *= -1.0;
+            if(diff >= ptol) return false;
+        }
+        return true;
+    }
+};
+
+} // namespace
 
 bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
-    using allocator_type = allocator::Eigen<double>;
-
     if(lhs.rank() != rhs.rank()) return false;
 
     std::string index(lhs.rank() ? "i0" : "");
@@ -30,16 +50,9 @@ bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
     Tensor result;
     result(index) = lhs(index) - rhs(index);
 
-    if(!allocator_type::can_rebind(result.buffer()))
-        throw std::runtime_error("Buffer is not filled with doubles");
+    using tensorwrapper::utilities::floating_point_dispatch;
 
-    auto& buffer_down = allocator_type::rebind(result.buffer());
-
-    for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-        auto diff = *(buffer_down.data() + i);
-        if(std::fabs(diff) >= tol) return false;
-    }
-    return true;
+    return floating_point_dispatch(Kernel{}, result.buffer(), tol);
 }
 
 } // namespace tensorwrapper::operations
