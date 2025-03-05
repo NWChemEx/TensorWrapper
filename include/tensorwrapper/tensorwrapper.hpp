@@ -26,6 +26,7 @@
 #include <tensorwrapper/symmetry/symmetry.hpp>
 #include <tensorwrapper/tensor/tensor.hpp>
 #include <tensorwrapper/types/types.hpp>
+#include <tensorwrapper/utilities/utilities.hpp>
 
 /** @brief Contains the components of the TensorWrapper library. */
 namespace tensorwrapper {}
