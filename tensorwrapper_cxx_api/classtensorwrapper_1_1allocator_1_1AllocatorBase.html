@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.46</span>
+   &#160;<span id="projectnumber">0.0.47</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,8 @@ Inheritance diagram for tensorwrapper::allocator::AllocatorBase:</div>
 <area shape="rect" href="classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="26,199,207,240"/>
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,228,61"/>
 <area shape="rect" href="classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="26,288,207,329"/>
-<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="17,377,217,419"/>
+<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers." alt="" coords="19,377,215,419"/>
+<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="26,467,207,508"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -120,26 +121,34 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a1778ffc6f6ec1bfa301f2f2da45db440">layout_type</a> = <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html">layout::Physical</a></td></tr>
 <tr class="memdesc:a1778ffc6f6ec1bfa301f2f2da45db440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all physical layouts derive from. <br /></td></tr>
 <tr class="separator:a1778ffc6f6ec1bfa301f2f2da45db440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affd352a5c60cd78b9590c3a2dfdbc131"><td class="memItemLeft" align="right" valign="top"><a id="affd352a5c60cd78b9590c3a2dfdbc131"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#affd352a5c60cd78b9590c3a2dfdbc131">layout_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a8416d1e6c81c2dfba79ced2c640bd450">layout_type::layout_pointer</a></td></tr>
-<tr class="memdesc:affd352a5c60cd78b9590c3a2dfdbc131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type layout_type. <br /></td></tr>
-<tr class="separator:affd352a5c60cd78b9590c3a2dfdbc131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c41f07604a8d96a5ade2fc5f3ee060f"><td class="memItemLeft" align="right" valign="top"><a id="a7c41f07604a8d96a5ade2fc5f3ee060f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a7c41f07604a8d96a5ade2fc5f3ee060f">layout_pointer</a> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a1778ffc6f6ec1bfa301f2f2da45db440">layout_type</a> &gt;</td></tr>
+<tr class="memdesc:a7c41f07604a8d96a5ade2fc5f3ee060f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type layout_type. <br /></td></tr>
+<tr class="separator:a7c41f07604a8d96a5ade2fc5f3ee060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af363bbc28383d11bffa29f47ba5cf395"><td class="memItemLeft" align="right" valign="top"><a id="af363bbc28383d11bffa29f47ba5cf395"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#af363bbc28383d11bffa29f47ba5cf395">const_layout_reference</a> = const <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a1778ffc6f6ec1bfa301f2f2da45db440">layout_type</a> &amp;</td></tr>
+<tr class="memdesc:af363bbc28383d11bffa29f47ba5cf395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to the layout. <br /></td></tr>
+<tr class="separator:af363bbc28383d11bffa29f47ba5cf395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a560c19cee3f996c44052fb5cac954183"><td class="memItemLeft" align="right" valign="top"><a id="a560c19cee3f996c44052fb5cac954183"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a560c19cee3f996c44052fb5cac954183">buffer_base_type</a> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">buffer::BufferBase</a></td></tr>
 <tr class="memdesc:a560c19cee3f996c44052fb5cac954183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all buffers derive from. <br /></td></tr>
 <tr class="separator:a560c19cee3f996c44052fb5cac954183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45306886722d9291a6da60415f84d3b2"><td class="memItemLeft" align="right" valign="top"><a id="a45306886722d9291a6da60415f84d3b2"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a45306886722d9291a6da60415f84d3b2">buffer_base_reference</a> = <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a560c19cee3f996c44052fb5cac954183">buffer_base_type</a> &amp;</td></tr>
-<tr class="memdesc:a45306886722d9291a6da60415f84d3b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a mutable reference to an object of type buffer_base_type. <br /></td></tr>
-<tr class="separator:a45306886722d9291a6da60415f84d3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a883ffaa9c2524f980d4b9bf083d9ace3"><td class="memItemLeft" align="right" valign="top"><a id="a883ffaa9c2524f980d4b9bf083d9ace3"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a883ffaa9c2524f980d4b9bf083d9ace3">const_buffer_base_reference</a> = const <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a560c19cee3f996c44052fb5cac954183">buffer_base_type</a> &amp;</td></tr>
-<tr class="memdesc:a883ffaa9c2524f980d4b9bf083d9ace3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an object of type buffer_base_type. <br /></td></tr>
-<tr class="separator:a883ffaa9c2524f980d4b9bf083d9ace3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3609509b339a0cc576a78aac85f80310"><td class="memItemLeft" align="right" valign="top"><a id="a3609509b339a0cc576a78aac85f80310"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a3609509b339a0cc576a78aac85f80310">buffer_base_pointer</a> = typename <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a40b311f631cf39f901d553ccf6e9530c">buffer_base_type::buffer_base_pointer</a></td></tr>
-<tr class="memdesc:a3609509b339a0cc576a78aac85f80310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type buffer_base_type. <br /></td></tr>
-<tr class="separator:a3609509b339a0cc576a78aac85f80310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa12547907444d5cf71e45101b34dff7b"><td class="memItemLeft" align="right" valign="top"><a id="aa12547907444d5cf71e45101b34dff7b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#aa12547907444d5cf71e45101b34dff7b">buffer_base_traits</a> = <a class="el" href="structtensorwrapper_1_1types_1_1ClassTraits.html">types::ClassTraits</a>&lt; <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a560c19cee3f996c44052fb5cac954183">buffer_base_type</a> &gt;</td></tr>
+<tr class="memdesc:aa12547907444d5cf71e45101b34dff7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the class defining types for the buffer_base_type class. <br /></td></tr>
+<tr class="separator:aa12547907444d5cf71e45101b34dff7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aac5415bea80ad610d3a849d90620bf"><td class="memItemLeft" align="right" valign="top"><a id="a5aac5415bea80ad610d3a849d90620bf"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a5aac5415bea80ad610d3a849d90620bf">buffer_base_reference</a> = typename buffer_base_traits::buffer_base_reference</td></tr>
+<tr class="memdesc:a5aac5415bea80ad610d3a849d90620bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a mutable reference to an object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:a5aac5415bea80ad610d3a849d90620bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85574a18afcb200054e4be0dfcdba90f"><td class="memItemLeft" align="right" valign="top"><a id="a85574a18afcb200054e4be0dfcdba90f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a85574a18afcb200054e4be0dfcdba90f">const_buffer_base_reference</a> = typename buffer_base_traits::const_buffer_base_reference</td></tr>
+<tr class="memdesc:a85574a18afcb200054e4be0dfcdba90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:a85574a18afcb200054e4be0dfcdba90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674eb347b742f0d6a34095d0234a7b28"><td class="memItemLeft" align="right" valign="top"><a id="a674eb347b742f0d6a34095d0234a7b28"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a> = typename buffer_base_traits::buffer_base_pointer</td></tr>
+<tr class="memdesc:a674eb347b742f0d6a34095d0234a7b28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:a674eb347b742f0d6a34095d0234a7b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; AllocatorBase &gt;</a></td></tr>
 <tr class="memitem:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memItemLeft" align="right" valign="top"><a id="a7e74500695d4b9ef7768743fe6c1e29b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> = AllocatorBase</td></tr>
@@ -172,9 +181,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae794aa8350808fb7899f261649999022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a3609509b339a0cc576a78aac85f80310">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ae794aa8350808fb7899f261649999022">allocate</a> (<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#affd352a5c60cd78b9590c3a2dfdbc131">layout_pointer</a> playout)</td></tr>
+<tr class="memitem:ae794aa8350808fb7899f261649999022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ae794aa8350808fb7899f261649999022">allocate</a> (<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a7c41f07604a8d96a5ade2fc5f3ee060f">layout_pointer</a> playout)</td></tr>
 <tr class="memdesc:ae794aa8350808fb7899f261649999022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphically allocates a new buffer.  <a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ae794aa8350808fb7899f261649999022">More...</a><br /></td></tr>
 <tr class="separator:ae794aa8350808fb7899f261649999022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefe6baa4fd2d8a371e5f4f4cd98f67c8"><td class="memItemLeft" align="right" valign="top"><a id="aefe6baa4fd2d8a371e5f4f4cd98f67c8"></a>
+<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b> (<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#af363bbc28383d11bffa29f47ba5cf395">const_layout_reference</a> layout)</td></tr>
+<tr class="separator:aefe6baa4fd2d8a371e5f4f4cd98f67c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a100f87f7c9f9a7ec05b2848e231fb52a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a42cd4f9c201c9727a70b7f20d061111a">runtime_view_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a100f87f7c9f9a7ec05b2848e231fb52a">runtime</a> () noexcept</td></tr>
 <tr class="memdesc:a100f87f7c9f9a7ec05b2848e231fb52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The runtime *this uses for allocating.  <a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a100f87f7c9f9a7ec05b2848e231fb52a">More...</a><br /></td></tr>
 <tr class="separator:a100f87f7c9f9a7ec05b2848e231fb52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,7 +228,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a12f2466d567563a185cd2e0d8386b849"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a12f2466d567563a185cd2e0d8386b849">AllocatorBase</a> (const <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html">AllocatorBase</a> &amp;other)=default</td></tr>
 <tr class="memdesc:a12f2466d567563a185cd2e0d8386b849"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates *this so that it uses the same runtime as <code>other</code>.  <a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a12f2466d567563a185cd2e0d8386b849">More...</a><br /></td></tr>
 <tr class="separator:a12f2466d567563a185cd2e0d8386b849"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad00c2c0c84a221ab7e6370f54d12408d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a3609509b339a0cc576a78aac85f80310">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ad00c2c0c84a221ab7e6370f54d12408d">allocate_</a> (<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#affd352a5c60cd78b9590c3a2dfdbc131">layout_pointer</a> playout)=0</td></tr>
+<tr class="memitem:ad00c2c0c84a221ab7e6370f54d12408d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ad00c2c0c84a221ab7e6370f54d12408d">allocate_</a> (<a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a7c41f07604a8d96a5ade2fc5f3ee060f">layout_pointer</a> playout)=0</td></tr>
 <tr class="memdesc:ad00c2c0c84a221ab7e6370f54d12408d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived classes should overwrite in order to implement allocate.  <a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ad00c2c0c84a221ab7e6370f54d12408d">More...</a><br /></td></tr>
 <tr class="separator:ad00c2c0c84a221ab7e6370f54d12408d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; AllocatorBase &gt;</a></td></tr>
@@ -335,9 +347,9 @@ virtual <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.ht
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a3609509b339a0cc576a78aac85f80310">buffer_base_pointer</a> tensorwrapper::allocator::AllocatorBase::allocate </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a> tensorwrapper::allocator::AllocatorBase::allocate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#affd352a5c60cd78b9590c3a2dfdbc131">layout_pointer</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a7c41f07604a8d96a5ade2fc5f3ee060f">layout_pointer</a>&#160;</td>
           <td class="paramname"><em>playout</em></td><td>)</td>
           <td></td>
         </tr>
@@ -372,9 +384,9 @@ virtual <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.ht
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a3609509b339a0cc576a78aac85f80310">buffer_base_pointer</a> tensorwrapper::allocator::AllocatorBase::allocate_ </td>
+          <td class="memname">virtual <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a674eb347b742f0d6a34095d0234a7b28">buffer_base_pointer</a> tensorwrapper::allocator::AllocatorBase::allocate_ </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#affd352a5c60cd78b9590c3a2dfdbc131">layout_pointer</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#a7c41f07604a8d96a5ade2fc5f3ee060f">layout_pointer</a>&#160;</td>
           <td class="paramname"><em>playout</em></td><td>)</td>
           <td></td>
         </tr>
@@ -402,7 +414,7 @@ virtual <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.ht
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a57127b21eb1c98c076901894262fd9a4">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a979c0bf80c4c8c8589653872748e3af1">tensorwrapper::allocator::Eigen&lt; FloatType &gt;</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,7 @@
+<map id="tensorwrapper::allocator::Contiguous&lt; FloatType &gt;" name="tensorwrapper::allocator::Contiguous&lt; FloatType &gt;">
+<area shape="rect" id="node1" title="Allocator that can create Contiguous buffers." alt="" coords="19,377,215,419"/>
+<area shape="rect" id="node2" href="$classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="26,288,207,329"/>
+<area shape="rect" id="node3" href="$classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="26,199,207,240"/>
+<area shape="rect" id="node4" href="$classtensorwrapper_1_1allocator_1_1AllocatorBase.html" title="Common base class for all allocators." alt="" coords="26,109,207,151"/>
+<area shape="rect" id="node5" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,228,61"/>
+</map>

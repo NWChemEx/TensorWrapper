@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.46</span>
+   &#160;<span id="projectnumber">0.0.47</span>
    </div>
   </td>
  </tr>
@@ -81,7 +81,7 @@ $(function() {
 <area shape="rect" href="classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,39,677,80"/>
 <area shape="rect" href="classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,39,888,80"/>
 <area shape="rect" href="classtensorwrapper_1_1buffer_1_1Contiguous.html" title="Denotes that a buffer is held contiguously." alt="" coords="936,39,1132,80"/>
-<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor." alt="" coords="1180,39,1380,80"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object." alt="" coords="1180,39,1343,80"/>
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,71,256,112"/>
 </map>
 </td></tr>
@@ -149,7 +149,8 @@ $(function() {
 <area shape="rect" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html" title="Common base class for all allocators." alt="" coords="276,13,457,54"/>
 <area shape="rect" href="classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="505,13,687,54"/>
 <area shape="rect" href="classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="735,13,916,54"/>
-<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="964,13,1164,54"/>
+<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers." alt="" coords="964,13,1160,54"/>
+<area shape="rect" href="classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="1208,13,1389,54"/>
 </map>
 </td></tr>
 <tr><td><img src="inherit_graph_11.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01BaseType_01_4" alt=""/>
@@ -157,71 +158,103 @@ $(function() {
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title="Defines the API polymorphic utility methods should use." alt="" coords="5,5,248,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_12.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01Operation_01_4" alt=""/>
+<tr><td><img src="inherit_graph_12.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01EigenPIMPL_3_01FloatType_01_4_01_4" alt=""/>
+<map name="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01EigenPIMPL_3_01FloatType_01_4_01_4" id="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01EigenPIMPL_3_01FloatType_01_4_01_4">
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,245,61"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html" title="Common API that type&#45;erases Eigen&#39;s many tensor classes." alt="" coords="293,5,456,61"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenTensor.html" title="Implements EigenPIMPL by wrapping eigen::Tensor." alt="" coords="504,5,667,61"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_13.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01Operation_01_4" alt=""/>
 <map name="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01Operation_01_4" id="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01Operation_01_4">
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,249,47"/>
 <area shape="rect" href="classtensorwrapper_1_1symmetry_1_1Operation.html" title="Common API for classes describing a symmetry operation." alt="" coords="297,5,488,47"/>
 <area shape="rect" href="classtensorwrapper_1_1symmetry_1_1Permutation.html" title="Describes a permutation of a tensor&#39;s modes." alt="" coords="536,5,727,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_13.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01SmoothViewPIMPL_3_01SmoothType_01_4_01_4" alt=""/>
+<tr><td><img src="inherit_graph_14.png" border="0" usemap="#atensorwrapper_1_1detail___1_1PolymorphicBase_3_01SmoothViewPIMPL_3_01SmoothType_01_4_01_4" alt=""/>
 <map name="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01SmoothViewPIMPL_3_01SmoothType_01_4_01_4" id="atensorwrapper_1_1detail___1_1PolymorphicBase_3_01SmoothViewPIMPL_3_01SmoothType_01_4_01_4">
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,252,61"/>
 <area shape="rect" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html" title="Defines the API for all SmoothView PIMPLs." alt="" coords="300,5,503,61"/>
 <area shape="rect" href="classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html" title="Implements SmoothView by wrapping a Smooth object." alt="" coords="551,5,715,61"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_14.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorFactory" alt=""/>
+<tr><td><img src="inherit_graph_15.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorFactory" alt=""/>
 <map name="atensorwrapper_1_1detail___1_1TensorFactory" id="atensorwrapper_1_1detail___1_1TensorFactory">
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1TensorFactory.html" title="Object which helps create tensor objects." alt="" coords="5,5,167,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_15.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorInput" alt=""/>
+<tr><td><img src="inherit_graph_16.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorInput" alt=""/>
 <map name="atensorwrapper_1_1detail___1_1TensorInput" id="atensorwrapper_1_1detail___1_1TensorInput">
 <area shape="rect" href="structtensorwrapper_1_1detail___1_1TensorInput.html" title="Type capable of holding all valid inputs to a Tensor&#39;s ctor." alt="" coords="5,5,167,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_16.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorPIMPL" alt=""/>
+<tr><td><img src="inherit_graph_17.png" border="0" usemap="#atensorwrapper_1_1detail___1_1TensorPIMPL" alt=""/>
 <map name="atensorwrapper_1_1detail___1_1TensorPIMPL" id="atensorwrapper_1_1detail___1_1TensorPIMPL">
 <area shape="rect" href="classtensorwrapper_1_1detail___1_1TensorPIMPL.html" title="Actually implements a Tensor object." alt="" coords="5,5,167,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_17.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4" alt=""/>
+<tr><td><img src="inherit_graph_18.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4" alt=""/>
 <map name="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4" id="atensorwrapper_1_1dsl_1_1Labeled_3_01ObjectType_00_01StringType_01_4">
 <area shape="rect" title=" " alt="" coords="5,20,144,47"/>
 <area shape="rect" href="classtensorwrapper_1_1dsl_1_1Labeled.html" title="Represents an object whose modes are assigned dummy indices." alt="" coords="192,5,364,61"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_18.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1PairwiseParser" alt=""/>
+<tr><td><img src="inherit_graph_19.png" border="0" usemap="#atensorwrapper_1_1dsl_1_1PairwiseParser" alt=""/>
 <map name="atensorwrapper_1_1dsl_1_1PairwiseParser" id="atensorwrapper_1_1dsl_1_1PairwiseParser">
 <area shape="rect" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html" title="Object which evaluates the AST of an expression pairwise." alt="" coords="5,5,148,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_19.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4" alt=""/>
+<tr><td><img src="inherit_graph_20.png" border="0" usemap="#atensorwrapper_1_1layout_1_1Converter" alt=""/>
+<map name="atensorwrapper_1_1layout_1_1Converter" id="atensorwrapper_1_1layout_1_1Converter">
+<area shape="rect" href="classtensorwrapper_1_1layout_1_1Converter.html" title="Converts a logical layout into a physical layout." alt="" coords="5,5,171,47"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_21.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4" alt=""/>
 <map name="atensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4" id="atensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4">
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4.html" title=" " alt="" coords="5,5,168,61"/>
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01Smooth_01_4.html" title=" " alt="" coords="216,5,379,61"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_20.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4" alt=""/>
+<tr><td><img src="inherit_graph_22.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4" alt=""/>
 <map name="atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4" id="atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4">
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeBase_01_4.html" title=" " alt="" coords="5,5,212,47"/>
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits_3_01Smooth_01_4.html" title=" " alt="" coords="260,5,445,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_21.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeType_01_4" alt=""/>
+<tr><td><img src="inherit_graph_23.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeType_01_4" alt=""/>
 <map name="atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeType_01_4" id="atensorwrapper_1_1shape_1_1ShapeTraits_3_01ShapeType_01_4">
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits.html" title=" " alt="" coords="5,5,211,47"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_22.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4" alt=""/>
+<tr><td><img src="inherit_graph_24.png" border="0" usemap="#atensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4" alt=""/>
 <map name="atensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4" id="atensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4">
 <area shape="rect" href="structtensorwrapper_1_1shape_1_1ShapeTraits_3_01SmoothView_3_01T_01_4_01_4.html" title=" " alt="" coords="5,5,208,61"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_23.png" border="0" usemap="#atensorwrapper_1_1shape_1_1SmoothView_3_01SmoothType_01_4" alt=""/>
+<tr><td><img src="inherit_graph_25.png" border="0" usemap="#atensorwrapper_1_1shape_1_1SmoothView_3_01SmoothType_01_4" alt=""/>
 <map name="atensorwrapper_1_1shape_1_1SmoothView_3_01SmoothType_01_4" id="atensorwrapper_1_1shape_1_1SmoothView_3_01SmoothType_01_4">
 <area shape="rect" href="classtensorwrapper_1_1shape_1_1SmoothView.html" title="Wraps existing state in an API compatible with SmoothView." alt="" coords="5,5,228,47"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_26.png" border="0" usemap="#atensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1BufferBase_01_4" alt=""/>
+<map name="atensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1BufferBase_01_4" id="atensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1BufferBase_01_4">
+<area shape="rect" href="structtensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1BufferBase_01_4.html" title=" " alt="" coords="5,5,165,61"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_27.png" border="0" usemap="#atensorwrapper_1_1types_1_1ClassTraits_3_01ClassType_01_4" alt=""/>
+<map name="atensorwrapper_1_1types_1_1ClassTraits_3_01ClassType_01_4" id="atensorwrapper_1_1types_1_1ClassTraits_3_01ClassType_01_4">
+<area shape="rect" href="structtensorwrapper_1_1types_1_1ClassTraits.html" title="Defines the member types for the ClassType class." alt="" coords="5,5,200,47"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_28.png" border="0" usemap="#atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4" alt=""/>
+<map name="atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4" id="atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4">
+<area shape="rect" href="structtensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4.html" title=" " alt="" coords="5,5,189,47"/>
+</map>
+</td></tr>
+<tr><td><img src="inherit_graph_29.png" border="0" usemap="#atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_01Rank_01_4" alt=""/>
+<map name="atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_01Rank_01_4" id="atensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_01Rank_01_4">
+<area shape="rect" href="structtensorwrapper_1_1types_1_1ILTraits.html" title=" " alt="" coords="5,5,165,61"/>
 </map>
 </td></tr>
 </table>

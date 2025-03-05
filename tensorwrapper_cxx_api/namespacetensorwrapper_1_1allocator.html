@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.46</span>
+   &#160;<span id="projectnumber">0.0.47</span>
    </div>
   </td>
  </tr>
@@ -85,6 +85,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html">Eigen</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to allocate buffers which rely on <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors.">Eigen</a> tensors.  <a href="classtensorwrapper_1_1allocator_1_1Eigen.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1Contiguous.html">Contiguous</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator that can create <a class="el" href="classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers.">Contiguous</a> buffers.  <a href="classtensorwrapper_1_1allocator_1_1Contiguous.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1allocator_1_1Local.html">Local</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can create buffers that exist entirely in local memory.  <a href="classtensorwrapper_1_1allocator_1_1Local.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,18 +97,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a69735e79ad3c58eac93672888b6aa59b"><td class="memItemLeft" align="right" valign="top"><a id="a69735e79ad3c58eac93672888b6aa59b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DECLARE_EIGEN_ALLOCATOR</b> (float)</td></tr>
-<tr class="separator:a69735e79ad3c58eac93672888b6aa59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a880c6340829c9bb4b66a9577cde858e3"><td class="memItemLeft" align="right" valign="top"><a id="a880c6340829c9bb4b66a9577cde858e3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DECLARE_EIGEN_ALLOCATOR</b> (double)</td></tr>
-<tr class="separator:a880c6340829c9bb4b66a9577cde858e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9e8a803593bc335d85c84b1b367417b"><td class="memItemLeft" align="right" valign="top"><a id="aa9e8a803593bc335d85c84b1b367417b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_EIGEN_ALLOCATOR</b> (float)</td></tr>
-<tr class="separator:aa9e8a803593bc335d85c84b1b367417b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c4dba8a223dec1dd0ef918976bb8e7"><td class="memItemLeft" align="right" valign="top"><a id="aa6c4dba8a223dec1dd0ef918976bb8e7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_EIGEN_ALLOCATOR</b> (double)</td></tr>
-<tr class="separator:aa6c4dba8a223dec1dd0ef918976bb8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8df1c5484bd1fa321fbed89f962618a0"><td class="memItemLeft" align="right" valign="top"><a id="a8df1c5484bd1fa321fbed89f962618a0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TW_APPLY_FLOATING_POINT_TYPES</b> (DECLARE_EIGEN_ALLOCATOR)</td></tr>
+<tr class="separator:a8df1c5484bd1fa321fbed89f962618a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c2ac2afee7de7fdbb5ba3603f6036ff"><td class="memItemLeft" align="right" valign="top"><a id="a0c2ac2afee7de7fdbb5ba3603f6036ff"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TW_APPLY_FLOATING_POINT_TYPES</b> (DEFINE_EIGEN_ALLOCATOR)</td></tr>
+<tr class="separator:a0c2ac2afee7de7fdbb5ba3603f6036ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains classes related to allocating Buffer objects. </p>

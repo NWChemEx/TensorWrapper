@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.46</span>
+   &#160;<span id="projectnumber">0.0.47</span>
    </div>
   </td>
  </tr>
@@ -83,11 +83,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base class for all buffer objects.  <a href="classtensorwrapper_1_1buffer_1_1BufferBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A buffer which wraps an <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor.  <a href="classtensorwrapper_1_1buffer_1_1Eigen.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">Contiguous</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Denotes that a buffer is held contiguously.  <a href="classtensorwrapper_1_1buffer_1_1Contiguous.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A buffer which wraps an <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object.">Eigen</a> object.  <a href="classtensorwrapper_1_1buffer_1_1Eigen.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1Local.html">Local</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Establishes that the state in the buffer is obtainable without communication.  <a href="classtensorwrapper_1_1buffer_1_1Local.html#details">More...</a><br /></td></tr>
@@ -101,108 +101,22 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a998d6820244033782e1ff91329459c2d"><td class="memItemLeft" align="right" valign="top"><a id="a998d6820244033782e1ff91329459c2d"></a>
+<tr class="memitem:a531e5c8970f8d47d514eda1a56e7d469"><td class="memItemLeft" align="right" valign="top"><a id="a531e5c8970f8d47d514eda1a56e7d469"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_reference</b> = typename <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a></td></tr>
-<tr class="separator:a998d6820244033782e1ff91329459c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce6329a0801adda175e347340923e21"><td class="memItemLeft" align="right" valign="top"><a id="a2ce6329a0801adda175e347340923e21"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>const_labeled_reference</b> = typename <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; float, 0 &gt;::const_labeled_reference</td></tr>
-<tr class="separator:a2ce6329a0801adda175e347340923e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4956468c57ce5a9081247c57ae24dad"><td class="memItemLeft" align="right" valign="top"><a id="aa4956468c57ce5a9081247c57ae24dad"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>rank_type</b> = unsigned short</td></tr>
-<tr class="separator:aa4956468c57ce5a9081247c57ae24dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03bb4267c568267960cb484f42af305f"><td class="memItemLeft" align="right" valign="top"><a id="a03bb4267c568267960cb484f42af305f"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>return_type</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a></td></tr>
-<tr class="separator:a03bb4267c568267960cb484f42af305f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af17c251dba7484d9a50f4b66910796e1"><td class="memItemLeft" align="right" valign="top"><a id="af17c251dba7484d9a50f4b66910796e1"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = BufferBase::label_type</td></tr>
-<tr class="separator:af17c251dba7484d9a50f4b66910796e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a531e5c8970f8d47d514eda1a56e7d469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7d16b16c621e53904ddb7c6580f46469"><td class="memItemLeft" align="right" valign="top"><a id="a7d16b16c621e53904ddb7c6580f46469"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DECLARE_EIGEN_BUFFER</b> (float)</td></tr>
-<tr class="separator:a7d16b16c621e53904ddb7c6580f46469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4ddd9a27f50dc133fe7dc4dbda16ae3"><td class="memItemLeft" align="right" valign="top"><a id="ac4ddd9a27f50dc133fe7dc4dbda16ae3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DECLARE_EIGEN_BUFFER</b> (double)</td></tr>
-<tr class="separator:ac4ddd9a27f50dc133fe7dc4dbda16ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a591ea3e5a957330683693bd783f67920"><td class="memItemLeft" align="right" valign="top"><a id="a591ea3e5a957330683693bd783f67920"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_EIGEN_BUFFER</b> (float)</td></tr>
-<tr class="separator:a591ea3e5a957330683693bd783f67920"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99df0eb8c6b77e58db407ef78c9372b3"><td class="memItemLeft" align="right" valign="top"><a id="a99df0eb8c6b77e58db407ef78c9372b3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINE_EIGEN_BUFFER</b> (double)</td></tr>
-<tr class="separator:a99df0eb8c6b77e58db407ef78c9372b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae807bf969b9fea5b96e7baa20967067"><td class="memTemplParams" colspan="2"><a id="aae807bf969b9fea5b96e7baa20967067"></a>
-template&lt;typename FloatType , rank_type Rank, typename TensorType &gt; </td></tr>
-<tr class="memitem:aae807bf969b9fea5b96e7baa20967067"><td class="memTemplItemLeft" align="right" valign="top">FloatType *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get_data</b> (TensorType &amp;tensor)</td></tr>
-<tr class="separator:aae807bf969b9fea5b96e7baa20967067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52ebe9e8a83233660f5659cf95969389"><td class="memTemplParams" colspan="2"><a id="a52ebe9e8a83233660f5659cf95969389"></a>
-template&lt;typename TensorType &gt; </td></tr>
-<tr class="memitem:a52ebe9e8a83233660f5659cf95969389"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>matrix_size</b> (TensorType &amp;&amp;t, std::size_t row_ranks)</td></tr>
-<tr class="separator:a52ebe9e8a83233660f5659cf95969389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memTemplParams" colspan="2"><a id="a6f46c59626246f4e4195df0fbaaa2e64"></a>
-template&lt;typename FloatType , rank_type Rank&gt; </td></tr>
-<tr class="memitem:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memTemplItemLeft" align="right" valign="top">return_type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>eigen_contraction</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;result, label_type olabels, const_labeled_reference lhs, const_labeled_reference rhs)</td></tr>
-<tr class="separator:a6f46c59626246f4e4195df0fbaaa2e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24aa856602c496e3ec610ac1789579bc"><td class="memItemLeft" align="right" valign="top"><a id="a24aa856602c496e3ec610ac1789579bc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EIGEN_CONTRACTION</b> (float)</td></tr>
-<tr class="separator:a24aa856602c496e3ec610ac1789579bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af591e58a49e8655b27191573ea11ebd9"><td class="memItemLeft" align="right" valign="top"><a id="af591e58a49e8655b27191573ea11ebd9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EIGEN_CONTRACTION</b> (double)</td></tr>
-<tr class="separator:af591e58a49e8655b27191573ea11ebd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92eca1aff5194048115ea5e6bf53349c"><td class="memTemplParams" colspan="2">template&lt;typename FloatType , unsigned short Rank&gt; </td></tr>
-<tr class="memitem:a92eca1aff5194048115ea5e6bf53349c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1buffer.html#a92eca1aff5194048115ea5e6bf53349c">eigen_contraction</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;result, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">BufferBase::label_type</a> olabels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a> rhs)</td></tr>
-<tr class="memdesc:a92eca1aff5194048115ea5e6bf53349c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relatively template-free API for <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor contraction.  <a href="namespacetensorwrapper_1_1buffer.html#a92eca1aff5194048115ea5e6bf53349c">More...</a><br /></td></tr>
-<tr class="separator:a92eca1aff5194048115ea5e6bf53349c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e885f4aaddef0eca38aadda07fc75f"><td class="memItemLeft" align="right" valign="top"><a id="ae4e885f4aaddef0eca38aadda07fc75f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TW_APPLY_FLOATING_POINT_TYPES</b> (DECLARE_EIGEN_BUFFER)</td></tr>
+<tr class="separator:ae4e885f4aaddef0eca38aadda07fc75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada421583d00611a5e8c8e208aa2b61c8"><td class="memItemLeft" align="right" valign="top"><a id="ada421583d00611a5e8c8e208aa2b61c8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TW_APPLY_FLOATING_POINT_TYPES</b> (DEFINE_EIGEN_BUFFER)</td></tr>
+<tr class="separator:ada421583d00611a5e8c8e208aa2b61c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains classes need to wrap instances of the various backends. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a92eca1aff5194048115ea5e6bf53349c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92eca1aff5194048115ea5e6bf53349c">&#9670;&nbsp;</a></span>eigen_contraction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FloatType , unsigned short Rank&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">BufferBase::dsl_reference</a> tensorwrapper::buffer::eigen_contraction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt; FloatType, Rank &gt; &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">BufferBase::label_type</a>&#160;</td>
-          <td class="paramname"><em>olabels</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a>&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">BufferBase::const_labeled_reference</a>&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Relatively template-free API for <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> tensor contraction. </p>
-<p><a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a>'s tensor library relies on a heavy amount of template meta-programming to implement contract. TensorWrapper strives to do things at runtime. Ultimately, to have it both ways we need to create contraction dispatch instantiations for every combination of template parameters that <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen tensor.">Eigen</a> may end up seeing, that's what the functions in this header do. </p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1

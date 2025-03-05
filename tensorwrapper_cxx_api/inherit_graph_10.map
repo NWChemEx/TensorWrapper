@@ -3,5 +3,6 @@
 <area shape="rect" id="node2" href="$classtensorwrapper_1_1allocator_1_1AllocatorBase.html" title="Common base class for all allocators." alt="" coords="276,13,457,54"/>
 <area shape="rect" id="node3" href="$classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="505,13,687,54"/>
 <area shape="rect" id="node4" href="$classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="735,13,916,54"/>
-<area shape="rect" id="node5" href="$classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="964,13,1164,54"/>
+<area shape="rect" id="node5" href="$classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers." alt="" coords="964,13,1160,54"/>
+<area shape="rect" id="node6" href="$classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="1208,13,1389,54"/>
 </map>

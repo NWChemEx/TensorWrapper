@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.46</span>
+   &#160;<span id="projectnumber">0.0.47</span>
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aacb754acebdb8d12c93687a5a3eccfc1">tensorwrapper::detail_::DSLBase&lt; DerivedType, StringType &gt;</a>
 </li>
 <li>addition_assignment_()
-: <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#ada7d80f2fb4c77447a526978634220a1">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#ab926b6e8fa739e680fb9404d0cac17af">tensorwrapper::buffer::Eigen&lt; FloatType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a1261d0e2f3cc156aadb55aff0c848033">tensorwrapper::detail_::DSLBase&lt; DerivedType, StringType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#ac34c3dba76aeaa56a0445c6d629ff947">tensorwrapper::layout::LayoutBase</a>
 , <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html#ae7efbe182609d0bbd15f4960e32217cd">tensorwrapper::shape::Smooth</a>
@@ -79,14 +79,26 @@ $(function() {
 </li>
 <li>allocate()
 : <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ae794aa8350808fb7899f261649999022">tensorwrapper::allocator::AllocatorBase</a>
-, <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a6789d2a0a7fd762c5671e913b2f04d5a">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1allocator_1_1Contiguous.html#a343fe7daf8abe4321bfd06a37ab180dd">tensorwrapper::allocator::Contiguous&lt; FloatType &gt;</a>
 </li>
 <li>allocate_()
 : <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html#ad00c2c0c84a221ab7e6370f54d12408d">tensorwrapper::allocator::AllocatorBase</a>
-, <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a57127b21eb1c98c076901894262fd9a4">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a979c0bf80c4c8c8589653872748e3af1">tensorwrapper::allocator::Eigen&lt; FloatType &gt;</a>
+</li>
+<li>allocator()
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a32f1dda378ff9b9f6b5295aacc18310f">tensorwrapper::buffer::BufferBase</a>
 </li>
 <li>allocator_base
 : <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#aac944677287e1537e88b287388423df6">tensorwrapper::detail_::TensorInput</a>
+</li>
+<li>allocator_base_pointer
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ad912be0811e894bade6cc2fd211c2506">tensorwrapper::buffer::BufferBase</a>
+</li>
+<li>allocator_base_reference
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ab4efa6bd3d09e2d909fc438532d9a056">tensorwrapper::buffer::BufferBase</a>
+</li>
+<li>allocator_base_type
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5f5ac304b2f6953d6af42304d834a1b2">tensorwrapper::buffer::BufferBase</a>
 </li>
 <li>allocator_pointer
 : <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a3d1c2bdf9391585e8bba1362755b4762">tensorwrapper::detail_::TensorInput</a>
@@ -101,8 +113,9 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#aca6aec83f64355cc5d6b5cac49fc4308">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
 </li>
 <li>are_equal_()
-: <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a12eadc5645a6b4348bfad5c620e5e72a">tensorwrapper::allocator::Eigen&lt; FloatType, Rank &gt;</a>
-, <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a1a5d451cf00ec7f568e0350c96a7064d">tensorwrapper::buffer::Eigen&lt; FloatType, Rank &gt;</a>
+: <a class="el" href="classtensorwrapper_1_1allocator_1_1Eigen.html#a70bc4cdc2c695972a65d407f2a1addb5">tensorwrapper::allocator::Eigen&lt; FloatType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenTensor.html#a4f4cbad6009c627a4f2120509315f3a0">tensorwrapper::buffer::detail_::EigenTensor&lt; FloatType, Rank &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a3a9d6096f229182c6483f0c9d6d5dcb1">tensorwrapper::buffer::Eigen&lt; FloatType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#af8ee6d1b455b90cb25552ce6aec53d8f">tensorwrapper::detail_::PolymorphicBase&lt; BaseType &gt;</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#a3bef0d7cf78e3919fa9f45b0466bc17a">tensorwrapper::layout::Logical</a>
 , <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a1fd72079e5ba66dec9acbf671adb083d">tensorwrapper::layout::Physical</a>
@@ -134,7 +147,8 @@ $(function() {
 : <a class="el" href="classtensorwrapper_1_1detail___1_1TensorFactory.html#af83a91c613e7d9b22d1682ef9098453d">tensorwrapper::detail_::TensorFactory</a>
 </li>
 <li>at()
-: <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a44df5a4075800f2d50bd7831935e9e12">tensorwrapper::symmetry::Permutation</a>
+: <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html#aec3f5e35842fb303e4b6276312678316">tensorwrapper::buffer::Contiguous&lt; FloatType &gt;</a>
+, <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a44df5a4075800f2d50bd7831935e9e12">tensorwrapper::symmetry::Permutation</a>
 </li>
 <li>at_()
 : <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html#a3e2abb9719cca0bc1d48c8793d5dde00">tensorwrapper::dsl::DummyIndices&lt; StringType &gt;</a>

@@ -1,0 +1,5 @@
+<map id="tensorwrapper::buffer::detail_::EigenTensor&lt; FloatType, Rank &gt;" name="tensorwrapper::buffer::detail_::EigenTensor&lt; FloatType, Rank &gt;">
+<area shape="rect" id="node1" title="Implements EigenPIMPL by wrapping eigen::Tensor." alt="" coords="44,213,207,269"/>
+<area shape="rect" id="node2" href="$classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html" title="Common API that type&#45;erases Eigen&#39;s many tensor classes." alt="" coords="44,109,207,165"/>
+<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,245,61"/>
+</map>
