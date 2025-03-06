@@ -21,9 +21,6 @@
 
 namespace tensorwrapper {
 
-using float_type  = double;
-using buffer_type = buffer::Contiguous<float_type>;
-
 template<typename FloatType>
 auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
     using size_type       = std::size_t;
@@ -46,15 +43,39 @@ auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
                                  strides);
 }
 
+auto make_tensor(pybind11::buffer b) {
+    pybind11::buffer_info info = b.request();
+    if(info.format != pybind11::format_descriptor<double>::format())
+        throw std::runtime_error(
+          "Incompatible format: expected a double array!");
+
+    std::vector<std::size_t> dims(info.ndim);
+    for(auto i = 0; i < info.ndim; ++i) { dims[i] = info.shape[i]; }
+
+    parallelzone::runtime::RuntimeView rv = {};
+    allocator::Eigen<double> allocator(rv);
+    shape::Smooth matrix_shape{dims.begin(), dims.end()};
+    layout::Physical matrix_layout(matrix_shape);
+    auto pBuffer = allocator.allocate(matrix_layout);
+
+    auto n_elements = std::accumulate(dims.begin(), dims.end(), 1,
+                                      std::multiplies<std::size_t>());
+    for(auto i = 0; i < n_elements; ++i)
+        pBuffer->data()[i] = static_cast<double*>(info.ptr)[i];
+
+    return Tensor(matrix_shape, std::move(pBuffer));
+}
+
 void export_tensor(py_module_reference m) {
     py_class_type<Tensor>(m, "Tensor", pybind11::buffer_protocol())
       .def(pybind11::init<>())
+      .def(pybind11::init([](pybind11::buffer b) { return make_tensor(b); }))
       .def("rank", &Tensor::rank)
       .def(pybind11::self == pybind11::self)
       .def(pybind11::self != pybind11::self)
       .def("__str__", [](Tensor& self) { return self.to_string(); })
       .def_buffer([](Tensor& t) {
-          auto pbuffer = dynamic_cast<buffer_type*>(&t.buffer());
+          auto pbuffer = dynamic_cast<buffer::Contiguous<double>*>(&t.buffer());
           if(pbuffer == nullptr)
               throw std::runtime_error("Expected buffer to hold doubles");
           return make_buffer_info(*pbuffer);

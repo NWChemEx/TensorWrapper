@@ -20,17 +20,30 @@ import unittest
 
 class TestTensor(unittest.TestCase):
 
-    def test_ctor(self):
+    def test_rank(self):
+        with self.assertRaises(RuntimeError):
+            self.defaulted.rank()
         self.assertEqual(self.scalar.rank(), 0)
         self.assertEqual(self.vector.rank(), 1)
         self.assertEqual(self.matrix.rank(), 2)
+        self.assertEqual(self.scalar_from_cpp.rank(), 0)
+        self.assertEqual(self.vector_from_cpp.rank(), 1)
+        self.assertEqual(self.matrix_from_cpp.rank(), 2)
+
+    def test_equality(self):
+        self.assertTrue(self.scalar == self.scalar_from_cpp)
+        self.assertTrue(self.vector == self.vector_from_cpp)
+        self.assertTrue(self.matrix == self.matrix_from_cpp)
+
+    def test_inequality(self):
+        self.assertTrue(self.defaulted != self.scalar)
 
     def test_numpy(self):
         np_scalar = np.array(self.scalar)
         np_vector = np.array(self.vector)
         np_matrix = np.array(self.matrix)
 
-        scalar_corr = np.array(42)
+        scalar_corr = np.array(42.0)
         vector_corr = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
         matrix_corr = np.array([[1.0, 2.0], [3.0, 4.0]])
         self.assertFalse((np_scalar - scalar_corr).any())
@@ -38,6 +51,10 @@ class TestTensor(unittest.TestCase):
         self.assertFalse((np_matrix - matrix_corr).any())
 
     def setUp(self):
-        self.scalar = testing.get_scalar()
-        self.vector = testing.get_vector()
-        self.matrix = testing.get_matrix()
+        self.defaulted = tensorwrapper.Tensor()
+        self.scalar = tensorwrapper.Tensor(np.array(42.0))
+        self.vector = tensorwrapper.Tensor(np.array([0.0, 1.0, 2.0, 3.0, 4.0]))
+        self.matrix = tensorwrapper.Tensor(np.array([[1.0, 2.0], [3.0, 4.0]]))
+        self.scalar_from_cpp = testing.get_scalar()
+        self.vector_from_cpp = testing.get_vector()
+        self.matrix_from_cpp = testing.get_matrix()
