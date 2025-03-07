@@ -160,7 +160,7 @@ public:
      *
      *  @note This method is meant primarily for logging/debugging and NOT for
      *        serialization or archival.
-     * 
+     *
      *  @param[in] os The stream to add *this to.
      *
      *  @return The modified stream with *this added to it.
