@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.48</span>
+   &#160;<span id="projectnumber">0.0.49</span>
    </div>
   </td>
  </tr>
@@ -191,25 +191,27 @@ $(function() {
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
 <div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a4cbb937bf9e20e36bf82a423abab8fa3">  225</a></span>&#160;    typename <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">polymorphic_base</a>::<a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ad72659a6f55ee9bae43e1087aa1b086b">string_type</a> <a class="code" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a4cbb937bf9e20e36bf82a423abab8fa3">to_string_</a>() const override;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;private:</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordtype">bool</span> has_pimpl_() const noexcept;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">void</span> assert_pimpl_() const;</div>
+<div class="line"><a name="l00228"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a39d6263d18ced397cc0446c3f625f93b">  228</a></span>&#160;    std::ostream&amp; <a class="code" href="classtensorwrapper_1_1buffer_1_1Eigen.html#a39d6263d18ced397cc0446c3f625f93b">add_to_stream_</a>(std::ostream&amp; os) const override;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;private:</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">bool</span> has_pimpl_() const noexcept;</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">pimpl_reference</a> pimpl_();</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keywordtype">void</span> assert_pimpl_() const;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> pimpl_() const;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">pimpl_reference</a> pimpl_();</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    pimpl_pointer m_pimpl_;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;};</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="preprocessor">#define DECLARE_EIGEN_BUFFER(TYPE) extern template class Eigen&lt;TYPE&gt;</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_EIGEN_BUFFER);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="preprocessor">#undef DECLARE_EIGEN_BUFFER</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> pimpl_() const;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    pimpl_pointer m_pimpl_;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;};</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="preprocessor">#define DECLARE_EIGEN_BUFFER(TYPE) extern template class Eigen&lt;TYPE&gt;</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_EIGEN_BUFFER);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="preprocessor">#undef DECLARE_EIGEN_BUFFER</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
 <div class="ttc" id="aclasstensorwrapper_1_1allocator_1_1AllocatorBase_html"><div class="ttname"><a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html">tensorwrapper::allocator::AllocatorBase</a></div><div class="ttdoc">Common base class for all allocators.</div><div class="ttdef"><b>Definition:</b> allocator_base.hpp:31</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></div><div class="ttdoc">Common base class for all buffer objects.</div><div class="ttdef"><b>Definition:</b> buffer_base.hpp:32</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html_a07d840ac6ddab88ad0008b16eec99de6"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a07d840ac6ddab88ad0008b16eec99de6">tensorwrapper::buffer::BufferBase::const_buffer_base_reference</a></div><div class="ttdeci">typename my_traits::const_buffer_base_reference const_buffer_base_reference</div><div class="ttdoc">Type of a reference to a read-only object of type buffer_base_type.</div><div class="ttdef"><b>Definition:</b> buffer_base.hpp:53</div></div>
@@ -237,6 +239,7 @@ $(function() {
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a225b490cbe4c1f5e1661782558fb9eab"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a225b490cbe4c1f5e1661782558fb9eab">tensorwrapper::buffer::Eigen::data_</a></div><div class="ttdeci">pointer data_() noexcept override</div><div class="ttdoc">Implements getting the raw pointer.</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a2a528984ac7579e872d8c433d239f3f1"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a2a528984ac7579e872d8c433d239f3f1">tensorwrapper::buffer::Eigen::subtraction_assignment_</a></div><div class="ttdeci">dsl_reference subtraction_assignment_(label_type this_labels, const_labeled_reference lhs, const_labeled_reference rhs) override</div><div class="ttdoc">Calls subtraction_assignment on each member.</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a3943eb1f5ffe46fe7e583d1489c853a0"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a3943eb1f5ffe46fe7e583d1489c853a0">tensorwrapper::buffer::Eigen::~Eigen</a></div><div class="ttdeci">~Eigen() noexcept</div><div class="ttdoc">Defaulted no throw dtor.</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a39d6263d18ced397cc0446c3f625f93b"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a39d6263d18ced397cc0446c3f625f93b">tensorwrapper::buffer::Eigen::add_to_stream_</a></div><div class="ttdeci">std::ostream &amp; add_to_stream_(std::ostream &amp;os) const override</div><div class="ttdoc">Implements add_to_stream.</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a3a9d6096f229182c6483f0c9d6d5dcb1"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a3a9d6096f229182c6483f0c9d6d5dcb1">tensorwrapper::buffer::Eigen::are_equal_</a></div><div class="ttdeci">bool are_equal_(const_buffer_base_reference rhs) const noexcept override</div><div class="ttdoc">Implements are_equal by calling are_equal_impl_.</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a48e58af492368f9a800c40ba95c30e87"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a48e58af492368f9a800c40ba95c30e87">tensorwrapper::buffer::Eigen::get_elem_</a></div><div class="ttdeci">reference get_elem_(index_vector index) override</div><div class="ttdoc">Implements mutable element access.</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Eigen_html_a4cbb937bf9e20e36bf82a423abab8fa3"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Eigen.html#a4cbb937bf9e20e36bf82a423abab8fa3">tensorwrapper::buffer::Eigen::to_string_</a></div><div class="ttdeci">polymorphic_base::string_type to_string_() const override</div><div class="ttdoc">Implements to_string.</div></div>
