@@ -203,7 +203,9 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         std::stringstream ss, ss_corr;
         ss << std::fixed << std::setprecision(4);
         scalar.add_to_stream(ss);
-        REQUIRE(ss.str() == "1.0000");
+        ss_corr << std::fixed << std::setprecision(4);
+        ss_corr << TestType{1.0};
+        REQUIRE(ss.str() == ss_corr.str());
         REQUIRE_FALSE(ss.str() == scalar.to_string());
     }
 
