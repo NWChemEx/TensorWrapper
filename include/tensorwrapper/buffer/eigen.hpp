@@ -224,6 +224,9 @@ protected:
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;
 
+    /// Implements add_to_stream
+    std::ostream& add_to_stream_(std::ostream& os) const override;
+
 private:
     /// True if *this has a PIMPL
     bool has_pimpl_() const noexcept;

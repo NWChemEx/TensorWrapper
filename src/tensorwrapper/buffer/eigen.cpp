@@ -177,6 +177,10 @@ TPARAMS
 typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {
     return m_pimpl_ ? m_pimpl_->to_string() : "";
 }
+TPARAMS
+std::ostream& EIGEN::add_to_stream_(std::ostream& os) const {
+    return m_pimpl_ ? m_pimpl_->add_to_stream(os) : os;
+}
 
 // -- Private methods
 

@@ -153,6 +153,22 @@ public:
      */
     auto to_string() const { return to_string_(); }
 
+    /** @brief Adds a string representation of *this to the stream.
+     *
+     *  This uses `to_string` by default a polymorphic, but allows for better
+     *  optimization of the stream output for specific instances
+     *
+     *  @note This method is meant primarily for logging/debugging and NOT for
+     *        serialization or archival.
+     *
+     *  @param[in] os The stream to add *this to.
+     *
+     *  @return The modified stream with *this added to it.
+     */
+    std::ostream& add_to_stream(std::ostream& os) const {
+        return add_to_stream_(os);
+    }
+
 protected:
     /** @brief No-op default ctor
      *
@@ -227,12 +243,17 @@ protected:
 
     /// Should be overridden by the derived class to provide logging details.
     virtual string_type to_string_() const { return "{?}"; }
+
+    /// Should be overridden by the derived class to provide logging details
+    virtual std::ostream& add_to_stream_(std::ostream& os) const {
+        return os << this->to_string();
+    }
 };
 
 /// Implements printing via ostream for objects deriving from PolymorphicBase
 template<typename T>
 inline std::ostream& operator<<(std::ostream& os, const PolymorphicBase<T>& b) {
-    return os << b.to_string();
+    return b.add_to_stream(os);
 }
 
 } // namespace tensorwrapper::detail_
