@@ -15,6 +15,7 @@
  */
 
 #include "../../testing/testing.hpp"
+#include <iomanip>
 #include <tensorwrapper/buffer/detail_/eigen_tensor.hpp>
 
 using namespace tensorwrapper;
@@ -196,6 +197,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
 
         REQUIRE(scalar.to_string() == sone.str());
         REQUIRE(vector.to_string() == sone.str() + " " + stwo.str());
+    }
+
+    SECTION("add_to_stream_") {
+        std::stringstream ss, ss_corr;
+        ss << std::fixed << std::setprecision(4);
+        scalar.add_to_stream(ss);
+        REQUIRE(ss.str() == "1.0000");
+        REQUIRE_FALSE(ss.str() == scalar.to_string());
     }
 
     SECTION("addition_assignment_") {

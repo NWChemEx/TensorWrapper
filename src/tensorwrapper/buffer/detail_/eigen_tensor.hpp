@@ -103,6 +103,10 @@ protected:
         return ss.str();
     }
 
+    std::ostream& add_to_stream_(std::ostream& os) const override {
+        return os << m_tensor_;
+    }
+
     void addition_assignment_(label_type this_labels, label_type lhs_labels,
                               label_type rhs_labels, const_pimpl_reference lhs,
                               const_pimpl_reference rhs) override;
