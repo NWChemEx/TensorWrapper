@@ -266,9 +266,11 @@ private:
         const auto rank = other.object().rank();
         const auto n    = other.labels().size();
         if(rank == n) return;
-        throw std::runtime_error(
-          std::to_string(n) + " dummy indices is incompatible with an object"
-                              " with rank " = std::to_string(rank));
+        auto msg = std::to_string(n) +
+                   " dummy indices is incompatible with an object"
+                   " with rank  =" +
+                   std::to_string(rank);
+        throw std::runtime_error(msg);
     }
 
     /// Checks that @p output is a subset of @p input
