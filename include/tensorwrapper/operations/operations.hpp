@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/operations/approximately_equal.hpp>
+#include <tensorwrapper/operations/norm.hpp>
 
 /// Namespace for free functions that act on tensors
 namespace tensorwrapper::operations {}
