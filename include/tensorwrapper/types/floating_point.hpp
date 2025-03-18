@@ -28,6 +28,19 @@ using udouble = sigma::UDouble;
 
 using floating_point_types = std::tuple<float, double, ufloat, udouble>;
 
+template<typename T>
+constexpr bool is_uncertain_v =
+  std::is_same_v<T, ufloat> || std::is_same_v<T, udouble>;
+
+template<typename T>
+T fabs(T value) {
+    if constexpr(is_uncertain_v<T>) {
+        return sigma::fabs(value);
+    } else {
+        return std::fabs(value);
+    }
+}
+
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
@@ -39,6 +52,14 @@ using ufloat  = float;
 using udouble = double;
 
 using floating_point_types = std::tuple<float, double>;
+
+template<typename>
+constexpr bool is_uncertain_v = false;
+
+template<typename T>
+T fabs(T value) {
+    return std::fabs(value);
+}
 
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \

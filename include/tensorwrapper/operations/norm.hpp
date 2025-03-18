@@ -15,8 +15,19 @@
  */
 
 #pragma once
-#include <tensorwrapper/operations/approximately_equal.hpp>
-#include <tensorwrapper/operations/norm.hpp>
+#include <tensorwrapper/tensor/tensor.hpp>
 
-/// Namespace for free functions that act on tensors
-namespace tensorwrapper::operations {}
+namespace tensorwrapper::operations {
+
+/** @brief Returns the infinity norm of @p t.
+ *
+ *  The infinity norm of the tensor @p t is the element of @p t with the
+ *  largest absolute value.
+ *
+ *  @param[in] t The tensor to take the norm of.
+ *
+ *  @return The infinity norm of @p t.
+ */
+Tensor infinity_norm(const Tensor& t);
+
+} // namespace tensorwrapper::operations
