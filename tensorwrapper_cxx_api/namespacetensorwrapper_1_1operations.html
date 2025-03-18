@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.50</span>
+   &#160;<span id="projectnumber">0.0.51</span>
    </div>
   </td>
  </tr>
@@ -81,6 +81,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a23fd7e586895b7ba7dd1b1744bc86198"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1operations.html#a23fd7e586895b7ba7dd1b1744bc86198">approximately_equal</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;lhs, const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;rhs, double tol=1e-16)</td></tr>
 <tr class="memdesc:a23fd7e586895b7ba7dd1b1744bc86198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if <code>lhs</code> equals <code>rhs</code> to within <code>tol</code>.  <a href="namespacetensorwrapper_1_1operations.html#a23fd7e586895b7ba7dd1b1744bc86198">More...</a><br /></td></tr>
 <tr class="separator:a23fd7e586895b7ba7dd1b1744bc86198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ad2307c3313361a128e76f7401b78d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1operations.html#ad8ad2307c3313361a128e76f7401b78d">infinity_norm</a> (const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;t)</td></tr>
+<tr class="memdesc:ad8ad2307c3313361a128e76f7401b78d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the infinity norm of <code>t</code>.  <a href="namespacetensorwrapper_1_1operations.html#ad8ad2307c3313361a128e76f7401b78d">More...</a><br /></td></tr>
+<tr class="separator:ad8ad2307c3313361a128e76f7401b78d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace for free functions that act on tensors. </p>
@@ -137,6 +140,34 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad8ad2307c3313361a128e76f7401b78d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ad2307c3313361a128e76f7401b78d">&#9670;&nbsp;</a></span>infinity_norm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> tensorwrapper::operations::infinity_norm </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the infinity norm of <code>t</code>. </p>
+<p>The infinity norm of the tensor <code>t</code> is the element of <code>t</code> with the largest absolute value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>The tensor to take the norm of.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The infinity norm of <code>t</code>. </dd></dl>
 
 </div>
 </div>
