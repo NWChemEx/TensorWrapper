@@ -33,9 +33,9 @@ auto make_allocator() {
 }
 
 template<typename FloatType>
-auto eigen_scalar() {
+auto eigen_scalar(FloatType value = 42.0) {
     auto alloc = make_allocator<FloatType>();
-    return alloc.construct(42.0);
+    return alloc.construct(value);
 }
 
 template<typename FloatType>
