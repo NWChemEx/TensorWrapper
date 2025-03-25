@@ -17,6 +17,7 @@
 #pragma once
 #include <tensorwrapper/buffer/replicated.hpp>
 #include <tensorwrapper/detail_/integer_utilities.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -136,5 +137,11 @@ protected:
     /// Derived class should implement according to operator()()const
     virtual const_reference get_elem_(index_vector index) const = 0;
 };
+
+#define DECLARE_CONTIG_BUFFER(TYPE) extern template class Contiguous<TYPE>
+
+TW_APPLY_FLOATING_POINT_TYPES(DECLARE_CONTIG_BUFFER);
+
+#undef DECLARE_CONTIG_BUFFER
 
 } // namespace tensorwrapper::buffer
