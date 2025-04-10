@@ -62,6 +62,15 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
 
         scalar2.get_elem({}) = 42.0;
         REQUIRE_FALSE(scalar2 == scalar);
+
+        if constexpr(types::is_uncertain_v<TestType>) {
+            SECTION("Check Error Sources Match") {
+                pimpl_type<TestType, 0> uscalar(shape_type{});
+                uscalar.get_elem({}) = TestType(1.0, 0.0);
+                pimpl_type<TestType, 0> uscalar2(uscalar);
+                REQUIRE(uscalar2 == uscalar);
+            }
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -250,12 +259,12 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
             corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 8.0;
-            corr.get_elem({0, 1, 0}) = 8.0;
-            corr.get_elem({0, 1, 1}) = 14.0;
-            corr.get_elem({1, 0, 0}) = 4.0;
-            corr.get_elem({1, 0, 1}) = 10.0;
-            corr.get_elem({1, 1, 0}) = 10.0;
+            corr.get_elem({0, 0, 1}) = 7.0;
+            corr.get_elem({0, 1, 0}) = 6.0;
+            corr.get_elem({0, 1, 1}) = 11.0;
+            corr.get_elem({1, 0, 0}) = 7.0;
+            corr.get_elem({1, 0, 1}) = 12.0;
+            corr.get_elem({1, 1, 0}) = 11.0;
             corr.get_elem({1, 1, 1}) = 16.0;
             REQUIRE(output == corr);
         }
@@ -270,12 +279,12 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
             corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 8.0;
-            corr.get_elem({0, 1, 0}) = 8.0;
-            corr.get_elem({0, 1, 1}) = 14.0;
-            corr.get_elem({1, 0, 0}) = 4.0;
-            corr.get_elem({1, 0, 1}) = 10.0;
-            corr.get_elem({1, 1, 0}) = 10.0;
+            corr.get_elem({0, 0, 1}) = 7.0;
+            corr.get_elem({0, 1, 0}) = 6.0;
+            corr.get_elem({0, 1, 1}) = 11.0;
+            corr.get_elem({1, 0, 0}) = 7.0;
+            corr.get_elem({1, 0, 1}) = 12.0;
+            corr.get_elem({1, 1, 0}) = 11.0;
             corr.get_elem({1, 1, 1}) = 16.0;
             REQUIRE(output == corr);
         }

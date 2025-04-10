@@ -63,10 +63,10 @@ public:
     const_eigen_reference value() const noexcept { return m_tensor_; }
     ///@}
 
-    /// Tests for exact equality by taking the difference and comparing to 0.0
+    /// Tests for exact equality
     bool operator==(const my_type& rhs) const noexcept {
-        eigen::data_type<FloatType, 0> r = (m_tensor_ - rhs.m_tensor_).sum();
-        return r() == FloatType(0.0);
+        eigen::data_type<bool, 0> eq = (m_tensor_ == rhs.m_tensor_).all();
+        return eq();
     }
 
 protected:
