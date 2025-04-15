@@ -64,10 +64,7 @@ public:
     ///@}
 
     /// Tests for exact equality
-    bool operator==(const my_type& rhs) const noexcept {
-        eigen::data_type<bool, 0> eq = (m_tensor_ == rhs.m_tensor_).all();
-        return eq();
-    }
+    bool operator==(const my_type& rhs) const noexcept;
 
 protected:
     pimpl_pointer clone_() const override {

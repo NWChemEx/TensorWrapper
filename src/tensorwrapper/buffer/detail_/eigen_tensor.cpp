@@ -24,6 +24,12 @@ namespace tensorwrapper::buffer::detail_ {
 #define EIGEN_TENSOR EigenTensor<FloatType, Rank>
 
 TPARAMS
+bool EIGEN_TENSOR::operator==(const my_type& rhs) const noexcept {
+    eigen::data_type<bool, 0> eq = (m_tensor_ == rhs.m_tensor_).all();
+    return eq();
+}
+
+TPARAMS
 template<typename OperationType>
 void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
                                     label_type lhs_labels,
