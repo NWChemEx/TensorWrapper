@@ -73,6 +73,16 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         }
     }
 
+    SECTION("Hashing") {
+        auto scalar_hash = std::as_const(scalar).get_hash_();
+        auto matrix_hash = std::as_const(matrix).get_hash_();
+        auto tensor_hash = std::as_const(tensor).get_hash_();
+
+        std::cout << scalar_hash << std::endl;
+        std::cout << matrix_hash << std::endl;
+        std::cout << tensor_hash << std::endl;
+    }
+
     // -------------------------------------------------------------------------
     // -- Protected methods
     // -------------------------------------------------------------------------

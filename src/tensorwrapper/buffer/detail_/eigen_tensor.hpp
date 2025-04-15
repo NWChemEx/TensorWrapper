@@ -16,6 +16,7 @@
 
 #pragma once
 #include "eigen_pimpl.hpp"
+#include "hash_utilities.hpp"
 #include <sstream>
 #include <tensorwrapper/detail_/integer_utilities.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -65,6 +66,29 @@ public:
 
     /// Tests for exact equality
     bool operator==(const my_type& rhs) const noexcept;
+
+    using hash_type = hash_utilities::hash_type;
+
+    hash_type get_hash_() const {
+        if(m_hash_flag_) update_hash_();
+        return m_hash_;
+    }
+
+    // Computes the hash for the current state of *this
+    void update_hash_() const {
+        m_hash_ = hash_type{rank_()};
+        for(eigen_rank_type i = 0; i < rank_(); ++i)
+            hash_utilities::hash_input(m_hash_, extent_(i));
+        for(auto i = 0; i < m_tensor_.size(); ++i)
+            hash_utilities::hash_input(m_hash_, data_()[i]);
+        m_hash_flag_ = false;
+    }
+
+    // Tracks whether the hash needs to be redetermined
+    mutable bool m_hash_flag_ = true;
+
+    // Holds the computed hash value for this instance's state
+    mutable hash_type m_hash_;
 
 protected:
     pimpl_pointer clone_() const override {
