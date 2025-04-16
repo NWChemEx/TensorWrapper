@@ -21,12 +21,15 @@
 using namespace tensorwrapper;
 using namespace testing;
 
+using buffer::detail_::hash_utilities::hash_input;
+
 template<typename FloatType, unsigned int Rank>
 using pimpl_type = buffer::detail_::EigenTensor<FloatType, Rank>;
 using shape_type = shape::Smooth;
 
 // Should be the same regardless of template parameters
 using label_type = typename pimpl_type<double, 0>::label_type;
+using hash_type  = typename pimpl_type<double, 0>::hash_type;
 
 TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
     pimpl_type<TestType, 0> scalar(shape_type{});
@@ -57,11 +60,25 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
     // -------------------------------------------------------------------------
 
     SECTION("operator==") {
-        pimpl_type<TestType, 0> scalar2(scalar);
-        REQUIRE(scalar2 == scalar);
+        SECTION("Same State") {
+            pimpl_type<TestType, 0> scalar2(scalar);
+            REQUIRE(scalar2 == scalar);
+        }
 
-        scalar2.get_elem({}) = 42.0;
-        REQUIRE_FALSE(scalar2 == scalar);
+        SECTION("Different Value") {
+            pimpl_type<TestType, 0> scalar2(scalar);
+            scalar2.get_elem({}) = 42.0;
+            REQUIRE_FALSE(scalar2 == scalar);
+            // Ensure hash is recalculated after change
+            *(scalar2.data()) = 1.0;
+            REQUIRE(scalar2 == scalar);
+        }
+
+        SECTION("Different Extents") {
+            pimpl_type<TestType, 1> vector2(shape_type{1});
+            vector.get_elem({0}) = 1.0;
+            REQUIRE_FALSE(vector2 == vector);
+        }
 
         if constexpr(types::is_uncertain_v<TestType>) {
             SECTION("Check Error Sources Match") {
@@ -73,14 +90,24 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         }
     }
 
-    SECTION("Hashing") {
-        auto scalar_hash = std::as_const(scalar).get_hash_();
-        auto matrix_hash = std::as_const(matrix).get_hash_();
-        auto tensor_hash = std::as_const(tensor).get_hash_();
+    SECTION("get_hash") {
+        SECTION("scalar") {
+            hash_type scalar_hash = scalar.get_hash();
 
-        std::cout << scalar_hash << std::endl;
-        std::cout << matrix_hash << std::endl;
-        std::cout << tensor_hash << std::endl;
+            hash_type corr{std::as_const(scalar).rank()};
+            hash_input(corr, std::as_const(scalar).get_elem({}));
+            REQUIRE(scalar_hash == corr);
+        }
+        SECTION("vector") {
+            hash_type vector_hash = vector.get_hash();
+
+            using buffer::detail_::hash_utilities::hash_input;
+            hash_type corr{std::as_const(vector).rank()};
+            hash_input(corr, std::as_const(vector).extent(0));
+            hash_input(corr, std::as_const(vector).get_elem({0}));
+            hash_input(corr, std::as_const(vector).get_elem({1}));
+            REQUIRE(vector_hash == corr);
+        }
     }
 
     // -------------------------------------------------------------------------

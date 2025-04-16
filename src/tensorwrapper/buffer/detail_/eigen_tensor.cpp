@@ -25,8 +25,7 @@ namespace tensorwrapper::buffer::detail_ {
 
 TPARAMS
 bool EIGEN_TENSOR::operator==(const my_type& rhs) const noexcept {
-    eigen::data_type<bool, 0> eq = (m_tensor_ == rhs.m_tensor_).all();
-    return eq();
+    return get_hash() == rhs.get_hash();
 }
 
 TPARAMS
@@ -67,6 +66,7 @@ void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
     } else { // Everything needs permuted
         m_tensor_ = op(lhs_eigen.shuffle(l_to_r), rhs_eigen).shuffle(this_to_r);
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -78,6 +78,7 @@ void EIGEN_TENSOR::addition_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs + rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
 }
 
 template<typename TensorType>
@@ -144,6 +145,7 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
     } else {
         m_tensor_ = tensor;
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -155,6 +157,7 @@ void EIGEN_TENSOR::hadamard_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs * rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -172,6 +175,7 @@ void EIGEN_TENSOR::permute_assignment_(label_type this_labels,
     } else {
         m_tensor_ = rhs_down->value();
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -189,6 +193,7 @@ void EIGEN_TENSOR::scalar_multiplication_(label_type this_labels,
     } else {
         m_tensor_ = rhs_downcasted->value() * scalar;
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -200,6 +205,17 @@ void EIGEN_TENSOR::subtraction_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs - rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
+}
+
+TPARAMS
+void EIGEN_TENSOR::update_hash_() const {
+    m_hash_ = hash_type{rank_()};
+    for(eigen_rank_type i = 0; i < rank_(); ++i)
+        hash_utilities::hash_input(m_hash_, extent_(i));
+    for(auto i = 0; i < m_tensor_.size(); ++i)
+        hash_utilities::hash_input(m_hash_, data_()[i]);
+    m_recalculate_hash_ = false;
 }
 
 #undef EIGEN_TENSOR

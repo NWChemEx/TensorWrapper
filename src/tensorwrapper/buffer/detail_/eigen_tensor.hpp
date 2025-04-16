@@ -51,6 +51,7 @@ public:
     using eigen_data_type             = eigen::data_type<FloatType, Rank>;
     using eigen_reference             = eigen_data_type&;
     using const_eigen_reference       = const eigen_data_type&;
+    using hash_type                   = hash_utilities::hash_type;
 
     EigenTensor() = default;
 
@@ -60,35 +61,22 @@ public:
 
     /// Get a mutable/read-only reference to the Eigen tensor object
     ///@{
-    eigen_reference value() noexcept { return m_tensor_; }
+    eigen_reference value() noexcept {
+        mark_for_rehash_();
+        return m_tensor_;
+    }
     const_eigen_reference value() const noexcept { return m_tensor_; }
     ///@}
 
     /// Tests for exact equality
     bool operator==(const my_type& rhs) const noexcept;
 
-    using hash_type = hash_utilities::hash_type;
-
-    hash_type get_hash_() const {
-        if(m_hash_flag_) update_hash_();
+    // Returns the hash for the current state of *this, computing first if
+    // needed.
+    hash_type get_hash() const {
+        if(m_recalculate_hash_) update_hash_();
         return m_hash_;
     }
-
-    // Computes the hash for the current state of *this
-    void update_hash_() const {
-        m_hash_ = hash_type{rank_()};
-        for(eigen_rank_type i = 0; i < rank_(); ++i)
-            hash_utilities::hash_input(m_hash_, extent_(i));
-        for(auto i = 0; i < m_tensor_.size(); ++i)
-            hash_utilities::hash_input(m_hash_, data_()[i]);
-        m_hash_flag_ = false;
-    }
-
-    // Tracks whether the hash needs to be redetermined
-    mutable bool m_hash_flag_ = true;
-
-    // Holds the computed hash value for this instance's state
-    mutable hash_type m_hash_;
 
 protected:
     pimpl_pointer clone_() const override {
@@ -101,11 +89,15 @@ protected:
         return m_tensor_.dimension(i);
     }
 
-    pointer data_() noexcept override { return m_tensor_.data(); }
+    pointer data_() noexcept override {
+        mark_for_rehash_();
+        return m_tensor_.data();
+    }
 
     const_pointer data_() const noexcept override { return m_tensor_.data(); }
 
     reference get_elem_(index_vector index) override {
+        mark_for_rehash_();
         return unwrap_vector_(std::move(index),
                               std::make_index_sequence<Rank>());
     }
@@ -180,6 +172,19 @@ private:
                                    std::index_sequence<I...>) const {
         return m_tensor_(tensorwrapper::detail_::to_long(index.at(I))...);
     }
+
+    // Computes the hash for the current state of *this
+    void update_hash_() const;
+
+    // Designates that the state may have changed and to recalculate the hash.
+    // This function is really just for readability and clarity.
+    void mark_for_rehash_() const { m_recalculate_hash_ = true; }
+
+    // Tracks whether the hash needs to be redetermined
+    mutable bool m_recalculate_hash_ = true;
+
+    // Holds the computed hash value for this instance's state
+    mutable hash_type m_hash_;
 
     // The Eigen tensor *this wraps
     eigen_data_type m_tensor_;
