@@ -38,6 +38,7 @@ public:
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
     using typename base_type::index_vector;
+    using typename base_type::element_type;
     using typename base_type::label_type;
     using typename base_type::pimpl_pointer;
     using typename base_type::pointer;
@@ -58,15 +59,6 @@ public:
     explicit EigenTensor(const_smooth_view_reference shape) :
       m_tensor_(allocate_from_shape_(shape, std::make_index_sequence<Rank>())) {
     }
-
-    /// Get a mutable/read-only reference to the Eigen tensor object
-    ///@{
-    eigen_reference value() noexcept {
-        mark_for_rehash_();
-        return m_tensor_;
-    }
-    const_eigen_reference value() const noexcept { return m_tensor_; }
-    ///@}
 
     /// Tests for exact equality
     bool operator==(const my_type& rhs) const noexcept;

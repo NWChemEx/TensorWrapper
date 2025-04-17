@@ -52,6 +52,7 @@ public:
     using typename my_base_type::const_pointer;
     using typename my_base_type::const_reference;
     using typename my_base_type::dsl_reference;
+    using typename my_base_type::element_type;
     using typename my_base_type::index_vector;
     using typename my_base_type::label_type;
     using typename my_base_type::layout_pointer;

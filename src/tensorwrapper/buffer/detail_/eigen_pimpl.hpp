@@ -33,6 +33,7 @@ public:
     using parent_type           = Eigen<FloatType>;
     using pimpl_pointer         = typename parent_type::pimpl_pointer;
     using label_type            = typename parent_type::label_type;
+    using element_type          = typename parent_type::element_type;
     using reference             = typename parent_type::reference;
     using const_shape_reference = const shape::ShapeBase&;
     using const_reference       = typename parent_type::const_reference;

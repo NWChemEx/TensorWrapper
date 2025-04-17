@@ -37,9 +37,9 @@ void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
                                     const_pimpl_reference rhs) {
     // Downcast LHS and RHS
     const auto* lhs_down  = dynamic_cast<const my_type*>(&lhs);
-    const auto& lhs_eigen = lhs_down->value();
+    const auto& lhs_eigen = lhs_down->m_tensor_;
     const auto* rhs_down  = dynamic_cast<const my_type*>(&rhs);
-    const auto& rhs_eigen = rhs_down->value();
+    const auto& rhs_eigen = rhs_down->m_tensor_;
 
     // Whose indices match whose?
     bool this_matches_lhs = (this_labels == lhs_labels);
@@ -171,9 +171,9 @@ void EIGEN_TENSOR::permute_assignment_(label_type this_labels,
         auto r_to_l = this_labels.permutation(rhs_labels);
         // Eigen wants int objects
         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_down->value().shuffle(r_to_l2);
+        m_tensor_ = rhs_down->m_tensor_.shuffle(r_to_l2);
     } else {
-        m_tensor_ = rhs_down->value();
+        m_tensor_ = rhs_down->m_tensor_;
     }
     mark_for_rehash_();
 }
@@ -189,9 +189,9 @@ void EIGEN_TENSOR::scalar_multiplication_(label_type this_labels,
         auto r_to_l = rhs_labels.permutation(this_labels);
         // Eigen wants int objects
         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_downcasted->value().shuffle(r_to_l2) * scalar;
+        m_tensor_ = rhs_downcasted->m_tensor_.shuffle(r_to_l2) * scalar;
     } else {
-        m_tensor_ = rhs_downcasted->value() * scalar;
+        m_tensor_ = rhs_downcasted->m_tensor_ * scalar;
     }
     mark_for_rehash_();
 }
