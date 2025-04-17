@@ -46,14 +46,14 @@ TEMPLATE_LIST_TEST_CASE("buffer::Contiguous", "", types::floating_point_types) {
         REQUIRE(base1.size() == 5);
     }
 
-    SECTION("data()") {
-        REQUIRE(*base0.data() == TestType(42.0));
+    SECTION("get_mutable_data()") {
+        REQUIRE(*base0.get_mutable_data() == TestType(42.0));
 
-        REQUIRE(*(base1.data() + 0) == TestType(0.0));
-        REQUIRE(*(base1.data() + 1) == TestType(1.0));
-        REQUIRE(*(base1.data() + 2) == TestType(2.0));
-        REQUIRE(*(base1.data() + 3) == TestType(3.0));
-        REQUIRE(*(base1.data() + 4) == TestType(4.0));
+        REQUIRE(*(base1.get_mutable_data() + 0) == TestType(0.0));
+        REQUIRE(*(base1.get_mutable_data() + 1) == TestType(1.0));
+        REQUIRE(*(base1.get_mutable_data() + 2) == TestType(2.0));
+        REQUIRE(*(base1.get_mutable_data() + 3) == TestType(3.0));
+        REQUIRE(*(base1.get_mutable_data() + 4) == TestType(4.0));
     }
 
     SECTION("data() const") {

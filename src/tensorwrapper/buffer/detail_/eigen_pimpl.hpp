@@ -49,12 +49,14 @@ public:
 
     eigen_rank_type rank() const noexcept { return rank_(); }
 
+    size_type size() const noexcept { return size_(); }
+
     size_type extent(eigen_rank_type i) const {
         assert(i < rank());
         return extent_(i);
     }
 
-    pointer data() noexcept { return data_(); }
+    pointer get_mutable_data() noexcept { return get_mutable_data_(); }
 
     const_pointer data() const noexcept { return data_(); }
 
@@ -66,6 +68,21 @@ public:
     const_reference get_elem(index_vector index) const {
         assert(index.size() == rank());
         return get_elem_(std::move(index));
+    }
+
+    void set_elem(index_vector index, element_type new_value) {
+        assert(index.size() == rank());
+        set_elem_(index, new_value);
+    }
+
+    const_reference get_data_at(size_type index) const {
+        assert(index < size());
+        return get_data_at_(std::move(index));
+    }
+
+    void set_data_at(size_type index, element_type new_value) {
+        assert(index < size());
+        set_data_at_(index, new_value);
     }
 
     void addition_assignment(label_type this_labels, label_type lhs_labels,
@@ -111,39 +128,43 @@ public:
     }
 
 protected:
-    virtual eigen_rank_type rank_() const noexcept                  = 0;
-    virtual size_type extent_(eigen_rank_type i) const              = 0;
-    virtual pointer data_() noexcept                                = 0;
-    virtual const_pointer data_() const noexcept                    = 0;
-    virtual reference get_elem_(index_vector index)                 = 0;
-    virtual const_reference get_elem_(index_vector index) const     = 0;
+    virtual eigen_rank_type rank_() const noexcept                     = 0;
+    virtual size_type size_() const                                    = 0;
+    virtual size_type extent_(eigen_rank_type i) const                 = 0;
+    virtual pointer get_mutable_data_() noexcept                       = 0;
+    virtual const_pointer data_() const noexcept                       = 0;
+    virtual reference get_elem_(index_vector index)                    = 0;
+    virtual const_reference get_elem_(index_vector index) const        = 0;
+    virtual void set_elem_(index_vector index, element_type new_value) = 0;
+    virtual const_reference get_data_at_(size_type index) const        = 0;
+    virtual void set_data_at_(size_type index, element_type new_value) = 0;
     virtual void addition_assignment_(label_type this_labels,
                                       label_type lhs_labels,
                                       label_type rhs_labels,
                                       const_pimpl_reference lhs,
-                                      const_pimpl_reference rhs)    = 0;
+                                      const_pimpl_reference rhs)       = 0;
     virtual void subtraction_assignment_(label_type this_labels,
                                          label_type lhs_labels,
                                          label_type rhs_labels,
                                          const_pimpl_reference lhs,
-                                         const_pimpl_reference rhs) = 0;
+                                         const_pimpl_reference rhs)    = 0;
     virtual void hadamard_assignment_(label_type this_labels,
                                       label_type lhs_labels,
                                       label_type rhs_labels,
                                       const_pimpl_reference lhs,
-                                      const_pimpl_reference rhs)    = 0;
+                                      const_pimpl_reference rhs)       = 0;
     virtual void contraction_assignment_(label_type this_labels,
                                          label_type lhs_labels,
                                          label_type rhs_labels,
                                          const_shape_reference result_shape,
                                          const_pimpl_reference lhs,
-                                         const_pimpl_reference rhs) = 0;
+                                         const_pimpl_reference rhs)    = 0;
     virtual void permute_assignment_(label_type this_labels,
                                      label_type rhs_labels,
-                                     const_pimpl_reference rhs)     = 0;
+                                     const_pimpl_reference rhs)        = 0;
     virtual void scalar_multiplication_(label_type this_labels,
                                         label_type rhs_labels, FloatType scalar,
-                                        const_pimpl_reference rhs)  = 0;
+                                        const_pimpl_reference rhs)     = 0;
 };
 
 } // namespace tensorwrapper::buffer::detail_

@@ -33,11 +33,11 @@ using hash_type  = typename pimpl_type<double, 0>::hash_type;
 
 TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
     pimpl_type<TestType, 0> scalar(shape_type{});
-    scalar.get_elem({}) = 1.0;
+    scalar.set_elem({}, 1.0);
 
     pimpl_type<TestType, 1> vector(shape_type{2});
-    vector.get_elem({0}) = 1.0;
-    vector.get_elem({1}) = 2.0;
+    vector.set_elem({0}, 1.0);
+    vector.set_elem({1}, 2.0);
 
     pimpl_type<TestType, 2> matrix(shape_type{2, 2});
     matrix.get_elem({0, 0}) = 1.0;
@@ -67,23 +67,23 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
 
         SECTION("Different Value") {
             pimpl_type<TestType, 0> scalar2(scalar);
-            scalar2.get_elem({}) = 42.0;
+            scalar2.set_elem({}, 42.0);
             REQUIRE_FALSE(scalar2 == scalar);
             // Ensure hash is recalculated after change
-            *(scalar2.data()) = 1.0;
+            scalar2.set_elem({}, 1.0);
             REQUIRE(scalar2 == scalar);
         }
 
         SECTION("Different Extents") {
             pimpl_type<TestType, 1> vector2(shape_type{1});
-            vector.get_elem({0}) = 1.0;
+            vector.set_elem({0}, 1.0);
             REQUIRE_FALSE(vector2 == vector);
         }
 
         if constexpr(types::is_uncertain_v<TestType>) {
             SECTION("Check Error Sources Match") {
                 pimpl_type<TestType, 0> uscalar(shape_type{});
-                uscalar.get_elem({}) = TestType(1.0, 0.0);
+                uscalar.set_elem({}, TestType(1.0, 0.0));
                 pimpl_type<TestType, 0> uscalar2(uscalar);
                 REQUIRE(uscalar2 == uscalar);
             }
@@ -131,6 +131,13 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(defaulted.rank() == 6);
     }
 
+    SECTION("size_") {
+        REQUIRE(scalar.size() == 1);
+        REQUIRE(vector.size() == 2);
+        REQUIRE(matrix.size() == 4);
+        REQUIRE(tensor.size() == 8);
+    }
+
     SECTION("extent_") {
         REQUIRE(vector.extent(0) == 2);
 
@@ -140,27 +147,6 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(tensor.extent(0) == 2);
         REQUIRE(tensor.extent(1) == 2);
         REQUIRE(tensor.extent(2) == 2);
-    }
-
-    SECTION("data_()") {
-        REQUIRE(*scalar.data() == TestType{1.0});
-
-        REQUIRE(*vector.data() == TestType{1.0});
-        REQUIRE(*(vector.data() + 1) == TestType{2.0});
-
-        REQUIRE(*matrix.data() == TestType{1.0});
-        REQUIRE(*(matrix.data() + 1) == TestType{2.0});
-        REQUIRE(*(matrix.data() + 2) == TestType{3.0});
-        REQUIRE(*(matrix.data() + 3) == TestType{4.0});
-
-        REQUIRE(*tensor.data() == TestType{1.0});
-        REQUIRE(*(tensor.data() + 1) == TestType{2.0});
-        REQUIRE(*(tensor.data() + 2) == TestType{3.0});
-        REQUIRE(*(tensor.data() + 3) == TestType{4.0});
-        REQUIRE(*(tensor.data() + 4) == TestType{5.0});
-        REQUIRE(*(tensor.data() + 5) == TestType{6.0});
-        REQUIRE(*(tensor.data() + 6) == TestType{7.0});
-        REQUIRE(*(tensor.data() + 7) == TestType{8.0});
     }
 
     SECTION("data_() const") {
@@ -184,7 +170,46 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(*(std::as_const(tensor).data() + 7) == TestType{8.0});
     }
 
-    SECTION("get_elem_ ()") {
+    SECTION("get_mutable_data_()") {
+        SECTION("accessing") {
+            REQUIRE(*scalar.get_mutable_data() == TestType{1.0});
+
+            REQUIRE(*vector.get_mutable_data() == TestType{1.0});
+            REQUIRE(*(vector.get_mutable_data() + 1) == TestType{2.0});
+
+            REQUIRE(*matrix.get_mutable_data() == TestType{1.0});
+            REQUIRE(*(matrix.get_mutable_data() + 1) == TestType{2.0});
+            REQUIRE(*(matrix.get_mutable_data() + 2) == TestType{3.0});
+            REQUIRE(*(matrix.get_mutable_data() + 3) == TestType{4.0});
+
+            REQUIRE(*tensor.get_mutable_data() == TestType{1.0});
+            REQUIRE(*(tensor.get_mutable_data() + 1) == TestType{2.0});
+            REQUIRE(*(tensor.get_mutable_data() + 2) == TestType{3.0});
+            REQUIRE(*(tensor.get_mutable_data() + 3) == TestType{4.0});
+            REQUIRE(*(tensor.get_mutable_data() + 4) == TestType{5.0});
+            REQUIRE(*(tensor.get_mutable_data() + 5) == TestType{6.0});
+            REQUIRE(*(tensor.get_mutable_data() + 6) == TestType{7.0});
+            REQUIRE(*(tensor.get_mutable_data() + 7) == TestType{8.0});
+        }
+
+        SECTION("comparison behavior") {
+            // Initial state is the same
+            pimpl_type<TestType, 0> s(shape_type{});
+            s.set_elem({}, 1.0);
+            REQUIRE(s == scalar);
+            // Still the same, but the normal hash recalculation flag would be
+            // reset after this comparison.
+            auto* pdata = s.get_mutable_data();
+            REQUIRE(s == scalar);
+            // Changes state. The internal hash will have to be recalculated for
+            // the comparison to be false, ensuring that the hash caching has
+            // been turned off.
+            pdata[0] = 2.0;
+            REQUIRE_FALSE(s == scalar);
+        }
+    }
+
+    SECTION("get_elem_()") {
         REQUIRE(scalar.get_elem({}) == TestType{1.0});
 
         REQUIRE(vector.get_elem({0}) == TestType{1.0});
@@ -226,11 +251,50 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(std::as_const(tensor).get_elem({1, 1, 1}) == TestType{8.0});
     }
 
+    SECTION("set_elem_()") {
+        scalar.set_elem({}, TestType{2.0});
+        REQUIRE(scalar.get_elem({}) == TestType{2.0});
+
+        vector.set_elem({0}, TestType{2.0});
+        REQUIRE(vector.get_elem({0}) == TestType{2.0});
+        REQUIRE(vector.get_elem({1}) == TestType{2.0});
+    }
+
+    SECTION("get_data_at_() const") {
+        REQUIRE(std::as_const(scalar).get_data_at(0) == TestType{1.0});
+
+        REQUIRE(std::as_const(vector).get_data_at(0) == TestType{1.0});
+        REQUIRE(std::as_const(vector).get_data_at(1) == TestType{2.0});
+
+        REQUIRE(std::as_const(matrix).get_data_at(0) == TestType{1.0});
+        REQUIRE(std::as_const(matrix).get_data_at(1) == TestType{2.0});
+        REQUIRE(std::as_const(matrix).get_data_at(2) == TestType{3.0});
+        REQUIRE(std::as_const(matrix).get_data_at(3) == TestType{4.0});
+
+        REQUIRE(std::as_const(tensor).get_data_at(0) == TestType{1.0});
+        REQUIRE(std::as_const(tensor).get_data_at(1) == TestType{2.0});
+        REQUIRE(std::as_const(tensor).get_data_at(2) == TestType{3.0});
+        REQUIRE(std::as_const(tensor).get_data_at(3) == TestType{4.0});
+        REQUIRE(std::as_const(tensor).get_data_at(4) == TestType{5.0});
+        REQUIRE(std::as_const(tensor).get_data_at(5) == TestType{6.0});
+        REQUIRE(std::as_const(tensor).get_data_at(6) == TestType{7.0});
+        REQUIRE(std::as_const(tensor).get_data_at(7) == TestType{8.0});
+    }
+
+    SECTION("set_data_at_()") {
+        scalar.set_data_at(0, TestType{2.0});
+        REQUIRE(scalar.get_data_at(0) == TestType{2.0});
+
+        vector.set_data_at(0, TestType{2.0});
+        REQUIRE(vector.get_data_at(0) == TestType{2.0});
+        REQUIRE(vector.get_data_at(1) == TestType{2.0});
+    }
+
     SECTION("are_equal_") {
         pimpl_type<TestType, 0> scalar2(scalar);
         REQUIRE(scalar2.are_equal(scalar));
 
-        scalar2.get_elem({}) = 42.0;
+        scalar2.set_elem({}, 42.0);
         REQUIRE_FALSE(scalar2.are_equal(scalar));
     }
 
@@ -262,7 +326,7 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.addition_assignment(s, s, s, scalar, scalar);
 
             pimpl_type<TestType, 0> corr(shape_type{});
-            corr.get_elem({}) = 2.0;
+            corr.set_elem({}, 2.0);
             REQUIRE(output == corr);
         }
 
@@ -354,7 +418,7 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.subtraction_assignment(s, s, s, scalar, scalar);
 
             pimpl_type<TestType, 0> corr(shape_type{});
-            corr.get_elem({}) = 0.0;
+            corr.set_elem({}, 0.0);
             REQUIRE(output == corr);
         }
 
@@ -446,7 +510,7 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.hadamard_assignment(s, s, s, scalar, scalar);
 
             pimpl_type<TestType, 0> corr(shape_type{});
-            corr.get_elem({}) = 1.0;
+            corr.set_elem({}, 1.0);
             REQUIRE(output == corr);
         }
 
@@ -542,7 +606,7 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 0> corr(oshape);
-            corr.get_elem({}) = 204.0;
+            corr.set_elem({}, 204.0);
             REQUIRE(output == corr);
         }
 
@@ -556,7 +620,7 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 0> corr(oshape);
-            corr.get_elem({}) = 196.0;
+            corr.set_elem({}, 196.0);
             REQUIRE(output == corr);
         }
 

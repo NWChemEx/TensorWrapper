@@ -39,8 +39,8 @@ auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
             stride_i *= smooth_shape.extent(mode_i);
         strides[rank_i] = stride_i * nbytes;
     }
-    return pybind11::buffer_info(buffer.data(), nbytes, desc, rank, shape,
-                                 strides);
+    return pybind11::buffer_info(buffer.get_mutable_data(), nbytes, desc, rank,
+                                 shape, strides);
 }
 
 auto make_tensor(pybind11::buffer b) {

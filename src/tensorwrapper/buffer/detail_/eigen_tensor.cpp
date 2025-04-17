@@ -117,8 +117,8 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
 
     eigen::data_type<FloatType, 2> buffer(lrows, rcols);
 
-    map_t lmatrix(lt->data(), lrows, lcols);
-    map_t rmatrix(rt->data(), rrows, rcols);
+    map_t lmatrix(lt->get_mutable_data(), lrows, lcols);
+    map_t rmatrix(rt->get_mutable_data(), rrows, rcols);
     map_t omatrix(buffer.data(), lrows, rcols);
     omatrix = lmatrix * rmatrix;
 

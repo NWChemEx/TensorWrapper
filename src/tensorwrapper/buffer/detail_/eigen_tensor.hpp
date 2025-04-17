@@ -37,8 +37,8 @@ public:
     using typename base_type::const_reference;
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
-    using typename base_type::index_vector;
     using typename base_type::element_type;
+    using typename base_type::index_vector;
     using typename base_type::label_type;
     using typename base_type::pimpl_pointer;
     using typename base_type::pointer;
@@ -66,7 +66,7 @@ public:
     // Returns the hash for the current state of *this, computing first if
     // needed.
     hash_type get_hash() const {
-        if(m_recalculate_hash_) update_hash_();
+        if(m_recalculate_hash_ or !m_hash_caching_) update_hash_();
         return m_hash_;
     }
 
@@ -77,12 +77,14 @@ protected:
 
     eigen_rank_type rank_() const noexcept override { return Rank; }
 
+    size_type size_() const noexcept override { return m_tensor_.size(); }
+
     size_type extent_(eigen_rank_type i) const override {
         return m_tensor_.dimension(i);
     }
 
-    pointer data_() noexcept override {
-        mark_for_rehash_();
+    pointer get_mutable_data_() noexcept override {
+        turn_off_hash_caching_();
         return m_tensor_.data();
     }
 
@@ -93,9 +95,25 @@ protected:
         return unwrap_vector_(std::move(index),
                               std::make_index_sequence<Rank>());
     }
+
     const_reference get_elem_(index_vector index) const override {
         return unwrap_vector_(std::move(index),
                               std::make_index_sequence<Rank>());
+    }
+
+    void set_elem_(index_vector index, element_type new_value) override {
+        mark_for_rehash_();
+        unwrap_vector_(std::move(index), std::make_index_sequence<Rank>()) =
+          new_value;
+    }
+
+    const_reference get_data_at_(size_type index) const override {
+        return m_tensor_.data()[index];
+    }
+
+    void set_data_at_(size_type index, element_type new_value) override {
+        mark_for_rehash_();
+        m_tensor_.data()[index] = new_value;
     }
 
     bool are_equal_(const_base_reference rhs) const noexcept override {
@@ -172,8 +190,15 @@ private:
     // This function is really just for readability and clarity.
     void mark_for_rehash_() const { m_recalculate_hash_ = true; }
 
+    // Designates that state changes are not trackable and we should recalculate
+    // the hash each time.
+    void turn_off_hash_caching_() const { m_hash_caching_ = false; }
+
     // Tracks whether the hash needs to be redetermined
     mutable bool m_recalculate_hash_ = true;
+
+    // Tracks whether hash caching has been turned off
+    mutable bool m_hash_caching_ = true;
 
     // Holds the computed hash value for this instance's state
     mutable hash_type m_hash_;

@@ -66,7 +66,7 @@ public:
     size_type size() const noexcept { return size_(); }
 
     /// Returns a mutable pointer to the first element in contiguous memory
-    pointer data() noexcept { return data_(); }
+    pointer get_mutable_data() noexcept { return get_mutable_data_(); }
 
     /// Returns a read-only pointer to the first element in contiguous memory
     const_pointer data() const noexcept { return data_(); }
@@ -121,12 +121,24 @@ public:
           index_vector{detail_::to_size_t(std::forward<Args>(args))...});
     }
 
+    const_reference get_elem(index_vector index) const {
+        if(index.size() == this->rank())
+            throw std::runtime_error("Number of offsets must match rank");
+        return get_elem_(index);
+    }
+
+    void set_elem(index_vector index, element_type new_value) {
+        if(index.size() == this->rank())
+            throw std::runtime_error("Number of offsets must match rank");
+        return set_elem_(index, new_value);
+    }
+
 protected:
     /// Derived class can override if it likes
     virtual size_type size_() const noexcept { return layout().shape().size(); }
 
     /// Derived class should implement according to data() description
-    virtual pointer data_() noexcept = 0;
+    virtual pointer get_mutable_data_() noexcept = 0;
 
     /// Derived class should implement according to data() const description
     virtual const_pointer data_() const noexcept = 0;
@@ -134,8 +146,11 @@ protected:
     /// Derived class should implement according to operator()()
     virtual reference get_elem_(index_vector index) = 0;
 
-    /// Derived class should implement according to operator()()const
+    /// Derived class should implement according to get_elem()
     virtual const_reference get_elem_(index_vector index) const = 0;
+
+    /// Derived class should implement according to set_elem()
+    virtual void set_elem_(index_vector index, element_type new_value) = 0;
 };
 
 #define DECLARE_CONTIG_BUFFER(TYPE) extern template class Contiguous<TYPE>

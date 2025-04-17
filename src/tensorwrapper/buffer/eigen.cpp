@@ -155,8 +155,8 @@ typename EIGEN::dsl_reference EIGEN::scalar_multiplication_(
 }
 
 TPARAMS
-typename EIGEN::pointer EIGEN::data_() noexcept {
-    return m_pimpl_ ? m_pimpl_->data() : nullptr;
+typename EIGEN::pointer EIGEN::get_mutable_data_() noexcept {
+    return m_pimpl_ ? m_pimpl_->get_mutable_data() : nullptr;
 }
 
 TPARAMS
@@ -173,10 +173,17 @@ TPARAMS
 typename EIGEN::const_reference EIGEN::get_elem_(index_vector index) const {
     return pimpl_().get_elem(std::move(index));
 }
+
+TPARAMS
+void EIGEN::set_elem_(index_vector index, element_type new_value) {
+    return pimpl_().set_elem(std::move(index), std::move(new_value));
+}
+
 TPARAMS
 typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {
     return m_pimpl_ ? m_pimpl_->to_string() : "";
 }
+
 TPARAMS
 std::ostream& EIGEN::add_to_stream_(std::ostream& os) const {
     return m_pimpl_ ? m_pimpl_->add_to_stream(os) : os;

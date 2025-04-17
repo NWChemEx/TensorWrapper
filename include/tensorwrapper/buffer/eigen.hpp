@@ -211,7 +211,7 @@ protected:
                                          const_labeled_reference rhs) override;
 
     /// Implements getting the raw pointer
-    pointer data_() noexcept override;
+    pointer get_mutable_data_() noexcept override;
 
     /// Implements getting the raw pointer (read-only)
     const_pointer data_() const noexcept override;
@@ -221,6 +221,8 @@ protected:
 
     /// Implements read-only element access
     const_reference get_elem_(index_vector index) const override;
+
+    void set_elem_(index_vector index, element_type new_value) override;
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;

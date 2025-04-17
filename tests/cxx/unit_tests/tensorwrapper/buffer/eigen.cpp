@@ -185,10 +185,10 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             REQUIRE(output.are_equal(*corr));
         }
 
-        SECTION("data()") {
-            REQUIRE(defaulted.data() == nullptr);
-            REQUIRE(*eigen_scalar.data() == TestType{10.0});
-            REQUIRE(*eigen_matrix.data() == TestType{10.0});
+        SECTION("get_mutable_data()") {
+            REQUIRE(defaulted.get_mutable_data() == nullptr);
+            REQUIRE(*eigen_scalar.get_mutable_data() == TestType{10.0});
+            REQUIRE(*eigen_matrix.get_mutable_data() == TestType{10.0});
         }
 
         SECTION("data() const") {
