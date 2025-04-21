@@ -29,7 +29,7 @@ struct InfinityKernel {
         FloatType max_element{0.0};
         const auto& buffer_down = alloc.rebind(t);
         for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-            auto elem = types::fabs(*(buffer_down.data() + i));
+            auto elem = types::fabs(buffer_down.get_data(i));
             if(elem > max_element) max_element = elem;
         }
         shape::Smooth s{};

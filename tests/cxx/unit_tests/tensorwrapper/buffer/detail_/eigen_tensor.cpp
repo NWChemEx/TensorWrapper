@@ -40,20 +40,20 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
     vector.set_elem({1}, 2.0);
 
     pimpl_type<TestType, 2> matrix(shape_type{2, 2});
-    matrix.get_elem({0, 0}) = 1.0;
-    matrix.get_elem({0, 1}) = 2.0;
-    matrix.get_elem({1, 0}) = 3.0;
-    matrix.get_elem({1, 1}) = 4.0;
+    matrix.set_elem({0, 0}, 1.0);
+    matrix.set_elem({0, 1}, 2.0);
+    matrix.set_elem({1, 0}, 3.0);
+    matrix.set_elem({1, 1}, 4.0);
 
     pimpl_type<TestType, 3> tensor(shape_type{2, 2, 2});
-    tensor.get_elem({0, 0, 0}) = 1.0;
-    tensor.get_elem({0, 0, 1}) = 2.0;
-    tensor.get_elem({0, 1, 0}) = 3.0;
-    tensor.get_elem({0, 1, 1}) = 4.0;
-    tensor.get_elem({1, 0, 0}) = 5.0;
-    tensor.get_elem({1, 0, 1}) = 6.0;
-    tensor.get_elem({1, 1, 0}) = 7.0;
-    tensor.get_elem({1, 1, 1}) = 8.0;
+    tensor.set_elem({0, 0, 0}, 1.0);
+    tensor.set_elem({0, 0, 1}, 2.0);
+    tensor.set_elem({0, 1, 0}, 3.0);
+    tensor.set_elem({0, 1, 1}, 4.0);
+    tensor.set_elem({1, 0, 0}, 5.0);
+    tensor.set_elem({1, 0, 1}, 6.0);
+    tensor.set_elem({1, 1, 0}, 7.0);
+    tensor.set_elem({1, 1, 1}, 8.0);
 
     // -------------------------------------------------------------------------
     // -- Public methods
@@ -149,27 +149,6 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(tensor.extent(2) == 2);
     }
 
-    SECTION("data_() const") {
-        REQUIRE(*std::as_const(scalar).data() == TestType{1.0});
-
-        REQUIRE(*std::as_const(vector).data() == TestType{1.0});
-        REQUIRE(*(std::as_const(vector).data() + 1) == TestType{2.0});
-
-        REQUIRE(*std::as_const(matrix).data() == TestType{1.0});
-        REQUIRE(*(std::as_const(matrix).data() + 1) == TestType{2.0});
-        REQUIRE(*(std::as_const(matrix).data() + 2) == TestType{3.0});
-        REQUIRE(*(std::as_const(matrix).data() + 3) == TestType{4.0});
-
-        REQUIRE(*std::as_const(tensor).data() == TestType{1.0});
-        REQUIRE(*(std::as_const(tensor).data() + 1) == TestType{2.0});
-        REQUIRE(*(std::as_const(tensor).data() + 2) == TestType{3.0});
-        REQUIRE(*(std::as_const(tensor).data() + 3) == TestType{4.0});
-        REQUIRE(*(std::as_const(tensor).data() + 4) == TestType{5.0});
-        REQUIRE(*(std::as_const(tensor).data() + 5) == TestType{6.0});
-        REQUIRE(*(std::as_const(tensor).data() + 6) == TestType{7.0});
-        REQUIRE(*(std::as_const(tensor).data() + 7) == TestType{8.0});
-    }
-
     SECTION("get_mutable_data_()") {
         SECTION("accessing") {
             REQUIRE(*scalar.get_mutable_data() == TestType{1.0});
@@ -209,25 +188,36 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         }
     }
 
-    SECTION("get_elem_()") {
-        REQUIRE(scalar.get_elem({}) == TestType{1.0});
+    SECTION("get_immutable_data_() const") {
+        REQUIRE(*std::as_const(scalar).get_immutable_data() == TestType{1.0});
 
-        REQUIRE(vector.get_elem({0}) == TestType{1.0});
-        REQUIRE(vector.get_elem({1}) == TestType{2.0});
+        REQUIRE(*std::as_const(vector).get_immutable_data() == TestType{1.0});
+        REQUIRE(*(std::as_const(vector).get_immutable_data() + 1) ==
+                TestType{2.0});
 
-        REQUIRE(matrix.get_elem({0, 0}) == TestType{1.0});
-        REQUIRE(matrix.get_elem({0, 1}) == TestType{2.0});
-        REQUIRE(matrix.get_elem({1, 0}) == TestType{3.0});
-        REQUIRE(matrix.get_elem({1, 1}) == TestType{4.0});
+        REQUIRE(*std::as_const(matrix).get_immutable_data() == TestType{1.0});
+        REQUIRE(*(std::as_const(matrix).get_immutable_data() + 1) ==
+                TestType{2.0});
+        REQUIRE(*(std::as_const(matrix).get_immutable_data() + 2) ==
+                TestType{3.0});
+        REQUIRE(*(std::as_const(matrix).get_immutable_data() + 3) ==
+                TestType{4.0});
 
-        REQUIRE(tensor.get_elem({0, 0, 0}) == TestType{1.0});
-        REQUIRE(tensor.get_elem({0, 0, 1}) == TestType{2.0});
-        REQUIRE(tensor.get_elem({0, 1, 0}) == TestType{3.0});
-        REQUIRE(tensor.get_elem({0, 1, 1}) == TestType{4.0});
-        REQUIRE(tensor.get_elem({1, 0, 0}) == TestType{5.0});
-        REQUIRE(tensor.get_elem({1, 0, 1}) == TestType{6.0});
-        REQUIRE(tensor.get_elem({1, 1, 0}) == TestType{7.0});
-        REQUIRE(tensor.get_elem({1, 1, 1}) == TestType{8.0});
+        REQUIRE(*std::as_const(tensor).get_immutable_data() == TestType{1.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 1) ==
+                TestType{2.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 2) ==
+                TestType{3.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 3) ==
+                TestType{4.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 4) ==
+                TestType{5.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 5) ==
+                TestType{6.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 6) ==
+                TestType{7.0});
+        REQUIRE(*(std::as_const(tensor).get_immutable_data() + 7) ==
+                TestType{8.0});
     }
 
     SECTION("get_elem_() const") {
@@ -260,34 +250,47 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
         REQUIRE(vector.get_elem({1}) == TestType{2.0});
     }
 
-    SECTION("get_data_at_() const") {
-        REQUIRE(std::as_const(scalar).get_data_at(0) == TestType{1.0});
+    SECTION("get_data() const") {
+        REQUIRE(std::as_const(scalar).get_data(0) == TestType{1.0});
 
-        REQUIRE(std::as_const(vector).get_data_at(0) == TestType{1.0});
-        REQUIRE(std::as_const(vector).get_data_at(1) == TestType{2.0});
+        REQUIRE(std::as_const(vector).get_data(0) == TestType{1.0});
+        REQUIRE(std::as_const(vector).get_data(1) == TestType{2.0});
 
-        REQUIRE(std::as_const(matrix).get_data_at(0) == TestType{1.0});
-        REQUIRE(std::as_const(matrix).get_data_at(1) == TestType{2.0});
-        REQUIRE(std::as_const(matrix).get_data_at(2) == TestType{3.0});
-        REQUIRE(std::as_const(matrix).get_data_at(3) == TestType{4.0});
+        REQUIRE(std::as_const(matrix).get_data(0) == TestType{1.0});
+        REQUIRE(std::as_const(matrix).get_data(1) == TestType{2.0});
+        REQUIRE(std::as_const(matrix).get_data(2) == TestType{3.0});
+        REQUIRE(std::as_const(matrix).get_data(3) == TestType{4.0});
 
-        REQUIRE(std::as_const(tensor).get_data_at(0) == TestType{1.0});
-        REQUIRE(std::as_const(tensor).get_data_at(1) == TestType{2.0});
-        REQUIRE(std::as_const(tensor).get_data_at(2) == TestType{3.0});
-        REQUIRE(std::as_const(tensor).get_data_at(3) == TestType{4.0});
-        REQUIRE(std::as_const(tensor).get_data_at(4) == TestType{5.0});
-        REQUIRE(std::as_const(tensor).get_data_at(5) == TestType{6.0});
-        REQUIRE(std::as_const(tensor).get_data_at(6) == TestType{7.0});
-        REQUIRE(std::as_const(tensor).get_data_at(7) == TestType{8.0});
+        REQUIRE(std::as_const(tensor).get_data(0) == TestType{1.0});
+        REQUIRE(std::as_const(tensor).get_data(1) == TestType{2.0});
+        REQUIRE(std::as_const(tensor).get_data(2) == TestType{3.0});
+        REQUIRE(std::as_const(tensor).get_data(3) == TestType{4.0});
+        REQUIRE(std::as_const(tensor).get_data(4) == TestType{5.0});
+        REQUIRE(std::as_const(tensor).get_data(5) == TestType{6.0});
+        REQUIRE(std::as_const(tensor).get_data(6) == TestType{7.0});
+        REQUIRE(std::as_const(tensor).get_data(7) == TestType{8.0});
     }
 
-    SECTION("set_data_at_()") {
-        scalar.set_data_at(0, TestType{2.0});
-        REQUIRE(scalar.get_data_at(0) == TestType{2.0});
+    SECTION("set_data_()") {
+        scalar.set_data(0, TestType{2.0});
+        REQUIRE(scalar.get_data(0) == TestType{2.0});
 
-        vector.set_data_at(0, TestType{2.0});
-        REQUIRE(vector.get_data_at(0) == TestType{2.0});
-        REQUIRE(vector.get_data_at(1) == TestType{2.0});
+        vector.set_data(0, TestType{2.0});
+        REQUIRE(vector.get_data(0) == TestType{2.0});
+        REQUIRE(vector.get_data(1) == TestType{2.0});
+    }
+
+    SECTION("fill_()") {
+        vector.fill(TestType{42.0});
+        REQUIRE(vector.get_data(0) == TestType(42.0));
+        REQUIRE(vector.get_data(1) == TestType(42.0));
+    }
+
+    SECTION("copy_()") {
+        auto data = std::vector<TestType>(2, TestType(42.0));
+        vector.copy(data);
+        REQUIRE(vector.get_data(0) == TestType(42.0));
+        REQUIRE(vector.get_data(1) == TestType(42.0));
     }
 
     SECTION("are_equal_") {
@@ -339,14 +342,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.addition_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 4.0;
-            corr.get_elem({0, 1, 0}) = 6.0;
-            corr.get_elem({0, 1, 1}) = 8.0;
-            corr.get_elem({1, 0, 0}) = 10.0;
-            corr.get_elem({1, 0, 1}) = 12.0;
-            corr.get_elem({1, 1, 0}) = 14.0;
-            corr.get_elem({1, 1, 1}) = 16.0;
+            corr.set_elem({0, 0, 0}, 2.0);
+            corr.set_elem({0, 0, 1}, 4.0);
+            corr.set_elem({0, 1, 0}, 6.0);
+            corr.set_elem({0, 1, 1}, 8.0);
+            corr.set_elem({1, 0, 0}, 10.0);
+            corr.set_elem({1, 0, 1}, 12.0);
+            corr.set_elem({1, 1, 0}, 14.0);
+            corr.set_elem({1, 1, 1}, 16.0);
             REQUIRE(output == corr);
         }
 
@@ -359,14 +362,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.addition_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 7.0;
-            corr.get_elem({0, 1, 0}) = 6.0;
-            corr.get_elem({0, 1, 1}) = 11.0;
-            corr.get_elem({1, 0, 0}) = 7.0;
-            corr.get_elem({1, 0, 1}) = 12.0;
-            corr.get_elem({1, 1, 0}) = 11.0;
-            corr.get_elem({1, 1, 1}) = 16.0;
+            corr.set_elem({0, 0, 0}, 2.0);
+            corr.set_elem({0, 0, 1}, 7.0);
+            corr.set_elem({0, 1, 0}, 6.0);
+            corr.set_elem({0, 1, 1}, 11.0);
+            corr.set_elem({1, 0, 0}, 7.0);
+            corr.set_elem({1, 0, 1}, 12.0);
+            corr.set_elem({1, 1, 0}, 11.0);
+            corr.set_elem({1, 1, 1}, 16.0);
             REQUIRE(output == corr);
         }
 
@@ -379,14 +382,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.addition_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 7.0;
-            corr.get_elem({0, 1, 0}) = 6.0;
-            corr.get_elem({0, 1, 1}) = 11.0;
-            corr.get_elem({1, 0, 0}) = 7.0;
-            corr.get_elem({1, 0, 1}) = 12.0;
-            corr.get_elem({1, 1, 0}) = 11.0;
-            corr.get_elem({1, 1, 1}) = 16.0;
+            corr.set_elem({0, 0, 0}, 2.0);
+            corr.set_elem({0, 0, 1}, 7.0);
+            corr.set_elem({0, 1, 0}, 6.0);
+            corr.set_elem({0, 1, 1}, 11.0);
+            corr.set_elem({1, 0, 0}, 7.0);
+            corr.set_elem({1, 0, 1}, 12.0);
+            corr.set_elem({1, 1, 0}, 11.0);
+            corr.set_elem({1, 1, 1}, 16.0);
             REQUIRE(output == corr);
         }
 
@@ -399,14 +402,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.addition_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 2.0;
-            corr.get_elem({0, 0, 1}) = 8.0;
-            corr.get_elem({0, 1, 0}) = 8.0;
-            corr.get_elem({0, 1, 1}) = 14.0;
-            corr.get_elem({1, 0, 0}) = 4.0;
-            corr.get_elem({1, 0, 1}) = 10.0;
-            corr.get_elem({1, 1, 0}) = 10.0;
-            corr.get_elem({1, 1, 1}) = 16.0;
+            corr.set_elem({0, 0, 0}, 2.0);
+            corr.set_elem({0, 0, 1}, 8.0);
+            corr.set_elem({0, 1, 0}, 8.0);
+            corr.set_elem({0, 1, 1}, 14.0);
+            corr.set_elem({1, 0, 0}, 4.0);
+            corr.set_elem({1, 0, 1}, 10.0);
+            corr.set_elem({1, 1, 0}, 10.0);
+            corr.set_elem({1, 1, 1}, 16.0);
             REQUIRE(output == corr);
         }
     }
@@ -431,14 +434,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.subtraction_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 0.0;
-            corr.get_elem({0, 0, 1}) = 0.0;
-            corr.get_elem({0, 1, 0}) = 0.0;
-            corr.get_elem({0, 1, 1}) = 0.0;
-            corr.get_elem({1, 0, 0}) = 0.0;
-            corr.get_elem({1, 0, 1}) = 0.0;
-            corr.get_elem({1, 1, 0}) = 0.0;
-            corr.get_elem({1, 1, 1}) = 0.0;
+            corr.set_elem({0, 0, 0}, 0.0);
+            corr.set_elem({0, 0, 1}, 0.0);
+            corr.set_elem({0, 1, 0}, 0.0);
+            corr.set_elem({0, 1, 1}, 0.0);
+            corr.set_elem({1, 0, 0}, 0.0);
+            corr.set_elem({1, 0, 1}, 0.0);
+            corr.set_elem({1, 1, 0}, 0.0);
+            corr.set_elem({1, 1, 1}, 0.0);
             REQUIRE(output == corr);
         }
 
@@ -451,14 +454,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.subtraction_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 0.0;
-            corr.get_elem({0, 0, 1}) = 3.0;
-            corr.get_elem({0, 1, 0}) = 0.0;
-            corr.get_elem({0, 1, 1}) = 3.0;
-            corr.get_elem({1, 0, 0}) = -3.0;
-            corr.get_elem({1, 0, 1}) = 0.0;
-            corr.get_elem({1, 1, 0}) = -3.0;
-            corr.get_elem({1, 1, 1}) = 0.0;
+            corr.set_elem({0, 0, 0}, 0.0);
+            corr.set_elem({0, 0, 1}, 3.0);
+            corr.set_elem({0, 1, 0}, 0.0);
+            corr.set_elem({0, 1, 1}, 3.0);
+            corr.set_elem({1, 0, 0}, -3.0);
+            corr.set_elem({1, 0, 1}, 0.0);
+            corr.set_elem({1, 1, 0}, -3.0);
+            corr.set_elem({1, 1, 1}, 0.0);
             REQUIRE(output == corr);
         }
 
@@ -471,14 +474,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.subtraction_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 0.0;
-            corr.get_elem({0, 0, 1}) = -3.0;
-            corr.get_elem({0, 1, 0}) = 0.0;
-            corr.get_elem({0, 1, 1}) = -3.0;
-            corr.get_elem({1, 0, 0}) = 3.0;
-            corr.get_elem({1, 0, 1}) = 0.0;
-            corr.get_elem({1, 1, 0}) = 3.0;
-            corr.get_elem({1, 1, 1}) = 0.0;
+            corr.set_elem({0, 0, 0}, 0.0);
+            corr.set_elem({0, 0, 1}, -3.0);
+            corr.set_elem({0, 1, 0}, 0.0);
+            corr.set_elem({0, 1, 1}, -3.0);
+            corr.set_elem({1, 0, 0}, 3.0);
+            corr.set_elem({1, 0, 1}, 0.0);
+            corr.set_elem({1, 1, 0}, 3.0);
+            corr.set_elem({1, 1, 1}, 0.0);
             REQUIRE(output == corr);
         }
 
@@ -491,14 +494,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.subtraction_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 0.0;
-            corr.get_elem({0, 0, 1}) = 2.0;
-            corr.get_elem({0, 1, 0}) = -2.0;
-            corr.get_elem({0, 1, 1}) = 0.0;
-            corr.get_elem({1, 0, 0}) = 0.0;
-            corr.get_elem({1, 0, 1}) = 2.0;
-            corr.get_elem({1, 1, 0}) = -2.0;
-            corr.get_elem({1, 1, 1}) = 0.0;
+            corr.set_elem({0, 0, 0}, 0.0);
+            corr.set_elem({0, 0, 1}, 2.0);
+            corr.set_elem({0, 1, 0}, -2.0);
+            corr.set_elem({0, 1, 1}, 0.0);
+            corr.set_elem({1, 0, 0}, 0.0);
+            corr.set_elem({1, 0, 1}, 2.0);
+            corr.set_elem({1, 1, 0}, -2.0);
+            corr.set_elem({1, 1, 1}, 0.0);
             REQUIRE(output == corr);
         }
     }
@@ -523,14 +526,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.hadamard_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 1.0;
-            corr.get_elem({0, 0, 1}) = 4.0;
-            corr.get_elem({0, 1, 0}) = 9.0;
-            corr.get_elem({0, 1, 1}) = 16.0;
-            corr.get_elem({1, 0, 0}) = 25.0;
-            corr.get_elem({1, 0, 1}) = 36.0;
-            corr.get_elem({1, 1, 0}) = 49.0;
-            corr.get_elem({1, 1, 1}) = 64.0;
+            corr.set_elem({0, 0, 0}, 1.0);
+            corr.set_elem({0, 0, 1}, 4.0);
+            corr.set_elem({0, 1, 0}, 9.0);
+            corr.set_elem({0, 1, 1}, 16.0);
+            corr.set_elem({1, 0, 0}, 25.0);
+            corr.set_elem({1, 0, 1}, 36.0);
+            corr.set_elem({1, 1, 0}, 49.0);
+            corr.set_elem({1, 1, 1}, 64.0);
             REQUIRE(output == corr);
         }
 
@@ -543,14 +546,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.hadamard_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 1.0;
-            corr.get_elem({0, 0, 1}) = 10.0;
-            corr.get_elem({0, 1, 0}) = 9.0;
-            corr.get_elem({0, 1, 1}) = 28.0;
-            corr.get_elem({1, 0, 0}) = 10.0;
-            corr.get_elem({1, 0, 1}) = 36.0;
-            corr.get_elem({1, 1, 0}) = 28.0;
-            corr.get_elem({1, 1, 1}) = 64.0;
+            corr.set_elem({0, 0, 0}, 1.0);
+            corr.set_elem({0, 0, 1}, 10.0);
+            corr.set_elem({0, 1, 0}, 9.0);
+            corr.set_elem({0, 1, 1}, 28.0);
+            corr.set_elem({1, 0, 0}, 10.0);
+            corr.set_elem({1, 0, 1}, 36.0);
+            corr.set_elem({1, 1, 0}, 28.0);
+            corr.set_elem({1, 1, 1}, 64.0);
             REQUIRE(output == corr);
         }
 
@@ -563,14 +566,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.hadamard_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 1.0;
-            corr.get_elem({0, 0, 1}) = 10.0;
-            corr.get_elem({0, 1, 0}) = 9.0;
-            corr.get_elem({0, 1, 1}) = 28.0;
-            corr.get_elem({1, 0, 0}) = 10.0;
-            corr.get_elem({1, 0, 1}) = 36.0;
-            corr.get_elem({1, 1, 0}) = 28.0;
-            corr.get_elem({1, 1, 1}) = 64.0;
+            corr.set_elem({0, 0, 0}, 1.0);
+            corr.set_elem({0, 0, 1}, 10.0);
+            corr.set_elem({0, 1, 0}, 9.0);
+            corr.set_elem({0, 1, 1}, 28.0);
+            corr.set_elem({1, 0, 0}, 10.0);
+            corr.set_elem({1, 0, 1}, 36.0);
+            corr.set_elem({1, 1, 0}, 28.0);
+            corr.set_elem({1, 1, 1}, 64.0);
             REQUIRE(output == corr);
         }
 
@@ -583,14 +586,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.hadamard_assignment(o, l, r, tensor, tensor);
 
             pimpl_type<TestType, 3> corr(shape_type{2, 2, 2});
-            corr.get_elem({0, 0, 0}) = 1.0;
-            corr.get_elem({0, 0, 1}) = 15.0;
-            corr.get_elem({0, 1, 0}) = 15.0;
-            corr.get_elem({0, 1, 1}) = 49.0;
-            corr.get_elem({1, 0, 0}) = 4.0;
-            corr.get_elem({1, 0, 1}) = 24.0;
-            corr.get_elem({1, 1, 0}) = 24.0;
-            corr.get_elem({1, 1, 1}) = 64.0;
+            corr.set_elem({0, 0, 0}, 1.0);
+            corr.set_elem({0, 0, 1}, 15.0);
+            corr.set_elem({0, 1, 0}, 15.0);
+            corr.set_elem({0, 1, 1}, 49.0);
+            corr.set_elem({1, 0, 0}, 4.0);
+            corr.set_elem({1, 0, 1}, 24.0);
+            corr.set_elem({1, 1, 0}, 24.0);
+            corr.set_elem({1, 1, 1}, 64.0);
             REQUIRE(output == corr);
         }
     }
@@ -634,10 +637,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 2> corr(oshape);
-            corr.get_elem({0, 0}) = 50.0;
-            corr.get_elem({0, 1}) = 60.0;
-            corr.get_elem({1, 0}) = 114.0;
-            corr.get_elem({1, 1}) = 140.0;
+            corr.set_elem({0, 0}, 50.0);
+            corr.set_elem({0, 1}, 60.0);
+            corr.set_elem({1, 0}, 114.0);
+            corr.set_elem({1, 1}, 140.0);
             REQUIRE(output == corr);
         }
 
@@ -651,10 +654,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 2> corr(oshape);
-            corr.get_elem({0, 0}) = 44.0;
-            corr.get_elem({0, 1}) = 64.0;
-            corr.get_elem({1, 0}) = 100.0;
-            corr.get_elem({1, 1}) = 152.0;
+            corr.set_elem({0, 0}, 44.0);
+            corr.set_elem({0, 1}, 64.0);
+            corr.set_elem({1, 0}, 100.0);
+            corr.set_elem({1, 1}, 152.0);
             REQUIRE(output == corr);
         }
 
@@ -668,10 +671,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 2> corr(oshape);
-            corr.get_elem({0, 0}) = 44.0;
-            corr.get_elem({0, 1}) = 100.0;
-            corr.get_elem({1, 0}) = 64.0;
-            corr.get_elem({1, 1}) = 152.0;
+            corr.set_elem({0, 0}, 44.0);
+            corr.set_elem({0, 1}, 100.0);
+            corr.set_elem({1, 0}, 64.0);
+            corr.set_elem({1, 1}, 152.0);
             REQUIRE(output == corr);
         }
 
@@ -685,22 +688,22 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, tensor, tensor);
 
             pimpl_type<TestType, 4> corr(oshape);
-            corr.get_elem({0, 0, 0, 0}) = 10.0;
-            corr.get_elem({0, 0, 0, 1}) = 14.0;
-            corr.get_elem({0, 0, 1, 0}) = 26.0;
-            corr.get_elem({0, 0, 1, 1}) = 30.0;
-            corr.get_elem({0, 1, 0, 0}) = 14.0;
-            corr.get_elem({0, 1, 0, 1}) = 20.0;
-            corr.get_elem({0, 1, 1, 0}) = 38.0;
-            corr.get_elem({0, 1, 1, 1}) = 44.0;
-            corr.get_elem({1, 0, 0, 0}) = 26.0;
-            corr.get_elem({1, 0, 0, 1}) = 38.0;
-            corr.get_elem({1, 0, 1, 0}) = 74.0;
-            corr.get_elem({1, 0, 1, 1}) = 86.0;
-            corr.get_elem({1, 1, 0, 0}) = 30.0;
-            corr.get_elem({1, 1, 0, 1}) = 44.0;
-            corr.get_elem({1, 1, 1, 0}) = 86.0;
-            corr.get_elem({1, 1, 1, 1}) = 100.0;
+            corr.set_elem({0, 0, 0, 0}, 10.0);
+            corr.set_elem({0, 0, 0, 1}, 14.0);
+            corr.set_elem({0, 0, 1, 0}, 26.0);
+            corr.set_elem({0, 0, 1, 1}, 30.0);
+            corr.set_elem({0, 1, 0, 0}, 14.0);
+            corr.set_elem({0, 1, 0, 1}, 20.0);
+            corr.set_elem({0, 1, 1, 0}, 38.0);
+            corr.set_elem({0, 1, 1, 1}, 44.0);
+            corr.set_elem({1, 0, 0, 0}, 26.0);
+            corr.set_elem({1, 0, 0, 1}, 38.0);
+            corr.set_elem({1, 0, 1, 0}, 74.0);
+            corr.set_elem({1, 0, 1, 1}, 86.0);
+            corr.set_elem({1, 1, 0, 0}, 30.0);
+            corr.set_elem({1, 1, 0, 1}, 44.0);
+            corr.set_elem({1, 1, 1, 0}, 86.0);
+            corr.set_elem({1, 1, 1, 1}, 100.0);
 
             REQUIRE(output == corr);
         }
@@ -715,14 +718,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.contraction_assignment(o, l, r, oshape, matrix, tensor);
 
             pimpl_type<TestType, 3> corr(oshape);
-            corr.get_elem({0, 0, 0}) = 11.0;
-            corr.get_elem({0, 0, 1}) = 14.0;
-            corr.get_elem({0, 1, 0}) = 17.0;
-            corr.get_elem({0, 1, 1}) = 20.0;
-            corr.get_elem({1, 0, 0}) = 23.0;
-            corr.get_elem({1, 0, 1}) = 30.0;
-            corr.get_elem({1, 1, 0}) = 37.0;
-            corr.get_elem({1, 1, 1}) = 44.0;
+            corr.set_elem({0, 0, 0}, 11.0);
+            corr.set_elem({0, 0, 1}, 14.0);
+            corr.set_elem({0, 1, 0}, 17.0);
+            corr.set_elem({0, 1, 1}, 20.0);
+            corr.set_elem({1, 0, 0}, 23.0);
+            corr.set_elem({1, 0, 1}, 30.0);
+            corr.set_elem({1, 1, 0}, 37.0);
+            corr.set_elem({1, 1, 1}, 44.0);
 
             REQUIRE(corr == output);
         }
@@ -745,10 +748,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.permute_assignment(o, i, matrix);
 
             pimpl_type<TestType, 2> corr(shape_type{2, 2});
-            corr.get_elem({0, 0}) = 1.0;
-            corr.get_elem({0, 1}) = 3.0;
-            corr.get_elem({1, 0}) = 2.0;
-            corr.get_elem({1, 1}) = 4.0;
+            corr.set_elem({0, 0}, 1.0);
+            corr.set_elem({0, 1}, 3.0);
+            corr.set_elem({1, 0}, 2.0);
+            corr.set_elem({1, 1}, 4.0);
             REQUIRE(output == corr);
         }
     }
@@ -762,10 +765,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.scalar_multiplication(o, i, 2.0, matrix);
 
             pimpl_type<TestType, 2> corr(shape_type{2, 2});
-            corr.get_elem({0, 0}) = 2.0;
-            corr.get_elem({0, 1}) = 4.0;
-            corr.get_elem({1, 0}) = 6.0;
-            corr.get_elem({1, 1}) = 8.0;
+            corr.set_elem({0, 0}, 2.0);
+            corr.set_elem({0, 1}, 4.0);
+            corr.set_elem({1, 0}, 6.0);
+            corr.set_elem({1, 1}, 8.0);
 
             REQUIRE(output == corr);
         }
@@ -776,10 +779,10 @@ TEMPLATE_LIST_TEST_CASE("EigenTensor", "", types::floating_point_types) {
             output.scalar_multiplication(o, i, 2.0, matrix);
 
             pimpl_type<TestType, 2> corr(shape_type{2, 2});
-            corr.get_elem({0, 0}) = 2.0;
-            corr.get_elem({0, 1}) = 6.0;
-            corr.get_elem({1, 0}) = 4.0;
-            corr.get_elem({1, 1}) = 8.0;
+            corr.set_elem({0, 0}, 2.0);
+            corr.set_elem({0, 1}, 6.0);
+            corr.set_elem({1, 0}, 4.0);
+            corr.set_elem({1, 1}, 8.0);
             REQUIRE(output == corr);
         }
     }

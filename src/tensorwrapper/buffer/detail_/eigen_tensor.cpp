@@ -24,11 +24,6 @@ namespace tensorwrapper::buffer::detail_ {
 #define EIGEN_TENSOR EigenTensor<FloatType, Rank>
 
 TPARAMS
-bool EIGEN_TENSOR::operator==(const my_type& rhs) const noexcept {
-    return get_hash() == rhs.get_hash();
-}
-
-TPARAMS
 template<typename OperationType>
 void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
                                     label_type lhs_labels,
@@ -212,9 +207,9 @@ TPARAMS
 void EIGEN_TENSOR::update_hash_() const {
     m_hash_ = hash_type{rank_()};
     for(eigen_rank_type i = 0; i < rank_(); ++i)
-        hash_utilities::hash_input(m_hash_, extent_(i));
+        hash_utilities::hash_input(m_hash_, m_tensor_.dimension(i));
     for(auto i = 0; i < m_tensor_.size(); ++i)
-        hash_utilities::hash_input(m_hash_, data_()[i]);
+        hash_utilities::hash_input(m_hash_, m_tensor_.data()[i]);
     m_recalculate_hash_ = false;
 }
 

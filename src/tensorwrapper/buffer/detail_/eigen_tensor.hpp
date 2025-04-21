@@ -38,6 +38,7 @@ public:
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
     using typename base_type::element_type;
+    using typename base_type::elements_type;
     using typename base_type::index_vector;
     using typename base_type::label_type;
     using typename base_type::pimpl_pointer;
@@ -61,7 +62,9 @@ public:
     }
 
     /// Tests for exact equality
-    bool operator==(const my_type& rhs) const noexcept;
+    bool operator==(const my_type& rhs) const noexcept {
+        return get_hash() == rhs.get_hash();
+    }
 
     // Returns the hash for the current state of *this, computing first if
     // needed.
@@ -88,12 +91,8 @@ protected:
         return m_tensor_.data();
     }
 
-    const_pointer data_() const noexcept override { return m_tensor_.data(); }
-
-    reference get_elem_(index_vector index) override {
-        mark_for_rehash_();
-        return unwrap_vector_(std::move(index),
-                              std::make_index_sequence<Rank>());
+    const_pointer get_immutable_data_() const noexcept override {
+        return m_tensor_.data();
     }
 
     const_reference get_elem_(index_vector index) const override {
@@ -107,13 +106,23 @@ protected:
           new_value;
     }
 
-    const_reference get_data_at_(size_type index) const override {
+    const_reference get_data_(size_type index) const override {
         return m_tensor_.data()[index];
     }
 
-    void set_data_at_(size_type index, element_type new_value) override {
+    void set_data_(size_type index, element_type new_value) override {
         mark_for_rehash_();
         m_tensor_.data()[index] = new_value;
+    }
+
+    void fill_(element_type value) override {
+        mark_for_rehash_();
+        std::fill(m_tensor_.data(), m_tensor_.data() + m_tensor_.size(), value);
+    }
+
+    void copy_(elements_type& values) {
+        mark_for_rehash_();
+        std::copy(values.begin(), values.end(), m_tensor_.data());
     }
 
     bool are_equal_(const_base_reference rhs) const noexcept override {

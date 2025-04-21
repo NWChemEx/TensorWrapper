@@ -160,13 +160,8 @@ typename EIGEN::pointer EIGEN::get_mutable_data_() noexcept {
 }
 
 TPARAMS
-typename EIGEN::const_pointer EIGEN::data_() const noexcept {
-    return m_pimpl_ ? m_pimpl_->data() : nullptr;
-}
-
-TPARAMS
-typename EIGEN::reference EIGEN::get_elem_(index_vector index) {
-    return pimpl_().get_elem(std::move(index));
+typename EIGEN::const_pointer EIGEN::get_immutable_data_() const noexcept {
+    return m_pimpl_ ? m_pimpl_->get_immutable_data() : nullptr;
 }
 
 TPARAMS
@@ -177,6 +172,26 @@ typename EIGEN::const_reference EIGEN::get_elem_(index_vector index) const {
 TPARAMS
 void EIGEN::set_elem_(index_vector index, element_type new_value) {
     return pimpl_().set_elem(std::move(index), std::move(new_value));
+}
+
+TPARAMS
+typename EIGEN::const_reference EIGEN::get_data_(size_type index) const {
+    return pimpl_().get_data(std::move(index));
+}
+
+TPARAMS
+void EIGEN::set_data_(size_type index, element_type new_value) {
+    return pimpl_().set_data(std::move(index), std::move(new_value));
+}
+
+TPARAMS
+void EIGEN::fill_(element_type value) {
+    return pimpl_().fill(std::move(value));
+}
+
+TPARAMS
+void EIGEN::copy_(elements_type& values) {
+    return pimpl_().copy(values);
 }
 
 TPARAMS
