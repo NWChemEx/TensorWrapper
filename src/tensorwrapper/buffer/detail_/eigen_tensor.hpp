@@ -120,7 +120,7 @@ protected:
         std::fill(m_tensor_.data(), m_tensor_.data() + m_tensor_.size(), value);
     }
 
-    void copy_(elements_type& values) {
+    void copy_(elements_type& values) override {
         mark_for_rehash_();
         std::copy(values.begin(), values.end(), m_tensor_.data());
     }
