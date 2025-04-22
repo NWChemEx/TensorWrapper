@@ -62,7 +62,7 @@ inline auto smooth_matrix_() {
 inline auto smooth_matrix_input() { return smooth_matrix_<double>(); }
 
 inline auto smooth_symmetric_matrix_input() {
-    auto pmatrix      = eigen_matrix<double>(3, 3);
+    auto pmatrix = eigen_matrix<double>(3, 3);
     pmatrix->set_elem({0, 0}, 1.0);
     pmatrix->set_elem({0, 1}, 2.0);
     pmatrix->set_elem({0, 2}, 3.0);
