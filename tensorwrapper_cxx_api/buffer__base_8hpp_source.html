@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.53</span>
+   &#160;<span id="projectnumber">0.0.54</span>
    </div>
   </td>
  </tr>
@@ -96,15 +96,15 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a> {</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> : <span class="keyword">public</span> <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">detail_::PolymorphicBase</a>&lt;BufferBase&gt;,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                   <span class="keyword">public</span> <a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html">detail_::DSLBase</a>&lt;BufferBase&gt; {</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> : <span class="keyword">public</span> <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase</a>&lt;BufferBase&gt;,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                   <span class="keyword">public</span> <a class="code" href="classtensorwrapper_1_1detail___1_1DSLBase.html">tensorwrapper::detail_::DSLBase</a>&lt;BufferBase&gt; {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">using</span> <a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">my_type</a> = <a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aba4a07e6b73c9ce7826be6690e600b18">BufferBase</a>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">using</span> <a class="code" href="structtensorwrapper_1_1types_1_1ClassTraits.html">my_traits</a> = <a class="code" href="structtensorwrapper_1_1types_1_1ClassTraits.html">types::ClassTraits&lt;my_type&gt;</a>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a8389f2ab17b1c37f7b6c740d3a53cc3b">   42</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">polymorphic_base</a> = <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">detail_::PolymorphicBase&lt;my_type&gt;</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ab2706a46d06bff85da58e017926b1298">   42</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">polymorphic_base</a> = <a class="code" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt;my_type&gt;</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ab5366bfacbc4a63a3d41d80a4a8d1a76">   46</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ab5366bfacbc4a63a3d41d80a4a8d1a76">buffer_base_type</a> = <span class="keyword">typename</span> my_traits::buffer_base_type;</div>

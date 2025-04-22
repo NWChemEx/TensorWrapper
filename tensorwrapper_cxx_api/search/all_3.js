@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['data_78',['data',['../classtensorwrapper_1_1buffer_1_1Contiguous.html#aaf4a8af88d1b1590d1fe372200fe9f1a',1,'tensorwrapper::buffer::Contiguous::data() noexcept'],['../classtensorwrapper_1_1buffer_1_1Contiguous.html#a1b60745b4ac038cd6bb7b18c0e58cabc',1,'tensorwrapper::buffer::Contiguous::data() const noexcept']]],
-  ['data_5f_79',['data_',['../classtensorwrapper_1_1buffer_1_1Eigen.html#ae73bbae9c7db7ce2c46f1670990cdf43',1,'tensorwrapper::buffer::Eigen::data_()'],['../classtensorwrapper_1_1buffer_1_1Contiguous.html#aac28e70060a947bfb5c916ed62b6a843',1,'tensorwrapper::buffer::Contiguous::data_() noexcept=0'],['../classtensorwrapper_1_1buffer_1_1Contiguous.html#a2023e74dc0ccaa57eb6623a4a6af7a1c',1,'tensorwrapper::buffer::Contiguous::data_() const noexcept=0'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#a225b490cbe4c1f5e1661782558fb9eab',1,'tensorwrapper::buffer::Eigen::data_()']]],
   ['default_5fallocator_80',['default_allocator',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#af3bb8e1248e3589e9350a6065f1e83fc',1,'tensorwrapper::detail_::TensorFactory']]],
   ['default_5flogical_5flayout_81',['default_logical_layout',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#aaad0148b7084815512bce51ebf89dd91',1,'tensorwrapper::detail_::TensorFactory']]],
   ['default_5flogical_5fsparsity_82',['default_logical_sparsity',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#a6dea343bc661b15fe959531467dbd271',1,'tensorwrapper::detail_::TensorFactory']]],

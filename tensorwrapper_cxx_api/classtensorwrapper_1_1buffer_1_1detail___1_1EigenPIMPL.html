@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.53</span>
+   &#160;<span id="projectnumber">0.0.54</span>
    </div>
   </td>
  </tr>
@@ -111,6 +111,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>pimpl_pointer</b> = 
 <tr class="memitem:a0e8191d23892f3c097d3fdeae796de6a"><td class="memItemLeft" align="right" valign="top"><a id="a0e8191d23892f3c097d3fdeae796de6a"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = typename <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">parent_type::label_type</a></td></tr>
 <tr class="separator:a0e8191d23892f3c097d3fdeae796de6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f8841a2a10ccb82f19fa2c79ca3c1fe"><td class="memItemLeft" align="right" valign="top"><a id="a0f8841a2a10ccb82f19fa2c79ca3c1fe"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>element_type</b> = typename <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html#a2a4c83faea7fb32c6a66a28497dea97f">parent_type::element_type</a></td></tr>
+<tr class="separator:a0f8841a2a10ccb82f19fa2c79ca3c1fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e86933f881c8fdede18c2cb69ab7697"><td class="memItemLeft" align="right" valign="top"><a id="a0e86933f881c8fdede18c2cb69ab7697"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>element_vector</b> = typename parent_type::element_vector</td></tr>
+<tr class="separator:a0e86933f881c8fdede18c2cb69ab7697"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4794bafe5a523f95a0a5e2b862d0bc40"><td class="memItemLeft" align="right" valign="top"><a id="a4794bafe5a523f95a0a5e2b862d0bc40"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = typename <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html#acf2f6d1167ce43ebb55a08b03d3469fc">parent_type::reference</a></td></tr>
 <tr class="separator:a4794bafe5a523f95a0a5e2b862d0bc40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,21 +182,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9520e89a5a211a2db6025f151ee633c3"><td class="memItemLeft" align="right" valign="top"><a id="a9520e89a5a211a2db6025f151ee633c3"></a>
 eigen_rank_type&#160;</td><td class="memItemRight" valign="bottom"><b>rank</b> () const noexcept</td></tr>
 <tr class="separator:a9520e89a5a211a2db6025f151ee633c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8593dd1f8dc58c0a8689542cd43cd796"><td class="memItemLeft" align="right" valign="top"><a id="a8593dd1f8dc58c0a8689542cd43cd796"></a>
+size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const noexcept</td></tr>
+<tr class="separator:a8593dd1f8dc58c0a8689542cd43cd796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0f03f32376e3c5a08a14404a467b454"><td class="memItemLeft" align="right" valign="top"><a id="aa0f03f32376e3c5a08a14404a467b454"></a>
 size_type&#160;</td><td class="memItemRight" valign="bottom"><b>extent</b> (eigen_rank_type i) const</td></tr>
 <tr class="separator:aa0f03f32376e3c5a08a14404a467b454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8d6963be9e6a87f8ed4ad95087a4c80"><td class="memItemLeft" align="right" valign="top"><a id="af8d6963be9e6a87f8ed4ad95087a4c80"></a>
-pointer&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () noexcept</td></tr>
-<tr class="separator:af8d6963be9e6a87f8ed4ad95087a4c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ab9225d0ae0cd1db5603dea2b2dba3b"><td class="memItemLeft" align="right" valign="top"><a id="a1ab9225d0ae0cd1db5603dea2b2dba3b"></a>
-const_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () const noexcept</td></tr>
-<tr class="separator:a1ab9225d0ae0cd1db5603dea2b2dba3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a085dbe46559ff40dc5f4a85a2e35d1c2"><td class="memItemLeft" align="right" valign="top"><a id="a085dbe46559ff40dc5f4a85a2e35d1c2"></a>
-reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_elem</b> (index_vector index)</td></tr>
-<tr class="separator:a085dbe46559ff40dc5f4a85a2e35d1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af47b5d3ad7bbf13c8ec6e426030cf3a7"><td class="memItemLeft" align="right" valign="top"><a id="af47b5d3ad7bbf13c8ec6e426030cf3a7"></a>
+pointer&#160;</td><td class="memItemRight" valign="bottom"><b>get_mutable_data</b> () noexcept</td></tr>
+<tr class="separator:af47b5d3ad7bbf13c8ec6e426030cf3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065589566aaf0f3cba137a2c4b693a2a"><td class="memItemLeft" align="right" valign="top"><a id="a065589566aaf0f3cba137a2c4b693a2a"></a>
+const_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>get_immutable_data</b> () const noexcept</td></tr>
+<tr class="separator:a065589566aaf0f3cba137a2c4b693a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3092db1b156da83a8f7f9b4fda004948"><td class="memItemLeft" align="right" valign="top"><a id="a3092db1b156da83a8f7f9b4fda004948"></a>
 const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_elem</b> (index_vector index) const</td></tr>
 <tr class="separator:a3092db1b156da83a8f7f9b4fda004948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a928b4e27a1fc2b156e4b7519a9b81b02"><td class="memItemLeft" align="right" valign="top"><a id="a928b4e27a1fc2b156e4b7519a9b81b02"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_elem</b> (index_vector index, element_type new_value)</td></tr>
+<tr class="separator:a928b4e27a1fc2b156e4b7519a9b81b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af440193a9cbc89b83abb10c6b3584f75"><td class="memItemLeft" align="right" valign="top"><a id="af440193a9cbc89b83abb10c6b3584f75"></a>
+const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_data</b> (size_type index) const</td></tr>
+<tr class="separator:af440193a9cbc89b83abb10c6b3584f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec513d586690012dac4a4f74ee5cd87"><td class="memItemLeft" align="right" valign="top"><a id="abec513d586690012dac4a4f74ee5cd87"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_data</b> (size_type index, element_type new_value)</td></tr>
+<tr class="separator:abec513d586690012dac4a4f74ee5cd87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd5566c5a486f2015be717a57f37cf4"><td class="memItemLeft" align="right" valign="top"><a id="a9cd5566c5a486f2015be717a57f37cf4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>fill</b> (element_type value)</td></tr>
+<tr class="separator:a9cd5566c5a486f2015be717a57f37cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b1caca68f596163482ce34df8bb218"><td class="memItemLeft" align="right" valign="top"><a id="a17b1caca68f596163482ce34df8bb218"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const element_vector &amp;values)</td></tr>
+<tr class="separator:a17b1caca68f596163482ce34df8bb218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af065b3fd16616ff25431b050ac22b47b"><td class="memItemLeft" align="right" valign="top"><a id="af065b3fd16616ff25431b050ac22b47b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addition_assignment</b> (label_type this_labels, label_type lhs_labels, label_type rhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> rhs)</td></tr>
 <tr class="separator:af065b3fd16616ff25431b050ac22b47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,21 +259,36 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a92b4e5b3e4d1c056a3756ba3dc1ace2a"><td class="memItemLeft" align="right" valign="top"><a id="a92b4e5b3e4d1c056a3756ba3dc1ace2a"></a>
 virtual eigen_rank_type&#160;</td><td class="memItemRight" valign="bottom"><b>rank_</b> () const noexcept=0</td></tr>
 <tr class="separator:a92b4e5b3e4d1c056a3756ba3dc1ace2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8249b292de85e1a6435c6400ee39f85c"><td class="memItemLeft" align="right" valign="top"><a id="a8249b292de85e1a6435c6400ee39f85c"></a>
+virtual size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b> () const =0</td></tr>
+<tr class="separator:a8249b292de85e1a6435c6400ee39f85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaabb00c086f6ec528937cde6bdba1610"><td class="memItemLeft" align="right" valign="top"><a id="aaabb00c086f6ec528937cde6bdba1610"></a>
 virtual size_type&#160;</td><td class="memItemRight" valign="bottom"><b>extent_</b> (eigen_rank_type i) const =0</td></tr>
 <tr class="separator:aaabb00c086f6ec528937cde6bdba1610"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07c5488c0bda723e8cacf0fecec2c69a"><td class="memItemLeft" align="right" valign="top"><a id="a07c5488c0bda723e8cacf0fecec2c69a"></a>
-virtual pointer&#160;</td><td class="memItemRight" valign="bottom"><b>data_</b> () noexcept=0</td></tr>
-<tr class="separator:a07c5488c0bda723e8cacf0fecec2c69a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a844f5a9934dba8bfc752f1ff55ad9c15"><td class="memItemLeft" align="right" valign="top"><a id="a844f5a9934dba8bfc752f1ff55ad9c15"></a>
-virtual const_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>data_</b> () const noexcept=0</td></tr>
-<tr class="separator:a844f5a9934dba8bfc752f1ff55ad9c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45e585af90c9f9d552a95fb1c33ac2f8"><td class="memItemLeft" align="right" valign="top"><a id="a45e585af90c9f9d552a95fb1c33ac2f8"></a>
-virtual reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_elem_</b> (index_vector index)=0</td></tr>
-<tr class="separator:a45e585af90c9f9d552a95fb1c33ac2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e60a425f14ff8705e52dfeb5136159e"><td class="memItemLeft" align="right" valign="top"><a id="a1e60a425f14ff8705e52dfeb5136159e"></a>
+virtual pointer&#160;</td><td class="memItemRight" valign="bottom"><b>get_mutable_data_</b> () noexcept=0</td></tr>
+<tr class="separator:a1e60a425f14ff8705e52dfeb5136159e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a3ffa26e36e6c3ae52ed4176cfd145"><td class="memItemLeft" align="right" valign="top"><a id="af8a3ffa26e36e6c3ae52ed4176cfd145"></a>
+virtual const_pointer&#160;</td><td class="memItemRight" valign="bottom"><b>get_immutable_data_</b> () const noexcept=0</td></tr>
+<tr class="separator:af8a3ffa26e36e6c3ae52ed4176cfd145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5259dbc9fb83f1f8baa83ab6a86f1f08"><td class="memItemLeft" align="right" valign="top"><a id="a5259dbc9fb83f1f8baa83ab6a86f1f08"></a>
 virtual const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_elem_</b> (index_vector index) const =0</td></tr>
 <tr class="separator:a5259dbc9fb83f1f8baa83ab6a86f1f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f636967079a1fd83c6bb42710062756"><td class="memItemLeft" align="right" valign="top"><a id="a4f636967079a1fd83c6bb42710062756"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set_elem_</b> (index_vector index, element_type new_value)=0</td></tr>
+<tr class="separator:a4f636967079a1fd83c6bb42710062756"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaba56790f63240ec66bdd92f5f70e4bc"><td class="memItemLeft" align="right" valign="top"><a id="aaba56790f63240ec66bdd92f5f70e4bc"></a>
+virtual const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_data_</b> (size_type index) const =0</td></tr>
+<tr class="separator:aaba56790f63240ec66bdd92f5f70e4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9991d0884c25b10a59f1602cd8d7d3c4"><td class="memItemLeft" align="right" valign="top"><a id="a9991d0884c25b10a59f1602cd8d7d3c4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set_data_</b> (size_type index, element_type new_value)=0</td></tr>
+<tr class="separator:a9991d0884c25b10a59f1602cd8d7d3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea4c91c69ec420315f03f934187da362"><td class="memItemLeft" align="right" valign="top"><a id="aea4c91c69ec420315f03f934187da362"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>fill_</b> (element_type value)=0</td></tr>
+<tr class="separator:aea4c91c69ec420315f03f934187da362"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980e296345931bc5619ed6a3d8a7229f"><td class="memItemLeft" align="right" valign="top"><a id="a980e296345931bc5619ed6a3d8a7229f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>copy_</b> (const element_vector &amp;values)=0</td></tr>
+<tr class="separator:a980e296345931bc5619ed6a3d8a7229f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad02c54e745430e5438a6cbf4fb495394"><td class="memItemLeft" align="right" valign="top"><a id="ad02c54e745430e5438a6cbf4fb495394"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>addition_assignment_</b> (label_type this_labels, label_type lhs_labels, label_type rhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html">const_pimpl_reference</a> rhs)=0</td></tr>
 <tr class="separator:ad02c54e745430e5438a6cbf4fb495394"><td class="memSeparator" colspan="2">&#160;</td></tr>
