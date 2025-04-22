@@ -32,9 +32,9 @@ void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
                                     const_pimpl_reference rhs) {
     // Downcast LHS and RHS
     const auto* lhs_down  = dynamic_cast<const my_type*>(&lhs);
-    const auto& lhs_eigen = lhs_down->value();
+    const auto& lhs_eigen = lhs_down->m_tensor_;
     const auto* rhs_down  = dynamic_cast<const my_type*>(&rhs);
-    const auto& rhs_eigen = rhs_down->value();
+    const auto& rhs_eigen = rhs_down->m_tensor_;
 
     // Whose indices match whose?
     bool this_matches_lhs = (this_labels == lhs_labels);
@@ -61,6 +61,7 @@ void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_labels,
     } else { // Everything needs permuted
         m_tensor_ = op(lhs_eigen.shuffle(l_to_r), rhs_eigen).shuffle(this_to_r);
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -72,6 +73,7 @@ void EIGEN_TENSOR::addition_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs + rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
 }
 
 template<typename TensorType>
@@ -110,8 +112,8 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
 
     eigen::data_type<FloatType, 2> buffer(lrows, rcols);
 
-    map_t lmatrix(lt->data(), lrows, lcols);
-    map_t rmatrix(rt->data(), rrows, rcols);
+    map_t lmatrix(lt->get_mutable_data(), lrows, lcols);
+    map_t rmatrix(rt->get_mutable_data(), rrows, rcols);
     map_t omatrix(buffer.data(), lrows, rcols);
     omatrix = lmatrix * rmatrix;
 
@@ -138,6 +140,7 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
     } else {
         m_tensor_ = tensor;
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -149,6 +152,7 @@ void EIGEN_TENSOR::hadamard_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs * rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -162,10 +166,11 @@ void EIGEN_TENSOR::permute_assignment_(label_type this_labels,
         auto r_to_l = this_labels.permutation(rhs_labels);
         // Eigen wants int objects
         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_down->value().shuffle(r_to_l2);
+        m_tensor_ = rhs_down->m_tensor_.shuffle(r_to_l2);
     } else {
-        m_tensor_ = rhs_down->value();
+        m_tensor_ = rhs_down->m_tensor_;
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -179,10 +184,11 @@ void EIGEN_TENSOR::scalar_multiplication_(label_type this_labels,
         auto r_to_l = rhs_labels.permutation(this_labels);
         // Eigen wants int objects
         std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
-        m_tensor_ = rhs_downcasted->value().shuffle(r_to_l2) * scalar;
+        m_tensor_ = rhs_downcasted->m_tensor_.shuffle(r_to_l2) * scalar;
     } else {
-        m_tensor_ = rhs_downcasted->value() * scalar;
+        m_tensor_ = rhs_downcasted->m_tensor_ * scalar;
     }
+    mark_for_rehash_();
 }
 
 TPARAMS
@@ -194,6 +200,17 @@ void EIGEN_TENSOR::subtraction_assignment_(label_type this_labels,
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs - rhs; };
     element_wise_op_(lambda, std::move(this_labels), std::move(lhs_labels),
                      std::move(rhs_labels), lhs, rhs);
+    mark_for_rehash_();
+}
+
+TPARAMS
+void EIGEN_TENSOR::update_hash_() const {
+    m_hash_ = hash_type{rank_()};
+    for(eigen_rank_type i = 0; i < rank_(); ++i)
+        hash_utilities::hash_input(m_hash_, m_tensor_.dimension(i));
+    for(auto i = 0; i < m_tensor_.size(); ++i)
+        hash_utilities::hash_input(m_hash_, m_tensor_.data()[i]);
+    m_recalculate_hash_ = false;
 }
 
 #undef EIGEN_TENSOR

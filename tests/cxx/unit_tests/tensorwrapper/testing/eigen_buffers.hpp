@@ -43,7 +43,7 @@ auto eigen_vector(std::size_t n = 5) {
     layout::Physical l(shape::Smooth{n});
     auto alloc  = make_allocator<FloatType>();
     auto buffer = alloc.allocate(l);
-    for(std::size_t i = 0; i < n; ++i) buffer->at(i) = i;
+    for(std::size_t i = 0; i < n; ++i) buffer->set_elem({i}, i);
     return buffer;
 }
 
@@ -54,7 +54,7 @@ auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
     auto buffer    = alloc.allocate(l);
     double counter = 1.0;
     for(decltype(n) i = 0; i < n; ++i)
-        for(decltype(m) j = 0; j < m; ++j) buffer->at(i, j) = counter++;
+        for(decltype(m) j = 0; j < m; ++j) buffer->set_elem({i, j}, counter++);
     return buffer;
 }
 
@@ -66,7 +66,8 @@ auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
     double counter = 1.0;
     for(decltype(n) i = 0; i < n; ++i)
         for(decltype(m) j = 0; j < m; ++j)
-            for(decltype(l) k = 0; k < l; ++k) buffer->at(i, j, k) = counter++;
+            for(decltype(l) k = 0; k < l; ++k)
+                buffer->set_elem({i, j, k}, counter++);
     return buffer;
 }
 
@@ -82,7 +83,7 @@ auto eigen_tensor4(std::array<std::size_t, 4> extents = {2, 2, 2, 2}) {
         for(i[1] = 0; i[1] < extents[1]; ++i[1])
             for(i[2] = 0; i[2] < extents[2]; ++i[2])
                 for(i[3] = 0; i[3] < extents[3]; ++i[3])
-                    buffer->at(i[0], i[1], i[2], i[3]) = counter++;
+                    buffer->set_elem({i[0], i[1], i[2], i[3]}, counter++);
     return buffer;
 }
 

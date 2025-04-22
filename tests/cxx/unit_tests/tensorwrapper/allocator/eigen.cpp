@@ -35,19 +35,19 @@ TEMPLATE_LIST_TEST_CASE("EigenAllocator", "", types2test) {
 
     auto pscalar_corr = testing::eigen_scalar<TestType>();
     auto& scalar_corr = *pscalar_corr;
-    scalar_corr.at()  = 0.0;
+    scalar_corr.set_elem({}, 0.0);
 
     auto pvector_corr = testing::eigen_vector<TestType>(2);
     auto& vector_corr = *pvector_corr;
-    vector_corr.at(0) = 1;
-    vector_corr.at(1) = 1;
+    vector_corr.set_elem({0}, 1);
+    vector_corr.set_elem({1}, 1);
 
-    auto pmatrix_corr    = testing::eigen_matrix<TestType>(2, 2);
-    auto& matrix_corr    = *pmatrix_corr;
-    matrix_corr.at(0, 0) = 2;
-    matrix_corr.at(0, 1) = 2;
-    matrix_corr.at(1, 0) = 2;
-    matrix_corr.at(1, 1) = 2;
+    auto pmatrix_corr = testing::eigen_matrix<TestType>(2, 2);
+    auto& matrix_corr = *pmatrix_corr;
+    matrix_corr.set_elem({0, 0}, 2);
+    matrix_corr.set_elem({0, 1}, 2);
+    matrix_corr.set_elem({1, 0}, 2);
+    matrix_corr.set_elem({1, 1}, 2);
 
     alloc_type alloc(rv);
 

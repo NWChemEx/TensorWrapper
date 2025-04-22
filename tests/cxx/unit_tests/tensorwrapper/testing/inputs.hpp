@@ -62,16 +62,16 @@ inline auto smooth_matrix_() {
 inline auto smooth_matrix_input() { return smooth_matrix_<double>(); }
 
 inline auto smooth_symmetric_matrix_input() {
-    auto pmatrix      = eigen_matrix<double>(3, 3);
-    pmatrix->at(0, 0) = 1.0;
-    pmatrix->at(0, 1) = 2.0;
-    pmatrix->at(0, 2) = 3.0;
-    pmatrix->at(1, 0) = 2.0;
-    pmatrix->at(1, 1) = 4.0;
-    pmatrix->at(1, 2) = 5.0;
-    pmatrix->at(2, 0) = 3.0;
-    pmatrix->at(2, 1) = 5.0;
-    pmatrix->at(2, 2) = 6.0;
+    auto pmatrix = eigen_matrix<double>(3, 3);
+    pmatrix->set_elem({0, 0}, 1.0);
+    pmatrix->set_elem({0, 1}, 2.0);
+    pmatrix->set_elem({0, 2}, 3.0);
+    pmatrix->set_elem({1, 0}, 2.0);
+    pmatrix->set_elem({1, 1}, 4.0);
+    pmatrix->set_elem({1, 2}, 5.0);
+    pmatrix->set_elem({2, 0}, 3.0);
+    pmatrix->set_elem({2, 1}, 5.0);
+    pmatrix->set_elem({2, 2}, 6.0);
     shape::Smooth shape{3, 3};
     symmetry::Permutation p01{0, 1};
     symmetry::Group g(p01);

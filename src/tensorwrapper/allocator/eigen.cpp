@@ -100,8 +100,7 @@ typename EIGEN::contiguous_pointer EIGEN::construct_(layout_pointer playout,
                                                      element_type value) {
     auto pbuffer        = this->allocate(std::move(playout));
     auto& contig_buffer = static_cast<buffer::Contiguous<FloatType>&>(*pbuffer);
-    auto* pdata         = contig_buffer.data();
-    std::fill(pdata, pdata + contig_buffer.size(), value);
+    contig_buffer.fill(value);
     return pbuffer;
 }
 
@@ -115,7 +114,7 @@ typename EIGEN::contiguous_pointer EIGEN::il_construct_(ILType il) {
     auto playout      = std::make_unique<layout::Physical>(std::move(shape));
     auto pbuffer      = this->allocate(std::move(playout));
     auto& buffer_down = rebind(*pbuffer);
-    std::copy(data.begin(), data.end(), buffer_down.data());
+    buffer_down.copy(data);
     return pbuffer;
 }
 

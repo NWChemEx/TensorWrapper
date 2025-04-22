@@ -28,8 +28,8 @@ namespace tensorwrapper::buffer {
  *
  *  All classes which wrap existing tensor libraries derive from this class.
  */
-class BufferBase : public detail_::PolymorphicBase<BufferBase>,
-                   public detail_::DSLBase<BufferBase> {
+class BufferBase : public tensorwrapper::detail_::PolymorphicBase<BufferBase>,
+                   public tensorwrapper::detail_::DSLBase<BufferBase> {
 private:
     /// Type of *this
     using my_type = BufferBase;
@@ -39,7 +39,7 @@ private:
 
 protected:
     /// Type *this inherits from
-    using polymorphic_base = detail_::PolymorphicBase<my_type>;
+    using polymorphic_base = tensorwrapper::detail_::PolymorphicBase<my_type>;
 
 public:
     /// Type all buffers inherit from

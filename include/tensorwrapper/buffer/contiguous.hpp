@@ -47,6 +47,8 @@ public:
     /// Type of a read-only reference to an object of type element_type
     using const_reference = const element_type&;
 
+    using element_vector = std::vector<element_type>;
+
     /// Type of a pointer to a mutable element_type object
     using pointer = element_type*;
 
@@ -65,77 +67,139 @@ public:
     /// Returns the number of elements in contiguous memory
     size_type size() const noexcept { return size_(); }
 
-    /// Returns a mutable pointer to the first element in contiguous memory
-    pointer data() noexcept { return data_(); }
-
-    /// Returns a read-only pointer to the first element in contiguous memory
-    const_pointer data() const noexcept { return data_(); }
-
-    /** @brief Retrieves a tensor element by offset.
+    /** @brief Returns a mutable pointer to the first element in contiguous
+     *         memory
      *
-     *  @tparam Args The types of each offset. Must decay to integral types.
+     *  @warning Returning a mutable pointer to the underlying data makes it
+     *           no longer possible for *this to reliably track changes to that
+     *           data. Calling this method may have performance implications, so
+     *           use only when strictly required.
      *
-     *  @param[in] args The offsets such that the i-th value in @p args is the
-     *                  offset of the element along the i-th mode of the tensor.
+     *  @return A read/write pointer to the data.
      *
-     *  @return A mutable reference to the element.
-     *
-     *  @throw std::runtime_error if the number of indices does not match the
-     *                            rank of the tensor. Strong throw guarantee.
+     *  @throw None No throw guarantee.
      */
-    template<typename... Args>
-    reference at(Args&&... args) {
-        static_assert(
-          std::conjunction_v<std::is_integral<std::decay_t<Args>>...>,
-          "Offsets must be integral types");
-        if(sizeof...(Args) != this->rank())
-            throw std::runtime_error("Number of offsets must match rank");
-        return get_elem_(
-          index_vector{detail_::to_size_t(std::forward<Args>(args))...});
+    pointer get_mutable_data() noexcept { return get_mutable_data_(); }
+
+    /** @brief Returns an immutable pointer to the first element in contiguous
+     *         memory
+     *
+     *  @return A read-only pointer to the data.
+     *
+     *  @throw None No throw guarantee.
+     */
+    const_pointer get_immutable_data() const noexcept {
+        return get_immutable_data_();
     }
 
     /** @brief Retrieves a tensor element by offset.
      *
-     *  @tparam Args The types of each offset. Must decay to integral types.
+     *  This method is used to access the element in an immutable way.
      *
-     *  This method is the same as the non-const version except that the result
-     *  is read-only. See the documentation for the mutable version for more
-     *  details.
-     *
-     *  @param[in] args The offsets such that the i-th value in @p args is the
-     *                  offset of the element along the i-th mode of the tensor.
+     *  @param[in] index The offset of the element being retrieved.
      *
      *  @return A read-only reference to the element.
      *
      *  @throw std::runtime_error if the number of indices does not match the
      *                            rank of the tensor. Strong throw guarantee.
      */
-    template<typename... Args>
-    const_reference at(Args&&... args) const {
-        static_assert(
-          std::conjunction_v<std::is_integral<std::decay_t<Args>>...>,
-          "Offsets must be integral types");
-        if(sizeof...(Args) != this->rank())
+    const_reference get_elem(index_vector index) const {
+        if(index.size() != this->rank())
             throw std::runtime_error("Number of offsets must match rank");
-        return get_elem_(
-          index_vector{detail_::to_size_t(std::forward<Args>(args))...});
+        return get_elem_(index);
     }
+
+    /** @brief Sets a tensor element by offset.
+     *
+     *  This method is used to change the value of an element.
+     *
+     *  @param[in] index The offset of the element being updated.
+     *  @param[in] new_value The new value of the element.
+     *
+     *  @throw std::runtime_error if the number of indices does not match the
+     *                            rank of the tensor. Strong throw guarantee.
+     */
+    void set_elem(index_vector index, element_type new_value) {
+        if(index.size() != this->rank())
+            throw std::runtime_error("Number of offsets must match rank");
+        return set_elem_(index, new_value);
+    }
+
+    /** @brief Retrieves a tensor element by ordinal offset.
+     *
+     *  This method is used to access the element in an immutable way.
+     *
+     *  @param[in] index The ordinal offset of the element being retrieved.
+     *
+     *  @return A read-only reference to the element.
+     *
+     *  @throw std::runtime_error if the index is greater than the number of
+     *                            elements. Strong throw guarantee.
+     */
+    const_reference get_data(size_type index) const {
+        if(index >= this->size())
+            throw std::runtime_error("Index greater than number of elements");
+        return get_data_(std::move(index));
+    }
+
+    /** @brief Sets a tensor element by ordinal offset.
+     *
+     *  This method is used to change the value of an element.
+     *
+     *  @param[in] index The ordinal offset of the element being updated.
+     *  @param[in] new_value The new value of the element.
+     *
+     *  @throw std::runtime_error if the index is greater than the number of
+     *                            elements. Strong throw guarantee.
+     */
+    void set_data(size_type index, element_type new_value) {
+        if(index >= this->size())
+            throw std::runtime_error("Index greater than number of elements");
+        set_data_(index, new_value);
+    }
+
+    /** @brief Sets all elements to a value.
+     *
+     *  @param[in] value The new value of all elements.
+     *
+     *  @throw None No throw guarantee.
+     */
+    void fill(element_type value) { fill_(std::move(value)); }
+
+    /** @brief Sets elements using a list of values.
+     *
+     *  @param[in] values The new values of all elements.
+     *
+     *  @throw None No throw guarantee.
+     */
+    void copy(const element_vector& values) { copy_(values); }
 
 protected:
     /// Derived class can override if it likes
     virtual size_type size_() const noexcept { return layout().shape().size(); }
 
     /// Derived class should implement according to data() description
-    virtual pointer data_() noexcept = 0;
+    virtual pointer get_mutable_data_() noexcept = 0;
 
     /// Derived class should implement according to data() const description
-    virtual const_pointer data_() const noexcept = 0;
+    virtual const_pointer get_immutable_data_() const noexcept = 0;
 
-    /// Derived class should implement according to operator()()
-    virtual reference get_elem_(index_vector index) = 0;
-
-    /// Derived class should implement according to operator()()const
+    /// Derived class should implement according to get_elem()
     virtual const_reference get_elem_(index_vector index) const = 0;
+
+    /// Derived class should implement according to set_elem()
+    virtual void set_elem_(index_vector index, element_type new_value) = 0;
+
+    /// Derived class should implement according to get_data()
+    virtual const_reference get_data_(size_type index) const = 0;
+
+    /// Derived class should implement according to set_data()
+    virtual void set_data_(size_type index, element_type new_value) = 0;
+
+    /// Derived class should implement according to fill()
+    virtual void fill_(element_type) = 0;
+
+    virtual void copy_(const element_vector& values) = 0;
 };
 
 #define DECLARE_CONTIG_BUFFER(TYPE) extern template class Contiguous<TYPE>

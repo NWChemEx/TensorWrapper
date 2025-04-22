@@ -28,30 +28,30 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
 
     auto pscalar       = testing::eigen_scalar<TestType>();
     auto& eigen_scalar = static_cast<buffer_type&>(*pscalar);
-    eigen_scalar.at()  = 10.0;
+    eigen_scalar.set_elem({}, 10.0);
 
     auto pvector       = testing::eigen_vector<TestType>(2);
     auto& eigen_vector = static_cast<buffer_type&>(*pvector);
-    eigen_vector.at(0) = 10.0;
-    eigen_vector.at(1) = 20.0;
+    eigen_vector.set_elem({0}, 10.0);
+    eigen_vector.set_elem({1}, 20.0);
 
-    auto pmatrix          = testing::eigen_matrix<TestType>(2, 3);
-    auto& eigen_matrix    = static_cast<buffer_type&>(*pmatrix);
-    eigen_matrix.at(0, 0) = 10.0;
-    eigen_matrix.at(0, 1) = 20.0;
-    eigen_matrix.at(0, 2) = 30.0;
-    eigen_matrix.at(1, 0) = 40.0;
-    eigen_matrix.at(1, 1) = 50.0;
-    eigen_matrix.at(1, 2) = 60.0;
+    auto pmatrix       = testing::eigen_matrix<TestType>(2, 3);
+    auto& eigen_matrix = static_cast<buffer_type&>(*pmatrix);
+    eigen_matrix.set_elem({0, 0}, 10.0);
+    eigen_matrix.set_elem({0, 1}, 20.0);
+    eigen_matrix.set_elem({0, 2}, 30.0);
+    eigen_matrix.set_elem({1, 0}, 40.0);
+    eigen_matrix.set_elem({1, 1}, 50.0);
+    eigen_matrix.set_elem({1, 2}, 60.0);
 
-    auto ptensor             = testing::eigen_tensor3<TestType>(1, 2, 3);
-    auto& eigen_tensor       = static_cast<buffer_type&>(*ptensor);
-    eigen_tensor.at(0, 0, 0) = 10.0;
-    eigen_tensor.at(0, 0, 1) = 20.0;
-    eigen_tensor.at(0, 0, 2) = 30.0;
-    eigen_tensor.at(0, 1, 0) = 40.0;
-    eigen_tensor.at(0, 1, 1) = 50.0;
-    eigen_tensor.at(0, 1, 2) = 60.0;
+    auto ptensor       = testing::eigen_tensor3<TestType>(1, 2, 3);
+    auto& eigen_tensor = static_cast<buffer_type&>(*ptensor);
+    eigen_tensor.set_elem({0, 0, 0}, 10.0);
+    eigen_tensor.set_elem({0, 0, 1}, 20.0);
+    eigen_tensor.set_elem({0, 0, 2}, 30.0);
+    eigen_tensor.set_elem({0, 1, 0}, 40.0);
+    eigen_tensor.set_elem({0, 1, 1}, 50.0);
+    eigen_tensor.set_elem({0, 1, 2}, 60.0);
 
     auto scalar_layout = scalar_physical();
     auto vector_layout = vector_physical(2);
@@ -61,7 +61,9 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
     buffer_type defaulted;
 
     SECTION("ctors, assignment") {
-        SECTION("default ctor") { REQUIRE(defaulted.data() == nullptr); }
+        SECTION("default ctor") {
+            REQUIRE(defaulted.get_immutable_data() == nullptr);
+        }
 
         SECTION("value ctor") {
             REQUIRE(eigen_scalar.layout().are_equal(scalar_layout));
@@ -85,7 +87,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
         // Checking Layout/Allocator falls to base class tests
         auto pscalar2       = testing::eigen_scalar<TestType>();
         auto& eigen_scalar2 = static_cast<buffer_type&>(*pscalar2);
-        eigen_scalar2.at()  = 10.0;
+        eigen_scalar2.set_elem({}, 10.0);
 
         // Defaulted != scalar
         REQUIRE_FALSE(defaulted == eigen_scalar);
@@ -94,7 +96,7 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
         REQUIRE(eigen_scalar == eigen_scalar2);
 
         SECTION("Different buffer value") {
-            eigen_scalar2.at() = 2.0;
+            eigen_scalar2.set_elem({}, 2.0);
             REQUIRE_FALSE(eigen_scalar == eigen_scalar2);
         }
     }
@@ -102,10 +104,10 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
     SECTION("operator!=") {
         auto pscalar2       = testing::eigen_scalar<TestType>();
         auto& eigen_scalar2 = static_cast<buffer_type&>(*pscalar2);
-        eigen_scalar2.at()  = 10.0;
+        eigen_scalar2.set_elem({}, 10.0);
 
         REQUIRE_FALSE(eigen_scalar != eigen_scalar2);
-        eigen_scalar2.at() = 2.0;
+        eigen_scalar2.set_elem({}, 2.0);
         REQUIRE(eigen_scalar != eigen_scalar2);
     }
 
@@ -126,9 +128,9 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             auto vi = eigen_vector("i");
             output.addition_assignment("i", vi, vi);
 
-            auto corr   = testing::eigen_vector<TestType>(2);
-            corr->at(0) = 20.0;
-            corr->at(1) = 40.0;
+            auto corr = testing::eigen_vector<TestType>(2);
+            corr->set_elem({0}, 20.0);
+            corr->set_elem({1}, 40.0);
 
             REQUIRE(output.are_equal(*corr));
         }
@@ -138,9 +140,9 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             auto vi = eigen_vector("i");
             output.subtraction_assignment("i", vi, vi);
 
-            auto corr   = testing::eigen_vector<TestType>(2);
-            corr->at(0) = 0.0;
-            corr->at(1) = 0.0;
+            auto corr = testing::eigen_vector<TestType>(2);
+            corr->set_elem({0}, 0.0);
+            corr->set_elem({1}, 0.0);
 
             REQUIRE(output.are_equal(*corr));
         }
@@ -150,9 +152,9 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             auto vi = eigen_vector("i");
             output.multiplication_assignment("i", vi, vi);
 
-            auto corr   = testing::eigen_vector<TestType>(2);
-            corr->at(0) = 100.0;
-            corr->at(1) = 400.0;
+            auto corr = testing::eigen_vector<TestType>(2);
+            corr->set_elem({0}, 100.0);
+            corr->set_elem({1}, 400.0);
 
             REQUIRE(output.are_equal(*corr));
         }
@@ -162,13 +164,13 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             auto mij = eigen_matrix("i,j");
             output.permute_assignment("j,i", mij);
 
-            auto corr      = testing::eigen_matrix<TestType>(3, 2);
-            corr->at(0, 0) = 10.0;
-            corr->at(0, 1) = 40.0;
-            corr->at(1, 0) = 20.0;
-            corr->at(1, 1) = 50.0;
-            corr->at(2, 0) = 30.0;
-            corr->at(2, 1) = 60.0;
+            auto corr = testing::eigen_matrix<TestType>(3, 2);
+            corr->set_elem({0, 0}, 10.0);
+            corr->set_elem({0, 1}, 40.0);
+            corr->set_elem({1, 0}, 20.0);
+            corr->set_elem({1, 1}, 50.0);
+            corr->set_elem({2, 0}, 30.0);
+            corr->set_elem({2, 1}, 60.0);
 
             REQUIRE(output.are_equal(*corr));
         }
@@ -178,35 +180,62 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
             auto vi = eigen_vector("i");
             output.scalar_multiplication("i", 2.0, vi);
 
-            auto corr   = testing::eigen_vector<TestType>(2);
-            corr->at(0) = 20.0;
-            corr->at(1) = 40.0;
+            auto corr = testing::eigen_vector<TestType>(2);
+            corr->set_elem({0}, 20.0);
+            corr->set_elem({1}, 40.0);
 
             REQUIRE(output.are_equal(*corr));
         }
 
-        SECTION("data()") {
-            REQUIRE(defaulted.data() == nullptr);
-            REQUIRE(*eigen_scalar.data() == TestType{10.0});
-            REQUIRE(*eigen_matrix.data() == TestType{10.0});
+        SECTION("get_mutable_data_()") {
+            REQUIRE(defaulted.get_mutable_data() == nullptr);
+            REQUIRE(*eigen_scalar.get_mutable_data() == TestType{10.0});
+            REQUIRE(*eigen_matrix.get_mutable_data() == TestType{10.0});
         }
 
-        SECTION("data() const") {
-            REQUIRE(std::as_const(defaulted).data() == nullptr);
-            REQUIRE(*std::as_const(eigen_scalar).data() == TestType{10.0});
-            REQUIRE(*std::as_const(eigen_matrix).data() == TestType{10.0});
-        }
-
-        SECTION("get_elem_()") {
-            REQUIRE(eigen_scalar.at() == TestType{10.0});
-            REQUIRE(eigen_vector.at(0) == TestType{10.0});
-            REQUIRE(eigen_matrix.at(0, 0) == TestType{10.0});
+        SECTION("get_immutable_data_() const") {
+            REQUIRE(std::as_const(defaulted).get_immutable_data() == nullptr);
+            REQUIRE(*std::as_const(eigen_scalar).get_immutable_data() ==
+                    TestType{10.0});
+            REQUIRE(*std::as_const(eigen_matrix).get_immutable_data() ==
+                    TestType{10.0});
         }
 
         SECTION("get_elem_() const") {
-            REQUIRE(std::as_const(eigen_scalar).at() == TestType{10.0});
-            REQUIRE(std::as_const(eigen_vector).at(0) == TestType{10.0});
-            REQUIRE(std::as_const(eigen_matrix).at(0, 0) == TestType{10.0});
+            TestType corr{10.0};
+            REQUIRE(std::as_const(eigen_scalar).get_elem({}) == corr);
+            REQUIRE(std::as_const(eigen_vector).get_elem({0}) == corr);
+            REQUIRE(std::as_const(eigen_matrix).get_elem({0, 0}) == corr);
+        }
+
+        SECTION("set_elem_()") {
+            eigen_vector.set_elem({0}, TestType{42.0});
+            REQUIRE(eigen_vector.get_elem({0}) == TestType{42.0});
+        }
+
+        SECTION("get_data_() const") {
+            TestType corr{10.0};
+            REQUIRE(std::as_const(eigen_scalar).get_data(0) == corr);
+            REQUIRE(std::as_const(eigen_vector).get_data(0) == corr);
+            REQUIRE(std::as_const(eigen_matrix).get_data(0) == corr);
+        }
+
+        SECTION("set_data_()") {
+            eigen_vector.set_data(0, TestType{42.0});
+            REQUIRE(eigen_vector.get_data(0) == TestType{42.0});
+        }
+
+        SECTION("fill_()") {
+            eigen_vector.fill(TestType{42.0});
+            REQUIRE(eigen_vector.get_data(0) == TestType(42.0));
+            REQUIRE(eigen_vector.get_data(1) == TestType(42.0));
+        }
+
+        SECTION("copy_()") {
+            auto data = std::vector<TestType>(2, TestType(42.0));
+            eigen_vector.copy(data);
+            REQUIRE(eigen_vector.get_data(0) == TestType(42.0));
+            REQUIRE(eigen_vector.get_data(1) == TestType(42.0));
         }
     }
 }

@@ -31,17 +31,17 @@ using namespace operations;
 
 TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
                         types::floating_point_types) {
-    auto pscalar   = testing::eigen_scalar<TestType>();
-    pscalar->at()  = 42.0;
-    auto pvector   = testing::eigen_vector<TestType>(2);
-    pvector->at(0) = 1.23;
-    pvector->at(1) = 2.34;
+    auto pscalar = testing::eigen_scalar<TestType>();
+    pscalar->set_data(0, 42.0);
+    auto pvector = testing::eigen_vector<TestType>(2);
+    pvector->set_data(0, 1.23);
+    pvector->set_data(1, 2.34);
 
-    auto pscalar2   = testing::eigen_scalar<TestType>();
-    pscalar2->at()  = 42.0;
-    auto pvector2   = testing::eigen_vector<TestType>(2);
-    pvector2->at(0) = 1.23;
-    pvector2->at(1) = 2.34;
+    auto pscalar2 = testing::eigen_scalar<TestType>();
+    pscalar2->set_data(0, 42.0);
+    auto pvector2 = testing::eigen_vector<TestType>(2);
+    pvector2->set_data(0, 1.23);
+    pvector2->set_data(1, 2.34);
 
     shape::Smooth s0{};
     shape::Smooth s1{2};
@@ -65,9 +65,9 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by more than default tolerance") {
-        double value    = 1e-1;
-        pscalar2->at()  = 42.0 + value;
-        pvector2->at(0) = 1.23 + value;
+        double value = 1e-1;
+        pscalar2->set_data(0, 42.0 + value);
+        pvector2->set_data(0, 1.23 + value);
         Tensor scalar2(s0, std::move(pscalar2));
         Tensor vector2(s1, std::move(pvector2));
         REQUIRE_FALSE(approximately_equal(scalar, scalar2));
@@ -77,9 +77,9 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by less than default tolerance") {
-        double value    = 1e-17;
-        pscalar2->at()  = 42.0 + value;
-        pvector2->at(0) = 1.23 + value;
+        double value = 1e-17;
+        pscalar2->set_data(0, 42.0 + value);
+        pvector2->set_data(0, 1.23 + value);
         Tensor scalar2(s0, std::move(pscalar2));
         Tensor vector2(s1, std::move(pvector2));
         REQUIRE(approximately_equal(scalar, scalar2));
@@ -89,9 +89,9 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by more than provided tolerance") {
-        float value     = 1e-1;
-        pscalar2->at()  = 43.0;
-        pvector2->at(0) = 2.23;
+        float value = 1e-1;
+        pscalar2->set_data(0, 43.0);
+        pvector2->set_data(0, 2.23);
         Tensor scalar2(s0, std::move(pscalar2));
         Tensor vector2(s1, std::move(pvector2));
         REQUIRE_FALSE(approximately_equal(scalar, scalar2, value));
@@ -101,9 +101,9 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by less than provided tolerance") {
-        double value    = 1e-10;
-        pscalar2->at()  = 42.0 + value;
-        pvector2->at(0) = 1.23 + value;
+        double value = 1e-10;
+        pscalar2->set_data(0, 42.0 + value);
+        pvector2->set_data(0, 1.23 + value);
         Tensor scalar2(s0, std::move(pscalar2));
         Tensor vector2(s1, std::move(pvector2));
         REQUIRE(approximately_equal(scalar, scalar2, 1e-1));

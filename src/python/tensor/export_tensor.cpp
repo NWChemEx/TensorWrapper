@@ -39,8 +39,8 @@ auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
             stride_i *= smooth_shape.extent(mode_i);
         strides[rank_i] = stride_i * nbytes;
     }
-    return pybind11::buffer_info(buffer.data(), nbytes, desc, rank, shape,
-                                 strides);
+    return pybind11::buffer_info(buffer.get_mutable_data(), nbytes, desc, rank,
+                                 shape, strides);
 }
 
 auto make_tensor(pybind11::buffer b) {
@@ -60,8 +60,8 @@ auto make_tensor(pybind11::buffer b) {
 
     auto n_elements = std::accumulate(dims.begin(), dims.end(), 1,
                                       std::multiplies<std::size_t>());
-    for(auto i = 0; i < n_elements; ++i)
-        pBuffer->data()[i] = static_cast<double*>(info.ptr)[i];
+    auto pData      = static_cast<double*>(info.ptr);
+    for(auto i = 0; i < n_elements; ++i) pBuffer->set_data(i, pData[i]);
 
     return Tensor(matrix_shape, std::move(pBuffer));
 }

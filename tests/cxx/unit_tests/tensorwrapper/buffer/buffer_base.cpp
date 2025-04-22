@@ -36,13 +36,13 @@ using namespace buffer;
 TEST_CASE("BufferBase") {
     auto pscalar = testing::eigen_scalar<double>();
     auto& scalar = *pscalar;
-    scalar.at()  = 1.0;
+    scalar.set_elem({}, 1.0);
 
     auto pvector = testing::eigen_vector<double>(2);
     auto& vector = *pvector;
 
-    vector.at(0) = 1.0;
-    vector.at(1) = 2.0;
+    vector.set_elem({0}, 1.0);
+    vector.set_elem({1}, 2.0);
 
     auto scalar_layout = testing::scalar_physical();
     auto vector_layout = testing::vector_physical(2);

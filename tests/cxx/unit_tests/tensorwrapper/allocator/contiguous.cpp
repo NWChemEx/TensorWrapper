@@ -31,18 +31,18 @@ TEMPLATE_LIST_TEST_CASE("allocator::Contiguous", "",
     auto matrix_corr = testing::eigen_matrix<TestType>();
 
     SECTION("allocate(layout)") {
-        auto pscalar  = alloc.allocate(scalar_corr->layout());
-        pscalar->at() = 42.0;
+        auto pscalar = alloc.allocate(scalar_corr->layout());
+        pscalar->set_data(0, 42.0);
         REQUIRE(pscalar->are_equal(*scalar_corr));
     }
 
     SECTION("allocate(layout*)") {
-        auto pvector   = alloc.allocate(vector_corr->layout());
-        pvector->at(0) = 0.0;
-        pvector->at(1) = 1.0;
-        pvector->at(2) = 2.0;
-        pvector->at(3) = 3.0;
-        pvector->at(4) = 4.0;
+        auto pvector = alloc.allocate(vector_corr->layout());
+        pvector->set_data(0, 0.0);
+        pvector->set_data(1, 1.0);
+        pvector->set_data(2, 2.0);
+        pvector->set_data(3, 3.0);
+        pvector->set_data(4, 4.0);
 
         REQUIRE(pvector->are_equal(*vector_corr));
     }
@@ -79,11 +79,11 @@ TEMPLATE_LIST_TEST_CASE("allocator::Contiguous", "",
     }
 
     SECTION("construct(layout, value)") {
-        auto pmatrix          = alloc.construct(matrix_corr->layout(), 0.0);
-        matrix_corr->at(0, 0) = 0.0;
-        matrix_corr->at(0, 1) = 0.0;
-        matrix_corr->at(1, 0) = 0.0;
-        matrix_corr->at(1, 1) = 0.0;
+        auto pmatrix = alloc.construct(matrix_corr->layout(), 0.0);
+        matrix_corr->set_elem({0, 0}, 0.0);
+        matrix_corr->set_elem({0, 1}, 0.0);
+        matrix_corr->set_elem({1, 0}, 0.0);
+        matrix_corr->set_elem({1, 1}, 0.0);
 
         REQUIRE(pmatrix->are_equal(*matrix_corr));
     }
@@ -91,10 +91,10 @@ TEMPLATE_LIST_TEST_CASE("allocator::Contiguous", "",
     SECTION("construct(layout*, value)") {
         auto pmatrix = alloc.construct(
           matrix_corr->layout().template clone_as<layout_type>(), 0.0);
-        matrix_corr->at(0, 0) = 0.0;
-        matrix_corr->at(0, 1) = 0.0;
-        matrix_corr->at(1, 0) = 0.0;
-        matrix_corr->at(1, 1) = 0.0;
+        matrix_corr->set_elem({0, 0}, 0.0);
+        matrix_corr->set_elem({0, 1}, 0.0);
+        matrix_corr->set_elem({1, 0}, 0.0);
+        matrix_corr->set_elem({1, 1}, 0.0);
 
         REQUIRE(pmatrix->are_equal(*matrix_corr));
     }

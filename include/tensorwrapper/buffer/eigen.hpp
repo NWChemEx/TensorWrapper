@@ -52,6 +52,8 @@ public:
     using typename my_base_type::const_pointer;
     using typename my_base_type::const_reference;
     using typename my_base_type::dsl_reference;
+    using typename my_base_type::element_type;
+    using typename my_base_type::element_vector;
     using typename my_base_type::index_vector;
     using typename my_base_type::label_type;
     using typename my_base_type::layout_pointer;
@@ -210,16 +212,28 @@ protected:
                                          const_labeled_reference rhs) override;
 
     /// Implements getting the raw pointer
-    pointer data_() noexcept override;
+    pointer get_mutable_data_() noexcept override;
 
     /// Implements getting the raw pointer (read-only)
-    const_pointer data_() const noexcept override;
-
-    /// Implements mutable element access
-    reference get_elem_(index_vector index) override;
+    const_pointer get_immutable_data_() const noexcept override;
 
     /// Implements read-only element access
     const_reference get_elem_(index_vector index) const override;
+
+    // Implements element updating
+    void set_elem_(index_vector index, element_type new_value) override;
+
+    /// Implements read-only element access by ordinal index
+    const_reference get_data_(size_type index) const override;
+
+    // Implements element updating by ordinal index
+    void set_data_(size_type index, element_type new_value) override;
+
+    /// Implements filling the tensor
+    void fill_(element_type value) override;
+
+    /// Implements copying new values into the tensor
+    void copy_(const element_vector& values) override;
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;

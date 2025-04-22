@@ -16,6 +16,7 @@
 
 #pragma once
 #include "eigen_pimpl.hpp"
+#include "hash_utilities.hpp"
 #include <sstream>
 #include <tensorwrapper/detail_/integer_utilities.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -36,6 +37,8 @@ public:
     using typename base_type::const_reference;
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
+    using typename base_type::element_type;
+    using typename base_type::element_vector;
     using typename base_type::index_vector;
     using typename base_type::label_type;
     using typename base_type::pimpl_pointer;
@@ -50,6 +53,7 @@ public:
     using eigen_data_type             = eigen::data_type<FloatType, Rank>;
     using eigen_reference             = eigen_data_type&;
     using const_eigen_reference       = const eigen_data_type&;
+    using hash_type                   = hash_utilities::hash_type;
 
     EigenTensor() = default;
 
@@ -57,16 +61,16 @@ public:
       m_tensor_(allocate_from_shape_(shape, std::make_index_sequence<Rank>())) {
     }
 
-    /// Get a mutable/read-only reference to the Eigen tensor object
-    ///@{
-    eigen_reference value() noexcept { return m_tensor_; }
-    const_eigen_reference value() const noexcept { return m_tensor_; }
-    ///@}
-
     /// Tests for exact equality
     bool operator==(const my_type& rhs) const noexcept {
-        eigen::data_type<bool, 0> eq = (m_tensor_ == rhs.m_tensor_).all();
-        return eq();
+        return get_hash() == rhs.get_hash();
+    }
+
+    // Returns the hash for the current state of *this, computing first if
+    // needed.
+    hash_type get_hash() const {
+        if(m_recalculate_hash_ or !m_hash_caching_) update_hash_();
+        return m_hash_;
     }
 
 protected:
@@ -76,21 +80,49 @@ protected:
 
     eigen_rank_type rank_() const noexcept override { return Rank; }
 
+    size_type size_() const noexcept override { return m_tensor_.size(); }
+
     size_type extent_(eigen_rank_type i) const override {
         return m_tensor_.dimension(i);
     }
 
-    pointer data_() noexcept override { return m_tensor_.data(); }
-
-    const_pointer data_() const noexcept override { return m_tensor_.data(); }
-
-    reference get_elem_(index_vector index) override {
-        return unwrap_vector_(std::move(index),
-                              std::make_index_sequence<Rank>());
+    pointer get_mutable_data_() noexcept override {
+        turn_off_hash_caching_();
+        return m_tensor_.data();
     }
+
+    const_pointer get_immutable_data_() const noexcept override {
+        return m_tensor_.data();
+    }
+
     const_reference get_elem_(index_vector index) const override {
         return unwrap_vector_(std::move(index),
                               std::make_index_sequence<Rank>());
+    }
+
+    void set_elem_(index_vector index, element_type new_value) override {
+        mark_for_rehash_();
+        unwrap_vector_(std::move(index), std::make_index_sequence<Rank>()) =
+          new_value;
+    }
+
+    const_reference get_data_(size_type index) const override {
+        return m_tensor_.data()[index];
+    }
+
+    void set_data_(size_type index, element_type new_value) override {
+        mark_for_rehash_();
+        m_tensor_.data()[index] = new_value;
+    }
+
+    void fill_(element_type value) override {
+        mark_for_rehash_();
+        std::fill(m_tensor_.data(), m_tensor_.data() + m_tensor_.size(), value);
+    }
+
+    void copy_(const element_vector& values) override {
+        mark_for_rehash_();
+        std::copy(values.begin(), values.end(), m_tensor_.data());
     }
 
     bool are_equal_(const_base_reference rhs) const noexcept override {
@@ -159,6 +191,26 @@ private:
                                    std::index_sequence<I...>) const {
         return m_tensor_(tensorwrapper::detail_::to_long(index.at(I))...);
     }
+
+    // Computes the hash for the current state of *this
+    void update_hash_() const;
+
+    // Designates that the state may have changed and to recalculate the hash.
+    // This function is really just for readability and clarity.
+    void mark_for_rehash_() const { m_recalculate_hash_ = true; }
+
+    // Designates that state changes are not trackable and we should recalculate
+    // the hash each time.
+    void turn_off_hash_caching_() const { m_hash_caching_ = false; }
+
+    // Tracks whether the hash needs to be redetermined
+    mutable bool m_recalculate_hash_ = true;
+
+    // Tracks whether hash caching has been turned off
+    mutable bool m_hash_caching_ = true;
+
+    // Holds the computed hash value for this instance's state
+    mutable hash_type m_hash_;
 
     // The Eigen tensor *this wraps
     eigen_data_type m_tensor_;

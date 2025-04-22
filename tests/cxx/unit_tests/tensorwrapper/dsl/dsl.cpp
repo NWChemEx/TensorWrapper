@@ -94,9 +94,9 @@ TEST_CASE("DSLr : buffer::Eigen") {
     auto& scalar2 = *pscalar2;
     auto& corr    = *pcorr;
 
-    scalar0.at() = 1.0;
-    scalar1.at() = 2.0;
-    scalar2.at() = 3.0;
+    scalar0.set_data(0, 1.0);
+    scalar1.set_data(0, 2.0);
+    scalar2.set_data(0, 3.0);
 
     SECTION("assignment") {
         SECTION("scalar") {

@@ -31,7 +31,7 @@ struct Kernel {
         auto& buffer_down    = allocator_type::rebind(result);
 
         for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-            auto diff = *(buffer_down.data() + i);
+            auto diff = buffer_down.get_data(i);
             if(diff < zero) diff *= -1.0;
             if(diff >= ptol) return false;
         }
