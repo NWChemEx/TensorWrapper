@@ -34,7 +34,7 @@ public:
     using pimpl_pointer         = typename parent_type::pimpl_pointer;
     using label_type            = typename parent_type::label_type;
     using element_type          = typename parent_type::element_type;
-    using elements_type         = typename parent_type::elements_type;
+    using element_vector        = typename parent_type::element_vector;
     using reference             = typename parent_type::reference;
     using const_shape_reference = const shape::ShapeBase&;
     using const_reference       = typename parent_type::const_reference;
@@ -83,9 +83,9 @@ public:
         set_data_(index, new_value);
     }
 
-    void fill(element_type value) { fill_(value); }
+    void fill(element_type value) { fill_(std::move(value)); }
 
-    void copy(elements_type& values) {
+    void copy(const element_vector& values) {
         assert(values.size() <= size());
         copy_(values);
     }
@@ -143,7 +143,7 @@ protected:
     virtual const_reference get_data_(size_type index) const           = 0;
     virtual void set_data_(size_type index, element_type new_value)    = 0;
     virtual void fill_(element_type value)                             = 0;
-    virtual void copy_(elements_type& values)                          = 0;
+    virtual void copy_(const element_vector& values)                   = 0;
     virtual void addition_assignment_(label_type this_labels,
                                       label_type lhs_labels,
                                       label_type rhs_labels,

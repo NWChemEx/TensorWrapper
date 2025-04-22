@@ -53,7 +53,7 @@ public:
     using typename my_base_type::const_reference;
     using typename my_base_type::dsl_reference;
     using typename my_base_type::element_type;
-    using typename my_base_type::elements_type;
+    using typename my_base_type::element_vector;
     using typename my_base_type::index_vector;
     using typename my_base_type::label_type;
     using typename my_base_type::layout_pointer;
@@ -232,7 +232,8 @@ protected:
     /// Implements filling the tensor
     void fill_(element_type value) override;
 
-    void copy_(elements_type& values) override;
+    /// Implements copying new values into the tensor
+    void copy_(const element_vector& values) override;
 
     /// Implements to_string
     typename polymorphic_base::string_type to_string_() const override;

@@ -190,7 +190,9 @@ void EIGEN::fill_(element_type value) {
 }
 
 TPARAMS
-void EIGEN::copy_(elements_type& values) { return pimpl_().copy(values); }
+void EIGEN::copy_(const element_vector& values) {
+    return pimpl_().copy(values);
+}
 
 TPARAMS
 typename EIGEN::polymorphic_base::string_type EIGEN::to_string_() const {

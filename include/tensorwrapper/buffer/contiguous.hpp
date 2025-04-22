@@ -47,7 +47,7 @@ public:
     /// Type of a read-only reference to an object of type element_type
     using const_reference = const element_type&;
 
-    using elements_type = std::vector<element_type>;
+    using element_vector = std::vector<element_type>;
 
     /// Type of a pointer to a mutable element_type object
     using pointer = element_type*;
@@ -164,9 +164,15 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    void fill(element_type value) { fill_(value); }
+    void fill(element_type value) { fill_(std::move(value)); }
 
-    void copy(elements_type& values) { copy_(values); }
+    /** @brief Sets elements using a list of values.
+     *
+     *  @param[in] values The new values of all elements.
+     *
+     *  @throw None No throw guarantee.
+     */
+    void copy(const element_vector& values) { copy_(values); }
 
 protected:
     /// Derived class can override if it likes
@@ -193,7 +199,7 @@ protected:
     /// Derived class should implement according to fill()
     virtual void fill_(element_type) = 0;
 
-    virtual void copy_(elements_type& values) = 0;
+    virtual void copy_(const element_vector& values) = 0;
 };
 
 #define DECLARE_CONTIG_BUFFER(TYPE) extern template class Contiguous<TYPE>

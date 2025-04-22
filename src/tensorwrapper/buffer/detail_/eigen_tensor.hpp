@@ -38,7 +38,7 @@ public:
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
     using typename base_type::element_type;
-    using typename base_type::elements_type;
+    using typename base_type::element_vector;
     using typename base_type::index_vector;
     using typename base_type::label_type;
     using typename base_type::pimpl_pointer;
@@ -120,7 +120,7 @@ protected:
         std::fill(m_tensor_.data(), m_tensor_.data() + m_tensor_.size(), value);
     }
 
-    void copy_(elements_type& values) override {
+    void copy_(const element_vector& values) override {
         mark_for_rehash_();
         std::copy(values.begin(), values.end(), m_tensor_.data());
     }
