@@ -88,6 +88,10 @@ if("${BUILD_TESTING}")
         cxx_acceptance_test_dir 
         "${cxx_test_dir}/acceptance_tests/${PROJECT_NAME}"
     )
+    set(
+        cxx_performance_test_dir
+        "${cxx_test_dir}/performance_tests/${PROJECT_NAME}"
+    )
     set(python_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/python")
     set(python_unit_test_dir "${python_test_dir}/unit_tests")
 
@@ -96,6 +100,13 @@ if("${BUILD_TESTING}")
     cmaize_add_tests(
         test_unit_${PROJECT_NAME}
         SOURCE_DIR "${cxx_unit_test_dir}"
+        INCLUDE_DIRS "${project_src_dir}"
+        DEPENDS Catch2 ${PROJECT_NAME}
+    )
+
+    cmaize_add_tests(
+        test_performance_${PROJECT_NAME}
+        SOURCE_DIR "${cxx_performance_test_dir}"
         INCLUDE_DIRS "${project_src_dir}"
         DEPENDS Catch2 ${PROJECT_NAME}
     )
