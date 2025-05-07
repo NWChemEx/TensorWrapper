@@ -92,7 +92,9 @@ endif()
 cmaize_add_library(
     ${PROJECT_NAME}
     SOURCE_DIR "${project_src_dir}"
+    SOURCE_EXTS "${SOURCE_EXTS}"
     INCLUDE_DIRS "${project_inc_dir}"
+    INCLUDE_EXTS "${INCLUDE_EXTS}"
     DEPENDS "${DEPENDENCIES}"
 )
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
