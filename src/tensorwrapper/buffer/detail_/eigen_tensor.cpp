@@ -18,6 +18,10 @@
 #include "../contraction_planner.hpp"
 #include "eigen_tensor.hpp"
 
+#ifdef ENABLE_CUTENSOR
+#include "eigen_tensor.hu"
+#endif
+
 namespace tensorwrapper::buffer::detail_ {
 
 #define TPARAMS template<typename FloatType, unsigned int Rank>
@@ -94,6 +98,9 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
                                            const_shape_reference result_shape,
                                            const_pimpl_reference lhs,
                                            const_pimpl_reference rhs) {
+#ifdef ENABLE_CUTENSOR
+    hello();
+#endif
     ContractionPlanner plan(olabels, llabels, rlabels);
 
     auto lt = lhs.clone();
