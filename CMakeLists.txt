@@ -48,6 +48,7 @@ find_package(Boost REQUIRED)
 
 cmaize_find_or_build_dependency(
     eigen
+    NAME Eigen3
     URL https://www.gitlab.com/libeigen/eigen
     VERSION 2e76277bd049f7bec36b0f908c69734a42c5234f
     BUILD_TARGET eigen
