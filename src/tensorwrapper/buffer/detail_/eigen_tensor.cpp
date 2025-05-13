@@ -19,7 +19,7 @@
 #include "eigen_tensor.hpp"
 
 #ifdef ENABLE_CUTENSOR
-#include "eigen_tensor.hu"
+#include "eigen_tensor.cuh"
 #endif
 
 namespace tensorwrapper::buffer::detail_ {
@@ -98,11 +98,18 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
                                            const_shape_reference result_shape,
                                            const_pimpl_reference lhs,
                                            const_pimpl_reference rhs) {
-#ifdef ENABLE_CUTENSOR
-    hello();
-#endif
     ContractionPlanner plan(olabels, llabels, rlabels);
 
+#ifdef ENABLE_CUTENSOR
+    // Prepare m_tensor_
+    m_tensor_ = allocate_from_shape_(result_shape.as_smooth(),
+                                     std::make_index_sequence<Rank>());
+    m_tensor_.setZero();
+
+    // Dispatch to cuTENSOR
+    cutensor_contraction<my_type>(olabels, llabels, rlabels, result_shape, lhs,
+                                  rhs, m_tensor_);
+#else
     auto lt = lhs.clone();
     auto rt = rhs.clone();
     lt->permute_assignment(plan.lhs_permutation(), llabels, lhs);
@@ -147,6 +154,7 @@ void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
     } else {
         m_tensor_ = tensor;
     }
+#endif
     mark_for_rehash_();
 }
 
