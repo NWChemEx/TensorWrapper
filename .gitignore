@@ -41,6 +41,6 @@ docs/source/api
 _build/
 Debug/
 Release/
-
+install/
 # Users commonly store their specific CMake settings in a toolchain file
 toolchain.cmake
