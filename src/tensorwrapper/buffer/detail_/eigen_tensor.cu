@@ -151,7 +151,7 @@ void cutensor_contraction(typename TensorType::label_type c_label,
 
     cutensorTensorDescriptor_t descC;
     HANDLE_CUTENSOR_ERROR(cutensorCreateTensorDescriptor(
-      handle, &descResult, c_shape.rank(), c_extents.data(), c_strides.data(),
+      handle, &descC, c_shape.rank(), c_extents.data(), c_strides.data(),
       traits.cutensorDataType, kAlignment));
 
     // Create Contraction Descriptor
