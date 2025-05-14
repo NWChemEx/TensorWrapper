@@ -33,14 +33,13 @@ namespace tensorwrapper::buffer::detail_ {
  *                        @p layout. Strong throw guarantee.
  */
 template<typename TensorType>
-void cutensor_contraction(
-  typename TensorType::label_type olabel,
-  typename TensorType::label_type llabel,
-  typename TensorType::label_type rlabel,
-  typename TensorType::const_shape_reference result_shape,
-  typename TensorType::const_pimpl_reference lhs,
-  typename TensorType::const_pimpl_reference rhs,
-  typename TensorType::eigen_reference result);
+void cutensor_contraction(typename TensorType::label_type c_label,
+                          typename TensorType::label_type a_label,
+                          typename TensorType::label_type b_label,
+                          typename TensorType::const_shape_reference c_shape,
+                          typename TensorType::const_pimpl_reference A,
+                          typename TensorType::const_pimpl_reference B,
+                          typename TensorType::eigen_reference C);
 
 } // namespace tensorwrapper::buffer::detail_
 
