@@ -78,7 +78,7 @@ tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
     // Extrapolate the new X from the coefficients.
     tensor_type new_X;
     new_X("mu,nu") = m_samples_.at(0)("mu,nu") * coefs(0);
-    for(int i = 1; i < sz; i++) {
+    for(size_type i = 1; i < sz; i++) {
         tensor_type x_i;
         x_i("mu,nu")   = m_samples_.at(i)("mu,nu") * coefs(i);
         new_X("mu,nu") = new_X("mu,nu") + x_i("mu,nu");
