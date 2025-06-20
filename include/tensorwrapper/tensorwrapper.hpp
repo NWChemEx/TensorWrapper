@@ -18,6 +18,7 @@
 #include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/detail_/detail_.hpp>
+#include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/dsl/dsl.hpp>
 #include <tensorwrapper/layout/layout.hpp>
 #include <tensorwrapper/operations/operations.hpp>

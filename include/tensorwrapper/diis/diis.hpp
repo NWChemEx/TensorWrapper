@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NWChemEx-Project
+ * Copyright 2025 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 #pragma once
-#include "tensorwrapper/tensor/tensor_wrapper.hpp"
+#include "tensorwrapper/tensor/tensor.hpp"
 #include <Eigen/Dense>
 #include <deque>
 
@@ -39,7 +39,7 @@ public:
     using size_type = std::size_t;
 
     /// Type of the value and error matrices
-    using tensor_type = tensorwrapper::tensor::ScalarTensorWrapper;
+    using tensor_type = tensorwrapper::Tensor;
 
 private:
     /// Type of the container that stores the value and error matrices
@@ -53,13 +53,14 @@ private:
       Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
 public:
-    /** @brief Initializes the object with the given vector size.
+    /** @brief Initializes the object with the given sample size.
      *
-     *  @param[in] max_vec The max number of previous values stored.
-     *                     Default is 5.
+     *  @param[in] max_samples The max number of previous values stored.
+     *                         Default is 5.
      */
-    DIIS(size_type max_vec = 5) :
-      m_max_vec_(max_vec), m_B_(matrix_type::Zero(max_vec, max_vec)) {}
+    DIIS(size_type max_samples = 5) :
+      m_max_samples_(max_samples),
+      m_B_(matrix_type::Zero(max_samples, max_samples)) {}
 
     /** @brief Performs DIIS extrapolation with the new value and error
      * matrices.
@@ -86,9 +87,16 @@ public:
     bool operator==(const DIIS& rhs) const noexcept;
 
 private:
-    size_type m_max_vec_;
-    deque_type m_x_values_;
+    /// The maximum number of previous samples used to extrapolate from
+    size_type m_max_samples_;
+
+    /// The queue of previous samples
+    deque_type m_samples_;
+
+    /// The queue of previous error values
     deque_type m_errors_;
+
+    /// The matrix used to solve for the mixing coefficients
     matrix_type m_B_;
 };
 
