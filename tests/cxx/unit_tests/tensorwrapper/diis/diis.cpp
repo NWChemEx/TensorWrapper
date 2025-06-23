@@ -18,16 +18,27 @@
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
 
-using diis_type   = tensorwrapper::diis::DIIS;
-using tensor_type = tensorwrapper::Tensor;
-using il_type     = typename tensor_type::matrix_il_type;
+using diis_type     = tensorwrapper::diis::DIIS;
+using tensor_type   = tensorwrapper::Tensor;
+using elements_type = std::vector<double>;
 
-TEST_CASE("DIIS") {
+template<typename FloatType>
+tensor_type make_tensor(elements_type elems) {
+    auto pbuffer = tensorwrapper::testing::eigen_matrix<FloatType>(2, 2);
+    pbuffer->set_elem({0, 0}, elems[0]);
+    pbuffer->set_elem({0, 1}, elems[1]);
+    pbuffer->set_elem({1, 0}, elems[2]);
+    pbuffer->set_elem({1, 1}, elems[3]);
+    auto pshape = pbuffer->layout().shape().clone();
+    return tensor_type(std::move(pshape), std::move(pbuffer));
+}
+
+TEMPLATE_LIST_TEST_CASE("DIIS", "",
+                        tensorwrapper::types::floating_point_types) {
     // Inputs
-    il_type il1{{1.0, 2.0}, {3.0, 4.0}};
-    il_type il2{{6.0, 5.0}, {8.0, 7.0}};
-    il_type il3{{12.0, 11.0}, {10.0, 9.0}};
-    tensor_type i1(il1), i2(il2), i3(il3);
+    tensor_type i1 = make_tensor<TestType>({1.0, 2.0, 3.0, 4.0});
+    tensor_type i2 = make_tensor<TestType>({6.0, 5.0, 8.0, 7.0});
+    tensor_type i3 = make_tensor<TestType>({12.0, 11.0, 10.0, 9.0});
 
     SECTION("Typedefs") {
         SECTION("size_type") {
@@ -61,9 +72,10 @@ TEST_CASE("DIIS") {
 
     SECTION("extrapolate") {
         // Outputs
-        il_type il4{{12.0, 8.6}, {14.0, 10.6}};
-        il_type il5{{15.35294118, 14.35294118}, {11.11764706, 10.11764706}};
-        tensor_type corr1(il1), corr2(il4), corr3(il5);
+        tensor_type corr1 = make_tensor<TestType>({1.0, 2.0, 3.0, 4.0});
+        tensor_type corr2 = make_tensor<TestType>({12.0, 8.6, 14.0, 10.6});
+        tensor_type corr3 = make_tensor<TestType>(
+          {15.35294118, 14.35294118, 11.11764706, 10.11764706});
 
         // Call extrapolate enough to require removing an old value
         auto diis    = diis_type(2);
