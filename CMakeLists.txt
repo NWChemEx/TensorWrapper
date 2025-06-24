@@ -76,7 +76,7 @@ cmaize_find_or_build_optional_dependency(
     sigma
     ENABLE_SIGMA
     URL github.com/QCUncertainty/sigma
-    VERSION ad74a8305c615a825919b3ad067fdcdf4e578ed0
+    VERSION main
     BUILD_TARGET sigma
     FIND_TARGET sigma::sigma
     CMAKE_ARGS BUILD_TESTING=OFF

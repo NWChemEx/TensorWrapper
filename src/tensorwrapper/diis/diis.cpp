@@ -17,15 +17,41 @@
 #include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/diis/diis.hpp>
+#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
 
 namespace tensorwrapper::diis {
 
+namespace {
+
+struct Kernel {
+    using buffer_base_type = tensorwrapper::buffer::BufferBase;
+
+    template<typename FloatType>
+    auto run(const buffer_base_type& t) {
+        using alloc_type = tensorwrapper::allocator::Eigen<FloatType>;
+        alloc_type alloc(t.allocator().runtime());
+
+        double rv;
+        if constexpr(tensorwrapper::types::is_uncertain_v<FloatType>) {
+            const auto& t_eigen = alloc.rebind(t);
+
+            rv = t_eigen.get_elem({}).mean();
+        } else {
+            const auto& t_eigen = alloc.rebind(t);
+
+            rv = t_eigen.get_elem({});
+        }
+        return rv;
+    }
+};
+
+} // namespace
+
 using tensor_type = DIIS::tensor_type;
 
-tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
-    auto rt = X.buffer().allocator().runtime();
-    tensorwrapper::allocator::Eigen<double> allocator(rt);
+using tensorwrapper::utilities::floating_point_dispatch;
 
+tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
     // Append new values to stored values
     m_samples_.push_back(X);
     m_errors_.push_back(E);
@@ -55,9 +81,8 @@ tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
         tensor_type& E_j = m_errors_.at(j);
 
         tensor_type temp;
-        temp("")               = E_i("mu,nu") * E_j("mu,nu");
-        const auto& temp_eigen = allocator.rebind(temp.buffer());
-        m_B_(i, j)             = temp_eigen.get_elem({});
+        temp("")   = E_i("mu,nu") * E_j("mu,nu");
+        m_B_(i, j) = floating_point_dispatch(Kernel{}, temp.buffer());
 
         // Fill in lower triangle
         if(i != j) m_B_(j, i) = m_B_(i, j);
