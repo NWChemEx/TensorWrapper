@@ -258,10 +258,46 @@ private:
     pimpl_pointer m_pimpl_;
 };
 
+/** @brief Wraps downcasting a buffer to an Eigen buffer.
+ *
+ *  @tparam FloatType The type of the elements in the resulting Buffer.
+ *
+ *  This function is a convience function for using an allocator to convert
+ *  @p b to a buffer::Eigen object.
+ *
+ *  @param[in] b The BufferBase object to convert.
+ *
+ *  @return A reference to @p b after downcasting it.
+ */
+template<typename FloatType>
+Eigen<FloatType>& to_eigen_buffer(BufferBase& b);
+
+/** @brief Wraps downcasting a buffer to an Eigen buffer.
+ *
+ *  @tparam FloatType The type of the elements in the resulting Buffer.
+ *
+ *  This function is the same as the non-const overload except that result will
+ *  be read-only.
+ *
+ *  @param[in] b The BufferBase object to convert.
+ *
+ *  @return A reference to @p b after downcasting it.
+ */
+template<typename FloatType>
+const Eigen<FloatType>& to_eigen_buffer(const BufferBase& b);
+
 #define DECLARE_EIGEN_BUFFER(TYPE) extern template class Eigen<TYPE>
+#define DECLARE_TO_EIGEN_BUFFER(TYPE) \
+    extern template Eigen<TYPE>& to_eigen_buffer(BufferBase&)
+#define DECLARE_TO_CONST_EIGEN_BUFFER(TYPE) \
+    extern template const Eigen<TYPE>& to_eigen_buffer(const BufferBase&)
 
 TW_APPLY_FLOATING_POINT_TYPES(DECLARE_EIGEN_BUFFER);
+TW_APPLY_FLOATING_POINT_TYPES(DECLARE_TO_EIGEN_BUFFER);
+TW_APPLY_FLOATING_POINT_TYPES(DECLARE_TO_CONST_EIGEN_BUFFER);
 
 #undef DECLARE_EIGEN_BUFFER
+#undef DECLARE_TO_EIGEN_BUFFER
+#undef DECLARE_TO_CONST_EIGEN_BUFFER
 
 } // namespace tensorwrapper::buffer

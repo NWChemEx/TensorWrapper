@@ -227,13 +227,33 @@ typename EIGEN::const_pimpl_reference EIGEN::pimpl_() const {
     return *m_pimpl_;
 }
 
+TPARAMS
+EIGEN& to_eigen_buffer(BufferBase& b) {
+    using allocator_type = allocator::Eigen<FloatType>;
+    return allocator_type::rebind(b);
+}
+
+TPARAMS
+const EIGEN& to_eigen_buffer(const BufferBase& b) {
+    using allocator_type = allocator::Eigen<FloatType>;
+    return allocator_type::rebind(b);
+}
+
 #undef EIGEN
 #undef TPARAMS
 
 #define DEFINE_EIGEN_BUFFER(TYPE) template class Eigen<TYPE>
+#define DEFINE_TO_EIGEN_BUFFER(TYPE) \
+    template Eigen<TYPE>& to_eigen_buffer(BufferBase&)
+#define DEFINE_TO_CONST_EIGEN_BUFFER(TYPE) \
+    template const Eigen<TYPE>& to_eigen_buffer(const BufferBase&)
 
 TW_APPLY_FLOATING_POINT_TYPES(DEFINE_EIGEN_BUFFER);
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_TO_EIGEN_BUFFER);
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_TO_CONST_EIGEN_BUFFER);
 
 #undef DEFINE_EIGEN_BUFFER
+#undef DEFINE_TO_EIGEN_BUFFER
+#undef DEFINE_TO_CONST_EIGEN_BUFFER
 
 } // namespace tensorwrapper::buffer
