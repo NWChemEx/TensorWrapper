@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.59</span>
+   &#160;<span id="projectnumber">0.0.60</span>
    </div>
   </td>
  </tr>
@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">tensorwrapper::utilities Namespace Reference</div>  </div>
@@ -76,12 +77,32 @@ $(function() {
 <p>Namespace for helper functions.  
 <a href="namespacetensorwrapper_1_1utilities.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aefdedef162f875b7cc860ac94476603c"><td class="memItemLeft" align="right" valign="top"><a id="aefdedef162f875b7cc860ac94476603c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>offset_type</b> = std::size_t</td></tr>
+<tr class="separator:aefdedef162f875b7cc860ac94476603c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e7960a4930e23b5d7c012353f487401"><td class="memItemLeft" align="right" valign="top"><a id="a4e7960a4930e23b5d7c012353f487401"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>offset_vector</b> = std::vector&lt; offset_type &gt;</td></tr>
+<tr class="separator:a4e7960a4930e23b5d7c012353f487401"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c96846ed35db6038c5f7cef54b58f16"><td class="memTemplParams" colspan="2"><a id="a7c96846ed35db6038c5f7cef54b58f16"></a>
+template&lt;typename DataType &gt; </td></tr>
+<tr class="memitem:a7c96846ed35db6038c5f7cef54b58f16"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>buffer_type</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer::Contiguous</a>&lt; DataType &gt;</td></tr>
+<tr class="separator:a7c96846ed35db6038c5f7cef54b58f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplParams" colspan="2">template&lt;typename KernelType , typename BufferType , typename... Args&gt; </td></tr>
 <tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#aa2cb0104fde24d1a4aaef8f5e00c69ee">floating_point_dispatch</a> (KernelType &amp;&amp;kernel, BufferType &amp;&amp;buffer, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the logic needed to work out the floating point type of buffer.  <a href="namespacetensorwrapper_1_1utilities.html#aa2cb0104fde24d1a4aaef8f5e00c69ee">More...</a><br /></td></tr>
 <tr class="separator:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2d89014992766effe38b8f7eb20cf8c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#aa2d89014992766effe38b8f7eb20cf8c">to_json</a> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;t)</td></tr>
+<tr class="memdesc:aa2d89014992766effe38b8f7eb20cf8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a JSON representation of <code>to</code> <code>os</code>.  <a href="namespacetensorwrapper_1_1utilities.html#aa2d89014992766effe38b8f7eb20cf8c">More...</a><br /></td></tr>
+<tr class="separator:aa2d89014992766effe38b8f7eb20cf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memTemplParams" colspan="2"><a id="a4be514f8b2bb43b9b8bec3cfb29ddf3f"></a>
+template&lt;typename DataType &gt; </td></tr>
+<tr class="memitem:a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>to_json_</b> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer_type</a>&lt; DataType &gt; &amp;t, offset_vector index)</td></tr>
+<tr class="separator:a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace for helper functions. </p>
@@ -144,6 +165,46 @@ template&lt;typename KernelType , typename BufferType , typename... Args&gt; </d
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa2d89014992766effe38b8f7eb20cf8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2d89014992766effe38b8f7eb20cf8c">&#9670;&nbsp;</a></span>to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; tensorwrapper::utilities::to_json </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a JSON representation of <code>to</code> <code>os</code>. </p>
+<p>This function can be used to print a tensor out in a JSON format. For dense tensors this will be as a list of lists such that number of nestings is equal to the rank of the tensor.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">os</td><td>The stream to print <code>t</code> to. After the function is called <code>os</code> will contain the JSON representation of <code>t</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>The tensor to print to <code>os</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Since the caller controls the stream that is passed in, it is assumed that the caller has set the stream up to print floating point values in their desired format. For example, do <code>os &lt;&lt; std::fixed &lt;&lt; std::setprecision(8);</code> prior to calling <code>to_json</code> to guarantee all floating point values are printed with 8 decimal places.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>This function returns <code>os</code> by reference to support chaining. </dd></dl>
 
 </div>
 </div>

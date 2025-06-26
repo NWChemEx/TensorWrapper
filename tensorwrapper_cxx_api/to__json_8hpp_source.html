@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: include/tensorwrapper/operations/approximately_equal.hpp Source File</title>
+<title>tensorwrapper: include/tensorwrapper/utilities/to_json.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,12 +62,12 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_ce594d54a31e103fcce03bc6bedab543.html">operations</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_4049fd681d4f726c1b864c2e871d62b5.html">utilities</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">approximately_equal.hpp</div>  </div>
+<div class="title">to_json.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
@@ -87,17 +87,15 @@ $(function() {
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor.hpp&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacetensorwrapper_1_1operations.html">   20</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1operations.html">tensorwrapper::operations</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor.hpp&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a> {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacetensorwrapper_1_1operations.html#a23fd7e586895b7ba7dd1b1744bc86198">approximately_equal</a>(<span class="keyword">const</span> <a class="code" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&amp; lhs, <span class="keyword">const</span> <a class="code" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&amp; rhs,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                         <span class="keywordtype">double</span> tol = 1e-16);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;std::ostream&amp; <a class="code" href="namespacetensorwrapper_1_1utilities.html#aa2d89014992766effe38b8f7eb20cf8c">to_json</a>(std::ostream&amp; os, <span class="keyword">const</span> Tensor&amp; t);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace tensorwrapper::operations</span></div>
-<div class="ttc" id="aclasstensorwrapper_1_1Tensor_html"><div class="ttname"><a href="classtensorwrapper_1_1Tensor.html">tensorwrapper::Tensor</a></div><div class="ttdoc">Represents a multi-dimensional array of values.</div><div class="ttdef"><b>Definition:</b> tensor_class.hpp:39</div></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1operations_html"><div class="ttname"><a href="namespacetensorwrapper_1_1operations.html">tensorwrapper::operations</a></div><div class="ttdoc">Namespace for free functions that act on tensors.</div><div class="ttdef"><b>Definition:</b> approximately_equal.hpp:20</div></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1operations_html_a23fd7e586895b7ba7dd1b1744bc86198"><div class="ttname"><a href="namespacetensorwrapper_1_1operations.html#a23fd7e586895b7ba7dd1b1744bc86198">tensorwrapper::operations::approximately_equal</a></div><div class="ttdeci">bool approximately_equal(const Tensor &amp;lhs, const Tensor &amp;rhs, double tol=1e-16)</div><div class="ttdoc">Determines if lhs equals rhs to within tol.</div><div class="ttdef"><b>Definition:</b> approximately_equal.cpp:44</div></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace tensorwrapper::utilities</span></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1utilities_html"><div class="ttname"><a href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a></div><div class="ttdoc">Namespace for helper functions.</div><div class="ttdef"><b>Definition:</b> floating_point_dispatch.hpp:21</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1utilities_html_aa2d89014992766effe38b8f7eb20cf8c"><div class="ttname"><a href="namespacetensorwrapper_1_1utilities.html#aa2d89014992766effe38b8f7eb20cf8c">tensorwrapper::utilities::to_json</a></div><div class="ttdeci">std::ostream &amp; to_json(std::ostream &amp;os, const Tensor &amp;t)</div><div class="ttdoc">Adds a JSON representation of to os.</div><div class="ttdef"><b>Definition:</b> to_json.cpp:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

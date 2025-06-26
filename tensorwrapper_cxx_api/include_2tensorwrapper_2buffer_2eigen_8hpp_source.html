@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.59</span>
+   &#160;<span id="projectnumber">0.0.60</span>
    </div>
   </td>
  </tr>
@@ -217,13 +217,27 @@ $(function() {
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    pimpl_pointer m_pimpl_;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;};</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor">#define DECLARE_EIGEN_BUFFER(TYPE) extern template class Eigen&lt;TYPE&gt;</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_EIGEN_BUFFER);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="preprocessor">#undef DECLARE_EIGEN_BUFFER</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;template&lt;typename FloatType&gt;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<a class="code" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt;FloatType&gt;&amp; <a class="code" href="namespacetensorwrapper_1_1buffer.html#a23de9e5ade1d61010aaeac6eebecae2e">to_eigen_buffer</a>(<a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a>&amp; b);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;template&lt;typename FloatType&gt;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;const <a class="code" href="classtensorwrapper_1_1buffer_1_1Eigen.html">Eigen</a>&lt;FloatType&gt;&amp; <a class="code" href="namespacetensorwrapper_1_1buffer.html#a23de9e5ade1d61010aaeac6eebecae2e">to_eigen_buffer</a>(const <a class="code" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a>&amp; b);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#define DECLARE_EIGEN_BUFFER(TYPE) extern template class Eigen&lt;TYPE&gt;</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">#define DECLARE_TO_EIGEN_BUFFER(TYPE) \</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor">    extern template Eigen&lt;TYPE&gt;&amp; to_eigen_buffer(BufferBase&amp;)</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="preprocessor">#define DECLARE_TO_CONST_EIGEN_BUFFER(TYPE) \</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">    extern template const Eigen&lt;TYPE&gt;&amp; to_eigen_buffer(const BufferBase&amp;)</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_EIGEN_BUFFER);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_TO_EIGEN_BUFFER);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;TW_APPLY_FLOATING_POINT_TYPES(DECLARE_TO_CONST_EIGEN_BUFFER);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor">#undef DECLARE_EIGEN_BUFFER</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#undef DECLARE_TO_EIGEN_BUFFER</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor">#undef DECLARE_TO_CONST_EIGEN_BUFFER</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;} <span class="comment">// namespace tensorwrapper::buffer</span></div>
 <div class="ttc" id="aclasstensorwrapper_1_1allocator_1_1AllocatorBase_html"><div class="ttname"><a href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html">tensorwrapper::allocator::AllocatorBase</a></div><div class="ttdoc">Common base class for all allocators.</div><div class="ttdef"><b>Definition:</b> allocator_base.hpp:31</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></div><div class="ttdoc">Common base class for all buffer objects.</div><div class="ttdef"><b>Definition:</b> buffer_base.hpp:32</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html_a07d840ac6ddab88ad0008b16eec99de6"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a07d840ac6ddab88ad0008b16eec99de6">tensorwrapper::buffer::BufferBase::const_buffer_base_reference</a></div><div class="ttdeci">typename my_traits::const_buffer_base_reference const_buffer_base_reference</div><div class="ttdoc">Type of a reference to a read-only object of type buffer_base_type.</div><div class="ttdef"><b>Definition:</b> buffer_base.hpp:53</div></div>
@@ -281,6 +295,7 @@ $(function() {
 <div class="ttc" id="aclasstensorwrapper_1_1dsl_1_1Labeled_html"><div class="ttname"><a href="classtensorwrapper_1_1dsl_1_1Labeled.html">tensorwrapper::dsl::Labeled</a></div><div class="ttdoc">Represents an object whose modes are assigned dummy indices.</div><div class="ttdef"><b>Definition:</b> labeled.hpp:41</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1layout_1_1Physical_html"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1Physical.html">tensorwrapper::layout::Physical</a></div><div class="ttdoc">Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime.</div><div class="ttdef"><b>Definition:</b> physical.hpp:29</div></div>
 <div class="ttc" id="anamespacetensorwrapper_1_1buffer_html"><div class="ttname"><a href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a></div><div class="ttdoc">Contains classes need to wrap instances of the various backends.</div><div class="ttdef"><b>Definition:</b> buffer.hpp:24</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1buffer_html_a23de9e5ade1d61010aaeac6eebecae2e"><div class="ttname"><a href="namespacetensorwrapper_1_1buffer.html#a23de9e5ade1d61010aaeac6eebecae2e">tensorwrapper::buffer::to_eigen_buffer</a></div><div class="ttdeci">Eigen&lt; FloatType &gt; &amp; to_eigen_buffer(BufferBase &amp;b)</div><div class="ttdoc">Wraps downcasting a buffer to an Eigen buffer.</div><div class="ttdef"><b>Definition:</b> eigen.cpp:231</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
