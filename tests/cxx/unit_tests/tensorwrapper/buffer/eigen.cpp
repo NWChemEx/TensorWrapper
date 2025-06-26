@@ -239,3 +239,17 @@ TEMPLATE_LIST_TEST_CASE("Eigen", "", types::floating_point_types) {
         }
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("to_eigen_buffer", "", types::floating_point_types) {
+    using buffer_type = buffer::Eigen<TestType>;
+
+    auto pscalar       = testing::eigen_scalar<TestType>();
+    auto& eigen_scalar = static_cast<buffer_type&>(*pscalar);
+    eigen_scalar.set_elem({}, 10.0);
+
+    buffer::BufferBase& scalar_base = eigen_scalar;
+    REQUIRE(&buffer::to_eigen_buffer<TestType>(scalar_base) == &eigen_scalar);
+
+    const buffer::BufferBase& cscalar_base = eigen_scalar;
+    REQUIRE(&buffer::to_eigen_buffer<TestType>(cscalar_base) == &eigen_scalar);
+}
