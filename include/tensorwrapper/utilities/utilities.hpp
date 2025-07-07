@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+#include <tensorwrapper/utilities/to_json.hpp>
 
 /// Namespace for helper functions
 namespace tensorwrapper::utilities {}

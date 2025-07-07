@@ -29,15 +29,33 @@ include(get_cmaize)
 set(project_inc_dir "${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}")
 set(project_src_dir "${CMAKE_CURRENT_LIST_DIR}/src/${PROJECT_NAME}")
 
+# Documentation
 include(nwx_cxx_api_docs)
 nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
+
+## Extensions ##
+set(SOURCE_EXTS "cpp")
+set(INCLUDE_EXTS "hpp")
 
 ### Options ###
 cmaize_option_list(
     BUILD_TESTING OFF "Should we build the tests?"
     BUILD_PYBIND11_PYBINDINGS ON "Should we build Python3 bindings?"
     ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
+    ENABLE_CUTENSOR OFF "Should we enable cuTENSOR?"
 )
+
+if("${ENABLE_CUTENSOR}") 
+    if("${ENABLE_SIGMA}")
+        set(MSG "Sigma is not compatible with cuTENSOR. Turning Sigma OFF.")
+        message(WARNING ${MSG})
+        set(ENABLE_SIGMA OFF)
+    endif()
+    enable_language(CUDA)
+    set(SOURCE_EXTS ${SOURCE_EXTS} cu)
+    set(INCLUDE_EXTS ${INCLUDE_EXTS} cuh hu)
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-relaxed-constexpr")
+endif()
 
 ### Dependendencies ###
 include(get_utilities)
@@ -59,20 +77,32 @@ cmaize_find_or_build_optional_dependency(
     sigma
     ENABLE_SIGMA
     URL github.com/QCUncertainty/sigma
-    VERSION ad74a8305c615a825919b3ad067fdcdf4e578ed0
+    VERSION main
     BUILD_TARGET sigma
     FIND_TARGET sigma::sigma
     CMAKE_ARGS BUILD_TESTING=OFF
                ENABLE_EIGEN_SUPPORT=ON
 )
+set(DEPENDENCIES utilities parallelzone Boost::boost eigen sigma)
+
+if("${ENABLE_CUTENSOR}")
+    include(cmake/FindcuTENSOR.cmake)
+    list(APPEND DEPENDENCIES cuTENSOR::cuTENSOR)
+endif()
 
 cmaize_add_library(
     ${PROJECT_NAME}
     SOURCE_DIR "${project_src_dir}"
+    SOURCE_EXTS "${SOURCE_EXTS}"
     INCLUDE_DIRS "${project_inc_dir}"
-    DEPENDS utilities parallelzone Boost::boost eigen sigma
+    INCLUDE_EXTS "${INCLUDE_EXTS}"
+    DEPENDS "${DEPENDENCIES}"
 )
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
+
+if("${ENABLE_CUTENSOR}")
+    target_compile_definitions("${PROJECT_NAME}" PUBLIC ENABLE_CUTENSOR)
+endif()
 
 include(nwx_pybind11)
 nwx_add_pybind11_module(
