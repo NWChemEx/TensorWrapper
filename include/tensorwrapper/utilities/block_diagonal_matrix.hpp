@@ -15,9 +15,18 @@
  */
 
 #pragma once
-#include <tensorwrapper/utilities/block_diagonal_matrix.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
-#include <tensorwrapper/utilities/to_json.hpp>
+#include <tensorwrapper/tensor/tensor.hpp>
 
-/// Namespace for helper functions
-namespace tensorwrapper::utilities {}
+namespace tensorwrapper::utilities {
+
+/** @brief Produce a block diagonal matrix from a set of square matrices.
+ *
+ *  @param[in] matrices The vector of matrices to be placed along the output
+ *                      diagonal.
+ *
+ *  @return A block diagonal matrix whose block values are equal to the input
+ *          matrices.
+ */
+Tensor block_diagonal_matrix(std::vector<Tensor> matrices);
+
+} // namespace tensorwrapper::utilities
