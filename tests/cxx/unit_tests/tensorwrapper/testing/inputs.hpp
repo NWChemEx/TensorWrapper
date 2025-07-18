@@ -53,9 +53,9 @@ inline auto smooth_vector_alt() {
 }
 
 template<typename FloatType>
-inline auto smooth_matrix_() {
-    auto buffer = eigen_matrix<FloatType>();
-    shape::Smooth shape{2, 2};
+inline auto smooth_matrix_(std::size_t n = 2, std::size_t m = 2) {
+    auto buffer = eigen_matrix<FloatType>(n, m);
+    shape::Smooth shape{n, m};
     return detail_::TensorInput(shape, std::move(buffer));
 }
 
