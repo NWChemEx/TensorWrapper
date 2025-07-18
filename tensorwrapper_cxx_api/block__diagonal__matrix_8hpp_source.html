@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: include/tensorwrapper/allocator/allocator_fwd.hpp Source File</title>
+<title>tensorwrapper: include/tensorwrapper/utilities/block_diagonal_matrix.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,12 +62,12 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_7d9f54af77c327bb07b78871c465ff60.html">allocator</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_4049fd681d4f726c1b864c2e871d62b5.html">utilities</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">allocator_fwd.hpp</div>  </div>
+<div class="title">block_diagonal_matrix.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
@@ -87,23 +87,16 @@ $(function() {
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1allocator.html">tensorwrapper::allocator</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">class </span>AllocatorBase;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> FloatType&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">class </span>Eigen;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">class </span>Local;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span>Replicated;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> FloatType&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">class </span>Contiguous;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;} <span class="comment">// namespace tensorwrapper::allocator</span></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1allocator_html"><div class="ttname"><a href="namespacetensorwrapper_1_1allocator.html">tensorwrapper::allocator</a></div><div class="ttdoc">Contains classes related to allocating Buffer objects.</div><div class="ttdef"><b>Definition:</b> allocator.hpp:24</div></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor.hpp&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacetensorwrapper_1_1utilities.html">   20</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a> {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<a class="code" href="classtensorwrapper_1_1Tensor.html">Tensor</a> <a class="code" href="namespacetensorwrapper_1_1utilities.html#a0774866423ee9cc913691920250088e2">block_diagonal_matrix</a>(std::vector&lt;Tensor&gt; matrices);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace tensorwrapper::utilities</span></div>
+<div class="ttc" id="aclasstensorwrapper_1_1Tensor_html"><div class="ttname"><a href="classtensorwrapper_1_1Tensor.html">tensorwrapper::Tensor</a></div><div class="ttdoc">Represents a multi-dimensional array of values.</div><div class="ttdef"><b>Definition:</b> tensor_class.hpp:39</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1utilities_html"><div class="ttname"><a href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a></div><div class="ttdoc">Namespace for helper functions.</div><div class="ttdef"><b>Definition:</b> block_diagonal_matrix.hpp:20</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1utilities_html_a0774866423ee9cc913691920250088e2"><div class="ttname"><a href="namespacetensorwrapper_1_1utilities.html#a0774866423ee9cc913691920250088e2">tensorwrapper::utilities::block_diagonal_matrix</a></div><div class="ttdeci">Tensor block_diagonal_matrix(std::vector&lt; Tensor &gt; matrices)</div><div class="ttdoc">Produce a block diagonal matrix from a set of square matrices.</div><div class="ttdef"><b>Definition:</b> block_diagonal_matrix.cpp:76</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

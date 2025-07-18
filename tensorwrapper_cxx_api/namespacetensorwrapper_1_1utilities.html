@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">tensorwrapper
-   &#160;<span id="projectnumber">0.0.62</span>
+   &#160;<span id="projectnumber">0.0.63</span>
    </div>
   </td>
  </tr>
@@ -92,6 +92,9 @@ template&lt;typename DataType &gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0774866423ee9cc913691920250088e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#a0774866423ee9cc913691920250088e2">block_diagonal_matrix</a> (std::vector&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &gt; matrices)</td></tr>
+<tr class="memdesc:a0774866423ee9cc913691920250088e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produce a block diagonal matrix from a set of square matrices.  <a href="namespacetensorwrapper_1_1utilities.html#a0774866423ee9cc913691920250088e2">More...</a><br /></td></tr>
+<tr class="separator:a0774866423ee9cc913691920250088e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplParams" colspan="2">template&lt;typename KernelType , typename BufferType , typename... Args&gt; </td></tr>
 <tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#aa2cb0104fde24d1a4aaef8f5e00c69ee">floating_point_dispatch</a> (KernelType &amp;&amp;kernel, BufferType &amp;&amp;buffer, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the logic needed to work out the floating point type of buffer.  <a href="namespacetensorwrapper_1_1utilities.html#aa2cb0104fde24d1a4aaef8f5e00c69ee">More...</a><br /></td></tr>
@@ -107,6 +110,33 @@ template&lt;typename DataType &gt; </td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace for helper functions. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a0774866423ee9cc913691920250088e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0774866423ee9cc913691920250088e2">&#9670;&nbsp;</a></span>block_diagonal_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> tensorwrapper::utilities::block_diagonal_matrix </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &gt;&#160;</td>
+          <td class="paramname"><em>matrices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Produce a block diagonal matrix from a set of square matrices. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrices</td><td>The vector of matrices to be placed along the output diagonal.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A block diagonal matrix whose block values are equal to the input matrices. </dd></dl>
+
+</div>
+</div>
 <a id="aa2cb0104fde24d1a4aaef8f5e00c69ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2cb0104fde24d1a4aaef8f5e00c69ee">&#9670;&nbsp;</a></span>floating_point_dispatch()</h2>
 
