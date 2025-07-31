@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-name: .github Pull Request Workflow
+name: Pull Request Workflow
 
 on:
   pull_request:
@@ -21,21 +21,23 @@ on:
       - master
 
 jobs:
-  Common-Pull-Request:
-    uses: NWChemEx/.github/.github/workflows/common_pull_request.yaml@master
+  check_formatting:
+    uses: NWChemEx/.github/workflows/check_formatting.yaml@gha_workflows_update
     with:
-      config_file: '.github/.licenserc.yaml'
-      source_dir: 'include src tests'
+      license_config: ".github/.licenserc.yaml"
+
+  test_nwx_docs:
+    uses: NWChemEx/.github/workflows/test_nwx_docs.yaml@gha_workflows_update
+    with:
+      doc_target: "tensorwrapper_cxx_api"
+
+  test_library:
+    uses: NWChemEx/.github/workflows/test_nwx_library.yaml@gha_workflows_update
+    with:
       compilers: '["gcc-11", "clang-14"]'
-      doc_target: 'tensorwrapper_cxx_api'
-    secrets: inherit
-  Test-Enable-Sigma:
-    uses: NWChemEx/.github/.github/workflows/common_pull_request.yaml@master
+
+  test_library_with_sigma:
+    uses: NWChemEx/.github/workflows/test_nwx_library.yaml@gha_workflows_update
     with:
-      config_file: ''
-      source_dir: ''
-      format_python: false
       compilers: '["gcc-11", "clang-14"]'
       repo_toolchain: ".github/enable_sigma.cmake"
-      doc_target: ''
-    secrets: inherit
