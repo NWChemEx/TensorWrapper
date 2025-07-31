@@ -22,11 +22,11 @@ on:
 
 jobs:
   tag-commit:
-    uses: NWChemEx/.github/workflows/tag.yaml@gha_workflows_update
+    uses: NWChemEx/.github/.github/workflows/tag.yaml@gha_workflows_update
     secrets: inherit
 
   deploy_nwx_docs:
-    uses: NWChemEx/.github/workflows/deploy_nwx_docs.yaml@gha_workflows_update
+    uses: NWChemEx/.github/.github/workflows/deploy_nwx_docs.yaml@gha_workflows_update
     with:
       doc_target: "tensorwrapper_cxx_api"
     secrets: inherit
