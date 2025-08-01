@@ -19,7 +19,8 @@
 
 namespace tensorwrapper::testing {
 
-void get_scalar(pybind11::module_& m);
+void get_scalar(
+    pybind11::module_& m);
 void get_vector(pybind11::module_& m);
 void get_matrix(pybind11::module_& m);
 

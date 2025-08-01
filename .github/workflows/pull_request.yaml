@@ -34,10 +34,10 @@ jobs:
   test_library:
     uses: NWChemEx/.github/.github/workflows/test_nwx_library.yaml@gha_workflows_update
     with:
-      compilers: '["gcc-11", "clang-14"]'
+      compilers: '["gcc-11", "clang-14", "clang-0"]'
 
   test_library_with_sigma:
     uses: NWChemEx/.github/.github/workflows/test_nwx_library.yaml@gha_workflows_update
     with:
       compilers: '["gcc-11", "clang-14"]'
-      repo_toolchain: ".github/enable_sigma.cmake"
+      repo_toolchain: ".github/enable_alpha.cmake"
