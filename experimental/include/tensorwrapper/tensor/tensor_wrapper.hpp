@@ -81,7 +81,7 @@ private:
 
     template<typename T>
     static constexpr bool is_t_to_tot_v =
-      std::is_same_v<T, field::Scalar>&& is_tot;
+      std::is_same_v<T, field::Scalar> && is_tot;
 
     template<typename T>
     using eif_t_to_tot_conversion = std::enable_if_t<is_t_to_tot_v<T>>;

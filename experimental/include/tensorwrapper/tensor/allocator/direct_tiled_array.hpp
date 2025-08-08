@@ -35,7 +35,7 @@ public:
     using shape_type             = typename base_type::shape_type;
 
     explicit DirectTiledArrayAllocator(std::string fxn_id = "") :
-      m_fxn_id_(fxn_id){};
+      m_fxn_id_(fxn_id) {};
 
     ~DirectTiledArrayAllocator() noexcept = default;
 

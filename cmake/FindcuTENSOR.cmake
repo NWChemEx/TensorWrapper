@@ -88,11 +88,11 @@ if(NOT cuTENSOR_FOUND)
     VERSION ${CUTENSOR_VERSION}
     URL https://developer.download.nvidia.com/compute/cutensor/redist/libcutensor/linux-x86_64/libcutensor-linux-x86_64-${CUTENSOR_VERSION}-archive.tar.xz
     # Eigen's CMakelists are not intended for library use
-    DOWNLOAD_ONLY YES 
+    DOWNLOAD_ONLY YES
   )
-      
+
   set(cuTENSOR_LIBRARY ${cutensor_SOURCE_DIR}/lib/${CUDAToolkit_VERSION_MAJOR}/libcutensor.so)
-  set(cuTENSOR_INCLUDE_DIR ${cutensor_SOURCE_DIR}/include) 
+  set(cuTENSOR_INCLUDE_DIR ${cutensor_SOURCE_DIR}/include)
 
 
   set(cuTENSOR_FOUND TRUE)

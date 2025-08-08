@@ -45,7 +45,7 @@ cmaize_option_list(
     ENABLE_CUTENSOR OFF "Should we enable cuTENSOR?"
 )
 
-if("${ENABLE_CUTENSOR}") 
+if("${ENABLE_CUTENSOR}")
     if("${ENABLE_SIGMA}")
         set(MSG "Sigma is not compatible with cuTENSOR. Turning Sigma OFF.")
         message(WARNING ${MSG})
@@ -116,7 +116,7 @@ if("${BUILD_TESTING}")
     set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
     set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
     set(
-        cxx_acceptance_test_dir 
+        cxx_acceptance_test_dir
         "${cxx_test_dir}/acceptance_tests/${PROJECT_NAME}"
     )
     set(
@@ -127,7 +127,7 @@ if("${BUILD_TESTING}")
     set(python_unit_test_dir "${python_test_dir}/unit_tests")
 
     include(get_catch2)
-    
+
     cmaize_add_tests(
         test_unit_${PROJECT_NAME}
         SOURCE_DIR "${cxx_unit_test_dir}"
