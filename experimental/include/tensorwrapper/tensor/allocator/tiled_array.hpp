@@ -45,7 +45,7 @@ public:
     explicit TiledArrayAllocator(
       ta::Storage storage   = ta::Storage::Core,
       ta::Distribution dist = ta::Distribution::Replicated) :
-      storage_(storage), dist_(dist){};
+      storage_(storage), dist_(dist) {};
 
     ~TiledArrayAllocator() noexcept = default;
 

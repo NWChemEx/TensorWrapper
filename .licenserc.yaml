@@ -26,5 +26,6 @@ header:
     - docs/requirements.txt
     - docs/source/bibliography/*.bib
     - version.txt
+    - build/
 
   comment: never
