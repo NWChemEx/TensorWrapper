@@ -92,6 +92,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep___.rhs_dummy() == "");
             REQUIRE(ep___.lhs_free() == "");
             REQUIRE(ep___.rhs_free() == "");
+            REQUIRE(ep___.result_batch() == "");
             REQUIRE(ep___.lhs_batch() == "");
             REQUIRE(ep___.rhs_batch() == "");
         }
@@ -103,6 +104,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep___kl.rhs_dummy() == "");
             REQUIRE(ep___kl.lhs_free() == "");
             REQUIRE(ep___kl.rhs_free() == "");
+            REQUIRE(ep___kl.result_batch() == "");
             REQUIRE(ep___kl.lhs_batch() == "");
             REQUIRE(ep___kl.rhs_batch() == "");
         }
@@ -114,6 +116,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__ij_.rhs_dummy() == "");
             REQUIRE(ep__ij_.lhs_free() == "");
             REQUIRE(ep__ij_.rhs_free() == "");
+            REQUIRE(ep__ij_.result_batch() == "");
             REQUIRE(ep__ij_.lhs_batch() == "");
             REQUIRE(ep__ij_.rhs_batch() == "");
         }
@@ -125,6 +128,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__ij_klm.rhs_dummy() == "");
             REQUIRE(ep__ij_klm.lhs_free() == "");
             REQUIRE(ep__ij_klm.rhs_free() == "");
+            REQUIRE(ep__ij_klm.result_batch() == "");
             REQUIRE(ep__ij_klm.lhs_batch() == "");
             REQUIRE(ep__ij_klm.rhs_batch() == "");
         }
@@ -136,6 +140,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__ij_ji.rhs_dummy() == "j,i");
             REQUIRE(ep__ij_ji.lhs_free() == "");
             REQUIRE(ep__ij_ji.rhs_free() == "");
+            REQUIRE(ep__ij_ji.result_batch() == "");
             REQUIRE(ep__ij_ji.lhs_batch() == "");
             REQUIRE(ep__ij_ji.rhs_batch() == "");
         }
@@ -147,6 +152,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__ij_jik.rhs_dummy() == "j,i");
             REQUIRE(ep__ij_jik.lhs_free() == "");
             REQUIRE(ep__ij_jik.rhs_free() == "");
+            REQUIRE(ep__ij_jik.result_batch() == "");
             REQUIRE(ep__ij_jik.lhs_batch() == "");
             REQUIRE(ep__ij_jik.rhs_batch() == "");
         }
@@ -158,6 +164,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__jik_ik.rhs_dummy() == "i,k");
             REQUIRE(ep__jik_ik.lhs_free() == "");
             REQUIRE(ep__jik_ik.rhs_free() == "");
+            REQUIRE(ep__jik_ik.result_batch() == "");
             REQUIRE(ep__jik_ik.lhs_batch() == "");
             REQUIRE(ep__jik_ik.rhs_batch() == "");
         }
@@ -169,6 +176,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep__jik_ikm.rhs_dummy() == "i,k");
             REQUIRE(ep__jik_ikm.lhs_free() == "");
             REQUIRE(ep__jik_ikm.rhs_free() == "");
+            REQUIRE(ep__jik_ikm.result_batch() == "");
             REQUIRE(ep__jik_ikm.lhs_batch() == "");
             REQUIRE(ep__jik_ikm.rhs_batch() == "");
         }
@@ -183,6 +191,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ik_jl_ik.rhs_dummy() == "");
             REQUIRE(ep_ik_jl_ik.lhs_free() == "");
             REQUIRE(ep_ik_jl_ik.rhs_free() == "i,k");
+            REQUIRE(ep_ik_jl_ik.result_batch() == "");
             REQUIRE(ep_ik_jl_ik.lhs_batch() == "");
             REQUIRE(ep_ik_jl_ik.rhs_batch() == "");
         }
@@ -194,6 +203,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ij_ji_kl.rhs_dummy() == "");
             REQUIRE(ep_ij_ji_kl.lhs_free() == "j,i");
             REQUIRE(ep_ij_ji_kl.rhs_free() == "");
+            REQUIRE(ep_ij_ji_kl.result_batch() == "");
             REQUIRE(ep_ij_ji_kl.lhs_batch() == "");
             REQUIRE(ep_ij_ji_kl.rhs_batch() == "");
         }
@@ -205,6 +215,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ijkl_kl_ji.rhs_dummy() == "");
             REQUIRE(ep_ijkl_kl_ji.lhs_free() == "k,l");
             REQUIRE(ep_ijkl_kl_ji.rhs_free() == "j,i");
+            REQUIRE(ep_ijkl_kl_ji.result_batch() == "");
             REQUIRE(ep_ijkl_kl_ji.lhs_batch() == "");
             REQUIRE(ep_ijkl_kl_ji.rhs_batch() == "");
         }
@@ -216,6 +227,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ik_jl_kmi.rhs_dummy() == "");
             REQUIRE(ep_ik_jl_kmi.lhs_free() == "");
             REQUIRE(ep_ik_jl_kmi.rhs_free() == "k,i");
+            REQUIRE(ep_ik_jl_kmi.result_batch() == "");
             REQUIRE(ep_ik_jl_kmi.lhs_batch() == "");
             REQUIRE(ep_ik_jl_kmi.rhs_batch() == "");
         }
@@ -227,6 +239,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_jl_ljm_i.rhs_dummy() == "");
             REQUIRE(ep_jl_ljm_i.lhs_free() == "l,j");
             REQUIRE(ep_jl_ljm_i.rhs_free() == "");
+            REQUIRE(ep_jl_ljm_i.result_batch() == "");
             REQUIRE(ep_jl_ljm_i.lhs_batch() == "");
             REQUIRE(ep_jl_ljm_i.rhs_batch() == "");
         }
@@ -238,6 +251,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ik_kl_im.rhs_dummy() == "");
             REQUIRE(ep_ik_kl_im.lhs_free() == "k");
             REQUIRE(ep_ik_kl_im.rhs_free() == "i");
+            REQUIRE(ep_ik_kl_im.result_batch() == "");
             REQUIRE(ep_ik_kl_im.lhs_batch() == "");
             REQUIRE(ep_ik_kl_im.rhs_batch() == "");
         }
@@ -249,6 +263,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_i_kj_jki.rhs_dummy() == "j,k");
             REQUIRE(ep_i_kj_jki.lhs_free() == "");
             REQUIRE(ep_i_kj_jki.rhs_free() == "i");
+            REQUIRE(ep_i_kj_jki.result_batch() == "");
             REQUIRE(ep_i_kj_jki.lhs_batch() == "");
             REQUIRE(ep_i_kj_jki.rhs_batch() == "");
         }
@@ -260,6 +275,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ij_jikl_kl.rhs_dummy() == "k,l");
             REQUIRE(ep_ij_jikl_kl.lhs_free() == "j,i");
             REQUIRE(ep_ij_jikl_kl.rhs_free() == "");
+            REQUIRE(ep_ij_jikl_kl.result_batch() == "");
             REQUIRE(ep_ij_jikl_kl.lhs_batch() == "");
             REQUIRE(ep_ij_jikl_kl.rhs_batch() == "");
         }
@@ -271,6 +287,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_jm_im_ij.rhs_dummy() == "i");
             REQUIRE(ep_jm_im_ij.lhs_free() == "m");
             REQUIRE(ep_jm_im_ij.rhs_free() == "j");
+            REQUIRE(ep_jm_im_ij.result_batch() == "");
             REQUIRE(ep_jm_im_ij.lhs_batch() == "");
             REQUIRE(ep_jm_im_ij.rhs_batch() == "");
         }
@@ -282,6 +299,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_lm_ij_iml.rhs_dummy() == "i");
             REQUIRE(ep_lm_ij_iml.lhs_free() == "");
             REQUIRE(ep_lm_ij_iml.rhs_free() == "m,l");
+            REQUIRE(ep_lm_ij_iml.result_batch() == "");
             REQUIRE(ep_lm_ij_iml.lhs_batch() == "");
             REQUIRE(ep_lm_ij_iml.rhs_batch() == "");
         }
@@ -293,6 +311,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_i_ij_jk.rhs_dummy() == "j");
             REQUIRE(ep_i_ij_jk.lhs_free() == "i");
             REQUIRE(ep_i_ij_jk.rhs_free() == "");
+            REQUIRE(ep_i_ij_jk.result_batch() == "");
             REQUIRE(ep_i_ij_jk.lhs_batch() == "");
             REQUIRE(ep_i_ij_jk.rhs_batch() == "");
         }
@@ -304,6 +323,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ijk_klm_jlmi.rhs_dummy() == "l,m");
             REQUIRE(ep_ijk_klm_jlmi.lhs_free() == "k");
             REQUIRE(ep_ijk_klm_jlmi.rhs_free() == "j,i");
+            REQUIRE(ep_ijk_klm_jlmi.result_batch() == "");
             REQUIRE(ep_ijk_klm_jlmi.lhs_batch() == "");
             REQUIRE(ep_ijk_klm_jlmi.rhs_batch() == "");
         }
@@ -315,6 +335,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_il_jm_jlis.rhs_dummy() == "j");
             REQUIRE(ep_il_jm_jlis.lhs_free() == "");
             REQUIRE(ep_il_jm_jlis.rhs_free() == "l,i");
+            REQUIRE(ep_il_jm_jlis.result_batch() == "");
             REQUIRE(ep_il_jm_jlis.lhs_batch() == "");
             REQUIRE(ep_il_jm_jlis.rhs_batch() == "");
         }
@@ -326,6 +347,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_i_jikm_kjn.rhs_dummy() == "k,j");
             REQUIRE(ep_i_jikm_kjn.lhs_free() == "i");
             REQUIRE(ep_i_jikm_kjn.rhs_free() == "");
+            REQUIRE(ep_i_jikm_kjn.result_batch() == "");
             REQUIRE(ep_i_jikm_kjn.lhs_batch() == "");
             REQUIRE(ep_i_jikm_kjn.rhs_batch() == "");
         }
@@ -338,6 +360,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ijk_nilsk_sammjl.rhs_dummy() == "s,l");
             REQUIRE(ep_ijk_nilsk_sammjl.lhs_free() == "i,k");
             REQUIRE(ep_ijk_nilsk_sammjl.rhs_free() == "j");
+            REQUIRE(ep_ijk_nilsk_sammjl.result_batch() == "");
             REQUIRE(ep_ijk_nilsk_sammjl.lhs_batch() == "");
             REQUIRE(ep_ijk_nilsk_sammjl.rhs_batch() == "");
         }
@@ -352,6 +375,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ibk_bjl_bik.rhs_dummy() == "");
             REQUIRE(ep_ibk_bjl_bik.lhs_free() == "");
             REQUIRE(ep_ibk_bjl_bik.rhs_free() == "i,k");
+            REQUIRE(ep_ibk_bjl_bik.result_batch() == "b");
             REQUIRE(ep_ibk_bjl_bik.lhs_batch() == "b");
             REQUIRE(ep_ibk_bjl_bik.rhs_batch() == "b");
         }
@@ -363,6 +387,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_bij_jib_kbl.rhs_dummy() == "");
             REQUIRE(ep_bij_jib_kbl.lhs_free() == "j,i");
             REQUIRE(ep_bij_jib_kbl.rhs_free() == "");
+            REQUIRE(ep_bij_jib_kbl.result_batch() == "b");
             REQUIRE(ep_bij_jib_kbl.lhs_batch() == "b");
             REQUIRE(ep_bij_jib_kbl.rhs_batch() == "b");
         }
@@ -375,6 +400,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_iajkbl_kbla_ajbi.rhs_dummy() == "");
             REQUIRE(ep_iajkbl_kbla_ajbi.lhs_free() == "k,l");
             REQUIRE(ep_iajkbl_kbla_ajbi.rhs_free() == "j,i");
+            REQUIRE(ep_iajkbl_kbla_ajbi.result_batch() == "a,b");
             REQUIRE(ep_iajkbl_kbla_ajbi.lhs_batch() == "b,a");
             REQUIRE(ep_iajkbl_kbla_ajbi.rhs_batch() == "a,b");
         }
@@ -386,6 +412,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ibk_jbl_kbmi.rhs_dummy() == "");
             REQUIRE(ep_ibk_jbl_kbmi.lhs_free() == "");
             REQUIRE(ep_ibk_jbl_kbmi.rhs_free() == "k,i");
+            REQUIRE(ep_ibk_jbl_kbmi.result_batch() == "b");
             REQUIRE(ep_ibk_jbl_kbmi.lhs_batch() == "b");
             REQUIRE(ep_ibk_jbl_kbmi.rhs_batch() == "b");
         }
@@ -397,6 +424,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_jlb_ljmb_ib.rhs_dummy() == "");
             REQUIRE(ep_jlb_ljmb_ib.lhs_free() == "l,j");
             REQUIRE(ep_jlb_ljmb_ib.rhs_free() == "");
+            REQUIRE(ep_jlb_ljmb_ib.result_batch() == "b");
             REQUIRE(ep_jlb_ljmb_ib.lhs_batch() == "b");
             REQUIRE(ep_jlb_ljmb_ib.rhs_batch() == "b");
         }
@@ -408,6 +436,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ibk_bkl_bim.rhs_dummy() == "");
             REQUIRE(ep_ibk_bkl_bim.lhs_free() == "k");
             REQUIRE(ep_ibk_bkl_bim.rhs_free() == "i");
+            REQUIRE(ep_ibk_bkl_bim.result_batch() == "b");
             REQUIRE(ep_ibk_bkl_bim.lhs_batch() == "b");
             REQUIRE(ep_ibk_bkl_bim.rhs_batch() == "b");
         }
@@ -419,6 +448,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ib_bkj_bjki.rhs_dummy() == "j,k");
             REQUIRE(ep_ib_bkj_bjki.lhs_free() == "");
             REQUIRE(ep_ib_bkj_bjki.rhs_free() == "i");
+            REQUIRE(ep_ib_bkj_bjki.result_batch() == "b");
             REQUIRE(ep_ib_bkj_bjki.lhs_batch() == "b");
             REQUIRE(ep_ib_bkj_bjki.rhs_batch() == "b");
         }
@@ -430,6 +460,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ibj_jikbl_klb.rhs_dummy() == "k,l");
             REQUIRE(ep_ibj_jikbl_klb.lhs_free() == "j,i");
             REQUIRE(ep_ibj_jikbl_klb.rhs_free() == "");
+            REQUIRE(ep_ibj_jikbl_klb.result_batch() == "b");
             REQUIRE(ep_ibj_jikbl_klb.lhs_batch() == "b");
             REQUIRE(ep_ibj_jikbl_klb.rhs_batch() == "b");
         }
@@ -441,6 +472,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_jmb_imb_ijb.rhs_dummy() == "i");
             REQUIRE(ep_jmb_imb_ijb.lhs_free() == "m");
             REQUIRE(ep_jmb_imb_ijb.rhs_free() == "j");
+            REQUIRE(ep_jmb_imb_ijb.result_batch() == "b");
             REQUIRE(ep_jmb_imb_ijb.lhs_batch() == "b");
             REQUIRE(ep_jmb_imb_ijb.rhs_batch() == "b");
         }
@@ -452,6 +484,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_lbqm_iqbj_iqbml.rhs_dummy() == "i");
             REQUIRE(ep_lbqm_iqbj_iqbml.lhs_free() == "");
             REQUIRE(ep_lbqm_iqbj_iqbml.rhs_free() == "m,l");
+            REQUIRE(ep_lbqm_iqbj_iqbml.result_batch() == "b,q");
             REQUIRE(ep_lbqm_iqbj_iqbml.lhs_batch() == "q,b");
             REQUIRE(ep_lbqm_iqbj_iqbml.rhs_batch() == "q,b");
         }
@@ -463,6 +496,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_bi_bij_bjk.rhs_dummy() == "j");
             REQUIRE(ep_bi_bij_bjk.lhs_free() == "i");
             REQUIRE(ep_bi_bij_bjk.rhs_free() == "");
+            REQUIRE(ep_bi_bij_bjk.result_batch() == "b");
             REQUIRE(ep_bi_bij_bjk.lhs_batch() == "b");
             REQUIRE(ep_bi_bij_bjk.rhs_batch() == "b");
         }
@@ -474,6 +508,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ibjk_kblm_jblmi.rhs_dummy() == "l,m");
             REQUIRE(ep_ibjk_kblm_jblmi.lhs_free() == "k");
             REQUIRE(ep_ibjk_kblm_jblmi.rhs_free() == "j,i");
+            REQUIRE(ep_ibjk_kblm_jblmi.result_batch() == "b");
             REQUIRE(ep_ibjk_kblm_jblmi.lhs_batch() == "b");
             REQUIRE(ep_ibjk_kblm_jblmi.rhs_batch() == "b");
         }
@@ -485,6 +520,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ilb_bjm_jlibs.rhs_dummy() == "j");
             REQUIRE(ep_ilb_bjm_jlibs.lhs_free() == "");
             REQUIRE(ep_ilb_bjm_jlibs.rhs_free() == "l,i");
+            REQUIRE(ep_ilb_bjm_jlibs.result_batch() == "b");
             REQUIRE(ep_ilb_bjm_jlibs.lhs_batch() == "b");
             REQUIRE(ep_ilb_bjm_jlibs.rhs_batch() == "b");
         }
@@ -496,6 +532,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_bi_jikbm_bkjn.rhs_dummy() == "k,j");
             REQUIRE(ep_bi_jikbm_bkjn.lhs_free() == "i");
             REQUIRE(ep_bi_jikbm_bkjn.rhs_free() == "");
+            REQUIRE(ep_bi_jikbm_bkjn.result_batch() == "b");
             REQUIRE(ep_bi_jikbm_bkjn.lhs_batch() == "b");
             REQUIRE(ep_bi_jikbm_bkjn.rhs_batch() == "b");
         }
@@ -508,6 +545,7 @@ TEST_CASE("EinsumPlanner") {
             REQUIRE(ep_ijbk_bnilsk_bsammjl.rhs_dummy() == "s,l");
             REQUIRE(ep_ijbk_bnilsk_bsammjl.lhs_free() == "i,k");
             REQUIRE(ep_ijbk_bnilsk_bsammjl.rhs_free() == "j");
+            REQUIRE(ep_ijbk_bnilsk_bsammjl.result_batch() == "b");
             REQUIRE(ep_ijbk_bnilsk_bsammjl.lhs_batch() == "b");
             REQUIRE(ep_ijbk_bnilsk_bsammjl.rhs_batch() == "b");
         }
