@@ -68,7 +68,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">tensorwrapper::shape Namespace Reference</div>  </div>
 </div><!--header-->
@@ -106,10 +107,72 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a698709e65fc1ca14a6cb379ca01b2f31"><td class="memItemLeft" align="right" valign="top"><a id="a698709e65fc1ca14a6cb379ca01b2f31"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_reference</b> = typename <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">Smooth::dsl_reference</a></td></tr>
 <tr class="separator:a698709e65fc1ca14a6cb379ca01b2f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:acb9877db158e415e86db1eebbc4f9551"><td class="memTemplParams" colspan="2">template&lt;typename StringType , typename... Args&gt; </td></tr>
+<tr class="memitem:acb9877db158e415e86db1eebbc4f9551"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">shape::Smooth</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1shape.html#acb9877db158e415e86db1eebbc4f9551">shape_from_labels</a> (const <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html">dsl::DummyIndices</a>&lt; StringType &gt; &amp;labels, Args &amp;&amp;... labeled_shapes)</td></tr>
+<tr class="memdesc:acb9877db158e415e86db1eebbc4f9551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a series of dummy indices and labeled shapes, works out the shape of the tensor described by the dummy indices.  <a href="namespacetensorwrapper_1_1shape.html#acb9877db158e415e86db1eebbc4f9551">More...</a><br /></td></tr>
+<tr class="separator:acb9877db158e415e86db1eebbc4f9551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Sublibrary focused on describing the geometry of the tensor. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="acb9877db158e415e86db1eebbc4f9551"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb9877db158e415e86db1eebbc4f9551">&#9670;&nbsp;</a></span>shape_from_labels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename StringType , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">shape::Smooth</a> tensorwrapper::shape::shape_from_labels </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html">dsl::DummyIndices</a>&lt; StringType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>labeled_shapes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Given a series of dummy indices and labeled shapes, works out the shape of the tensor described by the dummy indices. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">StringType</td><td>The string type used to represent the labels. Assumed to be a type like std::string. </td></tr>
+    <tr><td class="paramname">Args</td><td>The types of the labeled shapes provided.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function wraps the process of working out the shape associated with a list of dummy indices. To do this, the function loops over each dummy index in <code>labels</code> and searches the labeled shapes in <code>labeled_shapes</code> for the dummy index. When the dummy index is found, the extent associated with the dummy index is recorded. If the dummy index is not found in any of the labeled shapes, an exception is thrown.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">labels</td><td>The dummy indices describing the tensor whose shape is to be determined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">labeled_shapes</td><td>The labeled shapes to search for the dummy indices in.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor.">Smooth</a> shape describing the shape of the tensor with dummy indices <code>labels</code>.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if any of the labels in <code>labels</code> are not found in <code>labeled_shapes</code>. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
