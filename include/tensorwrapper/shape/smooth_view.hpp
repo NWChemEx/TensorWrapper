@@ -198,7 +198,7 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    bool operator==(const SmoothView<const SmoothType>& rhs) const noexcept;
+    bool operator==(const SmoothView& rhs) const noexcept;
 
     /** @brief Is *this different from @p rhs?
      *
