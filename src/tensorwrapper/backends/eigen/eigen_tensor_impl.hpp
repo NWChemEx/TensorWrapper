@@ -42,11 +42,11 @@ public:
     using const_eigen_reference = const eigen_data_type&;
 
     ///@{
-    using typename base_type::const_permutation_reference;
     using typename base_type::const_reference;
     using typename base_type::const_shape_reference;
     using typename base_type::eigen_rank_type;
     using typename base_type::index_vector;
+    using typename base_type::label_type;
     using typename base_type::reference;
     using typename base_type::size_type;
     using typename base_type::string_type;
@@ -57,7 +57,7 @@ public:
       m_tensor_(
         make_from_shape_(data, shape, std::make_index_sequence<Rank>())) {}
 
-    EigenTensorImpl permute(const_permutation_reference perm) const;
+    EigenTensorImpl permute(label_type perm) const;
 
 protected:
     /// Implement rank by returning template parameter
@@ -86,49 +86,34 @@ protected:
     /// Relies on Eigen's operator<< to add to stream
     std::ostream& add_to_stream_(std::ostream& os) const override;
 
-    void addition_assignment_(const_permutation_reference lhs_permute,
-                              const_permutation_reference rhs_permute,
-                              const base_type& lhs,
+    void addition_assignment_(label_type this_label, label_type lhs_label,
+                              label_type rhs_label, const base_type& lhs,
                               const base_type& rhs) override;
 
-    void subtraction_assignment_(const_permutation_reference lhs_permute,
-                                 const_permutation_reference rhs_permute,
-                                 const base_type& lhs,
+    void subtraction_assignment_(label_type this_label, label_type lhs_label,
+                                 label_type rhs_label, const base_type& lhs,
                                  const base_type& rhs) override;
 
-    void hadamard_assignment_(const_permutation_reference lhs_permute,
-                              const_permutation_reference rhs_permute,
-                              const base_type& lhs,
+    void hadamard_assignment_(label_type this_label, label_type lhs_label,
+                              label_type rhs_label, const base_type& lhs,
                               const base_type& rhs) override;
 
-    void permute_assignment_(const_permutation_reference rhs_permute,
+    void permute_assignment_(label_type this_label, label_type rhs_label,
                              const base_type& rhs) override;
 
-    void scalar_multiplication_(const_permutation_reference rhs_permute,
+    void scalar_multiplication_(label_type this_label, label_type rhs_label,
                                 FloatType scalar,
                                 const base_type& rhs) override;
 
-    // void contraction_assignment_(label_type this_labels, label_type
-    // lhs_labels,
-    //                              label_type rhs_labels,
-    //                              const_shape_reference result_shape,
-    //                              const_pimpl_reference lhs,
-    //                              const_pimpl_reference rhs) override;
-
-    // void permute_assignment_(label_type this_labels, label_type rhs_labels,
-    //                          const_pimpl_reference rhs) override;
-
-    // void scalar_multiplication_(label_type this_labels, label_type
-    // rhs_labels,
-    //                             FloatType scalar,
-    //                             const_pimpl_reference rhs) override;
+    void contraction_assignment_(label_type this_labels, label_type lhs_labels,
+                                 label_type rhs_labels, const base_type& lhs,
+                                 const base_type& rhs) override;
 
 private:
     // Code factorization for implementing element-wise operations
     template<typename OperationType>
-    void element_wise_op_(OperationType op,
-                          const_permutation_reference lhs_permute,
-                          const_permutation_reference rhs_permute,
+    void element_wise_op_(OperationType op, label_type this_label,
+                          label_type lhs_label, label_type rhs_label,
                           const base_type& lhs, const base_type& rhs);
 
     // Handles TMP needed to create an Eigen TensorMap from a Smooth object
@@ -155,6 +140,10 @@ private:
     // The Eigen tensor *this wraps
     eigen_data_type m_tensor_;
 };
+
+template<typename FloatType>
+std::unique_ptr<EigenTensor<FloatType>> make_eigen_tensor(
+  std::span<FloatType> data, shape::SmoothView<const shape::Smooth> shape);
 
 #define DECLARE_EIGEN_TENSOR(TYPE)                  \
     extern template class EigenTensorImpl<TYPE, 0>; \

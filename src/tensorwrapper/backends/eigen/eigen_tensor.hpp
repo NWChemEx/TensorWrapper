@@ -17,8 +17,8 @@
 #pragma once
 #include <ostream>
 #include <string>
+#include <tensorwrapper/dsl/dummy_indices.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
-#include <tensorwrapper/symmetry/permutation.hpp>
 #include <vector>
 
 namespace tensorwrapper::backends::eigen {
@@ -71,11 +71,10 @@ public:
     /// Type used to express strings
     using string_type = std::string;
 
-    /// Type used to specify a permutation
-    using permutation_type = symmetry::Permutation;
+    /// Type of a label
+    using label_type = dsl::DummyIndices<string_type>;
 
-    /// Type of a read-only reference to an object of permutation_type
-    using const_permutation_reference = const permutation_type&;
+    virtual ~EigenTensor() noexcept = default;
 
     /** @brief Retrieves the rank of the wrapped tensor.
      *
@@ -83,6 +82,12 @@ public:
      */
     eigen_rank_type rank() const noexcept { return rank_(); }
 
+    /** @brief The total number of elements in *this.
+     *
+     *  @return The total number of elements in *this.
+     *
+     *  @throw None No throw guarantee.
+     */
     size_type size() const noexcept { return size_(); }
 
     size_type extent(eigen_rank_type i) const {
@@ -108,46 +113,40 @@ public:
         return add_to_stream_(os);
     }
 
-    void addition_assignment(const_permutation_reference lhs_permute,
-                             const_permutation_reference rhs_permute,
-                             const EigenTensor& lhs, const EigenTensor& rhs) {
-        return addition_assignment_(lhs_permute, rhs_permute, lhs, rhs);
+    void addition_assignment(label_type this_label, label_type lhs_label,
+                             label_type rhs_label, const EigenTensor& lhs,
+                             const EigenTensor& rhs) {
+        return addition_assignment_(this_label, lhs_label, rhs_label, lhs, rhs);
     }
 
-    void subtraction_assignment(const_permutation_reference lhs_permute,
-                                const_permutation_reference rhs_permute,
-                                const EigenTensor& lhs,
+    void subtraction_assignment(label_type this_label, label_type lhs_label,
+                                label_type rhs_label, const EigenTensor& lhs,
                                 const EigenTensor& rhs) {
-        return subtraction_assignment_(lhs_permute, rhs_permute, lhs, rhs);
+        return subtraction_assignment_(this_label, lhs_label, rhs_label, lhs,
+                                       rhs);
     }
 
-    void hadamard_assignment(const_permutation_reference lhs_permute,
-                             const_permutation_reference rhs_permute,
-                             const EigenTensor& lhs, const EigenTensor& rhs) {
-        return hadamard_assignment_(lhs_permute, rhs_permute, lhs, rhs);
+    void hadamard_assignment(label_type this_label, label_type lhs_label,
+                             label_type rhs_label, const EigenTensor& lhs,
+                             const EigenTensor& rhs) {
+        return hadamard_assignment_(this_label, lhs_label, rhs_label, lhs, rhs);
     }
 
-    void permute_assignment(const_permutation_reference rhs_permute,
+    void contraction_assignment(label_type this_label, label_type lhs_label,
+                                label_type rhs_label, const EigenTensor& lhs,
+                                const EigenTensor& rhs) {
+        contraction_assignment_(this_label, lhs_label, rhs_label, lhs, rhs);
+    }
+
+    void permute_assignment(label_type this_label, label_type rhs_label,
                             const EigenTensor& rhs) {
-        return permute_assignment_(rhs_permute, rhs);
+        return permute_assignment_(this_label, rhs_label, rhs);
     }
 
-    void scalar_multiplication(const_permutation_reference rhs_permute,
+    void scalar_multiplication(label_type this_label, label_type rhs_label,
                                FloatType scalar, const EigenTensor& rhs) {
-        return scalar_multiplication_(rhs_permute, scalar, rhs);
+        return scalar_multiplication_(this_label, rhs_label, scalar, rhs);
     }
-
-    // void contraction_assignment(label_type this_labels, label_type
-    // lhs_labels,
-    //                             label_type rhs_labels,
-    //                             const_shape_reference result_shape,
-    //                             const_pimpl_reference lhs,
-    //                             const_pimpl_reference rhs) {
-    //     contraction_assignment_(std::move(this_labels),
-    //     std::move(lhs_labels),
-    //                             std::move(rhs_labels), result_shape, lhs,
-    //                             rhs);
-    // }
 
 protected:
     EigenTensor() noexcept = default;
@@ -161,34 +160,37 @@ protected:
     virtual string_type to_string_() const                           = 0;
     virtual std::ostream& add_to_stream_(std::ostream& os) const     = 0;
 
-    virtual void addition_assignment_(const_permutation_reference lhs_permute,
-                                      const_permutation_reference rhs_permute,
+    virtual void addition_assignment_(label_type this_label,
+                                      label_type lhs_label,
+                                      label_type rhs_label,
                                       const EigenTensor& lhs,
                                       const EigenTensor& rhs) = 0;
 
-    virtual void subtraction_assignment_(
-      const_permutation_reference lhs_permute,
-      const_permutation_reference rhs_permute, const EigenTensor& lhs,
-      const EigenTensor& rhs) = 0;
+    virtual void subtraction_assignment_(label_type this_label,
+                                         label_type lhs_label,
+                                         label_type rhs_label,
+                                         const EigenTensor& lhs,
+                                         const EigenTensor& rhs) = 0;
 
-    virtual void hadamard_assignment_(const_permutation_reference lhs_permute,
-                                      const_permutation_reference rhs_permute,
+    virtual void hadamard_assignment_(label_type this_label,
+                                      label_type lhs_label,
+                                      label_type rhs_label,
                                       const EigenTensor& lhs,
                                       const EigenTensor& rhs) = 0;
 
-    virtual void permute_assignment_(const_permutation_reference rhs_permute,
+    virtual void permute_assignment_(label_type this_label,
+                                     label_type rhs_label,
                                      const EigenTensor& rhs) = 0;
 
-    virtual void scalar_multiplication_(const_permutation_reference rhs_permute,
-                                        FloatType scalar,
+    virtual void scalar_multiplication_(label_type this_label,
+                                        label_type rhs_label, FloatType scalar,
                                         const EigenTensor& rhs) = 0;
 
-    // virtual void contraction_assignment_(label_type this_labels,
-    //                                      label_type lhs_labels,
-    //                                      label_type rhs_labels,
-    //                                      const_shape_reference result_shape,
-    //                                      const_pimpl_reference lhs,
-    //                                      const_pimpl_reference rhs)    = 0;
+    virtual void contraction_assignment_(label_type this_label,
+                                         label_type lhs_label,
+                                         label_type rhs_label,
+                                         const EigenTensor& lhs,
+                                         const EigenTensor& rhs) = 0;
 };
 
 } // namespace tensorwrapper::backends::eigen

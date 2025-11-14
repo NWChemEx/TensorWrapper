@@ -15,9 +15,9 @@
  */
 #pragma once
 #ifdef ENABLE_CUTENSOR
-#include "eigen_tensor.hpp"
+#include "cuda_tensor.hpp"
 
-namespace tensorwrapper::buffer::detail_ {
+namespace tensorwrapper::backends::cutensor {
 
 /** @brief Performs a tensor contraction on GPU
  *
@@ -36,11 +36,9 @@ template<typename TensorType>
 void cutensor_contraction(typename TensorType::label_type c_label,
                           typename TensorType::label_type a_label,
                           typename TensorType::label_type b_label,
-                          typename TensorType::const_shape_reference c_shape,
-                          typename TensorType::const_pimpl_reference A,
-                          typename TensorType::const_pimpl_reference B,
-                          typename TensorType::eigen_reference C);
+                          const TensorType& A, const TensorType& B,
+                          TensorType& C);
 
-} // namespace tensorwrapper::buffer::detail_
+} // namespace tensorwrapper::backends::cutensor
 
 #endif

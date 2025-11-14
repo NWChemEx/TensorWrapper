@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 #ifdef ENABLE_CUTENSOR
+#include "cuda_tensor.cuh"
 #include "cutensor_traits.cuh"
-#include "eigen_tensor.cuh"
 #include <unordered_map>
 #include <vector>
 
-namespace tensorwrapper::buffer::detail_ {
+namespace tensorwrapper::backends::cutensor {
+
+// Some common typedefs
+using mode_vector_t  = std::vector<int>;
+using int64_vector_t = std::vector<int64_t>;
 
 // Handle cuda errors
 #define HANDLE_CUDA_ERROR(x)                                \
@@ -38,12 +42,7 @@ namespace tensorwrapper::buffer::detail_ {
         if(err != CUTENSOR_STATUS_SUCCESS) {                    \
             printf("Error: %s\n", cutensorGetErrorString(err)); \
             exit(-1);                                           \
-        }                                                       \
-    };
-
-// Some common typedefs
-using mode_vector_t  = std::vector<int>;
-using int64_vector_t = std::vector<int64_t>;
+        }
 
 // Convert a label into a vector of modes
 template<typename LabelType>
@@ -51,16 +50,6 @@ mode_vector_t label_to_modes(const LabelType& label) {
     mode_vector_t mode;
     for(const auto& i : label) { mode.push_back(i.data()[0]); }
     return mode;
-}
-
-// Query extent information from an input
-template<typename InfoType>
-int64_vector_t get_extents(const InfoType& info) {
-    int64_vector_t extent;
-    for(std::size_t i = 0; i < info.rank(); ++i) {
-        extent.push_back((int64_t)info.extent(i));
-    }
-    return extent;
 }
 
 // Compute strides in row major
@@ -74,41 +63,56 @@ int64_vector_t get_strides(std::size_t N, const int64_vector_t& extent) {
     return strides;
 }
 
+// Query extent information from an input
+template<typename InfoType>
+int64_vector_t get_extents(const InfoType& info) {
+    int64_vector_t extent;
+    for(std::size_t i = 0; i < info.rank(); ++i) {
+        extent.push_back((int64_t)info.extent(i));
+    }
+    return extent;
+}
+
 // Perform tensor contraction with cuTENSOR
 template<typename TensorType>
 void cutensor_contraction(typename TensorType::label_type c_label,
                           typename TensorType::label_type a_label,
                           typename TensorType::label_type b_label,
-                          typename TensorType::const_shape_reference c_shape,
-                          typename TensorType::const_pimpl_reference A,
-                          typename TensorType::const_pimpl_reference B,
-                          typename TensorType::eigen_reference C) {
-    using element_t    = typename TensorType::element_type;
-    using eigen_data_t = typename TensorType::eigen_data_type;
+                          const TensorType& A, const TensorType& B,
+                          TensorType& C) {
+    using element_t = typename TensorType::value_type;
+
+    const auto a_rank = A.rank();
+    const auto b_rank = B.rank();
+    const auto c_rank = C.rank();
+
+    const auto& a_shape = A.shape();
+    const auto& b_shape = B.shape();
+    const auto& c_shape = C.shape();
 
     // GEMM alpha and beta (hardcoded for now)
     element_t alpha = 1.0;
     element_t beta  = 0.0;
+
+    // The extents of each tensor
+    int64_vector_t a_extents = get_extents(a_shape);
+    int64_vector_t b_extents = get_extents(b_shape);
+    int64_vector_t c_extents = get_extents(c_shape);
 
     // The modes of the tensors
     mode_vector_t a_modes = label_to_modes(a_label);
     mode_vector_t b_modes = label_to_modes(b_label);
     mode_vector_t c_modes = label_to_modes(c_label);
 
-    // The extents of each tensor
-    int64_vector_t a_extents = get_extents(A);
-    int64_vector_t b_extents = get_extents(B);
-    int64_vector_t c_extents = get_extents(c_shape.as_smooth());
-
     // The strides of each tensor
-    int64_vector_t a_strides = get_strides(A.rank(), a_extents);
-    int64_vector_t b_strides = get_strides(B.rank(), b_extents);
-    int64_vector_t c_strides = get_strides(c_shape.rank(), c_extents);
+    int64_vector_t a_strides = get_strides(a_rank, a_extents);
+    int64_vector_t b_strides = get_strides(b_rank, b_extents);
+    int64_vector_t c_strides = get_strides(c_rank, c_extents);
 
     // The size of each tensor
     std::size_t a_size = sizeof(element_t) * A.size();
     std::size_t b_size = sizeof(element_t) * B.size();
-    std::size_t c_size = sizeof(element_t) * c_shape.size();
+    std::size_t c_size = sizeof(element_t) * C.size();
 
     // Allocate on device
     void *A_d, *B_d, *C_d;
@@ -118,9 +122,9 @@ void cutensor_contraction(typename TensorType::label_type c_label,
 
     // Copy to data to device
     HANDLE_CUDA_ERROR(
-      cudaMemcpy(A_d, A.get_immutable_data(), a_size, cudaMemcpyHostToDevice));
+      cudaMemcpy(A_d, A.data(), a_size, cudaMemcpyHostToDevice));
     HANDLE_CUDA_ERROR(
-      cudaMemcpy(B_d, B.get_immutable_data(), b_size, cudaMemcpyHostToDevice));
+      cudaMemcpy(B_d, B.data(), b_size, cudaMemcpyHostToDevice));
     HANDLE_CUDA_ERROR(
       cudaMemcpy(C_d, C.data(), c_size, cudaMemcpyHostToDevice));
 
@@ -141,17 +145,17 @@ void cutensor_contraction(typename TensorType::label_type c_label,
     // Create Tensor Descriptors
     cutensorTensorDescriptor_t descA;
     HANDLE_CUTENSOR_ERROR(cutensorCreateTensorDescriptor(
-      handle, &descA, A.rank(), a_extents.data(), a_strides.data(),
+      handle, &descA, a_rank, a_extents.data(), a_strides.data(),
       traits.cutensorDataType, kAlignment));
 
     cutensorTensorDescriptor_t descB;
     HANDLE_CUTENSOR_ERROR(cutensorCreateTensorDescriptor(
-      handle, &descB, B.rank(), b_extents.data(), b_strides.data(),
+      handle, &descB, b_rank, b_extents.data(), b_strides.data(),
       traits.cutensorDataType, kAlignment));
 
     cutensorTensorDescriptor_t descC;
     HANDLE_CUTENSOR_ERROR(cutensorCreateTensorDescriptor(
-      handle, &descC, c_shape.rank(), c_extents.data(), c_strides.data(),
+      handle, &descC, c_rank, c_extents.data(), c_strides.data(),
       traits.cutensorDataType, kAlignment));
 
     // Create Contraction Descriptor
@@ -232,34 +236,17 @@ void cutensor_contraction(typename TensorType::label_type c_label,
 #undef HANDLE_CUDA_ERROR
 
 // Template instantiations
-#define FUNCTION_INSTANTIATE(TYPE, RANK)                         \
-    template void cutensor_contraction<EigenTensor<TYPE, RANK>>( \
-      typename EigenTensor<TYPE, RANK>::label_type,              \
-      typename EigenTensor<TYPE, RANK>::label_type,              \
-      typename EigenTensor<TYPE, RANK>::label_type,              \
-      typename EigenTensor<TYPE, RANK>::const_shape_reference,   \
-      typename EigenTensor<TYPE, RANK>::const_pimpl_reference,   \
-      typename EigenTensor<TYPE, RANK>::const_pimpl_reference,   \
-      typename EigenTensor<TYPE, RANK>::eigen_reference)
+#define FUNCTION_INSTANTIATE(TYPE)                                    \
+    template void cutensor_contraction<CUDATensor<TYPE>>(             \
+      typename CUDATensor<TYPE>::label_type,                          \
+      typename CUDATensor<TYPE>::label_type,                          \
+      typename CUDATensor<TYPE>::label_type, const CUDATensor<TYPE>&, \
+      const CUDATensor<TYPE>&, CUDATensor<TYPE>&)
 
-#define DEFINE_CUTENSOR_CONTRACTION(TYPE) \
-    FUNCTION_INSTANTIATE(TYPE, 0);        \
-    FUNCTION_INSTANTIATE(TYPE, 1);        \
-    FUNCTION_INSTANTIATE(TYPE, 2);        \
-    FUNCTION_INSTANTIATE(TYPE, 3);        \
-    FUNCTION_INSTANTIATE(TYPE, 4);        \
-    FUNCTION_INSTANTIATE(TYPE, 5);        \
-    FUNCTION_INSTANTIATE(TYPE, 6);        \
-    FUNCTION_INSTANTIATE(TYPE, 7);        \
-    FUNCTION_INSTANTIATE(TYPE, 8);        \
-    FUNCTION_INSTANTIATE(TYPE, 9);        \
-    FUNCTION_INSTANTIATE(TYPE, 10)
+TW_APPLY_FLOATING_POINT_TYPES(FUNCTION_INSTANTIATE);
 
-TW_APPLY_FLOATING_POINT_TYPES(DEFINE_CUTENSOR_CONTRACTION);
-
-#undef DEFINE_CUTENSOR_CONTRACTION
 #undef FUNCTION_INSTANTIATE
 
-} // namespace tensorwrapper::buffer::detail_
+} // namespace tensorwrapper::backends::cutensor
 
 #endif

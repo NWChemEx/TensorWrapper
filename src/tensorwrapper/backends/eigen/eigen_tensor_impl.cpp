@@ -19,17 +19,7 @@
 #include <iomanip>
 #include <sstream>
 
-#ifdef ENABLE_CUTENSOR
-#include "eigen_tensor.cuh"
-#endif
-
 namespace tensorwrapper::backends::eigen {
-
-std::vector<int> to_eigen_permutation(const symmetry::Permutation& perm) {
-    std::vector<int> eigen_perm(perm.rank());
-    std::iota(eigen_perm.begin(), eigen_perm.end(), 0);
-    return perm.apply(std::move(eigen_perm));
-}
 
 #define TPARAMS template<typename FloatType, unsigned int Rank>
 #define EIGEN_TENSOR EigenTensorImpl<FloatType, Rank>
@@ -64,34 +54,38 @@ std::ostream& EIGEN_TENSOR::add_to_stream_(std::ostream& os) const {
 }
 
 TPARAMS
-void EIGEN_TENSOR::addition_assignment_(const_permutation_reference lhs_permute,
-                                        const_permutation_reference rhs_permute,
+void EIGEN_TENSOR::addition_assignment_(label_type this_label,
+                                        label_type lhs_label,
+                                        label_type rhs_label,
                                         const base_type& lhs,
                                         const base_type& rhs) {
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs + rhs; };
-    element_wise_op_(lambda, lhs_permute, rhs_permute, lhs, rhs);
+    element_wise_op_(lambda, this_label, lhs_label, rhs_label, lhs, rhs);
 }
 
 TPARAMS
-void EIGEN_TENSOR::subtraction_assignment_(
-  const_permutation_reference lhs_permute,
-  const_permutation_reference rhs_permute, const base_type& lhs,
-  const base_type& rhs) {
+void EIGEN_TENSOR::subtraction_assignment_(label_type this_label,
+                                           label_type lhs_label,
+                                           label_type rhs_label,
+                                           const base_type& lhs,
+                                           const base_type& rhs) {
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs - rhs; };
-    element_wise_op_(lambda, lhs_permute, rhs_permute, lhs, rhs);
+    element_wise_op_(lambda, this_label, lhs_label, rhs_label, lhs, rhs);
 }
 
 TPARAMS
-void EIGEN_TENSOR::hadamard_assignment_(const_permutation_reference lhs_permute,
-                                        const_permutation_reference rhs_permute,
+void EIGEN_TENSOR::hadamard_assignment_(label_type this_label,
+                                        label_type lhs_label,
+                                        label_type rhs_label,
                                         const base_type& lhs,
                                         const base_type& rhs) {
     auto lambda = [](auto&& lhs, auto&& rhs) { return lhs * rhs; };
-    element_wise_op_(lambda, lhs_permute, rhs_permute, lhs, rhs);
+    element_wise_op_(lambda, this_label, lhs_label, rhs_label, lhs, rhs);
 }
 
 TPARAMS
-void EIGEN_TENSOR::permute_assignment_(const_permutation_reference rhs_permute,
+void EIGEN_TENSOR::permute_assignment_(label_type this_label,
+                                       label_type rhs_label,
                                        const base_type& rhs) {
     const auto* rhs_down = dynamic_cast<const my_type*>(&rhs);
 
@@ -99,134 +93,213 @@ void EIGEN_TENSOR::permute_assignment_(const_permutation_reference rhs_permute,
         m_tensor_ = rhs_down->m_tensor_;
         return;
     } else {
-        auto eigen_rhs_permute = to_eigen_permutation(rhs_permute);
-        auto rhs_shuffled      = rhs_down->m_tensor_.shuffle(eigen_rhs_permute);
-        m_tensor_              = rhs_shuffled;
+        if(this_label != rhs_label) { // We need to permute rhs first
+            // Eigen adopts the opposite definition of permutation from us.
+            auto r_to_l = this_label.permutation(rhs_label);
+            // Eigen wants int objects
+            std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+            m_tensor_ = rhs_down->m_tensor_.shuffle(r_to_l2);
+        } else {
+            m_tensor_ = rhs_down->m_tensor_;
+        }
     }
 }
 
 TPARAMS
-void EIGEN_TENSOR::scalar_multiplication_(
-  const_permutation_reference rhs_permute, FloatType scalar,
-  const base_type& rhs) {
+void EIGEN_TENSOR::scalar_multiplication_(label_type this_label,
+                                          label_type rhs_label,
+                                          FloatType scalar,
+                                          const base_type& rhs) {
     const auto* rhs_down = dynamic_cast<const my_type*>(&rhs);
 
     if constexpr(Rank <= 1) {
         m_tensor_ = rhs_down->m_tensor_ * scalar;
         return;
     } else {
-        auto eigen_rhs_permute = to_eigen_permutation(rhs_permute);
-        auto rhs_shuffled      = rhs_down->m_tensor_.shuffle(eigen_rhs_permute);
-        m_tensor_              = rhs_shuffled * scalar;
+        if(this_label != rhs_label) { // We need to permute rhs first
+            auto r_to_l = rhs_label.permutation(this_label);
+            // Eigen wants int objects
+            std::vector<int> r_to_l2(r_to_l.begin(), r_to_l.end());
+            m_tensor_ = rhs_down->m_tensor_.shuffle(r_to_l2) * scalar;
+        } else {
+            m_tensor_ = rhs_down->m_tensor_ * scalar;
+        }
     }
 }
 
 TPARAMS
 template<typename OperationType>
-void EIGEN_TENSOR::element_wise_op_(OperationType op,
-                                    const_permutation_reference lhs_permute,
-                                    const_permutation_reference rhs_permute,
+void EIGEN_TENSOR::element_wise_op_(OperationType op, label_type this_label,
+                                    label_type lhs_label, label_type rhs_label,
                                     const base_type& lhs,
                                     const base_type& rhs) {
     const auto* lhs_down = dynamic_cast<const my_type*>(&lhs);
     const auto* rhs_down = dynamic_cast<const my_type*>(&rhs);
 
+    // Whose indices match whose?
+    bool this_matches_lhs = (this_label == lhs_label);
+    bool this_matches_rhs = (this_label == rhs_label);
+    bool lhs_matches_rhs  = (lhs_label == rhs_label);
+
+    // The three possible permutations we may need to apply
+    auto get_permutation = [](auto&& lhs_, auto&& rhs_) {
+        auto l_to_r = lhs_.permutation(rhs_);
+        return std::vector<int>(l_to_r.begin(), l_to_r.end());
+    };
+    auto r_to_l    = get_permutation(rhs_label, lhs_label);
+    auto l_to_r    = get_permutation(lhs_label, rhs_label);
+    auto this_to_r = get_permutation(this_label, rhs_label);
+
+    auto& lhs_eigen = lhs_down->m_tensor_;
+    auto& rhs_eigen = rhs_down->m_tensor_;
+
     if constexpr(Rank <= 1) {
-        m_tensor_ = op(lhs_down->m_tensor_, rhs_down->m_tensor_);
+        m_tensor_ = op(lhs_eigen, rhs_eigen);
         return;
     } else {
-        auto eigen_lhs_permute = to_eigen_permutation(lhs_permute);
-        auto eigen_rhs_permute = to_eigen_permutation(rhs_permute);
-        auto lhs_shuffled      = lhs_down->m_tensor_.shuffle(eigen_lhs_permute);
-        auto rhs_shuffled      = rhs_down->m_tensor_.shuffle(eigen_rhs_permute);
-        m_tensor_              = op(lhs_shuffled, rhs_shuffled);
+        if(this_matches_lhs && this_matches_rhs) { // No permutations
+            m_tensor_ = op(lhs_eigen, rhs_eigen);
+        } else if(this_matches_lhs) { // RHS needs permuted
+            m_tensor_ = op(lhs_eigen, rhs_eigen.shuffle(r_to_l));
+        } else if(this_matches_rhs) { // LHS needs permuted
+            m_tensor_ = op(lhs_eigen.shuffle(l_to_r), rhs_eigen);
+        } else if(lhs_matches_rhs) { // This needs permuted
+            m_tensor_ = op(lhs_eigen, rhs_eigen).shuffle(this_to_r);
+        } else { // Everything needs permuted
+            auto lhs_shuffled = lhs_eigen.shuffle(l_to_r);
+            m_tensor_         = op(lhs_shuffled, rhs_eigen).shuffle(this_to_r);
+        }
     }
 }
 
-// template<typename TensorType>
-// auto matrix_size(TensorType&& t, std::size_t row_ranks) {
-//     std::size_t nrows = 1;
-//     for(std::size_t i = 0; i < row_ranks; ++i) nrows *= t.extent(i);
+template<typename TensorType>
+auto matrix_size(TensorType&& t, std::size_t row_ranks) {
+    std::size_t nrows = 1;
+    for(std::size_t i = 0; i < row_ranks; ++i) nrows *= t.extent(i);
 
-//     std::size_t ncols = 1;
-//     const auto rank   = t.rank();
-//     for(std::size_t i = row_ranks; i < rank; ++i) ncols *= t.extent(i);
-//     return std::make_pair(nrows, ncols);
-// }
+    std::size_t ncols = 1;
+    const auto rank   = t.rank();
+    for(std::size_t i = row_ranks; i < rank; ++i) ncols *= t.extent(i);
+    return std::make_pair(nrows, ncols);
+}
 
-// TPARAMS
-// void EIGEN_TENSOR::contraction_assignment_(label_type olabels,
-//                                            label_type llabels,
-//                                            label_type rlabels,
-//                                            const_shape_reference
-//                                            result_shape,
-//                                            const_pimpl_reference lhs,
-//                                            const_pimpl_reference rhs) {
-//     ContractionPlanner plan(olabels, llabels, rlabels);
+TPARAMS
+void EIGEN_TENSOR::contraction_assignment_(label_type this_label,
+                                           label_type lhs_label,
+                                           label_type rhs_label,
+                                           const base_type& lhs,
+                                           const base_type& rhs) {
+    // ContractionPlanner plan(this_labels, lhs_labels, rhs_labels);
 
-// #ifdef ENABLE_CUTENSOR
-//     // Prepare m_tensor_
-//     m_tensor_ = allocate_from_shape_(result_shape.as_smooth(),
-//                                      std::make_index_sequence<Rank>());
-//     m_tensor_.setZero();
+    // auto lhs_permutation = plan.lhs_permutation();
+    // auto rhs_permutation = plan.rhs_permutation();
 
-//     // Dispatch to cuTENSOR
-//     cutensor_contraction<my_type>(olabels, llabels, rlabels,
-//     result_shape, lhs,
-//                                   rhs, m_tensor_);
-// #else
-//     auto lt = lhs.clone();
-//     auto rt = rhs.clone();
-//     lt->permute_assignment(plan.lhs_permutation(), llabels, lhs);
-//     rt->permute_assignment(plan.rhs_permutation(), rlabels, rhs);
+    // std::vector<FloatType> new_lhs_buffer(lhs.size());
+    // std::vector<FloatType> new_rhs_buffer(rhs.size());
+    // std::span<FloatType> new_lhs_span(new_lhs_buffer.data(),
+    //                                   new_lhs_buffer.size());
+    // std::span<FloatType> new_rhs_span(new_rhs_buffer.data(),
+    //                                   new_rhs_buffer.size());
 
-//     const auto [lrows, lcols] = matrix_size(*lt, plan.lhs_free().size());
-//     const auto [rrows, rcols] = matrix_size(*rt,
-//     plan.rhs_dummy().size());
+    // auto new_lhs_shape = lhs_permutation.apply(lhs.shape());
+    // auto new_rhs_shape = rhs_permutation.apply(rhs.shape());
 
-//     // Work out the types of the matrix amd a map
-//     constexpr auto e_dyn       = ::Eigen::Dynamic;
-//     constexpr auto e_row_major = ::Eigen::RowMajor;
-//     using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn,
-//     e_row_major>; using map_t    = ::Eigen::Map<matrix_t>;
+    // auto new_lhs_tensor =
+    //   make_eigen_tensor<FloatType>(new_lhs_span, new_lhs_shape);
 
-//     eigen::data_type<FloatType, 2> buffer(lrows, rcols);
+    // auto new_rhs_tensor =
+    //   make_eigen_tensor<FloatType>(new_rhs_span, new_rhs_shape);
 
-//     map_t lmatrix(lt->get_mutable_data(), lrows, lcols);
-//     map_t rmatrix(rt->get_mutable_data(), rrows, rcols);
-//     map_t omatrix(buffer.data(), lrows, rcols);
-//     omatrix = lmatrix * rmatrix;
+    // new_lhs_tensor.permute_assignment(lhs_permutation, lhs);
+    // new_rhs_tensor.permute_assignment(rhs_permutation, rhs);
 
-//     auto mlabels = plan.result_matrix_labels();
-//     auto oshape  = result_shape(olabels);
+    // const auto [lrows, lcols] = matrix_size(*lt, plan.lhs_free().size());
+    // const auto [rrows, rcols] = matrix_size(*rt,
+    // plan.rhs_dummy().size());
 
-//     // oshapes is the final shape, permute it to shape omatrix is
-//     currently in auto temp_shape = result_shape.clone();
-//     temp_shape->permute_assignment(mlabels, oshape);
-//     auto mshape = temp_shape->as_smooth();
+    // // Work out the types of the matrix amd a map
+    // constexpr auto e_dyn       = ::Eigen::Dynamic;
+    // constexpr auto e_row_major = ::Eigen::RowMajor;
+    // using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn,
+    // e_row_major>; using map_t    = ::Eigen::Map<matrix_t>;
 
-//     auto m_to_o = olabels.permutation(mlabels); // N.b. Eigen def is
-//     inverse us
+    // map_t lmatrix(new_lhs_buffer.data(), lrows, lcols);
+    // map_t rmatrix(new_rhs_buffer.data(), rrows, rcols);
+    // map_t omatrix(m_tensor_.data(), lrows, rcols);
 
-//     std::array<int, Rank> out_size;
-//     std::array<int, Rank> m_to_o_array;
-//     for(std::size_t i = 0; i < Rank; ++i) {
-//         out_size[i]     = mshape.extent(i);
-//         m_to_o_array[i] = m_to_o[i];
-//     }
+    // omatrix = lmatrix * rmatrix;
 
-//     auto tensor = buffer.reshape(out_size);
-//     if constexpr(Rank > 0) {
-//         m_tensor_ = tensor.shuffle(m_to_o_array);
-//     } else {
-//         m_tensor_ = tensor;
-//     }
-// #endif
-//     mark_for_rehash_();
-// }
+    // // auto mlabels = plan.result_matrix_labels();
+    // // auto oshape  = result_shape(olabels);
+
+    // // oshapes is the final shape, permute it to shape omatrix is
+    // currently in
+
+    // auto temp_shape = result_shape.clone();
+    // temp_shape->permute_assignment(mlabels, oshape);
+    // auto mshape = temp_shape->as_smooth();
+
+    // auto m_to_o = olabels.permutation(mlabels); // N.b. Eigen def is
+    // inverse us
+
+    // std::array<int, Rank> out_size;
+    // std::array<int, Rank> m_to_o_array;
+    // for(std::size_t i = 0; i < Rank; ++i) {
+    //     out_size[i]     = mshape.extent(i);
+    //     m_to_o_array[i] = m_to_o[i];
+    // }
+
+    // auto tensor = buffer.reshape(out_size);
+    // if constexpr(Rank > 0) {
+    //     m_tensor_ = tensor.shuffle(m_to_o_array);
+    // } else {
+    //     m_tensor_ = tensor;
+    // }
+}
 
 #undef EIGEN_TENSOR
 #undef TPARAMS
+
+template<typename FloatType>
+std::unique_ptr<EigenTensor<FloatType>> make_eigen_tensor(
+  std::span<FloatType> data, shape::SmoothView<const shape::Smooth> shape) {
+    switch(shape.rank()) {
+        case 0:
+            return std::make_unique<EigenTensorImpl<FloatType, 0>>(data, shape);
+        case 1:
+            return std::make_unique<EigenTensorImpl<FloatType, 1>>(data, shape);
+        case 2:
+            return std::make_unique<EigenTensorImpl<FloatType, 2>>(data, shape);
+        case 3:
+            return std::make_unique<EigenTensorImpl<FloatType, 3>>(data, shape);
+        case 4:
+            return std::make_unique<EigenTensorImpl<FloatType, 4>>(data, shape);
+        case 5:
+            return std::make_unique<EigenTensorImpl<FloatType, 5>>(data, shape);
+        case 6:
+            return std::make_unique<EigenTensorImpl<FloatType, 6>>(data, shape);
+        case 7:
+            return std::make_unique<EigenTensorImpl<FloatType, 7>>(data, shape);
+        case 8:
+            return std::make_unique<EigenTensorImpl<FloatType, 8>>(data, shape);
+        case 9:
+            return std::make_unique<EigenTensorImpl<FloatType, 9>>(data, shape);
+        case 10:
+            return std::make_unique<EigenTensorImpl<FloatType, 10>>(data,
+                                                                    shape);
+        default:
+            throw std::runtime_error(
+              "EigenTensor backend only supports ranks 0 through 10.");
+    }
+}
+
+#define DEFINE_MAKE_EIGEN_TENSOR(TYPE)                                   \
+    template std::unique_ptr<EigenTensor<TYPE>> make_eigen_tensor<TYPE>( \
+      std::span<TYPE> data, shape::SmoothView<const shape::Smooth> shape);
+
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_MAKE_EIGEN_TENSOR);
+
+#undef DEFINE_MAKE_EIGEN_TENSOR
 
 #define DEFINE_EIGEN_TENSOR(TYPE)            \
     template class EigenTensorImpl<TYPE, 0>; \
