@@ -16,6 +16,9 @@
 
 #include "../../testing/testing.hpp"
 #include "../testing/addition_assignment.hpp"
+#include "../testing/hadamard_assignment.hpp"
+#include "../testing/permute_assignment.hpp"
+#include "../testing/subtraction_assignment.hpp"
 #include <tensorwrapper/backends/eigen/eigen_tensor_impl.hpp>
 
 using namespace tensorwrapper;
@@ -174,224 +177,70 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
         }
     }
 
-    // SECTION("subtraction_assignment") {
-    //     std::vector<TestType> result_data(16, TestType{0});
-    //     std::span<TestType> result_data_span(result_data.data(),
-    //                                          result_data.size());
+    SECTION("subtraction_assignment") {
+        SECTION("scalar") {
+            testing::scalar_subtraction_assignment<scalar_type>();
+        }
 
-    //     auto lambda = [](TestType a, TestType b) { return a - b; };
+        SECTION("vector") {
+            testing::vector_subtraction_assignment<vector_type>();
+        }
 
-    //     SECTION("scalar") {
-    //         permutation_type i(0);
-    //         scalar_type result(result_data_span, scalar_shape);
-    //         result.subtraction_assignment(i, i, scalar, scalar);
-    //         REQUIRE(result.get_elem({}) == lambda(data[0], data[0]));
-    //     }
+        SECTION("matrix") {
+            testing::matrix_subtraction_assignment<matrix_type>();
+        }
 
+        SECTION("rank 3 tensor") {
+            testing::tensor3_subtraction_assignment<tensor3_type>();
+        }
+
+        SECTION("rank 4 tensor") {
+            testing::tensor4_subtraction_assignment<tensor4_type>();
+        }
+    }
+
+    SECTION("hadamard_assignment") {
+        SECTION("scalar") {
+            testing::scalar_hadamard_assignment<scalar_type>();
+        }
+
+        SECTION("vector") {
+            testing::vector_hadamard_assignment<vector_type>();
+        }
+
+        SECTION("matrix") {
+            testing::matrix_hadamard_assignment<matrix_type>();
+        }
+
+        SECTION("rank 3 tensor") {
+            testing::tensor3_hadamard_assignment<tensor3_type>();
+        }
+
+        SECTION("rank 4 tensor") {
+            testing::tensor4_hadamard_assignment<tensor4_type>();
+        }
+    }
+
+    SECTION("permute_assignment") {
+        SECTION("scalar") { testing::scalar_permute_assignment<scalar_type>(); }
+    }
     //     SECTION("vector") {
-    //         permutation_type i(1);
+    //         using label_type = scalar_type::label_type;
+    //         label_type result_idx("i");
+    //         label_type rhs_idx("i");
     //         vector_type result(result_data_span, vector_shape);
-    //         result.subtraction_assignment(i, i, vector, vector);
-    //         for(std::size_t i = 0; i < result.size(); ++i)
-    //             REQUIRE(result.get_elem({i}) == lambda(data[i], data[i]));
-    //     }
-
-    //     SECTION("matrix") {
-    //         permutation_type i(2);
-    //         matrix_type result(result_data_span, matrix_shape);
-    //         result.subtraction_assignment(i, i, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[i * 4 + j], data[i * 4 + j]));
-
-    //         permutation_type p{{1, 0}};
-    //         result.subtraction_assignment(p, i, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[j * 4 + i], data[i * 4 + j]));
-
-    //         result.subtraction_assignment(p, p, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[j * 4 + i], data[j * 4 + i]));
-    //     }
-
-    //     SECTION("rank 3 tensor") {
-    //         permutation_type i(3);
-    //         tensor3_type result(result_data_span, tensor3_shape);
-    //         result.subtraction_assignment(i, i, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[i * 8 + j * 4 + k], data[i * 8 + j * 4 + k]));
-
-    //         permutation_type p({1, 0, 2});
-    //         result.subtraction_assignment(p, i, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[j * 8 + i * 4 + k], data[i * 8 + j * 4 + k]));
-
-    //         result.subtraction_assignment(p, p, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[j * 8 + i * 4 + k], data[j * 8 + i * 4 + k]));
-    //     }
-
-    //     SECTION("rank 4 tensor") {
-    //         permutation_type i(4);
-    //         tensor4_type result(result_data_span, tensor4_shape);
-    //         result.subtraction_assignment(i, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[i * 8 + j * 4 + k * 2 + l],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p({1, 0, 2, 3});
-    //         result.subtraction_assignment(p, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[j * 8 + i * 4 + k * 2 + l],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p1({0, 1, 3, 2});
-    //         result.subtraction_assignment(p1, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[i * 8 + j * 4 + l * 2 + k],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p2({2, 3, 0, 1});
-    //         result.subtraction_assignment(p2, p, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[k * 8 + l * 4 + i * 2 + j],
-    //                            data[j * 8 + i * 4 + k * 2 + l]));
-    //     }
-    // }
-
-    // SECTION("hadamard_assignment") {
-    //     std::vector<TestType> result_data(16, TestType{0});
-    //     std::span<TestType> result_data_span(result_data.data(),
-    //                                          result_data.size());
-
-    //     auto lambda = [](TestType a, TestType b) { return a * b; };
-
-    //     SECTION("scalar") {
-    //         permutation_type i(0);
-    //         scalar_type result(result_data_span, scalar_shape);
-    //         result.hadamard_assignment(i, i, scalar, scalar);
-    //         REQUIRE(result.get_elem({}) == lambda(data[0], data[0]));
-    //     }
-
-    //     SECTION("vector") {
-    //         permutation_type i(1);
-    //         vector_type result(result_data_span, vector_shape);
-    //         result.hadamard_assignment(i, i, vector, vector);
-    //         for(std::size_t i = 0; i < result.size(); ++i)
-    //             REQUIRE(result.get_elem({i}) == lambda(data[i], data[i]));
-    //     }
-
-    //     SECTION("matrix") {
-    //         permutation_type i(2);
-    //         matrix_type result(result_data_span, matrix_shape);
-    //         result.hadamard_assignment(i, i, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[i * 4 + j], data[i * 4 + j]));
-
-    //         permutation_type p{{1, 0}};
-    //         result.hadamard_assignment(p, i, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[j * 4 + i], data[i * 4 + j]));
-
-    //         result.hadamard_assignment(p, p, matrix, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     lambda(data[j * 4 + i], data[j * 4 + i]));
-    //     }
-
-    //     SECTION("rank 3 tensor") {
-    //         permutation_type i(3);
-    //         tensor3_type result(result_data_span, tensor3_shape);
-    //         result.hadamard_assignment(i, i, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[i * 8 + j * 4 + k], data[i * 8 + j * 4 + k]));
-
-    //         permutation_type p({1, 0, 2});
-    //         result.hadamard_assignment(p, i, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[j * 8 + i * 4 + k], data[i * 8 + j * 4 + k]));
-
-    //         result.hadamard_assignment(p, p, tensor3, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(
-    //               result.get_elem({i, j, k}) ==
-    //               lambda(data[j * 8 + i * 4 + k], data[j * 8 + i * 4 + k]));
-    //     }
-
-    //     SECTION("rank 4 tensor") {
-    //         permutation_type i(4);
-    //         tensor4_type result(result_data_span, tensor4_shape);
-    //         result.hadamard_assignment(i, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[i * 8 + j * 4 + k * 2 + l],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p({1, 0, 2, 3});
-    //         result.hadamard_assignment(p, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[j * 8 + i * 4 + k * 2 + l],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p1({0, 1, 3, 2});
-    //         result.hadamard_assignment(p1, i, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[i * 8 + j * 4 + l * 2 + k],
-    //                            data[i * 8 + j * 4 + k * 2 + l]));
-
-    //         permutation_type p2({2, 3, 0, 1});
-    //         result.hadamard_assignment(p2, p, tensor4, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     lambda(data[k * 8 + l * 4 + i * 2 + j],
-    //                            data[j * 8 + i * 4 + k * 2 + l]));
-    //     }
-    // }
-
-    // SECTION("permute_assignment") {
-    //     std::vector<TestType> result_data(16, TestType{0});
-    //     std::span<TestType> result_data_span(result_data.data(),
-    //                                          result_data.size());
-
-    //     SECTION("scalar") {
-    //         permutation_type identity(0);
-    //         scalar_type result(result_data_span, scalar_shape);
-    //         result.permute_assignment(identity, scalar);
-    //         REQUIRE(result.get_elem({}) == data[0]);
-    //     }
-
-    //     SECTION("vector") {
-    //         permutation_type identity(1);
-    //         vector_type result(result_data_span, vector_shape);
-    //         result.permute_assignment(identity, vector);
+    //         result.permute_assignment(result_idx, rhs_idx, vector);
     //         for(std::size_t i = 0; i < result.size(); ++i)
     //             REQUIRE(result.get_elem({i}) == data[i]);
     //     }
 
     //     SECTION("matrix") {
-    //         permutation_type identity(2);
+    //         using label_type = scalar_type::label_type;
+    //         label_type ij("i,j");
+    //         label_type ji("j,i");
     //         matrix_type result(result_data_span, matrix_shape);
-    //         result.permute_assignment(identity, matrix);
+    //         result.permute_assignment(ij, ij, matrix);
+
     //         for(auto [i, j] : matrix_indices)
     //             REQUIRE(result.get_elem({i, j}) == data[i * 4 + j]);
 
@@ -406,14 +255,14 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
     //         tensor3_type result(result_data_span, tensor3_shape);
     //         result.permute_assignment(identity, tensor3);
     //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) == data[i * 8 + j * 4 +
-    //             k]);
+    //             REQUIRE(result.get_elem({i, j, k}) == data[i * 8 + j * 4
+    //             + k]);
 
     //         permutation_type p({1, 0, 2});
     //         result.permute_assignment(p, tensor3);
     //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) == data[j * 8 + i * 4 +
-    //             k]);
+    //             REQUIRE(result.get_elem({i, j, k}) == data[j * 8 + i * 4
+    //             + k]);
     //     }
 
     //     SECTION("rank 4 tensor") {
@@ -490,8 +339,8 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
     //     SECTION("rank 3 tensor") {
     //         permutation_type identity(3);
     //         tensor3_type result(result_data_span, tensor3_shape);
-    //         result.scalar_multiplication(identity, scalar_value, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
+    //         result.scalar_multiplication(identity, scalar_value,
+    //         tensor3); for(auto [i, j, k] : tensor3_indices)
     //             REQUIRE(result.get_elem({i, j, k}) ==
     //                     data[i * 8 + j * 4 + k] * scalar_value);
 
@@ -505,8 +354,8 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
     //     SECTION("rank 4 tensor") {
     //         permutation_type identity(4);
     //         tensor4_type result(result_data_span, tensor4_shape);
-    //         result.scalar_multiplication(identity, scalar_value, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
+    //         result.scalar_multiplication(identity, scalar_value,
+    //         tensor4); for(auto [i, j, k, l] : tensor4_indices)
     //             REQUIRE(result.get_elem({i, j, k, l}) ==
     //                     data[i * 8 + j * 4 + k * 2 + l] * scalar_value);
 
