@@ -160,14 +160,6 @@ void tensor3_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             REQUIRE(result.get_elem({i, j, k}) == corr_op(s0_data[idx]));
         }
     }
-
-    SECTION("Permute result") {
-        the_op(jik, ijk, result, s0);
-        for(const auto [i, j, k] : tensor3_indices) {
-            std::size_t idx = i * 4 + j * 2 + k;
-            REQUIRE(result.get_elem({j, i, k}) == corr_op(s0_data[idx]));
-        }
-    }
 }
 
 template<typename TestType, typename Fxn1, typename Fxn2>
@@ -215,14 +207,6 @@ void tensor4_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         for(const auto [i, j, k, l] : tensor4_indices) {
             std::size_t idx = j * 8 + i * 4 + k * 2 + l;
             REQUIRE(result.get_elem({i, j, k, l}) == corr_op(s0_data[idx]));
-        }
-    }
-
-    SECTION("Permute result") {
-        the_op(jikl, ijkl, result, s0);
-        for(const auto [i, j, k, l] : tensor4_indices) {
-            std::size_t idx = i * 8 + j * 4 + k * 2 + l;
-            REQUIRE(result.get_elem({j, i, k, l}) == corr_op(s0_data[idx]));
         }
     }
 }

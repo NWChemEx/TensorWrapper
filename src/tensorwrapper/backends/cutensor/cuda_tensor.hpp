@@ -67,4 +67,7 @@ private:
     const_shape_view m_shape_;
 };
 
+extern template class CUDATensor<float>;
+extern template class CUDATensor<double>;
+
 } // namespace tensorwrapper::backends::cutensor

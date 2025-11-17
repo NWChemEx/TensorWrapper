@@ -44,22 +44,25 @@ public:
     ///@{
     using typename base_type::const_reference;
     using typename base_type::const_shape_reference;
+    using typename base_type::const_span_type;
     using typename base_type::eigen_rank_type;
     using typename base_type::index_vector;
     using typename base_type::label_type;
+    using typename base_type::permuted_copy_return_type;
     using typename base_type::reference;
+    using typename base_type::shape_type;
     using typename base_type::size_type;
+    using typename base_type::span_type;
     using typename base_type::string_type;
     using typename base_type::value_type;
     ///@}
 
-    EigenTensorImpl(std::span<value_type> data, const_shape_reference shape) :
-      m_tensor_(
-        make_from_shape_(data, shape, std::make_index_sequence<Rank>())) {}
-
-    EigenTensorImpl permute(label_type perm) const;
+    EigenTensorImpl(std::span<value_type> data, const_shape_reference shape);
 
 protected:
+    permuted_copy_return_type permuted_copy_(
+      label_type perm, label_type this_label) const override;
+
     /// Implement rank by returning template parameter
     eigen_rank_type rank_() const noexcept override { return Rank; }
 
@@ -76,6 +79,13 @@ protected:
 
     /// Unwraps index vector into Eigen's operator() to set element
     void set_elem_(index_vector index, value_type new_value) override;
+
+    virtual span_type data_() noexcept override {
+        return {m_tensor_.data(), size_type(m_tensor_.size())};
+    }
+    virtual const_span_type data_() const noexcept override {
+        return {m_tensor_.data(), size_type(m_tensor_.size())};
+    }
 
     /// Calls std::fill to set the values
     void fill_(value_type value) override;

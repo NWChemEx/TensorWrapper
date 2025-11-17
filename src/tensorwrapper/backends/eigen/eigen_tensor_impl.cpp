@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// #include "../contraction_planner.hpp"
+#include "../../buffer/contraction_planner.hpp"
 #include "eigen_tensor_impl.hpp"
 #include <iomanip>
 #include <sstream>
@@ -23,6 +23,32 @@ namespace tensorwrapper::backends::eigen {
 
 #define TPARAMS template<typename FloatType, unsigned int Rank>
 #define EIGEN_TENSOR EigenTensorImpl<FloatType, Rank>
+
+TPARAMS
+EIGEN_TENSOR::EigenTensorImpl(std::span<value_type> data,
+                              const_shape_reference shape) :
+  m_tensor_(make_from_shape_(data, shape, std::make_index_sequence<Rank>())) {}
+
+TPARAMS
+auto EIGEN_TENSOR::permuted_copy_(label_type out, label_type in) const
+  -> permuted_copy_return_type {
+    using value_type = FloatType;
+    std::vector<value_type> buffer(this->size(), value_type{0});
+    std::span<value_type> buffer_span(buffer.data(), buffer.size());
+
+    // Make a shape::Smooth object for tensor
+    std::vector<std::size_t> old_shape_vec(this->rank());
+    for(std::size_t i = 0; i < old_shape_vec.size(); ++i) {
+        old_shape_vec[i] = this->extent(i);
+    }
+    shape_type old_shape(old_shape_vec.begin(), old_shape_vec.end());
+    shape_type new_shape(old_shape);
+    new_shape(out) = old_shape(in);
+    auto pnew_tensor =
+      std::make_unique<EigenTensorImpl>(buffer_span, new_shape);
+    pnew_tensor->permute_assignment(out, in, *this);
+    return std::make_pair(std::move(buffer), std::move(pnew_tensor));
+}
 
 TPARAMS
 auto EIGEN_TENSOR::get_elem_(index_vector index) const -> const_reference {
@@ -189,72 +215,39 @@ void EIGEN_TENSOR::contraction_assignment_(label_type this_label,
                                            label_type rhs_label,
                                            const base_type& lhs,
                                            const base_type& rhs) {
-    // ContractionPlanner plan(this_labels, lhs_labels, rhs_labels);
+    buffer::ContractionPlanner plan(this_label, lhs_label, rhs_label);
 
-    // auto lhs_permutation = plan.lhs_permutation();
-    // auto rhs_permutation = plan.rhs_permutation();
+    // Transpose, Transpose part of TTGT
+    auto&& [new_lhs_buffer, pnew_lhs_tensor] =
+      lhs.permuted_copy(plan.lhs_permutation(), lhs_label);
 
-    // std::vector<FloatType> new_lhs_buffer(lhs.size());
-    // std::vector<FloatType> new_rhs_buffer(rhs.size());
-    // std::span<FloatType> new_lhs_span(new_lhs_buffer.data(),
-    //                                   new_lhs_buffer.size());
-    // std::span<FloatType> new_rhs_span(new_rhs_buffer.data(),
-    //                                   new_rhs_buffer.size());
+    auto&& [new_rhs_buffer, pnew_rhs_tensor] =
+      rhs.permuted_copy(plan.rhs_permutation(), rhs_label);
 
-    // auto new_lhs_shape = lhs_permutation.apply(lhs.shape());
-    // auto new_rhs_shape = rhs_permutation.apply(rhs.shape());
+    // Gemm part of TTGT
+    auto olabels = plan.result_matrix_labels();
 
-    // auto new_lhs_tensor =
-    //   make_eigen_tensor<FloatType>(new_lhs_span, new_lhs_shape);
+    auto&& [out_buffer, pout_tensor] = this->permuted_copy(olabels, this_label);
 
-    // auto new_rhs_tensor =
-    //   make_eigen_tensor<FloatType>(new_rhs_span, new_rhs_shape);
+    const auto [lrows, lcols] =
+      matrix_size(*pnew_lhs_tensor, plan.lhs_free().size());
+    const auto [rrows, rcols] =
+      matrix_size(*pnew_rhs_tensor, plan.rhs_dummy().size());
 
-    // new_lhs_tensor.permute_assignment(lhs_permutation, lhs);
-    // new_rhs_tensor.permute_assignment(rhs_permutation, rhs);
+    // Work out the types of the matrix amd a map
+    constexpr auto e_dyn       = ::Eigen::Dynamic;
+    constexpr auto e_row_major = ::Eigen::RowMajor;
+    using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn, e_row_major>;
+    using map_t    = ::Eigen::Map<matrix_t>;
 
-    // const auto [lrows, lcols] = matrix_size(*lt, plan.lhs_free().size());
-    // const auto [rrows, rcols] = matrix_size(*rt,
-    // plan.rhs_dummy().size());
+    map_t lmatrix(new_lhs_buffer.data(), lrows, lcols);
+    map_t rmatrix(new_rhs_buffer.data(), rrows, rcols);
+    map_t omatrix(out_buffer.data(), lrows, rcols);
 
-    // // Work out the types of the matrix amd a map
-    // constexpr auto e_dyn       = ::Eigen::Dynamic;
-    // constexpr auto e_row_major = ::Eigen::RowMajor;
-    // using matrix_t = ::Eigen::Matrix<FloatType, e_dyn, e_dyn,
-    // e_row_major>; using map_t    = ::Eigen::Map<matrix_t>;
+    omatrix = lmatrix * rmatrix;
 
-    // map_t lmatrix(new_lhs_buffer.data(), lrows, lcols);
-    // map_t rmatrix(new_rhs_buffer.data(), rrows, rcols);
-    // map_t omatrix(m_tensor_.data(), lrows, rcols);
-
-    // omatrix = lmatrix * rmatrix;
-
-    // // auto mlabels = plan.result_matrix_labels();
-    // // auto oshape  = result_shape(olabels);
-
-    // // oshapes is the final shape, permute it to shape omatrix is
-    // currently in
-
-    // auto temp_shape = result_shape.clone();
-    // temp_shape->permute_assignment(mlabels, oshape);
-    // auto mshape = temp_shape->as_smooth();
-
-    // auto m_to_o = olabels.permutation(mlabels); // N.b. Eigen def is
-    // inverse us
-
-    // std::array<int, Rank> out_size;
-    // std::array<int, Rank> m_to_o_array;
-    // for(std::size_t i = 0; i < Rank; ++i) {
-    //     out_size[i]     = mshape.extent(i);
-    //     m_to_o_array[i] = m_to_o[i];
-    // }
-
-    // auto tensor = buffer.reshape(out_size);
-    // if constexpr(Rank > 0) {
-    //     m_tensor_ = tensor.shuffle(m_to_o_array);
-    // } else {
-    //     m_tensor_ = tensor;
-    // }
+    // The last transpose part of TTGT
+    this->permute_assignment(this_label, olabels, *pout_tensor);
 }
 
 #undef EIGEN_TENSOR

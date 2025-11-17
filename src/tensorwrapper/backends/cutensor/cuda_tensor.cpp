@@ -43,4 +43,7 @@ void CUDA_TENSOR::contraction_assignment(label_type this_label,
 #undef CUDA_TENSOR
 #undef TPARAMS
 
+    template class CUDATensor<float>;
+    template class CUDATensor<double>;
+
 } // namespace tensorwrapper::backends::cutensor

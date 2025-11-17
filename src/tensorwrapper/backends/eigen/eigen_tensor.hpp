@@ -15,9 +15,12 @@
  */
 
 #pragma once
+#include <cassert>
 #include <ostream>
+#include <span>
 #include <string>
 #include <tensorwrapper/dsl/dummy_indices.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
 #include <vector>
 
@@ -44,6 +47,9 @@ private:
     using my_type = EigenTensor<FloatType>;
 
 public:
+    /// Pointer to an object of my_type
+    using eigen_tensor_pointer = std::unique_ptr<my_type>;
+
     /// Type of an element in *this
     using value_type = FloatType;
 
@@ -52,6 +58,12 @@ public:
 
     /// Type of a read-only reference to an element in *this
     using const_reference = const value_type&;
+
+    /// Type of a span to raw memory
+    using span_type = std::span<value_type>;
+
+    /// Type of a read-only span to raw memory
+    using const_span_type = std::span<const value_type>;
 
     /// Type used to express the shape of *this
     using shape_type = shape::Smooth;
@@ -74,7 +86,16 @@ public:
     /// Type of a label
     using label_type = dsl::DummyIndices<string_type>;
 
+    /// Type returned by permuted_copy
+    using permuted_copy_return_type =
+      std::pair<std::vector<FloatType>, eigen_tensor_pointer>;
+
     virtual ~EigenTensor() noexcept = default;
+
+    permuted_copy_return_type permuted_copy(label_type perm,
+                                            label_type this_label) const {
+        return permuted_copy_(perm, this_label);
+    }
 
     /** @brief Retrieves the rank of the wrapped tensor.
      *
@@ -104,6 +125,10 @@ public:
         assert(index.size() == rank());
         set_elem_(index, new_value);
     }
+
+    span_type data() noexcept { return data_(); }
+
+    const_span_type data() const noexcept { return data_(); }
 
     void fill(value_type value) { fill_(std::move(value)); }
 
@@ -149,8 +174,9 @@ public:
     }
 
 protected:
-    EigenTensor() noexcept = default;
-
+    explicit EigenTensor() noexcept = default;
+    virtual permuted_copy_return_type permuted_copy_(
+      label_type perm, label_type this_label) const                  = 0;
     virtual eigen_rank_type rank_() const noexcept                   = 0;
     virtual size_type size_() const                                  = 0;
     virtual size_type extent_(eigen_rank_type i) const               = 0;
@@ -159,12 +185,13 @@ protected:
     virtual void fill_(value_type value)                             = 0;
     virtual string_type to_string_() const                           = 0;
     virtual std::ostream& add_to_stream_(std::ostream& os) const     = 0;
-
+    virtual span_type data_() noexcept                               = 0;
+    virtual const_span_type data_() const noexcept                   = 0;
     virtual void addition_assignment_(label_type this_label,
                                       label_type lhs_label,
                                       label_type rhs_label,
                                       const EigenTensor& lhs,
-                                      const EigenTensor& rhs) = 0;
+                                      const EigenTensor& rhs)        = 0;
 
     virtual void subtraction_assignment_(label_type this_label,
                                          label_type lhs_label,
