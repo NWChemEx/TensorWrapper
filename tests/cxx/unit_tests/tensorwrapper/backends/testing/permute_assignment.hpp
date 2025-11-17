@@ -28,4 +28,40 @@ void scalar_permute_assignment() {
     scalar_unary_assignment<TestType>(the_op, corr_op);
 }
 
+template<typename TestType>
+void vector_permute_assignment() {
+    auto the_op = [](auto&& out_idx, auto&& rhs_idx, auto&& result, auto&& t0) {
+        result.permute_assignment(out_idx, rhs_idx, t0);
+    };
+    auto corr_op = [](auto a) { return a; };
+    vector_unary_assignment<TestType>(the_op, corr_op);
+}
+
+template<typename TestType>
+void matrix_permute_assignment() {
+    auto the_op = [](auto&& out_idx, auto&& rhs_idx, auto&& result, auto&& t0) {
+        result.permute_assignment(out_idx, rhs_idx, t0);
+    };
+    auto corr_op = [](auto a) { return a; };
+    matrix_unary_assignment<TestType>(the_op, corr_op);
+}
+
+template<typename TestType>
+void tensor3_permute_assignment() {
+    auto the_op = [](auto&& out_idx, auto&& rhs_idx, auto&& result, auto&& t0) {
+        result.permute_assignment(out_idx, rhs_idx, t0);
+    };
+    auto corr_op = [](auto a) { return a; };
+    tensor3_unary_assignment<TestType>(the_op, corr_op);
+}
+
+template<typename TestType>
+void tensor4_permute_assignment() {
+    auto the_op = [](auto&& out_idx, auto&& rhs_idx, auto&& result, auto&& t0) {
+        result.permute_assignment(out_idx, rhs_idx, t0);
+    };
+    auto corr_op = [](auto a) { return a; };
+    tensor4_unary_assignment<TestType>(the_op, corr_op);
+}
+
 } // namespace tensorwrapper::testing

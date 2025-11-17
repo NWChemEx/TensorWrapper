@@ -18,6 +18,7 @@
 #include "../testing/addition_assignment.hpp"
 #include "../testing/hadamard_assignment.hpp"
 #include "../testing/permute_assignment.hpp"
+#include "../testing/scalar_multiplication.hpp"
 #include "../testing/subtraction_assignment.hpp"
 #include <tensorwrapper/backends/eigen/eigen_tensor_impl.hpp>
 
@@ -223,159 +224,31 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
 
     SECTION("permute_assignment") {
         SECTION("scalar") { testing::scalar_permute_assignment<scalar_type>(); }
+        SECTION("vector") { testing::vector_permute_assignment<vector_type>(); }
+        SECTION("matrix") { testing::matrix_permute_assignment<matrix_type>(); }
+        SECTION("rank 3 tensor") {
+            testing::tensor3_permute_assignment<tensor3_type>();
+        }
+        SECTION("rank 4 tensor") {
+            testing::tensor4_permute_assignment<tensor4_type>();
+        }
     }
-    //     SECTION("vector") {
-    //         using label_type = scalar_type::label_type;
-    //         label_type result_idx("i");
-    //         label_type rhs_idx("i");
-    //         vector_type result(result_data_span, vector_shape);
-    //         result.permute_assignment(result_idx, rhs_idx, vector);
-    //         for(std::size_t i = 0; i < result.size(); ++i)
-    //             REQUIRE(result.get_elem({i}) == data[i]);
-    //     }
 
-    //     SECTION("matrix") {
-    //         using label_type = scalar_type::label_type;
-    //         label_type ij("i,j");
-    //         label_type ji("j,i");
-    //         matrix_type result(result_data_span, matrix_shape);
-    //         result.permute_assignment(ij, ij, matrix);
-
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) == data[i * 4 + j]);
-
-    //         permutation_type p{{1, 0}};
-    //         result.permute_assignment(p, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) == data[j * 4 + i]);
-    //     }
-
-    //     SECTION("rank 3 tensor") {
-    //         permutation_type identity(3);
-    //         tensor3_type result(result_data_span, tensor3_shape);
-    //         result.permute_assignment(identity, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) == data[i * 8 + j * 4
-    //             + k]);
-
-    //         permutation_type p({1, 0, 2});
-    //         result.permute_assignment(p, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) == data[j * 8 + i * 4
-    //             + k]);
-    //     }
-
-    //     SECTION("rank 4 tensor") {
-    //         permutation_type identity(4);
-    //         tensor4_type result(result_data_span, tensor4_shape);
-    //         result.permute_assignment(identity, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[i * 8 + j * 4 + k * 2 + l]);
-
-    //         permutation_type p({1, 0, 2, 3});
-    //         result.permute_assignment(p, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[j * 8 + i * 4 + k * 2 + l]);
-
-    //         permutation_type p1({0, 1, 3, 2});
-    //         result.permute_assignment(p1, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[i * 8 + j * 4 + l * 2 + k]);
-
-    //         permutation_type p2({2, 3, 0, 1});
-    //         result.permute_assignment(p2, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[k * 8 + l * 4 + i * 2 + j]);
-
-    //         permutation_type p3({3, 2, 1, 0});
-    //         result.permute_assignment(p3, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[l * 8 + k * 4 + j * 2 + i]);
-    //     }
-    // }
-
-    // SECTION("scalar_multiplication") {
-    //     std::vector<TestType> result_data(16, TestType{0});
-    //     std::span<TestType> result_data_span(result_data.data(),
-    //                                          result_data.size());
-
-    //     TestType scalar_value(3);
-
-    //     SECTION("scalar") {
-    //         permutation_type i(0);
-    //         scalar_type result(result_data_span, scalar_shape);
-    //         result.scalar_multiplication(i, scalar_value, scalar);
-    //         REQUIRE(result.get_elem({}) == data[0] * scalar_value);
-    //     }
-
-    //     SECTION("vector") {
-    //         permutation_type identity(1);
-    //         vector_type result(result_data_span, vector_shape);
-    //         result.scalar_multiplication(identity, scalar_value, vector);
-    //         for(std::size_t i = 0; i < result.size(); ++i)
-    //             REQUIRE(result.get_elem({i}) == data[i] * scalar_value);
-    //     }
-
-    //     SECTION("matrix") {
-    //         permutation_type identity(2);
-    //         matrix_type result(result_data_span, matrix_shape);
-    //         result.scalar_multiplication(identity, scalar_value, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     data[i * 4 + j] * scalar_value);
-
-    //         permutation_type p{{1, 0}};
-    //         result.scalar_multiplication(p, scalar_value, matrix);
-    //         for(auto [i, j] : matrix_indices)
-    //             REQUIRE(result.get_elem({i, j}) ==
-    //                     data[j * 4 + i] * scalar_value);
-    //     }
-
-    //     SECTION("rank 3 tensor") {
-    //         permutation_type identity(3);
-    //         tensor3_type result(result_data_span, tensor3_shape);
-    //         result.scalar_multiplication(identity, scalar_value,
-    //         tensor3); for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) ==
-    //                     data[i * 8 + j * 4 + k] * scalar_value);
-
-    //         permutation_type p({1, 0, 2});
-    //         result.scalar_multiplication(p, scalar_value, tensor3);
-    //         for(auto [i, j, k] : tensor3_indices)
-    //             REQUIRE(result.get_elem({i, j, k}) ==
-    //                     data[j * 8 + i * 4 + k] * scalar_value);
-    //     }
-
-    //     SECTION("rank 4 tensor") {
-    //         permutation_type identity(4);
-    //         tensor4_type result(result_data_span, tensor4_shape);
-    //         result.scalar_multiplication(identity, scalar_value,
-    //         tensor4); for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[i * 8 + j * 4 + k * 2 + l] * scalar_value);
-
-    //         permutation_type p({1, 0, 2, 3});
-    //         result.scalar_multiplication(p, scalar_value, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[j * 8 + i * 4 + k * 2 + l] * scalar_value);
-
-    //         permutation_type p1({0, 1, 3, 2});
-    //         result.scalar_multiplication(p1, scalar_value, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[i * 8 + j * 4 + l * 2 + k] * scalar_value);
-
-    //         permutation_type p2({2, 3, 0, 1});
-    //         result.scalar_multiplication(p2, scalar_value, tensor4);
-    //         for(auto [i, j, k, l] : tensor4_indices)
-    //             REQUIRE(result.get_elem({i, j, k, l}) ==
-    //                     data[k * 8 + l * 4 + i * 2 + j] * scalar_value);
-    //     }
-    // }
+    SECTION("scalar_multiplication") {
+        SECTION("scalar") {
+            testing::scalar_scalar_multiplication<scalar_type>();
+        }
+        SECTION("vector") {
+            testing::vector_scalar_multiplication<vector_type>();
+        }
+        SECTION("matrix") {
+            testing::matrix_scalar_multiplication<matrix_type>();
+        }
+        SECTION("rank 3 tensor") {
+            testing::tensor3_scalar_multiplication<tensor3_type>();
+        }
+        SECTION("rank 4 tensor") {
+            testing::tensor4_scalar_multiplication<tensor4_type>();
+        }
+    }
 }
