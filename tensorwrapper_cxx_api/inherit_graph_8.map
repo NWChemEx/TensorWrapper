@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,200,47"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1Tensor.html" title="Represents a multi&#45;dimensional array of values." alt="" coords="276,46,443,73"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,71,228,112"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,204,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1sparsity_1_1Pattern.html" title="Base class for objects describing the sparsity of a tensor." alt="" coords="280,37,456,77"/>
+<area shape="poly" id="edge18_Node000000_Node000001" title=" " alt="" coords="218,35,280,43,280,49,217,41"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,69,232,109"/>
+<area shape="poly" id="edge19_Node000002_Node000001" title=" " alt="" coords="245,70,280,66,280,71,246,76"/>
 </map>

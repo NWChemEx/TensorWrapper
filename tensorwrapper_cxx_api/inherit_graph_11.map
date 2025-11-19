@@ -1,8 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,228,61"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1allocator_1_1AllocatorBase.html" title="Common base class for all allocators." alt="" coords="276,13,457,54"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="505,13,687,54"/>
-<area shape="rect" id="node4" href="$classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="735,13,916,54"/>
-<area shape="rect" id="node5" href="$classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers." alt="" coords="964,13,1160,54"/>
-<area shape="rect" id="node6" href="$classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="1208,13,1389,54"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,228,60"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1allocator_1_1AllocatorBase.html" title="Common base class for all allocators." alt="" coords="276,13,457,53"/>
+<area shape="poly" id="edge25_Node000000_Node000001" title=" " alt="" coords="242,30,276,30,276,35,242,35"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1allocator_1_1Local.html" title="Can create buffers that exist entirely in local memory." alt="" coords="505,13,687,53"/>
+<area shape="poly" id="edge26_Node000001_Node000002" title=" " alt="" coords="471,30,505,30,505,35,471,35"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1allocator_1_1Replicated.html" title="Can create buffers that exist entirely in local memory and are guaranteed to be the same for all proc..." alt="" coords="735,13,916,53"/>
+<area shape="poly" id="edge27_Node000002_Node000003" title=" " alt="" coords="701,30,734,30,734,35,701,35"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1allocator_1_1Contiguous.html" title="Allocator that can create Contiguous buffers." alt="" coords="964,13,1160,53"/>
+<area shape="poly" id="edge28_Node000003_Node000004" title=" " alt="" coords="930,30,964,30,964,35,930,35"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1allocator_1_1Eigen.html" title="Used to allocate buffers which rely on Eigen tensors." alt="" coords="1208,13,1389,53"/>
+<area shape="poly" id="edge29_Node000004_Node000005" title=" " alt="" coords="1174,30,1208,30,1208,35,1174,35"/>
 </map>

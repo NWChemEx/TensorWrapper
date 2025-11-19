@@ -1,4 +1,5 @@
 <map id="tensorwrapper::dsl::DummyIndices&lt; StringType &gt;" name="tensorwrapper::dsl::DummyIndices&lt; StringType &gt;">
-<area shape="rect" id="node1" title="Class to help deal with string&#45;based dummy indices." alt="" coords="32,95,259,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,285,47"/>
+<area shape="rect" id="Node000001" title="Class to help deal with string&#45;based dummy indices." alt="" coords="32,93,259,133"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,285,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,59,148,93,143,93,143,59"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="tensorwrapper::sparsity::Pattern" name="tensorwrapper::sparsity::Pattern">
-<area shape="rect" id="node1" title="Base class for objects describing the sparsity of a tensor." alt="" coords="280,39,456,80"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,204,47"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,71,232,112"/>
+<area shape="rect" id="Node000001" title="Base class for objects describing the sparsity of a tensor." alt="" coords="280,37,456,77"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,35,280,43,280,49,217,41"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,69,232,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="245,70,280,66,280,71,246,76"/>
 </map>

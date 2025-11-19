@@ -1,4 +1,5 @@
 <map id="tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;" name="tensorwrapper::dsl::Labeled&lt; ObjectType, StringType &gt;">
-<area shape="rect" id="node1" title="Represents an object whose modes are assigned dummy indices." alt="" coords="9,109,181,165"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,184,61"/>
+<area shape="rect" id="Node000001" title="Represents an object whose modes are assigned dummy indices." alt="" coords="9,108,181,163"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,184,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,74,97,108,92,108,92,74"/>
 </map>

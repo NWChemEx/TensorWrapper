@@ -1,4 +1,5 @@
 <map id="tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;" name="tensorwrapper::shape::detail_::SmoothViewPIMPL&lt; SmoothType &gt;">
-<area shape="rect" id="node1" title="Defines the API for all SmoothView PIMPLs." alt="" coords="27,109,230,165"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,252,61"/>
+<area shape="rect" id="Node000001" title="Defines the API for all SmoothView PIMPLs." alt="" coords="27,108,230,163"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,252,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,74,131,108,126,108,126,74"/>
 </map>

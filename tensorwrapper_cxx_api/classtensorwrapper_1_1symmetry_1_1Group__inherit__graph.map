@@ -1,6 +1,9 @@
 <map id="tensorwrapper::symmetry::Group" name="tensorwrapper::symmetry::Group">
-<area shape="rect" id="node1" title="Container of the symmetry elements for a tensor." alt="" coords="272,71,463,112"/>
-<area shape="rect" id="node2" title=" " alt="" coords="11,5,218,47"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,71,196,112"/>
-<area shape="rect" id="node4" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,136,224,177"/>
+<area shape="rect" id="Node000001" title="Container of the symmetry elements for a tensor." alt="" coords="272,69,463,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,218,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,46,289,67,287,72,207,51"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,196,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,87,272,87,272,92,210,92"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,133,224,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="207,127,287,107,289,112,208,132"/>
 </map>

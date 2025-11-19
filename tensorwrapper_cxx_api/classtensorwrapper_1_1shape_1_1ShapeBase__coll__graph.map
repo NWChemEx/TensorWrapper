@@ -1,5 +1,7 @@
 <map id="tensorwrapper::shape::ShapeBase" name="tensorwrapper::shape::ShapeBase">
-<area shape="rect" id="node1" title="Code factorization for the various types of shapes." alt="" coords="305,39,468,80"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,257,47"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,71,229,112"/>
+<area shape="rect" id="Node000001" title="Code factorization for the various types of shapes." alt="" coords="305,37,468,77"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,257,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,40,305,45,305,50,270,45"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,229,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,73,305,65,305,70,244,78"/>
 </map>

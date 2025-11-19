@@ -1,6 +1,9 @@
 <map id="tensorwrapper::layout::Physical" name="tensorwrapper::layout::Physical">
-<area shape="rect" id="node1" title="Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime." alt="" coords="523,39,688,80"/>
-<area shape="rect" id="node2" href="$classtensorwrapper_1_1layout_1_1LayoutBase.html" title="Common base class for all layouts." alt="" coords="309,39,475,80"/>
-<area shape="rect" id="node3" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,261,47"/>
-<area shape="rect" id="node4" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,71,233,112"/>
+<area shape="rect" id="Node000001" title="Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime." alt="" coords="523,37,688,77"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1layout_1_1LayoutBase.html" title="Common base class for all layouts." alt="" coords="309,37,475,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="488,55,522,55,522,60,488,60"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,261,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="275,40,310,45,309,50,274,45"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,233,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="247,73,309,65,309,70,248,78"/>
 </map>
