@@ -70,11 +70,10 @@ void SMOOTH_VIEW::swap(SmoothView& rhs) noexcept {
 }
 
 TPARAMS
-bool SMOOTH_VIEW::operator==(
-  const SmoothView<const SmoothType>& rhs) const noexcept {
+bool SMOOTH_VIEW::operator==(const SmoothView<SmoothType>& rhs) const noexcept {
     if(has_pimpl_() != rhs.has_pimpl_()) return false;
     if(!has_pimpl_()) return true;
-    return m_pimpl_->as_const()->are_equal(*rhs.m_pimpl_);
+    return m_pimpl_->are_equal(*rhs.m_pimpl_);
 }
 
 TPARAMS
