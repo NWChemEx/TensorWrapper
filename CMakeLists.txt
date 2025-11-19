@@ -20,6 +20,7 @@ include(cmake/get_nwx_cmake.cmake)
 #Sets the version to whatever git thinks it is
 include(get_version_from_git)
 get_version_from_git(tensorwrapper_version "${CMAKE_CURRENT_LIST_DIR}")
+set(CMAKE_CXX_STANDARD 20)
 project(tensorwrapper VERSION "${tensorwrapper_version}" LANGUAGES CXX)
 
 include(nwx_versions)
