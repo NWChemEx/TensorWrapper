@@ -15,24 +15,12 @@
  */
 
 #pragma once
+#include <wtf/concepts/floating_point.hpp>
 
-namespace tensorwrapper {
+namespace tensorwrapper::concepts {
 
-namespace buffer {
-namespace detail_ {
-class MDBufferPIMPL;
-}
+using wtf::concepts::ConstFloatingPoint;
+using wtf::concepts::FloatingPoint;
+using wtf::concepts::UnmodifiedFloatingPoint;
 
-class MDBuffer;
-
-} // namespace buffer
-
-namespace shape {
-template<typename T>
-class SmoothView;
-
-class Smooth;
-
-} // namespace shape
-
-} // namespace tensorwrapper
+} // namespace tensorwrapper::concepts
