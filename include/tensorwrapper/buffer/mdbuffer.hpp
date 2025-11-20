@@ -15,6 +15,8 @@
  */
 
 #pragma once
+#include <tensorwrapper/buffer/replicated.hpp>
+#include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/types/mdbuffer_traits.hpp>
 
 namespace tensorwrapper::buffer {
@@ -23,42 +25,138 @@ namespace tensorwrapper::buffer {
  *
  *  This class is a dense multidimensional buffer of floating-point values.
  */
-class MDBuffer {
+class MDBuffer : public Replicated {
 private:
-    using traits_type = types::ClassTraits<MDBuffer>;
+    /// Type *this derives from
+    using my_base_type = Replicated;
+    using traits_type  = types::ClassTraits<MDBuffer>;
+    using my_type      = MDBuffer;
 
 public:
     /// Add types to public API
     ///@{
-    using buffer_type   = typename traits_type::buffer_type;
-    using pimpl_type    = typename traits_type::pimpl_type;
-    using pimpl_pointer = typename traits_type::pimpl_pointer;
-    using rank_type     = typename traits_type::rank_type;
-    using shape_type    = typename traits_type::shape_type;
+    using value_type        = typename traits_type::value_type;
+    using reference         = typename traits_type::reference;
+    using const_reference   = typename traits_type::const_reference;
+    using buffer_type       = typename traits_type::buffer_type;
+    using buffer_view       = typename traits_type::buffer_view;
+    using const_buffer_view = typename traits_type::const_buffer_view;
+    using pimpl_type        = typename traits_type::pimpl_type;
+    using pimpl_pointer     = typename traits_type::pimpl_pointer;
+    using rank_type         = typename traits_type::rank_type;
+    using shape_type        = typename traits_type::shape_type;
+    using const_shape_view  = typename traits_type::const_shape_view;
+    using size_type         = typename traits_type::size_type;
     ///@}
+
+    using index_vector = std::vector<size_type>;
+    using typename my_base_type::label_type;
+    using string_type = std::string;
+    using hash_type   = std::size_t;
 
     MDBuffer() noexcept;
 
-    template<typename T>
-    MDBuffer(shape_type shape, std::vector<T> elements) {
-        MDBuffer(std::move(shape), buffer_type(std::move(elements)));
+    template<concepts::FloatingPoint T>
+    MDBuffer(std::vector<T> elements, const_shape_view shape) :
+      MDBuffer(buffer_type(std::move(elements)),
+               std::make_unique<layout::Physical>(shape), nullptr) {}
+
+    template<concepts::FloatingPoint T>
+    MDBuffer(std::vector<T> elements, layout_pointer playout = nullptr,
+             allocator_base_pointer pallocator = nullptr) {
+        MDBuffer(buffer_type(std::move(elements)), std::move(playout),
+                 std::move(pallocator));
     }
 
-    MDBuffer(shape_type shape, buffer_type buffer);
+    MDBuffer(buffer_type buffer, layout_pointer playout = nullptr,
+             allocator_base_pointer pallocator = nullptr);
 
-    rank_type rank() const;
+    MDBuffer(const MDBuffer& other)     = default;
+    MDBuffer(MDBuffer&& other) noexcept = default;
+
+    MDBuffer& operator=(const MDBuffer& other)     = default;
+    MDBuffer& operator=(MDBuffer&& other) noexcept = default;
+
+    ~MDBuffer() override = default;
+
+    // -------------------------------------------------------------------------
+    // -- State Accessors
+    // -------------------------------------------------------------------------
+
+    size_type size() const noexcept;
+
+    const_reference get_elem(index_vector index) const;
+
+    void set_elem(index_vector index, value_type new_value);
+
+    buffer_view get_mutable_data();
+
+    const_buffer_view get_immutable_data() const;
+
+    // -------------------------------------------------------------------------
+    // -- Utility Methods
+    // -------------------------------------------------------------------------
+
+    bool operator==(const my_type& rhs) const noexcept;
+
+protected:
+    const_shape_view shape_() const;
+
+    buffer_base_pointer clone_() const override;
+
+    bool are_equal_(const_buffer_base_reference rhs) const noexcept override;
+
+    dsl_reference addition_assignment_(label_type this_labels,
+                                       const_labeled_reference lhs,
+                                       const_labeled_reference rhs) override;
+    dsl_reference subtraction_assignment_(label_type this_labels,
+                                          const_labeled_reference lhs,
+                                          const_labeled_reference rhs) override;
+    dsl_reference multiplication_assignment_(
+      label_type this_labels, const_labeled_reference lhs,
+      const_labeled_reference rhs) override;
+
+    dsl_reference permute_assignment_(label_type this_labels,
+                                      const_labeled_reference rhs) override;
+
+    dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
+                                         const_labeled_reference rhs) override;
+
+    string_type to_string_() const override;
+
+    std::ostream& add_to_stream_(std::ostream& os) const override;
+
+    // Returns the hash for the current state of *this, computing first if
+    // needed.
+    hash_type get_hash_() const {
+        if(m_recalculate_hash_ or !m_hash_caching_) update_hash_();
+        return m_hash_;
+    }
 
 private:
-    explicit MDBuffer(pimpl_pointer pimpl) noexcept;
+    size_type coordinate_to_ordinal_(index_vector index) const;
 
-    bool has_pimpl_() const noexcept;
+    // Computes the hash for the current state of *this
+    void update_hash_() const;
 
-    void assert_pimpl_() const;
+    // Designates that the state may have changed and to recalculate the hash.
+    // This function is really just for readability and clarity.
+    void mark_for_rehash_() const { m_recalculate_hash_ = true; }
 
-    pimpl_type& pimpl_();
-    const pimpl_type& pimpl_() const;
+    // Designates that state changes are not trackable and we should recalculate
+    // the hash each time.
+    void turn_off_hash_caching_() const { m_hash_caching_ = false; }
 
-    pimpl_pointer m_pimpl_;
+    // Tracks whether the hash needs to be redetermined
+    mutable bool m_recalculate_hash_ = true;
+
+    // Tracks whether hash caching has been turned off
+    mutable bool m_hash_caching_ = true;
+
+    // Holds the computed hash value for this instance's state
+    mutable hash_type m_hash_ = 0;
+
+    buffer_type m_buffer_;
 };
 
 } // namespace tensorwrapper::buffer
