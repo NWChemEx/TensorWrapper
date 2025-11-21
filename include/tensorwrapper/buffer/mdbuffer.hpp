@@ -17,6 +17,7 @@
 #pragma once
 #include <tensorwrapper/buffer/replicated.hpp>
 #include <tensorwrapper/concepts/floating_point.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/types/mdbuffer_traits.hpp>
 
 namespace tensorwrapper::buffer {
@@ -57,19 +58,10 @@ public:
     MDBuffer() noexcept;
 
     template<concepts::FloatingPoint T>
-    MDBuffer(std::vector<T> elements, const_shape_view shape) :
-      MDBuffer(buffer_type(std::move(elements)),
-               std::make_unique<layout::Physical>(shape), nullptr) {}
+    MDBuffer(std::vector<T> elements, shape_type shape) :
+      MDBuffer(buffer_type(std::move(elements)), std::move(shape)) {}
 
-    template<concepts::FloatingPoint T>
-    MDBuffer(std::vector<T> elements, layout_pointer playout = nullptr,
-             allocator_base_pointer pallocator = nullptr) {
-        MDBuffer(buffer_type(std::move(elements)), std::move(playout),
-                 std::move(pallocator));
-    }
-
-    MDBuffer(buffer_type buffer, layout_pointer playout = nullptr,
-             allocator_base_pointer pallocator = nullptr);
+    MDBuffer(buffer_type buffer, shape_type shape);
 
     MDBuffer(const MDBuffer& other)     = default;
     MDBuffer(MDBuffer&& other) noexcept = default;
@@ -82,6 +74,8 @@ public:
     // -------------------------------------------------------------------------
     // -- State Accessors
     // -------------------------------------------------------------------------
+
+    const_shape_view shape() const;
 
     size_type size() const noexcept;
 
@@ -100,8 +94,6 @@ public:
     bool operator==(const my_type& rhs) const noexcept;
 
 protected:
-    const_shape_view shape_() const;
-
     buffer_base_pointer clone_() const override;
 
     bool are_equal_(const_buffer_base_reference rhs) const noexcept override;
@@ -155,6 +147,8 @@ private:
 
     // Holds the computed hash value for this instance's state
     mutable hash_type m_hash_ = 0;
+
+    shape_type m_shape_;
 
     buffer_type m_buffer_;
 };

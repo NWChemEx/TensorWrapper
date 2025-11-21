@@ -68,4 +68,21 @@ void hash_input(hash_type& seed, const sigma::Uncertain<T>& value) {
 
 #endif
 
+class HashVisitor {
+public:
+    HashVisitor(hash_type seed = 0) : m_seed_(seed) {}
+
+    hash_type get_hash() const { return m_seed_; }
+
+    template<typename T>
+    void operator()(std::span<const T> data) {
+        for(std::size_t i = 0; i < data.size(); ++i) {
+            hash_input(m_seed_, data[i]);
+        }
+    }
+
+private:
+    hash_type m_seed_;
+};
+
 } // namespace tensorwrapper::buffer::detail_::hash_utilities

@@ -21,16 +21,28 @@
 
 namespace tensorwrapper::buffer {
 
+using fp_types = types::floating_point_types;
+
 MDBuffer::MDBuffer() noexcept = default;
 
-MDBuffer::MDBuffer(buffer_type buffer, layout_pointer playout,
-                   allocator_base_pointer pallocator) :
-  my_base_type(std::move(playout), std::move(pallocator)),
-  m_buffer_(std::move(buffer)) {}
+MDBuffer::MDBuffer(buffer_type buffer, shape_type shape) :
+  my_base_type(std::make_unique<layout::Physical>(shape), nullptr),
+  m_shape_(std::move(shape)),
+  m_buffer_() {
+    if(buffer.size() == shape.size()) {
+        m_buffer_ = std::move(buffer);
+    } else {
+        throw std::invalid_argument(
+          "The size of the provided buffer does not match the size "
+          "implied by the provided shape.");
+    }
+}
 
 // -----------------------------------------------------------------------------
 // -- State Accessor
 // -----------------------------------------------------------------------------
+
+auto MDBuffer::shape() const -> const_shape_view { return m_shape_; }
 
 auto MDBuffer::size() const noexcept -> size_type { return m_buffer_.size(); }
 
@@ -67,10 +79,6 @@ bool MDBuffer::operator==(const my_type& rhs) const noexcept {
 // -- Protected Methods
 // -----------------------------------------------------------------------------
 
-auto MDBuffer::shape_() const -> const_shape_view {
-    return this->layout().shape().as_smooth();
-}
-
 auto MDBuffer::clone_() const -> buffer_base_pointer {
     return std::make_unique<MDBuffer>(*this);
 }
@@ -103,7 +111,7 @@ auto MDBuffer::scalar_multiplication_(label_type this_labels, double scalar,
 
 auto MDBuffer::to_string_() const -> string_type {}
 
-std::ostream& MDBuffer::add_to_stream_(std::ostream& os) const {}
+std::ostream& MDBuffer::add_to_stream_(std::ostream& os) const { return os; }
 
 // -----------------------------------------------------------------------------
 // -- Private Methods
@@ -113,16 +121,19 @@ auto MDBuffer::coordinate_to_ordinal_(index_vector index) const -> size_type {
     using size_type   = typename decltype(index)::size_type;
     size_type ordinal = 0;
     size_type stride  = 1;
-    for(rank_type i = shape_().rank(); i-- > 0;) {
+    for(rank_type i = shape().rank(); i-- > 0;) {
         ordinal += index[i] * stride;
-        stride *= shape_().extent(i);
+        stride *= shape().extent(i);
     }
     return ordinal;
 }
 
 void MDBuffer::update_hash_() const {
-    // for(auto i = 0; i < m_buffer_.size(); ++i)
-    //     hash_utilities::hash_input(m_hash_, m_tensor_.data()[i]);
+    buffer::detail_::hash_utilities::HashVisitor visitor;
+    if(m_buffer_.size()) {
+        wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, m_buffer_);
+        m_hash_ = visitor.get_hash();
+    }
     m_recalculate_hash_ = false;
 }
 

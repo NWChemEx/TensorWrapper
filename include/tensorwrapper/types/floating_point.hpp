@@ -15,7 +15,9 @@
  */
 
 #pragma once
+#include <cmath>
 #include <tuple>
+#include <wtf/wtf.hpp>
 #ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
 #endif
@@ -46,6 +48,10 @@ T fabs(T value) {
     MACRO_IN(double);                           \
     MACRO_IN(types::ufloat);                    \
     MACRO_IN(types::udouble)
+} // namespace tensorwrapper::types
+
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::udouble);
 
 #else
 using ufloat  = float;
@@ -65,6 +71,5 @@ T fabs(T value) {
     MACRO_IN(float);                            \
     MACRO_IN(double)
 
-#endif
-
 } // namespace tensorwrapper::types
+#endif
