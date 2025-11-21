@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <cmath>
 #include <tuple>
 #ifdef ENABLE_SIGMA
 #include <sigma/sigma.hpp>
