@@ -58,6 +58,12 @@ TEST_CASE("Permutation") {
             REQUIRE(p5.size() == mode_index_type(0));
             REQUIRE(p5.rank() == mode_index_type(5));
 
+            // One cycle and a fix-point via one-line
+            Permutation one_line({1, 0, 2});
+            REQUIRE(one_line.size() == mode_index_type(1));
+            REQUIRE(one_line.rank() == mode_index_type(3));
+            REQUIRE(one_line.at(0) == c01);
+
             // Two cycles via one-line
             Permutation p01_23{1, 0, 3, 2};
             REQUIRE(p01_23.size() == mode_index_type(2));
@@ -137,6 +143,22 @@ TEST_CASE("Permutation") {
         REQUIRE(defaulted.size() == 0);
         REQUIRE(one_cycle.size() == 1);
         REQUIRE(two_cycles.size() == 2);
+    }
+
+    SECTION("apply") {
+        REQUIRE(defaulted.apply(cycle_type{}) == cycle_type{});
+
+        // One cycle (0 1)
+        REQUIRE(one_cycle.apply(cycle_type{0, 1}) == cycle_type{1, 0});
+        REQUIRE(one_cycle.apply(cycle_type{1, 2}) == cycle_type{2, 1});
+
+        // Two cycles (1 3 2)(4 5)
+        REQUIRE(two_cycles.apply(cycle_type{0, 1, 2, 3, 4, 5}) ==
+                cycle_type{0, 2, 3, 1, 5, 4});
+
+        Permutation one_line({1, 0, 2});
+        REQUIRE(one_line.apply(cycle_type{0, 1, 2}) == cycle_type{1, 0, 2});
+        REQUIRE(one_line.apply(cycle_type{2, 3, 4}) == cycle_type{3, 2, 4});
     }
 
     SECTION("swap") {

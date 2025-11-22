@@ -18,7 +18,7 @@
 #include <cuda_runtime.h>
 #include <cutensor.h>
 
-namespace tensorwrapper::buffer::detail_ {
+namespace tensorwrapper::backends::cutensor {
 
 // Traits for cuTENSOR based on the floating point type
 template<typename FloatType>
@@ -36,6 +36,6 @@ struct cutensor_traits<double> {
     cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_64F;
 };
 
-} // namespace tensorwrapper::buffer::detail_
+} // namespace tensorwrapper::backends::cutensor
 
 #endif

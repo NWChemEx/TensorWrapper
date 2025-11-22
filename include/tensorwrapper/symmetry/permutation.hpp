@@ -161,6 +161,36 @@ public:
      */
     mode_index_type size() const noexcept { return m_cycles_.size(); }
 
+    /** @brief Permutes the objects in @p input according to *this.
+     *
+     *  @tparam T The type of a container-like object. It must support size(),
+     *            and operator[].
+     *
+     *  @param[in] input The object to permute.
+     *
+     *  @return A copy of @p input with its elements permuted according to
+     *          *this.
+     *
+     *  @throw std::runtime_error if the size of @p input does not match the
+     *                         rank of *this. Strong throw guarantee.
+     */
+    template<typename T>
+    T apply(T input) const {
+        if(input.size() != m_rank_)
+            throw std::runtime_error(
+              "Input size does not match permutation rank");
+        for(const auto& cycle : m_cycles_) {
+            if(cycle.size() < 2) continue;
+            T buffer = input;
+            for(std::size_t i = 0; i < cycle.size(); ++i) {
+                auto from = cycle[i];
+                auto to   = cycle[(i + 1) % cycle.size()];
+                input[to] = buffer[from];
+            }
+        }
+        return input;
+    }
+
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------

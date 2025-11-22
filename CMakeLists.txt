@@ -84,7 +84,17 @@ cmaize_find_or_build_optional_dependency(
     CMAKE_ARGS BUILD_TESTING=OFF
                ENABLE_EIGEN_SUPPORT=ON
 )
-set(DEPENDENCIES utilities parallelzone Boost::boost eigen sigma)
+
+cmaize_find_or_build_dependency(
+    WeaklyTypedFloat
+    NAME WeaklyTypedFloat
+    URL https://www.github.com/NWChemEx/weaklytypedfloat
+    VERSION master
+    BUILD_TARGET wtf
+    FIND_TARGET nwx::wtf
+)
+
+set(DEPENDENCIES utilities parallelzone Boost::boost eigen sigma wtf)
 
 if("${ENABLE_CUTENSOR}")
     include(cmake/FindcuTENSOR.cmake)
