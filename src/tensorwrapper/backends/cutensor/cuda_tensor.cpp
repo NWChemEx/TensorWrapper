@@ -37,13 +37,13 @@ void CUDA_TENSOR::contraction_assignment(label_type this_label,
 #else
     throw std::runtime_error(
       "cuTENSOR backend not enabled. Recompile with -DENABLE_CUTENSOR.");
-}
 #endif
+}
 
 #undef CUDA_TENSOR
 #undef TPARAMS
 
-    template class CUDATensor<float>;
-    template class CUDATensor<double>;
+template class CUDATensor<float>;
+template class CUDATensor<double>;
 
 } // namespace tensorwrapper::backends::cutensor

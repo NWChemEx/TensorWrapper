@@ -91,7 +91,7 @@ cmaize_find_or_build_dependency(
     URL https://www.github.com/NWChemEx/weaklytypedfloat
     VERSION master
     BUILD_TARGET wtf
-    FIND_TARGET wtf::wtf
+    FIND_TARGET nwx::wtf
 )
 
 set(DEPENDENCIES utilities parallelzone Boost::boost eigen sigma wtf)
