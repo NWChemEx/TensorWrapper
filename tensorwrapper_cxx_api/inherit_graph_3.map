@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1buffer_1_1EinsumPlanner.html" title="Works out the details pertaining to an arbitrary binary einsum op." alt="" coords="5,5,168,45"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensor.html" title="API for interacting with Eigen&#39;s tensor object." alt="" coords="5,5,191,60"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensorImpl.html" title="Implements EigenTensor by wrapping eigen::TensorMap." alt="" coords="239,5,424,60"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="205,30,238,30,238,35,205,35"/>
 </map>

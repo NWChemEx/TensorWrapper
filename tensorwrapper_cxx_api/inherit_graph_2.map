@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1buffer_1_1ContractionPlanner.html" title="Class for working out details pertaining to a tensor contraction." alt="" coords="5,5,168,45"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1backends_1_1cutensor_1_1CUDATensor.html" title="Wraps using cuTENSOR." alt="" coords="5,5,191,60"/>
 </map>

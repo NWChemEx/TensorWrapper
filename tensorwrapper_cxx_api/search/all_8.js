@@ -2,7 +2,7 @@ var searchData=
 [
   ['iltraits_0',['ILTraits',['../structtensorwrapper_1_1types_1_1ILTraits.html',1,'tensorwrapper::types']]],
   ['iltraits_3c_20floattype_2c_200_20_3e_1',['ILTraits&lt; FloatType, 0 &gt;',['../structtensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4.html',1,'tensorwrapper::types']]],
-  ['index_5fvector_2',['index_vector',['../classtensorwrapper_1_1buffer_1_1Contiguous.html#a7048e277662d75c8363827f116d13f38',1,'tensorwrapper::buffer::Contiguous::index_vector'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#a7048e277662d75c8363827f116d13f38',1,'tensorwrapper::buffer::Eigen::index_vector']]],
+  ['index_5fvector_2',['index_vector',['../classtensorwrapper_1_1buffer_1_1Contiguous.html#a7048e277662d75c8363827f116d13f38',1,'tensorwrapper::buffer::Contiguous::index_vector'],['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensor.html#ab4e849ee11b818f22b0724d735472590',1,'tensorwrapper::backends::eigen::EigenTensor::index_vector'],['../classtensorwrapper_1_1buffer_1_1Eigen.html#a7048e277662d75c8363827f116d13f38',1,'tensorwrapper::buffer::Eigen::index_vector'],['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensorImpl.html#ab4e849ee11b818f22b0724d735472590',1,'tensorwrapper::backends::eigen::EigenTensorImpl::index_vector']]],
   ['infinity_5fnorm_3',['infinity_norm',['../namespacetensorwrapper_1_1operations.html#ad8ad2307c3313361a128e76f7401b78d',1,'tensorwrapper::operations']]],
   ['input_5ftype_4',['input_type',['../classtensorwrapper_1_1detail___1_1TensorFactory.html#ab3e36a2a29d025e2dd56507cb4bc528d',1,'tensorwrapper::detail_::TensorFactory']]],
   ['intersection_5',['intersection',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a4c518ef880ad96a7745d3b78cd1c6b99',1,'tensorwrapper::dsl::DummyIndices']]],

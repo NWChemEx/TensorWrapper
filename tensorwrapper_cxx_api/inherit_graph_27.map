@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1BufferBase_01_4.html" title=" " alt="" coords="5,5,165,60"/>
+<area shape="rect" id="Node000000" href="$structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01ShapeBase_01_4.html" title=" " alt="" coords="5,5,168,60"/>
+<area shape="rect" id="Node000001" href="$structtensorwrapper_1_1shape_1_1ShapeTraits_3_01const_01Smooth_01_4.html" title=" " alt="" coords="216,5,379,60"/>
+<area shape="poly" id="edge37_Node000000_Node000001" title=" " alt="" coords="182,30,216,30,216,35,182,35"/>
 </map>

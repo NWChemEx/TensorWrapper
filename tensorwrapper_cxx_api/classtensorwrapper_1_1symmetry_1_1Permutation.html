@@ -213,6 +213,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0286ba85caa3a734626dc9fd30049fcd" id="r_a0286ba85caa3a734626dc9fd30049fcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1symmetry_1_1Operation.html#a18616cc4ebaef5efaa3d284f8f959141">mode_index_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a0286ba85caa3a734626dc9fd30049fcd">size</a> () const noexcept</td></tr>
 <tr class="memdesc:a0286ba85caa3a734626dc9fd30049fcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of non-trivial cycles in the permutation.  <br /></td></tr>
 <tr class="separator:a0286ba85caa3a734626dc9fd30049fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d589778710c2865525ba38763849d91" id="r_a2d589778710c2865525ba38763849d91"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2d589778710c2865525ba38763849d91"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a2d589778710c2865525ba38763849d91">apply</a> (T input) const</td></tr>
+<tr class="memdesc:a2d589778710c2865525ba38763849d91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permutes the objects in <code>input</code> according to *this.  <br /></td></tr>
+<tr class="separator:a2d589778710c2865525ba38763849d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b5933bcbf912a9769abf6f071dcb340" id="r_a4b5933bcbf912a9769abf6f071dcb340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a4b5933bcbf912a9769abf6f071dcb340">swap</a> (<a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html">Permutation</a> &amp;other) noexcept</td></tr>
 <tr class="memdesc:a4b5933bcbf912a9769abf6f071dcb340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges the state in *this with the state in <code>other</code>.  <br /></td></tr>
 <tr class="separator:a4b5933bcbf912a9769abf6f071dcb340"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -445,6 +449,55 @@ template&lt;typename... Args&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2d589778710c2865525ba38763849d91" name="a2d589778710c2865525ba38763849d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d589778710c2865525ba38763849d91">&#9670;&#160;</a></span>apply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T tensorwrapper::symmetry::Permutation::apply </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Permutes the objects in <code>input</code> according to *this. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of a container-like object. It must support <a class="el" href="classtensorwrapper_1_1symmetry_1_1Permutation.html#a0286ba85caa3a734626dc9fd30049fcd" title="Returns the number of non-trivial cycles in the permutation.">size()</a>, and operator[].</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>The object to permute.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A copy of <code>input</code> with its elements permuted according to *this.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the size of <code>input</code> does not match the rank of *this. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a44df5a4075800f2d50bd7831935e9e12" name="a44df5a4075800f2d50bd7831935e9e12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44df5a4075800f2d50bd7831935e9e12">&#9670;&#160;</a></span>at()</h2>
 
