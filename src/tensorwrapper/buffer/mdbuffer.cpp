@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 
+#include "../backends/eigen/eigen_tensor_impl.hpp"
 #include "detail_/addition_visitor.hpp"
 #include "detail_/hash_utilities.hpp"
 #include <tensorwrapper/buffer/mdbuffer.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::buffer {
+namespace {
+
+template<typename T>
+const MDBuffer& downcast(T&& object) {
+    auto* pobject = dynamic_cast<const MDBuffer*>(&object);
+    if(pobject == nullptr) {
+        throw std::invalid_argument("The provided buffer must be an MDBuffer.");
+    }
+    return *pobject;
+}
+} // namespace
 
 using fp_types = types::floating_point_types;
 
@@ -90,7 +102,29 @@ bool MDBuffer::are_equal_(const_buffer_base_reference rhs) const noexcept {
 auto MDBuffer::addition_assignment_(label_type this_labels,
                                     const_labeled_reference lhs,
                                     const_labeled_reference rhs)
-  -> dsl_reference {}
+  -> dsl_reference {
+    const auto& lhs_down   = downcast(lhs.object());
+    const auto& rhs_down   = downcast(rhs.object());
+    const auto& lhs_labels = lhs.labels();
+    const auto& rhs_labels = rhs.labels();
+    const auto& lhs_shape  = lhs_down.m_shape_;
+    const auto& rhs_shape  = rhs_down.m_shape_;
+
+    auto labeled_lhs_shape = lhs_shape(lhs_labels);
+    auto labeled_rhs_shape = rhs_shape(rhs_labels);
+
+    m_shape_.addition_assignment(this_labels, labeled_lhs_shape,
+                                 labeled_rhs_shape);
+
+    detail_::AdditionVisitor visitor(m_buffer_, this_labels, m_shape_,
+                                     lhs.labels(), lhs_shape, rhs.labels(),
+                                     rhs_shape);
+
+    wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, lhs_down.m_buffer_,
+                                                   rhs_down.m_buffer_);
+    mark_for_rehash_();
+    return *this;
+}
 
 auto MDBuffer::subtraction_assignment_(label_type this_labels,
                                        const_labeled_reference lhs,
@@ -109,15 +143,49 @@ auto MDBuffer::scalar_multiplication_(label_type this_labels, double scalar,
                                       const_labeled_reference rhs)
   -> dsl_reference {}
 
-auto MDBuffer::to_string_() const -> string_type {}
+auto MDBuffer::to_string_() const -> string_type {
+    std::stringstream ss;
+    add_to_stream_(ss);
+    return ss.str();
+}
 
-std::ostream& MDBuffer::add_to_stream_(std::ostream& os) const { return os; }
+std::ostream& MDBuffer::add_to_stream_(std::ostream& os) const {
+    /// XXX: EigenTensor should handle aliasing a const buffer correctly. That's
+    ///      a lot of work, just to get this to work though...
+
+    if(m_buffer_.size() == 0) return os;
+    auto lambda = [&](auto&& span) {
+        using clean_type = std::decay_t<decltype(span)>::value_type;
+        auto data_ptr    = const_cast<clean_type*>(span.data());
+        std::span<clean_type> data_span(data_ptr, span.size());
+        auto ptensor = backends::eigen::make_eigen_tensor(data_span, m_shape_);
+        ptensor->add_to_stream(os);
+    };
+    wtf::buffer::visit_contiguous_buffer<fp_types>(lambda, m_buffer_);
+    return os;
+}
 
 // -----------------------------------------------------------------------------
 // -- Private Methods
 // -----------------------------------------------------------------------------
 
+void MDBuffer::check_index_(const index_vector& index) const {
+    if(index.size() != m_shape_.rank()) {
+        throw std::out_of_range(
+          "The length of the provided index does not match the rank of "
+          "*this.");
+    }
+    for(rank_type i = 0; i < m_shape_.rank(); ++i) {
+        if(index[i] >= m_shape_.extent(i)) {
+            throw std::out_of_range(
+              "An index provided is out of bounds for the corresponding "
+              "dimension.");
+        }
+    }
+}
+
 auto MDBuffer::coordinate_to_ordinal_(index_vector index) const -> size_type {
+    check_index_(index);
     using size_type   = typename decltype(index)::size_type;
     size_type ordinal = 0;
     size_type stride  = 1;
