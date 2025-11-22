@@ -93,7 +93,6 @@ TEMPLATE_LIST_TEST_CASE("CUDATensor", "", supported_fp_types) {
         label_type label("");
         REQUIRE_THROWS_AS(
           scalar.contraction_assignment(label, label, label, scalar, scalar),
-
           std::runtime_error);
 #endif
     }
