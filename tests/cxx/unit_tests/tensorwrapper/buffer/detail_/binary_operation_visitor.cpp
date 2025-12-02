@@ -102,3 +102,47 @@ TEMPLATE_LIST_TEST_CASE("AdditionVisitor", "[buffer][detail_]",
         REQUIRE(empty_buffer.at(3) == TestType(2.0));
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("SubtractionVisitor", "[buffer][detail_]",
+                        types::floating_point_types) {
+    using VisitorType = buffer::detail_::SubtractionVisitor;
+    using buffer_type = typename VisitorType::buffer_type;
+    using label_type  = typename VisitorType::label_type;
+    using shape_type  = typename VisitorType::shape_type;
+
+    TestType one{1.0}, two{2.0}, three{3.0}, four{4.0};
+    std::vector<TestType> this_data{one, two, three, four};
+    std::vector<TestType> lhs_data{four, three, two, one};
+    std::vector<TestType> rhs_data{one, one, one, one};
+    shape_type shape({4});
+    label_type labels("i");
+
+    std::span<TestType> lhs_span(lhs_data.data(), lhs_data.size());
+    std::span<const TestType> clhs_span(lhs_data.data(), lhs_data.size());
+    std::span<TestType> rhs_span(rhs_data.data(), rhs_data.size());
+    std::span<const TestType> crhs_span(rhs_data.data(), rhs_data.size());
+
+    SECTION("existing buffer") {
+        buffer_type this_buffer(this_data);
+        VisitorType visitor(this_buffer, labels, shape, labels, shape, labels,
+                            shape);
+
+        visitor(lhs_span, rhs_span);
+        REQUIRE(this_buffer.at(0) == TestType(3.0));
+        REQUIRE(this_buffer.at(1) == TestType(2.0));
+        REQUIRE(this_buffer.at(2) == TestType(1.0));
+        REQUIRE(this_buffer.at(3) == TestType(0.0));
+    }
+
+    SECTION("non-existing buffer") {
+        buffer_type empty_buffer;
+        VisitorType visitor(empty_buffer, labels, shape, labels, shape, labels,
+                            shape);
+
+        visitor(clhs_span, crhs_span);
+        REQUIRE(empty_buffer.at(0) == TestType(3.0));
+        REQUIRE(empty_buffer.at(1) == TestType(2.0));
+        REQUIRE(empty_buffer.at(2) == TestType(1.0));
+        REQUIRE(empty_buffer.at(3) == TestType(0.0));
+    }
+}

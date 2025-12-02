@@ -129,19 +129,74 @@ auto MDBuffer::addition_assignment_(label_type this_labels,
 auto MDBuffer::subtraction_assignment_(label_type this_labels,
                                        const_labeled_reference lhs,
                                        const_labeled_reference rhs)
-  -> dsl_reference {}
+  -> dsl_reference {
+    const auto& lhs_down   = downcast(lhs.object());
+    const auto& rhs_down   = downcast(rhs.object());
+    const auto& lhs_labels = lhs.labels();
+    const auto& rhs_labels = rhs.labels();
+    const auto& lhs_shape  = lhs_down.m_shape_;
+    const auto& rhs_shape  = rhs_down.m_shape_;
+
+    auto labeled_lhs_shape = lhs_shape(lhs_labels);
+    auto labeled_rhs_shape = rhs_shape(rhs_labels);
+
+    m_shape_.subtraction_assignment(this_labels, labeled_lhs_shape,
+                                    labeled_rhs_shape);
+
+    detail_::SubtractionVisitor visitor(m_buffer_, this_labels, m_shape_,
+                                        lhs.labels(), lhs_shape, rhs.labels(),
+                                        rhs_shape);
+
+    wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, lhs_down.m_buffer_,
+                                                   rhs_down.m_buffer_);
+    mark_for_rehash_();
+    return *this;
+}
+
 auto MDBuffer::multiplication_assignment_(label_type this_labels,
                                           const_labeled_reference lhs,
                                           const_labeled_reference rhs)
-  -> dsl_reference {}
+  -> dsl_reference {
+    throw std::runtime_error("multiplication NYI");
+}
 
 auto MDBuffer::permute_assignment_(label_type this_labels,
                                    const_labeled_reference rhs)
-  -> dsl_reference {}
+  -> dsl_reference {
+    const auto& rhs_down   = downcast(rhs.object());
+    const auto& rhs_labels = rhs.labels();
+    const auto& rhs_shape  = rhs_down.m_shape_;
+
+    auto labeled_rhs_shape = rhs_shape(rhs_labels);
+
+    m_shape_.permute_assignment(this_labels, labeled_rhs_shape);
+
+    detail_::PermuteVisitor visitor(m_buffer_, this_labels, m_shape_,
+                                    rhs.labels(), rhs_shape);
+
+    wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, rhs_down.m_buffer_);
+    mark_for_rehash_();
+    return *this;
+}
 
 auto MDBuffer::scalar_multiplication_(label_type this_labels, double scalar,
                                       const_labeled_reference rhs)
-  -> dsl_reference {}
+  -> dsl_reference {
+    const auto& rhs_down   = downcast(rhs.object());
+    const auto& rhs_labels = rhs.labels();
+    const auto& rhs_shape  = rhs_down.m_shape_;
+
+    auto labeled_rhs_shape = rhs_shape(rhs_labels);
+
+    m_shape_.permute_assignment(this_labels, labeled_rhs_shape);
+
+    detail_::ScalarMultiplicationVisitor visitor(
+      m_buffer_, this_labels, m_shape_, rhs.labels(), rhs_shape, scalar);
+
+    wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, rhs_down.m_buffer_);
+    mark_for_rehash_();
+    return *this;
+}
 
 auto MDBuffer::to_string_() const -> string_type {
     std::stringstream ss;

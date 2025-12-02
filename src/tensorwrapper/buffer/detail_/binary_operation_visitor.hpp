@@ -16,6 +16,7 @@
 
 #pragma once
 #include "../../backends/eigen/eigen_tensor_impl.hpp"
+#include "unary_operation_visitor.hpp"
 #include <span>
 #include <tensorwrapper/dsl/dummy_indices.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -31,42 +32,40 @@ namespace tensorwrapper::buffer::detail_ {
  *  This base class implements the logic common to all binary operations and
  *  lets the derived classes implement the operation-specific logic.
  *
+ *  @note This class derives from UnaryOperationVisitor to reuse some of its
+ *        functionality. This inheritance is private because it does not make
+ *        sense to use a BinaryOperationVisitor as a UnaryOperationVisitor.
  */
-class BinaryOperationVisitor {
+class BinaryOperationVisitor : private UnaryOperationVisitor {
+private:
+    using base_class = UnaryOperationVisitor;
+
 public:
-    /// Type of the WTF buffer
-    using buffer_type = wtf::buffer::FloatBuffer;
-
-    /// Type that the labels use for representing indices
-    using string_type = std::string;
-
-    /// Type of a set of labels
-    using label_type = dsl::DummyIndices<string_type>;
-
-    /// Type describing the shape of the tensors
-    using shape_type = shape::Smooth;
-
-    /// Type describing a read-only view acting like shape_type
-    using const_shape_view = shape::SmoothView<const shape_type>;
+    /// Pull in types from the base class
+    ///@{
+    using typename base_class::buffer_type;
+    using typename base_class::const_shape_view;
+    using typename base_class::label_type;
+    using typename base_class::shape_type;
+    using typename base_class::string_type;
+    ///@}
 
     BinaryOperationVisitor(buffer_type& this_buffer, label_type this_labels,
                            shape_type this_shape, label_type lhs_labels,
                            shape_type lhs_shape, label_type rhs_labels,
                            shape_type rhs_shape) :
-      m_pthis_buffer_(&this_buffer),
-      m_this_labels_(std::move(this_labels)),
-      m_this_shape_(std::move(this_shape)),
-      m_lhs_labels_(std::move(lhs_labels)),
-      m_lhs_shape_(std::move(lhs_shape)),
+      UnaryOperationVisitor(this_buffer, this_labels, this_shape, lhs_labels,
+                            lhs_shape),
       m_rhs_labels_(std::move(rhs_labels)),
       m_rhs_shape_(std::move(rhs_shape)) {}
 
-    const auto& this_shape() const { return m_this_shape_; }
-    const auto& lhs_shape() const { return m_lhs_shape_; }
+    using base_class::this_labels;
+    using base_class::this_shape;
+
+    const auto& lhs_shape() const { return other_shape(); }
     const auto& rhs_shape() const { return m_rhs_shape_; }
 
-    const auto& this_labels() const { return m_this_labels_; }
-    const auto& lhs_labels() const { return m_lhs_labels_; }
+    const auto& lhs_labels() const { return other_labels(); }
     const auto& rhs_labels() const { return m_rhs_labels_; }
 
     template<typename LHSType, typename RHSType>
@@ -78,30 +77,8 @@ public:
 
 protected:
     template<typename FloatType>
-    auto make_eigen_tensor_(std::span<FloatType> data, const_shape_view shape) {
-        return backends::eigen::make_eigen_tensor(data, shape);
-    }
-
-    template<typename FloatType>
-    auto make_this_eigen_tensor_() {
-        if(m_pthis_buffer_->size() != m_this_shape_.size()) {
-            std::vector<FloatType> temp_buffer(m_this_shape_.size());
-            *m_pthis_buffer_ = buffer_type(std::move(temp_buffer));
-        }
-        auto this_span =
-          wtf::buffer::contiguous_buffer_cast<FloatType>(*m_pthis_buffer_);
-        return backends::eigen::make_eigen_tensor(this_span, m_this_shape_);
-    }
-
-    template<typename FloatType>
     auto make_lhs_eigen_tensor_(std::span<FloatType> data) {
-        /// XXX: Ideally we would not need to const_cast here, but we didn't
-        ///      code EigenTensor correctly...
-
-        using clean_type = std::decay_t<FloatType>;
-        auto* pdata      = const_cast<clean_type*>(data.data());
-        std::span<clean_type> non_const_data(pdata, data.size());
-        return backends::eigen::make_eigen_tensor(non_const_data, m_lhs_shape_);
+        return base_class::make_other_eigen_tensor_(data);
     }
 
     template<typename FloatType>
@@ -116,23 +93,16 @@ protected:
     }
 
 private:
-    buffer_type* m_pthis_buffer_;
-    label_type m_this_labels_;
-    shape_type m_this_shape_;
-
-    label_type m_lhs_labels_;
-    shape_type m_lhs_shape_;
-
     label_type m_rhs_labels_;
     shape_type m_rhs_shape_;
 };
 
+/// Visitor that calls addition_assignment
 class AdditionVisitor : public BinaryOperationVisitor {
 public:
     using BinaryOperationVisitor::BinaryOperationVisitor;
     using BinaryOperationVisitor::operator();
 
-    // AdditionVisitor(shape, permutation, shape, permutation)
     template<typename FloatType>
     void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
         using clean_t = std::decay_t<FloatType>;
@@ -142,6 +112,24 @@ public:
 
         pthis->addition_assignment(this_labels(), lhs_labels(), rhs_labels(),
                                    *plhs, *prhs);
+    }
+};
+
+/// Visitor that calls subtraction_assignment
+class SubtractionVisitor : public BinaryOperationVisitor {
+public:
+    using BinaryOperationVisitor::BinaryOperationVisitor;
+    using BinaryOperationVisitor::operator();
+
+    template<typename FloatType>
+    void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
+        using clean_t = std::decay_t<FloatType>;
+        auto pthis    = this->make_this_eigen_tensor_<clean_t>();
+        auto plhs     = this->make_lhs_eigen_tensor_(lhs);
+        auto prhs     = this->make_rhs_eigen_tensor_(rhs);
+
+        pthis->subtraction_assignment(this_labels(), lhs_labels(), rhs_labels(),
+                                      *plhs, *prhs);
     }
 };
 

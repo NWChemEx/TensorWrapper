@@ -282,6 +282,112 @@ TEMPLATE_LIST_TEST_CASE("MDBuffer", "", types::floating_point_types) {
         }
     }
 
+    SECTION("subtraction_assignment_") {
+        SECTION("scalar") {
+            label_type labels("");
+            MDBuffer result;
+            result.subtraction_assignment(labels, scalar(labels),
+                                          scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(0.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            MDBuffer result;
+            result.subtraction_assignment(labels, vector(labels),
+                                          vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(0.0));
+            REQUIRE(result.get_elem({1}) == TestType(0.0));
+            REQUIRE(result.get_elem({2}) == TestType(0.0));
+            REQUIRE(result.get_elem({3}) == TestType(0.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            MDBuffer result;
+            result.subtraction_assignment(labels, matrix(labels),
+                                          matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(0.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(0.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(0.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(0.0));
+        }
+    }
+
+    SECTION("scalar_multiplication_") {
+        // TODO: Test with other scalar types when public API supports it
+        using scalar_type = double;
+        scalar_type scalar_value_{2.0};
+        TestType scalar_value(scalar_value_);
+        SECTION("scalar") {
+            label_type labels("");
+            MDBuffer result;
+            result.scalar_multiplication(labels, scalar_value_, scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0) * scalar_value);
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            MDBuffer result;
+            result.scalar_multiplication(labels, scalar_value_, vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0) * scalar_value);
+            REQUIRE(result.get_elem({1}) == TestType(2.0) * scalar_value);
+            REQUIRE(result.get_elem({2}) == TestType(3.0) * scalar_value);
+            REQUIRE(result.get_elem({3}) == TestType(4.0) * scalar_value);
+        }
+
+        SECTION("matrix") {
+            label_type rhs_labels("i,j");
+            label_type lhs_labels("j,i");
+            MDBuffer result;
+            result.scalar_multiplication(lhs_labels, scalar_value_,
+                                         matrix(rhs_labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0) * scalar_value);
+            REQUIRE(result.get_elem({0, 1}) == TestType(3.0) * scalar_value);
+            REQUIRE(result.get_elem({1, 0}) == TestType(2.0) * scalar_value);
+            REQUIRE(result.get_elem({1, 1}) == TestType(4.0) * scalar_value);
+        }
+    }
+
+    SECTION("permute_assignment_") {
+        SECTION("scalar") {
+            label_type labels("");
+            MDBuffer result;
+            result.permute_assignment(labels, scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            MDBuffer result;
+            result.permute_assignment(labels, vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0));
+            REQUIRE(result.get_elem({1}) == TestType(2.0));
+            REQUIRE(result.get_elem({2}) == TestType(3.0));
+            REQUIRE(result.get_elem({3}) == TestType(4.0));
+        }
+
+        SECTION("matrix") {
+            label_type rhs_labels("i,j");
+            label_type lhs_labels("j,i");
+            MDBuffer result;
+            result.permute_assignment(lhs_labels, matrix(rhs_labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(3.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(2.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(4.0));
+        }
+    }
+
     SECTION("to_string") {
         REQUIRE(defaulted.to_string().empty());
         REQUIRE_FALSE(scalar.to_string().empty());
