@@ -20,6 +20,15 @@
 
 using namespace tensorwrapper;
 
+/* Testing notes:
+ *
+ * The various operations (addition_assignment, etc.) are not exhaustively
+ * tested here. These operations are implemented via visitors that dispatch to
+ * various backends. The visitors themselves are tested in their own unit tests.
+ * Here we assume the visitors work and spot check a couple of operations for
+ * to help catch any integration issues.
+ */
+
 TEMPLATE_LIST_TEST_CASE("MDBuffer", "", types::floating_point_types) {
     using buffer::MDBuffer;
     using buffer_type = MDBuffer::buffer_type;
@@ -248,6 +257,28 @@ TEMPLATE_LIST_TEST_CASE("MDBuffer", "", types::floating_point_types) {
             result.addition_assignment(labels, scalar(labels), scalar(labels));
             REQUIRE(result.shape() == scalar_shape);
             REQUIRE(result.get_elem({}) == TestType(2.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            MDBuffer result;
+            result.addition_assignment(labels, vector(labels), vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(2.0));
+            REQUIRE(result.get_elem({1}) == TestType(4.0));
+            REQUIRE(result.get_elem({2}) == TestType(6.0));
+            REQUIRE(result.get_elem({3}) == TestType(8.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            MDBuffer result;
+            result.addition_assignment(labels, matrix(labels), matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(2.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(4.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(6.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(8.0));
         }
     }
 

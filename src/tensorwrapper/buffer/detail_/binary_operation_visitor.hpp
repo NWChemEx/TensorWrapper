@@ -15,24 +15,38 @@
  */
 
 #pragma once
+#include "../../backends/eigen/eigen_tensor_impl.hpp"
 #include <span>
 #include <tensorwrapper/dsl/dummy_indices.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
 #include <type_traits>
+#include <wtf/wtf.hpp>
 
 namespace tensorwrapper::buffer::detail_ {
 
 /** @brief Dispatches to the appropriate backend based on the FP type.
  *
- *
+ *  This visitor is intended to be used with WTF's buffer visitation mechanism.
+ *  This base class implements the logic common to all binary operations and
+ *  lets the derived classes implement the operation-specific logic.
  *
  */
 class BinaryOperationVisitor {
 public:
-    using buffer_type      = wtf::buffer::FloatBuffer;
-    using string_type      = std::string;
-    using label_type       = dsl::DummyIndices<string_type>;
-    using shape_type       = shape::Smooth;
+    /// Type of the WTF buffer
+    using buffer_type = wtf::buffer::FloatBuffer;
+
+    /// Type that the labels use for representing indices
+    using string_type = std::string;
+
+    /// Type of a set of labels
+    using label_type = dsl::DummyIndices<string_type>;
+
+    /// Type describing the shape of the tensors
+    using shape_type = shape::Smooth;
+
+    /// Type describing a read-only view acting like shape_type
     using const_shape_view = shape::SmoothView<const shape_type>;
 
     BinaryOperationVisitor(buffer_type& this_buffer, label_type this_labels,
@@ -57,7 +71,7 @@ public:
 
     template<typename LHSType, typename RHSType>
         requires(!std::is_same_v<LHSType, RHSType>)
-    void operator()(std::span<const LHSType>, std::span<const RHSType>) {
+    void operator()(std::span<const LHSType>, std::span<const RHSType>) const {
         throw std::runtime_error(
           "BinaryOperationVisitor: Mixed types not supported");
     }
@@ -80,22 +94,24 @@ protected:
     }
 
     template<typename FloatType>
-    auto make_lhs_eigen_tensor_(std::span<const FloatType> data) {
+    auto make_lhs_eigen_tensor_(std::span<FloatType> data) {
         /// XXX: Ideally we would not need to const_cast here, but we didn't
         ///      code EigenTensor correctly...
 
-        auto* pdata = const_cast<FloatType*>(data.data());
-        std::span<FloatType> non_const_data(pdata, data.size());
+        using clean_type = std::decay_t<FloatType>;
+        auto* pdata      = const_cast<clean_type*>(data.data());
+        std::span<clean_type> non_const_data(pdata, data.size());
         return backends::eigen::make_eigen_tensor(non_const_data, m_lhs_shape_);
     }
 
     template<typename FloatType>
-    auto make_rhs_eigen_tensor_(std::span<const FloatType> data) {
+    auto make_rhs_eigen_tensor_(std::span<FloatType> data) {
         /// XXX: Ideally we would not need to const_cast here, but we didn't
         ///      code EigenTensor correctly...
 
-        auto* pdata = const_cast<FloatType*>(data.data());
-        std::span<FloatType> non_const_data(pdata, data.size());
+        using clean_type = std::decay_t<FloatType>;
+        auto* pdata      = const_cast<clean_type*>(data.data());
+        std::span<clean_type> non_const_data(pdata, data.size());
         return backends::eigen::make_eigen_tensor(non_const_data, m_rhs_shape_);
     }
 
@@ -114,11 +130,11 @@ private:
 class AdditionVisitor : public BinaryOperationVisitor {
 public:
     using BinaryOperationVisitor::BinaryOperationVisitor;
+    using BinaryOperationVisitor::operator();
 
     // AdditionVisitor(shape, permutation, shape, permutation)
     template<typename FloatType>
-    void operator()(std::span<const FloatType> lhs,
-                    std::span<const FloatType> rhs) {
+    void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
         using clean_t = std::decay_t<FloatType>;
         auto pthis    = this->make_this_eigen_tensor_<clean_t>();
         auto plhs     = this->make_lhs_eigen_tensor_(lhs);

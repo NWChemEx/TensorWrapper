@@ -15,7 +15,7 @@
  */
 
 #include "../backends/eigen/eigen_tensor_impl.hpp"
-#include "detail_/addition_visitor.hpp"
+#include "detail_/binary_operation_visitor.hpp"
 #include "detail_/hash_utilities.hpp"
 #include <tensorwrapper/buffer/mdbuffer.hpp>
 #include <tensorwrapper/types/floating_point.hpp>

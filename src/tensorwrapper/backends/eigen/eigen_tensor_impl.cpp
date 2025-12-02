@@ -257,6 +257,7 @@ void EIGEN_TENSOR::contraction_assignment_(label_type this_label,
 #undef EIGEN_TENSOR
 #undef TPARAMS
 
+template<typename FloatType>
 std::unique_ptr<EigenTensor<FloatType>> make_eigen_tensor(
   std::span<FloatType> data, shape::SmoothView<const shape::Smooth> shape) {
     switch(shape.rank()) {
