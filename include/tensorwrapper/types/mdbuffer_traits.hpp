@@ -28,7 +28,9 @@ struct MDBufferTraitsCommon {
     using buffer_type       = wtf::buffer::FloatBuffer;
     using const_buffer_view = wtf::buffer::BufferView<const value_type>;
     using shape_type        = shape::Smooth;
-    using rank_type         = typename shape_type::rank_type;
+    using const_shape_view  = shape::SmoothView<const shape_type>;
+    using rank_type         = typename ClassTraits<shape_type>::rank_type;
+    using size_type         = typename ClassTraits<shape_type>::size_type;
     using pimpl_type        = tensorwrapper::buffer::detail_::MDBufferPIMPL;
     using pimpl_pointer     = std::unique_ptr<pimpl_type>;
 };

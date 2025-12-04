@@ -39,6 +39,8 @@ public:
     // -- Ctors, assignment, and dtor
     // -------------------------------------------------------------------------
 
+    Smooth() noexcept = default;
+
     /** @brief Constructs *this with a statically specified number of extents.
      *
      *  This ctor is used to create a Smooth object by explicitly providing

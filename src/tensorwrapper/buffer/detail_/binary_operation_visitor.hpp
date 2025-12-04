@@ -1,0 +1,138 @@
+/*
+ * Copyright 2025 NWChemEx-Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#pragma once
+#include "../../backends/eigen/eigen_tensor_impl.hpp"
+#include "unary_operation_visitor.hpp"
+#include <span>
+#include <tensorwrapper/dsl/dummy_indices.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
+#include <tensorwrapper/shape/smooth_view.hpp>
+#include <type_traits>
+#include <wtf/wtf.hpp>
+
+namespace tensorwrapper::buffer::detail_ {
+
+/** @brief Dispatches to the appropriate backend based on the FP type.
+ *
+ *  This visitor is intended to be used with WTF's buffer visitation mechanism.
+ *  This base class implements the logic common to all binary operations and
+ *  lets the derived classes implement the operation-specific logic.
+ *
+ *  @note This class derives from UnaryOperationVisitor to reuse some of its
+ *        functionality. This inheritance is private because it does not make
+ *        sense to use a BinaryOperationVisitor as a UnaryOperationVisitor.
+ */
+class BinaryOperationVisitor : private UnaryOperationVisitor {
+private:
+    using base_class = UnaryOperationVisitor;
+
+public:
+    /// Pull in types from the base class
+    ///@{
+    using typename base_class::buffer_type;
+    using typename base_class::const_shape_view;
+    using typename base_class::label_type;
+    using typename base_class::shape_type;
+    using typename base_class::string_type;
+    ///@}
+
+    BinaryOperationVisitor(buffer_type& this_buffer, label_type this_labels,
+                           shape_type this_shape, label_type lhs_labels,
+                           shape_type lhs_shape, label_type rhs_labels,
+                           shape_type rhs_shape) :
+      UnaryOperationVisitor(this_buffer, this_labels, this_shape, lhs_labels,
+                            lhs_shape),
+      m_rhs_labels_(std::move(rhs_labels)),
+      m_rhs_shape_(std::move(rhs_shape)) {}
+
+    using base_class::this_labels;
+    using base_class::this_shape;
+
+    const auto& lhs_shape() const { return other_shape(); }
+    const auto& rhs_shape() const { return m_rhs_shape_; }
+
+    const auto& lhs_labels() const { return other_labels(); }
+    const auto& rhs_labels() const { return m_rhs_labels_; }
+
+    template<typename LHSType, typename RHSType>
+        requires(!std::is_same_v<LHSType, RHSType>)
+    void operator()(std::span<const LHSType>, std::span<const RHSType>) const {
+        throw std::runtime_error(
+          "BinaryOperationVisitor: Mixed types not supported");
+    }
+
+protected:
+    using base_class::make_this_eigen_tensor_;
+
+    template<typename FloatType>
+    auto make_lhs_eigen_tensor_(std::span<FloatType> data) {
+        return base_class::make_other_eigen_tensor_(data);
+    }
+
+    template<typename FloatType>
+    auto make_rhs_eigen_tensor_(std::span<FloatType> data) {
+        /// XXX: Ideally we would not need to const_cast here, but we didn't
+        ///      code EigenTensor correctly...
+
+        using clean_type = std::decay_t<FloatType>;
+        auto* pdata      = const_cast<clean_type*>(data.data());
+        std::span<clean_type> non_const_data(pdata, data.size());
+        return backends::eigen::make_eigen_tensor(non_const_data, m_rhs_shape_);
+    }
+
+private:
+    label_type m_rhs_labels_;
+    shape_type m_rhs_shape_;
+};
+
+/// Visitor that calls addition_assignment
+class AdditionVisitor : public BinaryOperationVisitor {
+public:
+    using BinaryOperationVisitor::BinaryOperationVisitor;
+    using BinaryOperationVisitor::operator();
+
+    template<typename FloatType>
+    void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
+        using clean_t = std::decay_t<FloatType>;
+        auto pthis    = this->make_this_eigen_tensor_<clean_t>();
+        auto plhs     = this->make_lhs_eigen_tensor_(lhs);
+        auto prhs     = this->make_rhs_eigen_tensor_(rhs);
+
+        pthis->addition_assignment(this_labels(), lhs_labels(), rhs_labels(),
+                                   *plhs, *prhs);
+    }
+};
+
+/// Visitor that calls subtraction_assignment
+class SubtractionVisitor : public BinaryOperationVisitor {
+public:
+    using BinaryOperationVisitor::BinaryOperationVisitor;
+    using BinaryOperationVisitor::operator();
+
+    template<typename FloatType>
+    void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
+        using clean_t = std::decay_t<FloatType>;
+        auto pthis    = this->make_this_eigen_tensor_<clean_t>();
+        auto plhs     = this->make_lhs_eigen_tensor_(lhs);
+        auto prhs     = this->make_rhs_eigen_tensor_(rhs);
+
+        pthis->subtraction_assignment(this_labels(), lhs_labels(), rhs_labels(),
+                                      *plhs, *prhs);
+    }
+};
+
+} // namespace tensorwrapper::buffer::detail_

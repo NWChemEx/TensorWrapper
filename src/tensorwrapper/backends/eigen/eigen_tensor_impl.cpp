@@ -76,7 +76,11 @@ auto EIGEN_TENSOR::to_string_() const -> string_type {
 TPARAMS
 std::ostream& EIGEN_TENSOR::add_to_stream_(std::ostream& os) const {
     os << std::fixed << std::setprecision(16);
-    return os << m_tensor_.format(Eigen::TensorIOFormat::Numpy());
+    if constexpr(Rank > 0) {
+        return os << m_tensor_.format(Eigen::TensorIOFormat::Numpy());
+    } else {
+        return os << m_tensor_;
+    }
 }
 
 TPARAMS
