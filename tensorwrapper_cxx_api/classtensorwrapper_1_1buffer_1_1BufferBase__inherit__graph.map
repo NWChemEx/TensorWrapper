@@ -8,8 +8,10 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,73,303,65,304,70,242,78"/>
 <area shape="rect" id="Node000005" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,37,888,77"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="691,55,725,55,725,60,691,60"/>
-<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1buffer_1_1Contiguous.html" title="Denotes that a buffer is held contiguously." alt="" coords="936,37,1132,77"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="902,55,936,55,936,60,902,60"/>
-<area shape="rect" id="Node000007" href="$classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object." alt="" coords="1180,37,1343,77"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1146,55,1180,55,1180,60,1146,60"/>
+<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1buffer_1_1Contiguous.html" title="Denotes that a buffer is held contiguously." alt="" coords="936,5,1132,45"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="902,41,935,36,936,42,902,47"/>
+<area shape="rect" id="Node000008" href="$classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer." alt="" coords="953,69,1115,109"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="902,68,953,75,952,81,901,73"/>
+<area shape="rect" id="Node000007" href="$classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object." alt="" coords="1180,5,1343,45"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1146,23,1180,23,1180,28,1146,28"/>
 </map>

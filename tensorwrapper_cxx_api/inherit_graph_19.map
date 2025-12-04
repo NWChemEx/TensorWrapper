@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,249,45"/>
-<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1symmetry_1_1Operation.html" title="Common API for classes describing a symmetry operation." alt="" coords="297,5,488,45"/>
-<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="263,23,297,23,297,28,263,28"/>
-<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1symmetry_1_1Permutation.html" title="Describes a permutation of a tensor&#39;s modes." alt="" coords="536,5,727,45"/>
-<area shape="poly" id="edge34_Node000001_Node000002" title=" " alt="" coords="502,23,536,23,536,28,502,28"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,252,60"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1shape_1_1detail___1_1SmoothViewPIMPL.html" title="Defines the API for all SmoothView PIMPLs." alt="" coords="300,5,503,60"/>
+<area shape="poly" id="edge41_Node000000_Node000001" title=" " alt="" coords="266,30,300,30,300,35,266,35"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1shape_1_1detail___1_1SmoothAlias.html" title="Implements SmoothView by wrapping a Smooth object." alt="" coords="551,5,715,60"/>
+<area shape="poly" id="edge42_Node000001_Node000002" title=" " alt="" coords="516,30,550,30,550,35,516,35"/>
 </map>

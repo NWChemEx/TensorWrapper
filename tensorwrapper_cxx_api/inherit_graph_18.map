@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,245,60"/>
-<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1buffer_1_1detail___1_1EigenPIMPL.html" title="Common API that type&#45;erases Eigen&#39;s many tensor classes." alt="" coords="293,5,456,60"/>
-<area shape="poly" id="edge31_Node000000_Node000001" title=" " alt="" coords="259,30,293,30,293,35,259,35"/>
-<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1detail___1_1EigenTensor.html" title="Implements EigenPIMPL by wrapping eigen::Tensor." alt="" coords="504,5,667,60"/>
-<area shape="poly" id="edge32_Node000001_Node000002" title=" " alt="" coords="470,30,504,30,504,35,470,35"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,249,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1symmetry_1_1Operation.html" title="Common API for classes describing a symmetry operation." alt="" coords="297,5,488,45"/>
+<area shape="poly" id="edge39_Node000000_Node000001" title=" " alt="" coords="263,23,297,23,297,28,263,28"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1symmetry_1_1Permutation.html" title="Describes a permutation of a tensor&#39;s modes." alt="" coords="536,5,727,45"/>
+<area shape="poly" id="edge40_Node000001_Node000002" title=" " alt="" coords="502,23,536,23,536,28,502,28"/>
 </map>

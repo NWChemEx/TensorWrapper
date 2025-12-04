@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title="Code factorization for objects that are composable via the DSL." alt="" coords="5,5,200,60"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="43,5,206,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1symmetry_1_1Group.html" title="Container of the symmetry elements for a tensor." alt="" coords="310,61,501,101"/>
+<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="220,41,310,60,309,65,219,47"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,141,244,166"/>
+<area shape="poly" id="edge19_Node000002_Node000001" title=" " alt="" coords="188,135,326,99,327,104,189,140"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1dsl_1_1DummyIndices.html" title=" " alt="" coords="315,126,495,181"/>
+<area shape="poly" id="edge17_Node000002_Node000003" title=" " alt="" coords="258,151,315,151,315,156,258,156"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1dsl_1_1DummyIndices.html" title="Class to help deal with string&#45;based dummy indices." alt="" coords="292,205,519,245"/>
+<area shape="poly" id="edge18_Node000002_Node000004" title=" " alt="" coords="189,167,327,203,326,208,188,172"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="15,69,234,109"/>
+<area shape="poly" id="edge20_Node000005_Node000001" title=" " alt="" coords="248,83,309,81,310,87,248,88"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structtensorwrapper_1_1types_1_1MDBufferTraitsCommon.html" title=" " alt="" coords="5,64,191,104"/>
-<area shape="rect" id="Node000001" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01const_01tensorwrapper_1_1buffer_1_1MDBuffer_01_4.html" title=" " alt="" coords="260,5,427,75"/>
-<area shape="poly" id="edge39_Node000000_Node000001" title=" " alt="" coords="204,62,259,52,260,58,205,68"/>
-<area shape="rect" id="Node000002" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01tensorwrapper_1_1buffer_1_1MDBuffer_01_4.html" title=" " alt="" coords="239,99,448,154"/>
-<area shape="poly" id="edge40_Node000000_Node000002" title=" " alt="" coords="204,100,239,106,238,111,204,105"/>
+<area shape="rect" id="Node000000" href="$structtensorwrapper_1_1types_1_1ShapeTraitsCommon.html" title=" " alt="" coords="5,64,169,104"/>
+<area shape="rect" id="Node000001" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01const_01tensorwrapper_1_1shape_1_1Smooth_01_4.html" title=" " alt="" coords="239,5,405,75"/>
+<area shape="poly" id="edge47_Node000000_Node000001" title=" " alt="" coords="183,63,238,53,239,58,184,69"/>
+<area shape="rect" id="Node000002" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01tensorwrapper_1_1shape_1_1Smooth_01_4.html" title=" " alt="" coords="217,99,427,154"/>
+<area shape="poly" id="edge48_Node000000_Node000002" title=" " alt="" coords="184,99,218,105,217,110,183,104"/>
 </map>

@@ -1,0 +1,7 @@
+<map id="tensorwrapper::buffer::detail_::SubtractionVisitor" name="tensorwrapper::buffer::detail_::SubtractionVisitor">
+<area shape="rect" id="Node000001" title="Visitor that calls subtraction_assignment." alt="" coords="21,181,220,221"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="5,93,236,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,147,123,181,118,181,118,147"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1detail___1_1UnaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="7,5,234,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,59,123,93,118,93,118,59"/>
+</map>

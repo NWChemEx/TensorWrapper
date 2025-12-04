@@ -80,22 +80,112 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Dispatches to the appropriate backend based on the FP type.  
+<p>Visitor that calls addition_assignment.  
  <a href="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="addition__visitor_8hpp_source.html">addition_visitor.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="binary__operation__visitor_8hpp_source.html">binary_operation_visitor.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for tensorwrapper::buffer::detail_::AdditionVisitor:</div>
+<div class="dyncontent">
+<div class="center"><img src="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_inherit__map" alt="Inheritance graph"/></div>
+<map name="atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_inherit__map" id="atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_inherit__map">
+<area shape="rect" title="Visitor that calls addition_assignment." alt="" coords="31,181,210,221"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="5,93,236,133"/>
+<area shape="poly" title=" " alt="" coords="123,147,123,181,118,181,118,147"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1UnaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="7,5,234,45"/>
+<area shape="poly" title=" " alt="" coords="123,59,123,93,118,93,118,59"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for tensorwrapper::buffer::detail_::AdditionVisitor:</div>
+<div class="dyncontent">
+<div class="center"><img src="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor__coll__graph.png" border="0" usemap="#atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_coll__map" alt="Collaboration graph"/></div>
+<map name="atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_coll__map" id="atensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_coll__map">
+<area shape="rect" title="Visitor that calls addition_assignment." alt="" coords="31,181,210,221"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="5,93,236,133"/>
+<area shape="poly" title=" " alt="" coords="123,147,123,181,118,181,118,147"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1detail___1_1UnaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="7,5,234,45"/>
+<area shape="poly" title=" " alt="" coords="123,59,123,93,118,93,118,59"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a271a3970efc6f88fa30791525036446a" id="r_a271a3970efc6f88fa30791525036446a"><td class="memTemplParams" colspan="2"><a id="a271a3970efc6f88fa30791525036446a" name="a271a3970efc6f88fa30791525036446a"></a>
-template&lt;typename LHSType , typename RHSType &gt; </td></tr>
-<tr class="memitem:a271a3970efc6f88fa30791525036446a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator()</b> (std::span&lt; LHSType &gt; lhs, std::span&lt; const RHSType &gt; rhs)</td></tr>
-<tr class="separator:a271a3970efc6f88fa30791525036446a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68418730e4760a7a1e843ff2103e9a31" id="r_a68418730e4760a7a1e843ff2103e9a31"><td class="memTemplParams" colspan="2"><a id="a68418730e4760a7a1e843ff2103e9a31" name="a68418730e4760a7a1e843ff2103e9a31"></a>
+template&lt;typename FloatType &gt; </td></tr>
+<tr class="memitem:a68418730e4760a7a1e843ff2103e9a31"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator()</b> (std::span&lt; FloatType &gt; lhs, std::span&lt; FloatType &gt; rhs)</td></tr>
+<tr class="separator:a68418730e4760a7a1e843ff2103e9a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a61d67443ebf19981384155715942c" id="r_a63a61d67443ebf19981384155715942c"><td class="memItemLeft" align="right" valign="top"><a id="a63a61d67443ebf19981384155715942c" name="a63a61d67443ebf19981384155715942c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BinaryOperationVisitor</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ad075311347be6678f3e5e500dfcd9ad4">buffer_type</a> &amp;this_buffer, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> this_shape, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> lhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> lhs_shape, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> rhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> rhs_shape)</td></tr>
+<tr class="separator:a63a61d67443ebf19981384155715942c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html">tensorwrapper::buffer::detail_::BinaryOperationVisitor</a></td></tr>
+<tr class="memitem:a63a61d67443ebf19981384155715942c inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a63a61d67443ebf19981384155715942c"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>BinaryOperationVisitor</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ad075311347be6678f3e5e500dfcd9ad4">buffer_type</a> &amp;this_buffer, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> this_shape, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> lhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> lhs_shape, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#ab1e2dd89939922c85c5b5082225c5883">label_type</a> rhs_labels, <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> rhs_shape)</td></tr>
+<tr class="separator:a63a61d67443ebf19981384155715942c inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b0951b73eafb199d987c78fe92f4733 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a2b0951b73eafb199d987c78fe92f4733"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>lhs_shape</b> () const</td></tr>
+<tr class="separator:a2b0951b73eafb199d987c78fe92f4733 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4cf40f1ab6108433998d08b9c9e2ac inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a7b4cf40f1ab6108433998d08b9c9e2ac"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>rhs_shape</b> () const</td></tr>
+<tr class="separator:a7b4cf40f1ab6108433998d08b9c9e2ac inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc340f6854856b0161ea0a1dbe5cefb1 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_adc340f6854856b0161ea0a1dbe5cefb1"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>lhs_labels</b> () const</td></tr>
+<tr class="separator:adc340f6854856b0161ea0a1dbe5cefb1 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68583d9341bc4ba744b35420ed3678e4 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a68583d9341bc4ba744b35420ed3678e4"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>rhs_labels</b> () const</td></tr>
+<tr class="separator:a68583d9341bc4ba744b35420ed3678e4 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7708c42a2850c2bd24e0f3081aff61a0 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a7708c42a2850c2bd24e0f3081aff61a0"><td class="memTemplParams" colspan="2">
+template&lt;typename LHSType , typename RHSType &gt; <br />
+requires (!std::is_same_v&lt;LHSType, RHSType&gt;)</td></tr>
+<tr class="memitem:a7708c42a2850c2bd24e0f3081aff61a0 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator()</b> (std::span&lt; const LHSType &gt;, std::span&lt; const RHSType &gt;) const</td></tr>
+<tr class="separator:a7708c42a2850c2bd24e0f3081aff61a0 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe66b7a665568a773fd83f12d9ad4741 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_abe66b7a665568a773fd83f12d9ad4741"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>this_labels</b> () const</td></tr>
+<tr class="separator:abe66b7a665568a773fd83f12d9ad4741 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b08962226cb96a12ec54f99b0fa210 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_ab2b08962226cb96a12ec54f99b0fa210"><td class="memItemLeft" align="right" valign="top">
+const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>this_shape</b> () const</td></tr>
+<tr class="separator:ab2b08962226cb96a12ec54f99b0fa210 inherit pub_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html">tensorwrapper::buffer::detail_::BinaryOperationVisitor</a></td></tr>
+<tr class="memitem:ad075311347be6678f3e5e500dfcd9ad4 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_ad075311347be6678f3e5e500dfcd9ad4"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_type</b> = wtf::buffer::FloatBuffer</td></tr>
+<tr class="memdesc:ad075311347be6678f3e5e500dfcd9ad4 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the WTF buffer. <br /></td></tr>
+<tr class="separator:ad075311347be6678f3e5e500dfcd9ad4 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8f722c9c630b4fe51288569bd0d2b5 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a5a8f722c9c630b4fe51288569bd0d2b5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_shape_view</b> = <a class="el" href="classtensorwrapper_1_1shape_1_1SmoothView.html">shape::SmoothView</a>&lt; const <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a6018cd4e3507fb249b50e6ce0f93cd77">shape_type</a> &gt;</td></tr>
+<tr class="memdesc:a5a8f722c9c630b4fe51288569bd0d2b5 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type describing a read-only view acting like shape_type. <br /></td></tr>
+<tr class="separator:a5a8f722c9c630b4fe51288569bd0d2b5 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1e2dd89939922c85c5b5082225c5883 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_ab1e2dd89939922c85c5b5082225c5883"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = <a class="el" href="classtensorwrapper_1_1dsl_1_1DummyIndices.html">dsl::DummyIndices</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#a432487f6c925193801fb0a7abd96af87">string_type</a> &gt;</td></tr>
+<tr class="memdesc:ab1e2dd89939922c85c5b5082225c5883 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a set of labels. <br /></td></tr>
+<tr class="separator:ab1e2dd89939922c85c5b5082225c5883 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6018cd4e3507fb249b50e6ce0f93cd77 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a6018cd4e3507fb249b50e6ce0f93cd77"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>shape_type</b> = <a class="el" href="classtensorwrapper_1_1shape_1_1Smooth.html">shape::Smooth</a></td></tr>
+<tr class="memdesc:a6018cd4e3507fb249b50e6ce0f93cd77 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type describing the shape of the tensors. <br /></td></tr>
+<tr class="separator:a6018cd4e3507fb249b50e6ce0f93cd77 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432487f6c925193801fb0a7abd96af87 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a432487f6c925193801fb0a7abd96af87"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>string_type</b> = std::string</td></tr>
+<tr class="memdesc:a432487f6c925193801fb0a7abd96af87 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that the labels use for representing indices. <br /></td></tr>
+<tr class="separator:a432487f6c925193801fb0a7abd96af87 inherit pub_types_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html">tensorwrapper::buffer::detail_::BinaryOperationVisitor</a></td></tr>
+<tr class="memitem:a3f41c2fcf677f1caaf3d7593725f174b inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a3f41c2fcf677f1caaf3d7593725f174b"><td class="memTemplParams" colspan="2">
+template&lt;typename FloatType &gt; </td></tr>
+<tr class="memitem:a3f41c2fcf677f1caaf3d7593725f174b inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>make_lhs_eigen_tensor_</b> (std::span&lt; FloatType &gt; data)</td></tr>
+<tr class="separator:a3f41c2fcf677f1caaf3d7593725f174b inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe5710842a529513c99108a48557066e inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_afe5710842a529513c99108a48557066e"><td class="memTemplParams" colspan="2">template&lt;typename FloatType &gt; </td></tr>
+<tr class="memitem:afe5710842a529513c99108a48557066e inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html#afe5710842a529513c99108a48557066e">make_rhs_eigen_tensor_</a> (std::span&lt; FloatType &gt; data)</td></tr>
+<tr class="separator:afe5710842a529513c99108a48557066e inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1686134d156f4122adc97fd3bb3235 inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor" id="r_a4d1686134d156f4122adc97fd3bb3235"><td class="memTemplParams" colspan="2">
+template&lt;typename FloatType &gt; </td></tr>
+<tr class="memitem:a4d1686134d156f4122adc97fd3bb3235 inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>make_this_eigen_tensor_</b> ()</td></tr>
+<tr class="separator:a4d1686134d156f4122adc97fd3bb3235 inherit pro_methods_classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Dispatches to the appropriate backend based on the FP type. </p>
+<div class="textblock"><p>Visitor that calls addition_assignment. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/tensorwrapper/buffer/detail_/<a class="el" href="addition__visitor_8hpp_source.html">addition_visitor.hpp</a></li>
+<li>src/tensorwrapper/buffer/detail_/<a class="el" href="binary__operation__visitor_8hpp_source.html">binary_operation_visitor.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

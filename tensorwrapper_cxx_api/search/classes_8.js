@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['mdbuffer_0',['MDBuffer',['../classtensorwrapper_1_1buffer_1_1MDBuffer.html',1,'tensorwrapper::buffer']]],
-  ['mdbufferpimpl_1',['MDBufferPIMPL',['../classtensorwrapper_1_1buffer_1_1detail___1_1MDBufferPIMPL.html',1,'tensorwrapper::buffer::detail_']]],
-  ['mdbuffertraitscommon_2',['MDBufferTraitsCommon',['../structtensorwrapper_1_1types_1_1MDBufferTraitsCommon.html',1,'tensorwrapper::types']]]
+  ['labeled_0',['Labeled',['../classtensorwrapper_1_1dsl_1_1Labeled.html',1,'tensorwrapper::dsl']]],
+  ['layoutbase_1',['LayoutBase',['../classtensorwrapper_1_1layout_1_1LayoutBase.html',1,'tensorwrapper::layout']]],
+  ['local_2',['local',['../classtensorwrapper_1_1allocator_1_1Local.html',1,'tensorwrapper::allocator::Local'],['../classtensorwrapper_1_1buffer_1_1Local.html',1,'tensorwrapper::buffer::Local']]],
+  ['logical_3',['Logical',['../classtensorwrapper_1_1layout_1_1Logical.html',1,'tensorwrapper::layout']]]
 ];

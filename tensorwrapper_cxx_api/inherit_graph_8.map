@@ -1,3 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer." alt="" coords="5,5,168,45"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,228,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects." alt="" coords="304,37,467,77"/>
+<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="242,37,304,44,303,50,242,42"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,37,677,77"/>
+<area shape="poly" id="edge10_Node000001_Node000002" title=" " alt="" coords="481,55,514,55,514,60,481,60"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,37,888,77"/>
+<area shape="poly" id="edge11_Node000002_Node000003" title=" " alt="" coords="691,55,725,55,725,60,691,60"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1Contiguous.html" title="Denotes that a buffer is held contiguously." alt="" coords="936,5,1132,45"/>
+<area shape="poly" id="edge12_Node000003_Node000004" title=" " alt="" coords="902,41,935,36,936,42,902,47"/>
+<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer." alt="" coords="953,69,1115,109"/>
+<area shape="poly" id="edge14_Node000003_Node000006" title=" " alt="" coords="902,68,953,75,952,81,901,73"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object." alt="" coords="1180,5,1343,45"/>
+<area shape="poly" id="edge13_Node000004_Node000005" title=" " alt="" coords="1146,23,1180,23,1180,28,1146,28"/>
+<area shape="rect" id="Node000007" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,69,256,109"/>
+<area shape="poly" id="edge15_Node000007_Node000001" title=" " alt="" coords="269,69,303,65,304,70,270,75"/>
 </map>

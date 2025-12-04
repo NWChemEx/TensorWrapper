@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: src/tensorwrapper/buffer/detail_/addition_visitor.hpp Source File</title>
+<title>tensorwrapper: include/tensorwrapper/concepts/floating_point.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,11 +74,11 @@ $(document).ready(function() { init_codefold(0); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a3ef7787234d276598f190de2d036010.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_a3117351ea9a883ecfd9291c2ea198c1.html">buffer</a></li><li class="navelem"><a class="el" href="dir_b6988aee02fa9460f4409e30c873556a.html">detail_</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_9be993c512a1277bd86ea194d0504e7c.html">concepts</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">addition_visitor.hpp</div></div>
+  <div class="headertitle"><div class="title">floating_point.hpp</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
@@ -98,25 +98,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;span&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;wtf/concepts/floating_point.hpp&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>tensorwrapper::buffer::detail_ {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>tensorwrapper::concepts {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html">AdditionVisitor</a> {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="comment">// AdditionVisitor(shape, permutation, shape, permutation)</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> LHSType, <span class="keyword">typename</span> RHSType&gt;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> operator()(std::span&lt;LHSType&gt; lhs, std::span&lt;const RHSType&gt; rhs) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="comment">// auto lhs_wrapped = backends::eigen::wrap_span(lhs);</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment">// auto rhs_wrapped = backends::eigen::wrap_span(rhs);</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">for</span>(std::size_t i = 0; i &lt; lhs.size(); ++i) lhs[i] += rhs[i];</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
-</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} <span class="comment">// namespace tensorwrapper::buffer::detail_</span></div>
-<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html">tensorwrapper::buffer::detail_::AdditionVisitor</a></div><div class="ttdoc">Dispatches to the appropriate backend based on the FP type.</div><div class="ttdef"><b>Definition</b> addition_visitor.hpp:27</div></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">using </span>wtf::concepts::ConstFloatingPoint;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using </span>wtf::concepts::FloatingPoint;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">using </span>wtf::concepts::UnmodifiedFloatingPoint;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>} <span class="comment">// namespace tensorwrapper::concepts</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

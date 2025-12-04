@@ -74,7 +74,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classtensorwrapper_1_1buffer_1_1MDBuffer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">tensorwrapper::buffer::MDBuffer Class Reference</div></div>
 </div><!--header-->
@@ -84,12 +86,69 @@ $(function() {
  <a href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="mdbuffer_8hpp_source.html">mdbuffer.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for tensorwrapper::buffer::MDBuffer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classtensorwrapper_1_1buffer_1_1MDBuffer__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1buffer_1_1MDBuffer_inherit__map" alt="Inheritance graph"/></div>
+<map name="atensorwrapper_1_1buffer_1_1MDBuffer_inherit__map" id="atensorwrapper_1_1buffer_1_1MDBuffer_inherit__map">
+<area shape="rect" title="A multidimensional (MD) buffer." alt="" coords="936,37,1099,77"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,37,888,77"/>
+<area shape="poly" title=" " alt="" coords="902,55,936,55,936,60,902,60"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,37,677,77"/>
+<area shape="poly" title=" " alt="" coords="691,55,725,55,725,60,691,60"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects." alt="" coords="304,37,467,77"/>
+<area shape="poly" title=" " alt="" coords="481,55,514,55,514,60,481,60"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,256,45"/>
+<area shape="poly" title=" " alt="" coords="270,40,304,44,303,50,269,45"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,228,109"/>
+<area shape="poly" title=" " alt="" coords="242,73,303,65,304,70,242,78"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for tensorwrapper::buffer::MDBuffer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classtensorwrapper_1_1buffer_1_1MDBuffer__coll__graph.png" border="0" usemap="#atensorwrapper_1_1buffer_1_1MDBuffer_coll__map" alt="Collaboration graph"/></div>
+<map name="atensorwrapper_1_1buffer_1_1MDBuffer_coll__map" id="atensorwrapper_1_1buffer_1_1MDBuffer_coll__map">
+<area shape="rect" title="A multidimensional (MD) buffer." alt="" coords="936,37,1099,77"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,37,888,77"/>
+<area shape="poly" title=" " alt="" coords="902,55,936,55,936,60,902,60"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,37,677,77"/>
+<area shape="poly" title=" " alt="" coords="691,55,725,55,725,60,691,60"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects." alt="" coords="304,37,467,77"/>
+<area shape="poly" title=" " alt="" coords="481,55,514,55,514,60,481,60"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,256,45"/>
+<area shape="poly" title=" " alt="" coords="270,40,304,44,303,50,269,45"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,228,109"/>
+<area shape="poly" title=" " alt="" coords="242,73,303,65,304,70,242,78"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a7b994d053d48683746ed4231e6900b5f" id="r_a7b994d053d48683746ed4231e6900b5f"><td class="memItemLeft" align="right" valign="top"><a id="a7b994d053d48683746ed4231e6900b5f" name="a7b994d053d48683746ed4231e6900b5f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>index_vector</b> = std::vector&lt; size_type &gt;</td></tr>
+<tr class="separator:a7b994d053d48683746ed4231e6900b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaba706f27eeab5e4b1aa6bfea89d0372" id="r_aaba706f27eeab5e4b1aa6bfea89d0372"><td class="memItemLeft" align="right" valign="top"><a id="aaba706f27eeab5e4b1aa6bfea89d0372" name="aaba706f27eeab5e4b1aa6bfea89d0372"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>string_type</b> = std::string</td></tr>
+<tr class="separator:aaba706f27eeab5e4b1aa6bfea89d0372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a6f2b9c2cb9b96759d26f52ad8030a979" id="r_a6f2b9c2cb9b96759d26f52ad8030a979"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a6f2b9c2cb9b96759d26f52ad8030a979">buffer_type</a> = typename traits_type::buffer_type</td></tr>
+<tr class="memitem:a8192f1e87baf4361a7ad70bc1f52ce89" id="r_a8192f1e87baf4361a7ad70bc1f52ce89"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8192f1e87baf4361a7ad70bc1f52ce89">value_type</a> = typename traits_type::value_type</td></tr>
+<tr class="separator:a8192f1e87baf4361a7ad70bc1f52ce89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53e0fbe70547813f1c36f0530967a9a" id="r_af53e0fbe70547813f1c36f0530967a9a"><td class="memItemLeft" align="right" valign="top"><a id="af53e0fbe70547813f1c36f0530967a9a" name="af53e0fbe70547813f1c36f0530967a9a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = typename traits_type::reference</td></tr>
+<tr class="separator:af53e0fbe70547813f1c36f0530967a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b69d73f2a00e8af0e65a48b415c9c0e" id="r_a0b69d73f2a00e8af0e65a48b415c9c0e"><td class="memItemLeft" align="right" valign="top"><a id="a0b69d73f2a00e8af0e65a48b415c9c0e" name="a0b69d73f2a00e8af0e65a48b415c9c0e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_reference</b> = typename traits_type::const_reference</td></tr>
+<tr class="separator:a0b69d73f2a00e8af0e65a48b415c9c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2b9c2cb9b96759d26f52ad8030a979" id="r_a6f2b9c2cb9b96759d26f52ad8030a979"><td class="memItemLeft" align="right" valign="top"><a id="a6f2b9c2cb9b96759d26f52ad8030a979" name="a6f2b9c2cb9b96759d26f52ad8030a979"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_type</b> = typename traits_type::buffer_type</td></tr>
 <tr class="separator:a6f2b9c2cb9b96759d26f52ad8030a979"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea1c310a2ac6fbcbdd98289db65ecb37" id="r_aea1c310a2ac6fbcbdd98289db65ecb37"><td class="memItemLeft" align="right" valign="top"><a id="aea1c310a2ac6fbcbdd98289db65ecb37" name="aea1c310a2ac6fbcbdd98289db65ecb37"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_view</b> = typename traits_type::buffer_view</td></tr>
+<tr class="separator:aea1c310a2ac6fbcbdd98289db65ecb37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234096253b2d99da267c55276cf555a0" id="r_a234096253b2d99da267c55276cf555a0"><td class="memItemLeft" align="right" valign="top"><a id="a234096253b2d99da267c55276cf555a0" name="a234096253b2d99da267c55276cf555a0"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_view</b> = typename traits_type::const_buffer_view</td></tr>
+<tr class="separator:a234096253b2d99da267c55276cf555a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a534ac2d360cc4233dea7b97bed0ae88c" id="r_a534ac2d360cc4233dea7b97bed0ae88c"><td class="memItemLeft" align="right" valign="top"><a id="a534ac2d360cc4233dea7b97bed0ae88c" name="a534ac2d360cc4233dea7b97bed0ae88c"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>pimpl_type</b> = typename traits_type::pimpl_type</td></tr>
 <tr class="separator:a534ac2d360cc4233dea7b97bed0ae88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,36 +161,1048 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>rank_type</b> = type
 <tr class="memitem:ae830f3fc62f916301354fced8bd661b7" id="r_ae830f3fc62f916301354fced8bd661b7"><td class="memItemLeft" align="right" valign="top"><a id="ae830f3fc62f916301354fced8bd661b7" name="ae830f3fc62f916301354fced8bd661b7"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>shape_type</b> = typename traits_type::shape_type</td></tr>
 <tr class="separator:ae830f3fc62f916301354fced8bd661b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3336367e60093d9b84f7b741b914cc98" id="r_a3336367e60093d9b84f7b741b914cc98"><td class="memItemLeft" align="right" valign="top"><a id="a3336367e60093d9b84f7b741b914cc98" name="a3336367e60093d9b84f7b741b914cc98"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_shape_view</b> = typename traits_type::const_shape_view</td></tr>
+<tr class="separator:a3336367e60093d9b84f7b741b914cc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff820ad72a5276a312418379ec1b32d" id="r_a3ff820ad72a5276a312418379ec1b32d"><td class="memItemLeft" align="right" valign="top"><a id="a3ff820ad72a5276a312418379ec1b32d" name="a3ff820ad72a5276a312418379ec1b32d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename traits_type::size_type</td></tr>
+<tr class="separator:a3ff820ad72a5276a312418379ec1b32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1buffer_1_1BufferBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></td></tr>
+<tr class="memitem:ab5366bfacbc4a63a3d41d80a4a8d1a76 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ab5366bfacbc4a63a3d41d80a4a8d1a76"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_base_type</b> = typename my_traits::buffer_base_type</td></tr>
+<tr class="memdesc:ab5366bfacbc4a63a3d41d80a4a8d1a76 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all buffers inherit from. <br /></td></tr>
+<tr class="separator:ab5366bfacbc4a63a3d41d80a4a8d1a76 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac8f43aecd30f441a8ca3f19c027516a inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_aac8f43aecd30f441a8ca3f19c027516a"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_base_reference</b> = typename my_traits::buffer_base_reference</td></tr>
+<tr class="memdesc:aac8f43aecd30f441a8ca3f19c027516a inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a reference to an object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:aac8f43aecd30f441a8ca3f19c027516a inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d840ac6ddab88ad0008b16eec99de6 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a07d840ac6ddab88ad0008b16eec99de6"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_base_reference</b> = typename my_traits::const_buffer_base_reference</td></tr>
+<tr class="memdesc:a07d840ac6ddab88ad0008b16eec99de6 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a reference to a read-only object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:a07d840ac6ddab88ad0008b16eec99de6 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f5ef1d2bb0fd2c91829df29fa59f84 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a59f5ef1d2bb0fd2c91829df29fa59f84"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_base_pointer</b> = typename my_traits::buffer_base_pointer</td></tr>
+<tr class="memdesc:a59f5ef1d2bb0fd2c91829df29fa59f84 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:a59f5ef1d2bb0fd2c91829df29fa59f84 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8586d30717301136de386edff628d5 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_abc8586d30717301136de386edff628d5"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_base_pointer</b> = typename my_traits::const_buffer_base_pointer</td></tr>
+<tr class="memdesc:abc8586d30717301136de386edff628d5 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to a read-only object of type buffer_base_type. <br /></td></tr>
+<tr class="separator:abc8586d30717301136de386edff628d5 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908cc02b871dc8d39413f48d4ca6c844 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a908cc02b871dc8d39413f48d4ca6c844"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>layout_type</b> = <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html">layout::Physical</a></td></tr>
+<tr class="memdesc:a908cc02b871dc8d39413f48d4ca6c844 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the class describing the physical layout of the buffer. <br /></td></tr>
+<tr class="separator:a908cc02b871dc8d39413f48d4ca6c844 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f1c648e0258595f1ff3fb731da2db0b inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a9f1c648e0258595f1ff3fb731da2db0b"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_layout_reference</b> = const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a908cc02b871dc8d39413f48d4ca6c844">layout_type</a> &amp;</td></tr>
+<tr class="memdesc:a9f1c648e0258595f1ff3fb731da2db0b inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to a layout. <br /></td></tr>
+<tr class="separator:a9f1c648e0258595f1ff3fb731da2db0b inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77066597ca19842bf85c5991dd060ec2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a77066597ca19842bf85c5991dd060ec2"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>layout_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a908cc02b871dc8d39413f48d4ca6c844">layout_type</a> &gt;</td></tr>
+<tr class="memdesc:a77066597ca19842bf85c5991dd060ec2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to the layout. <br /></td></tr>
+<tr class="separator:a77066597ca19842bf85c5991dd060ec2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f5ac304b2f6953d6af42304d834a1b2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a5f5ac304b2f6953d6af42304d834a1b2"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator_base_type</b> = <a class="el" href="classtensorwrapper_1_1allocator_1_1AllocatorBase.html">allocator::AllocatorBase</a></td></tr>
+<tr class="memdesc:a5f5ac304b2f6953d6af42304d834a1b2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type all allocators inherit from. <br /></td></tr>
+<tr class="separator:a5f5ac304b2f6953d6af42304d834a1b2 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad912be0811e894bade6cc2fd211c2506 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ad912be0811e894bade6cc2fd211c2506"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator_base_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5f5ac304b2f6953d6af42304d834a1b2">allocator_base_type</a> &gt;</td></tr>
+<tr class="memdesc:ad912be0811e894bade6cc2fd211c2506 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an allocator_base_type object. <br /></td></tr>
+<tr class="separator:ad912be0811e894bade6cc2fd211c2506 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4efa6bd3d09e2d909fc438532d9a056 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ab4efa6bd3d09e2d909fc438532d9a056"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>allocator_base_reference</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5f5ac304b2f6953d6af42304d834a1b2">allocator_base_type</a> &amp;</td></tr>
+<tr class="memdesc:ab4efa6bd3d09e2d909fc438532d9a056 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a mutable reference to an allocator_base_type. <br /></td></tr>
+<tr class="separator:ab4efa6bd3d09e2d909fc438532d9a056 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f8c5d2f17c59169e9717852a15eedef inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a2f8c5d2f17c59169e9717852a15eedef"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_allocator_reference</b> = const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5f5ac304b2f6953d6af42304d834a1b2">allocator_base_type</a> &amp;</td></tr>
+<tr class="memdesc:a2f8c5d2f17c59169e9717852a15eedef inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an allocator_base_type. <br /></td></tr>
+<tr class="separator:a2f8c5d2f17c59169e9717852a15eedef inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c2203aecd842181ba6261936f35609 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ad6c2203aecd842181ba6261936f35609"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>rank_type</b> = typename <a class="el" href="classtensorwrapper_1_1layout_1_1Physical.html#a9e4e0d859918af487ae9e20cea6865c4">layout_type::size_type</a></td></tr>
+<tr class="memdesc:ad6c2203aecd842181ba6261936f35609 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to represent the tensor's rank. <br /></td></tr>
+<tr class="separator:ad6c2203aecd842181ba6261936f35609 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a7e74500695d4b9ef7768743fe6c1e29b"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>base_type</b> = BufferBase</td></tr>
+<tr class="memdesc:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type *this is implementing. <br /></td></tr>
+<tr class="separator:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d4cdbec8c20631c3bf9caf684f0fe1c inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a4d4cdbec8c20631c3bf9caf684f0fe1c"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>base_reference</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &amp;</td></tr>
+<tr class="memdesc:a4d4cdbec8c20631c3bf9caf684f0fe1c inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable reference to an object of type base_type. <br /></td></tr>
+<tr class="separator:a4d4cdbec8c20631c3bf9caf684f0fe1c inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d3ea0c25ad674f9796b74e2fe62a818 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a4d3ea0c25ad674f9796b74e2fe62a818"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_base_reference</b> = const <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &amp;</td></tr>
+<tr class="memdesc:a4d3ea0c25ad674f9796b74e2fe62a818 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only reference to an object of type base_type. <br /></td></tr>
+<tr class="separator:a4d3ea0c25ad674f9796b74e2fe62a818 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808afdcccc21b8ad1a6e4a8ee2296ae1 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a808afdcccc21b8ad1a6e4a8ee2296ae1"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>base_rvalue</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &amp;&amp;</td></tr>
+<tr class="memdesc:a808afdcccc21b8ad1a6e4a8ee2296ae1 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable rvalue reference to an object of type base_type. <br /></td></tr>
+<tr class="separator:a808afdcccc21b8ad1a6e4a8ee2296ae1 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5623524f9de386896bc7600f78d0250e inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a5623524f9de386896bc7600f78d0250e"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>base_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &gt;</td></tr>
+<tr class="memdesc:a5623524f9de386896bc7600f78d0250e inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to an object of type base_type. <br /></td></tr>
+<tr class="separator:a5623524f9de386896bc7600f78d0250e inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49c3855ca63ff779fd2ed214510057c8 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a49c3855ca63ff779fd2ed214510057c8"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_base_pointer</b> = std::unique_ptr&lt; const <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a7e74500695d4b9ef7768743fe6c1e29b">base_type</a> &gt;</td></tr>
+<tr class="memdesc:a49c3855ca63ff779fd2ed214510057c8 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to a read-only object of type base_type. <br /></td></tr>
+<tr class="separator:a49c3855ca63ff779fd2ed214510057c8 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9531ddf5e054a4c914b5f54dc981238 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_ad9531ddf5e054a4c914b5f54dc981238"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>string_type</b> = std::string</td></tr>
+<tr class="memdesc:ad9531ddf5e054a4c914b5f54dc981238 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for representing *this as a string. <br /></td></tr>
+<tr class="separator:ad9531ddf5e054a4c914b5f54dc981238 inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1detail___1_1DSLBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:ae4cf93785043718e77bb36638cd7a8b9 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_ae4cf93785043718e77bb36638cd7a8b9"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_value_type</b> = BufferBase</td></tr>
+<tr class="memdesc:ae4cf93785043718e77bb36638cd7a8b9 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the derived class. <br /></td></tr>
+<tr class="separator:ae4cf93785043718e77bb36638cd7a8b9 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affe3c128cd26826333aa494b96a7281b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_affe3c128cd26826333aa494b96a7281b"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_const_value_type</b> = const <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9">dsl_value_type</a></td></tr>
+<tr class="memdesc:affe3c128cd26826333aa494b96a7281b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only object of type dsl_value_type. <br /></td></tr>
+<tr class="separator:affe3c128cd26826333aa494b96a7281b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdad86554aa99fe9b5111737f6bd8571 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_abdad86554aa99fe9b5111737f6bd8571"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_reference</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9">dsl_value_type</a> &amp;</td></tr>
+<tr class="memdesc:abdad86554aa99fe9b5111737f6bd8571 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a reference to an object of type dsl_value_type. <br /></td></tr>
+<tr class="separator:abdad86554aa99fe9b5111737f6bd8571 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a723bc12e6e338836c14bb47ea2555 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_af4a723bc12e6e338836c14bb47ea2555"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_const_reference</b> = const <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9">dsl_value_type</a> &amp;</td></tr>
+<tr class="memdesc:af4a723bc12e6e338836c14bb47ea2555 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to an object of type dsl_value_type. <br /></td></tr>
+<tr class="separator:af4a723bc12e6e338836c14bb47ea2555 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09fb09448b438208f57cf081abeb6e6a inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a09fb09448b438208f57cf081abeb6e6a"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>dsl_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9">dsl_value_type</a> &gt;</td></tr>
+<tr class="memdesc:a09fb09448b438208f57cf081abeb6e6a inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type dsl_value_type. <br /></td></tr>
+<tr class="separator:a09fb09448b438208f57cf081abeb6e6a inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad72659a6f55ee9bae43e1087aa1b086b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_ad72659a6f55ee9bae43e1087aa1b086b"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>string_type</b> = std::string</td></tr>
+<tr class="memdesc:ad72659a6f55ee9bae43e1087aa1b086b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for representing the dummy indices as a string. <br /></td></tr>
+<tr class="separator:ad72659a6f55ee9bae43e1087aa1b086b inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0161d627582c002dbd77d97c076976fb inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a0161d627582c002dbd77d97c076976fb"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>labeled_type</b> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">dsl::Labeled</a>&lt; <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9">dsl_value_type</a>, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ad72659a6f55ee9bae43e1087aa1b086b">string_type</a> &gt;</td></tr>
+<tr class="memdesc:a0161d627582c002dbd77d97c076976fb inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a labeled object. <br /></td></tr>
+<tr class="separator:a0161d627582c002dbd77d97c076976fb inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5273f3007852fd59832c5c916d812819 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a5273f3007852fd59832c5c916d812819"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>labeled_const_type</b> = <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html">dsl::Labeled</a>&lt; <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#affe3c128cd26826333aa494b96a7281b">dsl_const_value_type</a>, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ad72659a6f55ee9bae43e1087aa1b086b">string_type</a> &gt;</td></tr>
+<tr class="memdesc:a5273f3007852fd59832c5c916d812819 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a labeled read-only object (n.b. labels are mutable) <br /></td></tr>
+<tr class="separator:a5273f3007852fd59832c5c916d812819 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0ae4d4cac26930cf8338c1a24b004c4 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_aa0ae4d4cac26930cf8338c1a24b004c4"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = typename <a class="el" href="classtensorwrapper_1_1dsl_1_1Labeled.html#a24a571ab75613584b5c4ccc1fc3a92fa">labeled_type::label_type</a></td></tr>
+<tr class="memdesc:aa0ae4d4cac26930cf8338c1a24b004c4 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of parsed labels. <br /></td></tr>
+<tr class="separator:aa0ae4d4cac26930cf8338c1a24b004c4 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177e1e11d1adce6f1c6d3b2515eee56c inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a177e1e11d1adce6f1c6d3b2515eee56c"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>labeled_reference</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a0161d627582c002dbd77d97c076976fb">labeled_type</a> &amp;</td></tr>
+<tr class="memdesc:a177e1e11d1adce6f1c6d3b2515eee56c inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a mutable reference to a labeled_type object. <br /></td></tr>
+<tr class="separator:a177e1e11d1adce6f1c6d3b2515eee56c inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af81286387b2df29588b36bf10a073048 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase" id="r_af81286387b2df29588b36bf10a073048"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_labeled_reference</b> = const <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a5273f3007852fd59832c5c916d812819">labeled_const_type</a> &amp;</td></tr>
+<tr class="memdesc:af81286387b2df29588b36bf10a073048 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a read-only reference to a labeled_type object. <br /></td></tr>
+<tr class="separator:af81286387b2df29588b36bf10a073048 inherit pub_types_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a40fadec5790b7a7421294adc2039a8f6" id="r_a40fadec5790b7a7421294adc2039a8f6"><td class="memTemplParams" colspan="2"><a id="a40fadec5790b7a7421294adc2039a8f6" name="a40fadec5790b7a7421294adc2039a8f6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a40fadec5790b7a7421294adc2039a8f6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>MDBuffer</b> (shape_type shape, std::vector&lt; T &gt; elements)</td></tr>
-<tr class="separator:a40fadec5790b7a7421294adc2039a8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8222a3840a433f4a758be1d3219c99e4" id="r_a8222a3840a433f4a758be1d3219c99e4"><td class="memItemLeft" align="right" valign="top"><a id="a8222a3840a433f4a758be1d3219c99e4" name="a8222a3840a433f4a758be1d3219c99e4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MDBuffer</b> (shape_type shape, <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a6f2b9c2cb9b96759d26f52ad8030a979">buffer_type</a> buffer)</td></tr>
-<tr class="separator:a8222a3840a433f4a758be1d3219c99e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3e8c0af1a5e588d6b0d16877863e6a1" id="r_aa3e8c0af1a5e588d6b0d16877863e6a1"><td class="memItemLeft" align="right" valign="top"><a id="aa3e8c0af1a5e588d6b0d16877863e6a1" name="aa3e8c0af1a5e588d6b0d16877863e6a1"></a>
-rank_type&#160;</td><td class="memItemRight" valign="bottom"><b>rank</b> () const</td></tr>
-<tr class="separator:aa3e8c0af1a5e588d6b0d16877863e6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f2c5bdb64156f0383a1d99de597d8b" id="r_a45f2c5bdb64156f0383a1d99de597d8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a45f2c5bdb64156f0383a1d99de597d8b">MDBuffer</a> () noexcept</td></tr>
+<tr class="memdesc:a45f2c5bdb64156f0383a1d99de597d8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty multi-dimensional buffer.  <br /></td></tr>
+<tr class="separator:a45f2c5bdb64156f0383a1d99de597d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57db8022aefb882b5820fcfed958cc0f" id="r_a57db8022aefb882b5820fcfed958cc0f"><td class="memTemplParams" colspan="2">template&lt;concepts::FloatingPoint T&gt; </td></tr>
+<tr class="memitem:a57db8022aefb882b5820fcfed958cc0f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a57db8022aefb882b5820fcfed958cc0f">MDBuffer</a> (std::vector&lt; T &gt; elements, shape_type <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ac470ce2f7d9b5929cd15a9137bba8579">shape</a>)</td></tr>
+<tr class="memdesc:a57db8022aefb882b5820fcfed958cc0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Treats allocated memory like a multi-dimensional buffer.  <br /></td></tr>
+<tr class="separator:a57db8022aefb882b5820fcfed958cc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96cbd46dd9e5408dbdd128317251ff45" id="r_a96cbd46dd9e5408dbdd128317251ff45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a96cbd46dd9e5408dbdd128317251ff45">MDBuffer</a> (buffer_type buffer, shape_type <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ac470ce2f7d9b5929cd15a9137bba8579">shape</a>)</td></tr>
+<tr class="memdesc:a96cbd46dd9e5408dbdd128317251ff45"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main ctor.  <br /></td></tr>
+<tr class="separator:a96cbd46dd9e5408dbdd128317251ff45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9998f538c106864c5eae487fd08687b3" id="r_a9998f538c106864c5eae487fd08687b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a9998f538c106864c5eae487fd08687b3">MDBuffer</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;other)=default</td></tr>
+<tr class="memdesc:a9998f538c106864c5eae487fd08687b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes *this to a deep copy of <code>other</code>.  <br /></td></tr>
+<tr class="separator:a9998f538c106864c5eae487fd08687b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe96510642ea0f1ba3b400859a1e978f" id="r_afe96510642ea0f1ba3b400859a1e978f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#afe96510642ea0f1ba3b400859a1e978f">MDBuffer</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&amp;other) noexcept=default</td></tr>
+<tr class="memdesc:afe96510642ea0f1ba3b400859a1e978f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move ctor.  <br /></td></tr>
+<tr class="separator:afe96510642ea0f1ba3b400859a1e978f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05fecd6ff16ea886f83d9e56b3ec80a" id="r_ad05fecd6ff16ea886f83d9e56b3ec80a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ad05fecd6ff16ea886f83d9e56b3ec80a">operator=</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;other)=default</td></tr>
+<tr class="memdesc:ad05fecd6ff16ea886f83d9e56b3ec80a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment.  <br /></td></tr>
+<tr class="separator:ad05fecd6ff16ea886f83d9e56b3ec80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0871c9d89daa7f1d7894b6f6eaeb59b" id="r_af0871c9d89daa7f1d7894b6f6eaeb59b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#af0871c9d89daa7f1d7894b6f6eaeb59b">operator=</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&amp;other) noexcept=default</td></tr>
+<tr class="memdesc:af0871c9d89daa7f1d7894b6f6eaeb59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment.  <br /></td></tr>
+<tr class="separator:af0871c9d89daa7f1d7894b6f6eaeb59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bae352bdc8e22aede428aad59176456" id="r_a8bae352bdc8e22aede428aad59176456"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8bae352bdc8e22aede428aad59176456">~MDBuffer</a> () override=default</td></tr>
+<tr class="memdesc:a8bae352bdc8e22aede428aad59176456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted dtor.  <br /></td></tr>
+<tr class="separator:a8bae352bdc8e22aede428aad59176456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac470ce2f7d9b5929cd15a9137bba8579" id="r_ac470ce2f7d9b5929cd15a9137bba8579"><td class="memItemLeft" align="right" valign="top">const_shape_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ac470ce2f7d9b5929cd15a9137bba8579">shape</a> () const</td></tr>
+<tr class="memdesc:ac470ce2f7d9b5929cd15a9137bba8579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns (a view of) the shape of *this.  <br /></td></tr>
+<tr class="separator:ac470ce2f7d9b5929cd15a9137bba8579"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f042bdb26bd54a68c51238d159d92ca" id="r_a9f042bdb26bd54a68c51238d159d92ca"><td class="memItemLeft" align="right" valign="top">size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a9f042bdb26bd54a68c51238d159d92ca">size</a> () const noexcept</td></tr>
+<tr class="memdesc:a9f042bdb26bd54a68c51238d159d92ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of elements in *this.  <br /></td></tr>
+<tr class="separator:a9f042bdb26bd54a68c51238d159d92ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af06524a3cec12b4d5412b48e597fea9d" id="r_af06524a3cec12b4d5412b48e597fea9d"><td class="memItemLeft" align="right" valign="top">const_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#af06524a3cec12b4d5412b48e597fea9d">get_elem</a> (index_vector index) const</td></tr>
+<tr class="memdesc:af06524a3cec12b4d5412b48e597fea9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the element with the offsets specified by <code>index</code>.  <br /></td></tr>
+<tr class="separator:af06524a3cec12b4d5412b48e597fea9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc8c74ba26a9403df57fa2d988fc00d0" id="r_adc8c74ba26a9403df57fa2d988fc00d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#adc8c74ba26a9403df57fa2d988fc00d0">set_elem</a> (index_vector index, <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8192f1e87baf4361a7ad70bc1f52ce89">value_type</a> new_value)</td></tr>
+<tr class="memdesc:adc8c74ba26a9403df57fa2d988fc00d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the specified element to <code>new_value</code>.  <br /></td></tr>
+<tr class="separator:adc8c74ba26a9403df57fa2d988fc00d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3abec104f127cdfab40bcea99ac6de5" id="r_ab3abec104f127cdfab40bcea99ac6de5"><td class="memItemLeft" align="right" valign="top">buffer_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ab3abec104f127cdfab40bcea99ac6de5">get_mutable_data</a> ()</td></tr>
+<tr class="memdesc:ab3abec104f127cdfab40bcea99ac6de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view of the data.  <br /></td></tr>
+<tr class="separator:ab3abec104f127cdfab40bcea99ac6de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b8092b1e57616b93b13905c3423a5cd" id="r_a4b8092b1e57616b93b13905c3423a5cd"><td class="memItemLeft" align="right" valign="top">const_buffer_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a4b8092b1e57616b93b13905c3423a5cd">get_immutable_data</a> () const</td></tr>
+<tr class="memdesc:a4b8092b1e57616b93b13905c3423a5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a read-only view of the data.  <br /></td></tr>
+<tr class="separator:a4b8092b1e57616b93b13905c3423a5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fe96eaaf34ce759e75ddd8a956e585f" id="r_a8fe96eaaf34ce759e75ddd8a956e585f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8fe96eaaf34ce759e75ddd8a956e585f">operator==</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">my_type</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:a8fe96eaaf34ce759e75ddd8a956e585f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> objects for exact equality.  <br /></td></tr>
+<tr class="separator:a8fe96eaaf34ce759e75ddd8a956e585f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></td></tr>
+<tr class="memitem:a6623e82c5f3bef4b2fce767a55f55d40 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a6623e82c5f3bef4b2fce767a55f55d40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a6623e82c5f3bef4b2fce767a55f55d40">has_layout</a> () const noexcept</td></tr>
+<tr class="memdesc:a6623e82c5f3bef4b2fce767a55f55d40 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does *this have a layout?  <br /></td></tr>
+<tr class="separator:a6623e82c5f3bef4b2fce767a55f55d40 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a027cb90690db6af71698c59c6295f358 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a027cb90690db6af71698c59c6295f358"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a027cb90690db6af71698c59c6295f358">has_allocator</a> () const noexcept</td></tr>
+<tr class="memdesc:a027cb90690db6af71698c59c6295f358 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does *this have an allocator?  <br /></td></tr>
+<tr class="separator:a027cb90690db6af71698c59c6295f358 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5214ae9b235a602c19864639ffef1c6b inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a5214ae9b235a602c19864639ffef1c6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a9f1c648e0258595f1ff3fb731da2db0b">const_layout_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5214ae9b235a602c19864639ffef1c6b">layout</a> () const</td></tr>
+<tr class="memdesc:a5214ae9b235a602c19864639ffef1c6b inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the layout of *this.  <br /></td></tr>
+<tr class="separator:a5214ae9b235a602c19864639ffef1c6b inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0faf5ca7f3556831bb345cc0d040f8 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_acd0faf5ca7f3556831bb345cc0d040f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ab4efa6bd3d09e2d909fc438532d9a056">allocator_base_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#acd0faf5ca7f3556831bb345cc0d040f8">allocator</a> ()</td></tr>
+<tr class="memdesc:acd0faf5ca7f3556831bb345cc0d040f8 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the allocator of *this.  <br /></td></tr>
+<tr class="separator:acd0faf5ca7f3556831bb345cc0d040f8 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f1dda378ff9b9f6b5295aacc18310f inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a32f1dda378ff9b9f6b5295aacc18310f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a2f8c5d2f17c59169e9717852a15eedef">const_allocator_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a32f1dda378ff9b9f6b5295aacc18310f">allocator</a> () const</td></tr>
+<tr class="memdesc:a32f1dda378ff9b9f6b5295aacc18310f inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the allocator of *this.  <br /></td></tr>
+<tr class="separator:a32f1dda378ff9b9f6b5295aacc18310f inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d46599ed961debf2eeaa059bd180434 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a2d46599ed961debf2eeaa059bd180434"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ad6c2203aecd842181ba6261936f35609">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rank</b> () const noexcept</td></tr>
+<tr class="separator:a2d46599ed961debf2eeaa059bd180434 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564962092d430bcc7453d3228bac985d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a564962092d430bcc7453d3228bac985d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a564962092d430bcc7453d3228bac985d">operator==</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:a564962092d430bcc7453d3228bac985d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this value equal to <code>rhs</code>?  <br /></td></tr>
+<tr class="separator:a564962092d430bcc7453d3228bac985d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489085b5300e738abb341e6277e9c6fa inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a489085b5300e738abb341e6277e9c6fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a489085b5300e738abb341e6277e9c6fa">operator!=</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:a489085b5300e738abb341e6277e9c6fa inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this different from <code>rhs</code>?  <br /></td></tr>
+<tr class="separator:a489085b5300e738abb341e6277e9c6fa inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:a024e62fa649f93a0cd1039a136381b47 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a024e62fa649f93a0cd1039a136381b47"><td class="memItemLeft" align="right" valign="top">
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~PolymorphicBase</b> () noexcept=default</td></tr>
+<tr class="memdesc:a024e62fa649f93a0cd1039a136381b47 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaulted no-throw polymorphic dtor. <br /></td></tr>
+<tr class="separator:a024e62fa649f93a0cd1039a136381b47 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b29b65a2f44ca721ce151a312a98521 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a3b29b65a2f44ca721ce151a312a98521"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a5623524f9de386896bc7600f78d0250e">base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a3b29b65a2f44ca721ce151a312a98521">clone</a> () const</td></tr>
+<tr class="memdesc:a3b29b65a2f44ca721ce151a312a98521 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a deep polymorphic copy of *this via the base class.  <br /></td></tr>
+<tr class="separator:a3b29b65a2f44ca721ce151a312a98521 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4cdc663a4e292257ec6a63815c17cbe inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_ad4cdc663a4e292257ec6a63815c17cbe"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad4cdc663a4e292257ec6a63815c17cbe">clone_as</a> () const</td></tr>
+<tr class="memdesc:ad4cdc663a4e292257ec6a63815c17cbe inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a deep polymorphic copy, but returns the pointer as a class other than base_type.  <br /></td></tr>
+<tr class="separator:ad4cdc663a4e292257ec6a63815c17cbe inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca6aec83f64355cc5d6b5cac49fc4308 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_aca6aec83f64355cc5d6b5cac49fc4308"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#aca6aec83f64355cc5d6b5cac49fc4308">are_equal</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">const_base_reference</a> rhs) const noexcept</td></tr>
+<tr class="memdesc:aca6aec83f64355cc5d6b5cac49fc4308 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if *this and <code>rhs</code> are polymorphically equal.  <br /></td></tr>
+<tr class="separator:aca6aec83f64355cc5d6b5cac49fc4308 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fce0bfd83f932ec181aaeb0367ba712 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a0fce0bfd83f932ec181aaeb0367ba712"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a0fce0bfd83f932ec181aaeb0367ba712">are_different</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">const_base_reference</a> rhs) const noexcept</td></tr>
+<tr class="memdesc:a0fce0bfd83f932ec181aaeb0367ba712 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if *this and <code>rhs</code> are polymorphically different.  <br /></td></tr>
+<tr class="separator:a0fce0bfd83f932ec181aaeb0367ba712 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a299d66e878f901448a77207902096c85 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a299d66e878f901448a77207902096c85"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a299d66e878f901448a77207902096c85">to_string</a> () const</td></tr>
+<tr class="memdesc:a299d66e878f901448a77207902096c85 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representation of *this.  <br /></td></tr>
+<tr class="separator:a299d66e878f901448a77207902096c85 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a642479b6849db7e63c981124a345f422 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a642479b6849db7e63c981124a345f422"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a642479b6849db7e63c981124a345f422">add_to_stream</a> (std::ostream &amp;os) const</td></tr>
+<tr class="memdesc:a642479b6849db7e63c981124a345f422 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a string representation of *this to the stream.  <br /></td></tr>
+<tr class="separator:a642479b6849db7e63c981124a345f422 inherit pub_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classtensorwrapper_1_1detail___1_1DSLBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:a13304dcd5e5f4e71ef85c53c92218fdf inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a13304dcd5e5f4e71ef85c53c92218fdf"><td class="memItemLeft" align="right" valign="top">
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~DSLBase</b> () noexcept=default</td></tr>
+<tr class="memdesc:a13304dcd5e5f4e71ef85c53c92218fdf inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polymorphic no-throw defaulted dtor. <br /></td></tr>
+<tr class="separator:a13304dcd5e5f4e71ef85c53c92218fdf inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6eb6c7fa85642a8d9458f360c646ba3 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_ab6eb6c7fa85642a8d9458f360c646ba3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a0161d627582c002dbd77d97c076976fb">labeled_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ab6eb6c7fa85642a8d9458f360c646ba3">operator()</a> (LabelType &amp;&amp;labels)</td></tr>
+<tr class="memdesc:ab6eb6c7fa85642a8d9458f360c646ba3 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates labels with the modes of *this.  <br /></td></tr>
+<tr class="separator:ab6eb6c7fa85642a8d9458f360c646ba3 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a869ed602bc058cf88a1f17b8e9edaa7b inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a869ed602bc058cf88a1f17b8e9edaa7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a5273f3007852fd59832c5c916d812819">labeled_const_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a869ed602bc058cf88a1f17b8e9edaa7b">operator()</a> (LabelType &amp;&amp;labels) const</td></tr>
+<tr class="memdesc:a869ed602bc058cf88a1f17b8e9edaa7b inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates labels with the modes of *this.  <br /></td></tr>
+<tr class="separator:a869ed602bc058cf88a1f17b8e9edaa7b inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb754acebdb8d12c93687a5a3eccfc1 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_aacb754acebdb8d12c93687a5a3eccfc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aacb754acebdb8d12c93687a5a3eccfc1">addition_assignment</a> (LabelType &amp;&amp;this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:aacb754acebdb8d12c93687a5a3eccfc1 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this to the result of <code>lhs</code> + <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:aacb754acebdb8d12c93687a5a3eccfc1 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8428c120176049e398ac8ba60034b3fd inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a8428c120176049e398ac8ba60034b3fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a8428c120176049e398ac8ba60034b3fd">subtraction_assignment</a> (LabelType &amp;&amp;this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a8428c120176049e398ac8ba60034b3fd inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this to the result of <code>lhs</code> - <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:a8428c120176049e398ac8ba60034b3fd inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd76bb7b627b14a67f64b3df9e907b7 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_abdd76bb7b627b14a67f64b3df9e907b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdd76bb7b627b14a67f64b3df9e907b7">multiplication_assignment</a> (LabelType &amp;&amp;this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:abdd76bb7b627b14a67f64b3df9e907b7 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this to the result of <code>lhs</code> * <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:abdd76bb7b627b14a67f64b3df9e907b7 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa547edda9c9e2a1fc49b6f605ad4e523 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_aa547edda9c9e2a1fc49b6f605ad4e523"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa547edda9c9e2a1fc49b6f605ad4e523">permute_assignment</a> (LabelType &amp;&amp;this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:aa547edda9c9e2a1fc49b6f605ad4e523 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets *this to a permutation of <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:aa547edda9c9e2a1fc49b6f605ad4e523 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0052a85a61b87d29d8f1cd0db0d0c43 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_ae0052a85a61b87d29d8f1cd0db0d0c43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#ae0052a85a61b87d29d8f1cd0db0d0c43">scalar_multiplication</a> (LabelType &amp;&amp;this_labels, ScalarType &amp;&amp;scalar, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:ae0052a85a61b87d29d8f1cd0db0d0c43 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales *this by <code>scalar</code>.  <br /></td></tr>
+<tr class="separator:ae0052a85a61b87d29d8f1cd0db0d0c43 inherit pub_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac70890cae0c0586c7a88edcd0d1f43ff" id="r_ac70890cae0c0586c7a88edcd0d1f43ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a59f5ef1d2bb0fd2c91829df29fa59f84">buffer_base_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#ac70890cae0c0586c7a88edcd0d1f43ff">clone_</a> () const override</td></tr>
+<tr class="memdesc:ac70890cae0c0586c7a88edcd0d1f43ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a deep polymorphic copy of *this.  <br /></td></tr>
+<tr class="separator:ac70890cae0c0586c7a88edcd0d1f43ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9c79c1ec7cb5ce0c1418e72c44e007e" id="r_af9c79c1ec7cb5ce0c1418e72c44e007e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#af9c79c1ec7cb5ce0c1418e72c44e007e">are_equal_</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a07d840ac6ddab88ad0008b16eec99de6">const_buffer_base_reference</a> rhs) const noexcept override</td></tr>
+<tr class="separator:af9c79c1ec7cb5ce0c1418e72c44e007e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c9f68216b736a7dc04e5d5bfe7e2d59" id="r_a4c9f68216b736a7dc04e5d5bfe7e2d59"><td class="memItemLeft" align="right" valign="top"><a id="a4c9f68216b736a7dc04e5d5bfe7e2d59" name="a4c9f68216b736a7dc04e5d5bfe7e2d59"></a>
+dsl_reference&#160;</td><td class="memItemRight" valign="bottom"><b>addition_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a4c9f68216b736a7dc04e5d5bfe7e2d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f22daa7ba04a03805ca5df0a6288d4" id="r_ac8f22daa7ba04a03805ca5df0a6288d4"><td class="memItemLeft" align="right" valign="top"><a id="ac8f22daa7ba04a03805ca5df0a6288d4" name="ac8f22daa7ba04a03805ca5df0a6288d4"></a>
+dsl_reference&#160;</td><td class="memItemRight" valign="bottom"><b>subtraction_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:ac8f22daa7ba04a03805ca5df0a6288d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a88c81eada69726eb8606cf39679311" id="r_a1a88c81eada69726eb8606cf39679311"><td class="memItemLeft" align="right" valign="top"><a id="a1a88c81eada69726eb8606cf39679311" name="a1a88c81eada69726eb8606cf39679311"></a>
+dsl_reference&#160;</td><td class="memItemRight" valign="bottom"><b>multiplication_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a1a88c81eada69726eb8606cf39679311"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f9292f5cd484e2b0069233650e37170" id="r_a4f9292f5cd484e2b0069233650e37170"><td class="memItemLeft" align="right" valign="top"><a id="a4f9292f5cd484e2b0069233650e37170" name="a4f9292f5cd484e2b0069233650e37170"></a>
+dsl_reference&#160;</td><td class="memItemRight" valign="bottom"><b>permute_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a4f9292f5cd484e2b0069233650e37170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a002ffc53db17ca8ae689f325c4274e62" id="r_a002ffc53db17ca8ae689f325c4274e62"><td class="memItemLeft" align="right" valign="top"><a id="a002ffc53db17ca8ae689f325c4274e62" name="a002ffc53db17ca8ae689f325c4274e62"></a>
+dsl_reference&#160;</td><td class="memItemRight" valign="bottom"><b>scalar_multiplication_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, double scalar, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a002ffc53db17ca8ae689f325c4274e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37078ad7bbdd291f714ed231478edfcd" id="r_a37078ad7bbdd291f714ed231478edfcd"><td class="memItemLeft" align="right" valign="top">string_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a37078ad7bbdd291f714ed231478edfcd">to_string_</a> () const override</td></tr>
+<tr class="memdesc:a37078ad7bbdd291f714ed231478edfcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls add_to_stream_ on a stringstream to implement.  <br /></td></tr>
+<tr class="separator:a37078ad7bbdd291f714ed231478edfcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a539fbf861fe25328f2950e9f2691f491" id="r_a539fbf861fe25328f2950e9f2691f491"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a539fbf861fe25328f2950e9f2691f491">add_to_stream_</a> (std::ostream &amp;os) const override</td></tr>
+<tr class="memdesc:a539fbf861fe25328f2950e9f2691f491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object.">Eigen</a>'s printing capabilities to add to stream.  <br /></td></tr>
+<tr class="separator:a539fbf861fe25328f2950e9f2691f491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></td></tr>
+<tr class="memitem:aba4a07e6b73c9ce7826be6690e600b18 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_aba4a07e6b73c9ce7826be6690e600b18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aba4a07e6b73c9ce7826be6690e600b18">BufferBase</a> ()</td></tr>
+<tr class="memdesc:aba4a07e6b73c9ce7826be6690e600b18 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer with no layout.  <br /></td></tr>
+<tr class="separator:aba4a07e6b73c9ce7826be6690e600b18 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae853e4cabc4ef7bbf377901d95002b00 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ae853e4cabc4ef7bbf377901d95002b00"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ae853e4cabc4ef7bbf377901d95002b00">BufferBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a9f1c648e0258595f1ff3fb731da2db0b">const_layout_reference</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a5214ae9b235a602c19864639ffef1c6b">layout</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a2f8c5d2f17c59169e9717852a15eedef">const_allocator_reference</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#acd0faf5ca7f3556831bb345cc0d040f8">allocator</a>)</td></tr>
+<tr class="memdesc:ae853e4cabc4ef7bbf377901d95002b00 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer initialized with a copy of <code>layout</code>.  <br /></td></tr>
+<tr class="separator:ae853e4cabc4ef7bbf377901d95002b00 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa19e8d797567919b4e39e6df3f1f0128 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_aa19e8d797567919b4e39e6df3f1f0128"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aa19e8d797567919b4e39e6df3f1f0128">BufferBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a77066597ca19842bf85c5991dd060ec2">layout_pointer</a> playout, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#ad912be0811e894bade6cc2fd211c2506">allocator_base_pointer</a> pallocator) noexcept</td></tr>
+<tr class="memdesc:aa19e8d797567919b4e39e6df3f1f0128 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer which owns the layout pointed to by <code>playout</code>.  <br /></td></tr>
+<tr class="separator:aa19e8d797567919b4e39e6df3f1f0128 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a3a6628e4afb8113b7c31ab6ed7ccb inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a15a3a6628e4afb8113b7c31ab6ed7ccb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a15a3a6628e4afb8113b7c31ab6ed7ccb">BufferBase</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;other)</td></tr>
+<tr class="memdesc:a15a3a6628e4afb8113b7c31ab6ed7ccb inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffer by deep copying <code>other</code>.  <br /></td></tr>
+<tr class="separator:a15a3a6628e4afb8113b7c31ab6ed7ccb inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af486beba2e9d585835bfb5af44c3e867 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_af486beba2e9d585835bfb5af44c3e867"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#af486beba2e9d585835bfb5af44c3e867">operator=</a> (const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;rhs)</td></tr>
+<tr class="memdesc:af486beba2e9d585835bfb5af44c3e867 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the state in *this with a deep copy of the state in <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:af486beba2e9d585835bfb5af44c3e867 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0387c508406e20955923edf4ef3a6f46 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a0387c508406e20955923edf4ef3a6f46"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>addition_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a0387c508406e20955923edf4ef3a6f46 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b78f9dcb17ccba3fd08cd6603a6ddb inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a72b78f9dcb17ccba3fd08cd6603a6ddb"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subtraction_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a72b78f9dcb17ccba3fd08cd6603a6ddb inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ecc008997f044fabe4d7d3442fd8eef inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a7ecc008997f044fabe4d7d3442fd8eef"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multiplication_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a7ecc008997f044fabe4d7d3442fd8eef inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33049a08c43c3943300f81c58daa9dd6 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_a33049a08c43c3943300f81c58daa9dd6"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>permute_assignment_</b> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs) override</td></tr>
+<tr class="separator:a33049a08c43c3943300f81c58daa9dd6 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:ab2ed41e0c812d0c07d7a59ef88beacb8 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_ab2ed41e0c812d0c07d7a59ef88beacb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ab2ed41e0c812d0c07d7a59ef88beacb8">PolymorphicBase</a> () noexcept=default</td></tr>
+<tr class="memdesc:ab2ed41e0c812d0c07d7a59ef88beacb8 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op default ctor.  <br /></td></tr>
+<tr class="separator:ab2ed41e0c812d0c07d7a59ef88beacb8 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ba66e5906f003079dd4ebe04ed18588 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a6ba66e5906f003079dd4ebe04ed18588"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a6ba66e5906f003079dd4ebe04ed18588">PolymorphicBase</a> (const <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">PolymorphicBase</a> &amp;other)=default</td></tr>
+<tr class="memdesc:a6ba66e5906f003079dd4ebe04ed18588 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy ctor.  <br /></td></tr>
+<tr class="separator:a6ba66e5906f003079dd4ebe04ed18588 inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2223944f002e239a36207f6e5203b44b inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a2223944f002e239a36207f6e5203b44b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a2223944f002e239a36207f6e5203b44b">are_equal_impl_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">const_base_reference</a> rhs) const noexcept</td></tr>
+<tr class="memdesc:a2223944f002e239a36207f6e5203b44b inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements are_equal_ assuming the derived class implements operator==.  <br /></td></tr>
+<tr class="separator:a2223944f002e239a36207f6e5203b44b inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ee6d1b455b90cb25552ce6aec53d8f inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_af8ee6d1b455b90cb25552ce6aec53d8f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#af8ee6d1b455b90cb25552ce6aec53d8f">are_equal_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a4d3ea0c25ad674f9796b74e2fe62a818">const_base_reference</a> rhs) const noexcept=0</td></tr>
+<tr class="memdesc:af8ee6d1b455b90cb25552ce6aec53d8f inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived classes should override this method to implement are_equal.  <br /></td></tr>
+<tr class="separator:af8ee6d1b455b90cb25552ce6aec53d8f inherit pro_methods_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1detail___1_1DSLBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html">tensorwrapper::detail_::DSLBase&lt; BufferBase &gt;</a></td></tr>
+<tr class="memitem:a1261d0e2f3cc156aadb55aff0c848033 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a1261d0e2f3cc156aadb55aff0c848033"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a1261d0e2f3cc156aadb55aff0c848033">addition_assignment_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a1261d0e2f3cc156aadb55aff0c848033 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should overwrite to implement addition_assignment.  <br /></td></tr>
+<tr class="separator:a1261d0e2f3cc156aadb55aff0c848033 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bcbb63e5d75306c054ae774f831049c inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a9bcbb63e5d75306c054ae774f831049c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a9bcbb63e5d75306c054ae774f831049c">subtraction_assignment_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a9bcbb63e5d75306c054ae774f831049c inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should overwrite to implement subtraction_assignment.  <br /></td></tr>
+<tr class="separator:a9bcbb63e5d75306c054ae774f831049c inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b7d84d148e0bb06f2d5511828051b5b inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a6b7d84d148e0bb06f2d5511828051b5b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a6b7d84d148e0bb06f2d5511828051b5b">multiplication_assignment_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> lhs, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a6b7d84d148e0bb06f2d5511828051b5b inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should overwrite to implement multiplication_assignment.  <br /></td></tr>
+<tr class="separator:a6b7d84d148e0bb06f2d5511828051b5b inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008c5821003bdbf9019a88a3281dccfb inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_a008c5821003bdbf9019a88a3281dccfb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#a008c5821003bdbf9019a88a3281dccfb">permute_assignment_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:a008c5821003bdbf9019a88a3281dccfb inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should overwrite to implement permute_assignment.  <br /></td></tr>
+<tr class="separator:a008c5821003bdbf9019a88a3281dccfb inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf7eb90ab162a003b30e1ca313620200 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase" id="r_adf7eb90ab162a003b30e1ca313620200"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571">dsl_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#adf7eb90ab162a003b30e1ca313620200">scalar_multiplication_</a> (<a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#aa0ae4d4cac26930cf8338c1a24b004c4">label_type</a> this_labels, double scalar, <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#af81286387b2df29588b36bf10a073048">const_labeled_reference</a> rhs)</td></tr>
+<tr class="memdesc:adf7eb90ab162a003b30e1ca313620200 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived class should overwrite to implement scalar_multiplication.  <br /></td></tr>
+<tr class="separator:adf7eb90ab162a003b30e1ca313620200 inherit pro_methods_classtensorwrapper_1_1detail___1_1DSLBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classtensorwrapper_1_1buffer_1_1BufferBase')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></td></tr>
+<tr class="memitem:ab2706a46d06bff85da58e017926b1298 inherit pro_types_classtensorwrapper_1_1buffer_1_1BufferBase" id="r_ab2706a46d06bff85da58e017926b1298"><td class="memItemLeft" align="right" valign="top">
+using&#160;</td><td class="memItemRight" valign="bottom"><b>polymorphic_base</b> = <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">my_type</a> &gt;</td></tr>
+<tr class="memdesc:ab2706a46d06bff85da58e017926b1298 inherit pro_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type *this inherits from. <br /></td></tr>
+<tr class="separator:ab2706a46d06bff85da58e017926b1298 inherit pro_types_classtensorwrapper_1_1buffer_1_1BufferBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A multidimensional (MD) buffer. </p>
 <p>This class is a dense multidimensional buffer of floating-point values. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a6f2b9c2cb9b96759d26f52ad8030a979" name="a6f2b9c2cb9b96759d26f52ad8030a979"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f2b9c2cb9b96759d26f52ad8030a979">&#9670;&#160;</a></span>buffer_type</h2>
+<a id="a8192f1e87baf4361a7ad70bc1f52ce89" name="a8192f1e87baf4361a7ad70bc1f52ce89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8192f1e87baf4361a7ad70bc1f52ce89">&#9670;&#160;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a6f2b9c2cb9b96759d26f52ad8030a979">tensorwrapper::buffer::MDBuffer::buffer_type</a> =  typename traits_type::buffer_type</td>
+          <td class="memname">using <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8192f1e87baf4361a7ad70bc1f52ce89">tensorwrapper::buffer::MDBuffer::value_type</a> =  typename traits_type::value_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Add types to public API </p>
+<p>Add types from traits_type to public API </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a45f2c5bdb64156f0383a1d99de597d8b" name="a45f2c5bdb64156f0383a1d99de597d8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f2c5bdb64156f0383a1d99de597d8b">&#9670;&#160;</a></span>MDBuffer() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::MDBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates an empty multi-dimensional buffer. </p>
+<p>The resulting buffer will have a shape of rank 0, but a size of 0. Thus the buffer can NOT be used to store any elements (including treating *this as a scalar). The resulting buffer can be assigned to or moved to to populate it.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a57db8022aefb882b5820fcfed958cc0f" name="a57db8022aefb882b5820fcfed958cc0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57db8022aefb882b5820fcfed958cc0f">&#9670;&#160;</a></span>MDBuffer() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;concepts::FloatingPoint T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::MDBuffer </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>elements</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">shape_type&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Treats allocated memory like a multi-dimensional buffer. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the elements in the buffer. Must satisfy the FloatingPoint concept.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This ctor will use <code>element</code> to create a buffer_type object and then pass that along with <code>shape</code> to the main ctor.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">elements</td><td>The elements to be used as the backing store. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of *this.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the size of <code>elements</code> does not match the size implied by <code>shape</code>. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating memory for the internal state. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a96cbd46dd9e5408dbdd128317251ff45" name="a96cbd46dd9e5408dbdd128317251ff45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96cbd46dd9e5408dbdd128317251ff45">&#9670;&#160;</a></span>MDBuffer() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::MDBuffer </td>
+          <td>(</td>
+          <td class="paramtype">buffer_type&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">shape_type&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The main ctor. </p>
+<p>This ctor will create *this using <code>buffer</code> as the backing store and <code>shape</code> to describe the geometry of the multidimensional array.</p>
+<p>All other ctors (aside from copy and move) delegate to this one.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>The buffer to be used as the backing store. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">shape</td><td>The shape of *this.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the size of <code>buffer</code> does not match the size implied by <code>shape</code>. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating memory for the internal state. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9998f538c106864c5eae487fd08687b3" name="a9998f538c106864c5eae487fd08687b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9998f538c106864c5eae487fd08687b3">&#9670;&#160;</a></span>MDBuffer() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::MDBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializes *this to a deep copy of <code>other</code>. </p>
+<p>This ctor will initialize *this to be a deep copy of <code>other</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating memory for the internal state. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afe96510642ea0f1ba3b400859a1e978f" name="afe96510642ea0f1ba3b400859a1e978f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe96510642ea0f1ba3b400859a1e978f">&#9670;&#160;</a></span>MDBuffer() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::MDBuffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move ctor. </p>
+<p>This ctor will initialize *this by taking the state from <code>other</code>. After this ctor is called <code>other</code> is left in a valid but unspecified state.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> to move from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8bae352bdc8e22aede428aad59176456" name="a8bae352bdc8e22aede428aad59176456"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bae352bdc8e22aede428aad59176456">&#9670;&#160;</a></span>~MDBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tensorwrapper::buffer::MDBuffer::~MDBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defaulted dtor. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a539fbf861fe25328f2950e9f2691f491" name="a539fbf861fe25328f2950e9f2691f491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a539fbf861fe25328f2950e9f2691f491">&#9670;&#160;</a></span>add_to_stream_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; tensorwrapper::buffer::MDBuffer::add_to_stream_ </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Uses <a class="el" href="classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object.">Eigen</a>'s printing capabilities to add to stream. </p>
+<p>XXX: EigenTensor should handle aliasing a const buffer correctly. That's a lot of work, just to get this to work though...</p>
+
+<p>Reimplemented from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#aaa1aa9bddf3f93c4fe585bca4dd8520c">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a>.</p>
+
+</div>
+</div>
+<a id="af9c79c1ec7cb5ce0c1418e72c44e007e" name="af9c79c1ec7cb5ce0c1418e72c44e007e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9c79c1ec7cb5ce0c1418e72c44e007e">&#9670;&#160;</a></span>are_equal_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::buffer::MDBuffer::are_equal_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#a07d840ac6ddab88ad0008b16eec99de6">const_buffer_base_reference</a>&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Implements are_equal by checking that rhs is an <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> and then calling operator== </p>
+
+</div>
+</div>
+<a id="ac70890cae0c0586c7a88edcd0d1f43ff" name="ac70890cae0c0586c7a88edcd0d1f43ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac70890cae0c0586c7a88edcd0d1f43ff">&#9670;&#160;</a></span>clone_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::clone_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Makes a deep polymorphic copy of *this. </p>
+
+<p>Implements <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#ad0ce72301f81d6ad7f6316e84dee80e5">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a>.</p>
+
+</div>
+</div>
+<a id="af06524a3cec12b4d5412b48e597fea9d" name="af06524a3cec12b4d5412b48e597fea9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af06524a3cec12b4d5412b48e597fea9d">&#9670;&#160;</a></span>get_elem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::get_elem </td>
+          <td>(</td>
+          <td class="paramtype">index_vector&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the element with the offsets specified by <code>index</code>. </p>
+<p>This method will retrieve a const reference to the element at the offsets specified by <code>index</code>. The length of <code>index</code> must be equal to the rank of *this and each entry in <code>index</code> must be less than the extent of the corresponding mode of *this.</p>
+<p>This method can only be used to retrieve elements from *this. To modify elements use <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#adc8c74ba26a9403df57fa2d988fc00d0" title="Sets the specified element to new_value.">set_elem()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The offsets into each mode of *this for the desired element.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A const reference to the element at the specified offsets. </dd></dl>
+
+</div>
+</div>
+<a id="a4b8092b1e57616b93b13905c3423a5cd" name="a4b8092b1e57616b93b13905c3423a5cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b8092b1e57616b93b13905c3423a5cd">&#9670;&#160;</a></span>get_immutable_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::get_immutable_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a read-only view of the data. </p>
+<p>This method is deprecated. Use get_slice instead. </p>
+
+</div>
+</div>
+<a id="ab3abec104f127cdfab40bcea99ac6de5" name="ab3abec104f127cdfab40bcea99ac6de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3abec104f127cdfab40bcea99ac6de5">&#9670;&#160;</a></span>get_mutable_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::get_mutable_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a view of the data. </p>
+<p>This method is deprecated. Use set_slice instead. </p>
+
+</div>
+</div>
+<a id="ad05fecd6ff16ea886f83d9e56b3ec80a" name="ad05fecd6ff16ea886f83d9e56b3ec80a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad05fecd6ff16ea886f83d9e56b3ec80a">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp; tensorwrapper::buffer::MDBuffer::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy assignment. </p>
+<p>This operator will make *this a deep copy of <code>other</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> to copy.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after the assignment.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating memory for the internal state. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af0871c9d89daa7f1d7894b6f6eaeb59b" name="af0871c9d89daa7f1d7894b6f6eaeb59b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0871c9d89daa7f1d7894b6f6eaeb59b">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp; tensorwrapper::buffer::MDBuffer::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">MDBuffer</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move assignment. </p>
+<p>This operator will make *this take the state from <code>other</code>. After this operator is called <code>other</code> is left in a valid but unspecified state.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> to move from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this after the assignment.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8fe96eaaf34ce759e75ddd8a956e585f" name="a8fe96eaaf34ce759e75ddd8a956e585f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fe96eaaf34ce759e75ddd8a956e585f">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool tensorwrapper::buffer::MDBuffer::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html">my_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compares two <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> objects for exact equality. </p>
+<p>Two <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> objects are exactly equal if they have the same shape and if all of their corresponding elements are bitwise identical. In practice, the implementation stores a hash of the elements in the tensor and compares the hashes for equality rather than checking each element individually.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The <a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html" title="A multidimensional (MD) buffer.">MDBuffer</a> to compare against.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if *this and <code>rhs</code> are exactly equal and false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adc8c74ba26a9403df57fa2d988fc00d0" name="adc8c74ba26a9403df57fa2d988fc00d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc8c74ba26a9403df57fa2d988fc00d0">&#9670;&#160;</a></span>set_elem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::buffer::MDBuffer::set_elem </td>
+          <td>(</td>
+          <td class="paramtype">index_vector&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1MDBuffer.html#a8192f1e87baf4361a7ad70bc1f52ce89">value_type</a>&#160;</td>
+          <td class="paramname"><em>new_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the specified element to <code>new_value</code>. </p>
+<p>This method will set the element at the offsets specified by <code>index</code>. The length of <code>index</code> must be equal to the rank of *this and each entry in <code>index</code> must be less than the extent of the corresponding mode of *this.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The offsets into each mode of *this for the desired element. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">new_value</td><td>The new value for the specified element.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if any entry in <code>index</code> is invalid. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac470ce2f7d9b5929cd15a9137bba8579" name="ac470ce2f7d9b5929cd15a9137bba8579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac470ce2f7d9b5929cd15a9137bba8579">&#9670;&#160;</a></span>shape()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::shape </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns (a view of) the shape of *this. </p>
+<p>The shape of *this describes the geometry of the underlying multidimensional array.</p>
+<dl class="section return"><dt>Returns</dt><dd>A view of the shape of *this.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there is a problem allocating memory for the returned view. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9f042bdb26bd54a68c51238d159d92ca" name="a9f042bdb26bd54a68c51238d159d92ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f042bdb26bd54a68c51238d159d92ca">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The total number of elements in *this. </p>
+<p>The total number of elements is the product of the extents of each mode of *this.</p>
+<dl class="section return"><dt>Returns</dt><dd>The total number of elements in *this.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a37078ad7bbdd291f714ed231478edfcd" name="a37078ad7bbdd291f714ed231478edfcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37078ad7bbdd291f714ed231478edfcd">&#9670;&#160;</a></span>to_string_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto tensorwrapper::buffer::MDBuffer::to_string_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls add_to_stream_ on a stringstream to implement. </p>
+
+<p>Reimplemented from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html#a75d7ed3d4cedc67950be4b532db2516e">tensorwrapper::detail_::PolymorphicBase&lt; BufferBase &gt;</a>.</p>
 
 </div>
 </div>

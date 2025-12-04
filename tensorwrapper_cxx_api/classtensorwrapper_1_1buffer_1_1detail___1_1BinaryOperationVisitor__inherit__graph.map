@@ -1,0 +1,9 @@
+<map id="tensorwrapper::buffer::detail_::BinaryOperationVisitor" name="tensorwrapper::buffer::detail_::BinaryOperationVisitor">
+<area shape="rect" id="Node000001" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="280,37,511,77"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html" title="Visitor that calls addition_assignment." alt="" coords="569,5,747,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="524,39,568,34,569,39,525,44"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1detail___1_1SubtractionVisitor.html" title="Visitor that calls subtraction_assignment." alt="" coords="559,69,757,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="525,70,559,75,558,80,524,76"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1detail___1_1UnaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="5,37,232,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,55,280,55,280,60,246,60"/>
+</map>

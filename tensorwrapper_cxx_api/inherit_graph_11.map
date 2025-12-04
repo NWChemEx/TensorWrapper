@@ -1,13 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="43,5,206,45"/>
-<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1symmetry_1_1Group.html" title="Container of the symmetry elements for a tensor." alt="" coords="310,61,501,101"/>
-<area shape="poly" id="edge10_Node000000_Node000001" title=" " alt="" coords="220,41,310,60,309,65,219,47"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,141,244,166"/>
-<area shape="poly" id="edge13_Node000002_Node000001" title=" " alt="" coords="188,135,326,99,327,104,189,140"/>
-<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1dsl_1_1DummyIndices.html" title=" " alt="" coords="315,126,495,181"/>
-<area shape="poly" id="edge11_Node000002_Node000003" title=" " alt="" coords="258,151,315,151,315,156,258,156"/>
-<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1dsl_1_1DummyIndices.html" title="Class to help deal with string&#45;based dummy indices." alt="" coords="292,205,519,245"/>
-<area shape="poly" id="edge12_Node000002_Node000004" title=" " alt="" coords="189,167,327,203,326,208,188,172"/>
-<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="15,69,234,109"/>
-<area shape="poly" id="edge14_Node000005_Node000001" title=" " alt="" coords="248,83,309,81,310,87,248,88"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,233,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1layout_1_1LayoutBase.html" title="Common base class for all layouts." alt="" coords="309,37,475,77"/>
+<area shape="poly" id="edge21_Node000000_Node000001" title=" " alt="" coords="248,37,309,44,309,50,247,42"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1layout_1_1Logical.html" title="Specializes a LayoutBase for a layout describing how a user wants to view the tensor." alt="" coords="523,5,688,45"/>
+<area shape="poly" id="edge22_Node000001_Node000002" title=" " alt="" coords="488,40,522,35,523,40,489,46"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1layout_1_1Physical.html" title="Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime." alt="" coords="523,69,688,109"/>
+<area shape="poly" id="edge23_Node000001_Node000003" title=" " alt="" coords="489,69,523,74,522,80,488,74"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,69,261,109"/>
+<area shape="poly" id="edge24_Node000004_Node000001" title=" " alt="" coords="274,69,309,65,310,70,275,74"/>
 </map>

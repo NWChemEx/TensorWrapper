@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['operation_0',['Operation',['../classtensorwrapper_1_1symmetry_1_1Operation.html',1,'tensorwrapper::symmetry']]]
+  ['mdbuffer_0',['MDBuffer',['../classtensorwrapper_1_1buffer_1_1MDBuffer.html',1,'tensorwrapper::buffer']]],
+  ['mdbuffertraitscommon_1',['MDBufferTraitsCommon',['../structtensorwrapper_1_1types_1_1MDBufferTraitsCommon.html',1,'tensorwrapper::types']]]
 ];
