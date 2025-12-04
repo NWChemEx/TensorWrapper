@@ -76,6 +76,8 @@ public:
     }
 
 protected:
+    using base_class::make_this_eigen_tensor_;
+
     template<typename FloatType>
     auto make_lhs_eigen_tensor_(std::span<FloatType> data) {
         return base_class::make_other_eigen_tensor_(data);
