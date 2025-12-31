@@ -93,7 +93,9 @@ cmaize_find_or_build_dependency(
     FIND_TARGET nwx::wtf
 )
 
-set(DEPENDENCIES utilities parallelzone Boost::boost eigen sigma wtf)
+set(DEPENDENCIES
+    utilities parallelzone Boost::boost eigen sigma WeaklyTypedFloat
+)
 
 if("${ENABLE_CUTENSOR}")
     include(cmake/FindcuTENSOR.cmake)
