@@ -15,17 +15,9 @@
  */
 
 #pragma once
+#include <tensorwrapper/buffer/buffer_fwd.hpp>
 
 namespace tensorwrapper {
-
-namespace buffer {
-namespace detail_ {
-class MDBufferPIMPL;
-}
-
-class MDBuffer;
-
-} // namespace buffer
 
 namespace shape {
 template<typename T>

@@ -13,37 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/allocator/contiguous.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/tensor/tensor.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::operations {
 namespace {
 struct InfinityKernel {
+    InfinityKernel(allocator::Contiguous& alloc) : palloc(&alloc) {}
+
     template<typename FloatType>
-    Tensor run(const buffer::BufferBase& t) {
-        using allocator_type = allocator::Eigen<FloatType>;
-        allocator_type alloc(t.allocator().runtime());
+    auto operator()(const std::span<FloatType> buffer) {
         FloatType max_element{0.0};
-        const auto& buffer_down = alloc.rebind(t);
-        for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-            auto elem = types::fabs(buffer_down.get_data(i));
+        for(std::size_t i = 0; i < buffer.size(); ++i) {
+            auto elem = types::fabs(buffer[i]);
             if(elem > max_element) max_element = elem;
         }
         shape::Smooth s{};
         layout::Physical l(s);
-        auto pbuffer = alloc.construct(l, max_element);
+        auto pbuffer = palloc->construct(l, max_element);
         return Tensor(s, std::move(pbuffer));
     }
+
+    allocator::Contiguous* palloc;
 };
 
 } // namespace
 
 Tensor infinity_norm(const Tensor& t) {
-    InfinityKernel k;
-    return utilities::floating_point_dispatch(k, t.buffer());
+    using allocator_type = allocator::Contiguous;
+    auto rv              = t.allocator().runtime();
+    allocator_type alloc(rv);
+    const auto& buffer_down = alloc.rebind(t.buffer());
+    InfinityKernel kernel(alloc);
+    return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
+      kernel, buffer_down);
 }
 
 } // namespace tensorwrapper::operations

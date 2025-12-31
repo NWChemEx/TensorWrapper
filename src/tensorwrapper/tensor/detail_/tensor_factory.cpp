@@ -18,8 +18,8 @@
 #include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
 #include <stdexcept>
-#include <tensorwrapper/allocator/eigen.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/allocator/contiguous.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::detail_ {
@@ -69,7 +69,7 @@ physical_layout_pointer TensorFactory::default_physical_layout(
 
 allocator_pointer TensorFactory::default_allocator(
   const_physical_reference physical, runtime_view_type rv) {
-    return std::make_unique<allocator::Eigen<double>>(rv);
+    return std::make_unique<allocator::Contiguous>(rv);
 }
 
 bool TensorFactory::can_make_logical_layout(const input_type& input) noexcept {
@@ -177,7 +177,7 @@ namespace {
 /// Wraps the process of turning an initializer list into a TensorInput object
 template<typename T>
 auto il_to_input(T il, parallelzone::runtime::RuntimeView rv = {}) {
-    allocator::Eigen<double> alloc(rv);
+    allocator::Contiguous alloc(rv);
     auto pbuffer = alloc.construct(il);
     return TensorInput(pbuffer->layout().shape(), std::move(pbuffer));
 }

@@ -22,7 +22,7 @@
 
 namespace tensorwrapper::types {
 
-struct MDBufferTraitsCommon {
+struct ContiguousTraitsCommon {
     using value_type        = wtf::fp::Float;
     using const_reference   = wtf::fp::FloatView<const value_type>;
     using buffer_type       = wtf::buffer::FloatBuffer;
@@ -31,13 +31,11 @@ struct MDBufferTraitsCommon {
     using const_shape_view  = shape::SmoothView<const shape_type>;
     using rank_type         = typename ClassTraits<shape_type>::rank_type;
     using size_type         = typename ClassTraits<shape_type>::size_type;
-    using pimpl_type        = tensorwrapper::buffer::detail_::MDBufferPIMPL;
-    using pimpl_pointer     = std::unique_ptr<pimpl_type>;
 };
 
 template<>
-struct ClassTraits<tensorwrapper::buffer::MDBuffer>
-  : public MDBufferTraitsCommon {
+struct ClassTraits<tensorwrapper::buffer::Contiguous>
+  : public ContiguousTraitsCommon {
     using reference = wtf::fp::FloatView<value_type>;
 
     using buffer_view       = wtf::buffer::BufferView<value_type>;
@@ -45,8 +43,8 @@ struct ClassTraits<tensorwrapper::buffer::MDBuffer>
 };
 
 template<>
-struct ClassTraits<const tensorwrapper::buffer::MDBuffer>
-  : public MDBufferTraitsCommon {
+struct ClassTraits<const tensorwrapper::buffer::Contiguous>
+  : public ContiguousTraitsCommon {
     using reference   = wtf::fp::FloatView<const value_type>;
     using buffer_view = wtf::buffer::BufferView<const value_type>;
 };

@@ -17,6 +17,7 @@
 #pragma once
 #include <tensorwrapper/allocator/replicated.hpp>
 #include <tensorwrapper/types/il_traits.hpp>
+#include <wtf/wtf.hpp>
 
 namespace tensorwrapper::allocator {
 
@@ -24,11 +25,10 @@ namespace tensorwrapper::allocator {
  *
  *  @tparam FloatType Type of the elements in the contiguous buffer.
  */
-template<typename FloatType>
 class Contiguous : public Replicated {
 private:
     /// Type of *this
-    using my_type = Contiguous<FloatType>;
+    using my_type = Contiguous;
 
     /// Type *this derives from
     using base_type = Replicated;
@@ -41,22 +41,63 @@ public:
     using base_type::layout_pointer;
     ///@}
 
-    /// Type of each element in the tensor
-    using element_type = FloatType;
+    /// Types associated with the buffer *this makes
+    using buffer_type            = buffer::Contiguous;
+    using buffer_reference       = buffer_type&;
+    using const_buffer_reference = const buffer_type&;
+    using buffer_pointer         = std::unique_ptr<buffer_type>;
 
-    /// Type of the buffer associated with *this
-    using contiguous_buffer_type = buffer::Contiguous<element_type>;
-    using contiguous_pointer     = std::unique_ptr<contiguous_buffer_type>;
+    using size_type = std::size_t;
 
     /// Type of initializer lists
+    template<typename element_type>
     using rank0_il = typename types::ILTraits<element_type, 0>::type;
+
+    template<typename element_type>
     using rank1_il = typename types::ILTraits<element_type, 1>::type;
+
+    template<typename element_type>
     using rank2_il = typename types::ILTraits<element_type, 2>::type;
+
+    template<typename element_type>
     using rank3_il = typename types::ILTraits<element_type, 3>::type;
+
+    template<typename element_type>
     using rank4_il = typename types::ILTraits<element_type, 4>::type;
 
     /// Pull in base class's ctors
     using base_type::base_type;
+
+    /** @brief Determines if @p buffer can be rebound as a Contiguous buffer.
+     *
+     *  Rebinding a buffer allows the same memory to be viewed as a (possibly)
+     *  different type of buffer.
+     *
+     *  @param[in] buffer The tensor we are attempting to rebind.
+     *
+     *  @return True if @p buffer can be rebound to the type of buffer
+     *          associated with this allocator and false otherwise.
+     *
+     *  @throw None No throw guarantee
+     */
+    static bool can_rebind(const_buffer_base_reference buffer);
+
+    /** @brief Rebinds a buffer to the same type as *this.
+     *
+     *  This method will convert @p buffer into a buffer which could have been
+     *  allocated by *this. If @p buffer was allocated as such a buffer already,
+     *  then this method is simply a downcast.
+     *
+     *  @param[in] buffer The buffer to rebind.
+     *
+     *  @return A mutable reference to @p buffer viewed as a buffer that could
+     *          have been allocated by *this.
+     *
+     *  @throw std::runtime_error if can_rebind(buffer) is false. Strong throw
+     *                            guarantee.
+     */
+    static buffer_reference rebind(buffer_base_reference buffer);
+    static const_buffer_reference rebind(const_buffer_base_reference buffer);
 
     /** @brief Allocates a contiguous pointer given @p layout.
      *
@@ -72,22 +113,41 @@ public:
      *  @return A pointer to the newly allocated buffer::Contiguous object.
      */
     ///@{
-    contiguous_pointer allocate(const_layout_reference layout) {
+    buffer_pointer allocate(const_layout_reference layout) {
         return allocate(layout.clone_as<layout_type>());
     }
-    contiguous_pointer allocate(layout_pointer layout) {
+    buffer_pointer allocate(layout_pointer layout) {
         auto p = allocate_(std::move(layout));
-        return detail_::static_pointer_cast<contiguous_buffer_type>(p);
+        return detail_::static_pointer_cast<buffer_type>(p);
     }
     ///@}
 
     /// Constructs a contiguous buffer from an initializer list
     ///@{
-    contiguous_pointer construct(rank0_il il) { return construct_(il); }
-    contiguous_pointer construct(rank1_il il) { return construct_(il); }
-    contiguous_pointer construct(rank2_il il) { return construct_(il); }
-    contiguous_pointer construct(rank3_il il) { return construct_(il); }
-    contiguous_pointer construct(rank4_il il) { return construct_(il); }
+    template<typename T>
+    buffer_pointer construct(rank0_il<T> il) {
+        return il_construct_(il);
+    }
+
+    template<typename T>
+    buffer_pointer construct(rank1_il<T> il) {
+        return il_construct_(il);
+    }
+
+    template<typename T>
+    buffer_pointer construct(rank2_il<T> il) {
+        return il_construct_(il);
+    }
+
+    template<typename T>
+    buffer_pointer construct(rank3_il<T> il) {
+        return il_construct_(il);
+    }
+
+    template<typename T>
+    buffer_pointer construct(rank4_il<T> il) {
+        return il_construct_(il);
+    }
     ///@}
 
     /** @brief Constructs a contiguous buffer and sets all elements to @p value.
@@ -99,25 +159,45 @@ public:
      *  @return A pointer to the newly constructed buffer.
      */
     ///@{
-    contiguous_pointer construct(const_layout_reference layout,
-                                 element_type value) {
+    template<typename ElementType>
+    buffer_pointer construct(const_layout_reference layout, ElementType value) {
         return construct(layout.clone_as<layout_type>(), std::move(value));
     }
-    contiguous_pointer construct(layout_pointer layout, element_type value) {
-        return construct_(std::move(layout), std::move(value));
+
+    template<typename ElementType>
+    buffer_pointer construct(layout_pointer layout, ElementType value) {
+        return construct_(std::move(layout), wtf::fp::make_float(value));
     }
     ///@}
 
 protected:
-    virtual contiguous_pointer construct_(rank0_il il) = 0;
-    virtual contiguous_pointer construct_(rank1_il il) = 0;
-    virtual contiguous_pointer construct_(rank2_il il) = 0;
-    virtual contiguous_pointer construct_(rank3_il il) = 0;
-    virtual contiguous_pointer construct_(rank4_il il) = 0;
+    buffer_base_pointer allocate_(layout_pointer playout) override;
 
     /// To be overridden by the derived class to implement construct
-    virtual contiguous_pointer construct_(layout_pointer layout,
-                                          element_type value) = 0;
+    virtual buffer_pointer construct_(layout_pointer layout,
+                                      wtf::fp::Float value);
+
+    base_pointer clone_() const override {
+        return std::make_unique<my_type>(*this);
+    }
+
+    /// Implements are_equal, by deferring to the base's operator==
+    bool are_equal_(const_base_reference rhs) const noexcept override {
+        return base_type::template are_equal_impl_<my_type>(rhs);
+    }
+
+private:
+    layout_pointer layout_from_extents_(const std::vector<size_type>& extents);
+
+    template<typename ILType>
+    buffer_pointer il_construct_(ILType il) {
+        throw std::runtime_error("Fix me!");
+        // auto [extents, data] = detail_::unwrap_il(il);
+        // auto pbuffer         = this->allocate(layout_from_extents_(extents));
+        // auto& buffer_down    = rebind(*pbuffer);
+        // buffer_down.copy(data);
+        // return pbuffer;
+    }
 };
 
 } // namespace tensorwrapper::allocator

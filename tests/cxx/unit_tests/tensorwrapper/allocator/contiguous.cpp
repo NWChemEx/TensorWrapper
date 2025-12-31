@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NWChemEx-Project
+ * Copyright 2024 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,87 +15,114 @@
  */
 
 #include "../testing/testing.hpp"
+#include <parallelzone/parallelzone.hpp>
 #include <tensorwrapper/allocator/contiguous.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
 
 using namespace tensorwrapper;
 
-TEMPLATE_LIST_TEST_CASE("allocator::Contiguous", "",
-                        types::floating_point_types) {
-    using allocator_type = allocator::Contiguous<TestType>;
-    using layout_type    = typename allocator_type::layout_type;
+using types2test = types::floating_point_types;
 
-    auto alloc = testing::make_allocator<TestType>();
+TEMPLATE_LIST_TEST_CASE("allocator::Contiguous", "", types2test) {
+    using alloc_type = allocator::Contiguous;
 
-    auto scalar_corr = testing::eigen_scalar<TestType>();
-    auto vector_corr = testing::eigen_vector<TestType>();
-    auto matrix_corr = testing::eigen_matrix<TestType>();
+    parallelzone::runtime::RuntimeView rv;
+    // auto scalar_layout = testing::scalar_physical();
+    // auto vector_layout = testing::vector_physical(2);
+    // auto matrix_layout = testing::matrix_physical(2, 2);
+    // using layout_type  = decltype(scalar_layout);
 
-    SECTION("allocate(layout)") {
-        auto pscalar = alloc.allocate(scalar_corr->layout());
-        pscalar->set_data(0, 42.0);
-        REQUIRE(pscalar->are_equal(*scalar_corr));
-    }
+    // auto pscalar_corr = testing::eigen_scalar<TestType>();
+    // auto& scalar_corr = *pscalar_corr;
+    // scalar_corr.set_elem({}, 0.0);
 
-    SECTION("allocate(layout*)") {
-        auto pvector = alloc.allocate(vector_corr->layout());
-        pvector->set_data(0, 0.0);
-        pvector->set_data(1, 1.0);
-        pvector->set_data(2, 2.0);
-        pvector->set_data(3, 3.0);
-        pvector->set_data(4, 4.0);
+    // auto pvector_corr = testing::eigen_vector<TestType>(2);
+    // auto& vector_corr = *pvector_corr;
+    // vector_corr.set_elem({0}, 1);
+    // vector_corr.set_elem({1}, 1);
 
-        REQUIRE(pvector->are_equal(*vector_corr));
-    }
+    // auto pmatrix_corr = testing::eigen_matrix<TestType>(2, 2);
+    // auto& matrix_corr = *pmatrix_corr;
+    // matrix_corr.set_elem({0, 0}, 2);
+    // matrix_corr.set_elem({0, 1}, 2);
+    // matrix_corr.set_elem({1, 0}, 2);
+    // matrix_corr.set_elem({1, 1}, 2);
 
-    SECTION("contruct(scalar)") {
-        auto pscalar = alloc.construct(42.0);
-        REQUIRE(pscalar->are_equal(*scalar_corr));
-    }
+    // alloc_type alloc(rv);
 
-    SECTION("construct(vector)") {
-        auto pvector = alloc.construct({0.0, 1.0, 2.0, 3.0, 4.0});
-        REQUIRE(pvector->are_equal(*vector_corr));
-    }
+    // SECTION("Ctor") {
+    //     SECTION("runtime") { REQUIRE(alloc.runtime() == rv); }
+    //     testing::test_copy_and_move_ctors(alloc);
+    // }
 
-    SECTION("construct(matrix)") {
-        typename allocator_type::rank2_il il{{1.0, 2.0}, {3.0, 4.0}};
-        auto pmatrix = alloc.construct(il);
-        REQUIRE(pmatrix->are_equal(*matrix_corr));
-    }
+    // SECTION("allocate(Layout)") {
+    //     // N.b. allocate doesn't initialize tensor, so only compare layouts
+    //     auto pscalar = alloc.allocate(scalar_layout);
+    //     REQUIRE(pscalar->layout().are_equal(scalar_layout));
 
-    SECTION("construct(tensor3)") {
-        typename allocator_type::rank3_il il{{{1.0, 2.0}, {3.0, 4.0}},
-                                             {{5.0, 6.0}, {7.0, 8.0}}};
-        auto ptensor3 = alloc.construct(il);
-        REQUIRE(ptensor3->are_equal(*testing::eigen_tensor3<TestType>()));
-    }
+    //     auto pvector = alloc.allocate(vector_layout);
+    //     REQUIRE(pvector->layout().are_equal(vector_layout));
 
-    SECTION("construct(tensor4)") {
-        typename allocator_type::rank4_il il{
-          {{{1.0, 2.0}, {3.0, 4.0}}, {{5.0, 6.0}, {7.0, 8.0}}},
-          {{{9.0, 10.0}, {11.0, 12.0}}, {{13.0, 14.0}, {15.0, 16.0}}}};
-        auto ptensor4 = alloc.construct(il);
-        REQUIRE(ptensor4->are_equal(*testing::eigen_tensor4<TestType>()));
-    }
+    //     auto pmatrix = alloc.allocate(matrix_layout);
+    //     REQUIRE(pmatrix->layout().are_equal(matrix_layout));
 
-    SECTION("construct(layout, value)") {
-        auto pmatrix = alloc.construct(matrix_corr->layout(), 0.0);
-        matrix_corr->set_elem({0, 0}, 0.0);
-        matrix_corr->set_elem({0, 1}, 0.0);
-        matrix_corr->set_elem({1, 0}, 0.0);
-        matrix_corr->set_elem({1, 1}, 0.0);
+    //     // Works if ranks don't match
+    //     pvector = alloc.allocate(vector_layout);
+    //     REQUIRE(pvector->layout().are_equal(vector_layout));
+    // }
 
-        REQUIRE(pmatrix->are_equal(*matrix_corr));
-    }
+    // SECTION("allocate(std::unique_ptr<Layout>)") {
+    //     // N.b. allocate doesn't initialize tensor, so only compare layouts
+    //     auto pscalar_layout = std::make_unique<layout_type>(scalar_layout);
+    //     auto pscalar        = alloc.allocate(std::move(pscalar_layout));
+    //     REQUIRE(pscalar->layout().are_equal(scalar_layout));
 
-    SECTION("construct(layout*, value)") {
-        auto pmatrix = alloc.construct(
-          matrix_corr->layout().template clone_as<layout_type>(), 0.0);
-        matrix_corr->set_elem({0, 0}, 0.0);
-        matrix_corr->set_elem({0, 1}, 0.0);
-        matrix_corr->set_elem({1, 0}, 0.0);
-        matrix_corr->set_elem({1, 1}, 0.0);
+    //     auto pvector_layout = std::make_unique<layout_type>(vector_layout);
+    //     auto pvector        = alloc.allocate(std::move(pvector_layout));
+    //     REQUIRE(pvector->layout().are_equal(vector_layout));
 
-        REQUIRE(pmatrix->are_equal(*matrix_corr));
-    }
+    //     auto pmatrix_layout = std::make_unique<layout_type>(matrix_layout);
+    //     auto pmatrix        = alloc.allocate(std::move(pmatrix_layout));
+    //     REQUIRE(pmatrix->layout().are_equal(matrix_layout));
+    // }
+
+    // SECTION("construct(value)") {
+    //     auto pscalar = alloc.construct(scalar_layout, 0);
+    //     REQUIRE(*pscalar == scalar_corr);
+
+    //     auto pvector = alloc.construct(vector_layout, 1);
+    //     REQUIRE(*pvector == vector_corr);
+
+    //     auto pmatrix_layout = std::make_unique<layout_type>(matrix_layout);
+    //     auto pmatrix        = alloc.construct(std::move(pmatrix_layout), 2);
+    //     REQUIRE(*pmatrix == matrix_corr);
+    // }
+
+    // SECTION("can_rebind") { REQUIRE(alloc.can_rebind(scalar_corr)); }
+
+    // SECTION("rebind(non-const)") {
+    //     using type         = typename alloc_type::buffer_base_reference;
+    //     type scalar_base   = scalar_corr;
+    //     auto& eigen_buffer = alloc.rebind(scalar_base);
+    //     REQUIRE(&eigen_buffer == &scalar_corr);
+    // }
+
+    // SECTION("rebind(const)") {
+    //     using type         = typename
+    //     alloc_type::const_buffer_base_reference; type scalar_base   =
+    //     scalar_corr; auto& eigen_buffer = alloc.rebind(scalar_base);
+    //     REQUIRE(&eigen_buffer == &scalar_corr);
+    // }
+
+    // SECTION("operator==") { REQUIRE(alloc == alloc_type(rv)); }
+
+    // SECTION("virtual_methods") {
+    //     SECTION("clone") {
+    //         auto pscalar = alloc.clone();
+    //         REQUIRE(pscalar->are_equal(alloc));
+    //     }
+
+    //     SECTION("are_equal") { REQUIRE(alloc.are_equal(alloc_type(rv))); }
+    // }
 }

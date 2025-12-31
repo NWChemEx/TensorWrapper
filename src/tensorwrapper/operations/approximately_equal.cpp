@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-#include <tensorwrapper/allocator/eigen.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/allocator/contiguous.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::operations {
 namespace {
 
 struct Kernel {
+    Kernel(double tolerance) : tol(tolerance) {}
+
     template<typename FloatType>
-    bool run(const buffer::BufferBase& result, double tol) {
-        using allocator_type = allocator::Eigen<FloatType>;
+    bool operator()(const std::span<FloatType> result) {
         const FloatType zero{0.0};
         const FloatType ptol = static_cast<FloatType>(tol);
-        auto& buffer_down    = allocator_type::rebind(result);
-
-        for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-            auto diff = buffer_down.get_data(i);
+        for(std::size_t i = 0; i < result.size(); ++i) {
+            auto diff = result[i];
             if(diff < zero) diff *= -1.0;
             if(diff >= ptol) return false;
         }
         return true;
     }
+
+    double tol;
 };
 
 } // namespace
@@ -50,9 +51,12 @@ bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
     Tensor result;
     result(index) = lhs(index) - rhs(index);
 
-    using tensorwrapper::utilities::floating_point_dispatch;
-
-    return floating_point_dispatch(Kernel{}, result.buffer(), tol);
+    using allocator_type = allocator::Contiguous;
+    allocator_type alloc(result.buffer().allocator().runtime());
+    const auto& buffer_down = alloc.rebind(result.buffer());
+    Kernel k(tol);
+    return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
+      k, buffer_down);
 }
 
 } // namespace tensorwrapper::operations

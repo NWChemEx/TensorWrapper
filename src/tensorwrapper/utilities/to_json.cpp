@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/allocator/contiguous.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/utilities/to_json.hpp>
 
 namespace tensorwrapper::utilities {
@@ -22,16 +23,14 @@ namespace tensorwrapper::utilities {
 using offset_type   = std::size_t;
 using offset_vector = std::vector<offset_type>;
 
-template<typename DataType>
-using buffer_type = buffer::Contiguous<DataType>;
+using buffer_type = buffer::Contiguous;
 
-template<typename DataType>
-void to_json_(std::ostream& os, const buffer_type<DataType>& t,
-              offset_vector index) {
+void to_json_(std::ostream& os, const buffer_type& t, offset_vector index) {
     const auto& shape = t.layout().shape().as_smooth();
     auto rank         = index.size();
     if(rank == t.rank()) {
-        os << t.get_elem(index);
+        throw std::runtime_error("Fix me!");
+        // os << t.get_elem(index);
         return;
     } else {
         auto n_elements = shape.extent(rank);
@@ -48,7 +47,8 @@ void to_json_(std::ostream& os, const buffer_type<DataType>& t,
 
 std::ostream& to_json(std::ostream& os, const Tensor& t) {
     offset_vector i;
-    const auto& buffer = buffer::to_eigen_buffer<double>(t.buffer());
+    allocator::Contiguous alloc(t.buffer().allocator().runtime());
+    const auto& buffer = alloc.rebind(t.buffer());
     to_json_(os, buffer, i);
     return os;
 }
