@@ -317,6 +317,44 @@ TEMPLATE_LIST_TEST_CASE("MDBuffer", "", types::floating_point_types) {
         }
     }
 
+    SECTION("multiplication_assignment_") {
+        // N.b., dispatching among hadamard, contraction, etc. is the visitor's
+        // responsibility and happens there. Here we just test hadamard.
+
+        SECTION("scalar") {
+            label_type labels("");
+            MDBuffer result;
+            result.multiplication_assignment(labels, scalar(labels),
+                                             scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            MDBuffer result;
+            result.multiplication_assignment(labels, vector(labels),
+                                             vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0));
+            REQUIRE(result.get_elem({1}) == TestType(4.0));
+            REQUIRE(result.get_elem({2}) == TestType(9.0));
+            REQUIRE(result.get_elem({3}) == TestType(16.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            MDBuffer result;
+            result.multiplication_assignment(labels, matrix(labels),
+                                             matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(4.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(9.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(16.0));
+        }
+    }
+
     SECTION("scalar_multiplication_") {
         // TODO: Test with other scalar types when public API supports it
         using scalar_type = double;

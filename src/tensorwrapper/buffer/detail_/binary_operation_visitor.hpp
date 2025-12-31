@@ -135,4 +135,29 @@ public:
     }
 };
 
+/// Visitor that calls hadamard_assignment or contraction_assignment
+class MultiplicationVisitor : public BinaryOperationVisitor {
+public:
+    using BinaryOperationVisitor::BinaryOperationVisitor;
+    using BinaryOperationVisitor::operator();
+
+    template<typename FloatType>
+    void operator()(std::span<FloatType> lhs, std::span<FloatType> rhs) {
+        using clean_t = std::decay_t<FloatType>;
+        auto pthis    = this->make_this_eigen_tensor_<clean_t>();
+        auto plhs     = this->make_lhs_eigen_tensor_(lhs);
+        auto prhs     = this->make_rhs_eigen_tensor_(rhs);
+
+        if(this_labels().is_hadamard_product(lhs_labels(), rhs_labels()))
+            pthis->hadamard_assignment(this_labels(), lhs_labels(),
+                                       rhs_labels(), *plhs, *prhs);
+        else if(this_labels().is_contraction(lhs_labels(), rhs_labels()))
+            pthis->contraction_assignment(this_labels(), lhs_labels(),
+                                          rhs_labels(), *plhs, *prhs);
+        else
+            throw std::runtime_error(
+              "MultiplicationVisitor: Batched contraction NYI");
+    }
+};
+
 } // namespace tensorwrapper::buffer::detail_

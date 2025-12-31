@@ -157,7 +157,26 @@ auto MDBuffer::multiplication_assignment_(label_type this_labels,
                                           const_labeled_reference lhs,
                                           const_labeled_reference rhs)
   -> dsl_reference {
-    throw std::runtime_error("multiplication NYI");
+    const auto& lhs_down  = downcast(lhs.object());
+    const auto& rhs_down  = downcast(rhs.object());
+    const auto& lhs_shape = lhs_down.m_shape_;
+    const auto& rhs_shape = rhs_down.m_shape_;
+
+    auto labeled_lhs_shape = lhs_shape(lhs.labels());
+    auto labeled_rhs_shape = rhs_shape(rhs.labels());
+
+    m_shape_.multiplication_assignment(this_labels, labeled_lhs_shape,
+                                       labeled_rhs_shape);
+
+    detail_::MultiplicationVisitor visitor(m_buffer_, this_labels, m_shape_,
+                                           lhs.labels(), lhs_shape,
+                                           rhs.labels(), rhs_shape);
+
+    wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, lhs_down.m_buffer_,
+                                                   rhs_down.m_buffer_);
+
+    mark_for_rehash_();
+    return *this;
 }
 
 auto MDBuffer::permute_assignment_(label_type this_labels,
