@@ -27,64 +27,61 @@
 namespace tensorwrapper::testing {
 
 template<typename FloatType>
-auto make_allocator() {
-    parallelzone::runtime::RuntimeView rv;
-    return allocator::Eigen<FloatType>(rv);
-}
-
-template<typename FloatType>
 auto eigen_scalar(FloatType value = 42.0) {
-    auto alloc = make_allocator<FloatType>();
-    return alloc.construct(value);
+    shape::Smooth shape{};
+    std::vector<FloatType> data{value};
+    return std::make_unique<buffer::Contiguous>(std::move(data),
+                                                std::move(shape));
 }
 
 template<typename FloatType>
 auto eigen_vector(std::size_t n = 5) {
-    layout::Physical l(shape::Smooth{n});
-    auto alloc  = make_allocator<FloatType>();
-    auto buffer = alloc.allocate(l);
-    for(std::size_t i = 0; i < n; ++i) buffer->set_elem({i}, i);
-    return buffer;
+    shape::Smooth shape{n};
+    std::vector<FloatType> data(n);
+    for(std::size_t i = 0; i < n; ++i) data[i] = static_cast<FloatType>(i);
+    return std::make_unique<buffer::Contiguous>(std::move(data),
+                                                std::move(shape));
 }
 
 template<typename FloatType>
 auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
-    layout::Physical l(shape::Smooth{n, m});
-    auto alloc     = make_allocator<FloatType>();
-    auto buffer    = alloc.allocate(l);
+    shape::Smooth shape{n, m};
+    std::vector<FloatType> data(n * m);
     double counter = 1.0;
     for(decltype(n) i = 0; i < n; ++i)
-        for(decltype(m) j = 0; j < m; ++j) buffer->set_elem({i, j}, counter++);
-    return buffer;
+        for(decltype(m) j = 0; j < m; ++j)
+            data[i * m + j] = static_cast<FloatType>(counter++);
+    return std::make_unique<buffer::Contiguous>(std::move(data),
+                                                std::move(shape));
 }
 
 template<typename FloatType>
 auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
-    layout::Physical layout(shape::Smooth{n, m, l});
-    auto alloc     = make_allocator<FloatType>();
-    auto buffer    = alloc.allocate(layout);
+    shape::Smooth shape{n, m, l};
+    std::vector<FloatType> data(n * m * l);
     double counter = 1.0;
     for(decltype(n) i = 0; i < n; ++i)
         for(decltype(m) j = 0; j < m; ++j)
             for(decltype(l) k = 0; k < l; ++k)
-                buffer->set_elem({i, j, k}, counter++);
-    return buffer;
+                data[i * m * n + j * n + l] = static_cast<FloatType>(counter++);
+    return std::make_unique<buffer::Contiguous>(std::move(data),
+                                                std::move(shape));
 }
 
 template<typename FloatType>
 auto eigen_tensor4(std::array<std::size_t, 4> extents = {2, 2, 2, 2}) {
-    shape::Smooth shape{extents[0], extents[1], extents[2], extents[3]};
-    layout::Physical layout(shape);
-    auto alloc     = make_allocator<FloatType>();
-    auto buffer    = alloc.allocate(layout);
+    shape::Smooth shape(extents.begin(), extents.end());
+    std::vector<FloatType> data(shape.size());
+    buffer::Contiguous buffer(std::move(data), std::move(shape));
     double counter = 1.0;
-    decltype(extents) i;
-    for(i[0] = 0; i[0] < extents[0]; ++i[0])
-        for(i[1] = 0; i[1] < extents[1]; ++i[1])
-            for(i[2] = 0; i[2] < extents[2]; ++i[2])
-                for(i[3] = 0; i[3] < extents[3]; ++i[3])
-                    buffer->set_elem({i[0], i[1], i[2], i[3]}, counter++);
-    return buffer;
+    for(std::size_t i = 0; i < extents[0]; ++i)
+        for(decltype(i) j = 0; j < extents[1]; ++j)
+            for(decltype(i) k = 0; k < extents[2]; ++k)
+                for(decltype(i) l = 0; l < extents[3]; ++l)
+                    buffer.set_elem({i, j, k, l},
+                                    static_cast<FloatType>(counter++));
+
+    return std::make_unique<buffer::Contiguous>(std::move(buffer));
 }
 
 } // namespace tensorwrapper::testing

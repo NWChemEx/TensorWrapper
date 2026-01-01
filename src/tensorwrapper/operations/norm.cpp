@@ -44,12 +44,13 @@ struct InfinityKernel {
 
 Tensor infinity_norm(const Tensor& t) {
     using allocator_type = allocator::Contiguous;
-    auto rv              = t.allocator().runtime();
+    auto rv              = t.buffer().allocator().runtime();
     allocator_type alloc(rv);
     const auto& buffer_down = alloc.rebind(t.buffer());
     InfinityKernel kernel(alloc);
-    return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
-      kernel, buffer_down);
+    throw std::runtime_error("Fix me!!!!");
+    // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
+    //   kernel, buffer_down);
 }
 
 } // namespace tensorwrapper::operations

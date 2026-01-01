@@ -15,6 +15,7 @@
  */
 
 #include "../../testing/testing.hpp"
+#include <tensorwrapper/buffer/contiguous.hpp>
 
 using namespace tensorwrapper;
 
@@ -36,8 +37,9 @@ TEST_CASE("TensorInput") {
     sparsity::Pattern sparsity(2);
     layout::Logical logical(shape, g, sparsity);
     layout::Physical physical(shape, g, sparsity);
-    allocator::Eigen<double> alloc(rv);
-    auto pbuffer = alloc.construct(42.0);
+
+    std::vector<double> data{42.0};
+    auto pbuffer = std::make_unique<buffer::Contiguous>(data, shape::Smooth{});
     auto& buffer = *pbuffer;
 
     detail_::TensorInput defaulted;
@@ -210,67 +212,38 @@ TEST_CASE("TensorInput") {
             REQUIRE(i.has_physical_layout());
         }
 
-        SECTION("Allocator (by value)") {
-            detail_::TensorInput i(physical, alloc, logical);
-            REQUIRE(i.m_pshape == nullptr);
-            REQUIRE(i.m_psymmetry == nullptr);
-            REQUIRE(i.m_psparsity == nullptr);
-            REQUIRE(i.m_plogical->are_equal(logical));
-            REQUIRE(i.m_pphysical->are_equal(physical));
-            REQUIRE(i.m_palloc->are_equal(alloc));
-            REQUIRE(i.m_pbuffer == nullptr);
-            REQUIRE(i.m_rv == rv);
-
-            REQUIRE(i.has_allocator());
-        }
-
-        SECTION("Allocator (by pointer)") {
-            auto palloc        = alloc.clone();
-            auto alloc_address = palloc.get();
-            detail_::TensorInput i(physical, std::move(palloc), logical);
-            REQUIRE(i.m_pshape == nullptr);
-            REQUIRE(i.m_psymmetry == nullptr);
-            REQUIRE(i.m_psparsity == nullptr);
-            REQUIRE(i.m_plogical->are_equal(logical));
-            REQUIRE(i.m_pphysical->are_equal(physical));
-            REQUIRE(i.m_palloc->are_equal(alloc));
-            REQUIRE(i.m_palloc.get() == alloc_address);
-            REQUIRE(i.m_pbuffer == nullptr);
-            REQUIRE(i.m_rv == rv);
-
-            REQUIRE(i.has_allocator());
-        }
-
         SECTION("Buffer (by value)") {
-            detail_::TensorInput i(physical, alloc, logical, buffer);
-            REQUIRE(i.m_pshape == nullptr);
-            REQUIRE(i.m_psymmetry == nullptr);
-            REQUIRE(i.m_psparsity == nullptr);
-            REQUIRE(i.m_plogical->are_equal(logical));
-            REQUIRE(i.m_pphysical->are_equal(physical));
-            REQUIRE(i.m_palloc->are_equal(alloc));
-            // REQUIRE(i.m_pbuffer->are_equal(buffer));
-            REQUIRE(i.m_rv == rv);
+            throw std::runtime_error("Fix me!");
+            // detail_::TensorInput i(physical, alloc, logical, buffer);
+            // REQUIRE(i.m_pshape == nullptr);
+            // REQUIRE(i.m_psymmetry == nullptr);
+            // REQUIRE(i.m_psparsity == nullptr);
+            // REQUIRE(i.m_plogical->are_equal(logical));
+            // REQUIRE(i.m_pphysical->are_equal(physical));
+            // REQUIRE(i.m_palloc->are_equal(alloc));
+            // // REQUIRE(i.m_pbuffer->are_equal(buffer));
+            // REQUIRE(i.m_rv == rv);
 
-            REQUIRE(i.has_buffer());
+            // REQUIRE(i.has_buffer());
         }
 
         SECTION("Buffer (by pointer)") {
-            auto pbuffer        = buffer.clone();
-            auto buffer_address = pbuffer.get();
-            detail_::TensorInput i(physical, alloc, logical,
-                                   std::move(pbuffer));
-            REQUIRE(i.m_pshape == nullptr);
-            REQUIRE(i.m_psymmetry == nullptr);
-            REQUIRE(i.m_psparsity == nullptr);
-            REQUIRE(i.m_plogical->are_equal(logical));
-            REQUIRE(i.m_pphysical->are_equal(physical));
-            REQUIRE(i.m_palloc->are_equal(alloc));
-            // REQUIRE(i.m_pbuffer->are_equal(buffer));
-            REQUIRE(i.m_pbuffer.get() == buffer_address);
-            REQUIRE(i.m_rv == rv);
+            throw std::runtime_error("Fix me!");
+            // auto pbuffer        = buffer.clone();
+            // auto buffer_address = pbuffer.get();
+            // detail_::TensorInput i(physical, alloc, logical,
+            //                        std::move(pbuffer));
+            // REQUIRE(i.m_pshape == nullptr);
+            // REQUIRE(i.m_psymmetry == nullptr);
+            // REQUIRE(i.m_psparsity == nullptr);
+            // REQUIRE(i.m_plogical->are_equal(logical));
+            // REQUIRE(i.m_pphysical->are_equal(physical));
+            // REQUIRE(i.m_palloc->are_equal(alloc));
+            // // REQUIRE(i.m_pbuffer->are_equal(buffer));
+            // REQUIRE(i.m_pbuffer.get() == buffer_address);
+            // REQUIRE(i.m_rv == rv);
 
-            REQUIRE(i.has_buffer());
+            // REQUIRE(i.has_buffer());
         }
 
         SECTION("RuntimeView") {
@@ -315,13 +288,6 @@ TEST_CASE("TensorInput") {
 
         detail_::TensorInput w_physical(physical);
         REQUIRE(w_physical.has_physical_layout());
-    }
-
-    SECTION("has_allocator") {
-        REQUIRE_FALSE(defaulted.has_allocator());
-
-        detail_::TensorInput w_allocator(alloc);
-        REQUIRE(w_allocator.has_allocator());
     }
 
     SECTION("has_buffer") {

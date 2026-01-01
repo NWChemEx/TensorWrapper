@@ -21,12 +21,14 @@
 
 namespace tensorwrapper {
 
-template<typename FloatType>
-auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
+auto make_buffer_info(buffer::Contiguous& buffer) {
+    throw std::runtime_error("Fix me!!!!");
     using size_type       = std::size_t;
-    constexpr auto nbytes = sizeof(FloatType);
-    const auto desc       = pybind11::format_descriptor<FloatType>::format();
-    const auto rank       = buffer.rank();
+    constexpr auto nbytes = sizeof(double);
+    const auto desc       = pybind11::format_descriptor<double>::format();
+    // constexpr auto nbytes = sizeof(FloatType);
+    // const auto desc       = pybind11::format_descriptor<FloatType>::format();
+    const auto rank = buffer.rank();
 
     const auto smooth_shape = buffer.layout().shape().as_smooth();
 
@@ -39,31 +41,31 @@ auto make_buffer_info(buffer::Contiguous<FloatType>& buffer) {
             stride_i *= smooth_shape.extent(mode_i);
         strides[rank_i] = stride_i * nbytes;
     }
-    return pybind11::buffer_info(buffer.get_mutable_data(), nbytes, desc, rank,
-                                 shape, strides);
+    double* ptr = nullptr; // buffer.get_mutable_data<double>();
+    return pybind11::buffer_info(ptr, nbytes, desc, rank, shape, strides);
 }
 
-auto make_tensor(pybind11::buffer b) {
-    pybind11::buffer_info info = b.request();
-    if(info.format != pybind11::format_descriptor<double>::format())
-        throw std::runtime_error(
-          "Incompatible format: expected a double array!");
+Tensor make_tensor(pybind11::buffer b) {
+    throw std::runtime_error("Fix me!!!!");
+    // pybind11::buffer_info info = b.request();
+    // if(info.format != pybind11::format_descriptor<double>::format())
+    //     throw std::runtime_error(
+    //       "Incompatible format: expected a double array!");
 
-    std::vector<std::size_t> dims(info.ndim);
-    for(auto i = 0; i < info.ndim; ++i) { dims[i] = info.shape[i]; }
+    // std::vector<std::size_t> dims(info.ndim);
+    // for(auto i = 0; i < info.ndim; ++i) { dims[i] = info.shape[i]; }
 
-    parallelzone::runtime::RuntimeView rv = {};
-    allocator::Eigen<double> allocator(rv);
-    shape::Smooth matrix_shape{dims.begin(), dims.end()};
-    layout::Physical matrix_layout(matrix_shape);
-    auto pBuffer = allocator.allocate(matrix_layout);
+    // parallelzone::runtime::RuntimeView rv = {};
+    // shape::Smooth matrix_shape{dims.begin(), dims.end()};
+    // layout::Physical matrix_layout(matrix_shape);
+    // auto pBuffer = std::make_unique<buffer::Contiguous>(rv, matrix_layout);
 
-    auto n_elements = std::accumulate(dims.begin(), dims.end(), 1,
-                                      std::multiplies<std::size_t>());
-    auto pData      = static_cast<double*>(info.ptr);
-    for(auto i = 0; i < n_elements; ++i) pBuffer->set_data(i, pData[i]);
+    // auto n_elements = std::accumulate(dims.begin(), dims.end(), 1,
+    //                                   std::multiplies<std::size_t>());
+    // auto pData      = static_cast<double*>(info.ptr);
+    // for(auto i = 0; i < n_elements; ++i) pBuffer->set_elem({i}, pData[i]);
 
-    return Tensor(matrix_shape, std::move(pBuffer));
+    // return Tensor(matrix_shape, std::move(pBuffer));
 }
 
 void export_tensor(py_module_reference m) {
@@ -75,7 +77,7 @@ void export_tensor(py_module_reference m) {
       .def(pybind11::self != pybind11::self)
       .def("__str__", [](Tensor& self) { return self.to_string(); })
       .def_buffer([](Tensor& t) {
-          auto pbuffer = dynamic_cast<buffer::Contiguous<double>*>(&t.buffer());
+          auto pbuffer = dynamic_cast<buffer::Contiguous*>(&t.buffer());
           if(pbuffer == nullptr)
               throw std::runtime_error("Expected buffer to hold doubles");
           return make_buffer_info(*pbuffer);

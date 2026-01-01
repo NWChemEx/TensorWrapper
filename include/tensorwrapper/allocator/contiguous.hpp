@@ -68,6 +68,8 @@ public:
     /// Pull in base class's ctors
     using base_type::base_type;
 
+    explicit Contiguous(runtime_view_reference runtime) : base_type(runtime) {}
+
     /** @brief Determines if @p buffer can be rebound as a Contiguous buffer.
      *
      *  Rebinding a buffer allows the same memory to be viewed as a (possibly)

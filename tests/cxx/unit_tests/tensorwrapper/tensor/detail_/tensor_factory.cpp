@@ -51,8 +51,8 @@ TEST_CASE("TensorFactory") {
     layout::Physical physical(shape, g, sparsity);
     auto pphysical = physical.clone_as<layout::Physical>();
 
-    allocator::Eigen<double> alloc(rv);
-    auto pbuffer        = alloc.allocate(std::move(pphysical));
+    std::vector<double> data{0.0};
+    auto pbuffer        = std::make_unique<buffer::Contiguous>(data, shape);
     auto buffer_address = pbuffer.get();
 
     SECTION("default_logical_symmetry") {
@@ -86,11 +86,6 @@ TEST_CASE("TensorFactory") {
     SECTION("default_physical_layout") {
         auto result = TensorFactory::default_physical_layout(logical);
         REQUIRE(result->are_equal(physical));
-    }
-
-    SECTION("default_allocator") {
-        auto result = TensorFactory::default_allocator(physical, rv);
-        REQUIRE(result->are_equal(alloc));
     }
 
     SECTION("construct(input)") {

@@ -15,7 +15,7 @@
  */
 
 #include "../testing/testing.hpp"
-#include <tensorwrapper/buffer/mdbuffer.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 
 using namespace tensorwrapper;

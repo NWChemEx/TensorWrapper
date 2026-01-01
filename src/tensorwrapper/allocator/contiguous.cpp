@@ -42,16 +42,13 @@ auto Contiguous::rebind(const_buffer_base_reference buffer)
 // -- Protected methods
 // -----------------------------------------------------------------------------
 
-auto Contiguous::allocate_(layout_pointer playout) {
-    return std::make_unique<buffer_type>(std::move(playout));
+auto Contiguous::allocate_(layout_pointer playout) -> buffer_base_pointer {
+    throw std::runtime_error("Fix me!");
 }
 
 auto Contiguous::construct_(layout_pointer playout, wtf::fp::Float value)
-  -> contiguous_pointer {
-    auto pbuffer        = this->allocate(std::move(playout));
-    auto& contig_buffer = static_cast<buffer::Contiguous&>(*pbuffer);
-    contig_buffer.fill(value);
-    return pbuffer;
+  -> buffer_pointer {
+    throw std::runtime_error("Fix me!");
 }
 
 // -- Private

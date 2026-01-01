@@ -15,7 +15,7 @@
  */
 
 #include "../testing/testing.hpp"
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
@@ -47,7 +47,7 @@ TEST_CASE("BufferBase") {
     auto scalar_layout = testing::scalar_physical();
     auto vector_layout = testing::vector_physical(2);
 
-    buffer::Eigen<double> defaulted;
+    buffer::Contiguous defaulted;
     BufferBase& defaulted_base = defaulted;
     BufferBase& scalar_base    = scalar;
     BufferBase& vector_base    = vector;
@@ -77,7 +77,7 @@ TEST_CASE("BufferBase") {
 
     SECTION("operator==") {
         // Defaulted layout == defaulted layout
-        REQUIRE(defaulted_base == buffer::Eigen<double>{});
+        REQUIRE(defaulted_base == buffer::Contiguous{});
 
         // Defaulted layout != non-defaulted layout
         REQUIRE_FALSE(defaulted_base == scalar_base);
@@ -89,6 +89,6 @@ TEST_CASE("BufferBase") {
     SECTION("operator!=") {
         // Just spot check because it negates operator==, which was tested
         REQUIRE(defaulted_base != scalar_base);
-        REQUIRE_FALSE(defaulted_base != buffer::Eigen<double>());
+        REQUIRE_FALSE(defaulted_base != buffer::Contiguous());
     }
 }

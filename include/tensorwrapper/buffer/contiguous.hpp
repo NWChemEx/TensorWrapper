@@ -53,7 +53,10 @@ public:
     using size_type         = typename traits_type::size_type;
     ///@}
 
+    /// Type of an offset vector
     using index_vector = std::vector<size_type>;
+
+    /// Type of the object used to annotate modes
     using typename my_base_type::label_type;
     using string_type = std::string;
 

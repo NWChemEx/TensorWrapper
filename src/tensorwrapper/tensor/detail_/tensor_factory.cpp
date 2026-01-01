@@ -177,8 +177,10 @@ namespace {
 /// Wraps the process of turning an initializer list into a TensorInput object
 template<typename T>
 auto il_to_input(T il, parallelzone::runtime::RuntimeView rv = {}) {
-    allocator::Contiguous alloc(rv);
-    auto pbuffer = alloc.construct(il);
+    auto [extents, data] = unwrap_il(il);
+    shape::Smooth shape(extents.begin(), extents.end());
+    auto pbuffer =
+      std::make_unique<buffer::Contiguous>(std::move(data), std::move(shape));
     return TensorInput(pbuffer->layout().shape(), std::move(pbuffer));
 }
 

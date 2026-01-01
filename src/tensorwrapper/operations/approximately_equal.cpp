@@ -55,8 +55,9 @@ bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
     allocator_type alloc(result.buffer().allocator().runtime());
     const auto& buffer_down = alloc.rebind(result.buffer());
     Kernel k(tol);
-    return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
-      k, buffer_down);
+    throw std::runtime_error("Fix me!!!!");
+    // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
+    //  k, buffer_down.get_immutable_data());
 }
 
 } // namespace tensorwrapper::operations

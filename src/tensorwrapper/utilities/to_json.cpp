@@ -47,9 +47,11 @@ void to_json_(std::ostream& os, const buffer_type& t, offset_vector index) {
 
 std::ostream& to_json(std::ostream& os, const Tensor& t) {
     offset_vector i;
-    allocator::Contiguous alloc(t.buffer().allocator().runtime());
-    const auto& buffer = alloc.rebind(t.buffer());
-    to_json_(os, buffer, i);
+    auto pbuffer_down = dynamic_cast<const buffer_type*>(&t.buffer());
+    if(pbuffer_down == nullptr)
+        throw std::runtime_error(
+          "to_json only supports tensors with Contiguous buffers");
+    to_json_(os, *pbuffer_down, i);
     return os;
 }
 
