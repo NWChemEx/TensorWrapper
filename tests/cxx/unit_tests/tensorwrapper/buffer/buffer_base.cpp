@@ -58,21 +58,10 @@ TEST_CASE("BufferBase") {
         REQUIRE(vector_base.has_layout());
     }
 
-    SECTION("has_allocator") { REQUIRE_FALSE(defaulted_base.has_allocator()); }
-
     SECTION("layout") {
         REQUIRE_THROWS_AS(defaulted_base.layout(), std::runtime_error);
         REQUIRE(scalar_base.layout().are_equal(scalar_layout));
         REQUIRE(vector_base.layout().are_equal(vector_layout));
-    }
-
-    SECTION("allocator()") {
-        REQUIRE_THROWS_AS(defaulted_base.allocator(), std::runtime_error);
-    }
-
-    SECTION("allocator() const") {
-        REQUIRE_THROWS_AS(std::as_const(defaulted_base).allocator(),
-                          std::runtime_error);
     }
 
     SECTION("operator==") {

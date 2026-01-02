@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <tensorwrapper/allocator/contiguous.hpp>
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
@@ -51,9 +50,7 @@ bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
     Tensor result;
     result(index) = lhs(index) - rhs(index);
 
-    using allocator_type = allocator::Contiguous;
-    allocator_type alloc(result.buffer().allocator().runtime());
-    const auto& buffer_down = alloc.rebind(result.buffer());
+    const auto& buffer_down = make_contiguous(result.buffer());
     Kernel k(tol);
     throw std::runtime_error("Fix me!!!!");
     // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(

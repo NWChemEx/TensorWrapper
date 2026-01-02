@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <tensorwrapper/allocator/contiguous.hpp>
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/tensor/tensor.hpp>
@@ -22,8 +21,6 @@
 namespace tensorwrapper::operations {
 namespace {
 struct InfinityKernel {
-    InfinityKernel(allocator::Contiguous& alloc) : palloc(&alloc) {}
-
     template<typename FloatType>
     auto operator()(const std::span<FloatType> buffer) {
         FloatType max_element{0.0};
@@ -32,25 +29,19 @@ struct InfinityKernel {
             if(elem > max_element) max_element = elem;
         }
         shape::Smooth s{};
-        layout::Physical l(s);
-        auto pbuffer = palloc->construct(l, max_element);
+        std::vector<FloatType> data{max_element};
+        auto pbuffer = std::make_unique<buffer::Contiguous>(data, s);
         return Tensor(s, std::move(pbuffer));
     }
-
-    allocator::Contiguous* palloc;
 };
-
 } // namespace
 
 Tensor infinity_norm(const Tensor& t) {
-    using allocator_type = allocator::Contiguous;
-    auto rv              = t.buffer().allocator().runtime();
-    allocator_type alloc(rv);
-    const auto& buffer_down = alloc.rebind(t.buffer());
-    InfinityKernel kernel(alloc);
+    // const auto& buffer_down = make_contiguous(t.buffer());
+    //  InfinityKernel kernel;
     throw std::runtime_error("Fix me!!!!");
     // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
-    //   kernel, buffer_down);
+    //   kernel, buffer_down.get_immutable_data());
 }
 
 } // namespace tensorwrapper::operations

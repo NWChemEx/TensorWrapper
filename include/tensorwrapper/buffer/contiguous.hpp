@@ -232,15 +232,13 @@ public:
 
     /** @brief Returns a view of the data.
      *
-     *  This method is deprecated. Use set_slice instead.
      */
-    [[deprecated]] buffer_view get_mutable_data();
+    buffer_view get_mutable_data();
 
     /** @brief Returns a read-only view of the data.
      *
-     *  This method is deprecated. Use get_slice instead.
      */
-    [[deprecated]] const_buffer_view get_immutable_data() const;
+    const_buffer_view get_immutable_data() const;
 
     // -------------------------------------------------------------------------
     // -- Utility Methods
@@ -335,5 +333,34 @@ private:
     /// The flat buffer holding the elements of *this
     buffer_type m_buffer_;
 };
+
+template<concepts::FloatingPoint T>
+Contiguous make_contiguous(const shape::ShapeBase& shape) {
+    auto smooth_view = shape.as_smooth();
+    using size_type  = typename decltype(smooth_view)::size_type;
+    std::vector<size_type> extents(smooth_view.rank());
+    for(size_type i = 0; i < smooth_view.rank(); ++i)
+        extents[i] = smooth_view.extent(i);
+    shape::Smooth smooth_shape(extents.begin(), extents.end());
+    std::vector<T> elements(smooth_view.size(),
+                            static_cast<T>(0)); // Initialize to zeroes
+    return Contiguous(std::move(elements), std::move(smooth_shape));
+}
+
+inline Contiguous& make_contiguous(buffer::BufferBase& buffer) {
+    auto* pcontiguous = dynamic_cast<Contiguous*>(&buffer);
+    if(pcontiguous == nullptr)
+        throw std::runtime_error(
+          "make_contiguous: buffer is not a Contiguous buffer");
+    return *pcontiguous;
+}
+
+inline const Contiguous& make_contiguous(const buffer::BufferBase& buffer) {
+    const auto* pcontiguous = dynamic_cast<const Contiguous*>(&buffer);
+    if(pcontiguous == nullptr)
+        throw std::runtime_error(
+          "make_contiguous: buffer is not a Contiguous buffer");
+    return *pcontiguous;
+}
 
 } // namespace tensorwrapper::buffer

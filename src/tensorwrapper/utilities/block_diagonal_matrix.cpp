@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/layout/layout.hpp>
 #include <tensorwrapper/shape/shape.hpp>
@@ -27,16 +26,12 @@ namespace {
 //     template<typename FloatType>
 //     auto run(const buffer::BufferBase& b, const std::vector<Tensor>&
 //     matrices) {
-//         using allocator_type = tensorwrapper::allocator::Eigen<FloatType>;
 
 //         // All inputs must be Rank 2, square, and the same floating point
 //         type.
 //         // If so, sum their extent sizes.
 //         std::size_t size = 0;
 //         for(const auto& matrix : matrices) {
-//             if(!allocator_type::can_rebind(matrix.buffer()))
-//                 throw std::runtime_error(
-//                   "All inputs must have the same floating point type");
 
 //             if(matrix.rank() != 2)
 //                 throw std::runtime_error(
@@ -52,7 +47,6 @@ namespace {
 //         }
 
 //         // Allocate new buffer
-//         allocator_type allocator(b.allocator().runtime());
 //         shape::Smooth oshape{size, size};
 //         layout::Physical olayout(oshape);
 //         auto obuffer = allocator.construct(olayout, 0.0);

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
@@ -28,8 +27,6 @@ namespace {
 
 //     template<typename FloatType>
 //     auto run(const buffer_base_type& t) {
-//         using alloc_type = tensorwrapper::allocator::Eigen<FloatType>;
-//         alloc_type alloc(t.allocator().runtime());
 
 //         double rv;
 //         if constexpr(tensorwrapper::types::is_uncertain_v<FloatType>) {

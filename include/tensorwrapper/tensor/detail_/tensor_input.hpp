@@ -17,7 +17,6 @@
 #pragma once
 #include <memory>
 #include <parallelzone/parallelzone.hpp>
-#include <tensorwrapper/allocator/allocator_base.hpp>
 #include <tensorwrapper/buffer/buffer_base.hpp>
 #include <tensorwrapper/layout/layout_base.hpp>
 #include <tensorwrapper/layout/logical.hpp>
@@ -90,18 +89,8 @@ struct TensorInput {
     /// Type of a pointer to an object of type physical_layout_type
     using physical_layout_pointer = std::unique_ptr<physical_layout_type>;
 
-    /// Type all allocators inherit from
-    using allocator_base = allocator::AllocatorBase;
-
-    /// Type of a read-only reference to an object of type allocator_base
-    using const_allocator_reference =
-      typename allocator_base::const_base_reference;
-
-    /// Type of a pointer to an object of type allocator_base
-    using allocator_pointer = typename allocator_base::base_pointer;
-
     /// Type all buffer object's inherit from
-    using buffer_base = typename allocator_base::buffer_base_type;
+    using buffer_base = typename buffer::BufferBase;
 
     /// Type of a mutable reference to a buffer_base object
     using buffer_reference = typename buffer_base::base_reference;
@@ -116,7 +105,7 @@ struct TensorInput {
     using const_buffer_pointer = typename buffer_base::const_base_pointer;
 
     /// Type of a view of the runtime
-    using runtime_view_type = typename allocator_base::runtime_view_type;
+    using runtime_view_type = parallelzone::runtime::RuntimeView;
 
     TensorInput() = default;
 
@@ -193,16 +182,6 @@ struct TensorInput {
     }
 
     template<typename... Args>
-    TensorInput(const_allocator_reference alloc, Args&&... args) :
-      TensorInput(alloc.clone(), std::forward<Args>(args)...) {}
-
-    template<typename... Args>
-    TensorInput(allocator_pointer palloc, Args&&... args) :
-      TensorInput(std::forward<Args>(args)...) {
-        m_palloc = std::move(palloc);
-    }
-
-    template<typename... Args>
     TensorInput(const_buffer_reference buffer, Args&&... args) :
       TensorInput(buffer.clone(), std::forward<Args>(args)...) {}
 
@@ -242,8 +221,6 @@ struct TensorInput {
 
     bool has_physical_layout() const noexcept { return m_pphysical != nullptr; }
 
-    bool has_allocator() const noexcept { return m_palloc != nullptr; }
-
     bool has_buffer() const noexcept { return m_pbuffer != nullptr; }
     ///@}
 
@@ -256,8 +233,6 @@ struct TensorInput {
     logical_layout_pointer m_plogical;
 
     physical_layout_pointer m_pphysical;
-
-    allocator_pointer m_palloc;
 
     buffer_pointer m_pbuffer;
 
