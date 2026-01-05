@@ -21,3 +21,4 @@ Developer Documentation
    :caption: Contents:
 
    design/index
+   adding_operations_to_contiguous

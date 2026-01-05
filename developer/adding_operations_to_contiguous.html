@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding Operations to Contiguous &mdash; TensorWrapper 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sparse Maps Sublibrary" href="../sparse_maps/index.html" />
+    <link rel="prev" title="Designing the Sparse Map Component" href="design/sparse_maps.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_candybar.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../background/index.html">TensorWrapper Background</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design/index.html">Design of TensorWrapper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adding Operations to Contiguous</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-how-contiguous-works">Understanding How Contiguous Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-a-new-operation">Adding a New Operation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sparse_maps/index.html">Sparse Maps Sublibrary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://nwchemex.github.io/TensorWrapper/tensorwrapper_cxx_api/index.html">C++ API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TensorWrapper</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developer Documentation</a></li>
+      <li class="breadcrumb-item active">Adding Operations to Contiguous</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/NWChemEx/TensorWrapper/edit/master/docs/source/developer/adding_operations_to_contiguous.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adding-operations-to-contiguous">
+<h1>Adding Operations to Contiguous<a class="headerlink" href="#adding-operations-to-contiguous" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Contiguous</span></code> class is the workhorse of most tensor operations because it
+provides the kernels that non-contiguous tensors are built on. As such, we may
+need to add operations to it from time to time. This document describes how to
+do that.</p>
+<section id="understanding-how-contiguous-works">
+<h2>Understanding How Contiguous Works<a class="headerlink" href="#understanding-how-contiguous-works" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<img alt="../_images/how_contiguous_works.png" src="../_images/how_contiguous_works.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Control flow for an operation resulting in a <code class="docutils literal notranslate"><span class="pre">Contiguous</span></code> buffer object.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>For concreteness, we’ll trace how <code class="docutils literal notranslate"><span class="pre">subtraction_assignment</span></code> is implemented.
+Other binary operations are implemented nearly identically and the
+implementation of unary operations is extremely similar.</p>
+<ol class="arabic simple">
+<li><p>The input objects, <code class="docutils literal notranslate"><span class="pre">lhs</span></code> and <code class="docutils literal notranslate"><span class="pre">rhs</span></code> are converted to <code class="docutils literal notranslate"><span class="pre">Contiguous</span></code>
+objects. N.b., we should eventually use performance models to decide whether
+the time to convert to <code class="docutils literal notranslate"><span class="pre">Contiguous</span></code> objects is worth it, or if we should
+rely on algorithms which do not require contiguous data.</p></li>
+<li><p>We work out the shape of the output tensor.</p></li>
+<li><p>A visitor for the desired operation is created. For
+<code class="docutils literal notranslate"><span class="pre">subtraction_assignment</span></code>, this is <code class="docutils literal notranslate"><span class="pre">detail_::SubtractionVisitor</span></code>.</p>
+<ul class="simple">
+<li><p>Visitor definitions live in <code class="docutils literal notranslate"><span class="pre">wtf/src/tensorwrapper/buffer/detail_/</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p>Control enters <code class="docutils literal notranslate"><span class="pre">wtf::buffer::visit_contiguous_buffer</span></code> to restore floating-
+point types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lhs</span></code> and <code class="docutils literal notranslate"><span class="pre">rhs</span></code> are converted to <code class="docutils literal notranslate"><span class="pre">std::span</span></code> objects.</p></li>
+<li><p>Control enters the visitor.</p></li>
+<li><p>With types known, the output tensor can be initialized (and is).</p></li>
+<li><p>The visitor converts the <code class="docutils literal notranslate"><span class="pre">std::span</span></code> objects into the tensor backend’s
+tensor objects.</p>
+<ul class="simple">
+<li><p>Backend implementations live in <code class="docutils literal notranslate"><span class="pre">wtf/src/tensorwrapper/backends/</span></code>.</p></li>
+</ul>
+</li>
+<li><p>The backend’s implementation of the operation is invoked.</p></li>
+</ol>
+</section>
+<section id="adding-a-new-operation">
+<h2>Adding a New Operation<a class="headerlink" href="#adding-a-new-operation" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Verify that one of the backends supports the desired operation. If not, add
+it to a backend first.</p></li>
+<li><p>Create a visitor for it.</p></li>
+<li><p>Add the operation to <code class="docutils literal notranslate"><span class="pre">wtf::buffer::Contiguous</span></code>.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="design/sparse_maps.html" class="btn btn-neutral float-left" title="Designing the Sparse Map Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../sparse_maps/index.html" class="btn btn-neutral float-right" title="Sparse Maps Sublibrary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, NWChemEx Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
