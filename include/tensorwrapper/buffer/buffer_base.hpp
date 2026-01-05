@@ -144,6 +144,10 @@ public:
         return !(*this == rhs);
     }
 
+    bool approximately_equal(const BufferBase& rhs, double tol) const {
+        return approximately_equal_(rhs, tol);
+    }
+
 protected:
     // -------------------------------------------------------------------------
     // -- Ctors, assignment
@@ -225,6 +229,9 @@ protected:
 
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
+
+    virtual bool approximately_equal_(const BufferBase& rhs,
+                                      double tol) const = 0;
 
 private:
     template<typename FxnType>

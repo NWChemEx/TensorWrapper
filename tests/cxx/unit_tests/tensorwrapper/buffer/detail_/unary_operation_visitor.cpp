@@ -149,3 +149,62 @@ TEMPLATE_LIST_TEST_CASE("ScalarMultiplicationVisitor", "[buffer][detail_]",
         REQUIRE(this_buffer.at(5) == TestType(6.0) * scalar);
     }
 }
+
+TEMPLATE_LIST_TEST_CASE("ApproximatelyEqualVisitor", "[buffer][detail_]",
+                        types::floating_point_types) {
+    using VisitorType  = buffer::detail_::ApproximatelyEqualVisitor;
+    using vector_type  = std::vector<TestType>;
+    using span_type    = std::span<TestType>;
+    using cspan_type   = std::span<const TestType>;
+    double default_tol = 1e-16;
+
+    vector_type scalar_diff{0.000001};
+    vector_type scalar_same{0.0};
+    vector_type vector_diff{0.000001, -0.000001};
+    vector_type vector_same{0.0, 0.0};
+
+    span_type scalar_diff_span(scalar_diff.data(), scalar_diff.size());
+    cspan_type cscalar_diff_span(scalar_diff.data(), scalar_diff.size());
+    span_type scalar_same_span(scalar_same.data(), scalar_same.size());
+    cspan_type cscalar_same_span(scalar_same.data(), scalar_same.size());
+    span_type vector_diff_span(vector_diff.data(), vector_diff.size());
+    cspan_type cvector_diff_span(vector_diff.data(), vector_diff.size());
+    span_type vector_same_span(vector_same.data(), vector_same.size());
+    cspan_type cvector_same_span(vector_same.data(), vector_same.size());
+
+    SECTION("Differ by more than default tolerance") {
+        VisitorType v(default_tol);
+        REQUIRE_FALSE(v(scalar_diff_span));
+        REQUIRE_FALSE(v(cscalar_diff_span));
+        REQUIRE_FALSE(v(vector_diff_span));
+        REQUIRE_FALSE(v(cvector_diff_span));
+    }
+
+    SECTION("Differ by less than default tolerance") {
+        VisitorType v(default_tol);
+        REQUIRE(v(scalar_same_span));
+        REQUIRE(v(cscalar_same_span));
+        REQUIRE(v(vector_same_span));
+        REQUIRE(v(cvector_same_span));
+    }
+
+    SECTION("Differ by more than provided tolerance") {
+        VisitorType v(1e-8);
+        REQUIRE_FALSE(v(scalar_diff_span));
+        REQUIRE_FALSE(v(cscalar_diff_span));
+        REQUIRE_FALSE(v(vector_diff_span));
+        REQUIRE_FALSE(v(cvector_diff_span));
+    }
+
+    SECTION("Differ by less than provided tolerance") {
+        VisitorType v(1e-1);
+        REQUIRE(v(scalar_diff_span));
+        REQUIRE(v(cscalar_diff_span));
+        REQUIRE(v(vector_diff_span));
+        REQUIRE(v(cvector_diff_span));
+        REQUIRE(v(scalar_same_span));
+        REQUIRE(v(cscalar_same_span));
+        REQUIRE(v(vector_same_span));
+        REQUIRE(v(cvector_same_span));
+    }
+}

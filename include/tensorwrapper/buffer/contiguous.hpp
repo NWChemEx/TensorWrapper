@@ -19,6 +19,7 @@
 #include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/types/contiguous_traits.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -284,6 +285,9 @@ protected:
     dsl_reference scalar_multiplication_(label_type this_labels, double scalar,
                                          const_labeled_reference rhs) override;
 
+    bool approximately_equal_(const_buffer_base_reference rhs,
+                              double tol) const override;
+
     /// Calls add_to_stream_ on a stringstream to implement
     string_type to_string_() const override;
 
@@ -333,6 +337,24 @@ private:
     /// The flat buffer holding the elements of *this
     buffer_type m_buffer_;
 };
+
+template<typename KernelType>
+decltype(auto) visit_contiguous_buffer(KernelType&& kernel,
+                                       buffer::Contiguous& buffer) {
+    using fp_types  = types::floating_point_types;
+    auto wtf_buffer = buffer.get_mutable_data();
+    return wtf::buffer::visit_contiguous_buffer_view<fp_types>(
+      std::forward<KernelType>(kernel), wtf_buffer);
+}
+
+template<typename KernelType>
+decltype(auto) visit_contiguous_buffer(KernelType&& kernel,
+                                       const buffer::Contiguous& buffer) {
+    using fp_types  = types::floating_point_types;
+    auto wtf_buffer = buffer.get_immutable_data();
+    return wtf::buffer::visit_contiguous_buffer_view<fp_types>(
+      std::forward<KernelType>(kernel), wtf_buffer);
+}
 
 template<concepts::FloatingPoint T>
 Contiguous make_contiguous(const shape::ShapeBase& shape) {

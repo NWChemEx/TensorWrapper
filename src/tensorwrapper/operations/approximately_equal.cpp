@@ -13,48 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
-#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::operations {
-namespace {
-
-struct Kernel {
-    Kernel(double tolerance) : tol(tolerance) {}
-
-    template<typename FloatType>
-    bool operator()(const std::span<FloatType> result) {
-        const FloatType zero{0.0};
-        const FloatType ptol = static_cast<FloatType>(tol);
-        for(std::size_t i = 0; i < result.size(); ++i) {
-            auto diff = result[i];
-            if(diff < zero) diff *= -1.0;
-            if(diff >= ptol) return false;
-        }
-        return true;
-    }
-
-    double tol;
-};
-
-} // namespace
 
 bool approximately_equal(const Tensor& lhs, const Tensor& rhs, double tol) {
-    if(lhs.rank() != rhs.rank()) return false;
-
-    std::string index(lhs.rank() ? "i0" : "");
-    for(std::size_t i = 1; i < lhs.rank(); ++i)
-        index += (",i" + std::to_string(i));
-    Tensor result;
-    result(index) = lhs(index) - rhs(index);
-
-    const auto& buffer_down = make_contiguous(result.buffer());
-    Kernel k(tol);
-    throw std::runtime_error("Fix me!!!!");
-    // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
-    //  k, buffer_down.get_immutable_data());
+    return lhs.buffer().approximately_equal(rhs.buffer(), tol);
 }
 
 } // namespace tensorwrapper::operations

@@ -250,6 +250,58 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         REQUIRE_FALSE(matrix == Contiguous(diff_data, matrix_shape));
     }
 
+    SECTION("approximately_equal") {
+        Contiguous scalar2(std::vector{one}, scalar_shape);
+        Contiguous vector2(data, vector_shape);
+        Contiguous matrix2(data, matrix_shape);
+        double default_tol = 1e-16;
+        SECTION("different ranks") {
+            REQUIRE_FALSE(scalar.approximately_equal(vector, default_tol));
+            REQUIRE_FALSE(scalar.approximately_equal(matrix, default_tol));
+            REQUIRE_FALSE(vector.approximately_equal(scalar, default_tol));
+            REQUIRE_FALSE(vector.approximately_equal(matrix, default_tol));
+            REQUIRE_FALSE(matrix.approximately_equal(scalar, default_tol));
+            REQUIRE_FALSE(matrix.approximately_equal(vector, default_tol));
+        }
+
+        SECTION("Same values") {
+            REQUIRE(scalar.approximately_equal(scalar2, default_tol));
+            REQUIRE(scalar2.approximately_equal(scalar, default_tol));
+            REQUIRE(vector.approximately_equal(vector2, default_tol));
+            REQUIRE(vector2.approximately_equal(vector, default_tol));
+            REQUIRE(matrix.approximately_equal(matrix2, default_tol));
+            REQUIRE(matrix2.approximately_equal(matrix, default_tol));
+        }
+
+        SECTION("Differ by more than provided tolerance") {
+            TestType diff = 1e-1;
+            scalar2.set_elem({}, one + diff);
+            vector2.set_elem({0}, one + diff);
+            matrix2.set_elem({0, 0}, one + diff);
+            double tol = 1e-1;
+            REQUIRE_FALSE(scalar.approximately_equal(scalar2, tol));
+            REQUIRE_FALSE(scalar2.approximately_equal(scalar, tol));
+            REQUIRE_FALSE(vector.approximately_equal(vector2, tol));
+            REQUIRE_FALSE(vector2.approximately_equal(vector, tol));
+            REQUIRE_FALSE(matrix.approximately_equal(matrix2, tol));
+            REQUIRE_FALSE(matrix2.approximately_equal(matrix, tol));
+        }
+
+        SECTION("Differ by less than provided tolerance") {
+            TestType diff = 1e-10;
+            double tol    = 1e-10;
+            scalar2.set_elem({}, one + diff);
+            vector2.set_elem({0}, one + diff);
+            matrix2.set_elem({0, 0}, one + diff);
+            REQUIRE(scalar.approximately_equal(scalar2, tol));
+            REQUIRE(scalar2.approximately_equal(scalar, tol));
+            REQUIRE(vector.approximately_equal(vector2, tol));
+            REQUIRE(vector2.approximately_equal(vector, tol));
+            REQUIRE(matrix.approximately_equal(matrix2, tol));
+            REQUIRE(matrix2.approximately_equal(matrix, tol));
+        }
+    }
+
     SECTION("addition_assignment_") {
         SECTION("scalar") {
             label_type labels("");

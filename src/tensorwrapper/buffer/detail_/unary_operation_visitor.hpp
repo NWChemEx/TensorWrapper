@@ -143,4 +143,23 @@ private:
     scalar_type m_scalar_;
 };
 
+class ApproximatelyEqualVisitor {
+public:
+    explicit ApproximatelyEqualVisitor(double tol) : m_tol_(tol) {}
+
+    template<typename FloatType>
+    bool operator()(const std::span<FloatType> result) {
+        const FloatType zero{0.0};
+        const FloatType ptol = static_cast<FloatType>(m_tol_);
+        for(std::size_t i = 0; i < result.size(); ++i) {
+            auto diff = result[i];
+            if(diff < zero) diff *= -1.0;
+            if(diff >= ptol) return false;
+        }
+        return true;
+    }
+
+private:
+    double m_tol_;
+};
 } // namespace tensorwrapper::buffer::detail_

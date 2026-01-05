@@ -218,6 +218,20 @@ auto Contiguous::scalar_multiplication_(label_type this_labels, double scalar,
     return *this;
 }
 
+bool Contiguous::approximately_equal_(const_buffer_base_reference rhs,
+                                      double tol) const {
+    const auto& rhs_down = downcast(rhs);
+    if(rank() != rhs_down.rank()) return false;
+
+    std::string index(rank() ? "i0" : "");
+    for(std::size_t i = 1; i < rank(); ++i) index += (",i" + std::to_string(i));
+    Contiguous result;
+    result(index) = (*this)(index)-rhs_down(index);
+
+    detail_::ApproximatelyEqualVisitor k(tol);
+    return buffer::visit_contiguous_buffer(k, result);
+}
+
 auto Contiguous::to_string_() const -> string_type {
     std::stringstream ss;
     add_to_stream_(ss);
