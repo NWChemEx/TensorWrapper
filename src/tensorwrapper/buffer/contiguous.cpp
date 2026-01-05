@@ -79,6 +79,12 @@ auto Contiguous::get_immutable_data() const -> const_buffer_view {
     return m_buffer_;
 }
 
+auto Contiguous::infinity_norm() const -> value_type {
+    detail_::InfinityNormVisitor visitor;
+    auto v = wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, m_buffer_);
+    return value_type{v};
+}
+
 // -----------------------------------------------------------------------------
 // -- Utility Methods
 // -----------------------------------------------------------------------------

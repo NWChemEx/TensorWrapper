@@ -14,34 +14,14 @@
  * limitations under the License.
  */
 #include <tensorwrapper/buffer/contiguous.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
-#include <tensorwrapper/types/floating_point.hpp>
+#include <tensorwrapper/operations/norm.hpp>
 
 namespace tensorwrapper::operations {
-namespace {
-struct InfinityKernel {
-    template<typename FloatType>
-    auto operator()(const std::span<FloatType> buffer) {
-        FloatType max_element{0.0};
-        for(std::size_t i = 0; i < buffer.size(); ++i) {
-            auto elem = types::fabs(buffer[i]);
-            if(elem > max_element) max_element = elem;
-        }
-        shape::Smooth s{};
-        std::vector<FloatType> data{max_element};
-        auto pbuffer = std::make_unique<buffer::Contiguous>(data, s);
-        return Tensor(s, std::move(pbuffer));
-    }
-};
-} // namespace
 
 Tensor infinity_norm(const Tensor& t) {
-    // const auto& buffer_down = make_contiguous(t.buffer());
-    //  InfinityKernel kernel;
-    throw std::runtime_error("Fix me!!!!");
-    // return wtf::buffer::visit_contiguous_buffer<types::floating_point_types>(
-    //   kernel, buffer_down.get_immutable_data());
+    const auto& buffer_down = buffer::make_contiguous(t.buffer());
+    auto max_value          = buffer_down.infinity_norm();
+    throw std::runtime_error("Fix Me!!!!");
 }
 
 } // namespace tensorwrapper::operations

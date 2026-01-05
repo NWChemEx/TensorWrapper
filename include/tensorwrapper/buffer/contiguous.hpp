@@ -241,6 +241,8 @@ public:
      */
     const_buffer_view get_immutable_data() const;
 
+    value_type infinity_norm() const;
+
     // -------------------------------------------------------------------------
     // -- Utility Methods
     // -------------------------------------------------------------------------
