@@ -80,9 +80,11 @@ auto Contiguous::get_immutable_data() const -> const_buffer_view {
 }
 
 auto Contiguous::infinity_norm() const -> value_type {
+    if(m_buffer_.size() == 0)
+        throw std::runtime_error(
+          "Cannot compute the infinity norm of an empty tensor.");
     detail_::InfinityNormVisitor visitor;
-    auto v = wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, m_buffer_);
-    return value_type{v};
+    return wtf::buffer::visit_contiguous_buffer<fp_types>(visitor, m_buffer_);
 }
 
 // -----------------------------------------------------------------------------

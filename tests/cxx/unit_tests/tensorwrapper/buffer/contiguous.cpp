@@ -220,6 +220,13 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         REQUIRE(matrix.get_elem({1, 0}) == one);
     }
 
+    SECTION("infinity_norm") {
+        REQUIRE_THROWS_AS(defaulted.infinity_norm(), std::runtime_error);
+        REQUIRE(scalar.infinity_norm() == one);
+        REQUIRE(vector.infinity_norm() == four);
+        REQUIRE(matrix.infinity_norm() == four);
+    }
+
     SECTION("operator==") {
         // Same object
         REQUIRE(defaulted == defaulted);

@@ -166,12 +166,12 @@ private:
 struct InfinityNormVisitor {
     template<typename FloatType>
     auto operator()(const std::span<FloatType> buffer) {
-        FloatType max_element{0.0};
+        std::decay_t<FloatType> max_element{0.0};
         for(std::size_t i = 0; i < buffer.size(); ++i) {
             auto elem = types::fabs(buffer[i]);
             if(elem > max_element) max_element = elem;
         }
-        return max_element;
+        return wtf::fp::make_float(max_element);
     }
 };
 

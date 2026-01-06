@@ -15,13 +15,22 @@
  */
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/operations/norm.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
+#include <wtf/buffer/float_buffer.hpp>
 
 namespace tensorwrapper::operations {
 
 Tensor infinity_norm(const Tensor& t) {
     const auto& buffer_down = buffer::make_contiguous(t.buffer());
     auto max_value          = buffer_down.infinity_norm();
-    throw std::runtime_error("Fix Me!!!!");
+    std::initializer_list<decltype(max_value)> il{max_value};
+    using fp_types  = types::floating_point_types;
+    auto wtf_buffer = wtf::buffer::make_float_buffer<fp_types>(il);
+    shape::Smooth shape;
+    buffer::Contiguous buffer(std::move(wtf_buffer), shape);
+    layout::Physical playout(shape);
+    layout::Logical llayout(shape);
+    return Tensor(std::move(playout), std::move(llayout), std::move(buffer));
 }
 
 } // namespace tensorwrapper::operations
