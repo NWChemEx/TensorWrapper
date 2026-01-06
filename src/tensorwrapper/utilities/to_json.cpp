@@ -28,8 +28,7 @@ void to_json_(std::ostream& os, const buffer_type& t, offset_vector index) {
     const auto& shape = t.layout().shape().as_smooth();
     auto rank         = index.size();
     if(rank == t.rank()) {
-        throw std::runtime_error("Fix me!");
-        // os << t.get_elem(index);
+        os << t.get_elem(index).to_string();
         return;
     } else {
         auto n_elements = shape.extent(rank);
