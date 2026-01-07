@@ -134,9 +134,10 @@ TEST_CASE("PairwiseParser : buffer::Eigen") {
     auto& scalar2 = *pscalar2;
     auto& corr    = *pcorr;
 
-    scalar0.set_elem({}, 1.0);
-    scalar1.set_elem({}, 2.0);
-    scalar2.set_elem({}, 3.0);
+    float one{1.0f}, two{2.0f}, three{3.0f};
+    scalar0.set_elem({}, one);
+    scalar1.set_elem({}, two);
+    scalar2.set_elem({}, three);
 
     dsl::PairwiseParser p;
 

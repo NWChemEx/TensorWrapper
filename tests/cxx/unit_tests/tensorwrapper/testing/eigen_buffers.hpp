@@ -58,14 +58,14 @@ auto eigen_matrix(std::size_t n = 2, std::size_t m = 2) {
 template<typename FloatType>
 auto eigen_tensor3(std::size_t n = 2, std::size_t m = 2, std::size_t l = 2) {
     shape::Smooth shape{n, m, l};
-    std::vector<FloatType> data(n * m * l);
+    std::vector<FloatType> data(shape.size());
+    buffer::Contiguous buffer(std::move(data), std::move(shape));
     double counter = 1.0;
     for(decltype(n) i = 0; i < n; ++i)
         for(decltype(m) j = 0; j < m; ++j)
             for(decltype(l) k = 0; k < l; ++k)
-                data[i * m * n + j * n + l] = static_cast<FloatType>(counter++);
-    return std::make_unique<buffer::Contiguous>(std::move(data),
-                                                std::move(shape));
+                buffer.set_elem({i, j, k}, static_cast<FloatType>(counter++));
+    return std::make_unique<buffer::Contiguous>(std::move(buffer));
 }
 
 template<typename FloatType>

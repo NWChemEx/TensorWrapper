@@ -56,6 +56,7 @@ TEMPLATE_LIST_TEST_CASE("infinity_norm", "", types::floating_point_types) {
     SECTION("rank 4 tensor") {
         shape::Smooth s{2, 2, 2, 2};
         Tensor t(s, testing::eigen_tensor4<TestType>());
+        std::cout << t << std::endl;
         Tensor corr(shape::Smooth{}, testing::eigen_scalar<TestType>(16));
         auto norm = infinity_norm(t);
         REQUIRE(approximately_equal(corr, norm));

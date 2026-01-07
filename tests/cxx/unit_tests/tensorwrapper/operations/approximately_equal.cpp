@@ -31,84 +31,85 @@ using namespace operations;
 
 TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
                         types::floating_point_types) {
-    auto pscalar = testing::eigen_scalar<TestType>();
-    pscalar->set_elem({}, TestType{42.0});
-    auto pvector = testing::eigen_vector<TestType>(2);
-    pvector->set_elem({0}, TestType{1.23});
-    pvector->set_elem({1}, TestType{2.34});
+    throw std::runtime_error("Test not implemented.");
+    // auto pscalar = testing::eigen_scalar<TestType>();
+    // pscalar->set_elem({}, TestType{42.0});
+    // auto pvector = testing::eigen_vector<TestType>(2);
+    // pvector->set_elem({0}, TestType{1.23});
+    // pvector->set_elem({1}, TestType{2.34});
 
-    auto pscalar2 = testing::eigen_scalar<TestType>();
-    pscalar2->set_elem({}, TestType{42.0});
-    auto pvector2 = testing::eigen_vector<TestType>(2);
-    pvector2->set_elem({0}, TestType{1.23});
-    pvector2->set_elem({1}, TestType{2.34});
+    // auto pscalar2 = testing::eigen_scalar<TestType>();
+    // pscalar2->set_elem({}, TestType{42.0});
+    // auto pvector2 = testing::eigen_vector<TestType>(2);
+    // pvector2->set_elem({0}, TestType{1.23});
+    // pvector2->set_elem({1}, TestType{2.34});
 
-    shape::Smooth s0{};
-    shape::Smooth s1{2};
+    // shape::Smooth s0{};
+    // shape::Smooth s1{2};
 
-    Tensor scalar(s0, std::move(pscalar));
-    Tensor vector(s1, std::move(pvector));
+    // Tensor scalar(s0, std::move(pscalar));
+    // Tensor vector(s1, std::move(pvector));
 
-    SECTION("different ranks") {
-        REQUIRE_FALSE(approximately_equal(scalar, vector));
-        REQUIRE_FALSE(approximately_equal(vector, scalar));
-    }
+    // SECTION("different ranks") {
+    //     REQUIRE_FALSE(approximately_equal(scalar, vector));
+    //     REQUIRE_FALSE(approximately_equal(vector, scalar));
+    // }
 
-    SECTION("Same values") {
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
+    // SECTION("Same values") {
+    //     Tensor scalar2(s0, std::move(pscalar2));
+    //     Tensor vector2(s1, std::move(pvector2));
 
-        REQUIRE(approximately_equal(scalar, scalar2));
-        REQUIRE(approximately_equal(scalar2, scalar));
-        REQUIRE(approximately_equal(vector, vector2));
-        REQUIRE(approximately_equal(vector2, vector));
-    }
+    //     REQUIRE(approximately_equal(scalar, scalar2));
+    //     REQUIRE(approximately_equal(scalar2, scalar));
+    //     REQUIRE(approximately_equal(vector, vector2));
+    //     REQUIRE(approximately_equal(vector2, vector));
+    // }
 
-    SECTION("Differ by more than default tolerance") {
-        TestType value = 1e-1;
-        pscalar2->set_elem({}, TestType{42.0} + value);
-        pvector2->set_elem({0}, TestType{1.23} + value);
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
-        REQUIRE_FALSE(approximately_equal(scalar, scalar2));
-        REQUIRE_FALSE(approximately_equal(scalar2, scalar));
-        REQUIRE_FALSE(approximately_equal(vector, vector2));
-        REQUIRE_FALSE(approximately_equal(vector2, vector));
-    }
+    // SECTION("Differ by more than default tolerance") {
+    //     TestType value = 1e-1;
+    //     pscalar2->set_elem({}, TestType{42.0} + value);
+    //     pvector2->set_elem({0}, TestType{1.23} + value);
+    //     Tensor scalar2(s0, std::move(pscalar2));
+    //     Tensor vector2(s1, std::move(pvector2));
+    //     REQUIRE_FALSE(approximately_equal(scalar, scalar2));
+    //     REQUIRE_FALSE(approximately_equal(scalar2, scalar));
+    //     REQUIRE_FALSE(approximately_equal(vector, vector2));
+    //     REQUIRE_FALSE(approximately_equal(vector2, vector));
+    // }
 
-    SECTION("Differ by less than default tolerance") {
-        TestType value = 1e-17;
-        pscalar2->set_elem({}, TestType{42.0} + value);
-        pvector2->set_elem({0}, TestType{1.23} + value);
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
-        REQUIRE(approximately_equal(scalar, scalar2));
-        REQUIRE(approximately_equal(scalar2, scalar));
-        REQUIRE(approximately_equal(vector, vector2));
-        REQUIRE(approximately_equal(vector2, vector));
-    }
+    // SECTION("Differ by less than default tolerance") {
+    //     TestType value = 1e-17;
+    //     pscalar2->set_elem({}, TestType{42.0} + value);
+    //     pvector2->set_elem({0}, TestType{1.23} + value);
+    //     Tensor scalar2(s0, std::move(pscalar2));
+    //     Tensor vector2(s1, std::move(pvector2));
+    //     REQUIRE(approximately_equal(scalar, scalar2));
+    //     REQUIRE(approximately_equal(scalar2, scalar));
+    //     REQUIRE(approximately_equal(vector, vector2));
+    //     REQUIRE(approximately_equal(vector2, vector));
+    // }
 
-    SECTION("Differ by more than provided tolerance") {
-        double value = 1e-1;
-        pscalar2->set_elem({}, TestType{43.0});
-        pvector2->set_elem({0}, TestType{2.23});
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
-        REQUIRE_FALSE(approximately_equal(scalar, scalar2, value));
-        REQUIRE_FALSE(approximately_equal(scalar2, scalar, value));
-        REQUIRE_FALSE(approximately_equal(vector, vector2, value));
-        REQUIRE_FALSE(approximately_equal(vector2, vector, value));
-    }
+    // SECTION("Differ by more than provided tolerance") {
+    //     double value = 1e-1;
+    //     pscalar2->set_elem({}, TestType{43.0});
+    //     pvector2->set_elem({0}, TestType{2.23});
+    //     Tensor scalar2(s0, std::move(pscalar2));
+    //     Tensor vector2(s1, std::move(pvector2));
+    //     REQUIRE_FALSE(approximately_equal(scalar, scalar2, value));
+    //     REQUIRE_FALSE(approximately_equal(scalar2, scalar, value));
+    //     REQUIRE_FALSE(approximately_equal(vector, vector2, value));
+    //     REQUIRE_FALSE(approximately_equal(vector2, vector, value));
+    // }
 
-    SECTION("Differ by less than provided tolerance") {
-        TestType value = 1e-10;
-        pscalar2->set_elem({}, TestType{42.0} + value);
-        pvector2->set_elem({0}, TestType{1.23} + value);
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
-        REQUIRE(approximately_equal(scalar, scalar2, 1e-1));
-        REQUIRE(approximately_equal(scalar2, scalar, 1e-1));
-        REQUIRE(approximately_equal(vector, vector2, 1e-1));
-        REQUIRE(approximately_equal(vector2, vector, 1e-1));
-    }
+    // SECTION("Differ by less than provided tolerance") {
+    //     TestType value = 1e-10;
+    //     pscalar2->set_elem({}, TestType{42.0} + value);
+    //     pvector2->set_elem({0}, TestType{1.23} + value);
+    //     Tensor scalar2(s0, std::move(pscalar2));
+    //     Tensor vector2(s1, std::move(pvector2));
+    //     REQUIRE(approximately_equal(scalar, scalar2, 1e-1));
+    //     REQUIRE(approximately_equal(scalar2, scalar, 1e-1));
+    //     REQUIRE(approximately_equal(vector, vector2, 1e-1));
+    //     REQUIRE(approximately_equal(vector2, vector, 1e-1));
+    // }
 }

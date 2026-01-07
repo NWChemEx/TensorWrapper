@@ -202,35 +202,30 @@ TEST_CASE("TensorInput") {
         }
 
         SECTION("Buffer (by value)") {
-            throw std::runtime_error("Fix me!");
-            // detail_::TensorInput i(physical, alloc, logical, buffer);
-            // REQUIRE(i.m_pshape == nullptr);
-            // REQUIRE(i.m_psymmetry == nullptr);
-            // REQUIRE(i.m_psparsity == nullptr);
-            // REQUIRE(i.m_plogical->are_equal(logical));
-            // REQUIRE(i.m_pphysical->are_equal(physical));
-            // // REQUIRE(i.m_pbuffer->are_equal(buffer));
-            // REQUIRE(i.m_rv == rv);
-
-            // REQUIRE(i.has_buffer());
+            detail_::TensorInput i(physical, logical, buffer);
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_pbuffer->are_equal(buffer));
+            REQUIRE(i.m_rv == rv);
+            REQUIRE(i.has_buffer());
         }
 
         SECTION("Buffer (by pointer)") {
-            throw std::runtime_error("Fix me!");
-            // auto pbuffer        = buffer.clone();
-            // auto buffer_address = pbuffer.get();
-            // detail_::TensorInput i(physical, alloc, logical,
-            //                        std::move(pbuffer));
-            // REQUIRE(i.m_pshape == nullptr);
-            // REQUIRE(i.m_psymmetry == nullptr);
-            // REQUIRE(i.m_psparsity == nullptr);
-            // REQUIRE(i.m_plogical->are_equal(logical));
-            // REQUIRE(i.m_pphysical->are_equal(physical));
-            // // REQUIRE(i.m_pbuffer->are_equal(buffer));
-            // REQUIRE(i.m_pbuffer.get() == buffer_address);
-            // REQUIRE(i.m_rv == rv);
-
-            // REQUIRE(i.has_buffer());
+            auto pbuffer        = buffer.clone();
+            auto buffer_address = pbuffer.get();
+            detail_::TensorInput i(physical, logical, std::move(pbuffer));
+            REQUIRE(i.m_pshape == nullptr);
+            REQUIRE(i.m_psymmetry == nullptr);
+            REQUIRE(i.m_psparsity == nullptr);
+            REQUIRE(i.m_plogical->are_equal(logical));
+            REQUIRE(i.m_pphysical->are_equal(physical));
+            REQUIRE(i.m_pbuffer->are_equal(buffer));
+            REQUIRE(i.m_pbuffer.get() == buffer_address);
+            REQUIRE(i.m_rv == rv);
+            REQUIRE(i.has_buffer());
         }
 
         SECTION("RuntimeView") {
