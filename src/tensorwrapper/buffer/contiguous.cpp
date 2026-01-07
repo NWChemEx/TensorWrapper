@@ -233,8 +233,8 @@ bool Contiguous::approximately_equal_(const_buffer_base_reference rhs,
 
     std::string index(rank() ? "i0" : "");
     for(std::size_t i = 1; i < rank(); ++i) index += (",i" + std::to_string(i));
-    Contiguous result;
-    result(index) = (*this)(index)-rhs_down(index);
+    Contiguous result(*this);
+    result.subtraction_assignment(index, (*this)(index), rhs_down(index));
     detail_::ApproximatelyEqualVisitor k(tol);
     return buffer::visit_contiguous_buffer(k, result);
 }
