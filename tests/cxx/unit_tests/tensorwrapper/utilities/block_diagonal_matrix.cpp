@@ -50,25 +50,26 @@ TEMPLATE_LIST_TEST_CASE("block_diagonal_matrix", "",
     std::vector<Tensor> inputs4{square_matrix1, rectangular_matrix1};
 
     SECTION("All matrices are square") {
-        // shape::Smooth corr_shape{5, 5};
-        // layout::Physical corr_layout(corr_shape);
-        // auto allocator   = make_allocator<TestType>();
-        // auto corr_buffer = allocator.allocate(corr_layout);
-        // double counter1 = 1.0, counter2 = 1.0;
-        // for(std::size_t i = 0; i < 5; ++i) {
-        //     for(std::size_t j = 0; j < 5; ++j) {
-        //         if(i >= 2 and j >= 2)
-        //             corr_buffer->set_elem({i, j}, counter1++);
-        //         else if(i < 2 and j < 2)
-        //             corr_buffer->set_elem({i, j}, counter2++);
-        //         else
-        //             corr_buffer->set_elem({i, j}, 0.0);
-        //     }
-        // }
-        // Tensor corr(corr_shape, std::move(corr_buffer));
+        shape::Smooth corr_shape{5, 5};
+        layout::Physical corr_layout(corr_shape);
+        auto corr_buffer = buffer::make_contiguous<TestType>(corr_shape);
+        double counter1 = 1.0, counter2 = 1.0;
+        for(std::size_t i = 0; i < 5; ++i) {
+            for(std::size_t j = 0; j < 5; ++j) {
+                if(i >= 2 and j >= 2)
+                    corr_buffer.set_elem({i, j},
+                                         static_cast<TestType>(counter1++));
+                else if(i < 2 and j < 2)
+                    corr_buffer.set_elem({i, j},
+                                         static_cast<TestType>(counter2++));
+                else
+                    corr_buffer.set_elem({i, j}, TestType{0.0});
+            }
+        }
+        Tensor corr(corr_shape, std::move(corr_buffer));
 
         auto result = block_diagonal_matrix(inputs1);
-        // REQUIRE(result == corr);
+        REQUIRE(result == corr);
     }
 
     SECTION("Input has different floating point types") {
