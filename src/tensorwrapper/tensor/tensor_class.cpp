@@ -117,7 +117,7 @@ Tensor::dsl_reference Tensor::binary_common_(FxnType&& fxn,
     const auto& lbuffer = lobject.buffer();
     const auto& rbuffer = robject.buffer();
 
-    auto buffer       = buffer::make_contiguous<double>(pphys_layout->shape());
+    auto buffer       = buffer::make_contiguous(lbuffer, pphys_layout->shape());
     auto pthis_buffer = std::make_unique<decltype(buffer)>(std::move(buffer));
 
     fxn(*pthis_buffer, this_labels, lbuffer(llabels), rbuffer(rlabels));

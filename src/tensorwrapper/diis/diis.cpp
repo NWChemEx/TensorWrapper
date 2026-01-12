@@ -70,11 +70,12 @@ tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
         tensor_type& E_j = m_errors_.at(j);
 
         tensor_type temp;
+        auto ei           = buffer::make_contiguous(E_i.buffer());
+        auto ej           = buffer::make_contiguous(E_j.buffer());
         temp("")          = E_i("mu,nu") * E_j("mu,nu");
         const auto& bdown = buffer::make_contiguous(temp.buffer());
         Kernel k;
         m_B_(i, j) = buffer::visit_contiguous_buffer(k, bdown);
-
         // Fill in lower triangle
         if(i != j) m_B_(j, i) = m_B_(i, j);
     }

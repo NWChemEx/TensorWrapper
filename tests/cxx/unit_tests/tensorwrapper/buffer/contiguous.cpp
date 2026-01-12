@@ -512,3 +512,23 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         }
     }
 }
+
+TEST_CASE("make_contiguous(buffer, shape)") {
+    using buffer::Contiguous;
+    using tensor_type = Tensor;
+    using shape_type  = shape::Smooth;
+
+    std::vector<double> data = {1.0, 2.0, 3.0, 4.0};
+    shape_type shape({2, 2});
+    buffer::Contiguous buffer(data, shape);
+
+    tensor_type tensor(shape.clone(),
+                       std::make_unique<buffer::Contiguous>(buffer));
+
+    shape_type other({3, 4, 5});
+    Contiguous contig = buffer::make_contiguous(tensor.buffer(), other);
+
+    REQUIRE(contig.shape() == other);
+    REQUIRE(contig.size() == 60); // 3*4*5 = 60
+    REQUIRE(contig.get_elem({0, 0, 0}) == 0.0);
+}

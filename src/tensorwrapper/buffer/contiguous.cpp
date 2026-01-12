@@ -301,4 +301,26 @@ void Contiguous::update_hash_() const {
     m_recalculate_hash_ = false;
 }
 
+// -----------------------------------------------------------------------------
+// Free functions
+// -----------------------------------------------------------------------------
+
+Contiguous make_contiguous(const buffer::BufferBase& buffer,
+                           const shape::ShapeBase& shape) {
+    auto smooth_view = shape.as_smooth();
+    using size_type  = typename decltype(smooth_view)::size_type;
+    std::vector<size_type> extents(smooth_view.rank());
+    for(size_type i = 0; i < smooth_view.rank(); ++i)
+        extents[i] = smooth_view.extent(i);
+    shape::Smooth smooth_shape(extents.begin(), extents.end());
+
+    auto lambda = [=](const auto& span) {
+        using value_type = std::decay_t<decltype(span[0])>;
+        std::vector<value_type> data(smooth_shape.size());
+        return Contiguous(std::move(data), std::move(smooth_shape));
+    };
+
+    return visit_contiguous_buffer(lambda, make_contiguous(buffer));
+}
+
 } // namespace tensorwrapper::buffer

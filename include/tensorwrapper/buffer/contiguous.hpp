@@ -387,4 +387,14 @@ inline const Contiguous& make_contiguous(const buffer::BufferBase& buffer) {
     return *pcontiguous;
 }
 
+/** @brief Makes a new Contiguous buffer using @p buffer as a guide.
+ *
+ *  This function is used to create a new buffer using @p buffer as a type hint.
+ *  More specifically, this function will create a default initialized
+ *  Contiguous buffer whose shape is given by @p shape. The type of the elements
+ *  is taken from the type of the elements in @p buffer.
+ */
+Contiguous make_contiguous(const buffer::BufferBase& buffer,
+                           const shape::ShapeBase& shape);
+
 } // namespace tensorwrapper::buffer
