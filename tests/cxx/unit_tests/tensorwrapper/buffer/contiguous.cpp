@@ -532,3 +532,30 @@ TEST_CASE("make_contiguous(buffer, shape)") {
     REQUIRE(contig.size() == 60); // 3*4*5 = 60
     REQUIRE(contig.get_elem({0, 0, 0}) == 0.0);
 }
+
+TEMPLATE_LIST_TEST_CASE("make_contiguous(shape)", "",
+                        types::floating_point_types) {
+    using buffer::Contiguous;
+    using shape_type = shape::Smooth;
+
+    std::vector<TestType> data = {0.0, 0.0, 0.0, 0.0};
+    shape_type shape({2, 2});
+    buffer::Contiguous corr(data, shape);
+
+    Contiguous contig = buffer::make_contiguous<TestType>(shape);
+    REQUIRE(contig == corr);
+}
+
+TEMPLATE_LIST_TEST_CASE("make_contiguous(shape, value)", "",
+                        types::floating_point_types) {
+    using buffer::Contiguous;
+    using shape_type = shape::Smooth;
+
+    TestType init{42.0};
+    std::vector<TestType> data = {init, init, init, init};
+    shape_type shape({2, 2});
+    buffer::Contiguous corr(data, shape);
+
+    Contiguous contig = buffer::make_contiguous(shape, init);
+    REQUIRE(contig == corr);
+}

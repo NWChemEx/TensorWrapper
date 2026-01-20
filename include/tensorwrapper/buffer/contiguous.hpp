@@ -340,35 +340,42 @@ private:
     buffer_type m_buffer_;
 };
 
-template<typename KernelType>
+template<typename KernelType, typename... Args>
 decltype(auto) visit_contiguous_buffer(KernelType&& kernel,
-                                       buffer::Contiguous& buffer) {
+                                       buffer::Contiguous& buffer,
+                                       Args&&... args) {
     using fp_types  = types::floating_point_types;
     auto wtf_buffer = buffer.get_mutable_data();
     return wtf::buffer::visit_contiguous_buffer_view<fp_types>(
-      std::forward<KernelType>(kernel), wtf_buffer);
+      std::forward<KernelType>(kernel), wtf_buffer, args.get_mutable_data()...);
 }
 
-template<typename KernelType>
+template<typename KernelType, typename... Args>
 decltype(auto) visit_contiguous_buffer(KernelType&& kernel,
-                                       const buffer::Contiguous& buffer) {
+                                       const buffer::Contiguous& buffer,
+                                       Args&&... args) {
     using fp_types  = types::floating_point_types;
     auto wtf_buffer = buffer.get_immutable_data();
     return wtf::buffer::visit_contiguous_buffer_view<fp_types>(
-      std::forward<KernelType>(kernel), wtf_buffer);
+      std::forward<KernelType>(kernel), wtf_buffer,
+      args.get_immutable_data()...);
 }
 
 template<concepts::FloatingPoint T>
-Contiguous make_contiguous(const shape::ShapeBase& shape) {
+Contiguous make_contiguous(const shape::ShapeBase& shape, T initial_value) {
     auto smooth_view = shape.as_smooth();
     using size_type  = typename decltype(smooth_view)::size_type;
     std::vector<size_type> extents(smooth_view.rank());
     for(size_type i = 0; i < smooth_view.rank(); ++i)
         extents[i] = smooth_view.extent(i);
     shape::Smooth smooth_shape(extents.begin(), extents.end());
-    std::vector<T> elements(smooth_view.size(),
-                            static_cast<T>(0)); // Initialize to zeroes
+    std::vector<T> elements(smooth_view.size(), initial_value);
     return Contiguous(std::move(elements), std::move(smooth_shape));
+}
+
+template<concepts::FloatingPoint T>
+Contiguous make_contiguous(const shape::ShapeBase& shape) {
+    return make_contiguous(shape, static_cast<T>(0));
 }
 
 inline Contiguous& make_contiguous(buffer::BufferBase& buffer) {
@@ -385,6 +392,30 @@ inline const Contiguous& make_contiguous(const buffer::BufferBase& buffer) {
         throw std::runtime_error(
           "make_contiguous: buffer is not a Contiguous buffer");
     return *pcontiguous;
+}
+
+template<typename FloatType>
+std::span<FloatType> get_raw_data(buffer::BufferBase& buffer) {
+    auto& contiguous_buffer = make_contiguous(buffer);
+    return get_raw_data<FloatType>(contiguous_buffer);
+}
+
+template<typename FloatType>
+std::span<FloatType> get_raw_data(buffer::Contiguous& buffer) {
+    auto wtf_buffer = buffer.get_mutable_data();
+    return wtf::buffer::contiguous_buffer_cast<FloatType>(wtf_buffer);
+}
+
+template<typename FloatType>
+std::span<const FloatType> get_raw_data(const buffer::Contiguous& buffer) {
+    auto wtf_buffer = buffer.get_immutable_data();
+    return wtf::buffer::contiguous_buffer_cast<const FloatType>(wtf_buffer);
+}
+
+template<typename FloatType>
+std::span<const FloatType> get_raw_data(const buffer::BufferBase& buffer) {
+    const auto& contiguous_buffer = make_contiguous(buffer);
+    return get_raw_data<FloatType>(contiguous_buffer);
 }
 
 /** @brief Makes a new Contiguous buffer using @p buffer as a guide.
