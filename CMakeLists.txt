@@ -86,7 +86,7 @@ cmaize_find_or_build_optional_dependency(
 
 cmaize_find_or_build_dependency(
     WeaklyTypedFloat
-    NAME WeaklyTypedFloat
+    NAME wtf
     URL https://www.github.com/NWChemEx/weaklytypedfloat
     VERSION master
     BUILD_TARGET wtf
