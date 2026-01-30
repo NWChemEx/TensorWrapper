@@ -91,27 +91,21 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>offset_type</b> = st
 <tr class="memitem:a4e7960a4930e23b5d7c012353f487401" id="r_a4e7960a4930e23b5d7c012353f487401"><td class="memItemLeft" align="right" valign="top"><a id="a4e7960a4930e23b5d7c012353f487401" name="a4e7960a4930e23b5d7c012353f487401"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>offset_vector</b> = std::vector&lt; offset_type &gt;</td></tr>
 <tr class="separator:a4e7960a4930e23b5d7c012353f487401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c96846ed35db6038c5f7cef54b58f16" id="r_a7c96846ed35db6038c5f7cef54b58f16"><td class="memTemplParams" colspan="2"><a id="a7c96846ed35db6038c5f7cef54b58f16" name="a7c96846ed35db6038c5f7cef54b58f16"></a>
-template&lt;typename DataType &gt; </td></tr>
-<tr class="memitem:a7c96846ed35db6038c5f7cef54b58f16"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>buffer_type</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer::Contiguous</a>&lt; DataType &gt;</td></tr>
-<tr class="separator:a7c96846ed35db6038c5f7cef54b58f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb65181b4a4a4fce495a1e5e5d49105" id="r_aefb65181b4a4a4fce495a1e5e5d49105"><td class="memItemLeft" align="right" valign="top"><a id="aefb65181b4a4a4fce495a1e5e5d49105" name="aefb65181b4a4a4fce495a1e5e5d49105"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_type</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer::Contiguous</a></td></tr>
+<tr class="separator:aefb65181b4a4a4fce495a1e5e5d49105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0774866423ee9cc913691920250088e2" id="r_a0774866423ee9cc913691920250088e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#a0774866423ee9cc913691920250088e2">block_diagonal_matrix</a> (std::vector&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &gt; matrices)</td></tr>
 <tr class="memdesc:a0774866423ee9cc913691920250088e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produce a block diagonal matrix from a set of square matrices.  <br /></td></tr>
 <tr class="separator:a0774866423ee9cc913691920250088e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee" id="r_aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplParams" colspan="2">template&lt;typename KernelType , typename BufferType , typename... Args&gt; </td></tr>
-<tr class="memitem:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#aa2cb0104fde24d1a4aaef8f5e00c69ee">floating_point_dispatch</a> (KernelType &amp;&amp;kernel, BufferType &amp;&amp;buffer, Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the logic needed to work out the floating point type of buffer.  <br /></td></tr>
-<tr class="separator:aa2cb0104fde24d1a4aaef8f5e00c69ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d89014992766effe38b8f7eb20cf8c" id="r_aa2d89014992766effe38b8f7eb20cf8c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1utilities.html#aa2d89014992766effe38b8f7eb20cf8c">to_json</a> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;t)</td></tr>
 <tr class="memdesc:aa2d89014992766effe38b8f7eb20cf8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a JSON representation of <code>to</code> <code>os</code>.  <br /></td></tr>
 <tr class="separator:aa2d89014992766effe38b8f7eb20cf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4be514f8b2bb43b9b8bec3cfb29ddf3f" id="r_a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memTemplParams" colspan="2"><a id="a4be514f8b2bb43b9b8bec3cfb29ddf3f" name="a4be514f8b2bb43b9b8bec3cfb29ddf3f"></a>
-template&lt;typename DataType &gt; </td></tr>
-<tr class="memitem:a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>to_json_</b> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer_type</a>&lt; DataType &gt; &amp;t, offset_vector index)</td></tr>
-<tr class="separator:a4be514f8b2bb43b9b8bec3cfb29ddf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80b1b11cb7e71196e7ec896fce782874" id="r_a80b1b11cb7e71196e7ec896fce782874"><td class="memItemLeft" align="right" valign="top"><a id="a80b1b11cb7e71196e7ec896fce782874" name="a80b1b11cb7e71196e7ec896fce782874"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>to_json_</b> (std::ostream &amp;os, const <a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer_type</a> &amp;t, offset_vector index)</td></tr>
+<tr class="separator:a80b1b11cb7e71196e7ec896fce782874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace for helper functions. </p>
@@ -140,67 +134,6 @@ template&lt;typename DataType &gt; </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A block diagonal matrix whose block values are equal to the input matrices. </dd></dl>
-
-</div>
-</div>
-<a id="aa2cb0104fde24d1a4aaef8f5e00c69ee" name="aa2cb0104fde24d1a4aaef8f5e00c69ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2cb0104fde24d1a4aaef8f5e00c69ee">&#9670;&#160;</a></span>floating_point_dispatch()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename KernelType , typename BufferType , typename... Args&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">decltype(auto) tensorwrapper::utilities::floating_point_dispatch </td>
-          <td>(</td>
-          <td class="paramtype">KernelType &amp;&amp;&#160;</td>
-          <td class="paramname"><em>kernel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">BufferType &amp;&amp;&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Wraps the logic needed to work out the floating point type of buffer. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">KernelType</td><td>Type of a functor. The functor must define a function template called <code>run</code> that takes one explicit template type parameter (will be the floating point type of <code>buffer</code>) and <code>buffer</code>. <code>run</code> may take an arbitrary amount of additional arguments. </td></tr>
-    <tr><td class="paramname">BufferType</td><td>The type of <code>buffer</code>. Must be derived from BufferBase. May contain cv or reference qualifiers. </td></tr>
-    <tr><td class="paramname">Args</td><td>The types of any additional arguments which will be forwarded to <code>kernel</code>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">kernel</td><td>The functor instance to call <code>run</code> on. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>The type of the elements in <code>buffer</code> will be used to dispatch. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">args</td><td>Any additional arguments to forward to <code>kernel</code>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns whatever <code>kernel</code> returns.</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if <code>buffer</code> is not derived from </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

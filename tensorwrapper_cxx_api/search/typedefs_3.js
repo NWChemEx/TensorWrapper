@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['dsl_5fbase_5ftype_0',['dsl_base_type',['../classtensorwrapper_1_1shape_1_1ShapeBase.html#a9d807282567a60c0c72b845955ef0632',1,'tensorwrapper::shape::ShapeBase']]],
-  ['dsl_5fconst_5freference_1',['dsl_const_reference',['../classtensorwrapper_1_1detail___1_1DSLBase.html#af4a723bc12e6e338836c14bb47ea2555',1,'tensorwrapper::detail_::DSLBase']]],
-  ['dsl_5fconst_5fvalue_5ftype_2',['dsl_const_value_type',['../classtensorwrapper_1_1detail___1_1DSLBase.html#affe3c128cd26826333aa494b96a7281b',1,'tensorwrapper::detail_::DSLBase']]],
-  ['dsl_5fpointer_3',['dsl_pointer',['../classtensorwrapper_1_1detail___1_1DSLBase.html#a09fb09448b438208f57cf081abeb6e6a',1,'tensorwrapper::detail_::DSLBase']]],
-  ['dsl_5freference_4',['dsl_reference',['../classtensorwrapper_1_1detail___1_1DSLBase.html#abdad86554aa99fe9b5111737f6bd8571',1,'tensorwrapper::detail_::DSLBase']]],
-  ['dsl_5fvalue_5ftype_5',['dsl_value_type',['../classtensorwrapper_1_1detail___1_1DSLBase.html#ae4cf93785043718e77bb36638cd7a8b9',1,'tensorwrapper::detail_::DSLBase']]]
+  ['eigen_5frank_5ftype_0',['eigen_rank_type',['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensor.html#ac8e82b5d0f8b8a917d6acb7958075787',1,'tensorwrapper::backends::eigen::EigenTensor::eigen_rank_type'],['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensorImpl.html#ac8e82b5d0f8b8a917d6acb7958075787',1,'tensorwrapper::backends::eigen::EigenTensorImpl::eigen_rank_type']]],
+  ['eigen_5ftensor_5fpointer_1',['eigen_tensor_pointer',['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensor.html#a497438c5d70636848797ec6f6702c755',1,'tensorwrapper::backends::eigen::EigenTensor']]],
+  ['enable_5fif_5fmutable_5fto_5fimmutable_5fcast_5ft_2',['enable_if_mutable_to_immutable_cast_t',['../namespacetensorwrapper_1_1detail__.html#aa6e3229f29de6317f20081b187503a29',1,'tensorwrapper::detail_']]]
 ];

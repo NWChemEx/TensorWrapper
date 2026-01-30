@@ -1,7 +1,5 @@
-<map id="tensorwrapper::buffer::Contiguous&lt; FloatType &gt;" name="tensorwrapper::buffer::Contiguous&lt; FloatType &gt;">
-<area shape="rect" id="Node000001" title="Denotes that a buffer is held contiguously." alt="" coords="936,37,1132,77"/>
-<area shape="rect" id="Node000007" href="$classtensorwrapper_1_1buffer_1_1Eigen.html" title="A buffer which wraps an Eigen object." alt="" coords="1180,37,1343,77"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1146,55,1180,55,1180,60,1146,60"/>
+<map id="tensorwrapper::buffer::Contiguous" name="tensorwrapper::buffer::Contiguous">
+<area shape="rect" id="Node000001" title="A multidimensional (MD) contiguous buffer." alt="" coords="936,37,1099,77"/>
 <area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="725,37,888,77"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="902,55,936,55,936,60,902,60"/>
 <area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="515,37,677,77"/>
