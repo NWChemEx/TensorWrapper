@@ -15,7 +15,7 @@
  */
 
 #include "../../testing/testing.hpp"
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/layout/logical.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_pimpl.hpp>

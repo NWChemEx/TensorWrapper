@@ -16,7 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/buffer/buffer_base.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/buffer/local.hpp>
 #include <tensorwrapper/buffer/replicated.hpp>
 

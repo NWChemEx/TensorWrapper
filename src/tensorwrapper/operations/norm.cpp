@@ -13,37 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include <tensorwrapper/buffer/eigen.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
-#include <tensorwrapper/tensor/tensor.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
+#include <tensorwrapper/operations/norm.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
+#include <wtf/buffer/float_buffer.hpp>
 
 namespace tensorwrapper::operations {
-namespace {
-struct InfinityKernel {
-    template<typename FloatType>
-    Tensor run(const buffer::BufferBase& t) {
-        using allocator_type = allocator::Eigen<FloatType>;
-        allocator_type alloc(t.allocator().runtime());
-        FloatType max_element{0.0};
-        const auto& buffer_down = alloc.rebind(t);
-        for(std::size_t i = 0; i < buffer_down.size(); ++i) {
-            auto elem = types::fabs(buffer_down.get_data(i));
-            if(elem > max_element) max_element = elem;
-        }
-        shape::Smooth s{};
-        layout::Physical l(s);
-        auto pbuffer = alloc.construct(l, max_element);
-        return Tensor(s, std::move(pbuffer));
-    }
-};
-
-} // namespace
 
 Tensor infinity_norm(const Tensor& t) {
-    InfinityKernel k;
-    return utilities::floating_point_dispatch(k, t.buffer());
+    const auto& buffer_down = buffer::make_contiguous(t.buffer());
+    auto max_value          = buffer_down.infinity_norm();
+    std::initializer_list<decltype(max_value)> il{max_value};
+    using fp_types  = types::floating_point_types;
+    auto wtf_buffer = wtf::buffer::make_float_buffer<fp_types>(il);
+    shape::Smooth shape;
+    buffer::Contiguous buffer(std::move(wtf_buffer), shape);
+    layout::Physical playout(shape);
+    layout::Logical llayout(shape);
+    return Tensor(std::move(playout), std::move(llayout), std::move(buffer));
 }
 
 } // namespace tensorwrapper::operations

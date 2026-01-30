@@ -14,32 +14,23 @@
  * limitations under the License.
  */
 
-#include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/diis/diis.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::diis {
 
 namespace {
 
 struct Kernel {
-    using buffer_base_type = tensorwrapper::buffer::BufferBase;
-
     template<typename FloatType>
-    auto run(const buffer_base_type& t) {
-        using alloc_type = tensorwrapper::allocator::Eigen<FloatType>;
-        alloc_type alloc(t.allocator().runtime());
-
+    auto operator()(const std::span<FloatType>& t) {
+        using clean_type = std::decay_t<FloatType>;
         double rv;
-        if constexpr(tensorwrapper::types::is_uncertain_v<FloatType>) {
-            const auto& t_eigen = alloc.rebind(t);
-
-            rv = t_eigen.get_elem({}).mean();
+        if constexpr(tensorwrapper::types::is_uncertain_v<clean_type>) {
+            rv = t[0].mean();
         } else {
-            const auto& t_eigen = alloc.rebind(t);
-
-            rv = t_eigen.get_elem({});
+            rv = t[0];
         }
         return rv;
     }
@@ -48,8 +39,6 @@ struct Kernel {
 } // namespace
 
 using tensor_type = DIIS::tensor_type;
-
-using tensorwrapper::utilities::floating_point_dispatch;
 
 tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
     // Append new values to stored values
@@ -81,9 +70,12 @@ tensor_type DIIS::extrapolate(const tensor_type& X, const tensor_type& E) {
         tensor_type& E_j = m_errors_.at(j);
 
         tensor_type temp;
-        temp("")   = E_i("mu,nu") * E_j("mu,nu");
-        m_B_(i, j) = floating_point_dispatch(Kernel{}, temp.buffer());
-
+        auto ei           = buffer::make_contiguous(E_i.buffer());
+        auto ej           = buffer::make_contiguous(E_j.buffer());
+        temp("")          = E_i("mu,nu") * E_j("mu,nu");
+        const auto& bdown = buffer::make_contiguous(temp.buffer());
+        Kernel k;
+        m_B_(i, j) = buffer::visit_contiguous_buffer(k, bdown);
         // Fill in lower triangle
         if(i != j) m_B_(j, i) = m_B_(i, j);
     }

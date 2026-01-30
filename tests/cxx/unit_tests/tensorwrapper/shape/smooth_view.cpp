@@ -127,4 +127,12 @@ TEMPLATE_LIST_TEST_CASE("SmoothView", "", types2test) {
             REQUIRE(alias_scalar != alias_vector);
         }
     }
+
+    SECTION("make_smooth") {
+        auto smooth_scalar = alias_scalar.make_smooth();
+        REQUIRE(smooth_scalar == scalar);
+
+        auto smooth_vector = alias_vector.make_smooth();
+        REQUIRE(smooth_vector == vector);
+    }
 }

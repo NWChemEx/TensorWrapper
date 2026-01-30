@@ -18,8 +18,7 @@
 #include "tensor_factory.hpp"
 #include "tensor_pimpl.hpp"
 #include <stdexcept>
-#include <tensorwrapper/allocator/eigen.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
 
 namespace tensorwrapper::detail_ {
@@ -31,7 +30,6 @@ using symmetry_pointer        = typename TensorFactory::symmetry_pointer;
 using sparsity_pointer        = typename TensorFactory::sparsity_pointer;
 using logical_layout_pointer  = typename TensorFactory::logical_layout_pointer;
 using physical_layout_pointer = typename TensorFactory::physical_layout_pointer;
-using allocator_pointer       = typename TensorFactory::allocator_pointer;
 using buffer_pointer          = typename pimpl_type::buffer_pointer;
 
 // -----------------------------------------------------------------------------
@@ -65,11 +63,6 @@ physical_layout_pointer TensorFactory::default_physical_layout(
     using physical_layout_type = input_type::physical_layout_type;
     return std::make_unique<physical_layout_type>(
       logical.shape(), logical.symmetry(), logical.sparsity());
-}
-
-allocator_pointer TensorFactory::default_allocator(
-  const_physical_reference physical, runtime_view_type rv) {
-    return std::make_unique<allocator::Eigen<double>>(rv);
 }
 
 bool TensorFactory::can_make_logical_layout(const input_type& input) noexcept {
@@ -157,13 +150,10 @@ pimpl_pointer TensorFactory::construct(TensorInput input) {
             input.m_pphysical = default_physical_layout(*input.m_plogical);
         }
 
-        if(!input.has_allocator()) {
-            input.m_palloc = default_allocator(*input.m_pphysical, input.m_rv);
-        }
-
         // TODO: Check if we have initialization criteria
-        input.m_pbuffer =
-          input.m_palloc->allocate(std::move(input.m_pphysical));
+        auto buffer =
+          buffer::make_contiguous<double>(input.m_pphysical->shape());
+        input.m_pbuffer = std::make_unique<decltype(buffer)>(std::move(buffer));
     }
 
     // Now we have both a logical layout and a buffer so we're done
@@ -177,8 +167,10 @@ namespace {
 /// Wraps the process of turning an initializer list into a TensorInput object
 template<typename T>
 auto il_to_input(T il, parallelzone::runtime::RuntimeView rv = {}) {
-    allocator::Eigen<double> alloc(rv);
-    auto pbuffer = alloc.construct(il);
+    auto [extents, data] = unwrap_il(il);
+    shape::Smooth shape(extents.begin(), extents.end());
+    auto pbuffer =
+      std::make_unique<buffer::Contiguous>(std::move(data), std::move(shape));
     return TensorInput(pbuffer->layout().shape(), std::move(pbuffer));
 }
 

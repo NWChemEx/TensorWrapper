@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2025 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,120 +15,547 @@
  */
 
 #include "../testing/testing.hpp"
-#include <tensorwrapper/buffer/eigen.hpp>
-#include <tensorwrapper/layout/physical.hpp>
-#include <tensorwrapper/shape/smooth.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 using namespace tensorwrapper;
-using namespace buffer;
 
-/* Testing strategy:
+/* Testing notes:
  *
- * - Contiguous is an abstract class. To test it we must create an instance of
- *   a derived class. We then will upcast to Contiguous and perform checks
- *   through the BufferBase interface.
-
- *
+ * The various operations (addition_assignment, etc.) are not exhaustively
+ * tested here. These operations are implemented via visitors that dispatch to
+ * various backends. The visitors themselves are tested in their own unit tests.
+ * Here we assume the visitors work and spot check a couple of operations for
+ * to help catch any integration issues.
  */
 
-TEMPLATE_LIST_TEST_CASE("buffer::Contiguous", "", types::floating_point_types) {
-    using base_type = Contiguous<TestType>;
-    auto pt0        = testing::eigen_scalar<TestType>();
-    auto pt1        = testing::eigen_vector<TestType>();
-    auto& t0        = *pt0;
-    auto& t1        = *pt1;
+TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
+    using buffer::Contiguous;
+    using buffer_type = Contiguous::buffer_type;
+    using shape_type  = typename Contiguous::shape_type;
+    using label_type  = typename Contiguous::label_type;
 
-    auto& base0 = static_cast<base_type&>(t0);
-    auto& base1 = static_cast<base_type&>(t1);
+    TestType one(1.0), two(2.0), three(3.0), four(4.0);
+    std::vector<TestType> data = {one, two, three, four};
+
+    shape_type scalar_shape({});
+    shape_type vector_shape({4});
+    shape_type matrix_shape({2, 2});
+
+    Contiguous defaulted;
+    Contiguous scalar(std::vector{one}, scalar_shape);
+    Contiguous vector(data, vector_shape);
+    Contiguous matrix(data, matrix_shape);
+
+    SECTION("Ctors and assignment") {
+        SECTION("Default ctor") {
+            REQUIRE(defaulted.size() == 0);
+            REQUIRE(defaulted.shape() == shape_type());
+        }
+
+        SECTION("vector ctor") {
+            REQUIRE(scalar.size() == 1);
+            REQUIRE(scalar.shape() == scalar_shape);
+            REQUIRE(scalar.get_elem({}) == one);
+
+            REQUIRE(vector.size() == 4);
+            REQUIRE(vector.shape() == vector_shape);
+            REQUIRE(vector.get_elem({0}) == one);
+            REQUIRE(vector.get_elem({1}) == two);
+            REQUIRE(vector.get_elem({2}) == three);
+            REQUIRE(vector.get_elem({3}) == four);
+
+            REQUIRE(matrix.size() == 4);
+            REQUIRE(matrix.shape() == matrix_shape);
+            REQUIRE(matrix.get_elem({0, 0}) == one);
+            REQUIRE(matrix.get_elem({0, 1}) == two);
+            REQUIRE(matrix.get_elem({1, 0}) == three);
+            REQUIRE(matrix.get_elem({1, 1}) == four);
+
+            REQUIRE_THROWS_AS(Contiguous(data, scalar_shape),
+                              std::invalid_argument);
+        }
+
+        SECTION("FloatBuffer ctor") {
+            buffer_type buf(data);
+
+            Contiguous vector_buf(buf, vector_shape);
+            REQUIRE(vector_buf == vector);
+
+            Contiguous matrix_buf(buf, matrix_shape);
+            REQUIRE(matrix_buf == matrix);
+
+            REQUIRE_THROWS_AS(Contiguous(buf, scalar_shape),
+                              std::invalid_argument);
+        }
+
+        SECTION("Copy ctor") {
+            Contiguous defaulted_copy(defaulted);
+            REQUIRE(defaulted_copy == defaulted);
+
+            Contiguous scalar_copy(scalar);
+            REQUIRE(scalar_copy == scalar);
+
+            Contiguous vector_copy(vector);
+            REQUIRE(vector_copy == vector);
+
+            Contiguous matrix_copy(matrix);
+            REQUIRE(matrix_copy == matrix);
+        }
+
+        SECTION("Move ctor") {
+            Contiguous defaulted_temp(defaulted);
+            Contiguous defaulted_move(std::move(defaulted_temp));
+            REQUIRE(defaulted_move == defaulted);
+
+            Contiguous scalar_temp(scalar);
+            Contiguous scalar_move(std::move(scalar_temp));
+            REQUIRE(scalar_move == scalar);
+
+            Contiguous vector_temp(vector);
+            Contiguous vector_move(std::move(vector_temp));
+            REQUIRE(vector_move == vector);
+
+            Contiguous matrix_temp(matrix);
+            Contiguous matrix_move(std::move(matrix_temp));
+            REQUIRE(matrix_move == matrix);
+        }
+
+        SECTION("Copy assignment") {
+            Contiguous defaulted_copy;
+            auto pdefaulted_copy = &(defaulted_copy = defaulted);
+            REQUIRE(defaulted_copy == defaulted);
+            REQUIRE(pdefaulted_copy == &defaulted_copy);
+
+            Contiguous scalar_copy;
+            auto pscalar_copy = &(scalar_copy = scalar);
+            REQUIRE(scalar_copy == scalar);
+            REQUIRE(pscalar_copy == &scalar_copy);
+
+            Contiguous vector_copy;
+            auto pvector_copy = &(vector_copy = vector);
+            REQUIRE(vector_copy == vector);
+            REQUIRE(pvector_copy == &vector_copy);
+
+            Contiguous matrix_copy;
+            auto pmatrix_copy = &(matrix_copy = matrix);
+            REQUIRE(matrix_copy == matrix);
+            REQUIRE(pmatrix_copy == &matrix_copy);
+        }
+
+        SECTION("Move assignment") {
+            Contiguous defaulted_temp(defaulted);
+            Contiguous defaulted_move;
+            auto pdefaulted_move =
+              &(defaulted_move = std::move(defaulted_temp));
+            REQUIRE(defaulted_move == defaulted);
+            REQUIRE(pdefaulted_move == &defaulted_move);
+
+            Contiguous scalar_temp(scalar);
+            Contiguous scalar_move;
+            auto pscalar_move = &(scalar_move = std::move(scalar_temp));
+            REQUIRE(scalar_move == scalar);
+            REQUIRE(pscalar_move == &scalar_move);
+
+            Contiguous vector_temp(vector);
+            Contiguous vector_move;
+            auto pvector_move = &(vector_move = std::move(vector_temp));
+            REQUIRE(vector_move == vector);
+            REQUIRE(pvector_move == &vector_move);
+
+            Contiguous matrix_temp(matrix);
+            Contiguous matrix_move;
+            auto pmatrix_move = &(matrix_move = std::move(matrix_temp));
+            REQUIRE(matrix_move == matrix);
+            REQUIRE(pmatrix_move == &matrix_move);
+        }
+    }
+
+    SECTION("shape") {
+        REQUIRE(defaulted.shape() == shape_type());
+        REQUIRE(scalar.shape() == scalar_shape);
+        REQUIRE(vector.shape() == vector_shape);
+        REQUIRE(matrix.shape() == matrix_shape);
+    }
 
     SECTION("size") {
-        REQUIRE(base0.size() == 1);
-        REQUIRE(base1.size() == 5);
+        REQUIRE(defaulted.size() == 0);
+        REQUIRE(scalar.size() == 1);
+        REQUIRE(vector.size() == 4);
+        REQUIRE(matrix.size() == 4);
     }
 
-    SECTION("get_mutable_data()") {
-        REQUIRE(*base0.get_mutable_data() == TestType(42.0));
+    SECTION("get_elem") {
+        REQUIRE_THROWS_AS(defaulted.get_elem({}), std::out_of_range);
 
-        REQUIRE(*(base1.get_mutable_data() + 0) == TestType(0.0));
-        REQUIRE(*(base1.get_mutable_data() + 1) == TestType(1.0));
-        REQUIRE(*(base1.get_mutable_data() + 2) == TestType(2.0));
-        REQUIRE(*(base1.get_mutable_data() + 3) == TestType(3.0));
-        REQUIRE(*(base1.get_mutable_data() + 4) == TestType(4.0));
+        REQUIRE(scalar.get_elem({}) == one);
+        REQUIRE_THROWS_AS(scalar.get_elem({0}), std::out_of_range);
+
+        REQUIRE(vector.get_elem({0}) == one);
+        REQUIRE(vector.get_elem({1}) == two);
+        REQUIRE(vector.get_elem({2}) == three);
+        REQUIRE(vector.get_elem({3}) == four);
+        REQUIRE_THROWS_AS(vector.get_elem({4}), std::out_of_range);
+
+        REQUIRE(matrix.get_elem({0, 0}) == one);
+        REQUIRE(matrix.get_elem({0, 1}) == two);
+        REQUIRE(matrix.get_elem({1, 0}) == three);
+        REQUIRE(matrix.get_elem({1, 1}) == four);
+        REQUIRE_THROWS_AS(matrix.get_elem({2, 0}), std::out_of_range);
     }
 
-    SECTION("get_immutable_data() const") {
-        REQUIRE(*std::as_const(base0).get_immutable_data() == TestType(42.0));
+    SECTION("set_elem") {
+        REQUIRE_THROWS_AS(defaulted.set_elem({}, one), std::out_of_range);
 
-        REQUIRE(*(std::as_const(base1).get_immutable_data() + 0) ==
-                TestType(0.0));
-        REQUIRE(*(std::as_const(base1).get_immutable_data() + 1) ==
-                TestType(1.0));
-        REQUIRE(*(std::as_const(base1).get_immutable_data() + 2) ==
-                TestType(2.0));
-        REQUIRE(*(std::as_const(base1).get_immutable_data() + 3) ==
-                TestType(3.0));
-        REQUIRE(*(std::as_const(base1).get_immutable_data() + 4) ==
-                TestType(4.0));
+        REQUIRE(scalar.get_elem({}) != two);
+        scalar.set_elem({}, two);
+        REQUIRE(scalar.get_elem({}) == two);
+
+        REQUIRE(vector.get_elem({2}) != four);
+        vector.set_elem({2}, four);
+        REQUIRE(vector.get_elem({2}) == four);
+
+        REQUIRE(matrix.get_elem({1, 0}) != one);
+        matrix.set_elem({1, 0}, one);
+        REQUIRE(matrix.get_elem({1, 0}) == one);
     }
 
-    SECTION("get_elem() const") {
-        REQUIRE(base0.get_elem({}) == TestType(42.0));
-
-        REQUIRE(base1.get_elem({0}) == TestType(0.0));
-        REQUIRE(base1.get_elem({1}) == TestType(1.0));
-        REQUIRE(base1.get_elem({2}) == TestType(2.0));
-        REQUIRE(base1.get_elem({3}) == TestType(3.0));
-        REQUIRE(base1.get_elem({4}) == TestType(4.0));
-
-        REQUIRE_THROWS_AS(base0.get_elem({0}), std::runtime_error);
+    SECTION("infinity_norm") {
+        REQUIRE_THROWS_AS(defaulted.infinity_norm(), std::runtime_error);
+        REQUIRE(scalar.infinity_norm() == one);
+        REQUIRE(vector.infinity_norm() == four);
+        REQUIRE(matrix.infinity_norm() == four);
     }
 
-    SECTION("set_elem() const") {
-        base0.set_elem({}, TestType(43.0));
-        REQUIRE(base0.get_elem({}) == TestType(43.0));
+    SECTION("operator==") {
+        // Same object
+        REQUIRE(defaulted == defaulted);
 
-        base1.set_elem({0}, TestType(43.0));
-        REQUIRE(base1.get_elem({0}) == TestType(43.0));
+        Contiguous scalar_copy(std::vector{one}, scalar_shape);
+        REQUIRE(scalar == scalar_copy);
 
-        REQUIRE_THROWS_AS(base0.set_elem({0}, TestType{0.0}),
-                          std::runtime_error);
+        Contiguous vector_copy(data, vector_shape);
+        REQUIRE(vector == vector_copy);
+
+        Contiguous matrix_copy(data, matrix_shape);
+        REQUIRE(matrix == matrix_copy);
+
+        // Different ranks
+        REQUIRE_FALSE(scalar == vector);
+        REQUIRE_FALSE(vector == matrix);
+        REQUIRE_FALSE(scalar == matrix);
+
+        // Different shapes
+        shape_type matrix_shape2({4, 1});
+        REQUIRE_FALSE(scalar == Contiguous(data, matrix_shape2));
+
+        // Different values
+        std::vector<TestType> diff_data = {two, three, four, one};
+        Contiguous scalar_diff(std::vector{two}, scalar_shape);
+        REQUIRE_FALSE(scalar == scalar_diff);
+        REQUIRE_FALSE(vector == Contiguous(diff_data, vector_shape));
+        REQUIRE_FALSE(matrix == Contiguous(diff_data, matrix_shape));
     }
 
-    SECTION("get_data() const") {
-        REQUIRE(base0.get_data(0) == TestType(42.0));
+    SECTION("approximately_equal") {
+        Contiguous scalar2(std::vector{one}, scalar_shape);
+        Contiguous vector2(data, vector_shape);
+        Contiguous matrix2(data, matrix_shape);
+        double default_tol = 1e-16;
+        SECTION("different ranks") {
+            REQUIRE_FALSE(scalar.approximately_equal(vector, default_tol));
+            REQUIRE_FALSE(scalar.approximately_equal(matrix, default_tol));
+            REQUIRE_FALSE(vector.approximately_equal(scalar, default_tol));
+            REQUIRE_FALSE(vector.approximately_equal(matrix, default_tol));
+            REQUIRE_FALSE(matrix.approximately_equal(scalar, default_tol));
+            REQUIRE_FALSE(matrix.approximately_equal(vector, default_tol));
+        }
 
-        REQUIRE(base1.get_data(0) == TestType(0.0));
-        REQUIRE(base1.get_data(1) == TestType(1.0));
-        REQUIRE(base1.get_data(2) == TestType(2.0));
-        REQUIRE(base1.get_data(3) == TestType(3.0));
-        REQUIRE(base1.get_data(4) == TestType(4.0));
+        SECTION("Same values") {
+            REQUIRE(scalar.approximately_equal(scalar2, default_tol));
+            REQUIRE(scalar2.approximately_equal(scalar, default_tol));
+            REQUIRE(vector.approximately_equal(vector2, default_tol));
+            REQUIRE(vector2.approximately_equal(vector, default_tol));
+            REQUIRE(matrix.approximately_equal(matrix2, default_tol));
+            REQUIRE(matrix2.approximately_equal(matrix, default_tol));
+        }
 
-        REQUIRE_THROWS_AS(base0.get_data(1), std::runtime_error);
+        SECTION("Differ by more than provided tolerance") {
+            TestType diff = 1e-1;
+            scalar2.set_elem({}, one + diff);
+            vector2.set_elem({0}, one + diff);
+            matrix2.set_elem({0, 0}, one + diff);
+            double tol = 1e-1;
+            REQUIRE_FALSE(scalar.approximately_equal(scalar2, tol));
+            REQUIRE_FALSE(scalar2.approximately_equal(scalar, tol));
+            REQUIRE_FALSE(vector.approximately_equal(vector2, tol));
+            REQUIRE_FALSE(vector2.approximately_equal(vector, tol));
+            REQUIRE_FALSE(matrix.approximately_equal(matrix2, tol));
+            REQUIRE_FALSE(matrix2.approximately_equal(matrix, tol));
+        }
+
+        SECTION("Differ by less than provided tolerance") {
+            TestType diff = 1e-10;
+            double tol    = 1e-1;
+            scalar2.set_elem({}, one + diff);
+            vector2.set_elem({0}, one + diff);
+            matrix2.set_elem({0, 0}, one + diff);
+            REQUIRE(scalar.approximately_equal(scalar2, tol));
+            REQUIRE(scalar2.approximately_equal(scalar, tol));
+            REQUIRE(vector.approximately_equal(vector2, tol));
+            REQUIRE(vector2.approximately_equal(vector, tol));
+            REQUIRE(matrix.approximately_equal(matrix2, tol));
+            REQUIRE(matrix2.approximately_equal(matrix, tol));
+        }
     }
 
-    SECTION("set_data() const") {
-        base0.set_data(0, TestType(43.0));
-        REQUIRE(base0.get_elem({}) == TestType(43.0));
+    SECTION("addition_assignment_") {
+        SECTION("scalar") {
+            label_type labels("");
+            Contiguous result;
+            result.addition_assignment(labels, scalar(labels), scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(2.0));
+        }
 
-        REQUIRE_THROWS_AS(base0.set_data(1, TestType{0.0}), std::runtime_error);
+        SECTION("vector") {
+            label_type labels("i");
+            Contiguous result;
+            result.addition_assignment(labels, vector(labels), vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(2.0));
+            REQUIRE(result.get_elem({1}) == TestType(4.0));
+            REQUIRE(result.get_elem({2}) == TestType(6.0));
+            REQUIRE(result.get_elem({3}) == TestType(8.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            Contiguous result;
+            result.addition_assignment(labels, matrix(labels), matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(2.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(4.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(6.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(8.0));
+        }
     }
 
-    SECTION("fill()") {
-        base1.fill(TestType{43.0});
-        REQUIRE(base1.get_data(0) == TestType(43.0));
-        REQUIRE(base1.get_data(1) == TestType(43.0));
-        REQUIRE(base1.get_data(2) == TestType(43.0));
-        REQUIRE(base1.get_data(3) == TestType(43.0));
-        REQUIRE(base1.get_data(4) == TestType(43.0));
+    SECTION("subtraction_assignment_") {
+        SECTION("scalar") {
+            label_type labels("");
+            Contiguous result;
+            result.subtraction_assignment(labels, scalar(labels),
+                                          scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(0.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            Contiguous result;
+            result.subtraction_assignment(labels, vector(labels),
+                                          vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(0.0));
+            REQUIRE(result.get_elem({1}) == TestType(0.0));
+            REQUIRE(result.get_elem({2}) == TestType(0.0));
+            REQUIRE(result.get_elem({3}) == TestType(0.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            Contiguous result;
+            result.subtraction_assignment(labels, matrix(labels),
+                                          matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(0.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(0.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(0.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(0.0));
+        }
     }
 
-    SECTION("copy()") {
-        auto data = std::vector<TestType>(5, TestType(43.0));
-        base1.copy(data);
-        REQUIRE(base1.get_data(0) == TestType(43.0));
-        REQUIRE(base1.get_data(1) == TestType(43.0));
-        REQUIRE(base1.get_data(2) == TestType(43.0));
-        REQUIRE(base1.get_data(3) == TestType(43.0));
-        REQUIRE(base1.get_data(4) == TestType(43.0));
+    SECTION("multiplication_assignment_") {
+        // N.b., dispatching among hadamard, contraction, etc. is the visitor's
+        // responsibility and happens there. Here we just test hadamard.
+
+        SECTION("scalar") {
+            label_type labels("");
+            Contiguous result;
+            result.multiplication_assignment(labels, scalar(labels),
+                                             scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            Contiguous result;
+            result.multiplication_assignment(labels, vector(labels),
+                                             vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0));
+            REQUIRE(result.get_elem({1}) == TestType(4.0));
+            REQUIRE(result.get_elem({2}) == TestType(9.0));
+            REQUIRE(result.get_elem({3}) == TestType(16.0));
+        }
+
+        SECTION("matrix") {
+            label_type labels("i,j");
+            Contiguous result;
+            result.multiplication_assignment(labels, matrix(labels),
+                                             matrix(labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(4.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(9.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(16.0));
+        }
     }
+
+    SECTION("scalar_multiplication_") {
+        // TODO: Test with other scalar types when public API supports it
+        using scalar_type = double;
+        scalar_type scalar_value_{2.0};
+        TestType scalar_value(scalar_value_);
+        SECTION("scalar") {
+            label_type labels("");
+            Contiguous result;
+            result.scalar_multiplication(labels, scalar_value_, scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0) * scalar_value);
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            Contiguous result;
+            result.scalar_multiplication(labels, scalar_value_, vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0) * scalar_value);
+            REQUIRE(result.get_elem({1}) == TestType(2.0) * scalar_value);
+            REQUIRE(result.get_elem({2}) == TestType(3.0) * scalar_value);
+            REQUIRE(result.get_elem({3}) == TestType(4.0) * scalar_value);
+        }
+
+        SECTION("matrix") {
+            label_type rhs_labels("i,j");
+            label_type lhs_labels("j,i");
+            Contiguous result;
+            result.scalar_multiplication(lhs_labels, scalar_value_,
+                                         matrix(rhs_labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0) * scalar_value);
+            REQUIRE(result.get_elem({0, 1}) == TestType(3.0) * scalar_value);
+            REQUIRE(result.get_elem({1, 0}) == TestType(2.0) * scalar_value);
+            REQUIRE(result.get_elem({1, 1}) == TestType(4.0) * scalar_value);
+        }
+    }
+
+    SECTION("permute_assignment_") {
+        SECTION("scalar") {
+            label_type labels("");
+            Contiguous result;
+            result.permute_assignment(labels, scalar(labels));
+            REQUIRE(result.shape() == scalar_shape);
+            REQUIRE(result.get_elem({}) == TestType(1.0));
+        }
+
+        SECTION("vector") {
+            label_type labels("i");
+            Contiguous result;
+            result.permute_assignment(labels, vector(labels));
+            REQUIRE(result.shape() == vector_shape);
+            REQUIRE(result.get_elem({0}) == TestType(1.0));
+            REQUIRE(result.get_elem({1}) == TestType(2.0));
+            REQUIRE(result.get_elem({2}) == TestType(3.0));
+            REQUIRE(result.get_elem({3}) == TestType(4.0));
+        }
+
+        SECTION("matrix") {
+            label_type rhs_labels("i,j");
+            label_type lhs_labels("j,i");
+            Contiguous result;
+            result.permute_assignment(lhs_labels, matrix(rhs_labels));
+            REQUIRE(result.shape() == matrix_shape);
+            REQUIRE(result.get_elem({0, 0}) == TestType(1.0));
+            REQUIRE(result.get_elem({0, 1}) == TestType(3.0));
+            REQUIRE(result.get_elem({1, 0}) == TestType(2.0));
+            REQUIRE(result.get_elem({1, 1}) == TestType(4.0));
+        }
+    }
+
+    SECTION("to_string") {
+        REQUIRE(defaulted.to_string().empty());
+        REQUIRE_FALSE(scalar.to_string().empty());
+        REQUIRE_FALSE(vector.to_string().empty());
+        REQUIRE_FALSE(matrix.to_string().empty());
+    }
+
+    SECTION("add_to_stream") {
+        std::stringstream ss;
+        SECTION("defaulted") {
+            defaulted.add_to_stream(ss);
+            REQUIRE(ss.str().empty());
+        }
+        SECTION("scalar") {
+            scalar.add_to_stream(ss);
+            REQUIRE_FALSE(ss.str().empty());
+        }
+        SECTION("vector") {
+            vector.add_to_stream(ss);
+            REQUIRE_FALSE(ss.str().empty());
+        }
+        SECTION("matrix") {
+            matrix.add_to_stream(ss);
+            REQUIRE_FALSE(ss.str().empty());
+        }
+    }
+}
+
+TEST_CASE("make_contiguous(buffer, shape)") {
+    using buffer::Contiguous;
+    using tensor_type = Tensor;
+    using shape_type  = shape::Smooth;
+
+    std::vector<double> data = {1.0, 2.0, 3.0, 4.0};
+    shape_type shape({2, 2});
+    buffer::Contiguous buffer(data, shape);
+
+    tensor_type tensor(shape.clone(),
+                       std::make_unique<buffer::Contiguous>(buffer));
+
+    shape_type other({3, 4, 5});
+    Contiguous contig = buffer::make_contiguous(tensor.buffer(), other);
+
+    REQUIRE(contig.shape() == other);
+    REQUIRE(contig.size() == 60); // 3*4*5 = 60
+    REQUIRE(contig.get_elem({0, 0, 0}) == 0.0);
+}
+
+TEMPLATE_LIST_TEST_CASE("make_contiguous(shape)", "",
+                        types::floating_point_types) {
+    using buffer::Contiguous;
+    using shape_type = shape::Smooth;
+
+    std::vector<TestType> data = {0.0, 0.0, 0.0, 0.0};
+    shape_type shape({2, 2});
+    buffer::Contiguous corr(data, shape);
+
+    Contiguous contig = buffer::make_contiguous<TestType>(shape);
+    REQUIRE(contig == corr);
+}
+
+TEMPLATE_LIST_TEST_CASE("make_contiguous(shape, value)", "",
+                        types::floating_point_types) {
+    using buffer::Contiguous;
+    using shape_type = shape::Smooth;
+
+    TestType init{42.0};
+    std::vector<TestType> data = {init, init, init, init};
+    shape_type shape({2, 2});
+    buffer::Contiguous corr(data, shape);
+
+    Contiguous contig = buffer::make_contiguous(shape, init);
+    REQUIRE(contig == corr);
 }

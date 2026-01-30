@@ -17,6 +17,7 @@
 #include "../layout/converter.hpp"
 #include "detail_/tensor_factory.hpp"
 #include "detail_/tensor_pimpl.hpp"
+#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/tensor/tensor_class.hpp>
 
 namespace tensorwrapper {
@@ -116,8 +117,8 @@ Tensor::dsl_reference Tensor::binary_common_(FxnType&& fxn,
     const auto& lbuffer = lobject.buffer();
     const auto& rbuffer = robject.buffer();
 
-    auto palloc       = lbuffer.allocator().clone();
-    auto pthis_buffer = palloc->allocate(std::move(pphys_layout));
+    auto buffer       = buffer::make_contiguous(lbuffer, pphys_layout->shape());
+    auto pthis_buffer = std::make_unique<decltype(buffer)>(std::move(buffer));
 
     fxn(*pthis_buffer, this_labels, lbuffer(llabels), rbuffer(rlabels));
 

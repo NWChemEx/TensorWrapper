@@ -16,7 +16,6 @@
 
 #include "../testing/testing.hpp"
 #include <tensorwrapper/buffer/contraction_planner.hpp>
-#include <tensorwrapper/buffer/eigen.hpp>
 
 using namespace tensorwrapper;
 using namespace buffer;

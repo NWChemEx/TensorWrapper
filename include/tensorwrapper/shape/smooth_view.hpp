@@ -219,6 +219,9 @@ public:
         return !((*this) == rhs);
     }
 
+    /** @brief Create a new Smooth shape that is a deep copy of *this. */
+    smooth_type make_smooth() const;
+
 protected:
     /// Lets the class access PIMPLs regardless of template type parameter
     template<typename SmoothType2>

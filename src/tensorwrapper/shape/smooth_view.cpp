@@ -77,6 +77,13 @@ bool SMOOTH_VIEW::operator==(const SmoothView<SmoothType>& rhs) const noexcept {
 }
 
 TPARAMS
+auto SMOOTH_VIEW::make_smooth() const -> smooth_type {
+    std::vector<rank_type> extents(rank());
+    for(rank_type i = 0; i < rank(); ++i) { extents[i] = extent(i); }
+    return smooth_type(extents.begin(), extents.end());
+}
+
+TPARAMS
 bool SMOOTH_VIEW::has_pimpl_() const noexcept {
     return static_cast<bool>(m_pimpl_);
 }

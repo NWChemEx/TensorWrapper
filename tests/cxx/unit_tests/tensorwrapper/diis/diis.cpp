@@ -18,27 +18,28 @@
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
 
-using diis_type     = tensorwrapper::diis::DIIS;
-using tensor_type   = tensorwrapper::Tensor;
-using elements_type = std::vector<double>;
+using diis_type   = tensorwrapper::diis::DIIS;
+using tensor_type = tensorwrapper::Tensor;
 
 template<typename FloatType>
-tensor_type make_tensor(elements_type elems) {
-    auto pbuffer = tensorwrapper::testing::eigen_matrix<FloatType>(2, 2);
-    pbuffer->set_elem({0, 0}, elems[0]);
-    pbuffer->set_elem({0, 1}, elems[1]);
-    pbuffer->set_elem({1, 0}, elems[2]);
-    pbuffer->set_elem({1, 1}, elems[3]);
-    auto pshape = pbuffer->layout().shape().clone();
+tensor_type make_tensor(std::vector<FloatType> elems) {
+    using namespace tensorwrapper;
+    shape::Smooth shape{2, 2};
+    buffer::Contiguous buffer(std::move(elems), shape);
+    auto pbuffer = std::make_unique<buffer::Contiguous>(std::move(buffer));
+    auto pshape  = pbuffer->layout().shape().clone();
     return tensor_type(std::move(pshape), std::move(pbuffer));
 }
 
 TEMPLATE_LIST_TEST_CASE("DIIS", "",
                         tensorwrapper::types::floating_point_types) {
     // Inputs
-    tensor_type i1 = make_tensor<TestType>({1.0, 2.0, 3.0, 4.0});
-    tensor_type i2 = make_tensor<TestType>({6.0, 5.0, 8.0, 7.0});
-    tensor_type i3 = make_tensor<TestType>({12.0, 11.0, 10.0, 9.0});
+    std::vector<TestType> i1_data{1.0, 2.0, 3.0, 4.0};
+    std::vector<TestType> i2_data{6.0, 5.0, 8.0, 7.0};
+    std::vector<TestType> i3_data{12.0, 11.0, 10.0, 9.0};
+    tensor_type i1 = make_tensor(i1_data);
+    tensor_type i2 = make_tensor(i2_data);
+    tensor_type i3 = make_tensor(i3_data);
 
     SECTION("Typedefs") {
         SECTION("size_type") {
@@ -72,10 +73,13 @@ TEMPLATE_LIST_TEST_CASE("DIIS", "",
 
     SECTION("extrapolate") {
         // Outputs
-        tensor_type corr1 = make_tensor<TestType>({1.0, 2.0, 3.0, 4.0});
-        tensor_type corr2 = make_tensor<TestType>({12.0, 8.6, 14.0, 10.6});
-        tensor_type corr3 = make_tensor<TestType>(
-          {15.35294118, 14.35294118, 11.11764706, 10.11764706});
+        std::vector<TestType> v0{1.0, 2.0, 3.0, 4.0};
+        std::vector<TestType> v1{12.0, 8.6, 14.0, 10.6};
+        std::vector<TestType> v2{15.35294118, 14.35294118, 11.11764706,
+                                 10.11764706};
+        tensor_type corr1 = make_tensor<TestType>(v0);
+        tensor_type corr2 = make_tensor<TestType>(v1);
+        tensor_type corr3 = make_tensor<TestType>(v2);
 
         // Call extrapolate enough to require removing an old value
         auto diis    = diis_type(2);

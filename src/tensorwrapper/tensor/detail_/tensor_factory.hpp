@@ -66,7 +66,6 @@ public:
     using logical_layout_pointer   = input_type::logical_layout_pointer;
     using const_physical_reference = input_type::const_physical_reference;
     using physical_layout_pointer  = input_type::physical_layout_pointer;
-    using allocator_pointer        = input_type::allocator_pointer;
     using runtime_view_type        = input_type::runtime_view_type;
 
     // -------------------------------------------------------------------------
@@ -139,21 +138,6 @@ public:
      */
     static physical_layout_pointer default_physical_layout(
       const_logical_reference logical);
-
-    /**  @brief Constructs an allocator consistent with the physical layout.
-     *
-     *   @param[in] physical The physical layout of the tensor we want to
-     *                       allocate.
-     *   @param[in] rv The runtime that tensors will be allocated in.
-     *
-     *   @return An allocator capable of allocating a tensor with the layout
-     *           @p physical using the resources in @p rv.
-     *
-     *   @throw std::bad_alloc if there is a problem allocating the return.
-     *                         Strong throw guarantee.
-     */
-    static allocator_pointer default_allocator(
-      const_physical_reference physical, runtime_view_type rv);
 
     /** @brief Actually constructs the tensor's PIMPL.
      *

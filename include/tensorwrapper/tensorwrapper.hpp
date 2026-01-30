@@ -15,7 +15,6 @@
  */
 
 #pragma once
-#include <tensorwrapper/allocator/allocator.hpp>
 #include <tensorwrapper/buffer/buffer.hpp>
 #include <tensorwrapper/detail_/detail_.hpp>
 #include <tensorwrapper/diis/diis.hpp>

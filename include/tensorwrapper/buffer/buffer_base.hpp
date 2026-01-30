@@ -15,11 +15,10 @@
  */
 
 #pragma once
-#include <tensorwrapper/allocator/allocator_base.hpp>
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/dsl/labeled.hpp>
-#include <tensorwrapper/layout/layout_base.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/types/buffer_traits.hpp>
 
 namespace tensorwrapper::buffer {
@@ -68,18 +67,6 @@ public:
     /// Type of a pointer to the layout
     using layout_pointer = std::unique_ptr<layout_type>;
 
-    /// Type all allocators inherit from
-    using allocator_base_type = allocator::AllocatorBase;
-
-    /// Type of a pointer to an allocator_base_type object
-    using allocator_base_pointer = std::unique_ptr<allocator_base_type>;
-
-    /// Type of a mutable reference to an allocator_base_type
-    using allocator_base_reference = allocator_base_type&;
-
-    /// Type of a read-only reference to an allocator_base_type
-    using const_allocator_reference = const allocator_base_type&;
-
     /// Type used to represent the tensor's rank
     using rank_type = typename layout_type::size_type;
 
@@ -98,18 +85,6 @@ public:
      */
     bool has_layout() const noexcept { return static_cast<bool>(m_layout_); }
 
-    /** @brief Does *this have an allocator?
-     *
-     *  Default constructed or moved from BufferBase objects will not have
-     *  allocators. This method is used to determine if *this has an allocator
-     *  or not.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool has_allocator() const noexcept {
-        return static_cast<bool>(m_allocator_);
-    }
-
     /** @brief Retrieves the layout of *this.
      *
      *  This method can be used to retrieve the layout associated with *this,
@@ -124,38 +99,6 @@ public:
     const_layout_reference layout() const {
         assert_layout_();
         return *m_layout_;
-    }
-
-    /** @brief Retrieves the allocator of *this.
-     *
-     *  This method can be used to retrieve the allocator used to allocate
-     *  *this, assuming *this was provided an allocator. See has_allocator for
-     *  determining if *this has an allocator or not.
-     *
-     *  @return A mutable reference to the allocator.
-     *
-     *  @throw std::runtime_error if *this does not have an allocator. Strong
-     *                            throw guarantee.
-     */
-    allocator_base_reference allocator() {
-        assert_layout_();
-        return *m_allocator_;
-    }
-
-    /** @brief Retrieves the allocator of *this.
-     *
-     *  This method can be used to retrieve the allocator used to allocate
-     *  *this, assuming *this was provided an allocator. See has_allocator for
-     *  determining if *this has an allocator or not.
-     *
-     *  @return A read-only reference to the allocator.
-     *
-     *  @throw std::runtime_error if *this does not have an allocator. Strong
-     *                            throw guarantee.
-     */
-    const_allocator_reference allocator() const {
-        assert_layout_();
-        return *m_allocator_;
     }
 
     rank_type rank() const noexcept {
@@ -180,10 +123,7 @@ public:
      */
     bool operator==(const BufferBase& rhs) const noexcept {
         if(has_layout() != rhs.has_layout()) return false;
-        if(has_allocator() != rhs.has_allocator()) return false;
         if(has_layout() && m_layout_->are_different(*rhs.m_layout_))
-            return false;
-        if(has_allocator() && m_allocator_->are_different(*rhs.m_allocator_))
             return false;
         return true;
     }
@@ -204,6 +144,10 @@ public:
         return !(*this == rhs);
     }
 
+    bool approximately_equal(const BufferBase& rhs, double tol) const {
+        return approximately_equal_(rhs, tol);
+    }
+
 protected:
     // -------------------------------------------------------------------------
     // -- Ctors, assignment
@@ -217,7 +161,7 @@ protected:
      *
      *  @throw None No throw guarantee.
      */
-    BufferBase() : BufferBase(nullptr, nullptr) {}
+    BufferBase() : BufferBase(nullptr) {}
 
     /** @brief Creates a buffer initialized with a copy of @p layout.
      *
@@ -226,9 +170,8 @@ protected:
      *  @throw std::bad_alloc if there is a problem allocating the copy of
      *                        @p layout. Strong throw guarantee.
      */
-    explicit BufferBase(const_layout_reference layout,
-                        const_allocator_reference allocator) :
-      BufferBase(layout.clone_as<layout_type>(), allocator.clone()) {}
+    explicit BufferBase(const_layout_reference layout) :
+      BufferBase(layout.clone_as<layout_type>()) {}
 
     /** @brief Creates a buffer which owns the layout pointed to by @p playout.
      *
@@ -237,9 +180,8 @@ protected:
      *  @throw None No throw guarantee.
      */
 
-    explicit BufferBase(layout_pointer playout,
-                        allocator_base_pointer pallocator) noexcept :
-      m_layout_(std::move(playout)), m_allocator_(std::move(pallocator)) {}
+    explicit BufferBase(layout_pointer playout) noexcept :
+      m_layout_(std::move(playout)) {}
 
     /** @brief Creates a buffer by deep copying @p other.
      *
@@ -250,9 +192,7 @@ protected:
      */
     BufferBase(const BufferBase& other) :
       m_layout_(other.m_layout_ ? other.m_layout_->clone_as<layout_type>() :
-                                  nullptr),
-      m_allocator_(other.m_allocator_ ? other.m_allocator_->clone() : nullptr) {
-    }
+                                  nullptr) {}
 
     /** @brief Replaces the state in *this with a deep copy of the state in
      *         @p rhs.
@@ -269,10 +209,8 @@ protected:
             auto temp_layout = rhs.has_layout() ?
                                  rhs.m_layout_->clone_as<layout_type>() :
                                  nullptr;
-            auto temp_allocator =
-              rhs.has_allocator() ? rhs.m_allocator_->clone() : nullptr;
+
             temp_layout.swap(m_layout_);
-            temp_allocator.swap(m_allocator_);
         }
         return *this;
     }
@@ -292,6 +230,9 @@ protected:
     dsl_reference permute_assignment_(label_type this_labels,
                                       const_labeled_reference rhs) override;
 
+    virtual bool approximately_equal_(const BufferBase& rhs,
+                                      double tol) const = 0;
+
 private:
     template<typename FxnType>
     dsl_reference binary_op_common_(FxnType&& fxn, label_type this_labels,
@@ -305,18 +246,8 @@ private:
           "Buffer has no layout. Was it default initialized?");
     }
 
-    /// Throws std::runtime_error when there is no allocator
-    void assert_allocator_() const {
-        if(has_allocator()) return;
-        throw std::runtime_error(
-          "Buffer has no allocator. Was it default initialized?");
-    }
-
     /// The layout of *this
     layout_pointer m_layout_;
-
-    /// The allocator of *this
-    allocator_base_pointer m_allocator_;
 };
 
 } // namespace tensorwrapper::buffer

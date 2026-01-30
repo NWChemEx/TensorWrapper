@@ -15,4 +15,5 @@
  */
 
 #pragma once
+#include <tensorwrapper/backends/cutensor.hpp>
 #include <tensorwrapper/backends/eigen.hpp>

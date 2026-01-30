@@ -16,7 +16,6 @@
 
 #pragma once
 #include <tensorwrapper/utilities/block_diagonal_matrix.hpp>
-#include <tensorwrapper/utilities/floating_point_dispatch.hpp>
 #include <tensorwrapper/utilities/to_json.hpp>
 
 /// Namespace for helper functions
