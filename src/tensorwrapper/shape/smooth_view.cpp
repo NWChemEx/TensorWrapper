@@ -50,11 +50,6 @@ TPARAMS
 SMOOTH_VIEW::~SmoothView() noexcept = default;
 
 TPARAMS
-typename SMOOTH_VIEW::rank_type SMOOTH_VIEW::extent(size_type i) const {
-    return m_pimpl_->extent(i);
-}
-
-TPARAMS
 typename SMOOTH_VIEW::rank_type SMOOTH_VIEW::rank() const noexcept {
     return m_pimpl_->rank();
 }
@@ -79,8 +74,13 @@ bool SMOOTH_VIEW::operator==(const SmoothView<SmoothType>& rhs) const noexcept {
 TPARAMS
 auto SMOOTH_VIEW::make_smooth() const -> smooth_type {
     std::vector<rank_type> extents(rank());
-    for(rank_type i = 0; i < rank(); ++i) { extents[i] = extent(i); }
+    for(rank_type i = 0; i < rank(); ++i) { extents[i] = this->extent(i); }
     return smooth_type(extents.begin(), extents.end());
+}
+
+TPARAMS
+auto SMOOTH_VIEW::extent_impl(rank_type i) const -> size_type {
+    return m_pimpl_->extent(i);
 }
 
 TPARAMS

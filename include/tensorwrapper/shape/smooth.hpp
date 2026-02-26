@@ -17,6 +17,8 @@
 #pragma once
 #include <functional>
 #include <numeric>
+#include <shape/shape_traits.hpp>
+#include <shape/smooth_common.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
 #include <vector>
 
@@ -29,7 +31,11 @@ namespace tensorwrapper::shape {
  *  geometric dimension of the (hyper-)rectangle and the number of elements in
  *  the array.
  */
-class Smooth : public ShapeBase {
+class Smooth : public ShapeBase, public SmoothCommon<Smooth> {
+private:
+    using my_type     = Smooth;
+    using common_base = SmoothCommon<my_type>;
+
 public:
     // Pull in base class's types
     using ShapeBase::rank_type;
@@ -39,6 +45,15 @@ public:
     // -- Ctors, assignment, and dtor
     // -------------------------------------------------------------------------
 
+    /** @brief Creates a shape for a null tensor.
+     *
+     *  A null tensor is a tensor that contains zero elements. Thus a null
+     *  tensor is not the same as scalar tensor (which contains 1 element). To
+     *  create a scalar tensor use ``Smooth scalar{};`` (i.e., the initializer
+     *  list ctor).
+     *
+     *  @throw None No throw guarantee.
+     */
     Smooth() noexcept = default;
 
     /** @brief Constructs *this with a statically specified number of extents.
@@ -86,18 +101,6 @@ public:
     // -------------------------------------------------------------------------
     // -- Accessor methods
     // -------------------------------------------------------------------------
-
-    /** @brief Returns the extent of the @p i -th mode.
-     *
-     *  @param[in] i The mode the user wants the extent of. @p i must be in the
-     *               range [0, rank()).
-     *
-     *  @return The extent of the requested mode.
-     *
-     *  @throw std::out_of_range if @p i is not in the range [0, range()).
-     *                           Strong throw guarantee.
-     */
-    rank_type extent(size_type i) const { return m_extents_.at(i); }
 
     // -------------------------------------------------------------------------
     // -- Utility methods
@@ -152,6 +155,10 @@ public:
     }
 
 protected:
+    friend common_base;
+
+    size_type extent_impl(rank_type i) const { return m_extents_.at(i); }
+
     /// Implement clone() by calling copy ctor
     base_pointer clone_() const override {
         return std::make_unique<Smooth>(*this);
