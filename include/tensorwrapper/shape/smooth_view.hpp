@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <shape/smooth_common.hpp>
 #include <tensorwrapper/detail_/view_traits.hpp>
 #include <tensorwrapper/shape/shape_traits.hpp>
 
@@ -30,10 +31,13 @@ namespace tensorwrapper::shape {
  *  API to the existing state.
  */
 template<typename SmoothType>
-class SmoothView {
+class SmoothView : public SmoothCommon<SmoothView<SmoothType>> {
 private:
     /// Type of *this
     using my_type = SmoothView<SmoothType>;
+
+    /// Type of the common base
+    using my_base = SmoothCommon<my_type>;
 
     /// Type defining the traits for *this
     using traits_type = ShapeTraits<my_type>;
@@ -152,20 +156,6 @@ public:
     /// Nothrow defaulted dtor
     ~SmoothView() noexcept;
 
-    /** @brief What is the extent of the i-th mode of the tensor with the
-     *         aliased shape?
-     *
-     *  @param[in] i The offset of the requested mode. @p i must be in the
-     *               range [0, size()).
-     *
-     *  @return The length of the @p i-th mode in a tensor with the aliased
-     *          shape.
-     *
-     *  @throw std::out_of_range if @p i is not in the range [0, size()). Strong
-     *                           throw guarantee.
-     */
-    rank_type extent(size_type i) const;
-
     /** @brief What is the rank of the tensor the aliased shape describes?
      *
      *  @return The rank of the tensor with the aliased shape.
@@ -226,6 +216,9 @@ protected:
     /// Lets the class access PIMPLs regardless of template type parameter
     template<typename SmoothType2>
     friend class SmoothView;
+
+    friend my_base;
+    size_type extent_impl(rank_type i) const;
 
 private:
     /// Type of a pointer to the PIMPL

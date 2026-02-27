@@ -131,7 +131,8 @@ private:
     auto make_from_shape_(std::span<value_type> data,
                           const_shape_reference shape,
                           std::index_sequence<I...>) {
-        return eigen_data_type(data.data(), shape.extent(I)...);
+        using tensorwrapper::detail_::to_long;
+        return eigen_data_type(data.data(), to_long(shape.extent(I))...);
     }
 
     // Gets an element from the Eigen Tensor by unwrapping a std::vector

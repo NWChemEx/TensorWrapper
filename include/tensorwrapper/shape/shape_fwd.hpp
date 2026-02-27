@@ -26,6 +26,9 @@ class SmoothViewPIMPL;
 
 class ShapeBase;
 
+template<typename DerivedType>
+class SmoothCommon;
+
 class Smooth;
 
 template<typename SmoothType>

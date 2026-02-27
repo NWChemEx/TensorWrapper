@@ -73,13 +73,6 @@ TEMPLATE_LIST_TEST_CASE("SmoothView", "", types2test) {
         }
     }
 
-    SECTION("extent") {
-        REQUIRE_THROWS_AS(alias_scalar.extent(0), std::out_of_range);
-
-        REQUIRE(alias_vector.extent(0) == 3);
-        REQUIRE_THROWS_AS(alias_vector.extent(1), std::out_of_range);
-    }
-
     SECTION("rank") {
         REQUIRE(alias_scalar.rank() == rank_type(0));
         REQUIRE(alias_vector.rank() == rank_type(1));
