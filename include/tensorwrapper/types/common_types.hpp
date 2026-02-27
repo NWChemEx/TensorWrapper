@@ -16,6 +16,7 @@
 
 #pragma once
 #include <cstddef>
+#include <initializer_list>
 
 namespace tensorwrapper::types {
 
@@ -26,6 +27,9 @@ struct CommonTypes {
 
     /// Type used for describing the rank of a tensor and selecting a mode.
     using rank_type = unsigned short;
+
+    /// Type of an initializer list filled with size_type objects
+    using offset_il_type = std::initializer_list<size_type>;
 };
 
 } // namespace tensorwrapper::types

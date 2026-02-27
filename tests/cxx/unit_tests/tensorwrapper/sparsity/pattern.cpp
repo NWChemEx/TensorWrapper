@@ -20,8 +20,13 @@ using namespace tensorwrapper::testing;
 using namespace tensorwrapper::sparsity;
 
 TEST_CASE("Pattern") {
+    using size_type = Pattern::size_type;
+
     Pattern defaulted;
+    Pattern p0(0);
     Pattern p1(1);
+    Pattern p2(2);
+    Pattern p3(3);
 
     SECTION("Ctors, assignment") {
         SECTION("Default") { REQUIRE(defaulted.rank() == 0); }
@@ -37,7 +42,59 @@ TEST_CASE("Pattern") {
 
     SECTION("rank") {
         REQUIRE(defaulted.rank() == 0);
+        REQUIRE(p0.rank() == 0);
         REQUIRE(p1.rank() == 1);
+        REQUIRE(p2.rank() == 2);
+        REQUIRE(p3.rank() == 3);
+    }
+
+    SECTION("slice(initializer_lists)") {
+        using except_t = std::runtime_error;
+        REQUIRE(defaulted.slice({}, {}) == defaulted);
+        REQUIRE(p0.slice({}, {}) == p0);
+        REQUIRE(p1.slice({0}, {1}) == p1);
+        REQUIRE(p2.slice({0, 0}, {1, 1}) == p2);
+        REQUIRE(p3.slice({0, 0, 0}, {1, 1, 1}) == p3);
+
+        // Offset ranks don't match: one empty offset
+        REQUIRE_THROWS_AS(p1.slice({}, {1}), except_t);
+
+        // Offset ranks don't match: catch in loop
+        REQUIRE_THROWS_AS(p2.slice({0, 0}, {1}), except_t);
+
+        // Offset ranks don't match: catch after loop
+        REQUIRE_THROWS_AS(p1.slice({0}, {1, 1}), except_t);
+
+        // Offset ranks don't match tensor's rank: empty offsets
+        REQUIRE_THROWS_AS(p1.slice({}, {}), except_t);
+
+        // Offset ranks don't match tensor's rank: non-empty
+        REQUIRE_THROWS_AS(p1.slice({0, 0}, {1, 1}), except_t);
+
+        // first_elem == last_elem
+        REQUIRE_THROWS_AS(p1.slice({1}, {1}), except_t);
+
+        // first_elem > last_elem
+        REQUIRE_THROWS_AS(p1.slice({1}, {0}), except_t);
+    }
+
+    SECTION("slice(containers)") {
+        // This overload dispatches to the ranges overload, so we just spot
+        // check.
+
+        std::vector<size_type> empty_idx;
+        REQUIRE(defaulted.slice(empty_idx, empty_idx) == defaulted);
+    }
+
+    SECTION("slice(ranges)") {
+        // For convenience we thoroughly test this function via the il overload.
+        // All overloads dispatch to this one, thus it's thoroughly tested
+        // there.
+
+        std::vector<size_type> empty_idx;
+        auto eb = empty_idx.begin();
+        auto ee = empty_idx.end();
+        REQUIRE(defaulted.slice(eb, ee, eb, ee) == defaulted);
     }
 
     SECTION("operator==") {

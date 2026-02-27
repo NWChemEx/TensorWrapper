@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NWChemEx-Project
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,20 @@
  */
 
 #pragma once
-#include <tensorwrapper/types/buffer_traits.hpp>
+#include "layout/layout_base.hpp"
+#include <tensorwrapper/layout/layout_fwd.hpp>
 #include <tensorwrapper/types/class_traits.hpp>
-#include <tensorwrapper/types/floating_point.hpp>
-#include <tensorwrapper/types/il_traits.hpp>
-#include <tensorwrapper/types/shape_traits.hpp>
-#include <tensorwrapper/types/sparsity_traits.hpp>
-#include <tensorwrapper/types/symmetry_traits.hpp>
+#include <tensorwrapper/types/common_types.hpp>
 
-/// Namespace for defining types used throughout the TensorWrapper library
-namespace tensorwrapper::types {}
+namespace tensorwrapper::types {
+
+template<>
+struct ClassTraits<layout::LayoutBase> : CommonTypes {};
+
+template<typename Derived>
+struct ClassTraits<layout::LayoutCommon<Derived>>
+  : ClassTraits<layout::LayoutBase> {
+    using slice_type = Derived;
+};
+
+} // namespace tensorwrapper::types

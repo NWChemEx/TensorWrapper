@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx Community
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,51 +15,30 @@
  */
 
 #pragma once
-#include <tensorwrapper/detail_/dsl_base.hpp>
-#include <tensorwrapper/detail_/polymorphic_base.hpp>
-#include <tensorwrapper/types/sparsity_traits.hpp>
+#include <tensorwrapper/layout/layout_base.hpp>
+#include <tensorwrapper/types/layout_traits.hpp>
 
-namespace tensorwrapper::sparsity {
+namespace tensorwrapper::layout {
 
-/** @brief Base class for objects describing the sparsity of a tensor. */
-class Pattern : public tensorwrapper::detail_::DSLBase<Pattern>,
-                public tensorwrapper::detail_::PolymorphicBase<Pattern> {
+template<typename Derived>
+class LayoutCommon : public LayoutBase {
 private:
-    /// Type defining the polymorphic API of *this
-    using polymorphic_base = tensorwrapper::detail_::PolymorphicBase<Pattern>;
+    /// Type of *this
+    using my_type = LayoutCommon<Derived>;
 
     /// Type defining the types for *this
-    using traits_type = types::ClassTraits<Pattern>;
+    using traits_type = types::ClassTraits<my_type>;
 
 public:
-    /// Add types to public API
     ///@{
-    using size_type      = traits_type::size_type;
-    using rank_type      = traits_type::rank_type;
-    using offset_il_type = traits_type::offset_il_type;
-    using slice_type     = traits_type::slice_type;
+    using slice_type     = typename traits_type::slice_type;
+    using offset_il_type = typename traits_type::offset_il_type;
     ///@}
 
-    /** @brief Creates a pattern for a rank @p rank tensor.
-     *
-     *  This constructor creates a sparsity pattern for a dense tensor with
-     *  @p rank modes.
-     *
-     *  @param[in] rank The number of modes in the associated tensor.
-     *
-     *  @throw None No throw guarantee.
-     */
-    Pattern(rank_type rank = 0) noexcept : m_rank_(rank) {}
+    /// Pull in base class's ctors
+    using LayoutBase::LayoutBase;
 
-    /** @brief Provides the rank of the tensor *this assumes.
-     *
-     *  @return The rank of the tensor *this describes.
-     *
-     *  @throw None No throw guarantee.
-     */
-    rank_type rank() const noexcept { return m_rank_; }
-
-    /** @brief Slices a sparsity pattern given two initializer lists.
+    /** @brief Slices a layout given two initializer lists.
      *
      *  C++ doesn't allow templates to work with initializer lists, therefore
      *  we must provide a special overload for when the input containers are
@@ -84,7 +63,7 @@ public:
                      last_elem.end());
     }
 
-    /** @brief Slices a sparsity pattern given two containers.
+    /** @brief Slices a layout given two containers.
      *
      *  @tparam ContainerType0 The type of first_elem. Assumed to have
      *                         begin()/end() methods.
@@ -172,107 +151,23 @@ public:
     template<typename BeginItr, typename EndItr>
     slice_type slice(BeginItr first_elem_begin, BeginItr first_elem_end,
                      EndItr last_elem_begin, EndItr last_elem_end) const;
-
-    /** @brief Determines if *this and @p rhs describe the same sparsity
-     *         pattern.
-     *
-     *  At present the sparsity component only tracks the rank of the tensor so
-     *  two Patterns are value equal if they describe tensors with the same
-     *  rank.
-     *
-     *  @param[in] rhs The object to compare against.
-     *
-     *  @return True if *this is value equal to @p rhs and false otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool operator==(const Pattern& rhs) const noexcept {
-        return rank() == rhs.rank();
-    }
-
-    /** @brief Is *this different from @p rhs?
-     *
-     *  This class defines "different" as not value equal. See the description
-     *  of operator== for the definition of value equal.
-     *
-     *  @param[in] rhs The object to compare against
-     *
-     *  @return False if *this and @p rhs are value equal and true otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool operator!=(const Pattern& rhs) const noexcept {
-        return !((*this) == rhs);
-    }
-
-protected:
-    /// Implements clone by calling copy constructor
-    typename polymorphic_base::base_pointer clone_() const override {
-        return std::make_unique<Pattern>(*this);
-    }
-
-    /// Implements are_equal by calling implementation provided by the base
-    bool are_equal_(const_base_reference rhs) const noexcept override {
-        return are_equal_impl_<Pattern>(rhs);
-    }
-
-    /// Implements addition_assignment via permute_assignment
-    dsl_reference addition_assignment_(label_type this_labels,
-                                       const_labeled_reference lhs,
-                                       const_labeled_reference rhs) override;
-
-    /// Implements subtraction_assignment via permute_assignment
-    dsl_reference subtraction_assignment_(label_type this_labels,
-                                          const_labeled_reference lhs,
-                                          const_labeled_reference rhs) override;
-
-    /// Implements multiplication_assignment via permute_assignment
-    dsl_reference multiplication_assignment_(
-      label_type this_labels, const_labeled_reference lhs,
-      const_labeled_reference rhs) override;
-
-    /// Implements permute_assignment by permuting the extents in @p rhs.
-    dsl_reference permute_assignment_(label_type this_labels,
-                                      const_labeled_reference rhs) override;
-
-private:
-    /// The rank of the tensor associated with *this
-    rank_type m_rank_;
 };
 
+template<typename Derived>
 template<typename BeginItr, typename EndItr>
-inline auto Pattern::slice(BeginItr first_elem_begin, BeginItr first_elem_end,
-                           EndItr last_elem_begin, EndItr last_elem_end) const
+inline auto LayoutCommon<Derived>::slice(BeginItr first_elem_begin,
+                                         BeginItr first_elem_end,
+                                         EndItr last_elem_begin,
+                                         EndItr last_elem_end) const
   -> slice_type {
-    auto first_done = [&]() { return first_elem_begin == first_elem_end; };
-    auto last_done  = [&]() { return last_elem_begin == last_elem_end; };
-
-    if(first_done() && last_done()) {
-        if(rank() == 0) return slice_type{};
-        throw std::runtime_error("Offset ranks does not match tensor rank");
-    } else if(first_done() || last_done()) {
-        throw std::runtime_error("Offsets do not have the same rank");
-    }
-
-    rank_type counter = 0;
-    for(; !first_done(); ++first_elem_begin, ++last_elem_begin) {
-        if(last_done())
-            throw std::runtime_error("Offsets do not have the same rank.");
-
-        auto fi = *first_elem_begin;
-        auto li = *last_elem_begin;
-        if(li <= fi)
-            throw std::runtime_error("First element in slice must be strictly "
-                                     "less than last element.");
-
-        ++counter;
-    }
-    if(!last_done())
-        throw std::runtime_error("Offsets do not have the same rank");
-    if(counter != rank())
-        throw std::runtime_error("Offset ranks do not match tensor rank");
-
-    return slice_type(rank());
+    if(this->is_null()) return Derived{};
+    auto new_shape = shape().as_smooth().slice(first_elem_begin, first_elem_end,
+                                               last_elem_begin, last_elem_end);
+    auto new_symmetry = symmetry().slice(first_elem_begin, first_elem_end,
+                                         last_elem_begin, last_elem_end);
+    auto new_sparsity = sparsity().slice(first_elem_begin, first_elem_end,
+                                         last_elem_begin, last_elem_end);
+    return slice_type{new_shape, new_symmetry, new_sparsity};
 }
 
-} // namespace tensorwrapper::sparsity
+} // namespace tensorwrapper::layout

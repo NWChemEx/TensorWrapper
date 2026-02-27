@@ -38,13 +38,17 @@ TEST_CASE("LayoutBase") {
     Physical phys_copy_no_sym(matrix_shape, no_symm, no_sparsity);
     Physical phys_copy_has_sym(matrix_shape, symm, no_sparsity);
     Physical phys_copy_just_shape(matrix_shape);
+    Physical phys_defaulted;
 
     // Test via references to the base class
     LayoutBase& base_copy_no_sym     = phys_copy_no_sym;
     LayoutBase& base_copy_has_sym    = phys_copy_has_sym;
     LayoutBase& base_copy_just_shape = phys_copy_just_shape;
+    LayoutBase& base_defaulted       = phys_defaulted;
 
     SECTION("Ctors") {
+        SECTION("Default") { REQUIRE(base_defaulted.is_null()); }
+
         SECTION("Copy state") {
             REQUIRE(base_copy_no_sym.shape().are_equal(matrix_shape));
             REQUIRE(base_copy_no_sym.symmetry().are_equal(no_symm));
@@ -136,12 +140,25 @@ TEST_CASE("LayoutBase") {
         REQUIRE(base_copy_has_sym.sparsity() == no_sparsity);
     }
 
+    SECTION("is_null") {
+        REQUIRE(base_defaulted.is_null());
+        REQUIRE_FALSE(base_copy_no_sym.is_null());
+        REQUIRE_FALSE(base_copy_has_sym.is_null());
+        REQUIRE_FALSE(base_copy_just_shape.is_null());
+    }
+
     SECTION("rank") {
         REQUIRE(base_copy_no_sym.rank() == 2);
         REQUIRE(base_copy_has_sym.rank() == 2);
     }
 
     SECTION("operator==") {
+        // Empty vs empty
+        REQUIRE(base_defaulted == base_defaulted);
+
+        // Empty vs non-empty
+        REQUIRE_FALSE(base_defaulted == base_copy_no_sym);
+
         // Same
         REQUIRE(base_copy_no_sym ==
                 Physical(matrix_shape, no_symm, no_sparsity));
