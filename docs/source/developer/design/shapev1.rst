@@ -12,9 +12,14 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
+.. _shape_v1_design:
+
 ###############
 Shape V1 Design
 ###############
+
+.. |n| replace:: :math:`n`
+.. |r| replace:: :math:`r`
 
 In designing the class hierarchy we note the following:
 
@@ -32,6 +37,7 @@ In designing the class hierarchy we note the following:
 
    The architecture of TensorWrapper's Shape component.
 
+Hi there
 :numref:`fig_shape_design` shows the classes primarily responsible for
 implementing the shape component. Most end users will deal with the ``Shape``
 class.

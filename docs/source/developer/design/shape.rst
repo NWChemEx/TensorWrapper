@@ -159,7 +159,7 @@ TODO: Express better.
 
    This is a proposal. It has not been fully implemented yet.
 
-The last design had problems:
+The last design, :ref:`shape_v1_design` had problems:
 
 - Passing things around as ``ShapeBase`` involved holding pointers and needing
   to downcast them. Pointers are "unnatural".
@@ -171,15 +171,15 @@ The last design had problems:
 - Exposing the actual polymorphic objects meant users had to be careful to not
   slice the objects.
 
-What this design changes:
-
-- Moves to a "type-erased" architecture.
-- Uses CRTP to factor out common APIs.
-- Better separation of user-API and performance details.
-
 .. _fig_shape_designv2:
 
 .. figure:: assets/shape_design_v2.png
    :align: center
 
    The architecture of TensorWrapper's Shape component.
+
+What this design changes:
+
+- Moves to a "type-erased" architecture.
+- Uses CRTP to factor out common APIs.
+- Better separation of user-API and performance details.

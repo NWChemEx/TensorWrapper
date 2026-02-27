@@ -37,3 +37,5 @@ Design of TensorWrapper
 .. toctree::
    :maxdepth: 2
    :caption: Old Designs
+
+   shapev1
