@@ -17,7 +17,7 @@
 #pragma once
 #include <shape/smooth_common.hpp>
 #include <tensorwrapper/detail_/view_traits.hpp>
-#include <tensorwrapper/shape/shape_traits.hpp>
+#include <tensorwrapper/types/shape_traits.hpp>
 
 namespace tensorwrapper::shape {
 
@@ -40,7 +40,7 @@ private:
     using my_base = SmoothCommon<my_type>;
 
     /// Type defining the traits for *this
-    using traits_type = ShapeTraits<my_type>;
+    using traits_type = types::ClassTraits<my_type>;
 
     /// Bind SmoothType for
     template<typename T>

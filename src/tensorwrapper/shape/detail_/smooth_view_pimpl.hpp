@@ -52,7 +52,7 @@ public:
 
     /// Type of a SmoothViewPIMPL if it aliases a const Smooth
     using const_smooth_view_pimpl_pointer =
-      typename ShapeTraits<parent_type>::const_pimpl_pointer;
+      typename types::ClassTraits<parent_type>::const_pimpl_pointer;
 
     /// Derived class implements by overriding extent_
     rank_type extent(size_type i) const { return extent_(i); }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NWChemEx-Project
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,17 @@
  */
 
 #pragma once
-#include <tensorwrapper/types/buffer_traits.hpp>
-#include <tensorwrapper/types/class_traits.hpp>
-#include <tensorwrapper/types/floating_point.hpp>
-#include <tensorwrapper/types/il_traits.hpp>
-#include <tensorwrapper/types/shape_traits.hpp>
+#include <cstddef>
 
-/// Namespace for defining types used throughout the TensorWrapper library
-namespace tensorwrapper::types {}
+namespace tensorwrapper::types {
+
+/** @brief Types used throughout the entire TensorWrapper library. */
+struct CommonTypes {
+    /// Type used for indexing and offsets along modes
+    using size_type = std::size_t;
+
+    /// Type used for describing the rank of a tensor and selecting a mode.
+    using rank_type = unsigned short;
+};
+
+} // namespace tensorwrapper::types

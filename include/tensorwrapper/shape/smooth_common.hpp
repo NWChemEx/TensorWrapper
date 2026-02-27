@@ -16,7 +16,7 @@
 
 #pragma once
 #include <initializer_list>
-#include <shape/shape_traits.hpp>
+#include <tensorwrapper/types/shape_traits.hpp>
 #include <vector>
 
 namespace tensorwrapper::shape {
@@ -33,7 +33,7 @@ namespace tensorwrapper::shape {
 template<typename Derived>
 class SmoothCommon {
 private:
-    using traits_type = ShapeTraits<Derived>;
+    using traits_type = types::ClassTraits<Derived>;
 
 public:
     using rank_type     = typename traits_type::rank_type;

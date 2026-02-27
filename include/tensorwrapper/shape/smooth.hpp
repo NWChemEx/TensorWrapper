@@ -17,9 +17,9 @@
 #pragma once
 #include <functional>
 #include <numeric>
-#include <shape/shape_traits.hpp>
 #include <shape/smooth_common.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
+#include <tensorwrapper/types/shape_traits.hpp>
 #include <vector>
 
 namespace tensorwrapper::shape {
