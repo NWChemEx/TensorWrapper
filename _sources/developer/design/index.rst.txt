@@ -33,3 +33,9 @@ Design of TensorWrapper
    expression
    op_graph
    sparse_maps
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Old Designs
+
+   shapev1

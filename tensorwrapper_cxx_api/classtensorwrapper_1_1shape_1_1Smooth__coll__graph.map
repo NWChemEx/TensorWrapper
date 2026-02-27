@@ -1,9 +1,11 @@
 <map id="tensorwrapper::shape::Smooth" name="tensorwrapper::shape::Smooth">
-<area shape="rect" id="Node000001" title="Describes the shape of a &quot;traditional&quot; tensor." alt="" coords="516,37,679,77"/>
-<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1shape_1_1ShapeBase.html" title="Code factorization for the various types of shapes." alt="" coords="305,37,468,77"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="482,55,516,55,516,60,482,60"/>
+<area shape="rect" id="Node000001" title="Describes the shape of a &quot;traditional&quot; tensor." alt="" coords="572,69,735,109"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1shape_1_1ShapeBase.html" title="Code factorization for the various types of shapes." alt="" coords="333,37,496,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="510,67,572,76,571,81,510,73"/>
 <area shape="rect" id="Node000003" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,257,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,40,305,45,305,50,270,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,38,334,46,333,51,270,44"/>
 <area shape="rect" id="Node000004" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,229,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="243,73,305,65,305,70,244,78"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="243,74,333,64,333,69,244,79"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1shape_1_1SmoothCommon.html" title=" " alt="" coords="305,101,524,141"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="537,102,571,98,572,103,538,107"/>
 </map>
