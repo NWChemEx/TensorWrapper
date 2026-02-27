@@ -66,6 +66,11 @@ void test_slice_il(std::vector<ShapeType> shapes) {
 
     using smooth_type = tensorwrapper::shape::Smooth;
 
+    smooth_type defaulted_corr;
+    smooth_type scalar_corr{};
+    REQUIRE(shapes[0].slice({}, {}) == defaulted_corr);
+
+    REQUIRE(shapes[1].slice({}, {}) == scalar_corr);
     auto vslice = shapes[2].slice({0}, {2});
     REQUIRE(vslice == smooth_type{2});
 
@@ -83,6 +88,13 @@ void test_slice_container(std::vector<ShapeType> shapes) {
     using smooth_type = tensorwrapper::shape::Smooth;
     using size_type   = typename smooth_type::size_type;
     using size_vector = std::vector<size_type>;
+
+    size_vector empty;
+    smooth_type defaulted_corr;
+    smooth_type scalar_corr{};
+    REQUIRE(shapes[0].slice(empty, empty) == defaulted_corr);
+
+    REQUIRE(shapes[1].slice(empty, empty) == scalar_corr);
 
     size_vector i0{0}, i2{2};
     auto vslice = shapes[2].slice(i0, i2);
