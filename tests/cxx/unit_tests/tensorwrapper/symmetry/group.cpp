@@ -15,6 +15,7 @@
  */
 
 #include "../testing/testing.hpp"
+#include <stdexcept>
 #include <tensorwrapper/symmetry/group.hpp>
 #include <tensorwrapper/symmetry/permutation.hpp>
 
@@ -24,11 +25,16 @@ using namespace tensorwrapper::symmetry;
 TEST_CASE("Group") {
     using cycle_type = typename Permutation::cycle_type;
     using label_type = typename Group::label_type;
+    using size_type  = typename Group::size_type;
 
     Permutation p01(4, cycle_type{0, 1});
     Permutation p23(4, cycle_type{2, 3});
 
     Group empty;
+    Group scalar(0);
+    Group vector(1);
+    Group matrix(2);
+    Group tensor(3);
     Group g(p01, p23);
 
     SECTION("Ctors and assignment") {
@@ -74,13 +80,73 @@ TEST_CASE("Group") {
 
     SECTION("count") {
         REQUIRE_FALSE(empty.count(p01));
+        REQUIRE_FALSE(scalar.count(p01));
+        REQUIRE_FALSE(vector.count(p01));
+        REQUIRE_FALSE(matrix.count(p01));
+        REQUIRE_FALSE(tensor.count(p01));
         REQUIRE(g.count(p01));
         REQUIRE(g.count(p23));
     }
 
     SECTION("rank") {
         REQUIRE(empty.rank() == 0);
+        REQUIRE(scalar.rank() == 0);
+        REQUIRE(vector.rank() == 1);
+        REQUIRE(matrix.rank() == 2);
+        REQUIRE(tensor.rank() == 3);
         REQUIRE(g.rank() == 4);
+    }
+
+    SECTION("slice(initializer_lists)") {
+        using except_t = std::runtime_error;
+        REQUIRE(empty.slice({}, {}) == empty);
+        REQUIRE(scalar.slice({}, {}) == scalar);
+        REQUIRE(vector.slice({0}, {1}) == vector);
+        REQUIRE(matrix.slice({0, 0}, {1, 1}) == matrix);
+        REQUIRE(tensor.slice({0, 0, 0}, {1, 1, 1}) == tensor);
+
+        // NYI for actual symmetries
+        REQUIRE_THROWS_AS(g.slice({0, 0, 0, 0}, {1, 1, 1, 1}), except_t);
+
+        // Offset ranks don't match: one empty offset
+        REQUIRE_THROWS_AS(vector.slice({}, {1}), except_t);
+
+        // Offset ranks don't match: catch in loop
+        REQUIRE_THROWS_AS(matrix.slice({0, 0}, {1}), except_t);
+
+        // Offset ranks don't match: catch after loop
+        REQUIRE_THROWS_AS(vector.slice({0}, {1, 1}), except_t);
+
+        // Offset ranks don't match tensor's rank: empty offsets
+        REQUIRE_THROWS_AS(vector.slice({}, {}), except_t);
+
+        // Offset ranks don't match tensor's rank: non-empty
+        REQUIRE_THROWS_AS(vector.slice({0, 0}, {1, 1}), except_t);
+
+        // first_elem == last_elem
+        REQUIRE_THROWS_AS(vector.slice({1}, {1}), except_t);
+
+        // first_elem > last_elem
+        REQUIRE_THROWS_AS(vector.slice({1}, {0}), except_t);
+    }
+
+    SECTION("slice(containers)") {
+        // This overload dispatches to the ranges overload, so we just spot
+        // check.
+
+        std::vector<size_type> empty_idx;
+        REQUIRE(empty.slice(empty_idx, empty_idx) == empty);
+    }
+
+    SECTION("slice(ranges)") {
+        // For convenience we thoroughly test this function via the il overload.
+        // All overloads dispatch to this one, thus it's thoroughly tested
+        // there.
+
+        std::vector<size_type> empty_idx;
+        auto eb = empty_idx.begin();
+        auto ee = empty_idx.end();
+        REQUIRE(empty.slice(eb, ee, eb, ee) == empty);
     }
 
     SECTION("swap") {

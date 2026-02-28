@@ -16,11 +16,10 @@
 
 #pragma once
 #include <cstddef>
-#include <memory>
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
-#include <tensorwrapper/shape/shape_traits.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
+#include <tensorwrapper/types/shape_traits.hpp>
 
 namespace tensorwrapper::shape {
 
@@ -42,7 +41,7 @@ class ShapeBase : public tensorwrapper::detail_::PolymorphicBase<ShapeBase>,
                   public tensorwrapper::detail_::DSLBase<ShapeBase> {
 private:
     /// Type implementing the traits of this
-    using traits_type = ShapeTraits<ShapeBase>;
+    using traits_type = types::ClassTraits<ShapeBase>;
 
 protected:
     /// Typedef of the PolymorphicBase class of *this

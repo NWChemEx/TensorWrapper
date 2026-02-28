@@ -21,6 +21,7 @@
 #include <tensorwrapper/shape/shape_base.hpp>
 #include <tensorwrapper/sparsity/pattern.hpp>
 #include <tensorwrapper/symmetry/group.hpp>
+#include <tensorwrapper/types/layout_traits.hpp>
 
 namespace tensorwrapper::layout {
 
@@ -29,6 +30,10 @@ namespace tensorwrapper::layout {
  */
 class LayoutBase : public tensorwrapper::detail_::PolymorphicBase<LayoutBase>,
                    public tensorwrapper::detail_::DSLBase<LayoutBase> {
+private:
+    /// Type defining types for *this
+    using traits_type = types::ClassTraits<LayoutBase>;
+
 public:
     /// Type all layouts derive from
     using layout_base = LayoutBase;
@@ -70,7 +75,7 @@ public:
     using sparsity_pointer = std::unique_ptr<sparsity_type>;
 
     /// Type used for indexing and offsets
-    using size_type = std::size_t;
+    using size_type = typename traits_type::size_type;
 
     // -------------------------------------------------------------------------
     // -- Ctors and dtor
@@ -186,6 +191,9 @@ public:
         return *m_sparsity_;
     }
 
+    /** @brief True if *this is a NULL layout and false otherwise. */
+    bool is_null() const noexcept { return !static_cast<bool>(m_shape_); }
+
     /** @brief The rank of the tensor this layout describes.
      *
      *  This method is convenience function for calling the rank methods on one
@@ -214,6 +222,10 @@ public:
      *  @throw None No throw guarantee.
      */
     bool operator==(const layout_base& rhs) const noexcept {
+        if(is_null() && rhs.is_null())
+            return true;
+        else if(is_null() || rhs.is_null())
+            return false;
         if(m_shape_->are_different(*rhs.m_shape_)) return false;
         if(m_symmetry_->are_different(*rhs.m_symmetry_)) return false;
         if(m_sparsity_->are_different(*rhs.m_sparsity_)) return false;

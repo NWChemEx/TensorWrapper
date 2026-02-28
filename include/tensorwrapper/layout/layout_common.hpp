@@ -15,47 +15,30 @@
  */
 
 #pragma once
-#include <initializer_list>
-#include <tensorwrapper/types/shape_traits.hpp>
-#include <vector>
+#include <tensorwrapper/layout/layout_base.hpp>
+#include <tensorwrapper/types/layout_traits.hpp>
 
-namespace tensorwrapper::shape {
+namespace tensorwrapper::layout {
 
-/** @brief Code factorization for Smooth/SmoothView.
- *
- *  @tparam Derived The class *this is implementing. Expected to be unqualified
- *                  Smooth or SmoothView.
- *
- *  To use this class the derived class must define:
- *  - `size_type extent(rank_type i) const` so that it returns the extent of
- *    mode i.
- */
 template<typename Derived>
-class SmoothCommon {
+class LayoutCommon : public LayoutBase {
 private:
-    using traits_type = types::ClassTraits<Derived>;
+    /// Type of *this
+    using my_type = LayoutCommon<Derived>;
+
+    /// Type defining the types for *this
+    using traits_type = types::ClassTraits<my_type>;
 
 public:
-    using rank_type     = typename traits_type::rank_type;
-    using size_type     = typename traits_type::size_type;
-    using slice_type    = typename traits_type::slice_type;
-    using slice_il_type = std::initializer_list<size_type>;
+    ///@{
+    using slice_type     = typename traits_type::slice_type;
+    using offset_il_type = typename traits_type::offset_il_type;
+    ///@}
 
-    /** @brief Returns the extent of the @p i -th mode.
-     *
-     *  @param[in] i The mode the user wants the extent of. @p i must be in the
-     *               range [0, rank()).
-     *
-     *  @return The extent of the requested mode.
-     *
-     *  @throw std::out_of_range if @p i is not in the range [0, range()).
-     *                           Strong throw guarantee.
-     */
-    decltype(auto) extent(rank_type i) const {
-        return derived().extent_impl(i);
-    }
+    /// Pull in base class's ctors
+    using LayoutBase::LayoutBase;
 
-    /** @brief Slices a shape given two initializer lists.
+    /** @brief Slices a layout given two initializer lists.
      *
      *  C++ doesn't allow templates to work with initializer lists, therefore
      *  we must provide a special overload for when the input containers are
@@ -74,12 +57,13 @@ public:
      *
      *  @throws ??? If the range-based method throws. Same throw guarantee.
      */
-    slice_type slice(slice_il_type first_elem, slice_il_type last_elem) const {
+    slice_type slice(offset_il_type first_elem,
+                     offset_il_type last_elem) const {
         return slice(first_elem.begin(), first_elem.end(), last_elem.begin(),
                      last_elem.end());
     }
 
-    /** @brief Slices a shape given two containers.
+    /** @brief Slices a layout given two containers.
      *
      *  @tparam ContainerType0 The type of first_elem. Assumed to have
      *                         begin()/end() methods.
@@ -103,8 +87,7 @@ public:
      *  @throws ??? If the range-based method throws. Same throw guarantee.
      */
     template<typename ContainerType0, typename ContainerType1>
-    slice_type slice(ContainerType0&& first_elem,
-                     ContainerType1&& last_elem) const {
+    slice_type slice(ContainerType0&& first_elem, ContainerType1&& last_elem) {
         return slice(first_elem.begin(), first_elem.end(), last_elem.begin(),
                      last_elem.end());
     }
@@ -158,59 +141,33 @@ public:
      *            [first_elem_begin, first_elem_end) do not come before the
      *            offsets in [last_elem_begin, last_elem_end). Strong throw
      *            guarantee.
+     * @throw std::runtime_error if [first_elem_begin, first_elem_end) and
+     *                           [last_elem_begin, last_elem_end) contain the
+     *                           same number of offsets, but that number is NOT
+     *                           equal to the rank of *this. Strong throw
+     *                           guarantee.
      *
      */
     template<typename BeginItr, typename EndItr>
     slice_type slice(BeginItr first_elem_begin, BeginItr first_elem_end,
                      EndItr last_elem_begin, EndItr last_elem_end) const;
-
-private:
-    // Downcasts *this to mutable Derived object
-    decltype(auto) derived() { return static_cast<Derived&>(*this); }
-
-    // Downcasts *this to read-only Derived object
-    decltype(auto) derived() const {
-        return static_cast<const Derived&>(*this);
-    }
 };
-
-// -----------------------------------------------------------------------------
-// -- Out of line implementations
-// -----------------------------------------------------------------------------
 
 template<typename Derived>
 template<typename BeginItr, typename EndItr>
-auto SmoothCommon<Derived>::slice(BeginItr first_elem_begin,
-                                  BeginItr first_elem_end,
-                                  EndItr last_elem_begin,
-                                  EndItr last_elem_end) const -> slice_type {
-    std::vector<size_type> new_extents;
-
-    auto first_done = [&]() { return first_elem_begin == first_elem_end; };
-    auto last_done  = [&]() { return last_elem_begin == last_elem_end; };
-
-    if(first_done() && last_done()) {
-        // TODO: Assert rank 0
-        return slice_type{};
-    } else if(first_done() || last_done()) {
-        throw std::runtime_error("Ranges were NOT equal");
-    }
-
-    for(; !first_done(); ++first_elem_begin, ++last_elem_begin) {
-        if(last_done()) // Last ended before first
-            throw std::runtime_error("Ranges were NOT equal");
-
-        const auto ei = *last_elem_begin;
-        const auto bi = *first_elem_begin;
-        if(bi >= ei)
-            throw std::runtime_error("begin index must be < end index");
-
-        new_extents.push_back(ei - bi);
-    }
-    if(!last_done()) { throw std::runtime_error("Ranges were NOT equal"); }
-
-    // TODO: assert rank == new_extents.size()
-    return slice_type(new_extents.begin(), new_extents.end());
+inline auto LayoutCommon<Derived>::slice(BeginItr first_elem_begin,
+                                         BeginItr first_elem_end,
+                                         EndItr last_elem_begin,
+                                         EndItr last_elem_end) const
+  -> slice_type {
+    if(this->is_null()) return Derived{};
+    auto new_shape = shape().as_smooth().slice(first_elem_begin, first_elem_end,
+                                               last_elem_begin, last_elem_end);
+    auto new_symmetry = symmetry().slice(first_elem_begin, first_elem_end,
+                                         last_elem_begin, last_elem_end);
+    auto new_sparsity = sparsity().slice(first_elem_begin, first_elem_end,
+                                         last_elem_begin, last_elem_end);
+    return slice_type{new_shape, new_symmetry, new_sparsity};
 }
 
-} // namespace tensorwrapper::shape
+} // namespace tensorwrapper::layout

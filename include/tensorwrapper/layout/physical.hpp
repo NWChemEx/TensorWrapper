@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include <tensorwrapper/layout/layout_base.hpp>
 
+#include <tensorwrapper/layout/layout_common.hpp>
 namespace tensorwrapper::layout {
 
 /** @brief Specializes a LayoutBase for a layout describing how a tensor is
@@ -26,10 +26,10 @@ namespace tensorwrapper::layout {
  *  to hold details such as row major vs column major that matter for the
  *  physical layout, but not the logical layout.
  */
-class Physical : public LayoutBase {
+class Physical : public LayoutCommon<Physical> {
 private:
     /// Type *this derives from
-    using my_base_type = LayoutBase;
+    using my_base_type = LayoutCommon<Physical>;
 
 public:
     /// Pull in base class's types
