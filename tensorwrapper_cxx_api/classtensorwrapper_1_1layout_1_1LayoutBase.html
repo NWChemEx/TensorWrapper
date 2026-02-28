@@ -91,15 +91,19 @@ Inheritance diagram for tensorwrapper::layout::LayoutBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classtensorwrapper_1_1layout_1_1LayoutBase__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1layout_1_1LayoutBase_inherit__map" alt="Inheritance graph"/></div>
 <map name="atensorwrapper_1_1layout_1_1LayoutBase_inherit__map" id="atensorwrapper_1_1layout_1_1LayoutBase_inherit__map">
-<area shape="rect" title="Common base class for all layouts." alt="" coords="309,37,475,77"/>
-<area shape="rect" href="classtensorwrapper_1_1layout_1_1Logical.html" title="Specializes a LayoutBase for a layout describing how a user wants to view the tensor." alt="" coords="523,5,688,45"/>
-<area shape="poly" title=" " alt="" coords="488,40,522,35,523,40,489,46"/>
-<area shape="rect" href="classtensorwrapper_1_1layout_1_1Physical.html" title="Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime." alt="" coords="523,69,688,109"/>
-<area shape="poly" title=" " alt="" coords="489,69,523,74,522,80,488,74"/>
-<area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,5,261,45"/>
-<area shape="poly" title=" " alt="" coords="275,40,310,45,309,50,274,45"/>
-<area shape="rect" href="classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,69,233,109"/>
-<area shape="poly" title=" " alt="" coords="247,73,309,65,309,70,248,78"/>
+<area shape="rect" title="Common base class for all layouts." alt="" coords="309,69,475,109"/>
+<area shape="rect" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html" title=" " alt="" coords="523,5,740,45"/>
+<area shape="poly" title=" " alt="" coords="480,63,555,43,557,48,481,68"/>
+<area shape="rect" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html" title=" " alt="" coords="524,69,739,109"/>
+<area shape="poly" title=" " alt="" coords="488,87,524,87,524,92,488,92"/>
+<area shape="rect" href="classtensorwrapper_1_1layout_1_1Logical.html" title="Specializes a LayoutBase for a layout describing how a user wants to view the tensor." alt="" coords="549,133,714,173"/>
+<area shape="poly" title=" " alt="" coords="481,110,557,131,555,136,480,116"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,37,261,77"/>
+<area shape="poly" title=" " alt="" coords="275,72,310,77,309,82,274,77"/>
+<area shape="rect" href="classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,101,233,141"/>
+<area shape="poly" title=" " alt="" coords="247,105,309,97,309,102,248,110"/>
+<area shape="rect" href="classtensorwrapper_1_1layout_1_1Physical.html" title="Specializes a LayoutBase for a layout describing how a tensor is actually laid out at runtime." alt="" coords="788,5,953,45"/>
+<area shape="poly" title=" " alt="" coords="754,23,788,23,788,28,754,28"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -169,10 +173,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>const_sparsity_refer
 using&#160;</td><td class="memItemRight" valign="bottom"><b>sparsity_pointer</b> = std::unique_ptr&lt; <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a66079cbdc5772b88b309dcf91dce6383">sparsity_type</a> &gt;</td></tr>
 <tr class="memdesc:a61bcc1c9a4c082cfa835f38946f4a038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to an object of type sparsity_type. <br /></td></tr>
 <tr class="separator:a61bcc1c9a4c082cfa835f38946f4a038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e4e0d859918af487ae9e20cea6865c4" id="r_a9e4e0d859918af487ae9e20cea6865c4"><td class="memItemLeft" align="right" valign="top"><a id="a9e4e0d859918af487ae9e20cea6865c4" name="a9e4e0d859918af487ae9e20cea6865c4"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std::size_t</td></tr>
-<tr class="memdesc:a9e4e0d859918af487ae9e20cea6865c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indexing and offsets. <br /></td></tr>
-<tr class="separator:a9e4e0d859918af487ae9e20cea6865c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfe6f849ee21afec143003653c9e8c29" id="r_acfe6f849ee21afec143003653c9e8c29"><td class="memItemLeft" align="right" valign="top"><a id="acfe6f849ee21afec143003653c9e8c29" name="acfe6f849ee21afec143003653c9e8c29"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = typename traits_type::size_type</td></tr>
+<tr class="memdesc:acfe6f849ee21afec143003653c9e8c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used for indexing and offsets. <br /></td></tr>
+<tr class="separator:acfe6f849ee21afec143003653c9e8c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classtensorwrapper_1_1detail___1_1PolymorphicBase.html">tensorwrapper::detail_::PolymorphicBase&lt; LayoutBase &gt;</a></td></tr>
 <tr class="memitem:a7e74500695d4b9ef7768743fe6c1e29b inherit pub_types_classtensorwrapper_1_1detail___1_1PolymorphicBase" id="r_a7e74500695d4b9ef7768743fe6c1e29b"><td class="memItemLeft" align="right" valign="top">
 using&#160;</td><td class="memItemRight" valign="bottom"><b>base_type</b> = LayoutBase</td></tr>
@@ -275,7 +279,11 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~LayoutBase</b> ()
 <tr class="memitem:a50440d727b8a08cd238a1ea919946b39" id="r_a50440d727b8a08cd238a1ea919946b39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a5b77efc3d60217888dec97e6db11683e">const_sparsity_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a50440d727b8a08cd238a1ea919946b39">sparsity</a> () const</td></tr>
 <tr class="memdesc:a50440d727b8a08cd238a1ea919946b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides access to the sparsity of the layout.  <br /></td></tr>
 <tr class="separator:a50440d727b8a08cd238a1ea919946b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eec558bcd76dba9d45f8380f7242641" id="r_a6eec558bcd76dba9d45f8380f7242641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a9e4e0d859918af487ae9e20cea6865c4">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a6eec558bcd76dba9d45f8380f7242641">rank</a> () const noexcept</td></tr>
+<tr class="memitem:a802d302efecbc6102807f02168e6a075" id="r_a802d302efecbc6102807f02168e6a075"><td class="memItemLeft" align="right" valign="top"><a id="a802d302efecbc6102807f02168e6a075" name="a802d302efecbc6102807f02168e6a075"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_null</b> () const noexcept</td></tr>
+<tr class="memdesc:a802d302efecbc6102807f02168e6a075"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if *this is a NULL layout and false otherwise. <br /></td></tr>
+<tr class="separator:a802d302efecbc6102807f02168e6a075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eec558bcd76dba9d45f8380f7242641" id="r_a6eec558bcd76dba9d45f8380f7242641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#acfe6f849ee21afec143003653c9e8c29">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a6eec558bcd76dba9d45f8380f7242641">rank</a> () const noexcept</td></tr>
 <tr class="memdesc:a6eec558bcd76dba9d45f8380f7242641"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rank of the tensor this layout describes.  <br /></td></tr>
 <tr class="separator:a6eec558bcd76dba9d45f8380f7242641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf53563c36179c63d04bed88ee3dd106" id="r_aaf53563c36179c63d04bed88ee3dd106"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#aaf53563c36179c63d04bed88ee3dd106">operator==</a> (const <a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a3f30dbbd6f9155d24b1a899f9c78fe58">layout_base</a> &amp;rhs) const noexcept</td></tr>
@@ -766,7 +774,7 @@ virtual <a class="el" href="classtensorwrapper_1_1detail___1_1DSLBase.html#abdad
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#a9e4e0d859918af487ae9e20cea6865c4">size_type</a> tensorwrapper::layout::LayoutBase::rank </td>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1layout_1_1LayoutBase.html#acfe6f849ee21afec143003653c9e8c29">size_type</a> tensorwrapper::layout::LayoutBase::rank </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
