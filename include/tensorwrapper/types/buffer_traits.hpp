@@ -17,12 +17,26 @@
 #pragma once
 #include <memory>
 #include <tensorwrapper/buffer/buffer_fwd.hpp>
+#include <tensorwrapper/layout/physical.hpp>
 #include <tensorwrapper/types/class_traits.hpp>
 
 namespace tensorwrapper::types {
 
+template<typename Derived>
+struct ClassTraits<buffer::BufferBaseCommon<Derived>> {
+    /// Type of the class describing the physical layout of the buffer
+    using layout_type = layout::Physical;
+
+    /// Type of a read-only reference to a layout
+    using const_layout_reference = const layout_type&;
+
+    /// Type used to represent the tensor's rank
+    using rank_type = typename layout_type::size_type;
+};
+
 template<>
-struct ClassTraits<buffer::BufferBase> {
+struct ClassTraits<buffer::BufferBase>
+  : public ClassTraits<buffer::BufferBaseCommon<buffer::BufferBase>> {
     /// Type all buffers inherit from
     using buffer_base_type = buffer::BufferBase;
 
