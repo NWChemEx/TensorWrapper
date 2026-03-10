@@ -21,6 +21,7 @@
 .idea/
 .vscode/
 .cache/
+.cursor/
 
 # These are common Python virtual enviornment directory names
 venv/

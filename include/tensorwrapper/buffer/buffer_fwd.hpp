@@ -18,7 +18,13 @@
 
 namespace tensorwrapper::buffer {
 
+template<typename Derived>
+class BufferBaseCommon;
+
 class BufferBase;
+
+template<typename BufferBaseType>
+class BufferViewBase;
 
 class Contiguous;
 

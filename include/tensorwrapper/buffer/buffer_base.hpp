@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/buffer/buffer_base_common.hpp>
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/dsl/labeled.hpp>
@@ -25,13 +26,18 @@ namespace tensorwrapper::buffer {
 
 /** @brief Common base class for all buffer objects.
  *
- *  All classes which wrap existing tensor libraries derive from this class.
+ *  All classes which own their state and wrap existing tensor libraries derive
+ *  from this class.
  */
-class BufferBase : public tensorwrapper::detail_::PolymorphicBase<BufferBase>,
+class BufferBase : public BufferBaseCommon<BufferBase>,
+                   public tensorwrapper::detail_::PolymorphicBase<BufferBase>,
                    public tensorwrapper::detail_::DSLBase<BufferBase> {
 private:
     /// Type of *this
     using my_type = BufferBase;
+
+    /// Type of the common base class
+    using common_base = BufferBaseCommon<my_type>;
 
     /// Traits of my_type
     using my_traits = types::ClassTraits<my_type>;
@@ -58,95 +64,8 @@ public:
     using const_buffer_base_pointer =
       typename my_traits::const_buffer_base_pointer;
 
-    /// Type of the class describing the physical layout of the buffer
-    using layout_type = layout::Physical;
-
-    /// Type of a read-only reference to a layout
-    using const_layout_reference = const layout_type&;
-
     /// Type of a pointer to the layout
     using layout_pointer = std::unique_ptr<layout_type>;
-
-    /// Type used to represent the tensor's rank
-    using rank_type = typename layout_type::size_type;
-
-    // -------------------------------------------------------------------------
-    // -- Accessors
-    // -------------------------------------------------------------------------
-
-    /** @brief Does *this have a layout?
-     *
-     *  Default constructed or moved from BufferBase objects do not have
-     *  layouts. This method is used to determine if *this has a layout or not.
-     *
-     *  @return True if *this has a layout and false otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool has_layout() const noexcept { return static_cast<bool>(m_layout_); }
-
-    /** @brief Retrieves the layout of *this.
-     *
-     *  This method can be used to retrieve the layout associated with *this,
-     *  assuming there is one. See has_layout for determining if *this has a
-     *  layout or not.
-     *
-     *  @return A read-only reference to the layout.
-     *
-     *  @throw std::runtime_error if *this does not have a layout. Strong throw
-     *                            guarantee.
-     */
-    const_layout_reference layout() const {
-        assert_layout_();
-        return *m_layout_;
-    }
-
-    rank_type rank() const noexcept {
-        return has_layout() ? layout().rank() : 0;
-    }
-
-    // -------------------------------------------------------------------------
-    // -- Utility methods
-    // -------------------------------------------------------------------------
-
-    /** @brief Is *this value equal to @p rhs?
-     *
-     *  Two BufferBase objects are value equal if the layouts they contain are
-     *  polymorphically value equal or if both BufferBase objects do not contain
-     *  a layout.
-     *
-     *  @param[in] rhs The object to compare to.
-     *
-     *  @return True if *this is value equal to @p rhs and false otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-    bool operator==(const BufferBase& rhs) const noexcept {
-        if(has_layout() != rhs.has_layout()) return false;
-        if(has_layout() && m_layout_->are_different(*rhs.m_layout_))
-            return false;
-        return true;
-    }
-
-    /** @brief Is *this different from @p rhs?
-     *
-     *  This method defines "different from" as being "not value equal." See
-     *  the description of operator== for the definition of value equal.
-     *
-     *  @param[in] rhs The object to compare to.
-     *
-     *  @return False if *this is value equal to @p rhs and true otherwise.
-     *
-     *  @throw None No throw guarantee.
-     */
-
-    bool operator!=(const BufferBase& rhs) const noexcept {
-        return !(*this == rhs);
-    }
-
-    bool approximately_equal(const BufferBase& rhs, double tol) const {
-        return approximately_equal_(rhs, tol);
-    }
 
 protected:
     // -------------------------------------------------------------------------
@@ -215,6 +134,14 @@ protected:
         return *this;
     }
 
+    // -------------------------------------------------------------------------
+    // -- BufferBaseCommon hooks
+    // -------------------------------------------------------------------------
+    friend common_base;
+    bool has_layout_() const noexcept { return static_cast<bool>(m_layout_); }
+
+    const_layout_reference layout_() const { return *m_layout_; }
+
     dsl_reference addition_assignment_(label_type this_labels,
                                        const_labeled_reference lhs,
                                        const_labeled_reference rhs) override;
@@ -233,18 +160,15 @@ protected:
     virtual bool approximately_equal_(const BufferBase& rhs,
                                       double tol) const = 0;
 
+    template<typename BufferBaseType>
+    bool approximately_equal_(const BufferViewBase<BufferBaseType>& rhs,
+                              double tol) const;
+
 private:
     template<typename FxnType>
     dsl_reference binary_op_common_(FxnType&& fxn, label_type this_labels,
                                     const_labeled_reference lhs,
                                     const_labeled_reference rhs);
-
-    /// Throws std::runtime_error when there is no layout
-    void assert_layout_() const {
-        if(has_layout()) return;
-        throw std::runtime_error(
-          "Buffer has no layout. Was it default initialized?");
-    }
 
     /// The layout of *this
     layout_pointer m_layout_;
