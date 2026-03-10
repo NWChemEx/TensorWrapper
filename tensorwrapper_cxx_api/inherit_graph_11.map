@@ -1,3 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title="Code factorization for objects that are composable via the DSL." alt="" coords="5,5,200,60"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1buffer_1_1detail___1_1UnaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="5,133,232,173"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1buffer_1_1detail___1_1BinaryOperationVisitor.html" title="Dispatches to the appropriate backend based on the FP type." alt="" coords="280,69,511,109"/>
+<area shape="poly" id="edge11_Node000000_Node000001" title=" " alt="" coords="219,128,308,107,309,112,220,133"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1buffer_1_1detail___1_1PermuteVisitor.html" title=" " alt="" coords="306,133,485,173"/>
+<area shape="poly" id="edge15_Node000000_Node000005" title=" " alt="" coords="246,151,306,151,306,156,246,156"/>
+<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1buffer_1_1detail___1_1ScalarMultiplicationVisitor.html" title=" " alt="" coords="290,198,501,253"/>
+<area shape="poly" id="edge16_Node000000_Node000006" title=" " alt="" coords="210,174,291,195,289,201,209,179"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1detail___1_1AdditionVisitor.html" title="Visitor that calls addition_assignment." alt="" coords="576,5,755,45"/>
+<area shape="poly" id="edge12_Node000001_Node000002" title=" " alt="" coords="493,63,580,43,581,48,494,69"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1detail___1_1MultiplicationVisitor.html" title="Visitor that calls hadamard_assignment or contraction_assignment." alt="" coords="559,69,772,109"/>
+<area shape="poly" id="edge13_Node000001_Node000003" title=" " alt="" coords="524,87,558,87,558,92,524,92"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1detail___1_1SubtractionVisitor.html" title="Visitor that calls subtraction_assignment." alt="" coords="566,133,765,173"/>
+<area shape="poly" id="edge14_Node000001_Node000004" title=" " alt="" coords="494,110,581,131,580,136,493,115"/>
 </map>
