@@ -1,0 +1,11 @@
+<map id="tensorwrapper::types::ReplicatedTraitsCommon" name="tensorwrapper::types::ReplicatedTraitsCommon">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,199,97"/>
+<area shape="rect" id="Node000002" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01buffer_1_1Replicated_01_4.html" title=" " alt="" coords="247,8,407,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,54,246,47,247,53,213,59"/>
+<area shape="rect" id="Node000004" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01const_01buffer_1_1Replicated_01_4.html" title=" " alt="" coords="247,88,407,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="213,93,247,99,246,104,212,98"/>
+<area shape="rect" id="Node000003" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01tensorwrapper_1_1buffer_1_1Contiguous_01_4.html" title=" " alt="" coords="455,5,664,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="421,32,454,31,454,37,421,37"/>
+<area shape="rect" id="Node000005" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01const_01tensorwrapper_1_1buffer_1_1Contiguous_01_4.html" title=" " alt="" coords="476,85,643,154"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="421,114,476,115,476,121,421,120"/>
+</map>

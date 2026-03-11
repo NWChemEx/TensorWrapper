@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1TensorFactory.html" title="Object which helps create tensor objects." alt="" coords="5,5,167,45"/>
+<area shape="rect" id="Node000000" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="33,5,229,45"/>
+<area shape="rect" id="Node000001" href="$classtensorwrapper_1_1shape_1_1ShapeBase.html" title="Code factorization for the various types of shapes." alt="" coords="333,37,496,77"/>
+<area shape="poly" id="edge38_Node000000_Node000001" title=" " alt="" coords="244,35,333,46,333,51,243,41"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1shape_1_1Smooth.html" title="Describes the shape of a &quot;traditional&quot; tensor." alt="" coords="572,69,735,109"/>
+<area shape="poly" id="edge39_Node000001_Node000002" title=" " alt="" coords="510,67,572,76,571,81,510,73"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="5,69,257,109"/>
+<area shape="poly" id="edge40_Node000004_Node000001" title=" " alt="" coords="270,71,333,64,334,69,271,76"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1shape_1_1SmoothCommon.html" title=" " alt="" coords="305,101,524,141"/>
+<area shape="poly" id="edge41_Node000003_Node000002" title=" " alt="" coords="537,102,571,98,572,103,538,107"/>
 </map>

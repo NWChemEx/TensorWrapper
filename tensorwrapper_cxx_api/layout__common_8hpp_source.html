@@ -99,68 +99,69 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;tensorwrapper/layout/layout_base.hpp&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/types/layout_traits.hpp&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1layout.html">tensorwrapper::layout</a> {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">LayoutCommon</a> : <span class="keyword">public</span> <a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutBase.html">LayoutBase</a> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">my_type</a> = <a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">LayoutCommon&lt;Derived&gt;</a>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">using </span><a class="code hl_struct" href="structtensorwrapper_1_1types_1_1ClassTraits.html">traits_type</a> = <a class="code hl_struct" href="structtensorwrapper_1_1types_1_1ClassTraits.html">types::ClassTraits&lt;my_type&gt;</a>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">using </span>slice_type     = <span class="keyword">typename</span> traits_type::slice_type;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">using </span>offset_il_type = <span class="keyword">typename</span> traits_type::offset_il_type;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">using </span>LayoutBase::LayoutBase;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">   60</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(offset_il_type first_elem,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                     offset_il_type last_elem)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(first_elem.begin(), first_elem.end(), last_elem.begin(),</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                     last_elem.end());</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/shape/smooth.hpp&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;tensorwrapper/types/layout_traits.hpp&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1layout.html">tensorwrapper::layout</a> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">LayoutCommon</a> : <span class="keyword">public</span> <a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutBase.html">LayoutBase</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">my_type</a> = <a class="code hl_class" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">LayoutCommon&lt;Derived&gt;</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">using </span><a class="code hl_struct" href="structtensorwrapper_1_1types_1_1ClassTraits.html">traits_type</a> = <a class="code hl_struct" href="structtensorwrapper_1_1types_1_1ClassTraits.html">types::ClassTraits&lt;my_type&gt;</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">using </span>slice_type     = <span class="keyword">typename</span> traits_type::slice_type;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">using </span>offset_il_type = <span class="keyword">typename</span> traits_type::offset_il_type;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">using </span>LayoutBase::LayoutBase;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">   61</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(offset_il_type first_elem,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                     offset_il_type last_elem)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(first_elem.begin(), first_elem.end(), last_elem.begin(),</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                     last_elem.end());</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ContainerType0, <span class="keyword">typename</span> ContainerType1&gt;</div>
-<div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">   90</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">slice</a>(ContainerType0&amp;&amp; first_elem, ContainerType1&amp;&amp; last_elem) {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(first_elem.begin(), first_elem.end(), last_elem.begin(),</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                     last_elem.end());</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ContainerType0, <span class="keyword">typename</span> ContainerType1&gt;</div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">   91</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">slice</a>(ContainerType0&amp;&amp; first_elem, ContainerType1&amp;&amp; last_elem) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">slice</a>(first_elem.begin(), first_elem.end(), last_elem.begin(),</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                     last_elem.end());</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
 </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> BeginItr, <span class="keyword">typename</span> EndItr&gt;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#ac00293aaf84dbf847521f166ff3f4a72">  152</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#ac00293aaf84dbf847521f166ff3f4a72">slice</a>(BeginItr first_elem_begin, BeginItr first_elem_end,</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                     EndItr last_elem_begin, EndItr last_elem_end) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>};</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> BeginItr, <span class="keyword">typename</span> EndItr&gt;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#ac00293aaf84dbf847521f166ff3f4a72">  153</a></span>    slice_type <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#ac00293aaf84dbf847521f166ff3f4a72">slice</a>(BeginItr first_elem_begin, BeginItr first_elem_end,</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                     EndItr last_elem_begin, EndItr last_elem_end) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>};</div>
 </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BeginItr, <span class="keyword">typename</span> EndItr&gt;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">LayoutCommon&lt;Derived&gt;::slice</a>(BeginItr first_elem_begin,</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                                         BeginItr first_elem_end,</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                                         EndItr last_elem_begin,</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                                         EndItr last_elem_end) <span class="keyword">const</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  -&gt; slice_type {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordflow">if</span>(this-&gt;is_null()) <span class="keywordflow">return</span> Derived{};</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keyword">auto</span> new_shape = shape().as_smooth().slice(first_elem_begin, first_elem_end,</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                                               last_elem_begin, last_elem_end);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keyword">auto</span> new_symmetry = symmetry().slice(first_elem_begin, first_elem_end,</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                         last_elem_begin, last_elem_end);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">auto</span> new_sparsity = sparsity().slice(first_elem_begin, first_elem_end,</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                         last_elem_begin, last_elem_end);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">return</span> slice_type{new_shape, new_symmetry, new_sparsity};</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>}</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>} <span class="comment">// namespace tensorwrapper::layout</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Derived&gt;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BeginItr, <span class="keyword">typename</span> EndItr&gt;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code hl_function" href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">LayoutCommon&lt;Derived&gt;::slice</a>(BeginItr first_elem_begin,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                                         BeginItr first_elem_end,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                                         EndItr last_elem_begin,</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                                         EndItr last_elem_end) <span class="keyword">const</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  -&gt; slice_type {</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">if</span>(this-&gt;is_null()) <span class="keywordflow">return</span> Derived{};</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keyword">auto</span> new_shape = shape().as_smooth().slice(first_elem_begin, first_elem_end,</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                                               last_elem_begin, last_elem_end);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">auto</span> new_symmetry = symmetry().slice(first_elem_begin, first_elem_end,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                                         last_elem_begin, last_elem_end);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">auto</span> new_sparsity = sparsity().slice(first_elem_begin, first_elem_end,</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                                         last_elem_begin, last_elem_end);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">return</span> slice_type{new_shape, new_symmetry, new_sparsity};</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>} <span class="comment">// namespace tensorwrapper::layout</span></div>
 <div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutBase_html"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutBase.html">tensorwrapper::layout::LayoutBase</a></div><div class="ttdoc">Common base class for all layouts.</div><div class="ttdef"><b>Definition</b> layout_base.hpp:32</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">tensorwrapper::layout::LayoutCommon</a></div><div class="ttdef"><b>Definition</b> layout_common.hpp:24</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html_a3189ba51a889dc689909cfce5d589ade"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">tensorwrapper::layout::LayoutCommon::slice</a></div><div class="ttdeci">slice_type slice(ContainerType0 &amp;&amp;first_elem, ContainerType1 &amp;&amp;last_elem)</div><div class="ttdoc">Slices a layout given two containers.</div><div class="ttdef"><b>Definition</b> layout_common.hpp:90</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html_a8435292d3e60b7af0d36237de5eeaa5b"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">tensorwrapper::layout::LayoutCommon::slice</a></div><div class="ttdeci">slice_type slice(offset_il_type first_elem, offset_il_type last_elem) const</div><div class="ttdoc">Slices a layout given two initializer lists.</div><div class="ttdef"><b>Definition</b> layout_common.hpp:60</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html">tensorwrapper::layout::LayoutCommon</a></div><div class="ttdef"><b>Definition</b> layout_common.hpp:25</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html_a3189ba51a889dc689909cfce5d589ade"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a3189ba51a889dc689909cfce5d589ade">tensorwrapper::layout::LayoutCommon::slice</a></div><div class="ttdeci">slice_type slice(ContainerType0 &amp;&amp;first_elem, ContainerType1 &amp;&amp;last_elem)</div><div class="ttdoc">Slices a layout given two containers.</div><div class="ttdef"><b>Definition</b> layout_common.hpp:91</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html_a8435292d3e60b7af0d36237de5eeaa5b"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#a8435292d3e60b7af0d36237de5eeaa5b">tensorwrapper::layout::LayoutCommon::slice</a></div><div class="ttdeci">slice_type slice(offset_il_type first_elem, offset_il_type last_elem) const</div><div class="ttdoc">Slices a layout given two initializer lists.</div><div class="ttdef"><b>Definition</b> layout_common.hpp:61</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1layout_1_1LayoutCommon_html_ac00293aaf84dbf847521f166ff3f4a72"><div class="ttname"><a href="classtensorwrapper_1_1layout_1_1LayoutCommon.html#ac00293aaf84dbf847521f166ff3f4a72">tensorwrapper::layout::LayoutCommon::slice</a></div><div class="ttdeci">slice_type slice(BeginItr first_elem_begin, BeginItr first_elem_end, EndItr last_elem_begin, EndItr last_elem_end) const</div><div class="ttdoc">Implements slicing given two ranges.</div></div>
 <div class="ttc" id="anamespacetensorwrapper_1_1layout_html"><div class="ttname"><a href="namespacetensorwrapper_1_1layout.html">tensorwrapper::layout</a></div><div class="ttdoc">Namespace for classes used to spe.</div><div class="ttdef"><b>Definition</b> layout.hpp:22</div></div>
 <div class="ttc" id="astructtensorwrapper_1_1types_1_1ClassTraits_html"><div class="ttname"><a href="structtensorwrapper_1_1types_1_1ClassTraits.html">tensorwrapper::types::ClassTraits</a></div><div class="ttdoc">Defines the member types for the ClassType class.</div><div class="ttdef"><b>Definition</b> class_traits.hpp:32</div></div>

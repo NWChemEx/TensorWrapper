@@ -1,0 +1,7 @@
+<map id="tensorwrapper::buffer::LocalView&lt; LocalType &gt;" name="tensorwrapper::buffer::LocalView&lt; LocalType &gt;">
+<area shape="rect" id="Node000001" title="A view of a Local buffer." alt="" coords="567,20,757,60"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title=" " alt="" coords="295,5,519,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="532,37,567,37,567,43,532,43"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html" title="CRTP base factoring the common layout/equality API of BufferBase and BufferViewBase." alt="" coords="5,20,247,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="260,37,294,37,294,43,260,43"/>
+</map>

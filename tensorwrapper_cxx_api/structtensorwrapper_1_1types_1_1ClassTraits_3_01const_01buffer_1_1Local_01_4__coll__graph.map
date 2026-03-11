@@ -1,0 +1,9 @@
+<map id="tensorwrapper::types::ClassTraits&lt; const buffer::Local &gt;" name="tensorwrapper::types::ClassTraits&lt; const buffer::Local &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="23,284,183,339"/>
+<area shape="rect" id="Node000002" href="$structtensorwrapper_1_1types_1_1ClassTraits_3_01const_01buffer_1_1BufferBase_01_4.html" title=" " alt="" coords="23,181,183,236"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,250,105,284,100,284,100,250"/>
+<area shape="rect" id="Node000003" href="$structtensorwrapper_1_1types_1_1BufferBaseTraitsCommon.html" title=" " alt="" coords="5,93,200,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,147,105,181,100,181,100,147"/>
+<area shape="rect" id="Node000004" href="$structtensorwrapper_1_1types_1_1CommonTypes.html" title="Types used throughout the entire TensorWrapper library." alt="" coords="23,5,183,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="105,59,105,93,100,93,100,59"/>
+</map>

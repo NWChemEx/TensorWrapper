@@ -1,0 +1,11 @@
+<map id="tensorwrapper::buffer::ReplicatedView&lt; ReplicatedType &gt;" name="tensorwrapper::buffer::ReplicatedView&lt; ReplicatedType &gt;">
+<area shape="rect" id="Node000001" title="A view of a Replicated buffer." alt="" coords="857,49,1072,104"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1ReplicatedCommon.html" title=" " alt="" coords="567,5,809,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="823,51,857,57,857,62,822,57"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1LocalView.html" title=" " alt="" coords="582,85,794,154"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="807,98,857,91,858,96,808,104"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title="View of a BufferBase that aliases existing state instead of owning it." alt="" coords="300,92,519,147"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="533,117,582,117,582,122,533,122"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html" title=" " alt="" coords="5,92,252,147"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="266,117,300,117,300,122,266,122"/>
+</map>

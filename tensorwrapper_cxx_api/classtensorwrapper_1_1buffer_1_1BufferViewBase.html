@@ -92,9 +92,13 @@ Inheritance diagram for tensorwrapper::buffer::BufferViewBase&lt; BufferBaseType
 <div class="dyncontent">
 <div class="center"><img src="classtensorwrapper_1_1buffer_1_1BufferViewBase__inherit__graph.png" border="0" usemap="#atensorwrapper_1_1buffer_1_1BufferViewBase_3_01BufferBaseType_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="atensorwrapper_1_1buffer_1_1BufferViewBase_3_01BufferBaseType_01_4_inherit__map" id="atensorwrapper_1_1buffer_1_1BufferViewBase_3_01BufferBaseType_01_4_inherit__map">
-<area shape="rect" title="View of a BufferBase that aliases existing state instead of owning it." alt="" coords="19,108,238,163"/>
-<area shape="rect" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html" title=" " alt="" coords="5,5,252,60"/>
-<area shape="poly" title=" " alt="" coords="131,74,131,108,126,108,126,74"/>
+<area shape="rect" title="View of a BufferBase that aliases existing state instead of owning it." alt="" coords="300,13,519,67"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1LocalView.html" title=" " alt="" coords="567,5,779,75"/>
+<area shape="poly" title=" " alt="" coords="533,37,566,37,566,43,533,43"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html" title=" " alt="" coords="5,13,252,67"/>
+<area shape="poly" title=" " alt="" coords="266,37,300,37,300,43,266,43"/>
+<area shape="rect" href="classtensorwrapper_1_1buffer_1_1ReplicatedView.html" title="A view of a Replicated buffer." alt="" coords="827,13,1041,67"/>
+<area shape="poly" title=" " alt="" coords="793,37,826,37,826,43,793,43"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -111,22 +115,29 @@ Collaboration diagram for tensorwrapper::buffer::BufferViewBase&lt; BufferBaseTy
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af751c2eed89d6494b72fe9e04632f994" id="r_af751c2eed89d6494b72fe9e04632f994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#af751c2eed89d6494b72fe9e04632f994">BufferViewBase</a> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
-<tr class="memdesc:af751c2eed89d6494b72fe9e04632f994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view that aliases no buffer.  <br /></td></tr>
+<tr class="memdesc:af751c2eed89d6494b72fe9e04632f994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view with no layout.  <br /></td></tr>
 <tr class="separator:af751c2eed89d6494b72fe9e04632f994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c0fa92cbc75b6166e4efb4b73f1d62" id="r_a48c0fa92cbc75b6166e4efb4b73f1d62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a48c0fa92cbc75b6166e4efb4b73f1d62">BufferViewBase</a> (aliased_type &amp;buffer) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
-<tr class="memdesc:a48c0fa92cbc75b6166e4efb4b73f1d62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view that aliases <code>buffer</code>.  <br /></td></tr>
-<tr class="separator:a48c0fa92cbc75b6166e4efb4b73f1d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a306ba303b1637f0aed0dcf329ee8e493" id="r_a306ba303b1637f0aed0dcf329ee8e493"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a306ba303b1637f0aed0dcf329ee8e493">BufferViewBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">other</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a>=<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">default</a></td></tr>
-<tr class="memdesc:a306ba303b1637f0aed0dcf329ee8e493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view that aliases the same buffer as <code>other</code>.  <br /></td></tr>
-<tr class="separator:a306ba303b1637f0aed0dcf329ee8e493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6f5f514a0919d4ef011a74d69b317f" id="r_afa6f5f514a0919d4ef011a74d69b317f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#afa6f5f514a0919d4ef011a74d69b317f">BufferViewBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a> &amp;buffer) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
+<tr class="memdesc:afa6f5f514a0919d4ef011a74d69b317f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view that aliases the layout of <code>buffer</code>.  <br /></td></tr>
+<tr class="separator:afa6f5f514a0919d4ef011a74d69b317f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e6f064d537e5e2a7350621879bbfea9" id="r_a3e6f064d537e5e2a7350621879bbfea9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &gt; <br />
+requires (!std::is_const_v&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a>&gt; &amp;&amp; std::is_const_v&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a>&gt;)</td></tr>
+<tr class="memitem:a3e6f064d537e5e2a7350621879bbfea9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a3e6f064d537e5e2a7350621879bbfea9">BufferViewBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">other</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
+<tr class="separator:a3e6f064d537e5e2a7350621879bbfea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73088051e18c83ce4bc3b74b15f514cc" id="r_a73088051e18c83ce4bc3b74b15f514cc"><td class="memItemLeft" align="right" valign="top"><a id="a73088051e18c83ce4bc3b74b15f514cc" name="a73088051e18c83ce4bc3b74b15f514cc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BufferViewBase</b> (layout_pointer <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a507e9ae2cb326c997005a95f2086b7d3">layout</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
+<tr class="separator:a73088051e18c83ce4bc3b74b15f514cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a543c06c0fc3a7bb2d2b18c33ed0d2300" id="r_a543c06c0fc3a7bb2d2b18c33ed0d2300"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a543c06c0fc3a7bb2d2b18c33ed0d2300">BufferViewBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">other</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
+<tr class="memdesc:a543c06c0fc3a7bb2d2b18c33ed0d2300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view that aliases the same layout as <code>other</code>.  <br /></td></tr>
+<tr class="separator:a543c06c0fc3a7bb2d2b18c33ed0d2300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67d86757d7dd01f1351bacfc394d6f73" id="r_a67d86757d7dd01f1351bacfc394d6f73"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a67d86757d7dd01f1351bacfc394d6f73">BufferViewBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;&amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">other</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a>=<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">default</a></td></tr>
-<tr class="memdesc:a67d86757d7dd01f1351bacfc394d6f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view by taking the alias from <code>other</code>.  <br /></td></tr>
+<tr class="memdesc:a67d86757d7dd01f1351bacfc394d6f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a view by taking the PIMPL from <code>other</code>.  <br /></td></tr>
 <tr class="separator:a67d86757d7dd01f1351bacfc394d6f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e85a9deed48fc6ec6c6de38a39cc61" id="r_a29e85a9deed48fc6ec6c6de38a39cc61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a29e85a9deed48fc6ec6c6de38a39cc61">operator=</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a>=<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">default</a></td></tr>
-<tr class="memdesc:a29e85a9deed48fc6ec6c6de38a39cc61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes *this alias the same buffer as <code>rhs</code>.  <br /></td></tr>
-<tr class="separator:a29e85a9deed48fc6ec6c6de38a39cc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9442a161677694c7ba3767e5127604b3" id="r_a9442a161677694c7ba3767e5127604b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a9442a161677694c7ba3767e5127604b3">operator=</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
+<tr class="memdesc:a9442a161677694c7ba3767e5127604b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes *this alias the same layout as <code>rhs</code>.  <br /></td></tr>
+<tr class="separator:a9442a161677694c7ba3767e5127604b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dea59b41384400bc0a833d09ab6a641" id="r_a1dea59b41384400bc0a833d09ab6a641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a1dea59b41384400bc0a833d09ab6a641">operator=</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;&amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a>=<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">default</a></td></tr>
-<tr class="memdesc:a1dea59b41384400bc0a833d09ab6a641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the alias in *this with that of <code>rhs</code>.  <br /></td></tr>
+<tr class="memdesc:a1dea59b41384400bc0a833d09ab6a641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the PIMPL in *this with that of <code>rhs</code>.  <br /></td></tr>
 <tr class="separator:a1dea59b41384400bc0a833d09ab6a641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a683a10ed768c50cd0596bd1e48e9228b" id="r_a683a10ed768c50cd0596bd1e48e9228b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#a683a10ed768c50cd0596bd1e48e9228b">operator!=</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
 <tr class="memdesc:a683a10ed768c50cd0596bd1e48e9228b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is *this different from <code>rhs</code>?  <br /></td></tr>
@@ -135,6 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb3c90e895104cfa13cc2c8be4087a6d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_aeb3c90e895104cfa13cc2c8be4087a6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#aeb3c90e895104cfa13cc2c8be4087a6d">has_layout</a> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
 <tr class="memdesc:aeb3c90e895104cfa13cc2c8be4087a6d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does *this have a layout?  <br /></td></tr>
 <tr class="separator:aeb3c90e895104cfa13cc2c8be4087a6d inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a507e9ae2cb326c997005a95f2086b7d3 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_a507e9ae2cb326c997005a95f2086b7d3"><td class="memItemLeft" align="right" valign="top">layout_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a507e9ae2cb326c997005a95f2086b7d3">layout</a> ()</td></tr>
+<tr class="memdesc:a507e9ae2cb326c997005a95f2086b7d3 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the layout of *this.  <br /></td></tr>
+<tr class="separator:a507e9ae2cb326c997005a95f2086b7d3 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc5c7af58dbe2a9f854a68d5548306f1 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_acc5c7af58dbe2a9f854a68d5548306f1"><td class="memItemLeft" align="right" valign="top">const_layout_reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#acc5c7af58dbe2a9f854a68d5548306f1">layout</a> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
 <tr class="memdesc:acc5c7af58dbe2a9f854a68d5548306f1 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the layout of *this.  <br /></td></tr>
 <tr class="separator:acc5c7af58dbe2a9f854a68d5548306f1 inherit pub_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,16 +170,19 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad9dcf3d7abfb228b81b18f9e05c4750c" id="r_ad9dcf3d7abfb228b81b18f9e05c4750c"><td class="memItemLeft" align="right" valign="top"><a id="ad9dcf3d7abfb228b81b18f9e05c4750c" name="ad9dcf3d7abfb228b81b18f9e05c4750c"></a>
 <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>has_layout_</b> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">noexcept</a></td></tr>
 <tr class="separator:ad9dcf3d7abfb228b81b18f9e05c4750c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae72da7581edadb7f574ab567e840994" id="r_aae72da7581edadb7f574ab567e840994"><td class="memItemLeft" align="right" valign="top"><a id="aae72da7581edadb7f574ab567e840994" name="aae72da7581edadb7f574ab567e840994"></a>
+layout_reference&#160;</td><td class="memItemRight" valign="bottom"><b>layout_</b> ()</td></tr>
+<tr class="separator:aae72da7581edadb7f574ab567e840994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef2ff85c009329ee15a5c229be7cad7" id="r_abef2ff85c009329ee15a5c229be7cad7"><td class="memItemLeft" align="right" valign="top"><a id="abef2ff85c009329ee15a5c229be7cad7" name="abef2ff85c009329ee15a5c229be7cad7"></a>
 const_layout_reference&#160;</td><td class="memItemRight" valign="bottom"><b>layout_</b> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
 <tr class="separator:abef2ff85c009329ee15a5c229be7cad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c0878bebf59916c2bc8e1b7e72fb4d3" id="r_a9c0878bebf59916c2bc8e1b7e72fb4d3"><td class="memTemplParams" colspan="2"><a id="a9c0878bebf59916c2bc8e1b7e72fb4d3" name="a9c0878bebf59916c2bc8e1b7e72fb4d3"></a>
-template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBase</a> &gt; </td></tr>
-<tr class="memitem:a9c0878bebf59916c2bc8e1b7e72fb4d3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>approximately_equal_</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBase</a> &gt; &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">double</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">tol</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
-<tr class="separator:a9c0878bebf59916c2bc8e1b7e72fb4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b5491fa379aa9a695cc2655a0b114c" id="r_af8b5491fa379aa9a695cc2655a0b114c"><td class="memItemLeft" align="right" valign="top"><a id="af8b5491fa379aa9a695cc2655a0b114c" name="af8b5491fa379aa9a695cc2655a0b114c"></a>
-<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>approximately_equal_</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">double</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">tol</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
-<tr class="separator:af8b5491fa379aa9a695cc2655a0b114c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0414ba983c427849c1e4fcd54a22ec6c" id="r_a0414ba983c427849c1e4fcd54a22ec6c"><td class="memTemplParams" colspan="2"><a id="a0414ba983c427849c1e4fcd54a22ec6c" name="a0414ba983c427849c1e4fcd54a22ec6c"></a>
+template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &gt; </td></tr>
+<tr class="memitem:a0414ba983c427849c1e4fcd54a22ec6c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>approximately_equal_</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &gt; &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">double</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
+<tr class="separator:a0414ba983c427849c1e4fcd54a22ec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ca85d3dce368cced9bf8505b833f88f" id="r_a0ca85d3dce368cced9bf8505b833f88f"><td class="memItemLeft" align="right" valign="top"><a id="a0ca85d3dce368cced9bf8505b833f88f" name="a0ca85d3dce368cced9bf8505b833f88f"></a>
+<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>approximately_equal_</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> &amp;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">rhs</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">double</a>) <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
+<tr class="separator:a0ca85d3dce368cced9bf8505b833f88f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html">tensorwrapper::buffer::BufferBaseCommon&lt; BufferViewBase&lt; BufferBaseType &gt; &gt;</a></td></tr>
 <tr class="memitem:a2871aeb912b3025da1d0ad1233ab14c5 inherit pro_methods_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_a2871aeb912b3025da1d0ad1233ab14c5"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>assert_layout_</b> () <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">const</a></td></tr>
@@ -189,6 +206,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af2c0c4e0b50864061aae655d84c7b478 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_af2c0c4e0b50864061aae655d84c7b478"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>layout_type</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> traits_type::layout_type</td></tr>
 <tr class="separator:af2c0c4e0b50864061aae655d84c7b478 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1436c47c2dcb8d8d11a7fe16bfab8b3 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_aa1436c47c2dcb8d8d11a7fe16bfab8b3"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>layout_reference</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> traits_type::layout_reference</td></tr>
+<tr class="separator:aa1436c47c2dcb8d8d11a7fe16bfab8b3 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41060863cb4aea85c82fc7bf77c55f12 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_a41060863cb4aea85c82fc7bf77c55f12"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>layout_pointer</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> traits_type::layout_pointer</td></tr>
+<tr class="separator:a41060863cb4aea85c82fc7bf77c55f12 inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9354304d1dbdd2d68aad2b52e3cf8f6f inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon" id="r_a9354304d1dbdd2d68aad2b52e3cf8f6f"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>const_layout_reference</b> = <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> traits_type::const_layout_reference</td></tr>
 <tr class="separator:a9354304d1dbdd2d68aad2b52e3cf8f6f inherit pub_types_classtensorwrapper_1_1buffer_1_1BufferBaseCommon"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,9 +222,9 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#af751c2eed89d6494b72fe9e04632f994">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html#af751c2eed89d6494b72fe9e04632f994">BufferBaseType</a>&gt;<br />
 class tensorwrapper::buffer::BufferViewBase&lt; BufferBaseType &gt;</div><p>View of a <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> that aliases existing state instead of owning it. </p>
-<p><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title="View of a BufferBase that aliases existing state instead of owning it.">BufferViewBase</a> has the same layout/equality API as <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#aeb3c90e895104cfa13cc2c8be4087a6d" title="Does *this have a layout?">has_layout()</a>, layout(), <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a8ff4a5fb1beec46c9898ea2507a85375" title="Returns the rank of the layout.">rank()</a>, operator==, operator!=, approximately_equal) but holds a non-owning pointer to a <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> and delegates all operations to it.</p>
-<p><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title="View of a BufferBase that aliases existing state instead of owning it.">BufferViewBase</a> is templated on the type of the aliased buffer, which must be either <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> or const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a>. This controls whether the view is a mutable or const view of the underlying <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a>.</p>
-<p>The aliased buffer must outlive this view. Default-constructed or moved-from views have no aliased buffer (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#aeb3c90e895104cfa13cc2c8be4087a6d" title="Does *this have a layout?">has_layout()</a> is false, layout() throws).</p>
+<p><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title="View of a BufferBase that aliases existing state instead of owning it.">BufferViewBase</a> has the same layout/equality API as <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#aeb3c90e895104cfa13cc2c8be4087a6d" title="Does *this have a layout?">has_layout()</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a507e9ae2cb326c997005a95f2086b7d3" title="Retrieves the layout of *this.">layout()</a>, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a8ff4a5fb1beec46c9898ea2507a85375" title="Returns the rank of the layout.">rank()</a>, operator==, operator!=, approximately_equal) but uses a PIMPL. The view delegates layout operations to the PIMPL.</p>
+<p><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html" title="View of a BufferBase that aliases existing state instead of owning it.">BufferViewBase</a> is templated on the type of the aliased buffer (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> or const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a>) for API compatibility; construction from a buffer copies a non-owning pointer to that buffer's layout into the PIMPL.</p>
+<p>The referenced layout (and its owner) must outlive this view. Default- constructed or moved-from views have no layout (<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#aeb3c90e895104cfa13cc2c8be4087a6d" title="Does *this have a layout?">has_layout()</a> is false, <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html#a507e9ae2cb326c997005a95f2086b7d3" title="Retrieves the layout of *this.">layout()</a> throws).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">BufferBaseType</td><td>Either <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a> or const <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects.">BufferBase</a>. </td></tr>
@@ -210,7 +233,7 @@ class tensorwrapper::buffer::BufferViewBase&lt; BufferBaseType &gt;</div><p>View
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af751c2eed89d6494b72fe9e04632f994" name="af751c2eed89d6494b72fe9e04632f994"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af751c2eed89d6494b72fe9e04632f994">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af751c2eed89d6494b72fe9e04632f994">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +257,7 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 </table>
 </div><div class="memdoc">
 
-<p>Creates a view that aliases no buffer. </p>
+<p>Creates a view with no layout. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">None</td><td>No throw guarantee. </td></tr>
@@ -244,8 +267,8 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 
 </div>
 </div>
-<a id="a48c0fa92cbc75b6166e4efb4b73f1d62" name="a48c0fa92cbc75b6166e4efb4b73f1d62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48c0fa92cbc75b6166e4efb4b73f1d62">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[2/4]</span></h2>
+<a id="afa6f5f514a0919d4ef011a74d69b317f" name="afa6f5f514a0919d4ef011a74d69b317f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa6f5f514a0919d4ef011a74d69b317f">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +281,7 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
         <tr>
           <td class="memname"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">tensorwrapper::buffer::BufferViewBase</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a> &gt;::BufferViewBase </td>
           <td>(</td>
-          <td class="paramtype">aliased_type &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a> &amp;&#160;</td>
           <td class="paramname"><em>buffer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -270,10 +293,10 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 </table>
 </div><div class="memdoc">
 
-<p>Creates a view that aliases <code>buffer</code>. </p>
+<p>Creates a view that aliases the layout of <code>buffer</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>The buffer to alias. Must outlive *this.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>The buffer whose layout to alias. The layout must outlive *this.</td></tr>
   </table>
   </dd>
 </dl>
@@ -286,8 +309,40 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 
 </div>
 </div>
-<a id="a306ba303b1637f0aed0dcf329ee8e493" name="a306ba303b1637f0aed0dcf329ee8e493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a306ba303b1637f0aed0dcf329ee8e493">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[3/4]</span></h2>
+<a id="a3e6f064d537e5e2a7350621879bbfea9" name="a3e6f064d537e5e2a7350621879bbfea9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e6f064d537e5e2a7350621879bbfea9">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a> &gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">typename</a> <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &gt; <br />
+requires (!std::is_const_v&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a>&gt; &amp;&amp; std::is_const_v&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a>&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">tensorwrapper::buffer::BufferViewBase</a>&lt; <a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferBaseType</a> &gt;::BufferViewBase </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">OtherBufferBaseType</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Creates a read-only view from a mutable buffer. </p>
+
+</div>
+</div>
+<a id="a543c06c0fc3a7bb2d2b18c33ed0d2300" name="a543c06c0fc3a7bb2d2b18c33ed0d2300"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a543c06c0fc3a7bb2d2b18c33ed0d2300">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,12 +362,12 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a view that aliases the same buffer as <code>other</code>. </p>
+<p>Creates a view that aliases the same layout as <code>other</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The view to copy.</td></tr>
@@ -329,7 +384,7 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 </div>
 </div>
 <a id="a67d86757d7dd01f1351bacfc394d6f73" name="a67d86757d7dd01f1351bacfc394d6f73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67d86757d7dd01f1351bacfc394d6f73">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67d86757d7dd01f1351bacfc394d6f73">&#9670;&#160;</a></span>BufferViewBase() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,8 +409,8 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 </table>
 </div><div class="memdoc">
 
-<p>Creates a view by taking the alias from <code>other</code>. </p>
-<p>After construction *this aliases the buffer <code>other</code> did, and <code>other</code> aliases no buffer.</p>
+<p>Creates a view by taking the PIMPL from <code>other</code>. </p>
+<p>After construction *this aliases the layout <code>other</code> did, and <code>other</code> has no layout.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">other</td><td>The view to move from.</td></tr>
@@ -441,7 +496,7 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 </table>
 </div><div class="memdoc">
 
-<p>Replaces the alias in *this with that of <code>rhs</code>. </p>
+<p>Replaces the PIMPL in *this with that of <code>rhs</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">rhs</td><td>The view to move from.</td></tr>
@@ -458,8 +513,8 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
 
 </div>
 </div>
-<a id="a29e85a9deed48fc6ec6c6de38a39cc61" name="a29e85a9deed48fc6ec6c6de38a39cc61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29e85a9deed48fc6ec6c6de38a39cc61">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="a9442a161677694c7ba3767e5127604b3" name="a9442a161677694c7ba3767e5127604b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9442a161677694c7ba3767e5127604b3">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,12 +534,12 @@ template&lt;<a class="el" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.h
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Makes *this alias the same buffer as <code>rhs</code>. </p>
+<p>Makes *this alias the same layout as <code>rhs</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>The view to copy.</td></tr>

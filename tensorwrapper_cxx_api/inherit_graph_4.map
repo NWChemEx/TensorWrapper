@@ -2,14 +2,16 @@
 <area shape="rect" id="Node000000" href="$classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html" title=" " alt="" coords="5,5,267,45"/>
 <area shape="rect" id="Node000001" href="$classtensorwrapper_1_1buffer_1_1BufferBase.html" title="Common base class for all buffer objects." alt="" coords="315,69,477,109"/>
 <area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="232,46,267,55,315,67,314,72,266,60,231,51"/>
-<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="525,69,688,109"/>
-<area shape="poly" id="edge5_Node000001_Node000002" title=" " alt="" coords="491,87,525,87,525,92,491,92"/>
-<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="736,69,899,109"/>
-<area shape="poly" id="edge6_Node000002_Node000003" title=" " alt="" coords="702,87,736,87,736,92,702,92"/>
-<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1Contiguous.html" title="A multidimensional (MD) contiguous buffer." alt="" coords="947,69,1109,109"/>
-<area shape="poly" id="edge7_Node000003_Node000004" title=" " alt="" coords="913,87,946,87,946,92,913,92"/>
-<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="39,69,233,109"/>
-<area shape="poly" id="edge8_Node000005_Node000001" title=" " alt="" coords="247,87,315,87,315,92,247,92"/>
-<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="11,133,261,173"/>
-<area shape="poly" id="edge9_Node000006_Node000001" title=" " alt="" coords="231,127,266,119,314,107,315,112,267,124,232,133"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1buffer_1_1Local.html" title="Establishes that the state in the buffer is obtainable without communication." alt="" coords="573,69,735,109"/>
+<area shape="poly" id="edge5_Node000001_Node000002" title=" " alt="" coords="491,87,572,87,572,92,491,92"/>
+<area shape="rect" id="Node000003" href="$classtensorwrapper_1_1buffer_1_1Replicated.html" title="Denotes that a buffer is the same on all processes." alt="" coords="831,101,993,141"/>
+<area shape="poly" id="edge6_Node000002_Node000003" title=" " alt="" coords="749,98,831,109,830,114,748,104"/>
+<area shape="rect" id="Node000004" href="$classtensorwrapper_1_1buffer_1_1Contiguous.html" title="A multidimensional (MD) contiguous buffer." alt="" coords="1041,101,1204,141"/>
+<area shape="poly" id="edge7_Node000003_Node000004" title=" " alt="" coords="1007,119,1041,119,1041,124,1007,124"/>
+<area shape="rect" id="Node000006" href="$classtensorwrapper_1_1detail___1_1DSLBase.html" title=" " alt="" coords="39,69,233,109"/>
+<area shape="poly" id="edge8_Node000006_Node000001" title=" " alt="" coords="247,87,315,87,315,92,247,92"/>
+<area shape="rect" id="Node000007" href="$classtensorwrapper_1_1detail___1_1PolymorphicBase.html" title=" " alt="" coords="11,133,261,173"/>
+<area shape="poly" id="edge9_Node000007_Node000001" title=" " alt="" coords="231,127,266,119,314,107,315,112,267,124,232,133"/>
+<area shape="rect" id="Node000005" href="$classtensorwrapper_1_1buffer_1_1ReplicatedCommon.html" title=" " alt="" coords="525,133,783,173"/>
+<area shape="poly" id="edge10_Node000005_Node000003" title=" " alt="" coords="796,133,830,129,831,134,797,138"/>
 </map>

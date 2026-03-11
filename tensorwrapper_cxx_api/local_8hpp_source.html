@@ -99,25 +99,43 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;tensorwrapper/buffer/buffer_base.hpp&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a> {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1Local.html">   29</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1Local.html">Local</a> : <span class="keyword">public</span> <a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">my_base_type</a> = <a class="code hl_function" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aba4a07e6b73c9ce7826be6690e600b18">BufferBase</a>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">// Pull in base&#39;s ctors</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">using </span>my_base_type::my_base_type;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/buffer/buffer_view_base.hpp&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;tensorwrapper/types/preserve_const.hpp&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1Local.html">   30</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1Local.html">Local</a> : <span class="keyword">public</span> <a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">BufferBase</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferBase.html">my_base_type</a> = <a class="code hl_function" href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aba4a07e6b73c9ce7826be6690e600b18">BufferBase</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">// Pull in base&#39;s ctors</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">using </span>my_base_type::my_base_type;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> LocalType&gt;</div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="};">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classtensorwrapper_1_1buffer_1_1LocalView.html">   47</a></span><span class="keyword">class </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1LocalView.html">LocalView</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  : <span class="keyword">public</span> <a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase</a>&lt;types::preserve_const_t&lt;LocalType, BufferBase&gt;&gt; {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">using </span>buffer_base_type = <a class="code hl_typedef" href="namespacetensorwrapper_1_1types.html#a8211648e8195f06384896fbad5ce7e51">types::preserve_const_t&lt;LocalType, BufferBase&gt;</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">my_base_type</a>     = <a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">BufferViewBase&lt;buffer_base_type&gt;</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">using </span><a class="code hl_class" href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html">my_base_type::my_base_type</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace tensorwrapper::buffer</span></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBaseCommon_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBaseCommon.html">tensorwrapper::buffer::BufferBaseCommon&lt; BufferViewBase&lt; BufferBaseType &gt; &gt;</a></div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html">tensorwrapper::buffer::BufferBase</a></div><div class="ttdoc">Common base class for all buffer objects.</div><div class="ttdef"><b>Definition</b> buffer_base.hpp:34</div></div>
 <div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferBase_html_aba4a07e6b73c9ce7826be6690e600b18"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferBase.html#aba4a07e6b73c9ce7826be6690e600b18">tensorwrapper::buffer::BufferBase::BufferBase</a></div><div class="ttdeci">BufferBase()</div><div class="ttdoc">Creates a buffer with no layout.</div><div class="ttdef"><b>Definition</b> buffer_base.hpp:83</div></div>
-<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Local_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Local.html">tensorwrapper::buffer::Local</a></div><div class="ttdoc">Establishes that the state in the buffer is obtainable without communication.</div><div class="ttdef"><b>Definition</b> local.hpp:29</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1BufferViewBase_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1BufferViewBase.html">tensorwrapper::buffer::BufferViewBase</a></div><div class="ttdoc">View of a BufferBase that aliases existing state instead of owning it.</div><div class="ttdef"><b>Definition</b> buffer_view_base.hpp:44</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1LocalView_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1LocalView.html">tensorwrapper::buffer::LocalView</a></div><div class="ttdoc">A view of a Local buffer.</div><div class="ttdef"><b>Definition</b> local.hpp:48</div></div>
+<div class="ttc" id="aclasstensorwrapper_1_1buffer_1_1Local_html"><div class="ttname"><a href="classtensorwrapper_1_1buffer_1_1Local.html">tensorwrapper::buffer::Local</a></div><div class="ttdoc">Establishes that the state in the buffer is obtainable without communication.</div><div class="ttdef"><b>Definition</b> local.hpp:30</div></div>
 <div class="ttc" id="anamespacetensorwrapper_1_1buffer_html"><div class="ttname"><a href="namespacetensorwrapper_1_1buffer.html">tensorwrapper::buffer</a></div><div class="ttdoc">Contains classes need to wrap instances of the various backends.</div><div class="ttdef"><b>Definition</b> buffer.hpp:24</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1types_html_a8211648e8195f06384896fbad5ce7e51"><div class="ttname"><a href="namespacetensorwrapper_1_1types.html#a8211648e8195f06384896fbad5ce7e51">tensorwrapper::types::preserve_const_t</a></div><div class="ttdeci">std::conditional_t&lt; std::is_const_v&lt; T &gt;, const U, U &gt; preserve_const_t</div><div class="ttdef"><b>Definition</b> preserve_const.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
