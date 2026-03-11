@@ -16,37 +16,24 @@
 
 #pragma once
 #include <tensorwrapper/forward_declarations.hpp>
+#include <tensorwrapper/types/buffer_traits.hpp>
 #include <tensorwrapper/types/class_traits.hpp>
 #include <tensorwrapper/types/shape_traits.hpp>
-#include <wtf/wtf.hpp>
 
 namespace tensorwrapper::types {
 
 struct ContiguousTraitsCommon {
-    using value_type        = wtf::fp::Float;
-    using const_reference   = wtf::fp::FloatView<const value_type>;
-    using buffer_type       = wtf::buffer::FloatBuffer;
-    using const_buffer_view = wtf::buffer::BufferView<const value_type>;
-    using shape_type        = shape::Smooth;
-    using const_shape_view  = shape::SmoothView<const shape_type>;
-    using rank_type         = typename ClassTraits<shape_type>::rank_type;
-    using size_type         = typename ClassTraits<shape_type>::size_type;
+    using shape_type       = shape::Smooth;
+    using const_shape_view = shape::SmoothView<const shape_type>;
 };
 
 template<>
 struct ClassTraits<tensorwrapper::buffer::Contiguous>
-  : public ContiguousTraitsCommon {
-    using reference = wtf::fp::FloatView<value_type>;
-
-    using buffer_view       = wtf::buffer::BufferView<value_type>;
-    using const_buffer_view = wtf::buffer::BufferView<const value_type>;
-};
+  : public ClassTraits<buffer::Replicated>, public ContiguousTraitsCommon {};
 
 template<>
 struct ClassTraits<const tensorwrapper::buffer::Contiguous>
-  : public ContiguousTraitsCommon {
-    using reference   = wtf::fp::FloatView<const value_type>;
-    using buffer_view = wtf::buffer::BufferView<const value_type>;
-};
+  : public ClassTraits<const buffer::Replicated>,
+    public ContiguousTraitsCommon {};
 
 } // namespace tensorwrapper::types

@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/layout/layout_base.hpp>
+#include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/types/layout_traits.hpp>
 
 namespace tensorwrapper::layout {

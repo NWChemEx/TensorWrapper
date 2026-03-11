@@ -142,6 +142,8 @@ protected:
 
     const_layout_reference layout_() const { return *m_layout_; }
 
+    layout_reference layout_() { return *m_layout_; }
+
     dsl_reference addition_assignment_(label_type this_labels,
                                        const_labeled_reference lhs,
                                        const_labeled_reference rhs) override;

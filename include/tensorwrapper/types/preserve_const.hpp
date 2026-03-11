@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NWChemEx-Project
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,15 @@
  */
 
 #pragma once
+#include <type_traits>
+namespace tensorwrapper::types {
 
-namespace tensorwrapper::buffer {
+/**@ brief Uses the const-ness of @p T to ensure @p U has the same const-ness.
+ *
+ *  @tparam T The type to preserve the const-ness of.
+ *  @tparam U The type to preserve the const-ness of @p T on.
+ */
+template<typename T, typename U = T>
+using preserve_const_t = std::conditional_t<std::is_const_v<T>, const U, U>;
 
-template<typename Derived>
-class BufferBaseCommon;
-
-class BufferBase;
-
-template<typename BufferBaseType>
-class BufferViewBase;
-
-class Local;
-
-template<typename LocalType>
-class LocalView;
-
-template<typename Derived>
-class ReplicatedCommon;
-
-class Replicated;
-
-template<typename ReplicatedType>
-class ReplicatedView;
-
-class Contiguous;
-
-} // namespace tensorwrapper::buffer
+} // namespace tensorwrapper::types

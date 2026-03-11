@@ -42,9 +42,9 @@ private:
 public:
     /// Add types from traits_type to public API
     ///@{
-    using value_type        = typename traits_type::value_type;
-    using reference         = typename traits_type::reference;
-    using const_reference   = typename traits_type::const_reference;
+    using value_type        = typename traits_type::element_type;
+    using reference         = typename traits_type::element_reference;
+    using const_reference   = typename traits_type::const_element_reference;
     using buffer_type       = typename traits_type::buffer_type;
     using buffer_view       = typename traits_type::buffer_view;
     using const_buffer_view = typename traits_type::const_buffer_view;
@@ -52,10 +52,8 @@ public:
     using shape_type        = typename traits_type::shape_type;
     using const_shape_view  = typename traits_type::const_shape_view;
     using size_type         = typename traits_type::size_type;
+    using index_vector      = typename traits_type::index_vector;
     ///@}
-
-    /// Type of an offset vector
-    using index_vector = std::vector<size_type>;
 
     /// Type of the object used to annotate modes
     using typename my_base_type::label_type;
@@ -198,39 +196,6 @@ public:
      */
     size_type size() const noexcept;
 
-    /** @brief Returns the element with the offsets specified by @p index.
-     *
-     *  This method will retrieve a const reference to the element at the
-     *  offsets specified by @p index. The length of @p index must be equal
-     *  to the rank of *this and each entry in @p index must be less than the
-     *  extent of the corresponding mode of *this.
-     *
-     *  This method can only be used to retrieve elements from *this. To modify
-     *  elements use set_elem().
-     *
-     *  @param[in] index The offsets into each mode of *this for the desired
-     *                   element.
-     *
-     *  @return A const reference to the element at the specified offsets.
-     */
-    const_reference get_elem(index_vector index) const;
-
-    /** @brief Sets the specified element to @p new_value.
-     *
-     *  This method will set the element at the offsets specified by @p index.
-     *  The length of @p index must be equal to the rank of *this and each
-     *  entry in @p index must be less than the extent of the corresponding
-     *  mode of *this.
-     *
-     *  @param[in] index The offsets into each mode of *this for the desired
-     *                   element.
-     *  @param[in] new_value The new value for the specified element.
-     *
-     *  @throw std::out_of_range if any entry in @p index is invalid. Strong
-     *                           throw guarantee.
-     */
-    void set_elem(index_vector index, value_type new_value);
-
     /** @brief Returns a view of the data.
      *
      */
@@ -295,6 +260,39 @@ protected:
 
     /// Uses Eigen's printing capabilities to add to stream
     std::ostream& add_to_stream_(std::ostream& os) const override;
+
+    /** @brief Returns the element with the offsets specified by @p index.
+     *
+     *  This method will retrieve a const reference to the element at the
+     *  offsets specified by @p index. The length of @p index must be equal
+     *  to the rank of *this and each entry in @p index must be less than the
+     *  extent of the corresponding mode of *this.
+     *
+     *  This method can only be used to retrieve elements from *this. To modify
+     *  elements use set_elem().
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element.
+     *
+     *  @return A const reference to the element at the specified offsets.
+     */
+    const_element_reference get_elem_(index_vector index) const override;
+
+    /** @brief Sets the specified element to @p new_value.
+     *
+     *  This method will set the element at the offsets specified by @p index.
+     *  The length of @p index must be equal to the rank of *this and each
+     *  entry in @p index must be less than the extent of the corresponding
+     *  mode of *this.
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element.
+     *  @param[in] new_value The new value for the specified element.
+     *
+     *  @throw std::out_of_range if any entry in @p index is invalid. Strong
+     *                           throw guarantee.
+     */
+    void set_elem_(index_vector index, element_type new_value) override;
 
 private:
     /// Type for storing the hash of *this

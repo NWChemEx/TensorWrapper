@@ -16,7 +16,8 @@
 
 #pragma once
 #include <tensorwrapper/buffer/buffer_base.hpp>
-
+#include <tensorwrapper/buffer/buffer_view_base.hpp>
+#include <tensorwrapper/types/preserve_const.hpp>
 namespace tensorwrapper::buffer {
 
 /** @brief Establishes that the state in the buffer is obtainable without
@@ -33,6 +34,24 @@ private:
 
 public:
     // Pull in base's ctors
+    using my_base_type::my_base_type;
+};
+
+/** @brief A view of a Local buffer.
+ *
+ *  This class is a view of a Local buffer. It is used to create a view of a
+ *  Local buffer. It is not a strong type and does not impart any additional
+ *  state to the BufferViewBase class.
+ */
+template<typename LocalType>
+class LocalView
+  : public BufferViewBase<types::preserve_const_t<LocalType, BufferBase>> {
+private:
+    using buffer_base_type = types::preserve_const_t<LocalType, BufferBase>;
+    using my_base_type     = BufferViewBase<buffer_base_type>;
+
+public:
+    /// Pull in base's ctors
     using my_base_type::my_base_type;
 };
 
