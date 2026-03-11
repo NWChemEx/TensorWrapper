@@ -1,0 +1,5 @@
+<map id="tensorwrapper::buffer::ReplicatedCommon&lt; Derived &gt;" name="tensorwrapper::buffer::ReplicatedCommon&lt; Derived &gt;">
+<area shape="rect" id="Node000001" title="Implements and defines common functionality for replicated buffers." alt="" coords="5,93,244,133"/>
+<area shape="rect" id="Node000002" href="$classtensorwrapper_1_1interfaces_1_1Sliceable.html" title="Defines the interface for objects that can be sliced." alt="" coords="30,5,219,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,59,127,93,122,93,122,59"/>
+</map>
