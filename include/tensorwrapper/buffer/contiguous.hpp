@@ -18,7 +18,7 @@
 #include <tensorwrapper/buffer/replicated.hpp>
 #include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
-#include <tensorwrapper/types/contiguous_traits.hpp>
+#include <tensorwrapper/types/buffer_traits.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::buffer {
@@ -293,6 +293,11 @@ protected:
      *                           throw guarantee.
      */
     void set_elem_(index_vector index, element_type new_value) override;
+
+    slice_type slice_(index_vector first_elem, index_vector last_elem) override;
+
+    const_slice_type slice_(index_vector first_elem,
+                            index_vector last_elem) const override;
 
 private:
     /// Type for storing the hash of *this

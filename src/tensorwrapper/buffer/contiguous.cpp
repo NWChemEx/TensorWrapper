@@ -262,6 +262,16 @@ void Contiguous::set_elem_(index_vector index, element_type new_value) {
     m_buffer_.at(ordinal_index) = new_value;
 }
 
+auto Contiguous::slice_(index_vector first_elem, index_vector last_elem)
+  -> slice_type {
+    return slice_type(*this, first_elem, last_elem);
+}
+
+auto Contiguous::slice_(index_vector first_elem, index_vector last_elem) const
+  -> const_slice_type {
+    return const_slice_type(*this, first_elem, last_elem);
+}
+
 // -----------------------------------------------------------------------------
 // -- Private Methods
 // -----------------------------------------------------------------------------

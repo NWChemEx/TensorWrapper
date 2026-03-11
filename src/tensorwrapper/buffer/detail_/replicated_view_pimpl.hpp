@@ -41,7 +41,9 @@ public:
     using element_type           = typename traits_type::element_type;
     using const_element_reference =
       typename traits_type::const_element_reference;
-    using index_vector = typename traits_type::index_vector;
+    using index_vector     = typename traits_type::index_vector;
+    using slice_type       = typename traits_type::slice_type;
+    using const_slice_type = typename traits_type::const_slice_type;
     ///@}
 
     /// Type of a pointer to the PIMPL
@@ -55,6 +57,16 @@ public:
     layout_reference layout() { return layout_(); }
 
     const_layout_reference layout() const { return layout_(); }
+
+    slice_type slice(const index_vector& first_elem,
+                     const index_vector& last_elem) {
+        return slice_(first_elem, last_elem);
+    }
+
+    const_slice_type slice(const index_vector& first_elem,
+                           const index_vector& last_elem) const {
+        return slice_(first_elem, last_elem);
+    }
 
     const_element_reference get_elem(const index_vector& slice_index) const {
         return get_elem_(slice_index);
@@ -72,6 +84,12 @@ protected:
     virtual const_layout_reference layout_() const = 0;
 
     virtual pimpl_pointer clone_() const = 0;
+
+    virtual slice_type slice_(const index_vector& first_elem,
+                              const index_vector& last_elem) = 0;
+
+    virtual const_slice_type slice_(const index_vector& first_elem,
+                                    const index_vector& last_elem) const = 0;
 
     /// Derived class should implement to be consistent with get_elem
     virtual const_element_reference get_elem_(

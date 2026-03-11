@@ -26,19 +26,22 @@ using namespace buffer;
 TEST_CASE("ReplicatedView") {
     using view_type       = ReplicatedView<Replicated>;
     using const_view_type = ReplicatedView<const Replicated>;
-    auto pvector          = testing::eigen_vector<double>(4);
+    using TestType        = double;
+    auto pvector          = testing::eigen_vector<TestType>(4);
     auto& vector          = *pvector;
     // vector has values [0, 1, 2, 3] at indices 0, 1, 2, 3
 
-    auto pmatrix = testing::eigen_matrix<double>(2, 2);
+    auto pmatrix = testing::eigen_matrix<TestType>(2, 2);
     auto& matrix = *pmatrix;
     // matrix has values: (0,0)=1, (0,1)=2, (1,0)=3, (1,1)=4
 
     view_type vector_view(vector, {1}, {3});
     const_view_type const_vector_view(vector, {1}, {3});
+    // vector_view has values [1, 2] at indices 0, 1
 
     view_type matrix_view(matrix, {0, 1}, {2, 2});
     const_view_type const_matrix_view(matrix, {0, 1}, {2, 2});
+    // matrix_view has values [2, 4] at indices (0,0), (1,0)
 
     SECTION("Slice Constructor") {
         // Slice indices 1:3 of vector -> slice index 0 maps to 1, slice index 1
@@ -89,5 +92,51 @@ TEST_CASE("ReplicatedView") {
 
         view_type defaulted;
         REQUIRE_THROWS_AS(defaulted.set_elem({0}, 1.0), std::runtime_error);
+    }
+
+    SECTION("slice()") {
+        auto vector_slice = vector_view.slice({1}, {2});
+        // vector_slice has values [2] at index 0
+        REQUIRE(vector_slice.layout().shape().size() == 1);
+        REQUIRE(vector_slice.get_elem({0}) == 2.0);
+
+        auto const_vector_slice = const_vector_view.slice({1}, {2});
+        REQUIRE(const_vector_slice.layout().shape().size() == 1);
+        REQUIRE(const_vector_slice.get_elem({0}) == 2.0);
+
+        auto matrix_slice = matrix_view.slice({0, 0}, {1, 1});
+        // matrix_slice has values [2] at index (0,0)
+        REQUIRE(matrix_slice.layout().shape().size() == 1);
+        REQUIRE(matrix_slice.get_elem({0, 0}) == 2.0);
+
+        auto const_matrix_slice = const_matrix_view.slice({0, 0}, {1, 1});
+        REQUIRE(const_matrix_slice.layout().shape().size() == 1);
+        REQUIRE(const_matrix_slice.get_elem({0, 0}) == 2.0);
+
+        TestType nine_nine(99.0);
+        vector_slice.set_elem({0}, nine_nine);
+        REQUIRE(vector.get_elem({2}) == nine_nine);
+        matrix_slice.set_elem({0, 0}, nine_nine);
+        REQUIRE(matrix.get_elem({0, 1}) == nine_nine);
+    }
+
+    SECTION("slice() const") {
+        auto vector_slice = std::as_const(vector_view).slice({1}, {2});
+        REQUIRE(vector_slice.layout().shape().size() == 1);
+        REQUIRE(vector_slice.get_elem({0}) == 2.0);
+
+        auto const_vector_slice =
+          std::as_const(const_vector_view).slice({1}, {2});
+        REQUIRE(const_vector_slice.layout().shape().size() == 1);
+        REQUIRE(const_vector_slice.get_elem({0}) == 2.0);
+
+        auto matrix_slice = std::as_const(matrix_view).slice({0, 0}, {1, 1});
+        REQUIRE(matrix_slice.layout().shape().size() == 1);
+        REQUIRE(matrix_slice.get_elem({0, 0}) == 2.0);
+
+        auto const_matrix_slice =
+          std::as_const(const_matrix_view).slice({0, 0}, {1, 1});
+        REQUIRE(const_matrix_slice.layout().shape().size() == 1);
+        REQUIRE(const_matrix_slice.get_elem({0, 0}) == 2.0);
     }
 }
