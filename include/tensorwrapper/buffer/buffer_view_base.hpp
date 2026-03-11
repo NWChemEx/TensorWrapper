@@ -15,26 +15,28 @@
  */
 
 #pragma once
+#include <memory>
 #include <tensorwrapper/buffer/buffer_base.hpp>
 #include <tensorwrapper/buffer/buffer_base_common.hpp>
+#include <tensorwrapper/buffer/detail_/buffer_view_base_pimpl.hpp>
 #include <type_traits>
 
 namespace tensorwrapper::buffer {
 
 /** @brief View of a BufferBase that aliases existing state instead of owning
- * it.
+ *         it.
  *
  *  BufferViewBase has the same layout/equality API as BufferBase (has_layout(),
- *  layout(), rank(), operator==, operator!=, approximately_equal) but holds a
- *  non-owning pointer to a BufferBase and delegates all operations to it.
+ *  layout(), rank(), operator==, operator!=, approximately_equal) but uses a
+ *  PIMPL. The view delegates layout operations to the PIMPL.
  *
- *  BufferViewBase is templated on the type of the aliased buffer, which must
- *  be either BufferBase or const BufferBase. This controls whether the view is
- *  a mutable or const view of the underlying BufferBase.
+ *  BufferViewBase is templated on the type of the aliased buffer (BufferBase or
+ *  const BufferBase) for API compatibility; construction from a buffer copies
+ *  a non-owning pointer to that buffer's layout into the PIMPL.
  *
- *  The aliased buffer must outlive this view. Default-constructed or
- *  moved-from views have no aliased buffer (has_layout() is false, layout()
- *  throws).
+ *  The referenced layout (and its owner) must outlive this view. Default-
+ *  constructed or moved-from views have no layout (has_layout() is false,
+ *  layout() throws).
  *
  *  @tparam BufferBaseType Either BufferBase or const BufferBase.
  */
@@ -48,43 +50,64 @@ private:
 
     /// Type *this derives from
     using my_base_type = BufferBaseCommon<BufferViewBase<BufferBaseType>>;
-    using typename my_base_type::const_layout_reference;
 
-    using aliased_type    = BufferBaseType;
-    using aliased_pointer = aliased_type*;
+    /// Type of the PIMPL
+    using pimpl_type            = detail_::BufferViewBasePIMPL<BufferBaseType>;
+    using pimpl_reference       = pimpl_type&;
+    using const_pimpl_reference = const pimpl_type&;
 
 public:
+    using typename my_base_type::const_layout_reference;
+    using typename my_base_type::layout_pointer;
+    using typename my_base_type::layout_reference;
+    using typename my_base_type::layout_type;
     // -------------------------------------------------------------------------
     // -- Ctors and assignment
     // -------------------------------------------------------------------------
 
-    /** @brief Creates a view that aliases no buffer.
+    /** @brief Creates a view with no layout.
      *
      *  @throw None No throw guarantee.
      */
-    BufferViewBase() noexcept : m_aliased_(nullptr) {}
+    BufferViewBase() noexcept : m_pimpl_(nullptr) {}
 
-    /** @brief Creates a view that aliases @p buffer.
+    /** @brief Creates a view that aliases the layout of @p buffer.
      *
-     *  @param[in] buffer The buffer to alias. Must outlive *this.
+     *  @param[in] buffer The buffer whose layout to alias. The layout must
+     *                   outlive *this.
      *
      *  @throw None No throw guarantee.
      */
-    explicit BufferViewBase(aliased_type& buffer) noexcept :
-      m_aliased_(&buffer) {}
+    explicit BufferViewBase(BufferBaseType& buffer) noexcept :
+      m_pimpl_(buffer.has_layout() ?
+                 std::make_unique<pimpl_type>(&buffer.layout()) :
+                 nullptr) {}
 
-    /** @brief Creates a view that aliases the same buffer as @p other.
+    /** Creates a read-only view from a mutable buffer. */
+    template<typename OtherBufferBaseType>
+        requires(!std::is_const_v<OtherBufferBaseType> &&
+                 std::is_const_v<BufferBaseType>)
+    explicit BufferViewBase(OtherBufferBaseType& other) noexcept :
+      m_pimpl_(other.has_layout() ?
+                 std::make_unique<pimpl_type>(&other.layout()) :
+                 nullptr) {}
+
+    explicit BufferViewBase(layout_pointer layout) noexcept :
+      m_pimpl_(std::make_unique<pimpl_type>(layout)) {}
+
+    /** @brief Creates a view that aliases the same layout as @p other.
      *
      *  @param[in] other The view to copy.
      *
      *  @throw None No throw guarantee.
      */
-    BufferViewBase(const BufferViewBase& other) noexcept = default;
+    BufferViewBase(const BufferViewBase& other) noexcept :
+      m_pimpl_(other.m_pimpl_ ? other.m_pimpl_->clone() : nullptr) {}
 
-    /** @brief Creates a view by taking the alias from @p other.
+    /** @brief Creates a view by taking the PIMPL from @p other.
      *
-     *  After construction *this aliases the buffer @p other did, and @p other
-     *  aliases no buffer.
+     *  After construction *this aliases the layout @p other did, and @p other
+     *  has no layout.
      *
      *  @param[in,out] other The view to move from.
      *
@@ -92,7 +115,7 @@ public:
      */
     BufferViewBase(BufferViewBase&& other) noexcept = default;
 
-    /** @brief Makes *this alias the same buffer as @p rhs.
+    /** @brief Makes *this alias the same layout as @p rhs.
      *
      *  @param[in] rhs The view to copy.
      *
@@ -100,9 +123,14 @@ public:
      *
      *  @throw None No throw guarantee.
      */
-    BufferViewBase& operator=(const BufferViewBase& rhs) noexcept = default;
+    BufferViewBase& operator=(const BufferViewBase& rhs) noexcept {
+        if(this != &rhs) {
+            m_pimpl_ = rhs.m_pimpl_ ? rhs.m_pimpl_->clone() : nullptr;
+        }
+        return *this;
+    }
 
-    /** @brief Replaces the alias in *this with that of @p rhs.
+    /** @brief Replaces the PIMPL in *this with that of @p rhs.
      *
      *  @param[in,out] rhs The view to move from.
      *
@@ -133,41 +161,53 @@ protected:
     // -------------------------------------------------------------------------
 
     bool has_layout_() const noexcept {
-        return m_aliased_ != nullptr && m_aliased_->has_layout();
+        return m_pimpl_ != nullptr && m_pimpl_->has_layout();
     }
 
-    const_layout_reference layout_() const {
-        if(m_aliased_ == nullptr) {
-            throw std::runtime_error(
-              "Buffer has no layout. Was it default initialized?");
-        }
-        return m_aliased_->layout();
+    layout_reference layout_() { return pimpl_().layout(); }
+
+    const_layout_reference layout_() const { return pimpl_().layout(); }
+
+    // Will be polymorphic eventually
+    template<typename OtherBufferBaseType>
+    bool approximately_equal_(const BufferViewBase<OtherBufferBaseType>& rhs,
+                              double) const {
+        return *this == rhs;
     }
 
-    template<typename OtherBufferBase>
-    bool approximately_equal_(const BufferViewBase<OtherBufferBase>& rhs,
-                              double tol) const {
-        if(m_aliased_ == nullptr) return !rhs.has_layout();
-        return m_aliased_->approximately_equal(*rhs.m_aliased_, tol);
-    }
-
-    bool approximately_equal_(const BufferBase& rhs, double tol) const {
-        if(m_aliased_ == nullptr) return !rhs.has_layout();
-        return m_aliased_->approximately_equal(rhs, tol);
+    // Will be polymorphic eventually
+    bool approximately_equal_(const BufferBase& rhs, double) const {
+        return *this == rhs;
     }
 
 private:
-    /// The buffer *this aliases (non-owning)
-    aliased_pointer m_aliased_;
+    void assert_pimpl_() const {
+        if(!m_pimpl_) {
+            throw std::runtime_error(
+              "BufferViewBase has no PIMPL. Was it default initialized?");
+        }
+    }
+    pimpl_reference pimpl_() {
+        assert_pimpl_();
+        return *m_pimpl_;
+    }
+
+    const_pimpl_reference pimpl_() const {
+        assert_pimpl_();
+        return *m_pimpl_;
+    }
+
+    /// PIMPL holding non-owning pointer to the aliased layout
+    std::unique_ptr<pimpl_type> m_pimpl_;
 };
 
-// Out-of-line definition so both BufferBase and BufferViewBase are complete
+// Out-of-line definition so both BufferBase and BufferViewBase are complete.
+
 template<typename BufferBaseType>
 bool BufferBase::approximately_equal_(const BufferViewBase<BufferBaseType>& rhs,
                                       double tol) const {
     if(!rhs.has_layout()) return !has_layout();
-    return approximately_equal_(
-      *static_cast<const BufferBaseType*>(rhs.m_aliased_), tol);
+    return !this->layout().are_different(rhs.layout());
 }
 
 } // namespace tensorwrapper::buffer

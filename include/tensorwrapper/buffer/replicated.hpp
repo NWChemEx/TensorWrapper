@@ -16,6 +16,7 @@
 
 #pragma once
 #include <tensorwrapper/buffer/local.hpp>
+#include <tensorwrapper/buffer/replicated_common.hpp>
 
 namespace tensorwrapper::buffer {
 
@@ -24,14 +25,20 @@ namespace tensorwrapper::buffer {
  *  At the moment this class is a strong type and has no additional state over
  *  its base class.
  */
-class Replicated : public Local {
+class Replicated : public ReplicatedCommon<Replicated>, public Local {
 private:
     /// Type *this derives from
-    using my_base_type = Local;
+    using my_base_type = ReplicatedCommon<Replicated>;
 
 public:
     // Pull in base's ctors
-    using my_base_type::my_base_type;
+    using Local::Local;
+
+protected:
+    friend my_base_type;
+
+    virtual const_element_reference get_elem_(index_vector index) const = 0;
+    virtual void set_elem_(index_vector index, element_type value)      = 0;
 };
 
 } // namespace tensorwrapper::buffer

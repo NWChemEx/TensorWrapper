@@ -35,15 +35,14 @@ private:
     /// Type of *this
     using my_type = BufferBaseCommon<Derived>;
 
-    /// Traits for my_type
-    using traits_type = types::ClassTraits<my_type>;
-
     /// Traits for Derived
-    using derived_traits = types::ClassTraits<Derived>;
+    using traits_type = types::ClassTraits<Derived>;
 
 public:
     ///@{
     using layout_type            = typename traits_type::layout_type;
+    using layout_reference       = typename traits_type::layout_reference;
+    using layout_pointer         = typename traits_type::layout_pointer;
     using const_layout_reference = typename traits_type::const_layout_reference;
     using rank_type              = typename traits_type::rank_type;
     ///@}
@@ -59,6 +58,18 @@ public:
      *  @throw None No throw guarantee.
      */
     bool has_layout() const noexcept { return derived_().has_layout_(); }
+
+    /** @brief Retrieves the layout of *this.
+     *
+     *  @return A reference to the layout.
+     *
+     *  @throw std::runtime_error if *this does not have a layout. Strong throw
+     *                            guarantee.
+     */
+    layout_reference layout() {
+        assert_layout_();
+        return derived_().layout_();
+    }
 
     /** @brief Retrieves the layout of *this.
      *
@@ -143,7 +154,7 @@ private:
 
     /// Access derived for CRTP
     const Derived& derived_() const noexcept {
-        return *static_cast<const Derived*>(this);
+        return static_cast<const Derived&>(*this);
     }
 };
 

@@ -59,17 +59,6 @@ auto Contiguous::shape() const -> const_shape_view { return m_shape_; }
 
 auto Contiguous::size() const noexcept -> size_type { return m_buffer_.size(); }
 
-auto Contiguous::get_elem(index_vector index) const -> const_reference {
-    auto ordinal_index = coordinate_to_ordinal_(index);
-    return m_buffer_.at(ordinal_index);
-}
-
-void Contiguous::set_elem(index_vector index, value_type new_value) {
-    auto ordinal_index = coordinate_to_ordinal_(index);
-    mark_for_rehash_();
-    m_buffer_.at(ordinal_index) = new_value;
-}
-
 auto Contiguous::get_mutable_data() -> buffer_view {
     mark_for_rehash_();
     return m_buffer_;
@@ -259,6 +248,18 @@ std::ostream& Contiguous::add_to_stream_(std::ostream& os) const {
     };
     wtf::buffer::visit_contiguous_buffer<fp_types>(lambda, m_buffer_);
     return os;
+}
+
+auto Contiguous::get_elem_(index_vector index) const
+  -> const_element_reference {
+    auto ordinal_index = coordinate_to_ordinal_(index);
+    return m_buffer_.at(ordinal_index);
+}
+
+void Contiguous::set_elem_(index_vector index, element_type new_value) {
+    auto ordinal_index = coordinate_to_ordinal_(index);
+    mark_for_rehash_();
+    m_buffer_.at(ordinal_index) = new_value;
 }
 
 // -----------------------------------------------------------------------------
