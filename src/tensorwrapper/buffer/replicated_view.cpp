@@ -90,6 +90,20 @@ void REPLICATED_VIEW::set_elem_(index_vector index, element_type value) {
     }
 }
 
+TPARAMS
+auto REPLICATED_VIEW::slice_(index_vector first_elem, index_vector last_elem)
+  -> slice_type {
+    if(!has_pimpl_()) return slice_type{};
+    return m_pimpl_->slice(first_elem, last_elem);
+}
+
+TPARAMS
+auto REPLICATED_VIEW::slice_(index_vector first_elem,
+                             index_vector last_elem) const -> const_slice_type {
+    if(!has_pimpl_()) return const_slice_type{};
+    return std::as_const(*m_pimpl_).slice(first_elem, last_elem);
+}
+
 // -----------------------------------------------------------------------------
 // -- Private methods
 // -----------------------------------------------------------------------------

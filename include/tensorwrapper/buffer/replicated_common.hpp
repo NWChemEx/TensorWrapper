@@ -15,6 +15,8 @@
  */
 
 #pragma once
+#include <tensorwrapper/concepts/has_begin_end.hpp>
+#include <tensorwrapper/interfaces/sliceable.hpp>
 #include <tensorwrapper/types/buffer_traits.hpp>
 
 namespace tensorwrapper::buffer {
@@ -34,9 +36,12 @@ namespace tensorwrapper::buffer {
  *  buffers.
  */
 template<typename Derived>
-class ReplicatedCommon {
+class ReplicatedCommon : public interfaces::Sliceable<Derived> {
 private:
     using my_traits = types::ClassTraits<Derived>;
+
+protected:
+    using sliceable_base = interfaces::Sliceable<Derived>;
 
 public:
     /// Pull in types from traits_type
@@ -46,6 +51,9 @@ public:
     using const_element_reference = typename my_traits::const_element_reference;
     using size_type               = typename my_traits::size_type;
     using index_vector            = typename my_traits::index_vector;
+    using slice_type              = typename my_traits::slice_type;
+    using const_slice_type        = typename my_traits::const_slice_type;
+    using slice_il_type           = typename my_traits::slice_il_type;
     ///@}
 
     /** @brief Returns the element at the given index.

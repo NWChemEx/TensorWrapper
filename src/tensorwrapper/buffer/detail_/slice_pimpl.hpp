@@ -36,12 +36,14 @@ public:
     ///@{
     using typename my_base::const_element_reference;
     using typename my_base::const_layout_reference;
+    using typename my_base::const_slice_type;
     using typename my_base::element_type;
     using typename my_base::index_vector;
     using typename my_base::layout_reference;
     using typename my_base::layout_type;
     using typename my_base::pimpl_pointer;
     using typename my_base::size_type;
+    using typename my_base::slice_type;
     ///@}
 
     /// Pull in base's ctors
@@ -92,6 +94,21 @@ protected:
             auto new_index = translate_index_(slice_index);
             replicated().set_elem(new_index, std::move(value));
         }
+    }
+
+    slice_type slice_(const index_vector& first_elem,
+                      const index_vector& last_elem) override {
+        auto new_first_elem = translate_index_(first_elem);
+        auto new_last_elem  = translate_index_(last_elem);
+        return slice_type(*m_replicated_ptr_, new_first_elem, new_last_elem);
+    }
+
+    const_slice_type slice_(const index_vector& first_elem,
+                            const index_vector& last_elem) const override {
+        auto new_first_elem = translate_index_(first_elem);
+        auto new_last_elem  = translate_index_(last_elem);
+        return const_slice_type(*m_replicated_ptr_, new_first_elem,
+                                new_last_elem);
     }
 
 private:

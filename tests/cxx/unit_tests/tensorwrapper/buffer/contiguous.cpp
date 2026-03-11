@@ -220,6 +220,39 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         REQUIRE(matrix.get_elem({1, 0}) == one);
     }
 
+    SECTION("slice()") {
+        REQUIRE(scalar.slice({}, {}).get_elem({}) == one);
+
+        auto vector_slice = vector.slice({0}, {2});
+        REQUIRE(vector_slice.layout().shape().size() == 2);
+        REQUIRE(vector_slice.get_elem({0}) == one);
+        REQUIRE(vector_slice.get_elem({1}) == two);
+        TestType nine_nine(99.0);
+        vector_slice.set_elem({0}, nine_nine);
+        REQUIRE(vector.get_elem({0}) == nine_nine);
+
+        auto matrix_slice = matrix.slice({1, 0}, {2, 2});
+        REQUIRE(matrix_slice.layout().shape().size() == 2);
+        REQUIRE(matrix_slice.get_elem({0, 0}) == three);
+        REQUIRE(matrix_slice.get_elem({0, 1}) == four);
+        matrix_slice.set_elem({0, 0}, nine_nine);
+        REQUIRE(matrix.get_elem({1, 0}) == nine_nine);
+    }
+
+    SECTION("slice() const") {
+        REQUIRE(std::as_const(scalar).slice({}, {}).get_elem({}) == one);
+
+        auto vector_slice = std::as_const(vector).slice({0}, {2});
+        REQUIRE(vector_slice.layout().shape().size() == 2);
+        REQUIRE(vector_slice.get_elem({0}) == one);
+        REQUIRE(vector_slice.get_elem({1}) == two);
+
+        auto matrix_slice = std::as_const(matrix).slice({1, 0}, {2, 2});
+        REQUIRE(matrix_slice.layout().shape().size() == 2);
+        REQUIRE(matrix_slice.get_elem({0, 0}) == three);
+        REQUIRE(matrix_slice.get_elem({0, 1}) == four);
+    }
+
     SECTION("infinity_norm") {
         REQUIRE_THROWS_AS(defaulted.infinity_norm(), std::runtime_error);
         REQUIRE(scalar.infinity_norm() == one);

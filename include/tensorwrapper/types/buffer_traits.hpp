@@ -74,6 +74,8 @@ struct ReplicatedTraitsCommon {
     using buffer_type             = wtf::buffer::FloatBuffer;
     using const_buffer_view       = wtf::buffer::BufferView<const element_type>;
     using index_vector            = std::vector<types::CommonTypes::size_type>;
+    using const_slice_type = buffer::ReplicatedView<const buffer::Replicated>;
+    using slice_il_type = std::initializer_list<types::CommonTypes::size_type>;
 };
 
 template<>
@@ -81,6 +83,7 @@ struct ClassTraits<buffer::Replicated> : public ReplicatedTraitsCommon,
                                          public ClassTraits<buffer::Local> {
     using element_reference = wtf::fp::FloatView<element_type>;
     using buffer_view       = wtf::buffer::BufferView<element_type>;
+    using slice_type        = buffer::ReplicatedView<buffer::Replicated>;
 };
 
 template<>
@@ -88,10 +91,25 @@ struct ClassTraits<const buffer::Replicated>
   : public ReplicatedTraitsCommon, public ClassTraits<const buffer::Local> {
     using element_reference = wtf::fp::FloatView<const element_type>;
     using buffer_view       = wtf::buffer::BufferView<const element_type>;
+    using slice_type        = buffer::ReplicatedView<const buffer::Replicated>;
 };
 
 template<typename ReplicatedType>
 struct ClassTraits<buffer::ReplicatedView<ReplicatedType>>
   : public ClassTraits<ReplicatedType> {};
+
+struct ContiguousTraitsCommon {
+    using shape_type       = shape::Smooth;
+    using const_shape_view = shape::SmoothView<const shape_type>;
+};
+
+template<>
+struct ClassTraits<tensorwrapper::buffer::Contiguous>
+  : public ClassTraits<buffer::Replicated>, public ContiguousTraitsCommon {};
+
+template<>
+struct ClassTraits<const tensorwrapper::buffer::Contiguous>
+  : public ClassTraits<const buffer::Replicated>,
+    public ContiguousTraitsCommon {};
 
 } // namespace tensorwrapper::types

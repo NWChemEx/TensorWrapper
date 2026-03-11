@@ -49,10 +49,12 @@ public:
     /// Pull in base's types
     ///@{
     using typename common_base_type::const_element_reference;
+    using typename common_base_type::const_slice_type;
     using typename common_base_type::element_reference;
     using typename common_base_type::element_type;
     using typename common_base_type::index_vector;
     using typename common_base_type::size_type;
+    using typename common_base_type::slice_type;
     ///@}
 
     /// Type of the PIMPL
@@ -154,12 +156,20 @@ public:
 
 protected:
     friend common_base_type;
+    friend typename common_base_type::sliceable_base;
 
     /// Implements get_elem for the view.
     const_element_reference get_elem_(index_vector index) const;
 
     /// Implements set_elem for the view.
     void set_elem_(index_vector index, element_type value);
+
+    /// Implements slice for the view.
+    slice_type slice_(index_vector first_elem, index_vector last_elem);
+
+    /// Implements slice for the view.
+    const_slice_type slice_(index_vector first_elem,
+                            index_vector last_elem) const;
 
 private:
     /// Does *this have a PIMPL?
