@@ -18,7 +18,6 @@
 #include <tensorwrapper/buffer/local.hpp>
 #include <tensorwrapper/buffer/replicated_common.hpp>
 #include <tensorwrapper/types/preserve_const.hpp>
-
 namespace tensorwrapper::buffer {
 namespace detail_ {
 
