@@ -106,6 +106,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>label_type</b> = <a 
 <tr class="memitem:a17671da2bf513a70b4adc44751bb008d" id="r_a17671da2bf513a70b4adc44751bb008d"><td class="memItemLeft" align="right" valign="top"><a id="a17671da2bf513a70b4adc44751bb008d" name="a17671da2bf513a70b4adc44751bb008d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std::size_t</td></tr>
 <tr class="separator:a17671da2bf513a70b4adc44751bb008d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5079864fa461dad7668a7dfd7e07fda3" id="r_a5079864fa461dad7668a7dfd7e07fda3"><td class="memItemLeft" align="right" valign="top"><a id="a5079864fa461dad7668a7dfd7e07fda3" name="a5079864fa461dad7668a7dfd7e07fda3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>index_vector</b> = std::vector&lt; size_type &gt;</td></tr>
+<tr class="separator:a5079864fa461dad7668a7dfd7e07fda3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca087f64df7d6a19554f59ab02407377" id="r_aca087f64df7d6a19554f59ab02407377"><td class="memItemLeft" align="right" valign="top"><a id="aca087f64df7d6a19554f59ab02407377" name="aca087f64df7d6a19554f59ab02407377"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>const_reference</b> = const value_type &amp;</td></tr>
+<tr class="separator:aca087f64df7d6a19554f59ab02407377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -124,6 +130,12 @@ size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () cons
 <tr class="memitem:af342892a811607d6f8dec6aa2a6f031c" id="r_af342892a811607d6f8dec6aa2a6f031c"><td class="memItemLeft" align="right" valign="top"><a id="af342892a811607d6f8dec6aa2a6f031c" name="af342892a811607d6f8dec6aa2a6f031c"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>shape</b> () const noexcept</td></tr>
 <tr class="separator:af342892a811607d6f8dec6aa2a6f031c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b7294526323f258131fb6c6731185b" id="r_aa3b7294526323f258131fb6c6731185b"><td class="memItemLeft" align="right" valign="top"><a id="aa3b7294526323f258131fb6c6731185b" name="aa3b7294526323f258131fb6c6731185b"></a>
+const_reference&#160;</td><td class="memItemRight" valign="bottom"><b>get_elem</b> (index_vector index) const</td></tr>
+<tr class="separator:aa3b7294526323f258131fb6c6731185b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc430c7d6fba0a22cf33e2c11af38021" id="r_adc430c7d6fba0a22cf33e2c11af38021"><td class="memItemLeft" align="right" valign="top"><a id="adc430c7d6fba0a22cf33e2c11af38021" name="adc430c7d6fba0a22cf33e2c11af38021"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_elem</b> (index_vector index, value_type new_value)</td></tr>
+<tr class="separator:adc430c7d6fba0a22cf33e2c11af38021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bc78a418e2fc88fe994627efbeba14e" id="r_a4bc78a418e2fc88fe994627efbeba14e"><td class="memItemLeft" align="right" valign="top"><a id="a4bc78a418e2fc88fe994627efbeba14e" name="a4bc78a418e2fc88fe994627efbeba14e"></a>
 auto&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () noexcept</td></tr>
 <tr class="separator:a4bc78a418e2fc88fe994627efbeba14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
