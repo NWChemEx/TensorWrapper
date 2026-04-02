@@ -67,7 +67,7 @@ void contraction_assignment_tests() {
     VectorType vector(vector_data_span, vector_shape);
     MatrixType matrix(matrix_data_span, matrix_shape);
     Tensor3Type tensor3(tensor3_data_span, tensor3_shape);
-    Tensor4Type tensor4(tensor4_data, shape_type{2, 2, 2, 2});
+    Tensor4Type tensor4(tensor4_data_span, tensor4_shape);
 
     SECTION("scalar,scalar->") {
         label_type o("");
