@@ -15,9 +15,10 @@
  */
 
 #include "cuda_tensor.hpp"
+#include <cassert>
 
 #ifdef ENABLE_CUTENSOR
-#include "eigen_tensor.cuh"
+#include "cuda_tensor.cuh"
 #endif
 
 namespace tensorwrapper::backends::cutensor {
@@ -38,6 +39,30 @@ void CUDA_TENSOR::contraction_assignment(label_type this_label,
     throw std::runtime_error(
       "cuTENSOR backend not enabled. Recompile with -DENABLE_CUTENSOR.");
 #endif
+}
+
+TPARAMS
+CUDA_TENSOR::const_reference CUDA_TENSOR::get_elem(index_vector index) const {
+    assert(index.size() == rank());
+    std::size_t flat_index = 0;
+    std::size_t stride     = 1;
+    for(std::size_t i = rank(); i-- > 0;) {
+        flat_index += index.at(i) * stride;
+        stride *= m_shape_.extent(i);
+    }
+    return m_data_[flat_index];
+}
+
+TPARAMS
+void CUDA_TENSOR::set_elem(index_vector index, value_type new_value) {
+    assert(index.size() == rank());
+    std::size_t flat_index = 0;
+    std::size_t stride     = 1;
+    for(std::size_t i = rank(); i-- > 0;) {
+        flat_index += index.at(i) * stride;
+        stride *= m_shape_.extent(i);
+    }
+    m_data_[flat_index] = new_value;
 }
 
 #undef CUDA_TENSOR

@@ -43,6 +43,8 @@ public:
     using const_shape_view = shape::SmoothView<const shape_type>;
     using label_type       = dsl::DummyIndices<std::string>;
     using size_type        = std::size_t;
+    using index_vector     = std::vector<size_type>;
+    using const_reference  = const value_type&;
 
     CUDATensor(span_type data, const_shape_view shape) :
       m_data_(data), m_shape_(shape) {}
@@ -56,6 +58,10 @@ public:
     size_type size() const noexcept { return m_shape_.size(); }
 
     auto shape() const noexcept { return m_shape_; }
+
+    const_reference get_elem(index_vector index) const;
+
+    void set_elem(index_vector index, value_type new_value);
 
     auto data() noexcept { return m_data_.data(); }
 

@@ -16,6 +16,8 @@
 #ifdef ENABLE_CUTENSOR
 #include "cuda_tensor.cuh"
 #include "cutensor_traits.cuh"
+#include <cassert>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <unordered_map>
 #include <vector>
 
@@ -42,7 +44,8 @@ using int64_vector_t = std::vector<int64_t>;
         if(err != CUTENSOR_STATUS_SUCCESS) {                    \
             printf("Error: %s\n", cutensorGetErrorString(err)); \
             exit(-1);                                           \
-        }
+        }                                                       \
+    };
 
 // Convert a label into a vector of modes
 template<typename LabelType>

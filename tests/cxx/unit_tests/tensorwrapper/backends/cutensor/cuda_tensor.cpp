@@ -70,6 +70,28 @@ TEMPLATE_LIST_TEST_CASE("CUDATensor", "", supported_fp_types) {
         REQUIRE(tensor4.shape() == tensor4_shape);
     }
 
+    SECTION("get_elem()") {
+        REQUIRE(scalar.get_elem({}) == data[0]);
+        REQUIRE(vector.get_elem({5}) == data[5]);
+        REQUIRE(matrix.get_elem({1, 2}) == data[6]);
+        REQUIRE(tensor3.get_elem({1, 0, 3}) == data[11]);
+        REQUIRE(tensor4.get_elem({1, 1, 1, 0}) == data[14]);
+    }
+
+    SECTION("set_elem()") {
+        scalar.set_elem({}, static_cast<TestType>(42.0));
+        vector.set_elem({5}, static_cast<TestType>(42.0));
+        matrix.set_elem({1, 2}, static_cast<TestType>(42.0));
+        tensor3.set_elem({1, 0, 3}, static_cast<TestType>(42.0));
+        tensor4.set_elem({1, 1, 1, 0}, static_cast<TestType>(42.0));
+
+        REQUIRE(scalar.get_elem({}) == static_cast<TestType>(42.0));
+        REQUIRE(vector.get_elem({5}) == static_cast<TestType>(42.0));
+        REQUIRE(matrix.get_elem({1, 2}) == static_cast<TestType>(42.0));
+        REQUIRE(tensor3.get_elem({1, 0, 3}) == static_cast<TestType>(42.0));
+        REQUIRE(tensor4.get_elem({1, 1, 1, 0}) == static_cast<TestType>(42.0));
+    }
+
     SECTION("data()") {
         REQUIRE(scalar.data() == data.data());
         REQUIRE(vector.data() == data.data());
@@ -87,8 +109,8 @@ TEMPLATE_LIST_TEST_CASE("CUDATensor", "", supported_fp_types) {
     }
 
     SECTION("contraction_assignment") {
-#ifdef ENABLE_CUTESNSOR
-        testing::contraction_assignment<tensor_type>();
+#ifdef ENABLE_CUTENSOR
+        testing::contraction_assignment_tests<tensor_type>();
 #else
         label_type label("");
         REQUIRE_THROWS_AS(
