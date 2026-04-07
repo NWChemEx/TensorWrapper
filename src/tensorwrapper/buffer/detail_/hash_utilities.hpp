@@ -66,6 +66,12 @@ void hash_input(hash_type& seed, const sigma::Uncertain<T>& value) {
     }
 }
 
+template<typename T>
+void hash_input(hash_type& seed, const sigma::Interval<T>& value) {
+    hash_input(seed, value.lower());
+    hash_input(seed, value.upper());
+}
+
 #endif
 
 class HashVisitor {

@@ -29,6 +29,8 @@ struct Kernel {
         double rv;
         if constexpr(tensorwrapper::types::is_uncertain_v<clean_type>) {
             rv = t[0].mean();
+        } else if constexpr(tensorwrapper::types::is_interval_v<clean_type>) {
+            rv = t[0].median();
         } else {
             rv = t[0];
         }

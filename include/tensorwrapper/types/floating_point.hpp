@@ -27,16 +27,23 @@ namespace tensorwrapper::types {
 #ifdef ENABLE_SIGMA
 using ufloat  = sigma::UFloat;
 using udouble = sigma::UDouble;
+using ifloat  = sigma::IFloat;
+using idouble = sigma::IDouble;
 
-using floating_point_types = std::tuple<float, double, ufloat, udouble>;
+using floating_point_types =
+  std::tuple<float, double, ufloat, udouble, ifloat, idouble>;
 
 template<typename T>
 constexpr bool is_uncertain_v =
   std::is_same_v<T, ufloat> || std::is_same_v<T, udouble>;
 
 template<typename T>
+constexpr bool is_interval_v =
+  std::is_same_v<T, ifloat> || std::is_same_v<T, idouble>;
+
+template<typename T>
 T fabs(T value) {
-    if constexpr(is_uncertain_v<T>) {
+    if constexpr(is_uncertain_v<T> || is_interval_v<T>) {
         return sigma::fabs(value);
     } else {
         return std::fabs(value);
@@ -47,20 +54,29 @@ T fabs(T value) {
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
     MACRO_IN(types::ufloat);                    \
-    MACRO_IN(types::udouble)
+    MACRO_IN(types::udouble);                   \
+    MACRO_IN(types::ifloat);                    \
+    MACRO_IN(types::idouble);
 } // namespace tensorwrapper::types
 
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::udouble);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::ifloat);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);
 
 #else
 using ufloat  = float;
 using udouble = double;
+using ifloat  = float;
+using idouble = double;
 
-using floating_point_types = std::tuple<float, double>;
+using floating_point_types = std::tuple<float, double, ifloat, idouble>;
 
 template<typename>
 constexpr bool is_uncertain_v = false;
+
+template<typename T>
+constexpr bool is_interval_v = false;
 
 template<typename T>
 T fabs(T value) {
