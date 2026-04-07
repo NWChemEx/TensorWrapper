@@ -149,12 +149,18 @@ public:
 
     template<typename FloatType>
     bool operator()(const std::span<FloatType> result) {
-        const FloatType zero{0.0};
-        const FloatType ptol = static_cast<FloatType>(m_tol_);
+        using clean_t = std::decay_t<FloatType>;
         for(std::size_t i = 0; i < result.size(); ++i) {
-            auto diff = result[i];
-            if(diff < zero) diff *= -1.0;
-            if(diff >= ptol) return false;
+            auto abs_diff = types::fabs(result[i]);
+            double scalar_diff;
+            if constexpr(types::is_uncertain_v<clean_t>) {
+                scalar_diff = abs_diff.mean();
+            } else if constexpr(types::is_interval_v<clean_t>) {
+                scalar_diff = abs_diff.upper();
+            } else {
+                scalar_diff = abs_diff;
+            }
+            if(scalar_diff >= m_tol_) return false;
         }
         return true;
     }
