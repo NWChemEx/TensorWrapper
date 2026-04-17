@@ -27,8 +27,10 @@ namespace tensorwrapper::types {
 #ifdef ENABLE_SIGMA
 using ufloat  = sigma::UFloat;
 using udouble = sigma::UDouble;
-using ifloat  = sigma::IFloat;
-using idouble = sigma::IDouble;
+template<typename T>
+using interval_type = sigma::GeneralInterval<T>;
+using ifloat        = sigma::GeneralInterval<sigma::IFloat>;
+using idouble       = sigma::GeneralInterval<sigma::IDouble>;
 
 using floating_point_types =
   std::tuple<float, double, ufloat, udouble, ifloat, idouble>;
@@ -67,8 +69,10 @@ WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);
 #else
 using ufloat  = float;
 using udouble = double;
-using ifloat  = float;
-using idouble = double;
+template<typename T>
+using interval_type = T;
+using ifloat        = float;
+using idouble       = double;
 
 using floating_point_types = std::tuple<float, double, ifloat, idouble>;
 

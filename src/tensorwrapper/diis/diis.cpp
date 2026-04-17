@@ -30,7 +30,7 @@ struct Kernel {
         if constexpr(tensorwrapper::types::is_uncertain_v<clean_type>) {
             rv = t[0].mean();
         } else if constexpr(tensorwrapper::types::is_interval_v<clean_type>) {
-            rv = t[0].median();
+            rv = t[0].center().median();
         } else {
             rv = t[0];
         }

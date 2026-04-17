@@ -72,6 +72,11 @@ void hash_input(hash_type& seed, const sigma::Interval<T>& value) {
     hash_input(seed, value.upper());
 }
 
+template<typename T>
+void hash_input(hash_type& seed, const sigma::GeneralInterval<T>& value) {
+    hash_input(seed, value.as_interval());
+}
+
 #endif
 
 class HashVisitor {
