@@ -16,6 +16,7 @@
 
 #pragma once
 #include "../../backends/eigen/eigen_tensor_impl.hpp"
+#include <limits>
 #include <span>
 #include <tensorwrapper/dsl/dummy_indices.hpp>
 #include <tensorwrapper/shape/smooth.hpp>
@@ -156,7 +157,12 @@ public:
             if constexpr(types::is_uncertain_v<clean_t>) {
                 scalar_diff = abs_diff.mean();
             } else if constexpr(types::is_interval_v<clean_t>) {
-                scalar_diff = abs_diff.upper();
+                auto max_diff       = abs_diff.as_interval().upper();
+                using max_diff_type = std::decay_t<decltype(max_diff)>;
+                auto epsilon = std::numeric_limits<max_diff_type>::epsilon();
+                if(max_diff < epsilon) return true;
+                scalar_diff = max_diff;
+                std::cout << "scalar_diff: " << scalar_diff << std::endl;
             } else {
                 scalar_diff = abs_diff;
             }

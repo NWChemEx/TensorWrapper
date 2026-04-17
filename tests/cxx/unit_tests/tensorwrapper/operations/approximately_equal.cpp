@@ -82,6 +82,14 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
         pvector2->set_elem({0}, TestType{1.23} + value);
         Tensor scalar2(s0, std::move(pscalar2));
         Tensor vector2(s1, std::move(pvector2));
+        if constexpr(std::is_same_v<TestType, tensorwrapper::types::ifloat>) {
+            std::cout << "float less tol scalar: " << scalar << std::endl;
+            std::cout << "float less tol scalar2: " << scalar2 << std::endl;
+        } else if constexpr(std::is_same_v<TestType,
+                                           tensorwrapper::types::idouble>) {
+            std::cout << "double less tol scalar: " << scalar << std::endl;
+            std::cout << "double less tol scalar2: " << scalar2 << std::endl;
+        }
         REQUIRE(approximately_equal(scalar, scalar2));
         REQUIRE(approximately_equal(scalar2, scalar));
         REQUIRE(approximately_equal(vector, vector2));
