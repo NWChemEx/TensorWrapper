@@ -28,9 +28,9 @@ namespace tensorwrapper::types {
 using ufloat  = sigma::UFloat;
 using udouble = sigma::UDouble;
 template<typename T>
-using interval_type = sigma::GeneralInterval<T>;
-using ifloat        = sigma::GeneralInterval<sigma::IFloat>;
-using idouble       = sigma::GeneralInterval<sigma::IDouble>;
+using interval_type = sigma::GeneralInterval<sigma::Interval<T>>;
+using ifloat        = interval_type<float>;
+using idouble       = interval_type<double>;
 
 using floating_point_types =
   std::tuple<float, double, ufloat, udouble, ifloat, idouble>;

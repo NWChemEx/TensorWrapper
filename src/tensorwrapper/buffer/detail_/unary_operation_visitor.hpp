@@ -162,7 +162,6 @@ public:
                 auto epsilon = std::numeric_limits<max_diff_type>::epsilon();
                 if(max_diff < epsilon) return true;
                 scalar_diff = max_diff;
-                std::cout << "scalar_diff: " << scalar_diff << std::endl;
             } else {
                 scalar_diff = abs_diff;
             }
