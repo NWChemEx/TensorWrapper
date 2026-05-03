@@ -73,8 +73,8 @@ void hash_input(hash_type& seed, const sigma::Interval<T>& value) {
 }
 
 template<typename T>
-void hash_input(hash_type& seed, const sigma::GeneralInterval<T>& value) {
-    hash_input(seed, value.as_interval());
+void hash_input(hash_type& seed, const types::interval_type<T>& value) {
+    hash_input(seed, value.range());
 }
 
 #endif
