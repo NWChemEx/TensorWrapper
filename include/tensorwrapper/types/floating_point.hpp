@@ -98,7 +98,7 @@ using interval_type = T;
 using ifloat        = float;
 using idouble       = double;
 
-using floating_point_types = std::tuple<float, double, ifloat, idouble>;
+using floating_point_types = std::tuple<float, double>;
 
 template<typename>
 constexpr bool is_uncertain_v = false;
