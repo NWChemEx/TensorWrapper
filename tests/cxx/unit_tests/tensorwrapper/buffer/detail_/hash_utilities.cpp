@@ -45,8 +45,8 @@ TEMPLATE_LIST_TEST_CASE("hash_input", "", types::floating_point_types) {
         value_type value(1.0, 1.0);
         hash_input(seed, value);
         hash_type corr{0};
-        boost::hash_combine(corr, value.range().lower());
-        boost::hash_combine(corr, value.range().upper());
+        boost::hash_combine(corr, value.lower());
+        boost::hash_combine(corr, value.upper());
         REQUIRE(seed == corr);
     } else {
         value_type value(1.0);

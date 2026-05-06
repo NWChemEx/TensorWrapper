@@ -78,14 +78,23 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
 
     SECTION("Differ by less than default tolerance") {
         TestType value = 1e-17;
-        pscalar2->set_elem({}, TestType{42.0} + value);
-        pvector2->set_elem({0}, TestType{1.23} + value);
-        Tensor scalar2(s0, std::move(pscalar2));
-        Tensor vector2(s1, std::move(pvector2));
-        REQUIRE(approximately_equal(scalar, scalar2));
-        REQUIRE(approximately_equal(scalar2, scalar));
-        REQUIRE(approximately_equal(vector, vector2));
-        REQUIRE(approximately_equal(vector2, vector));
+        // This test won't work for intervals because sigma::Interval
+        // automatically increases the interval size to ensure the result is in
+        // the interval, even after floating point rounding occurs. The
+        // widening of the interval is on the scale of machine epsilon, which is
+        // the default tolerance. Note that approximately_equal should work
+        // for intervals and tolerances greater than machine epsilon; that is
+        // tested in the "Differ by less than provided tolerance" section below.
+        if constexpr(!types::is_interval_v<TestType>) {
+            pscalar2->set_elem({}, TestType{42.0} + value);
+            pvector2->set_elem({0}, TestType{1.23} + value);
+            Tensor scalar2(s0, std::move(pscalar2));
+            Tensor vector2(s1, std::move(pvector2));
+            REQUIRE(approximately_equal(scalar, scalar2));
+            REQUIRE(approximately_equal(scalar2, scalar));
+            REQUIRE(approximately_equal(vector, vector2));
+            REQUIRE(approximately_equal(vector2, vector));
+        }
     }
 
     SECTION("Differ by more than provided tolerance") {

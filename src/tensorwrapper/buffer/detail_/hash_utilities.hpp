@@ -67,14 +67,9 @@ void hash_input(hash_type& seed, const sigma::Uncertain<T>& value) {
 }
 
 template<typename T>
-void hash_input(hash_type& seed, const sigma::Interval<T>& value) {
+void hash_input(hash_type& seed, const types::interval_type<T>& value) {
     hash_input(seed, value.lower());
     hash_input(seed, value.upper());
-}
-
-template<typename T>
-void hash_input(hash_type& seed, const types::interval_type<T>& value) {
-    hash_input(seed, value.range());
 }
 
 #endif

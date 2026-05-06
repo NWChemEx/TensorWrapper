@@ -28,7 +28,7 @@ namespace tensorwrapper::types {
 using ufloat  = sigma::UFloat;
 using udouble = sigma::UDouble;
 template<typename T>
-using interval_type = sigma::PartitionedAffine<T>;
+using interval_type = sigma::Interval<T>;
 using ifloat        = interval_type<float>;
 using idouble       = interval_type<double>;
 
@@ -48,7 +48,7 @@ T fabs(T value) {
     if constexpr(is_uncertain_v<T>) {
         return sigma::fabs(value);
     } else if constexpr(is_interval_v<T>) {
-        return T(sigma::fabs(value.range()));
+        return T(sigma::fabs(value));
     } else {
         return std::fabs(value);
     }

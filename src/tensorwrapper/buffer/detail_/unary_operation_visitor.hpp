@@ -157,11 +157,7 @@ public:
             if constexpr(types::is_uncertain_v<clean_t>) {
                 scalar_diff = abs_diff.mean();
             } else if constexpr(types::is_interval_v<clean_t>) {
-                auto max_diff       = abs_diff.range().upper();
-                using max_diff_type = std::decay_t<decltype(max_diff)>;
-                auto epsilon = std::numeric_limits<max_diff_type>::epsilon();
-                if(max_diff < epsilon) return true;
-                scalar_diff = max_diff;
+                scalar_diff = abs_diff.upper();
             } else {
                 scalar_diff = abs_diff;
             }
@@ -181,8 +177,7 @@ struct InfinityNormVisitor {
         for(std::size_t i = 0; i < buffer.size(); ++i) {
             auto elem = types::fabs(buffer[i]);
             if constexpr(types::is_interval_v<std::decay_t<FloatType>>) {
-                if(elem.range().upper() > max_element.range().upper())
-                    max_element = elem;
+                if(elem.upper() > max_element.upper()) max_element = elem;
             } else {
                 if(elem > max_element) max_element = elem;
             }
