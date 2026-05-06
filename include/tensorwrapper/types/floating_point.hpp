@@ -54,6 +54,28 @@ T fabs(T value) {
     }
 }
 
+template<typename T>
+T log(T value) {
+    if constexpr(is_uncertain_v<T>) {
+        return sigma::log(value);
+    } else if constexpr(is_interval_v<T>) {
+        return T(sigma::log(value));
+    } else {
+        return std::log(value);
+    }
+}
+
+template<typename T>
+T exp(T value) {
+    if constexpr(is_uncertain_v<T>) {
+        return sigma::exp(value);
+    } else if constexpr(is_interval_v<T>) {
+        return T(sigma::exp(value));
+    } else {
+        return std::exp(value);
+    }
+}
+
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
@@ -87,6 +109,16 @@ constexpr bool is_interval_v = false;
 template<typename T>
 T fabs(T value) {
     return std::fabs(value);
+}
+
+template<typename T>
+T log(T value) {
+    return std::log(value);
+}
+
+template<typename T>
+T exp(T value) {
+    return std::exp(value);
 }
 
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
