@@ -25,8 +25,10 @@
 namespace tensorwrapper::types {
 
 #ifdef ENABLE_SIGMA
-using ufloat  = sigma::UFloat;
-using udouble = sigma::UDouble;
+template<typename T>
+using uncertain_type = sigma::Uncertain<T>;
+using ufloat         = uncertain_type<float>;
+using udouble        = uncertain_type<double>;
 template<typename T>
 using interval_type = sigma::Interval<T>;
 using ifloat        = interval_type<float>;
@@ -91,8 +93,10 @@ WTF_REGISTER_FP_TYPE(tensorwrapper::types::ifloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);
 
 #else
-using ufloat  = float;
-using udouble = double;
+template<typename T>
+using uncertain_type = T;
+using ufloat         = uncertain_type<float>;
+using udouble        = uncertain_type<double>;
 template<typename T>
 using interval_type = T;
 using ifloat        = float;
