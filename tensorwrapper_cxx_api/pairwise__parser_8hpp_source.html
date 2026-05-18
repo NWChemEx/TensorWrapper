@@ -164,8 +164,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <a class="code hl_function" href="classtensorwrapper_1_1dsl_1_1PairwiseParser.html#a19ea143a04faeefb864ce2db41e58b1d">dispatch</a>(lA, rhs.lhs());</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            lhs.object().scalar_multiplication(lhs.labels(), rhs.rhs(), lA);</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keyword">auto</span> pA     = lhs.object().clone();</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keyword">auto</span> pB     = lhs.object().clone();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keyword">auto</span> pA     = rhs.lhs().object().clone();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keyword">auto</span> pB     = rhs.rhs().object().clone();</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            <span class="keyword">auto</span> labels = lhs.labels();</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <span class="keyword">auto</span> lA     = (*pA)(labels);</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keyword">auto</span> lB     = (*pB)(labels);</div>
