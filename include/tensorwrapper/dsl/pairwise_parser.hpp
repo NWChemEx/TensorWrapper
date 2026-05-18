@@ -145,8 +145,8 @@ public:
             dispatch(lA, rhs.lhs());
             lhs.object().scalar_multiplication(lhs.labels(), rhs.rhs(), lA);
         } else {
-            auto pA     = lhs.object().clone();
-            auto pB     = lhs.object().clone();
+            auto pA     = rhs.lhs().object().clone();
+            auto pB     = rhs.rhs().object().clone();
             auto labels = lhs.labels();
             auto lA     = (*pA)(labels);
             auto lB     = (*pB)(labels);
