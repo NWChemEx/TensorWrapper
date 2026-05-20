@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NWChemEx-Project
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,10 @@
  */
 
 #pragma once
-#include <tensorwrapper/operations/approximately_equal.hpp>
-#include <tensorwrapper/operations/norm.hpp>
-#include <tensorwrapper/operations/power.hpp>
+#include <tensorwrapper/tensor/tensor.hpp>
 
-/// Namespace for free functions that act on tensors
-namespace tensorwrapper::operations {}
+namespace tensorwrapper::utilities {
+
+Tensor diagonal_matrix(const Tensor& diagonal_elements);
+
+} // namespace tensorwrapper::utilities

@@ -78,6 +78,17 @@ T exp(T value) {
     }
 }
 
+template<typename T>
+T pow(T value, double pow) {
+    if constexpr(is_uncertain_v<T>) {
+        return sigma::pow(value, pow);
+    } else if constexpr(is_interval_v<T>) {
+        return T(sigma::pow(value, pow));
+    } else {
+        return std::pow(value, pow);
+    }
+}
+
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
@@ -123,6 +134,11 @@ T log(T value) {
 template<typename T>
 T exp(T value) {
     return std::exp(value);
+}
+
+template<typename T>
+T pow(T value, double pow) {
+    return std::pow(value, pow);
 }
 
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
