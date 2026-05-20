@@ -24,5 +24,6 @@ var searchData=
   ['polymorphicbase_3c_20shapebase_20_3e_21',['PolymorphicBase&lt; ShapeBase &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
   ['polymorphicbase_3c_20smoothviewpimpl_3c_20smoothtype_20_3e_20_3e_22',['PolymorphicBase&lt; SmoothViewPIMPL&lt; SmoothType &gt; &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
   ['polymorphicbase_3c_20tensor_20_3e_23',['PolymorphicBase&lt; Tensor &gt;',['../classtensorwrapper_1_1detail___1_1PolymorphicBase.html',1,'tensorwrapper::detail_']]],
-  ['preserve_5fconst_5ft_24',['preserve_const_t',['../namespacetensorwrapper_1_1types.html#a8211648e8195f06384896fbad5ce7e51',1,'tensorwrapper::types']]]
+  ['power_24',['power',['../namespacetensorwrapper_1_1operations.html#a2fee596cc90d1a03b88c6ef9bba0af3a',1,'tensorwrapper::operations']]],
+  ['preserve_5fconst_5ft_25',['preserve_const_t',['../namespacetensorwrapper_1_1types.html#a8211648e8195f06384896fbad5ce7e51',1,'tensorwrapper::types']]]
 ];

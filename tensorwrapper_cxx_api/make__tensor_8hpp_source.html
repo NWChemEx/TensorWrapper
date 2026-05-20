@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tensorwrapper: include/tensorwrapper/operations/operations.hpp Source File</title>
+<title>tensorwrapper: include/tensorwrapper/utilities/make_tensor.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,15 +74,15 @@ $(document).ready(function() { init_codefold(0); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_ce594d54a31e103fcce03bc6bedab543.html">operations</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_b851f65e215a286503163f79cf545269.html">tensorwrapper</a></li><li class="navelem"><a class="el" href="dir_4049fd681d4f726c1b864c2e871d62b5.html">utilities</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">operations.hpp</div></div>
+  <div class="headertitle"><div class="title">make_tensor.hpp</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright 2025 NWChemEx-Project</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright 2026 NWChemEx-Project</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -98,12 +98,27 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;tensorwrapper/operations/approximately_equal.hpp&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/operations/norm.hpp&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;tensorwrapper/operations/power.hpp&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;tensorwrapper/buffer/contiguous.hpp&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor_class.hpp&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a> {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1operations.html">tensorwrapper::operations</a> {}</div>
-<div class="ttc" id="anamespacetensorwrapper_1_1operations_html"><div class="ttname"><a href="namespacetensorwrapper_1_1operations.html">tensorwrapper::operations</a></div><div class="ttdoc">Namespace for free functions that act on tensors.</div><div class="ttdef"><b>Definition</b> approximately_equal.hpp:20</div></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BeginIterator, <span class="keyword">typename</span> EndIterator&gt;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>Tensor make_tensor(std::vector&lt;std::size_t&gt; shape, BeginIterator begin,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                   EndIterator end) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    shape::Smooth smooth_shape(shape.begin(), shape.end());</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    std::vector data(begin, end);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    buffer::Contiguous buffer(data, smooth_shape);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordflow">return</span> Tensor(std::move(smooth_shape), std::move(buffer));</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ContainerType&gt;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>Tensor make_tensor(std::initializer_list&lt;std::size_t&gt; shape,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                   ContainerType&amp;&amp; value) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">return</span> make_tensor(shape, value.begin(), value.end());</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace tensorwrapper::utilities</span></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1utilities_html"><div class="ttname"><a href="namespacetensorwrapper_1_1utilities.html">tensorwrapper::utilities</a></div><div class="ttdoc">Namespace for helper functions.</div><div class="ttdef"><b>Definition</b> block_diagonal_matrix.hpp:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
