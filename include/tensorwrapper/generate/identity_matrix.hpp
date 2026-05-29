@@ -15,11 +15,19 @@
  */
 
 #pragma once
-#include <tensorwrapper/generate/add_noise.hpp>
-#include <tensorwrapper/generate/generate_eigen_system.hpp>
-#include <tensorwrapper/generate/generate_eigenvalues.hpp>
+#include <cstddef>
 #include <tensorwrapper/generate/generate_utils.hpp>
-#include <tensorwrapper/generate/identity_matrix.hpp>
-#include <tensorwrapper/generate/random_orthogonal_matrix.hpp>
+#include <tensorwrapper/utilities/diagonal_matrix.hpp>
+#include <tensorwrapper/utilities/make_tensor.hpp>
+#include <vector>
 
-namespace tensorwrapper::generate {}
+namespace tensorwrapper::generate {
+
+inline Tensor identity_matrix(std::size_t n) {
+    require_valid_n(n);
+    std::vector<double> values(n, 1.0);
+    auto values_tensor = utilities::make_tensor({n}, values);
+    return utilities::diagonal_matrix(values_tensor);
+}
+
+} // namespace tensorwrapper::generate
