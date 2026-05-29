@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <tensorwrapper/generate/add_noise.hpp>
 #include <tensorwrapper/generate/generate_eigen_system.hpp>
 #include <tensorwrapper/generate/generate_eigenvalues.hpp>
 #include <tensorwrapper/generate/generate_utils.hpp>
