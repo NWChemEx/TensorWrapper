@@ -19,6 +19,7 @@
 #include <tensorwrapper/detail_/detail_.hpp>
 #include <tensorwrapper/diis/diis.hpp>
 #include <tensorwrapper/dsl/dsl.hpp>
+#include <tensorwrapper/generate/generate.hpp>
 #include <tensorwrapper/layout/layout.hpp>
 #include <tensorwrapper/operations/operations.hpp>
 #include <tensorwrapper/shape/shape.hpp>
