@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['my_5fbase_5ftype_0',['my_base_type',['../classtensorwrapper_1_1buffer_1_1LocalView.html#a3f724f12cd1a4abe2852642381dcaed3',1,'tensorwrapper::buffer::LocalView']]]
+  ['eigenvalues_0',['eigenvalues',['../structtensorwrapper_1_1generate_1_1EigenSystem.html#a3dc69375ab9eb2513935af228fa2276a',1,'tensorwrapper::generate::EigenSystem']]],
+  ['eigenvectors_1',['eigenvectors',['../structtensorwrapper_1_1generate_1_1EigenSystem.html#afc9148c2b6bb7b384f78989d73a529cf',1,'tensorwrapper::generate::EigenSystem']]]
 ];

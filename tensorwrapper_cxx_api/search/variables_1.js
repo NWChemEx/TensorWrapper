@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['is_5fmutable_5fto_5fimmutable_5fcast_5fv_0',['is_mutable_to_immutable_cast_v',['../namespacetensorwrapper_1_1detail__.html#a6a23574a75f8ab1de5e8f854c7263e03',1,'tensorwrapper::detail_']]]
+  ['cluster_5fwidth_0',['cluster_width',['../structtensorwrapper_1_1generate_1_1SymmetricMatrixSpec.html#a5c227da7fb8b80ce814044eaa5c696ff',1,'tensorwrapper::generate::SymmetricMatrixSpec']]],
+  ['condition_5fnumber_1',['condition_number',['../structtensorwrapper_1_1generate_1_1SymmetricMatrixSpec.html#a171227b3012df4e7ba12a5d1d832a6e4',1,'tensorwrapper::generate::SymmetricMatrixSpec']]]
 ];
