@@ -20,6 +20,18 @@
 
 namespace tensorwrapper::generate {
 
+/** @brief Creates a random @p n x @p n orthogonal matrix.
+ *
+ *  Draws entries from a standard normal distribution and applies Householder QR
+ *  factorization to obtain an orthogonal matrix @f$Q@f$.
+ *
+ *  @param[in] n Matrix dimension. Must be in `[1, kMaxMatrixDim]`.
+ *  @param[in,out] gen Random number generator used for the normal draws.
+ *
+ *  @return A rank-2 tensor whose columns form an orthonormal basis.
+ *
+ *  @throw std::invalid_argument if @p n is outside the allowed range.
+ */
 Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen);
 
 } // namespace tensorwrapper::generate

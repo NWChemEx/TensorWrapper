@@ -22,4 +22,10 @@
 #include <tensorwrapper/generate/identity_matrix.hpp>
 #include <tensorwrapper/generate/random_orthogonal_matrix.hpp>
 
+/** @brief Namespace for utilities that generate synthetic tensors and matrices.
+ *
+ *  The functions in this namespace create reproducible test matrices,
+ * eigenvalue
+ *  spectra, and related quantities for unit testing and benchmarking.
+ */
 namespace tensorwrapper::generate {}

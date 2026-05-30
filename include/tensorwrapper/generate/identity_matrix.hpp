@@ -23,6 +23,14 @@
 
 namespace tensorwrapper::generate {
 
+/** @brief Creates an @p n x @p n identity matrix.
+ *
+ *  @param[in] n Matrix dimension. Must be in `[1, kMaxMatrixDim]`.
+ *
+ *  @return A rank-2 tensor with ones on the diagonal and zeros elsewhere.
+ *
+ *  @throw std::invalid_argument if @p n is outside the allowed range.
+ */
 inline Tensor identity_matrix(std::size_t n) {
     require_valid_n(n);
     std::vector<double> values(n, 1.0);

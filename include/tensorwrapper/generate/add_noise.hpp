@@ -36,6 +36,17 @@ namespace tensorwrapper::generate {
  */
 Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen);
 
+/** @brief Overload of add_noise that creates its own RNG from @p seed.
+ *
+ *  @param[in] matrix The tensor to perturb.
+ *  @param[in] t Non-negative noise scale (standard deviation and clamp bound).
+ *  @param[in] seed Seed for the internal random number generator. A value of
+ *                  zero selects a non-deterministic seed.
+ *
+ *  @return A new tensor with the same shape as @p matrix.
+ *
+ *  @throw std::invalid_argument if @p t is negative.
+ */
 Tensor add_noise(const Tensor& matrix, double t, std::uint64_t seed = 42);
 
 } // namespace tensorwrapper::generate
