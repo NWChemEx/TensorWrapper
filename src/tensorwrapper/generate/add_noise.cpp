@@ -20,6 +20,7 @@
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/generate/add_noise.hpp>
 #include <tensorwrapper/generate/generate_utils.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
 #include <vector>
 
@@ -32,27 +33,83 @@ std::vector<std::size_t> shape_extents(const auto& shape) {
     return rv;
 }
 
-} // namespace
+template<concepts::FloatingPoint T>
+double noise_center(const T& value) {
+    if constexpr(types::is_uncertain_v<T>) {
+        return static_cast<double>(value.mean());
+    } else if constexpr(types::is_interval_v<T>) {
+        return static_cast<double>(value.median());
+    } else {
+        return static_cast<double>(value);
+    }
+}
 
-Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen) {
+template<concepts::FloatingPoint T>
+T apply_noise(double center, double delta, double t) {
+    if constexpr(types::is_uncertain_v<T>) {
+        using value_type = typename T::value_t;
+        return T(static_cast<value_type>(center + delta),
+                 static_cast<value_type>(t));
+    } else if constexpr(types::is_interval_v<T>) {
+        using value_type   = typename T::value_t;
+        const value_type c = static_cast<value_type>(center + delta);
+        const value_type w = static_cast<value_type>(t);
+        return T(c - w, c + w);
+    } else {
+        return static_cast<T>(center + delta);
+    }
+}
+
+template<concepts::FloatingPoint T>
+Tensor add_noise_impl(const Tensor& matrix, double t, std::mt19937& gen) {
     if(t < 0.0) { throw std::invalid_argument("t must be non-negative"); }
 
     auto& in_buf = buffer::make_contiguous(matrix.buffer());
-    auto in_data = buffer::get_raw_data<const double>(in_buf);
-    std::vector<double> data(in_data.begin(), in_data.end());
+    auto in_data = buffer::get_raw_data<const T>(in_buf);
+    std::vector<T> data(in_data.begin(), in_data.end());
 
     if(t > 0.0) {
         std::normal_distribution<double> dist(0.0, t);
-        for(auto& x : data) { x += std::clamp(dist(gen), -t, t); }
+        for(auto& x : data) {
+            const auto center = noise_center<T>(x);
+            const auto delta  = std::clamp(dist(gen), -t, t);
+            x                 = apply_noise<T>(center, delta, t);
+        }
     }
 
     return utilities::make_tensor(shape_extents(in_buf.shape()), data.begin(),
                                   data.end());
 }
 
+} // namespace
+
+template<concepts::FloatingPoint T>
+Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen) {
+    return add_noise_impl<T>(matrix, t, gen);
+}
+
+template<concepts::FloatingPoint T>
 Tensor add_noise(const Tensor& matrix, double t, std::uint64_t seed) {
     auto gen = make_rng(seed);
-    return add_noise(matrix, t, gen);
+    return add_noise<T>(matrix, t, gen);
 }
+
+Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen) {
+    return add_noise<double>(matrix, t, gen);
+}
+
+Tensor add_noise(const Tensor& matrix, double t, std::uint64_t seed) {
+    return add_noise<double>(matrix, t, seed);
+}
+
+#define DEFINE_ADD_NOISE(TYPE)                                      \
+    template Tensor add_noise<TYPE>(const Tensor& matrix, double t, \
+                                    std::mt19937& gen);             \
+    template Tensor add_noise<TYPE>(const Tensor& matrix, double t, \
+                                    std::uint64_t seed);
+
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_ADD_NOISE);
+
+#undef DEFINE_ADD_NOISE
 
 } // namespace tensorwrapper::generate
