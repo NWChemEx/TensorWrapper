@@ -17,6 +17,7 @@
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/generate/random_orthogonal_matrix.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/diagonal_matrix.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
 #include <testing/testing.hpp>
@@ -27,10 +28,11 @@ using namespace tensorwrapper::generate;
 using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
-TEST_CASE("random_orthogonal_matrix") {
+TEMPLATE_LIST_TEST_CASE("random_orthogonal_matrix", "",
+                        types::floating_point_types) {
     SECTION("shape") {
         auto gen = make_rng(7);
-        auto Q   = random_orthogonal_matrix(3, gen);
+        auto Q   = random_orthogonal_matrix<TestType>(3, gen);
         auto buf = make_contiguous(Q.buffer());
         REQUIRE(buf.shape().rank() == 2);
         REQUIRE(buf.shape().extent(0) == 3);
@@ -39,20 +41,26 @@ TEST_CASE("random_orthogonal_matrix") {
 
     SECTION("orthogonality") {
         auto gen = make_rng(11);
-        auto Q   = random_orthogonal_matrix(3, gen);
+        auto Q   = random_orthogonal_matrix<TestType>(3, gen);
         Tensor product;
         product("i,k") = Q("i,j") * Q("k,j");
 
-        auto ones  = make_tensor({3}, std::vector<double>{1, 1, 1});
-        auto ident = diagonal_matrix(ones);
-        REQUIRE(approximately_equal(product, ident, 1e-12));
+        auto ones = make_tensor(
+          {3}, std::vector<TestType>{TestType{1}, TestType{1}, TestType{1}});
+        auto ident           = diagonal_matrix(ones);
+        constexpr double tol = std::is_same_v<TestType, float> ||
+                                   std::is_same_v<TestType, types::ufloat> ||
+                                   std::is_same_v<TestType, types::ifloat> ?
+                                 1e-5 :
+                                 1e-12;
+        REQUIRE(approximately_equal(product, ident, tol));
     }
 
     SECTION("deterministic for fixed seed") {
         auto gen1 = make_rng(99);
         auto gen2 = make_rng(99);
-        auto Q1   = random_orthogonal_matrix(4, gen1);
-        auto Q2   = random_orthogonal_matrix(4, gen2);
+        auto Q1   = random_orthogonal_matrix<TestType>(4, gen1);
+        auto Q2   = random_orthogonal_matrix<TestType>(4, gen2);
         REQUIRE(approximately_equal(Q1, Q2));
     }
 }
