@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['identity_5fmatrix_0',['identity_matrix',['../namespacetensorwrapper_1_1generate.html#acbcd1e796b4f679ba3c81b26947b9504',1,'tensorwrapper::generate']]],
+  ['identity_5fmatrix_0',['identity_matrix',['../namespacetensorwrapper_1_1generate.html#acbcd1e796b4f679ba3c81b26947b9504',1,'tensorwrapper::generate::identity_matrix(std::size_t n)'],['../namespacetensorwrapper_1_1generate.html#ad51c5af03f77903fa1ef6096ec002941',1,'tensorwrapper::generate::identity_matrix(std::size_t n)']]],
   ['iltraits_1',['ILTraits',['../structtensorwrapper_1_1types_1_1ILTraits.html',1,'tensorwrapper::types']]],
   ['iltraits_3c_20floattype_2c_200_20_3e_2',['ILTraits&lt; FloatType, 0 &gt;',['../structtensorwrapper_1_1types_1_1ILTraits_3_01FloatType_00_010_01_4.html',1,'tensorwrapper::types']]],
   ['index_5fvector_3',['index_vector',['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensor.html#ab4e849ee11b818f22b0724d735472590',1,'tensorwrapper::backends::eigen::EigenTensor::index_vector'],['../classtensorwrapper_1_1backends_1_1eigen_1_1EigenTensorImpl.html#ab4e849ee11b818f22b0724d735472590',1,'tensorwrapper::backends::eigen::EigenTensorImpl::index_vector']]],

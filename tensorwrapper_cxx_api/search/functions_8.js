@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['identity_5fmatrix_0',['identity_matrix',['../namespacetensorwrapper_1_1generate.html#acbcd1e796b4f679ba3c81b26947b9504',1,'tensorwrapper::generate']]],
+  ['identity_5fmatrix_0',['identity_matrix',['../namespacetensorwrapper_1_1generate.html#ad51c5af03f77903fa1ef6096ec002941',1,'tensorwrapper::generate::identity_matrix(std::size_t n)'],['../namespacetensorwrapper_1_1generate.html#acbcd1e796b4f679ba3c81b26947b9504',1,'tensorwrapper::generate::identity_matrix(std::size_t n)']]],
   ['infinity_5fnorm_1',['infinity_norm',['../namespacetensorwrapper_1_1operations.html#ad8ad2307c3313361a128e76f7401b78d',1,'tensorwrapper::operations']]],
   ['intersection_2',['intersection',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a4c518ef880ad96a7745d3b78cd1c6b99',1,'tensorwrapper::dsl::DummyIndices']]],
   ['is_5fcontraction_3',['is_contraction',['../classtensorwrapper_1_1dsl_1_1DummyIndices.html#a464236bbc7c46269ed955e93d48f65e1',1,'tensorwrapper::dsl::DummyIndices']]],

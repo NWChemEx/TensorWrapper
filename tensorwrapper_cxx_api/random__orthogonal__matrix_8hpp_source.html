@@ -99,15 +99,28 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;random&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor.hpp&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1generate.html">tensorwrapper::generate</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;tensorwrapper/concepts/floating_point.hpp&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;tensorwrapper/tensor/tensor.hpp&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;tensorwrapper/types/floating_point.hpp&gt;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>Tensor <a class="code hl_function" href="namespacetensorwrapper_1_1generate.html#a2ed89de56ebef26eb8f1d6e439e98c8e">random_orthogonal_matrix</a>(std::size_t n, std::mt19937&amp; gen);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace tensorwrapper::generate</span></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1generate_html"><div class="ttname"><a href="namespacetensorwrapper_1_1generate.html">tensorwrapper::generate</a></div><div class="ttdoc">Namespace for utilities that generate synthetic tensors and matrices.</div><div class="ttdef"><b>Definition</b> add_noise.hpp:22</div></div>
-<div class="ttc" id="anamespacetensorwrapper_1_1generate_html_a2ed89de56ebef26eb8f1d6e439e98c8e"><div class="ttname"><a href="namespacetensorwrapper_1_1generate.html#a2ed89de56ebef26eb8f1d6e439e98c8e">tensorwrapper::generate::random_orthogonal_matrix</a></div><div class="ttdeci">Tensor random_orthogonal_matrix(std::size_t n, std::mt19937 &amp;gen)</div><div class="ttdoc">Creates a random n x n orthogonal matrix.</div><div class="ttdef"><b>Definition</b> random_orthogonal_matrix.cpp:25</div></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorwrapper_1_1generate.html">tensorwrapper::generate</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span>&lt;concepts::FloatingPo<span class="keywordtype">int</span> T&gt;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>Tensor <a class="code hl_function" href="namespacetensorwrapper_1_1generate.html#adac7f1e1e5ad5a6726d34921dc78e1d2">random_orthogonal_matrix</a>(std::size_t n, std::mt19937&amp; gen);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>Tensor <a class="code hl_function" href="namespacetensorwrapper_1_1generate.html#adac7f1e1e5ad5a6726d34921dc78e1d2">random_orthogonal_matrix</a>(std::size_t n, std::mt19937&amp; gen);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define DECLARE_RANDOM_ORTHOGONAL_MATRIX(TYPE)                           \</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">    extern template Tensor random_orthogonal_matrix&lt;TYPE&gt;(std::size_t n, \</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">                                                          std::mt19937&amp; gen);</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>TW_APPLY_FLOATING_POINT_TYPES(DECLARE_RANDOM_ORTHOGONAL_MATRIX);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#undef DECLARE_RANDOM_ORTHOGONAL_MATRIX</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace tensorwrapper::generate</span></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1generate_html"><div class="ttname"><a href="namespacetensorwrapper_1_1generate.html">tensorwrapper::generate</a></div><div class="ttdoc">Namespace for utilities that generate synthetic tensors and matrices.</div><div class="ttdef"><b>Definition</b> add_noise.hpp:24</div></div>
+<div class="ttc" id="anamespacetensorwrapper_1_1generate_html_adac7f1e1e5ad5a6726d34921dc78e1d2"><div class="ttname"><a href="namespacetensorwrapper_1_1generate.html#adac7f1e1e5ad5a6726d34921dc78e1d2">tensorwrapper::generate::random_orthogonal_matrix</a></div><div class="ttdeci">Tensor random_orthogonal_matrix(std::size_t n, std::mt19937 &amp;gen)</div><div class="ttdoc">Creates a random n x n orthogonal matrix.</div><div class="ttdef"><b>Definition</b> random_orthogonal_matrix.cpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
