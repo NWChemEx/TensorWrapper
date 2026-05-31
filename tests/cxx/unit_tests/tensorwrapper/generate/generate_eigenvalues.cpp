@@ -14,42 +14,29 @@
  * limitations under the License.
  */
 
-#include <algorithm>
-#include <cmath>
-#include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/generate/generate_eigenvalues.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
 #include <testing/testing.hpp>
-#include <wtf/fp/float_view.hpp>
 
 using namespace tensorwrapper;
-using namespace tensorwrapper::buffer;
 using namespace tensorwrapper::generate;
 using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
-namespace {
-double elem_as_double(const Contiguous::const_reference& elem) {
-    using wtf::fp::float_cast;
-    try {
-        return float_cast<double>(elem);
-    } catch(const std::runtime_error&) {
-        return static_cast<double>(float_cast<float>(elem));
+TEMPLATE_LIST_TEST_CASE("generate_eigenvalues", "",
+                        types::floating_point_types) {
+    SECTION("n == 1") {
+        SymmetricMatrixSpec spec;
+        spec.n              = 1;
+        spec.min_eigenvalue = 3.5;
+        auto gen            = make_rng(1);
+        auto result         = generate_eigenvalues<TestType>(spec, gen);
+        auto corr = make_tensor({1}, std::vector<TestType>{TestType{3.5}});
+        REQUIRE(approximately_equal(result, corr));
     }
-}
 
-std::vector<double> tensor_to_vector(const Tensor& t) {
-    auto buf = make_contiguous(t.buffer());
-    std::vector<double> rv(buf.shape().extent(0));
-    for(std::size_t i = 0; i < rv.size(); ++i) {
-        rv[i] = elem_as_double(buf.get_elem({i}));
-    }
-    return rv;
-}
-} // namespace
-
-TEST_CASE("generate_eigenvalues") {
     SECTION("linear spacing") {
         SymmetricMatrixSpec spec;
         spec.n                = 4;
@@ -57,8 +44,10 @@ TEST_CASE("generate_eigenvalues") {
         spec.condition_number = 10.0;
         spec.spacing          = EigenvalueSpacing::Linear;
         auto gen              = make_rng(1);
-        auto result           = generate_eigenvalues(spec, gen);
-        auto corr = make_tensor({4}, std::vector<double>{1, 4, 7, 10});
+        auto result           = generate_eigenvalues<TestType>(spec, gen);
+        auto corr =
+          make_tensor({4}, std::vector<TestType>{TestType{1}, TestType{4},
+                                                 TestType{7}, TestType{10}});
         REQUIRE(approximately_equal(result, corr));
     }
 
@@ -68,13 +57,20 @@ TEST_CASE("generate_eigenvalues") {
         spec.min_eigenvalue   = 1.0;
         spec.condition_number = 100.0;
         spec.spacing          = EigenvalueSpacing::Logarithmic;
-        auto gen              = make_rng(1);
-        auto values = tensor_to_vector(generate_eigenvalues(spec, gen));
-        REQUIRE(values.size() == 3);
-        REQUIRE(values[0] == Catch::Approx(1.0));
-        REQUIRE(values[1] == Catch::Approx(10.0));
-        REQUIRE(values[2] == Catch::Approx(100.0));
-        REQUIRE(std::is_sorted(values.begin(), values.end()));
+        const auto lambda_min = static_cast<TestType>(spec.min_eigenvalue);
+        const auto lambda_max =
+          static_cast<TestType>(spec.min_eigenvalue * spec.condition_number);
+        const auto log_min = types::log(lambda_min);
+        const auto log_max = types::log(lambda_max);
+        const auto dlog    = (log_max - log_min) / TestType{2};
+        std::vector<TestType> expected(3);
+        for(std::size_t i = 0; i < 3; ++i) {
+            expected[i] = types::exp(log_min + static_cast<TestType>(i) * dlog);
+        }
+        auto gen    = make_rng(1);
+        auto result = generate_eigenvalues<TestType>(spec, gen);
+        auto corr   = make_tensor({3}, expected);
+        REQUIRE(approximately_equal(result, corr));
     }
 
     SECTION("degenerate spacing") {
@@ -85,9 +81,11 @@ TEST_CASE("generate_eigenvalues") {
         spec.spacing          = EigenvalueSpacing::Degenerate;
         spec.n_clusters       = 1;
         auto gen              = make_rng(1);
-        auto values = tensor_to_vector(generate_eigenvalues(spec, gen));
-        REQUIRE(values.size() == 3);
-        for(const auto v : values) { REQUIRE(v == Catch::Approx(2.5)); }
+        auto result           = generate_eigenvalues<TestType>(spec, gen);
+        auto corr =
+          make_tensor({3}, std::vector<TestType>{TestType{2.5}, TestType{2.5},
+                                                 TestType{2.5}});
+        REQUIRE(approximately_equal(result, corr));
     }
 
     SECTION("clustered spacing") {
@@ -99,31 +97,27 @@ TEST_CASE("generate_eigenvalues") {
         spec.n_clusters       = 3;
         spec.cluster_width    = 1e-6;
         spec.seed             = 23;
-        auto gen              = make_rng(spec.seed);
-        auto values = tensor_to_vector(generate_eigenvalues(spec, gen));
-        REQUIRE(values.size() == 6);
-        REQUIRE(std::is_sorted(values.begin(), values.end()));
 
-        const double lambda_max = spec.min_eigenvalue * spec.condition_number;
-        const double dx         = (lambda_max - spec.min_eigenvalue) / 2.0;
-        std::vector<double> centers(3);
-        for(std::size_t c = 0; c < 3; ++c) {
-            centers[c] = spec.min_eigenvalue + static_cast<double>(c) * dx;
-        }
-        for(const auto v : values) {
-            const auto near_center =
-              std::any_of(centers.begin(), centers.end(), [&](double center) {
-                  return std::abs(v - center) <= spec.cluster_width;
-              });
-            REQUIRE(near_center);
-        }
+        auto gen    = make_rng(spec.seed);
+        auto result = generate_eigenvalues<TestType>(spec, gen);
+
+        gen              = make_rng(spec.seed);
+        auto result_copy = generate_eigenvalues<TestType>(spec, gen);
+        REQUIRE(approximately_equal(result, result_copy));
+
+        SymmetricMatrixSpec plateau_spec = spec;
+        plateau_spec.spacing             = EigenvalueSpacing::Degenerate;
+        auto plateau_gen                 = make_rng(1);
+        auto plateaus =
+          generate_eigenvalues<TestType>(plateau_spec, plateau_gen);
+        REQUIRE(approximately_equal(result, plateaus, spec.cluster_width));
     }
 
     SECTION("invalid n throws") {
         SymmetricMatrixSpec spec;
         spec.n   = 0;
         auto gen = make_rng(1);
-        REQUIRE_THROWS_AS(generate_eigenvalues(spec, gen),
+        REQUIRE_THROWS_AS(generate_eigenvalues<TestType>(spec, gen),
                           std::invalid_argument);
     }
 }

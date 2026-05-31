@@ -16,8 +16,10 @@
 
 #pragma once
 #include <cstddef>
+#include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/generate/generate_utils.hpp>
 #include <tensorwrapper/tensor/tensor.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::generate {
 
@@ -43,6 +45,11 @@ struct EigenSystem {
  *  Constructs @f$M = Q D Q^T@f$ where @f$D@f$ is built from eigenvalues
  *  generated according to @p spec and @f$Q@f$ is a random orthogonal matrix.
  *
+ *  Explicit instantiations are provided only for types in
+ *  @ref types::floating_point_types.
+ *
+ *  @tparam T Element type of the returned tensors.
+ *
  *  @param[in] spec Parameters controlling the matrix dimension, spectrum, and
  *                  random seed.
  *
@@ -51,6 +58,27 @@ struct EigenSystem {
  *
  *  @throw std::invalid_argument if @p spec.n is outside `[1, kMaxMatrixDim]`.
  */
+template<concepts::FloatingPoint T>
 EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec);
+
+/** @brief Generates an eigen-system with element type `double`.
+ *
+ *  Equivalent to `generate_eigen_system<double>(spec)`.
+ *
+ *  @param[in] spec Parameters controlling the matrix dimension, spectrum, and
+ *                  random seed.
+ *
+ *  @return An @ref EigenSystem populated with @p spec.n, the eigenvalues,
+ *          eigenvectors, and the assembled matrix.
+ */
+EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec);
+
+#define DECLARE_GENERATE_EIGEN_SYSTEM(TYPE)                  \
+    extern template EigenSystem generate_eigen_system<TYPE>( \
+      const SymmetricMatrixSpec& spec);
+
+TW_APPLY_FLOATING_POINT_TYPES(DECLARE_GENERATE_EIGEN_SYSTEM);
+
+#undef DECLARE_GENERATE_EIGEN_SYSTEM
 
 } // namespace tensorwrapper::generate

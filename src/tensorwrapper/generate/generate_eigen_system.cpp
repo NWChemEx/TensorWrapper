@@ -17,10 +17,12 @@
 #include <tensorwrapper/generate/generate_eigen_system.hpp>
 #include <tensorwrapper/generate/generate_eigenvalues.hpp>
 #include <tensorwrapper/generate/random_orthogonal_matrix.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/diagonal_matrix.hpp>
 
 namespace tensorwrapper::generate {
 
+template<concepts::FloatingPoint T>
 EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec) {
     require_valid_n(spec.n);
     auto gen     = make_rng(spec.seed);
@@ -28,8 +30,8 @@ EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec) {
 
     EigenSystem rv;
     rv.n            = n;
-    rv.eigenvalues  = generate_eigenvalues(spec, gen);
-    rv.eigenvectors = random_orthogonal_matrix(n, gen);
+    rv.eigenvalues  = generate_eigenvalues<T>(spec, gen);
+    rv.eigenvectors = random_orthogonal_matrix<T>(n, gen);
 
     const auto D = utilities::diagonal_matrix(rv.eigenvalues);
 
@@ -41,5 +43,17 @@ EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec) {
     rv.matrix     = std::move(matrix);
     return rv;
 }
+
+EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec) {
+    return generate_eigen_system<double>(spec);
+}
+
+#define DEFINE_GENERATE_EIGEN_SYSTEM(TYPE)            \
+    template EigenSystem generate_eigen_system<TYPE>( \
+      const SymmetricMatrixSpec& spec);
+
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_GENERATE_EIGEN_SYSTEM);
+
+#undef DEFINE_GENERATE_EIGEN_SYSTEM
 
 } // namespace tensorwrapper::generate

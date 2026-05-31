@@ -16,6 +16,7 @@
 
 #include <tensorwrapper/generate/identity_matrix.hpp>
 #include <tensorwrapper/operations/approximately_equal.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
 #include <testing/testing.hpp>
 
@@ -24,21 +25,25 @@ using namespace tensorwrapper::generate;
 using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
-TEST_CASE("identity_matrix") {
+TEMPLATE_LIST_TEST_CASE("identity_matrix", "", types::floating_point_types) {
     SECTION("2 by 2") {
-        auto result = identity_matrix(2);
-        auto corr   = make_tensor({2, 2}, std::vector<double>{1, 0, 0, 1});
+        auto result = identity_matrix<TestType>(2);
+        auto corr =
+          make_tensor({2, 2}, std::vector<TestType>{TestType{1}, TestType{0},
+                                                    TestType{0}, TestType{1}});
         REQUIRE(approximately_equal(result, corr));
     }
 
     SECTION("3 by 3") {
-        auto result = identity_matrix(3);
-        auto corr =
-          make_tensor({3, 3}, std::vector<double>{1, 0, 0, 0, 1, 0, 0, 0, 1});
+        auto result = identity_matrix<TestType>(3);
+        auto corr   = make_tensor(
+          {3, 3}, std::vector<TestType>{TestType{1}, TestType{0}, TestType{0},
+                                          TestType{0}, TestType{1}, TestType{0},
+                                          TestType{0}, TestType{0}, TestType{1}});
         REQUIRE(approximately_equal(result, corr));
     }
 
     SECTION("invalid n throws") {
-        REQUIRE_THROWS_AS(identity_matrix(0), std::invalid_argument);
+        REQUIRE_THROWS_AS(identity_matrix<TestType>(0), std::invalid_argument);
     }
 }

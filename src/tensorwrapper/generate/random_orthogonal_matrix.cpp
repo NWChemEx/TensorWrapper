@@ -17,14 +17,15 @@
 #include <Eigen/Dense>
 #include <tensorwrapper/generate/generate_utils.hpp>
 #include <tensorwrapper/generate/random_orthogonal_matrix.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
 #include <vector>
 
 namespace tensorwrapper::generate {
+namespace {
 
-Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen) {
-    require_valid_n(n);
-
+Eigen::MatrixXd random_orthogonal_matrix_eigen(std::size_t n,
+                                               std::mt19937& gen) {
     Eigen::MatrixXd M(n, n);
     std::normal_distribution<double> dist(0.0, 1.0);
     for(std::size_t i = 0; i < n; ++i) {
@@ -34,16 +35,37 @@ Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen) {
         }
     }
     Eigen::HouseholderQR<Eigen::MatrixXd> qr(M);
-    const Eigen::MatrixXd Q = qr.householderQ();
+    return Eigen::MatrixXd(qr.householderQ());
+}
 
-    std::vector<double> data(n * n);
+} // namespace
+
+template<concepts::FloatingPoint T>
+Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen) {
+    require_valid_n(n);
+
+    const auto Q = random_orthogonal_matrix_eigen(n, gen);
+
+    std::vector<T> data(n * n);
     for(std::size_t i = 0; i < n; ++i) {
         for(std::size_t j = 0; j < n; ++j) {
-            data[i * n + j] =
-              Q(static_cast<Eigen::Index>(i), static_cast<Eigen::Index>(j));
+            data[i * n + j] = static_cast<T>(
+              Q(static_cast<Eigen::Index>(i), static_cast<Eigen::Index>(j)));
         }
     }
     return utilities::make_tensor({n, n}, data);
 }
+
+Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen) {
+    return random_orthogonal_matrix<double>(n, gen);
+}
+
+#define DEFINE_RANDOM_ORTHOGONAL_MATRIX(TYPE)                     \
+    template Tensor random_orthogonal_matrix<TYPE>(std::size_t n, \
+                                                   std::mt19937& gen);
+
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_RANDOM_ORTHOGONAL_MATRIX);
+
+#undef DEFINE_RANDOM_ORTHOGONAL_MATRIX
 
 } // namespace tensorwrapper::generate

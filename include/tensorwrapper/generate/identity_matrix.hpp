@@ -16,6 +16,7 @@
 
 #pragma once
 #include <cstddef>
+#include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/generate/generate_utils.hpp>
 #include <tensorwrapper/utilities/diagonal_matrix.hpp>
 #include <tensorwrapper/utilities/make_tensor.hpp>
@@ -31,11 +32,23 @@ namespace tensorwrapper::generate {
  *
  *  @throw std::invalid_argument if @p n is outside the allowed range.
  */
-inline Tensor identity_matrix(std::size_t n) {
+template<concepts::FloatingPoint T>
+Tensor identity_matrix(std::size_t n) {
     require_valid_n(n);
-    std::vector<double> values(n, 1.0);
-    auto values_tensor = utilities::make_tensor({n}, values);
-    return utilities::diagonal_matrix(values_tensor);
+    std::vector<T> values(n, 1.0);
+    return utilities::diagonal_matrix(utilities::make_tensor({n}, values));
+}
+
+/** @brief Creates an identity matrix with element type `double`.
+ *
+ *  Equivalent to `identity_matrix<double>(n)`.
+ *
+ *  @param[in] n Matrix dimension. Must be in `[1, kMaxMatrixDim]`.
+ *
+ *  @return A rank-2 tensor with ones on the diagonal and zeros elsewhere.
+ */
+inline Tensor identity_matrix(std::size_t n) {
+    return identity_matrix<double>(n);
 }
 
 } // namespace tensorwrapper::generate
