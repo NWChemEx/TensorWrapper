@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NWChemEx-Project
+ * Copyright 2026 NWChemEx-Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-#include "tensor/export_tensor.hpp"
-#include <pybind11/pybind11.h>
+#include <tensorwrapper/types/floating_point.hpp>
 
-namespace tensorwrapper {
+#define DEFINE_WTF_CONTIGUOUS(TYPE)                             \
+    template class wtf::buffer::detail_::ContiguousModel<TYPE>; \
+    template class wtf::buffer::detail_::ContiguousViewModel<TYPE>;
 
-PYBIND11_MODULE(tensorwrapper, m) {
-    m.doc() = "PyTensorWrapper : Python bindings for TensorWrapper";
+TW_APPLY_FLOATING_POINT_TYPES(DEFINE_WTF_CONTIGUOUS);
 
-    export_tensor(m);
-}
-
-} // namespace tensorwrapper
+#undef DEFINE_WTF_CONTIGUOUS
