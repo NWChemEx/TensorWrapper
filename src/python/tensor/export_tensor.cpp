@@ -17,7 +17,9 @@
 #include "export_tensor.hpp"
 #include <pybind11/numpy.h>
 #include <pybind11/operators.h>
-#include <tensorwrapper/tensorwrapper.hpp>
+#include <tensorwrapper/buffer/contiguous.hpp>
+#include <tensorwrapper/concepts/floating_point.hpp>
+#include <tensorwrapper/tensor/tensor.hpp>
 
 namespace tensorwrapper {
 namespace {

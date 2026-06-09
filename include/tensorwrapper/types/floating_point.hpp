@@ -92,10 +92,10 @@ T pow(T value, double pow) {
 #define TW_APPLY_FLOATING_POINT_TYPES(MACRO_IN) \
     MACRO_IN(float);                            \
     MACRO_IN(double);                           \
-    MACRO_IN(types::ufloat);                    \
-    MACRO_IN(types::udouble);                   \
-    MACRO_IN(types::ifloat);                    \
-    MACRO_IN(types::idouble);
+    MACRO_IN(tensorwrapper::types::ufloat);     \
+    MACRO_IN(tensorwrapper::types::udouble);    \
+    MACRO_IN(tensorwrapper::types::ifloat);     \
+    MACRO_IN(tensorwrapper::types::idouble);
 } // namespace tensorwrapper::types
 
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
@@ -147,3 +147,11 @@ T pow(T value, double pow) {
 
 } // namespace tensorwrapper::types
 #endif
+
+#define DECLARE_WTF_CONTIGUOUS(TYPE)                                   \
+    extern template class wtf::buffer::detail_::ContiguousModel<TYPE>; \
+    extern template class wtf::buffer::detail_::ContiguousViewModel<TYPE>;
+
+TW_APPLY_FLOATING_POINT_TYPES(DECLARE_WTF_CONTIGUOUS);
+
+#undef DECLARE_WTF_CONTIGUOUS
