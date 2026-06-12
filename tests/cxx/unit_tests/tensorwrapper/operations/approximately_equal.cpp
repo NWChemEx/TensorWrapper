@@ -65,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by more than default tolerance") {
-        TestType value = 1e-1;
+        TestType value(1e-1);
         pscalar2->set_elem({}, TestType{42.0} + value);
         pvector2->set_elem({0}, TestType{1.23} + value);
         Tensor scalar2(s0, std::move(pscalar2));
@@ -77,7 +77,7 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by less than default tolerance") {
-        TestType value = 1e-17;
+        TestType value(1e-17);
         // This test won't work for intervals because sigma::Interval
         // automatically increases the interval size to ensure the result is in
         // the interval, even after floating point rounding occurs. The
@@ -110,7 +110,7 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
     }
 
     SECTION("Differ by less than provided tolerance") {
-        TestType value = 1e-10;
+        TestType value(1e-10);
         pscalar2->set_elem({}, TestType{42.0} + value);
         pvector2->set_elem({0}, TestType{1.23} + value);
         Tensor scalar2(s0, std::move(pscalar2));

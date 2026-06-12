@@ -314,7 +314,7 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         }
 
         SECTION("Differ by more than provided tolerance") {
-            TestType diff = 1e-1;
+            TestType diff(1e-1);
             scalar2.set_elem({}, one + diff);
             vector2.set_elem({0}, one + diff);
             matrix2.set_elem({0, 0}, one + diff);
@@ -328,8 +328,8 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         }
 
         SECTION("Differ by less than provided tolerance") {
-            TestType diff = 1e-10;
-            double tol    = 1e-1;
+            TestType diff(1e-10);
+            double tol = 1e-1;
             scalar2.set_elem({}, one + diff);
             vector2.set_elem({0}, one + diff);
             matrix2.set_elem({0, 0}, one + diff);
@@ -571,7 +571,8 @@ TEMPLATE_LIST_TEST_CASE("make_contiguous(shape)", "",
     using buffer::Contiguous;
     using shape_type = shape::Smooth;
 
-    std::vector<TestType> data = {0.0, 0.0, 0.0, 0.0};
+    TestType zero(0.0);
+    std::vector<TestType> data(4, zero);
     shape_type shape({2, 2});
     buffer::Contiguous corr(data, shape);
 

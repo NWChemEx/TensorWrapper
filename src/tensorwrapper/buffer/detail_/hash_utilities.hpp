@@ -60,16 +60,48 @@ template<typename T>
 void hash_input(hash_type& seed, const sigma::Uncertain<T>& value) {
     hash_input(seed, value.mean());
     hash_input(seed, value.sd());
+    // deps() is an unordered container, so its iteration order is not stable
+    // (e.g. across copies of the same value). Fold each dependency into an
+    // order-independent (commutative) accumulator before combining so that two
+    // equal values always produce the same hash.
+    hash_type deps_hash = 0;
     for(const auto& [dep, deriv] : value.deps()) {
-        hash_input(seed, dep);
-        hash_input(seed, deriv);
+        hash_type term = 0;
+        hash_input(term, dep);
+        hash_input(term, deriv);
+        deps_hash ^= term;
     }
+    hash_input(seed, deps_hash);
 }
 
 template<typename T>
 void hash_input(hash_type& seed, const types::interval_type<T>& value) {
     hash_input(seed, value.lower());
     hash_input(seed, value.upper());
+}
+
+template<typename T>
+void hash_input(hash_type& seed, const types::affine_type<T>& value) {
+    hash_input(seed, value.center());
+    // error_terms() is an unordered_map, so its iteration order is not stable
+    // (e.g. across copies of the same value). Fold each error term into an
+    // order-independent (commutative) accumulator before combining so that two
+    // equal affine forms always produce the same hash.
+    hash_type terms_hash = 0;
+    for(const auto& [label, coeff] : value.error_terms()) {
+        hash_type term = 0;
+        hash_input(term, label);
+        hash_input(term, coeff);
+        terms_hash ^= term;
+    }
+    hash_input(seed, terms_hash);
+}
+
+template<typename T>
+void hash_input(hash_type& seed,
+                const types::thresholded_affine_type<T>& value) {
+    hash_input(seed, value.affine());
+    hash_input(seed, value.threshold());
 }
 
 #endif

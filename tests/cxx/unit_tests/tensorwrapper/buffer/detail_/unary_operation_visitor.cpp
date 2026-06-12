@@ -158,10 +158,10 @@ TEMPLATE_LIST_TEST_CASE("ApproximatelyEqualVisitor", "[buffer][detail_]",
     using cspan_type   = std::span<const TestType>;
     double default_tol = 1e-16;
 
-    vector_type scalar_diff{0.000001};
-    vector_type scalar_same{0.0};
-    vector_type vector_diff{0.000001, -0.000001};
-    vector_type vector_same{0.0, 0.0};
+    vector_type scalar_diff{TestType(0.000001)};
+    vector_type scalar_same{TestType(0.0)};
+    vector_type vector_diff{TestType(0.000001), TestType(-0.000001)};
+    vector_type vector_same{TestType(0.0), TestType(0.0)};
 
     span_type scalar_diff_span(scalar_diff.data(), scalar_diff.size());
     cspan_type cscalar_diff_span(scalar_diff.data(), scalar_diff.size());

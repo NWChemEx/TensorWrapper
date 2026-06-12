@@ -137,7 +137,7 @@ public:
         // TODO: Change when public API changes to support other FP types
         auto scalar = wtf::fp::float_cast<double>(m_scalar_);
         pthis->scalar_multiplication(this->this_labels(), other_labels(),
-                                     scalar, *pother);
+                                     clean_t(scalar), *pother);
     }
 
 private:
@@ -150,18 +150,9 @@ public:
 
     template<typename FloatType>
     bool operator()(const std::span<FloatType> result) {
-        using clean_t = std::decay_t<FloatType>;
         for(std::size_t i = 0; i < result.size(); ++i) {
             auto abs_diff = types::fabs(result[i]);
-            double scalar_diff;
-            if constexpr(types::is_uncertain_v<clean_t>) {
-                scalar_diff = abs_diff.mean();
-            } else if constexpr(types::is_interval_v<clean_t>) {
-                scalar_diff = abs_diff.upper();
-            } else {
-                scalar_diff = abs_diff;
-            }
-            if(scalar_diff >= m_tol_) return false;
+            if(!types::strictly_less(abs_diff, m_tol_)) { return false; }
         }
         return true;
     }
@@ -176,11 +167,7 @@ struct InfinityNormVisitor {
         std::decay_t<FloatType> max_element{0.0};
         for(std::size_t i = 0; i < buffer.size(); ++i) {
             auto elem = types::fabs(buffer[i]);
-            if constexpr(types::is_interval_v<std::decay_t<FloatType>>) {
-                if(elem.upper() > max_element.upper()) max_element = elem;
-            } else {
-                if(elem > max_element) max_element = elem;
-            }
+            if(!types::strictly_less(elem, max_element)) { max_element = elem; }
         }
         return wtf::fp::make_float(max_element);
     }

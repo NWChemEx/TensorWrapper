@@ -24,17 +24,8 @@ namespace {
 
 struct Kernel {
     template<typename FloatType>
-    auto operator()(const std::span<FloatType>& t) {
-        using clean_type = std::decay_t<FloatType>;
-        double rv;
-        if constexpr(tensorwrapper::types::is_uncertain_v<clean_type>) {
-            rv = t[0].mean();
-        } else if constexpr(tensorwrapper::types::is_interval_v<clean_type>) {
-            rv = t[0].median();
-        } else {
-            rv = t[0];
-        }
-        return rv;
+    double operator()(const std::span<FloatType>& t) {
+        return static_cast<double>(tensorwrapper::types::uq_center(t[0]));
     }
 };
 

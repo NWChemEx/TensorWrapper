@@ -27,13 +27,15 @@ TEMPLATE_LIST_TEST_CASE("make_tensor", "", types::floating_point_types) {
         std::vector<TestType> data{42};
         auto tensor  = make_tensor({}, data.begin(), data.end());
         auto tensor2 = make_tensor({}, data);
-        Tensor corr(shape::Smooth{}, testing::eigen_scalar<TestType>(42));
+        Tensor corr(shape::Smooth{},
+                    testing::eigen_scalar<TestType>(TestType(42)));
         REQUIRE(approximately_equal(tensor, corr));
         REQUIRE(approximately_equal(tensor2, corr));
     }
 
     SECTION("vector") {
-        std::vector<TestType> data{0, 1, 2, 3, 4};
+        std::vector<TestType> data{TestType(0), TestType(1), TestType(2),
+                                   TestType(3), TestType(4)};
         auto tensor  = make_tensor({5}, data.begin(), data.end());
         auto tensor2 = make_tensor({5}, data);
         Tensor corr(shape::Smooth{5}, testing::eigen_vector<TestType>());
@@ -42,7 +44,8 @@ TEMPLATE_LIST_TEST_CASE("make_tensor", "", types::floating_point_types) {
     }
 
     SECTION("matrix") {
-        std::vector<TestType> data{1, 2, 3, 4};
+        std::vector<TestType> data{TestType(1), TestType(2), TestType(3),
+                                   TestType(4)};
         auto tensor  = make_tensor({2, 2}, data.begin(), data.end());
         auto tensor2 = make_tensor({2, 2}, data);
         Tensor corr(shape::Smooth{2, 2}, testing::eigen_matrix<TestType>());
@@ -50,7 +53,9 @@ TEMPLATE_LIST_TEST_CASE("make_tensor", "", types::floating_point_types) {
         REQUIRE(approximately_equal(tensor2, corr));
     }
     SECTION("tensor3") {
-        std::vector<TestType> data{1, 2, 3, 4, 5, 6, 7, 8};
+        std::vector<TestType> data{TestType(1), TestType(2), TestType(3),
+                                   TestType(4), TestType(5), TestType(6),
+                                   TestType(7), TestType(8)};
         auto tensor  = make_tensor({2, 2, 2}, data.begin(), data.end());
         auto tensor2 = make_tensor({2, 2, 2}, data);
         Tensor corr(shape::Smooth{2, 2, 2}, testing::eigen_tensor3<TestType>());
@@ -58,8 +63,11 @@ TEMPLATE_LIST_TEST_CASE("make_tensor", "", types::floating_point_types) {
         REQUIRE(approximately_equal(tensor2, corr));
     }
     SECTION("tensor4") {
-        std::vector<TestType> data{1, 2,  3,  4,  5,  6,  7,  8,
-                                   9, 10, 11, 12, 13, 14, 15, 16};
+        std::vector<TestType> data{
+          TestType(1),  TestType(2),  TestType(3),  TestType(4),
+          TestType(5),  TestType(6),  TestType(7),  TestType(8),
+          TestType(9),  TestType(10), TestType(11), TestType(12),
+          TestType(13), TestType(14), TestType(15), TestType(16)};
         auto tensor  = make_tensor({2, 2, 2, 2}, data.begin(), data.end());
         auto tensor2 = make_tensor({2, 2, 2, 2}, data);
         Tensor corr(shape::Smooth{2, 2, 2, 2},

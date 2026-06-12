@@ -36,10 +36,15 @@ TEMPLATE_LIST_TEST_CASE("hash_input", "", types::floating_point_types) {
         hash_type corr{0};
         boost::hash_combine(corr, value.mean());
         boost::hash_combine(corr, value.sd());
+        // deps are folded order-independently (see hash_utilities.hpp)
+        hash_type deps_hash{0};
         for(const auto& [dep, deriv] : value.deps()) {
-            boost::hash_combine(corr, dep);
-            boost::hash_combine(corr, deriv);
+            hash_type term{0};
+            boost::hash_combine(term, dep);
+            boost::hash_combine(term, deriv);
+            deps_hash ^= term;
         }
+        boost::hash_combine(corr, deps_hash);
         REQUIRE(seed == corr);
     } else if constexpr(types::is_interval_v<TestType>) {
         value_type value(1.0, 1.0);
@@ -48,6 +53,30 @@ TEMPLATE_LIST_TEST_CASE("hash_input", "", types::floating_point_types) {
         boost::hash_combine(corr, value.lower());
         boost::hash_combine(corr, value.upper());
         REQUIRE(seed == corr);
+    } else if constexpr(types::is_affine_v<TestType>) {
+        value_type value(1.0, 2.0);
+        hash_input(seed, value);
+        hash_type corr{0};
+        boost::hash_combine(corr, value.center());
+        // error terms are folded order-independently (see hash_utilities.hpp)
+        hash_type terms_hash{0};
+        for(const auto& [label, coeff] : value.error_terms()) {
+            hash_type term{0};
+            boost::hash_combine(term, label);
+            boost::hash_combine(term, coeff);
+            terms_hash ^= term;
+        }
+        boost::hash_combine(corr, terms_hash);
+        REQUIRE(seed == corr);
+    } else if constexpr(types::is_thresholded_affine_v<TestType>) {
+        value_type value(1.0, 2.0);
+        hash_input(seed, value);
+        hash_type corr{0};
+        hash_input(corr, value.affine());
+        hash_input(corr, value.threshold());
+        REQUIRE(seed == corr);
+    } else if constexpr(types::is_uq_type_v<TestType>) {
+        throw std::runtime_error("UQ type not registered for hash_input");
     } else {
         value_type value(1.0);
         hash_input(seed, value);

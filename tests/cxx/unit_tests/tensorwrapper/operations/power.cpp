@@ -29,16 +29,17 @@ TEMPLATE_LIST_TEST_CASE("power", "", types::floating_point_types) {
         Tensor scalar(s, testing::eigen_scalar<TestType>());
         auto rv = power(scalar, 2);
         REQUIRE(approximately_equal(
-          rv, Tensor(s, testing::eigen_scalar<TestType>(42 * 42))));
+          rv, Tensor(s, testing::eigen_scalar<TestType>(TestType(42 * 42)))));
     }
 
     SECTION("vector") {
         shape::Smooth s{5};
         Tensor vector(s, testing::eigen_vector<TestType>());
-        auto rv        = power(vector, 0.5);
-        TestType sqrt2 = std::sqrt(2);
-        TestType sqrt3 = std::sqrt(3);
-        std::vector<TestType> data{0, 1, sqrt2, sqrt3, 2};
+        auto rv = power(vector, 0.5);
+        TestType sqrt2(std::sqrt(2));
+        TestType sqrt3(std::sqrt(3));
+        std::vector<TestType> data{TestType(0), TestType(1), sqrt2, sqrt3,
+                                   TestType(2)};
         auto corr = make_tensor({5}, data.begin(), data.end());
         REQUIRE(approximately_equal(rv, corr));
     }

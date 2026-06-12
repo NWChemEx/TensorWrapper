@@ -29,28 +29,11 @@ using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
 namespace {
-template<typename T>
-double elem_center(const T& value) {
-    if constexpr(types::is_uncertain_v<T>) {
-        return static_cast<double>(value.mean());
-    } else if constexpr(types::is_interval_v<T>) {
-        return static_cast<double>(value.median());
-    } else {
-        return static_cast<double>(value);
-    }
-}
 
 template<typename T>
 void require_within_noise(const T& in, const T& out, double t) {
-    if constexpr(types::is_uncertain_v<T>) {
-        REQUIRE(out.sd() == Catch::Approx(t));
-        REQUIRE(std::abs(out.mean() - in.mean()) <= t);
-    } else if constexpr(types::is_interval_v<T>) {
-        REQUIRE(out.radius() == Catch::Approx(t));
-        REQUIRE(std::abs(out.median() - in.median()) <= t);
-    } else {
-        REQUIRE(std::abs(elem_center(out) - elem_center(in)) <= t);
-    }
+    using tensorwrapper::types::uq_center;
+    REQUIRE(std::abs(uq_center(in) - uq_center(out)) <= t);
 }
 } // namespace
 

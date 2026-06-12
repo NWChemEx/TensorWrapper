@@ -29,17 +29,25 @@ template<typename T>
 using uncertain_type = sigma::Uncertain<T>;
 using ufloat         = uncertain_type<float>;
 using udouble        = uncertain_type<double>;
+
 template<typename T>
 using interval_type = sigma::Interval<T>;
 using ifloat        = interval_type<float>;
 using idouble       = interval_type<double>;
+
 template<typename T>
 using affine_type = sigma::Affine<T>;
 using afloat      = affine_type<float>;
 using adouble     = affine_type<double>;
 
+template<typename T>
+using thresholded_affine_type = sigma::ThresholdedAffine<T>;
+using tafloat                 = thresholded_affine_type<float>;
+using tadouble                = thresholded_affine_type<double>;
+
 using floating_point_types =
-  std::tuple<float, double, ufloat, udouble, ifloat, idouble, afloat, adouble>;
+  std::tuple<float, double, ufloat, udouble, ifloat, idouble, afloat, adouble,
+             tafloat, tadouble>;
 
 template<typename T>
 constexpr bool is_uncertain_v =
@@ -54,13 +62,67 @@ constexpr bool is_affine_v =
   std::is_same_v<T, afloat> || std::is_same_v<T, adouble>;
 
 template<typename T>
-T fabs(T value) {
+constexpr bool is_thresholded_affine_v =
+  std::is_same_v<T, tafloat> || std::is_same_v<T, tadouble>;
+
+template<typename T>
+constexpr bool is_uq_type_v = is_uncertain_v<T> || is_interval_v<T> ||
+                              is_affine_v<T> || is_thresholded_affine_v<T>;
+
+template<typename T, typename U, typename V>
+T construct_uq_type(const U& center, const V& radius) {
     if constexpr(is_uncertain_v<T>) {
-        return sigma::fabs(value);
+        return T(center, radius);
     } else if constexpr(is_interval_v<T>) {
-        return T(sigma::fabs(value));
-    } else if constexpr(is_affine_v<T>) {
-        return T(sigma::fabs(value));
+        return T(center - radius, center + radius);
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
+        return T(center - radius, center + radius);
+    } else if constexpr(is_uq_type_v<T>) {
+        throw std::logic_error("UQ type not recognized in construct_uq_type.");
+    } else {
+        return T(center + radius);
+    }
+}
+
+template<typename T>
+auto uq_center(const T& value) {
+    if constexpr(is_uncertain_v<T>) {
+        return value.mean();
+    } else if constexpr(is_interval_v<T>) {
+        return value.median();
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
+        return value.center();
+    } else if constexpr(is_uq_type_v<T>) {
+        throw std::logic_error("UQ type not recognized in uq_center.");
+    } else {
+        return value;
+    }
+}
+
+template<typename T>
+auto uq_upper(const T& value) {
+    if constexpr(is_uncertain_v<T>) {
+        return value.mean() + value.sd();
+    } else if constexpr(is_interval_v<T>) {
+        return value.upper();
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
+        return value.range().upper();
+    } else if constexpr(is_uq_type_v<T>) {
+        throw std::logic_error("UQ type not recognized in uq_upper.");
+    } else {
+        return value;
+    }
+}
+
+template<typename T, typename U>
+bool strictly_less(const T& lhs, const U& rhs) {
+    return uq_upper(lhs) < uq_upper(rhs);
+}
+
+template<typename T>
+T fabs(T value) {
+    if constexpr(is_uq_type_v<T>) {
+        return static_cast<T>(sigma::fabs(value));
     } else {
         return std::fabs(value);
     }
@@ -68,12 +130,8 @@ T fabs(T value) {
 
 template<typename T>
 T log(T value) {
-    if constexpr(is_uncertain_v<T>) {
-        return sigma::log(value);
-    } else if constexpr(is_interval_v<T>) {
-        return T(sigma::log(value));
-    } else if constexpr(is_affine_v<T>) {
-        return T(sigma::log(value));
+    if constexpr(is_uq_type_v<T>) {
+        return static_cast<T>(sigma::log(value));
     } else {
         return std::log(value);
     }
@@ -81,12 +139,8 @@ T log(T value) {
 
 template<typename T>
 T exp(T value) {
-    if constexpr(is_uncertain_v<T>) {
-        return sigma::exp(value);
-    } else if constexpr(is_interval_v<T>) {
-        return T(sigma::exp(value));
-    } else if constexpr(is_affine_v<T>) {
-        return T(sigma::exp(value));
+    if constexpr(is_uq_type_v<T>) {
+        return static_cast<T>(sigma::exp(value));
     } else {
         return std::exp(value);
     }
@@ -94,12 +148,8 @@ T exp(T value) {
 
 template<typename T>
 T pow(T value, double pow) {
-    if constexpr(is_uncertain_v<T>) {
-        return sigma::pow(value, pow);
-    } else if constexpr(is_interval_v<T>) {
-        return T(sigma::pow(value, pow));
-    } else if constexpr(is_affine_v<T>) {
-        return T(sigma::pow(value, pow));
+    if constexpr(is_uq_type_v<T>) {
+        return static_cast<T>(sigma::pow(value, pow));
     } else {
         return std::pow(value, pow);
     }
@@ -113,7 +163,9 @@ T pow(T value, double pow) {
     MACRO_IN(tensorwrapper::types::ifloat);     \
     MACRO_IN(tensorwrapper::types::idouble);    \
     MACRO_IN(tensorwrapper::types::afloat);     \
-    MACRO_IN(tensorwrapper::types::adouble);
+    MACRO_IN(tensorwrapper::types::adouble);    \
+    MACRO_IN(tensorwrapper::types::tafloat);    \
+    MACRO_IN(tensorwrapper::types::tadouble)
 } // namespace tensorwrapper::types
 
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
@@ -122,6 +174,8 @@ WTF_REGISTER_FP_TYPE(tensorwrapper::types::ifloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::afloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::adouble);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::tafloat);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::tadouble);
 
 #else
 template<typename T>
@@ -136,6 +190,10 @@ template<typename T>
 using affine_type = T;
 using afloat      = float;
 using adouble     = double;
+template<typename T>
+using thresholded_affine_type = T;
+using tafloat                 = float;
+using tadouble                = double;
 
 using floating_point_types = std::tuple<float, double>;
 
@@ -147,6 +205,17 @@ constexpr bool is_interval_v = false;
 
 template<typename T>
 constexpr bool is_affine_v = false;
+
+template<typename T>
+constexpr bool is_thresholded_affine_v = false;
+
+template<typename T>
+constexpr bool is_uq_type_v = false;
+
+template<typename T>
+T uq_center(const T& value) {
+    return value;
+}
 
 template<typename T>
 T fabs(T value) {

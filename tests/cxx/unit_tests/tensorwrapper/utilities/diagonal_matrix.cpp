@@ -25,9 +25,12 @@ using namespace tensorwrapper::utilities;
 using namespace testing;
 
 TEMPLATE_LIST_TEST_CASE("diagonal_matrix", "", types::floating_point_types) {
-    auto diagonal_values = make_tensor({3}, std::vector<TestType>{1, 2, 3});
-    auto corr =
-      make_tensor({3, 3}, std::vector<TestType>{1, 0, 0, 0, 2, 0, 0, 0, 3});
+    auto diagonal_values = make_tensor(
+      {3}, std::vector<TestType>{TestType(1), TestType(2), TestType(3)});
+    auto corr = make_tensor(
+      {3, 3}, std::vector<TestType>{TestType(1), TestType(0), TestType(0),
+                                    TestType(0), TestType(2), TestType(0),
+                                    TestType(0), TestType(0), TestType(3)});
     auto result = diagonal_matrix(diagonal_values);
     REQUIRE(approximately_equal(result, corr));
 }

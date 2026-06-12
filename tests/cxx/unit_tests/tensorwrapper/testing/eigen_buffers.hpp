@@ -27,7 +27,7 @@
 namespace tensorwrapper::testing {
 
 template<typename FloatType>
-auto eigen_scalar(FloatType value = 42.0) {
+auto eigen_scalar(FloatType value = FloatType(42.0)) {
     shape::Smooth shape{};
     std::vector<FloatType> data{value};
     return std::make_unique<buffer::Contiguous>(std::move(data),
