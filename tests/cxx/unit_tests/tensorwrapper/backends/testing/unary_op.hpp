@@ -38,7 +38,7 @@ void scalar_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
     label_type out("");
     label_type rhs("");
     the_op(out, rhs, result, s0);
-    REQUIRE(result.get_elem({}) == corr_op(s0_data[0]));
+    REQUIRE(elements_equal(result.get_elem({}), corr_op(s0_data[0])));
 }
 
 template<typename TestType, typename Fxn1, typename Fxn2>
@@ -61,7 +61,7 @@ void vector_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
     label_type rhs("i");
     the_op(out, rhs, result, s0);
     for(std::size_t i = 0; i < n_elements; ++i)
-        REQUIRE(result.get_elem({i}) == corr_op(s0_data[i]));
+        REQUIRE(elements_equal(result.get_elem({i}), corr_op(s0_data[i])));
 }
 
 template<typename TestType, typename Fxn1, typename Fxn2>
@@ -91,7 +91,8 @@ void matrix_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         for(std::size_t i = 0; i < 4; ++i)
             for(std::size_t j = 0; j < 4; ++j) {
                 std::size_t idx = i * 4 + j;
-                REQUIRE(result.get_elem({i, j}) == corr_op(s0_data[idx]));
+                REQUIRE(elements_equal(result.get_elem({i, j}),
+                                       corr_op(s0_data[idx])));
             }
     }
 
@@ -100,7 +101,8 @@ void matrix_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         for(std::size_t i = 0; i < 4; ++i)
             for(std::size_t j = 0; j < 4; ++j) {
                 std::size_t idx = j * 4 + i;
-                REQUIRE(result.get_elem({i, j}) == corr_op(s0_data[idx]));
+                REQUIRE(elements_equal(result.get_elem({i, j}),
+                                       corr_op(s0_data[idx])));
             }
     }
 
@@ -109,7 +111,8 @@ void matrix_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         for(std::size_t i = 0; i < 4; ++i)
             for(std::size_t j = 0; j < 4; ++j) {
                 std::size_t idx = i * 4 + j;
-                REQUIRE(result.get_elem({j, i}) == corr_op(s0_data[idx]));
+                REQUIRE(elements_equal(result.get_elem({j, i}),
+                                       corr_op(s0_data[idx])));
             }
     }
 }
@@ -149,7 +152,8 @@ void tensor3_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         the_op(ijk, ijk, result, s0);
         for(const auto [i, j, k] : tensor3_indices) {
             std::size_t idx = i * 4 + j * 2 + k;
-            REQUIRE(result.get_elem({i, j, k}) == corr_op(s0_data[idx]));
+            REQUIRE(elements_equal(result.get_elem({i, j, k}),
+                                   corr_op(s0_data[idx])));
         }
     }
 
@@ -157,7 +161,8 @@ void tensor3_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         the_op(ijk, jik, result, s0);
         for(const auto [i, j, k] : tensor3_indices) {
             std::size_t idx = j * 4 + i * 2 + k;
-            REQUIRE(result.get_elem({i, j, k}) == corr_op(s0_data[idx]));
+            REQUIRE(elements_equal(result.get_elem({i, j, k}),
+                                   corr_op(s0_data[idx])));
         }
     }
 }
@@ -198,7 +203,8 @@ void tensor4_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         the_op(ijkl, ijkl, result, s0);
         for(const auto [i, j, k, l] : tensor4_indices) {
             std::size_t idx = i * 8 + j * 4 + k * 2 + l;
-            REQUIRE(result.get_elem({i, j, k, l}) == corr_op(s0_data[idx]));
+            REQUIRE(elements_equal(result.get_elem({i, j, k, l}),
+                                   corr_op(s0_data[idx])));
         }
     }
 
@@ -206,7 +212,8 @@ void tensor4_unary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
         the_op(ijkl, jikl, result, s0);
         for(const auto [i, j, k, l] : tensor4_indices) {
             std::size_t idx = j * 8 + i * 4 + k * 2 + l;
-            REQUIRE(result.get_elem({i, j, k, l}) == corr_op(s0_data[idx]));
+            REQUIRE(elements_equal(result.get_elem({i, j, k, l}),
+                                   corr_op(s0_data[idx])));
         }
     }
 }

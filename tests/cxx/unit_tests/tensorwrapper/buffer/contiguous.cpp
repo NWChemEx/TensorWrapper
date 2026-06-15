@@ -19,6 +19,7 @@
 #include <tensorwrapper/types/floating_point.hpp>
 
 using namespace tensorwrapper;
+using testing::elements_equal;
 
 /* Testing notes:
  *
@@ -314,7 +315,7 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         }
 
         SECTION("Differ by more than provided tolerance") {
-            TestType diff = 1e-1;
+            TestType diff(1e-1);
             scalar2.set_elem({}, one + diff);
             vector2.set_elem({0}, one + diff);
             matrix2.set_elem({0, 0}, one + diff);
@@ -328,8 +329,8 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
         }
 
         SECTION("Differ by less than provided tolerance") {
-            TestType diff = 1e-10;
-            double tol    = 1e-1;
+            TestType diff(1e-10);
+            double tol = 1e-1;
             scalar2.set_elem({}, one + diff);
             vector2.set_elem({0}, one + diff);
             matrix2.set_elem({0, 0}, one + diff);
@@ -419,7 +420,7 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             result.multiplication_assignment(labels, scalar(labels),
                                              scalar(labels));
             REQUIRE(result.shape() == scalar_shape);
-            REQUIRE(result.get_elem({}) == TestType(1.0));
+            REQUIRE(elements_equal(result.get_elem({}), TestType(1.0)));
         }
 
         SECTION("vector") {
@@ -428,10 +429,10 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             result.multiplication_assignment(labels, vector(labels),
                                              vector(labels));
             REQUIRE(result.shape() == vector_shape);
-            REQUIRE(result.get_elem({0}) == TestType(1.0));
-            REQUIRE(result.get_elem({1}) == TestType(4.0));
-            REQUIRE(result.get_elem({2}) == TestType(9.0));
-            REQUIRE(result.get_elem({3}) == TestType(16.0));
+            REQUIRE(elements_equal(result.get_elem({0}), TestType(1.0)));
+            REQUIRE(elements_equal(result.get_elem({1}), TestType(4.0)));
+            REQUIRE(elements_equal(result.get_elem({2}), TestType(9.0)));
+            REQUIRE(elements_equal(result.get_elem({3}), TestType(16.0)));
         }
 
         SECTION("matrix") {
@@ -440,10 +441,10 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             result.multiplication_assignment(labels, matrix(labels),
                                              matrix(labels));
             REQUIRE(result.shape() == matrix_shape);
-            REQUIRE(result.get_elem({0, 0}) == TestType(1.0));
-            REQUIRE(result.get_elem({0, 1}) == TestType(4.0));
-            REQUIRE(result.get_elem({1, 0}) == TestType(9.0));
-            REQUIRE(result.get_elem({1, 1}) == TestType(16.0));
+            REQUIRE(elements_equal(result.get_elem({0, 0}), TestType(1.0)));
+            REQUIRE(elements_equal(result.get_elem({0, 1}), TestType(4.0)));
+            REQUIRE(elements_equal(result.get_elem({1, 0}), TestType(9.0)));
+            REQUIRE(elements_equal(result.get_elem({1, 1}), TestType(16.0)));
         }
     }
 
@@ -457,7 +458,8 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             Contiguous result;
             result.scalar_multiplication(labels, scalar_value_, scalar(labels));
             REQUIRE(result.shape() == scalar_shape);
-            REQUIRE(result.get_elem({}) == TestType(1.0) * scalar_value);
+            REQUIRE(elements_equal(result.get_elem({}),
+                                   TestType(1.0) * scalar_value));
         }
 
         SECTION("vector") {
@@ -465,10 +467,14 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             Contiguous result;
             result.scalar_multiplication(labels, scalar_value_, vector(labels));
             REQUIRE(result.shape() == vector_shape);
-            REQUIRE(result.get_elem({0}) == TestType(1.0) * scalar_value);
-            REQUIRE(result.get_elem({1}) == TestType(2.0) * scalar_value);
-            REQUIRE(result.get_elem({2}) == TestType(3.0) * scalar_value);
-            REQUIRE(result.get_elem({3}) == TestType(4.0) * scalar_value);
+            REQUIRE(elements_equal(result.get_elem({0}),
+                                   TestType(1.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({1}),
+                                   TestType(2.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({2}),
+                                   TestType(3.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({3}),
+                                   TestType(4.0) * scalar_value));
         }
 
         SECTION("matrix") {
@@ -478,10 +484,14 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             result.scalar_multiplication(lhs_labels, scalar_value_,
                                          matrix(rhs_labels));
             REQUIRE(result.shape() == matrix_shape);
-            REQUIRE(result.get_elem({0, 0}) == TestType(1.0) * scalar_value);
-            REQUIRE(result.get_elem({0, 1}) == TestType(3.0) * scalar_value);
-            REQUIRE(result.get_elem({1, 0}) == TestType(2.0) * scalar_value);
-            REQUIRE(result.get_elem({1, 1}) == TestType(4.0) * scalar_value);
+            REQUIRE(elements_equal(result.get_elem({0, 0}),
+                                   TestType(1.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({0, 1}),
+                                   TestType(3.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({1, 0}),
+                                   TestType(2.0) * scalar_value));
+            REQUIRE(elements_equal(result.get_elem({1, 1}),
+                                   TestType(4.0) * scalar_value));
         }
     }
 
@@ -571,7 +581,8 @@ TEMPLATE_LIST_TEST_CASE("make_contiguous(shape)", "",
     using buffer::Contiguous;
     using shape_type = shape::Smooth;
 
-    std::vector<TestType> data = {0.0, 0.0, 0.0, 0.0};
+    TestType zero(0.0);
+    std::vector<TestType> data(4, zero);
     shape_type shape({2, 2});
     buffer::Contiguous corr(data, shape);
 

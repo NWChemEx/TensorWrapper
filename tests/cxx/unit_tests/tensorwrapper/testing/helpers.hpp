@@ -19,8 +19,57 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include <tensorwrapper/types/floating_point.hpp>
+#include <wtf/fp/float_view.hpp>
 
 namespace tensorwrapper::testing {
+
+// Detect FloatView<FloatType> (variable template specialization).
+// FloatBuffer::at() / Contiguous::get_elem() return FloatView<Float> where
+// Float is the type-erased wtf::fp::Float, not the concrete element type.
+// Calling value<FloatType>() on such a view fails because wtf::fp::Float
+// itself is not registered as a FloatingPoint type.  Instead, we cast to the
+// concrete type given by the OTHER argument (U) in elements_equal.
+template<typename T>
+inline constexpr bool is_float_view_v = false;
+template<typename FloatType>
+inline constexpr bool is_float_view_v<wtf::fp::FloatView<FloatType>> = true;
+
+// Compare two buffer elements.  For affine / thresholded-affine types
+// (detected from the rhs concrete type after stripping cv-qualifiers) compare
+// interval ranges rather than error-symbol maps, which differ across
+// independent computations of the same mathematical value.
+// When lhs is a FloatView, the concrete value is extracted via float_cast
+// using the rhs type as the target (all sigma UQ types are registered with
+// WTF_REGISTER_FP_TYPE so they satisfy concepts::FloatingPoint).
+template<typename T, typename U>
+bool elements_equal(const T& lhs, const U& rhs) {
+    using concrete_t = std::remove_cv_t<U>;
+    concrete_t lv    = [&]() -> concrete_t {
+        if constexpr(is_float_view_v<std::remove_cv_t<T>>) {
+            return wtf::fp::float_cast<concrete_t>(lhs);
+        } else {
+            return lhs;
+        }
+    }();
+    if constexpr(types::is_affine_v<concrete_t> ||
+                 types::is_thresholded_affine_v<concrete_t>) {
+        return lv.range() == rhs.range();
+    } else {
+        return lv == rhs;
+    }
+}
+
+template<typename T>
+constexpr double default_tolerance() {
+    if constexpr(types::is_affine_v<T> || types::is_thresholded_affine_v<T>) {
+        // pow() is implemented as exp(log(x)*n); float-precision accumulates
+        // ~1e-3 absolute error for values like 42^2 = 1764.
+        return 1e-3;
+    } else {
+        return 1e-16;
+    }
+}
 
 /// Tests copy ctor assuming operator== works
 template<typename T>

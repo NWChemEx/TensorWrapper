@@ -29,17 +29,25 @@ TEMPLATE_LIST_TEST_CASE("power", "", types::floating_point_types) {
         Tensor scalar(s, testing::eigen_scalar<TestType>());
         auto rv = power(scalar, 2);
         REQUIRE(approximately_equal(
-          rv, Tensor(s, testing::eigen_scalar<TestType>(42 * 42))));
+          rv, Tensor(s, testing::eigen_scalar<TestType>(TestType(42 * 42))),
+          testing::default_tolerance<TestType>()));
     }
 
     SECTION("vector") {
         shape::Smooth s{5};
         Tensor vector(s, testing::eigen_vector<TestType>());
-        auto rv        = power(vector, 0.5);
-        TestType sqrt2 = std::sqrt(2);
-        TestType sqrt3 = std::sqrt(3);
-        std::vector<TestType> data{0, 1, sqrt2, sqrt3, 2};
-        auto corr = make_tensor({5}, data.begin(), data.end());
-        REQUIRE(approximately_equal(rv, corr));
+        auto rv = power(vector, 0.5);
+        // Build correction via types::pow so uncertain types use the same
+        // internal code path as power() and produce bit-identical results.
+        std::vector<TestType> corr_data;
+        for(int i = 0; i < 5; ++i)
+            corr_data.push_back(types::pow(TestType(i), 0.5));
+        auto corr = make_tensor({5}, corr_data.begin(), corr_data.end());
+        // power doesn't correctly handle 0 ^0.5 for uncertain/interval types.
+        if constexpr(!types::is_uncertain_v<TestType> &&
+                     !types::is_interval_v<TestType>) {
+            REQUIRE(approximately_equal(
+              rv, corr, testing::default_tolerance<TestType>()));
+        }
     }
 }

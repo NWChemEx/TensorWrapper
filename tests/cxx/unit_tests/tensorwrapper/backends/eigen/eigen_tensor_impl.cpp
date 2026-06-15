@@ -220,19 +220,19 @@ TEMPLATE_LIST_TEST_CASE("EigenTensorImpl", "", types::floating_point_types) {
 
     SECTION("set_elem") {
         TestType corr(42);
-        scalar.set_elem({}, 42);
+        scalar.set_elem({}, TestType(42));
         REQUIRE(scalar.get_elem({}) == corr);
 
-        vector.set_elem({5}, 42);
+        vector.set_elem({5}, TestType(42));
         REQUIRE(vector.get_elem({5}) == corr);
 
-        matrix.set_elem({2, 2}, 42);
+        matrix.set_elem({2, 2}, TestType(42));
         REQUIRE(matrix.get_elem({2, 2}) == corr);
 
-        tensor3.set_elem({1, 0, 3}, 42);
+        tensor3.set_elem({1, 0, 3}, TestType(42));
         REQUIRE(tensor3.get_elem({1, 0, 3}) == corr);
 
-        tensor4.set_elem({0, 1, 1, 0}, 42);
+        tensor4.set_elem({0, 1, 1, 0}, TestType(42));
         REQUIRE(tensor4.get_elem({0, 1, 1, 0}) == corr);
     }
 

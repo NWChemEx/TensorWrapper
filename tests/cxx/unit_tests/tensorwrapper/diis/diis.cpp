@@ -34,9 +34,12 @@ tensor_type make_tensor(std::vector<FloatType> elems) {
 TEMPLATE_LIST_TEST_CASE("DIIS", "",
                         tensorwrapper::types::floating_point_types) {
     // Inputs
-    std::vector<TestType> i1_data{1.0, 2.0, 3.0, 4.0};
-    std::vector<TestType> i2_data{6.0, 5.0, 8.0, 7.0};
-    std::vector<TestType> i3_data{12.0, 11.0, 10.0, 9.0};
+    std::vector<TestType> i1_data{TestType(1.0), TestType(2.0), TestType(3.0),
+                                  TestType(4.0)};
+    std::vector<TestType> i2_data{TestType(6.0), TestType(5.0), TestType(8.0),
+                                  TestType(7.0)};
+    std::vector<TestType> i3_data{TestType(12.0), TestType(11.0),
+                                  TestType(10.0), TestType(9.0)};
     tensor_type i1 = make_tensor(i1_data);
     tensor_type i2 = make_tensor(i2_data);
     tensor_type i3 = make_tensor(i3_data);
@@ -73,10 +76,12 @@ TEMPLATE_LIST_TEST_CASE("DIIS", "",
 
     SECTION("extrapolate") {
         // Outputs
-        std::vector<TestType> v0{1.0, 2.0, 3.0, 4.0};
-        std::vector<TestType> v1{12.0, 8.6, 14.0, 10.6};
-        std::vector<TestType> v2{15.35294118, 14.35294118, 11.11764706,
-                                 10.11764706};
+        std::vector<TestType> v0{TestType(1.0), TestType(2.0), TestType(3.0),
+                                 TestType(4.0)};
+        std::vector<TestType> v1{TestType(12.0), TestType(8.6), TestType(14.0),
+                                 TestType(10.6)};
+        std::vector<TestType> v2{TestType(15.35294118), TestType(14.35294118),
+                                 TestType(11.11764706), TestType(10.11764706)};
         tensor_type corr1 = make_tensor<TestType>(v0);
         tensor_type corr2 = make_tensor<TestType>(v1);
         tensor_type corr3 = make_tensor<TestType>(v2);

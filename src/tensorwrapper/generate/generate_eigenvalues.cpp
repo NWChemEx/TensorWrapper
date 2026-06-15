@@ -134,25 +134,14 @@ auto degenerate_spacing(std::size_t n, std::size_t n_clusters,
 }
 
 template<concepts::FloatingPoint T>
-double eigenvalue_sort_key(const T& value) {
-    if constexpr(types::is_interval_v<T>) {
-        return static_cast<double>(value.median());
-    } else if constexpr(types::is_uncertain_v<T>) {
-        return static_cast<double>(value.mean());
-    } else {
-        return static_cast<double>(value);
-    }
-}
-
-template<concepts::FloatingPoint T>
 void sort_eigenvalues(std::vector<T>& values) {
-    if constexpr(types::is_interval_v<T> || types::is_uncertain_v<T>) {
+    if constexpr(types::is_uq_type_v<T>) {
         std::vector<std::size_t> indices(values.size());
         std::iota(indices.begin(), indices.end(), 0);
         std::sort(indices.begin(), indices.end(),
                   [&](std::size_t a, std::size_t b) {
-                      return eigenvalue_sort_key(values[a]) <
-                             eigenvalue_sort_key(values[b]);
+                      return tensorwrapper::types::uq_center(values[a]) <
+                             tensorwrapper::types::uq_center(values[b]);
                   });
         std::vector<T> sorted(values.size());
         for(std::size_t i = 0; i < values.size(); ++i) {

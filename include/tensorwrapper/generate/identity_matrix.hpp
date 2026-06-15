@@ -35,7 +35,7 @@ namespace tensorwrapper::generate {
 template<concepts::FloatingPoint T>
 Tensor identity_matrix(std::size_t n) {
     require_valid_n(n);
-    std::vector<T> values(n, 1.0);
+    std::vector<T> values(n, T{1});
     return utilities::diagonal_matrix(utilities::make_tensor({n}, values));
 }
 

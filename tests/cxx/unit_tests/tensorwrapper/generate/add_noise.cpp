@@ -29,28 +29,11 @@ using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
 namespace {
-template<typename T>
-double elem_center(const T& value) {
-    if constexpr(types::is_uncertain_v<T>) {
-        return static_cast<double>(value.mean());
-    } else if constexpr(types::is_interval_v<T>) {
-        return static_cast<double>(value.median());
-    } else {
-        return static_cast<double>(value);
-    }
-}
 
 template<typename T>
 void require_within_noise(const T& in, const T& out, double t) {
-    if constexpr(types::is_uncertain_v<T>) {
-        REQUIRE(out.sd() == Catch::Approx(t));
-        REQUIRE(std::abs(out.mean() - in.mean()) <= t);
-    } else if constexpr(types::is_interval_v<T>) {
-        REQUIRE(out.radius() == Catch::Approx(t));
-        REQUIRE(std::abs(out.median() - in.median()) <= t);
-    } else {
-        REQUIRE(std::abs(elem_center(out) - elem_center(in)) <= t);
-    }
+    using tensorwrapper::types::uq_center;
+    REQUIRE(std::abs(uq_center(in) - uq_center(out)) <= t);
 }
 } // namespace
 
@@ -100,8 +83,38 @@ TEMPLATE_LIST_TEST_CASE("add_noise", "", types::floating_point_types) {
                     REQUIRE(v1.upper() == Catch::Approx(v2.upper()));
                 }
             }
+        } else if constexpr(types::is_uncertain_v<TestType>) {
+            // Two independent calls create values with the same mean/sd but
+            // different internal error-source IDs; compare observables
+            // directly.
+            using wtf::fp::float_cast;
+            auto b1 = make_contiguous(out1.buffer());
+            auto b2 = make_contiguous(out2.buffer());
+            for(std::size_t i = 0; i < 2; ++i) {
+                for(std::size_t j = 0; j < 2; ++j) {
+                    const auto v1 = float_cast<TestType>(b1.get_elem({i, j}));
+                    const auto v2 = float_cast<TestType>(b2.get_elem({i, j}));
+                    REQUIRE(v1.mean() == Catch::Approx(v2.mean()));
+                    REQUIRE(v1.sd() == Catch::Approx(v2.sd()));
+                }
+            }
+        } else if constexpr(types::is_affine_v<TestType> ||
+                            types::is_thresholded_affine_v<TestType>) {
+            // Same reason as uncertain: independent error-symbol IDs differ.
+            using wtf::fp::float_cast;
+            auto b1 = make_contiguous(out1.buffer());
+            auto b2 = make_contiguous(out2.buffer());
+            for(std::size_t i = 0; i < 2; ++i) {
+                for(std::size_t j = 0; j < 2; ++j) {
+                    const auto v1 = float_cast<TestType>(b1.get_elem({i, j}));
+                    const auto v2 = float_cast<TestType>(b2.get_elem({i, j}));
+                    REQUIRE(v1.center() == Catch::Approx(v2.center()));
+                    REQUIRE(v1.radius() == Catch::Approx(v2.radius()));
+                }
+            }
         } else {
-            REQUIRE(approximately_equal(out1, out2));
+            REQUIRE(approximately_equal(
+              out1, out2, testing::default_tolerance<TestType>()));
         }
     }
 

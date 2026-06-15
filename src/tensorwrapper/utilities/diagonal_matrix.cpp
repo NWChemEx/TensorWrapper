@@ -26,7 +26,7 @@ struct Kernel {
         using clean_type = std::decay_t<FloatType>;
         const auto n     = diagonal_elements.size();
         shape::Smooth new_shape{n, n};
-        std::vector<clean_type> data(n * n, 0);
+        std::vector<clean_type> data(n * n, clean_type(0));
         for(std::size_t i = 0; i < n; ++i) {
             data[i * n + i] = diagonal_elements[i];
         }

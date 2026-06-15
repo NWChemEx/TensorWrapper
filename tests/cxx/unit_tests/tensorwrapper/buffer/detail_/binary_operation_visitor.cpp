@@ -18,6 +18,7 @@
 #include <tensorwrapper/buffer/detail_/binary_operation_visitor.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 using namespace tensorwrapper;
+using testing::elements_equal;
 
 /* Testing notes:
  *
@@ -172,10 +173,10 @@ TEMPLATE_LIST_TEST_CASE("MultiplicationVisitor", "[buffer][detail_]",
                             shape);
 
         visitor(lhs_span, rhs_span);
-        REQUIRE(this_buffer.at(0) == TestType(4.0));
-        REQUIRE(this_buffer.at(1) == TestType(3.0));
-        REQUIRE(this_buffer.at(2) == TestType(2.0));
-        REQUIRE(this_buffer.at(3) == TestType(1.0));
+        REQUIRE(elements_equal(this_buffer.at(0), TestType(4.0)));
+        REQUIRE(elements_equal(this_buffer.at(1), TestType(3.0)));
+        REQUIRE(elements_equal(this_buffer.at(2), TestType(2.0)));
+        REQUIRE(elements_equal(this_buffer.at(3), TestType(1.0)));
     }
 
     SECTION("existing buffer: contraction") {
@@ -186,7 +187,7 @@ TEMPLATE_LIST_TEST_CASE("MultiplicationVisitor", "[buffer][detail_]",
 
         visitor(lhs_span, rhs_span);
         REQUIRE(this_buffer.size() == 1);
-        REQUIRE(this_buffer.at(0) == TestType(10.0));
+        REQUIRE(elements_equal(this_buffer.at(0), TestType(10.0)));
     }
 
     SECTION("existing buffer: batched contraction") {
@@ -206,9 +207,9 @@ TEMPLATE_LIST_TEST_CASE("MultiplicationVisitor", "[buffer][detail_]",
                             shape);
 
         visitor(clhs_span, crhs_span);
-        REQUIRE(empty_buffer.at(0) == TestType(4.0));
-        REQUIRE(empty_buffer.at(1) == TestType(3.0));
-        REQUIRE(empty_buffer.at(2) == TestType(2.0));
-        REQUIRE(empty_buffer.at(3) == TestType(1.0));
+        REQUIRE(elements_equal(empty_buffer.at(0), TestType(4.0)));
+        REQUIRE(elements_equal(empty_buffer.at(1), TestType(3.0)));
+        REQUIRE(elements_equal(empty_buffer.at(2), TestType(2.0)));
+        REQUIRE(elements_equal(empty_buffer.at(3), TestType(1.0)));
     }
 }
