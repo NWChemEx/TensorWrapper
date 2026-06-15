@@ -212,9 +212,25 @@ constexpr bool is_thresholded_affine_v = false;
 template<typename T>
 constexpr bool is_uq_type_v = false;
 
+template<typename T, typename U, typename V>
+T construct_uq_type(const U& center, const V&) {
+    return T(center);
+}
+
 template<typename T>
 T uq_center(const T& value) {
     return value;
+}
+
+template<typename T>
+T uq_upper(const T& value) {
+    return value;
+}
+
+template<typename T, typename U>
+bool strictly_less(const T& lhs, const U& rhs) {
+    return lhs < rhs;
+    ;
 }
 
 template<typename T>
