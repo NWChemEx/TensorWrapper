@@ -18,6 +18,7 @@
 #include <tensorwrapper/buffer/detail_/unary_operation_visitor.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 using namespace tensorwrapper;
+using testing::elements_equal;
 
 /* Testing notes:
  *
@@ -127,12 +128,12 @@ TEMPLATE_LIST_TEST_CASE("ScalarMultiplicationVisitor", "[buffer][detail_]",
                             other_shape, scalar_);
         visitor(other_span);
 
-        REQUIRE(this_buffer.at(0) == TestType(1.0) * scalar);
-        REQUIRE(this_buffer.at(1) == TestType(3.0) * scalar);
-        REQUIRE(this_buffer.at(2) == TestType(5.0) * scalar);
-        REQUIRE(this_buffer.at(3) == TestType(2.0) * scalar);
-        REQUIRE(this_buffer.at(4) == TestType(4.0) * scalar);
-        REQUIRE(this_buffer.at(5) == TestType(6.0) * scalar);
+        REQUIRE(elements_equal(this_buffer.at(0), TestType(1.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(1), TestType(3.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(2), TestType(5.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(3), TestType(2.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(4), TestType(4.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(5), TestType(6.0) * scalar));
     }
 
     SECTION("Buffer is not allocated") {
@@ -141,12 +142,12 @@ TEMPLATE_LIST_TEST_CASE("ScalarMultiplicationVisitor", "[buffer][detail_]",
                             other_shape, scalar_);
         visitor(cother_span);
 
-        REQUIRE(this_buffer.at(0) == TestType(1.0) * scalar);
-        REQUIRE(this_buffer.at(1) == TestType(3.0) * scalar);
-        REQUIRE(this_buffer.at(2) == TestType(5.0) * scalar);
-        REQUIRE(this_buffer.at(3) == TestType(2.0) * scalar);
-        REQUIRE(this_buffer.at(4) == TestType(4.0) * scalar);
-        REQUIRE(this_buffer.at(5) == TestType(6.0) * scalar);
+        REQUIRE(elements_equal(this_buffer.at(0), TestType(1.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(1), TestType(3.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(2), TestType(5.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(3), TestType(2.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(4), TestType(4.0) * scalar));
+        REQUIRE(elements_equal(this_buffer.at(5), TestType(6.0) * scalar));
     }
 }
 

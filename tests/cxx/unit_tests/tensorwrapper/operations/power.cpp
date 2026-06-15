@@ -29,7 +29,8 @@ TEMPLATE_LIST_TEST_CASE("power", "", types::floating_point_types) {
         Tensor scalar(s, testing::eigen_scalar<TestType>());
         auto rv = power(scalar, 2);
         REQUIRE(approximately_equal(
-          rv, Tensor(s, testing::eigen_scalar<TestType>(TestType(42 * 42)))));
+          rv, Tensor(s, testing::eigen_scalar<TestType>(TestType(42 * 42))),
+          testing::default_tolerance<TestType>()));
     }
 
     SECTION("vector") {
@@ -41,6 +42,7 @@ TEMPLATE_LIST_TEST_CASE("power", "", types::floating_point_types) {
         std::vector<TestType> data{TestType(0), TestType(1), sqrt2, sqrt3,
                                    TestType(2)};
         auto corr = make_tensor({5}, data.begin(), data.end());
-        REQUIRE(approximately_equal(rv, corr));
+        REQUIRE(approximately_equal(rv, corr,
+                                    testing::default_tolerance<TestType>()));
     }
 }

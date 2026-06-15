@@ -43,7 +43,8 @@ void scalar_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
     label_type lhs("");
     label_type rhs("");
     the_op(out, lhs, rhs, result, s0, s1);
-    REQUIRE(result.get_elem({}) == corr_op(s0_data[0], s1_data[0]));
+    REQUIRE(
+      elements_equal(result.get_elem({}), corr_op(s0_data[0], s1_data[0])));
 }
 
 template<typename TestType, typename Fxn1, typename Fxn2>
@@ -73,7 +74,8 @@ void vector_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
 
     the_op(out, lhs, rhs, result, s0, s1);
     for(std::size_t i = 0; i < 4; ++i) {
-        REQUIRE(result.get_elem({i}) == corr_op(s0_data[i], s1_data[i]));
+        REQUIRE(elements_equal(result.get_elem({i}),
+                               corr_op(s0_data[i], s1_data[i])));
     }
 }
 
@@ -109,7 +111,7 @@ void matrix_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             for(std::size_t j = 0; j < 4; ++j) {
                 std::size_t idx = i * 4 + j;
                 auto corr       = corr_op(s0_data[idx], s1_data[idx]);
-                REQUIRE(result.get_elem({i, j}) == corr);
+                REQUIRE(elements_equal(result.get_elem({i, j}), corr));
             }
         }
     }
@@ -121,7 +123,7 @@ void matrix_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
                 std::size_t lhs_idx = j * 4 + i;
                 std::size_t rhs_idx = i * 4 + j;
                 auto corr = corr_op(s0_data[lhs_idx], s1_data[rhs_idx]);
-                REQUIRE(result.get_elem({i, j}) == corr);
+                REQUIRE(elements_equal(result.get_elem({i, j}), corr));
             }
         }
     }
@@ -133,7 +135,7 @@ void matrix_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
                 std::size_t lhs_idx = i * 4 + j;
                 std::size_t rhs_idx = j * 4 + i;
                 auto corr = corr_op(s0_data[lhs_idx], s1_data[rhs_idx]);
-                REQUIRE(result.get_elem({i, j}) == corr);
+                REQUIRE(elements_equal(result.get_elem({i, j}), corr));
             }
         }
     }
@@ -145,7 +147,7 @@ void matrix_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
                 std::size_t lhs_idx = i * 4 + j;
                 std::size_t rhs_idx = i * 4 + j;
                 auto corr = corr_op(s0_data[lhs_idx], s1_data[rhs_idx]);
-                REQUIRE(result.get_elem({j, i}) == corr);
+                REQUIRE(elements_equal(result.get_elem({j, i}), corr));
             }
         }
     }
@@ -193,7 +195,7 @@ void tensor3_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * 4 + j * 2 + k;
             std::size_t rhs_idx = i * 4 + j * 2 + k;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k}), corr));
         }
     }
 
@@ -203,7 +205,7 @@ void tensor3_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = j * 4 + i * 2 + k;
             std::size_t rhs_idx = i * 4 + j * 2 + k;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k}), corr));
         }
     }
 
@@ -213,7 +215,7 @@ void tensor3_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * 4 + j * 2 + k;
             std::size_t rhs_idx = j * 4 + i * 2 + k;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k}), corr));
         }
     }
 
@@ -223,7 +225,7 @@ void tensor3_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * 4 + j * 2 + k;
             std::size_t rhs_idx = i * 4 + j * 2 + k;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({j, i, k}) == corr);
+            REQUIRE(elements_equal(result.get_elem({j, i, k}), corr));
         }
     }
 }
@@ -277,7 +279,7 @@ void tensor4_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             std::size_t rhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k, l}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k, l}), corr));
         }
     }
 
@@ -287,7 +289,7 @@ void tensor4_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = j * stride0 + i * stride1 + l * stride2 + k;
             std::size_t rhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k, l}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k, l}), corr));
         }
     }
 
@@ -297,7 +299,7 @@ void tensor4_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             std::size_t rhs_idx = j * stride0 + i * stride1 + l * stride2 + k;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({i, j, k, l}) == corr);
+            REQUIRE(elements_equal(result.get_elem({i, j, k, l}), corr));
         }
     }
 
@@ -307,7 +309,7 @@ void tensor4_binary_assignment(Fxn1&& the_op, Fxn2&& corr_op) {
             std::size_t lhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             std::size_t rhs_idx = i * stride0 + j * stride1 + k * stride2 + l;
             auto corr           = corr_op(t0_data[lhs_idx], t1_data[rhs_idx]);
-            REQUIRE(result.get_elem({j, i, l, k}) == corr);
+            REQUIRE(elements_equal(result.get_elem({j, i, l, k}), corr));
         }
     }
 }
