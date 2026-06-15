@@ -24,7 +24,7 @@ using namespace tensorwrapper::utilities;
 
 TEMPLATE_LIST_TEST_CASE("make_tensor", "", types::floating_point_types) {
     SECTION("scalar") {
-        std::vector<TestType> data{42};
+        std::vector<TestType> data{TestType(42)};
         auto tensor  = make_tensor({}, data.begin(), data.end());
         auto tensor2 = make_tensor({}, data);
         Tensor corr(shape::Smooth{},
