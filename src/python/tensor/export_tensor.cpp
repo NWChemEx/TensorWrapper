@@ -16,22 +16,22 @@
 
 #include "export_tensor.hpp"
 #include <pybind11/numpy.h>
-#include <pybind11/operators.h>
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/concepts/floating_point.hpp>
 #include <tensorwrapper/tensor/tensor.hpp>
 
 namespace tensorwrapper {
+
 namespace {
 
 template<typename T>
-auto get_desc_() -> decltype(pybind11::format_descriptor<float>::format()) {
+auto get_desc_() -> decltype(py::format_descriptor<float>::format()) {
     if constexpr(std::is_same_v<T, float>)
-        return pybind11::format_descriptor<float>::format();
+        return py::format_descriptor<float>::format();
     else if constexpr(std::is_same_v<T, double>)
-        return pybind11::format_descriptor<double>::format();
+        return py::format_descriptor<double>::format();
     else if constexpr(std::is_same_v<T, long double>)
-        return pybind11::format_descriptor<long double>::format();
+        return py::format_descriptor<long double>::format();
     else
         throw std::runtime_error("Unsupported floating point type!");
 }
@@ -44,7 +44,7 @@ struct GetBufferDataKernel {
       m_rank(rank), m_psmooth_shape(&smooth_shape) {}
 
     template<concepts::FloatingPoint FloatType>
-    pybind11::buffer_info operator()(std::span<FloatType> buffer) {
+    py::buffer_info operator()(std::span<FloatType> buffer) {
         using clean_type = std::decay_t<FloatType>;
 
         // We have only tested with doubles at the moment.
@@ -66,7 +66,7 @@ struct GetBufferDataKernel {
             strides[rank_i] = stride_i * nbytes;
         }
         auto* ptr = const_cast<clean_type*>(buffer.data());
-        return pybind11::buffer_info(ptr, nbytes, desc, rank, shape, strides);
+        return py::buffer_info(ptr, nbytes, desc, rank, shape, strides);
     }
 
     size_type m_rank;
@@ -74,8 +74,8 @@ struct GetBufferDataKernel {
 };
 
 template<typename FloatType>
-Tensor make_tensor_(pybind11::buffer_info& info) {
-    if(info.format != pybind11::format_descriptor<FloatType>::format())
+Tensor make_tensor_(py::buffer_info& info) {
+    if(info.format != py::format_descriptor<FloatType>::format())
         throw std::runtime_error(
           "Incompatible format: expected a float array!");
 
@@ -107,9 +107,9 @@ auto make_buffer_info(buffer::Contiguous& buffer) {
     return buffer::visit_contiguous_buffer(kernel, buffer);
 }
 
-Tensor make_tensor(pybind11::buffer b) {
-    pybind11::buffer_info info = b.request();
-    if(info.format == pybind11::format_descriptor<double>::format())
+Tensor make_tensor(py::buffer b) {
+    py::buffer_info info = b.request();
+    if(info.format == py::format_descriptor<double>::format())
         return make_tensor_<double>(info);
     else
         throw std::runtime_error(
@@ -117,12 +117,12 @@ Tensor make_tensor(pybind11::buffer b) {
 }
 
 void export_tensor(py_module_reference m) {
-    py_class_type<Tensor>(m, "Tensor", pybind11::buffer_protocol())
-      .def(pybind11::init<>())
-      .def(pybind11::init([](pybind11::buffer b) { return make_tensor(b); }))
+    py_class_type<Tensor>(m, "Tensor", py::buffer_protocol())
+      .def(py::init<>())
+      .def(py::init([](py::buffer b) { return make_tensor(b); }))
       .def("rank", &Tensor::rank)
-      .def(pybind11::self == pybind11::self)
-      .def(pybind11::self != pybind11::self)
+      .def(py::self == py::self)
+      .def(py::self != py::self)
       .def("__str__", [](Tensor& self) { return self.to_string(); })
       .def_buffer([](Tensor& t) {
           auto pbuffer = dynamic_cast<buffer::Contiguous*>(&t.buffer());

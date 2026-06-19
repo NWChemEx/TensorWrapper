@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
 
 namespace tensorwrapper {
@@ -23,14 +24,16 @@ namespace tensorwrapper {
 // -- Type factorization used throughout the Python component
 // -----------------------------------------------------------------------------
 
+namespace py = pybind11;
+
 /// Type of a C++ handle to a Python module
-using py_module_type = pybind11::module_;
+using py_module_type = py::module_;
 
 /// Type of a reference to an object of type py_module_type
 using py_module_reference = py_module_type&;
 
 /// Type of Python object binding for a C++ class of type @p T
 template<typename... T>
-using py_class_type = pybind11::class_<T...>;
+using py_class_type = py::class_<T...>;
 
 } // namespace tensorwrapper
