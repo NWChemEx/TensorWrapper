@@ -15,7 +15,6 @@
  */
 
 #include "tensor/export_tensor.hpp"
-#include <pybind11/pybind11.h>
 
 namespace tensorwrapper {
 
