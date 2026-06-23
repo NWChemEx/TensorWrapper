@@ -91,6 +91,7 @@ cmaize_find_or_build_dependency(
     VERSION master
     BUILD_TARGET wtf
     FIND_TARGET nwx::wtf
+    CMAKE_ARGS BUILD_TESTING=OFF
 )
 
 set(DEPENDENCIES
