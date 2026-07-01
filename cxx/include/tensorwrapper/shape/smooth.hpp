@@ -17,8 +17,8 @@
 #pragma once
 #include <functional>
 #include <numeric>
-#include <shape/smooth_common.hpp>
 #include <tensorwrapper/shape/shape_base.hpp>
+#include <tensorwrapper/shape/smooth_common.hpp>
 #include <tensorwrapper/types/shape_traits.hpp>
 #include <vector>
 
