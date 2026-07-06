@@ -24,12 +24,7 @@ nwx_set_version(tw_version "${CMAKE_CURRENT_LIST_DIR}")
 project(tensorwrapper VERSION "${tw_version}" LANGUAGES CXX)
 
 include(disable_in_source_builds)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
-
-option(BUILD_TESTING           "Whether to build the unit tests"       OFF)
-option(BUILD_PYBIND11_BINDINGS "Build Python bindings via pybind11"    ON)
-option(ENABLE_SIGMA            "Enable Sigma for uncertainty tracking" OFF)
+include(set_default_nwx_options)
 option(ENABLE_CUTENSOR         "Enable cuTENSOR GPU backend"           OFF)
 
 # Documentation target
@@ -57,24 +52,22 @@ include(nwx_python_module)
 nwx_python_module(${PROJECT_NAME} "cxx/src")
 
 # C++ tests
-if(BUILD_TESTING)
-    include(catch2_tests_from_dir)
-    catch2_tests_from_dir(
-        "unit_test_${PROJECT_NAME}"
-        "tests/cxx/unit_tests/${PROJECT_NAME}"
-        ${PROJECT_NAME}
-        PRIVATE_INCLUDES cxx/src
-    )
-    catch2_tests_from_dir(
-        "test_acceptance_${PROJECT_NAME}"
-        "tests/cxx/acceptance_tests/${PROJECT_NAME}"
-        ${PROJECT_NAME}
-        PRIVATE_INCLUDES cxx/src
-    )
-    catch2_tests_from_dir(
-        "test_performance_${PROJECT_NAME}"
-        "tests/cxx/performance_tests/${PROJECT_NAME}"
-        ${PROJECT_NAME}
-        PRIVATE_INCLUDES cxx/src
-    )
-endif()
+include(catch2_tests_from_dir)
+catch2_tests_from_dir(
+    "unit_test_${PROJECT_NAME}"
+    "tests/cxx/unit_tests/${PROJECT_NAME}"
+    ${PROJECT_NAME}
+    PRIVATE_INCLUDES cxx/src
+)
+catch2_tests_from_dir(
+    "test_acceptance_${PROJECT_NAME}"
+    "tests/cxx/acceptance_tests/${PROJECT_NAME}"
+    ${PROJECT_NAME}
+    PRIVATE_INCLUDES cxx/src
+)
+catch2_tests_from_dir(
+    "test_performance_${PROJECT_NAME}"
+    "tests/cxx/performance_tests/${PROJECT_NAME}"
+    ${PROJECT_NAME}
+    PRIVATE_INCLUDES cxx/src
+)
