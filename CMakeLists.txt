@@ -71,3 +71,11 @@ catch2_tests_from_dir(
     ${PROJECT_NAME}
     PRIVATE_INCLUDES cxx/src
 )
+
+# py_test_tensorwrapper: a pybind11 module exposing C++ test fixtures to
+# tests/python/unit_tests/*.py (e.g. tensor/test_tensor.py imports
+# py_test_tensorwrapper.testing). Not part of the installed package --
+# test-only, built in place alongside the other test binaries.
+if(BUILD_PYBIND11_BINDINGS AND BUILD_TESTING)
+    nwx_python_module(py_test_tensorwrapper "tests/python/unit_tests" NO_INSTALL)
+endif()
