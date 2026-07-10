@@ -35,7 +35,7 @@ nwx_cxx_api_docs("cxx/include" "cxx/src")
 include(get_dependencies)
 get_dependencies(utilities parallelzone wtf eigen boost)
 
-# TODO: ENABLE_SIGMA and ENABLE_CUTENSOR handling
+# TODO: ENABLE_CUTENSOR handling
 
 # Build the library
 include(nwx_library)
