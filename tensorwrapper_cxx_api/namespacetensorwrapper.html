@@ -72,7 +72,8 @@ $(function() {
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">tensorwrapper Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -123,6 +124,19 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a5ddc02e40bf08e08a48eacbae12492c7" id="r_a5ddc02e40bf08e08a48eacbae12492c7"><td class="memItemLeft" align="right" valign="top"><a id="a5ddc02e40bf08e08a48eacbae12492c7" name="a5ddc02e40bf08e08a48eacbae12492c7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>py_module_type</b> = py::module_</td></tr>
+<tr class="memdesc:a5ddc02e40bf08e08a48eacbae12492c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a C++ handle to a Python module. <br /></td></tr>
+<tr class="separator:a5ddc02e40bf08e08a48eacbae12492c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa748002470001baf1bd506d929435635" id="r_aa748002470001baf1bd506d929435635"><td class="memItemLeft" align="right" valign="top"><a id="aa748002470001baf1bd506d929435635" name="aa748002470001baf1bd506d929435635"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>py_module_reference</b> = <a class="el" href="namespacetensorwrapper.html#a5ddc02e40bf08e08a48eacbae12492c7">py_module_type</a> &amp;</td></tr>
+<tr class="memdesc:aa748002470001baf1bd506d929435635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a reference to an object of type py_module_type. <br /></td></tr>
+<tr class="separator:aa748002470001baf1bd506d929435635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e17a8260c0f3b160fd750d3f42f3c65" id="r_a9e17a8260c0f3b160fd750d3f42f3c65"><td class="memTemplParams" colspan="2"><a id="a9e17a8260c0f3b160fd750d3f42f3c65" name="a9e17a8260c0f3b160fd750d3f42f3c65"></a>
+template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:a9e17a8260c0f3b160fd750d3f42f3c65"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>py_class_type</b> = py::class_&lt; T... &gt;</td></tr>
+<tr class="memdesc:a9e17a8260c0f3b160fd750d3f42f3c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of Python object binding for a C++ class of type <code>T</code>. <br /></td></tr>
+<tr class="separator:a9e17a8260c0f3b160fd750d3f42f3c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a03fca4ec50affbe743b501f1549b72" id="r_a2a03fca4ec50affbe743b501f1549b72"><td class="memItemLeft" align="right" valign="top"><a id="a2a03fca4ec50affbe743b501f1549b72" name="a2a03fca4ec50affbe743b501f1549b72"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_logical_reference</b> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#ab9f0826cf3a1b0b2241c728ecdf0ae84">Tensor::const_logical_reference</a></td></tr>
 <tr class="separator:a2a03fca4ec50affbe743b501f1549b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +146,21 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_reference</b>
 <tr class="memitem:aba04acb387a5b765d1f67260c1415b70" id="r_aba04acb387a5b765d1f67260c1415b70"><td class="memItemLeft" align="right" valign="top"><a id="aba04acb387a5b765d1f67260c1415b70" name="aba04acb387a5b765d1f67260c1415b70"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_reference</b> = typename <a class="el" href="classtensorwrapper_1_1Tensor.html#a3837f8a61174ecf23a5be4917269a50c">Tensor::const_buffer_reference</a></td></tr>
 <tr class="separator:aba04acb387a5b765d1f67260c1415b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aa0a06d372864e2ddc122114e7d16eddd" id="r_aa0a06d372864e2ddc122114e7d16eddd"><td class="memItemLeft" align="right" valign="top"><a id="aa0a06d372864e2ddc122114e7d16eddd" name="aa0a06d372864e2ddc122114e7d16eddd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PYBIND11_MODULE</b> (tensorwrapper, m)</td></tr>
+<tr class="separator:aa0a06d372864e2ddc122114e7d16eddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa3fa5fc6112373feb4cd9d925c082ad" id="r_afa3fa5fc6112373feb4cd9d925c082ad"><td class="memItemLeft" align="right" valign="top"><a id="afa3fa5fc6112373feb4cd9d925c082ad" name="afa3fa5fc6112373feb4cd9d925c082ad"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>make_buffer_info</b> (<a class="el" href="classtensorwrapper_1_1buffer_1_1Contiguous.html">buffer::Contiguous</a> &amp;buffer)</td></tr>
+<tr class="separator:afa3fa5fc6112373feb4cd9d925c082ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a903880bea563fa3d62ed122c4a68f6b0" id="r_a903880bea563fa3d62ed122c4a68f6b0"><td class="memItemLeft" align="right" valign="top"><a id="a903880bea563fa3d62ed122c4a68f6b0" name="a903880bea563fa3d62ed122c4a68f6b0"></a>
+<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>make_tensor</b> (py::buffer b)</td></tr>
+<tr class="separator:a903880bea563fa3d62ed122c4a68f6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29fa0f19d9c2d42802106bec2bed9284" id="r_a29fa0f19d9c2d42802106bec2bed9284"><td class="memItemLeft" align="right" valign="top"><a id="a29fa0f19d9c2d42802106bec2bed9284" name="a29fa0f19d9c2d42802106bec2bed9284"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>export_tensor</b> (<a class="el" href="namespacetensorwrapper.html#aa748002470001baf1bd506d929435635">py_module_reference</a> m)</td></tr>
+<tr class="separator:a29fa0f19d9c2d42802106bec2bed9284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains the components of the TensorWrapper library. </p>
