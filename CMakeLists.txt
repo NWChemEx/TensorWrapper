@@ -1,4 +1,4 @@
-# Copyright 2022 NWChemEx-Project
+# Copyright 2026 NWChemEx-Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,168 +14,68 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-# Downloads common CMake modules used throughout NWChemEx
+# Downloads common CMake modules used throughout NWChemEx. Included before
+# project() so nwx_set_version() is available to compute the version.
 include(cmake/get_nwx_cmake.cmake)
 
-#Sets the version to whatever git thinks it is
-include(get_version_from_git)
-get_version_from_git(tensorwrapper_version "${CMAKE_CURRENT_LIST_DIR}")
-set(CMAKE_CXX_STANDARD 20)
-project(tensorwrapper VERSION "${tensorwrapper_version}" LANGUAGES CXX)
+# Version from scikit-build-core (wheels/sdists) or the latest git tag.
+include(nwx_set_version)
+nwx_set_version(tw_version "${CMAKE_CURRENT_LIST_DIR}")
+project(tensorwrapper VERSION "${tw_version}" LANGUAGES CXX)
 
-include(get_cmaize)
+include(disable_in_source_builds)
+include(set_default_nwx_options)
+option(ENABLE_CUTENSOR         "Enable cuTENSOR GPU backend"           OFF)
 
-# Work out full paths to the project's include/src dirs
-set(project_inc_dir "${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}")
-set(project_src_dir "${CMAKE_CURRENT_LIST_DIR}/src/${PROJECT_NAME}")
-
-# Documentation
+# Documentation target
 include(nwx_cxx_api_docs)
-nwx_cxx_api_docs("${project_inc_dir}" "${project_src_dir}")
+nwx_cxx_api_docs("cxx/include" "cxx/src")
 
-## Extensions ##
-set(SOURCE_EXTS "cpp")
-set(INCLUDE_EXTS "hpp")
+# Dependencies
+include(get_dependencies)
+get_dependencies(utilities parallelzone wtf eigen boost)
 
-### Options ###
-cmaize_option_list(
-    BUILD_TESTING OFF "Should we build the tests?"
-    BUILD_PYBIND11_PYBINDINGS ON "Should we build Python3 bindings?"
-    ENABLE_SIGMA OFF "Should we enable Sigma for uncertainty tracking?"
-    ENABLE_CUTENSOR OFF "Should we enable cuTENSOR?"
-)
+# TODO: ENABLE_CUTENSOR handling
 
-if("${ENABLE_CUTENSOR}")
-    if("${ENABLE_SIGMA}")
-        set(MSG "Sigma is not compatible with cuTENSOR. Turning Sigma OFF.")
-        message(WARNING ${MSG})
-        set(ENABLE_SIGMA OFF)
-    endif()
-    enable_language(CUDA)
-    set(SOURCE_EXTS ${SOURCE_EXTS} cu)
-    set(INCLUDE_EXTS ${INCLUDE_EXTS} cuh hu)
-    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --expt-relaxed-constexpr")
-endif()
+# Build the library
+include(nwx_library)
+nwx_library(${PROJECT_NAME} "cxx/include" "cxx/src"
+    utilities parallelzone wtf
+    PUBLIC eigen boost)
 
-### Dependendencies ###
-include(get_utilities)
+# Generated config headers (e.g. from configure_file) live in binary dir
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
 
-include(get_parallelzone)
+# Python module
+include(nwx_python_module)
+nwx_python_module(${PROJECT_NAME} "cxx/src")
 
-find_package(Boost REQUIRED)
-
-cmaize_find_or_build_dependency(
-    eigen
-    NAME Eigen3
-    URL https://www.gitlab.com/libeigen/eigen
-    VERSION 2e76277bd049f7bec36b0f908c69734a42c5234f
-    BUILD_TARGET eigen
-    FIND_TARGET Eigen3::Eigen
-)
-
-cmaize_find_or_build_optional_dependency(
-    sigma
-    ENABLE_SIGMA
-    URL github.com/QCUncertainty/sigma
-    VERSION main
-    BUILD_TARGET sigma
-    FIND_TARGET sigma::sigma
-    CMAKE_ARGS BUILD_TESTING=OFF
-               ENABLE_EIGEN_SUPPORT=ON
-)
-
-cmaize_find_or_build_dependency(
-    WeaklyTypedFloat
-    NAME wtf
-    URL https://www.github.com/NWChemEx/weaklytypedfloat
-    VERSION master
-    BUILD_TARGET wtf
-    FIND_TARGET nwx::wtf
-    CMAKE_ARGS BUILD_TESTING=OFF
-)
-
-set(DEPENDENCIES
-    utilities parallelzone Boost::boost eigen sigma WeaklyTypedFloat
-)
-
-if("${ENABLE_CUTENSOR}")
-    include(cmake/FindcuTENSOR.cmake)
-    list(APPEND DEPENDENCIES cuTENSOR::cuTENSOR)
-endif()
-
-cmaize_add_library(
+# C++ tests
+include(catch2_tests_from_dir)
+catch2_tests_from_dir(
+    "unit_test_${PROJECT_NAME}"
+    "tests/cxx/unit_tests/${PROJECT_NAME}"
     ${PROJECT_NAME}
-    SOURCE_DIR "${project_src_dir}"
-    SOURCE_EXTS "${SOURCE_EXTS}"
-    INCLUDE_DIRS "${project_inc_dir}"
-    INCLUDE_EXTS "${INCLUDE_EXTS}"
-    DEPENDS "${DEPENDENCIES}"
+    PRIVATE_INCLUDES cxx/src
 )
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
-
-if("${ENABLE_CUTENSOR}")
-    target_compile_definitions("${PROJECT_NAME}" PUBLIC ENABLE_CUTENSOR)
-endif()
-
-include(nwx_pybind11)
-nwx_add_pybind11_module(
+catch2_tests_from_dir(
+    "test_acceptance_${PROJECT_NAME}"
+    "tests/cxx/acceptance_tests/${PROJECT_NAME}"
     ${PROJECT_NAME}
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src/python"
-    DEPENDS "${PROJECT_NAME}"
+    PRIVATE_INCLUDES cxx/src
+)
+catch2_tests_from_dir(
+    "test_performance_${PROJECT_NAME}"
+    "tests/cxx/performance_tests/${PROJECT_NAME}"
+    ${PROJECT_NAME}
+    PRIVATE_INCLUDES cxx/src
 )
 
-
-if("${BUILD_TESTING}")
-    set(cxx_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/cxx")
-    set(cxx_unit_test_dir "${cxx_test_dir}/unit_tests/${PROJECT_NAME}")
-    set(
-        cxx_acceptance_test_dir
-        "${cxx_test_dir}/acceptance_tests/${PROJECT_NAME}"
-    )
-    set(
-        cxx_performance_test_dir
-        "${cxx_test_dir}/performance_tests/${PROJECT_NAME}"
-    )
-    set(python_test_dir "${CMAKE_CURRENT_LIST_DIR}/tests/python")
-    set(python_unit_test_dir "${python_test_dir}/unit_tests")
-
-    include(get_catch2)
-
-    cmaize_add_tests(
-        test_unit_${PROJECT_NAME}
-        SOURCE_DIR "${cxx_unit_test_dir}"
-        INCLUDE_DIRS "${project_src_dir}"
-        DEPENDS Catch2 ${PROJECT_NAME}
-    )
-
-    cmaize_add_tests(
-        test_performance_${PROJECT_NAME}
-        SOURCE_DIR "${cxx_performance_test_dir}"
-        INCLUDE_DIRS "${project_src_dir}"
-        DEPENDS Catch2 ${PROJECT_NAME}
-    )
-
-    cmaize_add_tests(
-        acceptance_test_${PROJECT_NAME}
-        SOURCE_DIR "${cxx_acceptance_test_dir}"
-        INCLUDE_DIRS "${project_src_dir}"
-        DEPENDS Catch2 ${PROJECT_NAME}
-    )
-
-
-    nwx_add_pybind11_module(
-        py_test_${PROJECT_NAME}
-        INSTALL OFF
-        SOURCE_DIR "${python_unit_test_dir}"
-        INCLUDE_DIRS "${project_inc_dir}"
-        DEPENDS ${PROJECT_NAME}
-    )
-
-    nwx_pybind11_tests(
-        py_${PROJECT_NAME} ${python_unit_test_dir}/test_tensorwrapper.py
-        SUBMODULES parallelzone pluginplay
-        DEPENDS py_test_${PROJECT_NAME}
-    )
+# py_test_tensorwrapper: a pybind11 module exposing C++ test fixtures to
+# tests/python/unit_tests/*.py (e.g. tensor/test_tensor.py imports
+# py_test_tensorwrapper.testing). Not part of the installed package --
+# test-only, built in place alongside the other test binaries.
+if(BUILD_PYBIND11_BINDINGS AND BUILD_TESTING)
+    nwx_python_module(py_test_tensorwrapper "tests/python/unit_tests" NO_INSTALL)
 endif()
-
-cmaize_add_package(${PROJECT_NAME} NAMESPACE nwx::)

@@ -15,9 +15,9 @@
  */
 
 #pragma once
-#include "tensorwrapper/tensor/tensor.hpp"
 #include <Eigen/Dense>
 #include <deque>
+#include <tensorwrapper/tensor/tensor.hpp>
 
 /** TODO: This should probably be moved to TensorWrapper at a point when things
  *  are more stable there. Also, this makes Eigen an explicit dependency of

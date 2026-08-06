@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include <shape/smooth_common.hpp>
 #include <tensorwrapper/detail_/view_traits.hpp>
+#include <tensorwrapper/shape/smooth_common.hpp>
 #include <tensorwrapper/types/shape_traits.hpp>
 
 namespace tensorwrapper::shape {

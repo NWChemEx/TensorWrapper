@@ -15,7 +15,7 @@
  */
 
 #pragma once
-#include "layout/layout_base.hpp"
+#include <tensorwrapper/layout/layout_base.hpp>
 #include <tensorwrapper/layout/layout_fwd.hpp>
 #include <tensorwrapper/types/class_traits.hpp>
 #include <tensorwrapper/types/common_types.hpp>
