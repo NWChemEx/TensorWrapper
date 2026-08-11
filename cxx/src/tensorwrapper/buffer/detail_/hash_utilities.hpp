@@ -16,6 +16,7 @@
 
 #pragma once
 #include <boost/container_hash/hash.hpp>
+#include <string>
 #include <tensorwrapper/types/floating_point.hpp>
 
 /** @namespace tensorwrapper::buffer::detail_::hash_utilities
@@ -102,6 +103,43 @@ void hash_input(hash_type& seed,
                 const types::thresholded_affine_type<T>& value) {
     hash_input(seed, value.affine());
     hash_input(seed, value.threshold());
+}
+
+/** @brief Specialization for sigma::TaylorModel values
+ *
+ *  @tparam T The floating point type of the model's coefficients
+ *  @param[in,out] seed The initial value of the hash, which is overwritten when
+ *                      the new value is added.
+ *  @param[in] value The new TaylorModel value being hashed and combined with
+ *                   the seed.
+ *
+ *  @return The updated hash value
+ *
+ *  @throw none No throw guarantee
+ */
+template<typename T>
+void hash_input(hash_type& seed, const types::taylor_model_type<T>& value) {
+    // Unlike the other UQ types, TaylorModel has an explicit empty state
+    // (representing the empty set, distinct from a zero-width [0,0]
+    // remainder); remainder().lower()/upper() throw std::domain_error for an
+    // empty model, which would violate this function's no-throw guarantee.
+    if(value.empty()) {
+        hash_input(seed, std::string("empty_taylor_model"));
+        return;
+    }
+    hash_input(seed, value.constant());
+    // coefficients() is a std::map keyed on Monomial (which orders variables
+    // lexicographically), so iteration order is already stable -- unlike the
+    // unordered_map cases above, no order-independent folding is needed.
+    for(const auto& [mono, coeff] : value.coefficients()) {
+        for(const auto& [var, exponent] : mono.exponents()) {
+            hash_input(seed, var);
+            hash_input(seed, exponent);
+        }
+        hash_input(seed, coeff);
+    }
+    hash_input(seed, value.remainder().lower());
+    hash_input(seed, value.remainder().upper());
 }
 
 #endif

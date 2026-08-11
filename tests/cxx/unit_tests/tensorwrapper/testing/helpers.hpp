@@ -52,8 +52,7 @@ bool elements_equal(const T& lhs, const U& rhs) {
             return lhs;
         }
     }();
-    if constexpr(types::is_affine_v<concrete_t> ||
-                 types::is_thresholded_affine_v<concrete_t>) {
+    if constexpr(types::is_uq_type_v<concrete_t>) {
         return lv.range() == rhs.range();
     } else {
         return lv == rhs;
@@ -62,7 +61,7 @@ bool elements_equal(const T& lhs, const U& rhs) {
 
 template<typename T>
 constexpr double default_tolerance() {
-    if constexpr(types::is_affine_v<T> || types::is_thresholded_affine_v<T>) {
+    if constexpr(types::is_uq_type_v<T>) {
         // pow() is implemented as exp(log(x)*n); float-precision accumulates
         // ~1e-3 absolute error for values like 42^2 = 1764.
         return 1e-3;

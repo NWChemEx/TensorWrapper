@@ -45,9 +45,14 @@ using thresholded_affine_type = sigma::ThresholdedAffine<T>;
 using tafloat                 = thresholded_affine_type<float>;
 using tadouble                = thresholded_affine_type<double>;
 
+template<typename T>
+using taylor_model_type = sigma::TaylorModel<T>;
+using tmfloat           = taylor_model_type<float>;
+using tmdouble          = taylor_model_type<double>;
+
 using floating_point_types =
   std::tuple<float, double, ufloat, udouble, ifloat, idouble, afloat, adouble,
-             tafloat, tadouble>;
+             tafloat, tadouble, tmfloat, tmdouble>;
 
 template<typename T>
 constexpr bool is_uncertain_v =
@@ -66,8 +71,13 @@ constexpr bool is_thresholded_affine_v =
   std::is_same_v<T, tafloat> || std::is_same_v<T, tadouble>;
 
 template<typename T>
-constexpr bool is_uq_type_v = is_uncertain_v<T> || is_interval_v<T> ||
-                              is_affine_v<T> || is_thresholded_affine_v<T>;
+constexpr bool is_taylor_model_v =
+  std::is_same_v<T, tmfloat> || std::is_same_v<T, tmdouble>;
+
+template<typename T>
+constexpr bool is_uq_type_v =
+  is_uncertain_v<T> || is_interval_v<T> || is_affine_v<T> ||
+  is_thresholded_affine_v<T> || is_taylor_model_v<T>;
 
 template<typename T, typename U, typename V>
 T construct_uq_type(const U& center, const V& radius) {
@@ -75,7 +85,8 @@ T construct_uq_type(const U& center, const V& radius) {
         return T(center, radius);
     } else if constexpr(is_interval_v<T>) {
         return T(center - radius, center + radius);
-    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
+                        is_taylor_model_v<T>) {
         return T(center - radius, center + radius);
     } else if constexpr(is_uq_type_v<T>) {
         throw std::logic_error("UQ type not recognized in construct_uq_type.");
@@ -92,6 +103,8 @@ auto uq_center(const T& value) {
         return value.median();
     } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
         return value.center();
+    } else if constexpr(is_taylor_model_v<T>) {
+        return value.constant();
     } else if constexpr(is_uq_type_v<T>) {
         throw std::logic_error("UQ type not recognized in uq_center.");
     } else {
@@ -105,7 +118,8 @@ auto uq_upper(const T& value) {
         return value.mean() + value.sd();
     } else if constexpr(is_interval_v<T>) {
         return value.upper();
-    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
+                        is_taylor_model_v<T>) {
         return value.range().upper();
     } else if constexpr(is_uq_type_v<T>) {
         throw std::logic_error("UQ type not recognized in uq_upper.");
@@ -165,7 +179,9 @@ T pow(T value, double pow) {
     MACRO_IN(tensorwrapper::types::afloat);     \
     MACRO_IN(tensorwrapper::types::adouble);    \
     MACRO_IN(tensorwrapper::types::tafloat);    \
-    MACRO_IN(tensorwrapper::types::tadouble)
+    MACRO_IN(tensorwrapper::types::tadouble);   \
+    MACRO_IN(tensorwrapper::types::tmfloat);    \
+    MACRO_IN(tensorwrapper::types::tmdouble)
 } // namespace tensorwrapper::types
 
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
@@ -176,6 +192,8 @@ WTF_REGISTER_FP_TYPE(tensorwrapper::types::afloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::adouble);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::tafloat);
 WTF_REGISTER_FP_TYPE(tensorwrapper::types::tadouble);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmfloat);
+WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmdouble);
 
 #else
 template<typename T>
@@ -194,6 +212,10 @@ template<typename T>
 using thresholded_affine_type = T;
 using tafloat                 = float;
 using tadouble                = double;
+template<typename T>
+using taylor_model_type = T;
+using tmfloat           = float;
+using tmdouble          = double;
 
 using floating_point_types = std::tuple<float, double>;
 
@@ -208,6 +230,9 @@ constexpr bool is_affine_v = false;
 
 template<typename T>
 constexpr bool is_thresholded_affine_v = false;
+
+template<typename T>
+constexpr bool is_taylor_model_v = false;
 
 template<typename T>
 constexpr bool is_uq_type_v = false;

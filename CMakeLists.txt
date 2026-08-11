@@ -32,8 +32,12 @@ include(nwx_cxx_api_docs)
 nwx_cxx_api_docs("cxx/include" "cxx/src")
 
 # Dependencies
+set(TENSORWRAPPER_DEPENDENCIES utilities parallelzone wtf eigen boost)
+if(ENABLE_SIGMA)
+    list(APPEND TENSORWRAPPER_DEPENDENCIES sigma)
+endif()
 include(get_dependencies)
-get_dependencies(utilities parallelzone wtf eigen boost)
+get_dependencies(${TENSORWRAPPER_DEPENDENCIES})
 
 # TODO: ENABLE_CUTENSOR handling
 
@@ -42,6 +46,26 @@ include(nwx_library)
 nwx_library(${PROJECT_NAME} "cxx/include" "cxx/src"
     utilities parallelzone wtf
     PUBLIC eigen boost)
+
+# ENABLE_SIGMA is declared as an option() by set_default_nwx_options, but that
+# alone doesn't reach the preprocessor -- floating_point.hpp's #ifdef
+# ENABLE_SIGMA needs the compile definition too.
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+    $<$<BOOL:${ENABLE_SIGMA}>:ENABLE_SIGMA>)
+
+# sigma is linked BUILD_INTERFACE-only: it's still on its own CMaize-based
+# build (see NWXCMake/cmake/dependencies/sigma.cmake), so the raw "sigma"
+# target FetchContent produces is not IMPORTED and isn't part of this
+# project's own install(EXPORT) set. Requiring it there fails at generate
+# time ("target tensorwrapper... requires target sigma that is not in any
+# export set"). BUILD_INTERFACE keeps it available to this build (this
+# target's own sources, and other in-build consumers like the test binaries
+# and Python module) without making the installed/exported tensorwrapper
+# package require it.
+if(ENABLE_SIGMA)
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        $<BUILD_INTERFACE:${NWX_DEP_TARGET_sigma}>)
+endif()
 
 # Generated config headers (e.g. from configure_file) live in binary dir
 target_include_directories(${PROJECT_NAME} PUBLIC
