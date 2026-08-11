@@ -128,6 +128,22 @@ auto uq_upper(const T& value) {
     }
 }
 
+template<typename T>
+auto uq_lower(const T& value) {
+    if constexpr(is_uncertain_v<T>) {
+        return value.mean() - value.sd();
+    } else if constexpr(is_interval_v<T>) {
+        return value.lower();
+    } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
+                        is_taylor_model_v<T>) {
+        return value.range().lower();
+    } else if constexpr(is_uq_type_v<T>) {
+        throw std::logic_error("UQ type not recognized in uq_lower.");
+    } else {
+        return value;
+    }
+}
+
 template<typename T, typename U>
 bool strictly_less(const T& lhs, const U& rhs) {
     return uq_upper(lhs) < uq_upper(rhs);
@@ -249,6 +265,11 @@ T uq_center(const T& value) {
 
 template<typename T>
 T uq_upper(const T& value) {
+    return value;
+}
+
+template<typename T>
+T uq_lower(const T& value) {
     return value;
 }
 
