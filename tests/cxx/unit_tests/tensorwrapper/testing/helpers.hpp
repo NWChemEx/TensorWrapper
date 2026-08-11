@@ -52,7 +52,9 @@ bool elements_equal(const T& lhs, const U& rhs) {
             return lhs;
         }
     }();
-    if constexpr(types::is_uq_type_v<concrete_t>) {
+    if constexpr(types::is_affine_v<concrete_t> ||
+                 types::is_thresholded_affine_v<concrete_t> ||
+                 types::is_taylor_model_v<concrete_t>) {
         return lv.range() == rhs.range();
     } else {
         return lv == rhs;
