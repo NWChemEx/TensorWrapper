@@ -71,7 +71,12 @@ TEMPLATE_LIST_TEST_CASE("add_noise", "", types::floating_point_types) {
         const double t = 0.01;
         auto out1      = add_noise<TestType>(matrix, t, 99);
         auto out2      = add_noise<TestType>(matrix, t, 99);
-        if constexpr(types::is_interval_v<TestType>) {
+        if constexpr(types::is_uq_type_v<TestType>) {
+            // Two independent calls create values with the same observable
+            // bounds but different internal error-source/error-symbol IDs,
+            // so compare bounds via the type-generic uq_* accessors (which
+            // together fully determine each UQ type's observable state)
+            // rather than the raw values or their internal representations.
             using wtf::fp::float_cast;
             auto b1 = make_contiguous(out1.buffer());
             auto b2 = make_contiguous(out2.buffer());
@@ -79,37 +84,12 @@ TEMPLATE_LIST_TEST_CASE("add_noise", "", types::floating_point_types) {
                 for(std::size_t j = 0; j < 2; ++j) {
                     const auto v1 = float_cast<TestType>(b1.get_elem({i, j}));
                     const auto v2 = float_cast<TestType>(b2.get_elem({i, j}));
-                    REQUIRE(v1.lower() == Catch::Approx(v2.lower()));
-                    REQUIRE(v1.upper() == Catch::Approx(v2.upper()));
-                }
-            }
-        } else if constexpr(types::is_uncertain_v<TestType>) {
-            // Two independent calls create values with the same mean/sd but
-            // different internal error-source IDs; compare observables
-            // directly.
-            using wtf::fp::float_cast;
-            auto b1 = make_contiguous(out1.buffer());
-            auto b2 = make_contiguous(out2.buffer());
-            for(std::size_t i = 0; i < 2; ++i) {
-                for(std::size_t j = 0; j < 2; ++j) {
-                    const auto v1 = float_cast<TestType>(b1.get_elem({i, j}));
-                    const auto v2 = float_cast<TestType>(b2.get_elem({i, j}));
-                    REQUIRE(v1.mean() == Catch::Approx(v2.mean()));
-                    REQUIRE(v1.sd() == Catch::Approx(v2.sd()));
-                }
-            }
-        } else if constexpr(types::is_affine_v<TestType> ||
-                            types::is_thresholded_affine_v<TestType>) {
-            // Same reason as uncertain: independent error-symbol IDs differ.
-            using wtf::fp::float_cast;
-            auto b1 = make_contiguous(out1.buffer());
-            auto b2 = make_contiguous(out2.buffer());
-            for(std::size_t i = 0; i < 2; ++i) {
-                for(std::size_t j = 0; j < 2; ++j) {
-                    const auto v1 = float_cast<TestType>(b1.get_elem({i, j}));
-                    const auto v2 = float_cast<TestType>(b2.get_elem({i, j}));
-                    REQUIRE(v1.center() == Catch::Approx(v2.center()));
-                    REQUIRE(v1.radius() == Catch::Approx(v2.radius()));
+                    REQUIRE(types::uq_center(v1) ==
+                            Catch::Approx(types::uq_center(v2)));
+                    REQUIRE(types::uq_lower(v1) ==
+                            Catch::Approx(types::uq_lower(v2)));
+                    REQUIRE(types::uq_upper(v1) ==
+                            Catch::Approx(types::uq_upper(v2)));
                 }
             }
         } else {

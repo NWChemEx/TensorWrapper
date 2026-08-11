@@ -907,3 +907,34 @@ TEST_CASE("interval contraction") {
     }
 #endif
 }
+
+TEST_CASE("taylor model contraction") {
+#ifdef ENABLE_SIGMA
+    using tm_type = sigma::TaylorModel<double>;
+
+    // Matrix-vector product with the identity, so the correct result is
+    // exactly a_buffer regardless of how TaylorModel's polynomial/remainder
+    // machinery represents each intermediate product.
+    tensorwrapper::shape::Smooth a_shape({2});
+    tensorwrapper::shape::Smooth b_shape({2, 2});
+
+    std::vector a_buffer{tm_type(1.0), tm_type(2.0)};
+    std::vector b_buffer{tm_type(1.0), tm_type(0.0), tm_type(0.0),
+                         tm_type(1.0)};
+
+    buffer::Contiguous a_tensor(a_buffer, a_shape);
+    buffer::Contiguous b_tensor(b_buffer, b_shape);
+
+    std::vector<tm_type> c_buffer(a_shape.size(), tm_type(0.0));
+    buffer::Contiguous c_tensor(c_buffer, a_shape);
+    c_tensor("k") = a_tensor("i") * b_tensor("k,i");
+
+    std::vector<double> corr{1.0, 2.0};
+
+    auto c_tensor_buffer = buffer::get_raw_data<tm_type>(c_tensor);
+    REQUIRE(c_tensor_buffer.size() == corr.size());
+    for(size_t i = 0; i < c_tensor_buffer.size(); ++i) {
+        REQUIRE(c_tensor_buffer[i].contains(corr[i]));
+    }
+#endif
+}

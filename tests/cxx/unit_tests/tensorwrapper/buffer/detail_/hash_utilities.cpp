@@ -75,6 +75,21 @@ TEMPLATE_LIST_TEST_CASE("hash_input", "", types::floating_point_types) {
         hash_input(corr, value.affine());
         hash_input(corr, value.threshold());
         REQUIRE(seed == corr);
+    } else if constexpr(types::is_taylor_model_v<TestType>) {
+        value_type value(1.0, 2.0);
+        hash_input(seed, value);
+        hash_type corr{0};
+        boost::hash_combine(corr, value.constant());
+        for(const auto& [mono, coeff] : value.coefficients()) {
+            for(const auto& [var, exponent] : mono.exponents()) {
+                boost::hash_combine(corr, var);
+                boost::hash_combine(corr, exponent);
+            }
+            boost::hash_combine(corr, coeff);
+        }
+        boost::hash_combine(corr, value.remainder().lower());
+        boost::hash_combine(corr, value.remainder().upper());
+        REQUIRE(seed == corr);
     } else if constexpr(types::is_uq_type_v<TestType>) {
         throw std::runtime_error("UQ type not registered for hash_input");
     } else {

@@ -52,7 +52,8 @@ TEMPLATE_LIST_TEST_CASE("random_orthogonal_matrix", "",
                                    std::is_same_v<TestType, types::ufloat> ||
                                    std::is_same_v<TestType, types::ifloat> ||
                                    std::is_same_v<TestType, types::afloat> ||
-                                   std::is_same_v<TestType, types::tafloat> ?
+                                   std::is_same_v<TestType, types::tafloat> ||
+                                   std::is_same_v<TestType, types::tmfloat> ?
                                  1e-5 :
                                  1e-12;
         REQUIRE(approximately_equal(product, ident, tol));

@@ -33,7 +33,7 @@ template<typename T>
 constexpr double eigen_system_tol =
   std::is_same_v<T, float> || std::is_same_v<T, types::ufloat> ||
       std::is_same_v<T, types::ifloat> || std::is_same_v<T, types::afloat> ||
-      std::is_same_v<T, types::tafloat> ?
+      std::is_same_v<T, types::tafloat> || std::is_same_v<T, types::tmfloat> ?
     1e-5 :
     1e-12;
 } // namespace
