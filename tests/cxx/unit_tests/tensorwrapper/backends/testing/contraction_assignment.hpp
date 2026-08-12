@@ -16,6 +16,7 @@
 
 #pragma once
 #include <span>
+#include <tensorwrapper/types/floating_point.hpp>
 #include <vector>
 
 namespace tensorwrapper::testing {
@@ -253,6 +254,40 @@ void contraction_assignment_tests() {
                                tensor3_value_type(37.0)));
         REQUIRE(elements_equal(tensor3.get_elem({1, 1, 1}),
                                tensor3_value_type(44.0)));
+    }
+
+    // Regression test: contraction must preserve the operands' Taylor-model
+    // truncation order instead of collapsing to default_max_order() via
+    // Eigen's hidden GEMM zero-seed.
+    if constexpr(types::is_taylor_model_v<matrix_value_type>) {
+        SECTION("ij,jk->ik preserves non-default Taylor order") {
+            using order_type              = typename matrix_value_type::Order;
+            const std::size_t order_value = 4;
+            const auto order              = order_type(order_value);
+            REQUIRE(order_value !=
+                    matrix_value_type::default_max_order().value);
+
+            std::vector<matrix_value_type> lhs_data(4);
+            std::vector<matrix_value_type> rhs_data(4);
+            for(std::size_t i = 0; i < 4; ++i) {
+                lhs_data[i] = matrix_value_type(i + 1.0, i + 2.0, order);
+                rhs_data[i] = matrix_value_type(i + 1.0, i + 2.0, order);
+            }
+            std::span<matrix_value_type> lhs_span(lhs_data.data(),
+                                                  lhs_data.size());
+            std::span<matrix_value_type> rhs_span(rhs_data.data(),
+                                                  rhs_data.size());
+            MatrixType lhs(lhs_span, matrix_shape);
+            MatrixType rhs(rhs_span, matrix_shape);
+
+            label_type o("i,k");
+            label_type l("i,j");
+            label_type r("j,k");
+            matrix.contraction_assignment(o, l, r, lhs, rhs);
+
+            REQUIRE(matrix.get_elem({0, 0}).max_order() == order_value);
+            REQUIRE(matrix.get_elem({1, 1}).max_order() == order_value);
+        }
     }
 }
 } // namespace tensorwrapper::testing

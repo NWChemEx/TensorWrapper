@@ -33,6 +33,7 @@ Design of TensorWrapper
    expression
    op_graph
    sparse_maps
+   uq_contraction
 
 .. toctree::
    :maxdepth: 2

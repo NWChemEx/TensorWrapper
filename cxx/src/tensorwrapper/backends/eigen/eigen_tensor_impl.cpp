@@ -18,6 +18,7 @@
 #include "eigen_tensor_impl.hpp"
 #include <iomanip>
 #include <sstream>
+#include <tensorwrapper/types/floating_point.hpp>
 
 namespace tensorwrapper::backends::eigen {
 
@@ -248,7 +249,26 @@ void EIGEN_TENSOR::contraction_assignment_(label_type this_label,
     map_t rmatrix(new_rhs_buffer.data(), rrows, rcols);
     map_t omatrix(out_buffer.data(), lrows, rcols);
 
-    omatrix = lmatrix * rmatrix;
+    if constexpr(types::is_uq_type_v<FloatType>) {
+        // Eigen's dense GEMM seeds each output cell via an internal
+        // zero-construction path that Eigen::NumTraits<FloatType>::Zero()
+        // cannot intercept; for UQ scalar types that hidden zero carries the
+        // compile-time default truncation order, which then clamps every
+        // accumulated result via operator+=/operator*='s min-order rule.
+        // Seeding with a genuinely empty FloatType{} instead lets the first
+        // real term's order propagate through unmodified. See
+        // TensorWrapper/docs/source/design for the full rationale.
+        for(std::size_t i = 0; i < lrows; ++i) {
+            for(std::size_t j = 0; j < rcols; ++j) {
+                FloatType acc{};
+                for(std::size_t k = 0; k < lcols; ++k)
+                    acc += lmatrix(i, k) * rmatrix(k, j);
+                omatrix(i, j) = acc;
+            }
+        }
+    } else {
+        omatrix = lmatrix * rmatrix;
+    }
 
     // The last transpose part of TTGT
     this->permute_assignment(this_label, olabels, *pout_tensor);
