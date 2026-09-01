@@ -25,6 +25,21 @@ using namespace tensorwrapper::generate;
 using namespace tensorwrapper::operations;
 using namespace tensorwrapper::utilities;
 
+namespace {
+// Composing two transcendental functions (log then exp) forces a rigorous
+// Interval to widen by more than the default 1e-16 tolerance even when
+// compared against itself, since an interval's difference with itself is not
+// zero-width unless the interval is a single point. This tolerance accounts
+// for that unavoidable widening.
+template<typename T>
+constexpr double log_spacing_tol =
+  std::is_same_v<T, float> || std::is_same_v<T, types::ufloat> ||
+      std::is_same_v<T, types::ifloat> || std::is_same_v<T, types::afloat> ||
+      std::is_same_v<T, types::tafloat> || std::is_same_v<T, types::tmfloat> ?
+    5e-3 :
+    1e-9;
+} // namespace
+
 TEMPLATE_LIST_TEST_CASE("generate_eigenvalues", "",
                         types::floating_point_types) {
     SECTION("n == 1") {
@@ -70,7 +85,7 @@ TEMPLATE_LIST_TEST_CASE("generate_eigenvalues", "",
         auto gen    = make_rng(1);
         auto result = generate_eigenvalues<TestType>(spec, gen);
         auto corr   = make_tensor({3}, expected);
-        REQUIRE(approximately_equal(result, corr));
+        REQUIRE(approximately_equal(result, corr, log_spacing_tol<TestType>));
     }
 
     SECTION("degenerate spacing") {
