@@ -39,6 +39,8 @@ protected:
     friend my_base_type;
     friend my_base_type::sliceable_base;
 
+    using typename my_base_type::index_vector;
+
     virtual slice_type slice_(index_vector first_elem,
                               index_vector last_elem)             = 0;
     virtual const_slice_type slice_(index_vector first_elem,
