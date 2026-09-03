@@ -166,6 +166,23 @@ protected:
     bool approximately_equal_(const BufferViewBase<BufferBaseType>& rhs,
                               double tol) const;
 
+    /** @brief Returns the element with the offsets specified by @p index.
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element.
+     *
+     *  @return A const reference to the element at the specified offsets.
+     */
+    virtual const_element_reference get_elem_(index_vector index) const = 0;
+
+    /** @brief Sets the specified element to @p new_value.
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element.
+     *  @param[in] new_value The new value for the specified element.
+     */
+    virtual void set_elem_(index_vector index, element_type new_value) = 0;
+
 private:
     template<typename FxnType>
     dsl_reference binary_op_common_(FxnType&& fxn, label_type this_labels,

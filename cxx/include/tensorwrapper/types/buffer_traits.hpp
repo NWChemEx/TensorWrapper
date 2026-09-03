@@ -34,6 +34,10 @@ struct BufferBaseTraitsCommon : public CommonTypes {
     using buffer_base_type            = buffer::BufferBase;
     using const_buffer_base_pointer   = std::unique_ptr<const buffer_base_type>;
     using const_buffer_base_reference = const buffer_base_type&;
+
+    using element_type            = wtf::fp::Float;
+    using const_element_reference = wtf::fp::FloatView<const element_type>;
+    using index_vector            = std::vector<CommonTypes::size_type>;
 };
 
 template<>
@@ -42,6 +46,7 @@ struct ClassTraits<buffer::BufferBase> : public BufferBaseTraitsCommon {
     using layout_pointer        = layout_type*;
     using buffer_base_reference = buffer_base_type&;
     using buffer_base_pointer   = std::unique_ptr<buffer_base_type>;
+    using element_reference     = wtf::fp::FloatView<element_type>;
 };
 
 template<>
@@ -51,6 +56,7 @@ struct ClassTraits<const buffer::BufferBase> : public BufferBaseTraitsCommon {
     using buffer_base_reference     = const buffer_base_type&;
     using buffer_base_pointer       = std::unique_ptr<const buffer_base_type>;
     using const_buffer_base_pointer = std::unique_ptr<const buffer_base_type>;
+    using element_reference         = wtf::fp::FloatView<const element_type>;
 };
 
 template<typename BufferBaseType>
@@ -69,12 +75,9 @@ struct ClassTraits<buffer::LocalView<LocalType>>
   : public ClassTraits<LocalType> {};
 
 struct ReplicatedTraitsCommon {
-    using element_type            = wtf::fp::Float;
-    using const_element_reference = wtf::fp::FloatView<const element_type>;
-    using buffer_type             = wtf::buffer::FloatBuffer;
-    using const_buffer_view       = wtf::buffer::BufferView<const element_type>;
-    using index_vector            = std::vector<types::CommonTypes::size_type>;
-    using const_slice_type = buffer::ReplicatedView<const buffer::Replicated>;
+    using buffer_type       = wtf::buffer::FloatBuffer;
+    using const_buffer_view = wtf::buffer::BufferView<const wtf::fp::Float>;
+    using const_slice_type  = buffer::ReplicatedView<const buffer::Replicated>;
     using slice_il_type = std::initializer_list<types::CommonTypes::size_type>;
 };
 

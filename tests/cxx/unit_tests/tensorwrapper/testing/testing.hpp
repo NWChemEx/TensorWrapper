@@ -21,5 +21,6 @@
 #include "inputs.hpp"
 #include "layouts.hpp"
 #include "shapes.hpp"
+#include "test_view.hpp"
 
 namespace tensorwrapper::testing {} // namespace tensorwrapper::testing

@@ -159,10 +159,10 @@ protected:
     friend typename common_base_type::sliceable_base;
 
     /// Implements get_elem for the view.
-    const_element_reference get_elem_(index_vector index) const;
+    const_element_reference get_elem_(index_vector index) const override;
 
     /// Implements set_elem for the view.
-    void set_elem_(index_vector index, element_type value);
+    void set_elem_(index_vector index, element_type value) override;
 
     /// Implements slice for the view.
     slice_type slice_(index_vector first_elem, index_vector last_elem);
