@@ -200,16 +200,16 @@ T pow(T value, double pow) {
     MACRO_IN(tensorwrapper::types::tmdouble)
 } // namespace tensorwrapper::types
 
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::udouble);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::ifloat);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::afloat);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::adouble);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::tafloat);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::tadouble);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmfloat);
-WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmdouble);
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::ufloat, "ufloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::udouble, "udouble");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::ifloat, "ifloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::idouble, "idouble");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::afloat, "afloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::adouble, "adouble");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tafloat, "tafloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tadouble, "tadouble");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmfloat, "tmfloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmdouble, "tmdouble");
 
 #else
 template<typename T>
