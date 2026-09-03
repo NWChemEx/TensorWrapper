@@ -149,6 +149,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_pointer</b> =
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_buffer_pointer</b> = <a class="el" href="structtensorwrapper_1_1detail___1_1TensorInput.html#a5a79f1c9c540e48097c66e1b8265fb0e">input_type::const_buffer_pointer</a></td></tr>
 <tr class="memdesc:a18c9c4f79c37305d246e52cd5e43dda9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of a pointer to a read-only buffer. <br /></td></tr>
 <tr class="separator:a18c9c4f79c37305d246e52cd5e43dda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31bdcd6fec0c03b3dd94a513ef966a22" id="r_a31bdcd6fec0c03b3dd94a513ef966a22"><td class="memItemLeft" align="right" valign="top"><a id="a31bdcd6fec0c03b3dd94a513ef966a22" name="a31bdcd6fec0c03b3dd94a513ef966a22"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>element_type</b> = input_type::buffer_base::element_type</td></tr>
+<tr class="memdesc:a31bdcd6fec0c03b3dd94a513ef966a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of an individual element of the tensor's buffer. <br /></td></tr>
+<tr class="separator:a31bdcd6fec0c03b3dd94a513ef966a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc7f7b28b7cfd3a12bdde8562fdb398" id="r_adfc7f7b28b7cfd3a12bdde8562fdb398"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">const_element_reference</a> = input_type::buffer_base::const_element_reference</td></tr>
+<tr class="separator:adfc7f7b28b7cfd3a12bdde8562fdb398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbfcf94bffbc0d5e633c98f9d5f2ec51" id="r_adbfcf94bffbc0d5e633c98f9d5f2ec51"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">index_vector</a> = input_type::buffer_base::index_vector</td></tr>
+<tr class="separator:adbfcf94bffbc0d5e633c98f9d5f2ec51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3abb01b9a8aa77292e6ac80172f12477" id="r_a3abb01b9a8aa77292e6ac80172f12477"><td class="memItemLeft" align="right" valign="top"><a id="a3abb01b9a8aa77292e6ac80172f12477" name="a3abb01b9a8aa77292e6ac80172f12477"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>rank_type</b> = typename <a class="el" href="classtensorwrapper_1_1layout_1_1Logical.html#acfe6f849ee21afec143003653c9e8c29">logical_layout_type::size_type</a></td></tr>
 <tr class="memdesc:a3abb01b9a8aa77292e6ac80172f12477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used to convey rank. <br /></td></tr>
@@ -285,6 +293,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9c48548fc4b1209da578c00b17be45f8" id="r_a9c48548fc4b1209da578c00b17be45f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#a3abb01b9a8aa77292e6ac80172f12477">rank_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a9c48548fc4b1209da578c00b17be45f8">rank</a> () const</td></tr>
 <tr class="memdesc:a9c48548fc4b1209da578c00b17be45f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the logical rank of the tensor.  <br /></td></tr>
 <tr class="separator:a9c48548fc4b1209da578c00b17be45f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a755025ab4e6c1c8190d3ebd9b65b5aea" id="r_a755025ab4e6c1c8190d3ebd9b65b5aea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">const_element_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a755025ab4e6c1c8190d3ebd9b65b5aea">get_element</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">index_vector</a> index) const</td></tr>
+<tr class="memdesc:a755025ab4e6c1c8190d3ebd9b65b5aea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an individual element of the tensor's buffer.  <br /></td></tr>
+<tr class="separator:a755025ab4e6c1c8190d3ebd9b65b5aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab44d9e2fcfbb643997723da8f62fba11" id="r_ab44d9e2fcfbb643997723da8f62fba11"><td class="memTemplParams" colspan="2">template&lt;typename... Offsets&gt; </td></tr>
+<tr class="memitem:ab44d9e2fcfbb643997723da8f62fba11"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">const_element_reference</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab44d9e2fcfbb643997723da8f62fba11">get_element</a> (Offsets... offsets) const</td></tr>
+<tr class="memdesc:ab44d9e2fcfbb643997723da8f62fba11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves an individual element of the tensor's buffer.  <br /></td></tr>
+<tr class="separator:ab44d9e2fcfbb643997723da8f62fba11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab01673b9b1f2d7cd836119189f824cb1" id="r_ab01673b9b1f2d7cd836119189f824cb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#ab01673b9b1f2d7cd836119189f824cb1">set_element</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">index_vector</a> index, <a class="el" href="classtensorwrapper_1_1Tensor.html#a31bdcd6fec0c03b3dd94a513ef966a22">element_type</a> value)</td></tr>
+<tr class="memdesc:ab01673b9b1f2d7cd836119189f824cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an individual element of the tensor's buffer.  <br /></td></tr>
+<tr class="separator:ab01673b9b1f2d7cd836119189f824cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30bc6a2fa4dfe5eb78a274fd503abe44" id="r_a30bc6a2fa4dfe5eb78a274fd503abe44"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a30bc6a2fa4dfe5eb78a274fd503abe44"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a30bc6a2fa4dfe5eb78a274fd503abe44">set_element</a> (Args... args)</td></tr>
+<tr class="memdesc:a30bc6a2fa4dfe5eb78a274fd503abe44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an individual element of the tensor's buffer.  <br /></td></tr>
+<tr class="separator:a30bc6a2fa4dfe5eb78a274fd503abe44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47f9907fce0daa1f797f275701f65236" id="r_a47f9907fce0daa1f797f275701f65236"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorwrapper_1_1Tensor.html#a47f9907fce0daa1f797f275701f65236">swap</a> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &amp;other) noexcept</td></tr>
 <tr class="memdesc:a47f9907fce0daa1f797f275701f65236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges the state of *this with the state of <code>other</code>.  <br /></td></tr>
 <tr class="separator:a47f9907fce0daa1f797f275701f65236"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -430,7 +452,38 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a multi-dimensional array of values. </p>
 <p>The <a class="el" href="classtensorwrapper_1_1Tensor.html" title="Represents a multi-dimensional array of values.">Tensor</a> class is envisioned as being the most user-facing class of TensorWrapper and forms the entry point into TensorWrapper's DSL. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="adfc7f7b28b7cfd3a12bdde8562fdb398" name="adfc7f7b28b7cfd3a12bdde8562fdb398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfc7f7b28b7cfd3a12bdde8562fdb398">&#9670;&#160;</a></span>const_element_reference</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">tensorwrapper::Tensor::const_element_reference</a> =  input_type::buffer_base::const_element_reference</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type of a read-only reference to an individual element of the tensor's buffer </p>
+
+</div>
+</div>
+<a id="adbfcf94bffbc0d5e633c98f9d5f2ec51" name="adbfcf94bffbc0d5e633c98f9d5f2ec51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbfcf94bffbc0d5e633c98f9d5f2ec51">&#9670;&#160;</a></span>index_vector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">tensorwrapper::Tensor::index_vector</a> =  input_type::buffer_base::index_vector</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type used to index a single element of the tensor's buffer (one offset per mode, in the buffer's physical index space) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad1e68d6937d1df0a3dc868096184d8bc" name="ad1e68d6937d1df0a3dc868096184d8bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1e68d6937d1df0a3dc868096184d8bc">&#9670;&#160;</a></span>Tensor() <span class="overload">[1/5]</span></h2>
 
@@ -761,6 +814,92 @@ template&lt;typename... Args, typename  = enable_if_no_tensors_t&lt;std::decay_t
 
 </div>
 </div>
+<a id="a755025ab4e6c1c8190d3ebd9b65b5aea" name="a755025ab4e6c1c8190d3ebd9b65b5aea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a755025ab4e6c1c8190d3ebd9b65b5aea">&#9670;&#160;</a></span>get_element() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">Tensor::const_element_reference</a> tensorwrapper::Tensor::get_element </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">index_vector</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves an individual element of the tensor's buffer. </p>
+<dl class="section note"><dt>Note</dt><dd>This operates in the buffer's (physical) index space, not the tensor's logical index space (see <a class="el" href="classtensorwrapper_1_1Tensor.html#a399184a167a00c7b2a6a8c84d8286135" title="Mutable access to the tensor&#39;s buffer.">buffer()</a> for context on the distinction).</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>One offset per mode of the buffer. The length of <code>index</code> must equal the buffer's rank.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The requested element.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>index</code> has the wrong length or contains an out-of-bounds offset. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab44d9e2fcfbb643997723da8f62fba11" name="ab44d9e2fcfbb643997723da8f62fba11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab44d9e2fcfbb643997723da8f62fba11">&#9670;&#160;</a></span>get_element() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Offsets&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html#adfc7f7b28b7cfd3a12bdde8562fdb398">const_element_reference</a> tensorwrapper::Tensor::get_element </td>
+          <td>(</td>
+          <td class="paramtype">Offsets...&#160;</td>
+          <td class="paramname"><em>offsets</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves an individual element of the tensor's buffer. </p>
+<p>This overload allows the offsets to be provided as an arbitrary number of arguments (one per mode) instead of as an index_vector. It is implemented in terms of <a class="el" href="classtensorwrapper_1_1Tensor.html#a755025ab4e6c1c8190d3ebd9b65b5aea" title="Retrieves an individual element of the tensor&#39;s buffer.">get_element(index_vector) const</a>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Offsets</td><td>The types of the offsets.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">offsets</td><td>The offsets into each mode of the buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The requested element.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if the number of offsets does not equal the buffer's rank or if any offset is out of bounds. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa93eb1f54cba7139b2b22b66f7c60459" name="aa93eb1f54cba7139b2b22b66f7c60459"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa93eb1f54cba7139b2b22b66f7c60459">&#9670;&#160;</a></span>logical_layout()</h2>
 
@@ -969,6 +1108,102 @@ template&lt;typename... Args, typename  = enable_if_no_tensors_t&lt;std::decay_t
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::runtime_error</td><td>if *this does not have a logical layout. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a30bc6a2fa4dfe5eb78a274fd503abe44" name="a30bc6a2fa4dfe5eb78a274fd503abe44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30bc6a2fa4dfe5eb78a274fd503abe44">&#9670;&#160;</a></span>set_element() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::Tensor::set_element </td>
+          <td>(</td>
+          <td class="paramtype">Args...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets an individual element of the tensor's buffer. </p>
+<p>This overload allows the offsets to be provided as an arbitrary number of arguments (one per mode) instead of as an index_vector. It is implemented in terms of <a class="el" href="classtensorwrapper_1_1Tensor.html#ab01673b9b1f2d7cd836119189f824cb1" title="Sets an individual element of the tensor&#39;s buffer.">set_element(index_vector, element_type)</a>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Offsets</td><td>The types of the offsets.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">offsets</td><td>The offsets into each mode of the buffer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The new value for the specified element.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if the number of offsets does not equal the buffer's rank or if any offset is out of bounds. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab01673b9b1f2d7cd836119189f824cb1" name="ab01673b9b1f2d7cd836119189f824cb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab01673b9b1f2d7cd836119189f824cb1">&#9670;&#160;</a></span>set_element() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorwrapper::Tensor::set_element </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#adbfcf94bffbc0d5e633c98f9d5f2ec51">index_vector</a>&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorwrapper_1_1Tensor.html#a31bdcd6fec0c03b3dd94a513ef966a22">element_type</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets an individual element of the tensor's buffer. </p>
+<dl class="section note"><dt>Note</dt><dd>This operates in the buffer's (physical) index space, not the tensor's logical index space (see <a class="el" href="classtensorwrapper_1_1Tensor.html#a399184a167a00c7b2a6a8c84d8286135" title="Mutable access to the tensor&#39;s buffer.">buffer()</a> for context on the distinction).</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>One offset per mode of the buffer. The length of <code>index</code> must equal the buffer's rank. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The new value for the specified element.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if *this is an empty tensor. Strong throw guarantee. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>index</code> has the wrong length or contains an out-of-bounds offset. Strong throw guarantee. </td></tr>
   </table>
   </dd>
 </dl>
