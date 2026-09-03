@@ -38,6 +38,11 @@ namespace tensorwrapper::buffer {
  *  constructed or moved-from views have no layout (has_layout() is false,
  *  layout() throws).
  *
+ *  BufferViewBase is abstract: it declares get_elem_()/set_elem_() (required
+ *  by BufferBaseCommon for get_element()/set_element()) as pure virtual,
+ *  since it has no notion of how to access an aliased buffer's data on its
+ *  own. Derived classes that do (e.g. ReplicatedView) must implement them.
+ *
  *  @tparam BufferBaseType Either BufferBase or const BufferBase.
  */
 template<typename BufferBaseType>
@@ -57,7 +62,10 @@ private:
     using const_pimpl_reference = const pimpl_type&;
 
 public:
+    using typename my_base_type::const_element_reference;
     using typename my_base_type::const_layout_reference;
+    using typename my_base_type::element_type;
+    using typename my_base_type::index_vector;
     using typename my_base_type::layout_pointer;
     using typename my_base_type::layout_reference;
     using typename my_base_type::layout_type;
@@ -152,6 +160,18 @@ public:
         return !(*this == rhs);
     }
 
+    /** @brief Defaulted (virtual) dtor.
+     *
+     *  BufferViewBase is made polymorphic so that derived classes (e.g.
+     *  ReplicatedView) can override get_elem_()/set_elem_() and have that
+     *  override reached even when called through the CRTP
+     *  BufferBaseCommon<BufferViewBase<BufferBaseType>>::get_element()/
+     *  set_element(), whose static type is frozen at BufferViewBase.
+     *
+     *  @throw None No throw guarantee.
+     */
+    virtual ~BufferViewBase() noexcept = default;
+
 protected:
     friend my_base_type;
     friend class BufferBase;
@@ -179,6 +199,26 @@ protected:
     bool approximately_equal_(const BufferBase& rhs, double) const {
         return *this == rhs;
     }
+
+    /** @brief Implements the get_elem_() hook required by BufferBaseCommon.
+     *
+     *  BufferViewBase itself has no notion of how to retrieve an element (it
+     *  only aliases a layout, not a buffer's data), so this is left for
+     *  derived classes that do have access to the aliased buffer's data
+     *  (e.g. ReplicatedView) to implement.
+     *
+     *  @param[in] index The offsets into each mode for the desired element.
+     */
+    virtual const_element_reference get_elem_(index_vector index) const = 0;
+
+    /** @brief Implements the set_elem_() hook required by BufferBaseCommon.
+     *
+     *  @see get_elem_() for why this is left to derived classes.
+     *
+     *  @param[in] index The offsets into each mode for the desired element.
+     *  @param[in] value The new value for the specified element.
+     */
+    virtual void set_elem_(index_vector index, element_type value) = 0;
 
 private:
     void assert_pimpl_() const {

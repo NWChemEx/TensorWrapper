@@ -22,6 +22,7 @@
 
 using namespace tensorwrapper;
 using namespace buffer;
+using testing::TestView;
 
 TEST_CASE("BufferViewBase") {
     using MutableView = BufferViewBase<BufferBase>;
@@ -42,8 +43,10 @@ TEST_CASE("BufferViewBase") {
     buffer::Contiguous defaulted;
 
     SECTION("Default construction") {
-        ConstView defaulted_const_view;
-        MutableView defaulted_view;
+        TestView<const BufferBase> defaulted_const_view_impl;
+        TestView<BufferBase> defaulted_view_impl;
+        ConstView& defaulted_const_view = defaulted_const_view_impl;
+        MutableView& defaulted_view     = defaulted_view_impl;
         REQUIRE_FALSE(defaulted_const_view.has_layout());
         REQUIRE_FALSE(defaulted_view.has_layout());
         REQUIRE_THROWS_AS(defaulted_const_view.layout(), std::runtime_error);
@@ -53,8 +56,10 @@ TEST_CASE("BufferViewBase") {
     }
 
     SECTION("Construct from buffer") {
-        ConstView scalar_const_view(scalar);
-        MutableView scalar_view(scalar);
+        TestView<const BufferBase> scalar_const_view_impl(scalar);
+        TestView<BufferBase> scalar_view_impl(scalar);
+        ConstView& scalar_const_view = scalar_const_view_impl;
+        MutableView& scalar_view     = scalar_view_impl;
         REQUIRE(scalar_const_view.has_layout());
         REQUIRE(scalar_view.has_layout());
         REQUIRE(scalar_const_view.layout().are_equal(scalar_layout));
@@ -62,8 +67,10 @@ TEST_CASE("BufferViewBase") {
         REQUIRE(scalar_view.layout().are_equal(scalar_layout));
         REQUIRE(scalar_view.rank() == 0);
 
-        ConstView vector_const_view(vector);
-        MutableView vector_view(vector);
+        TestView<const BufferBase> vector_const_view_impl(vector);
+        TestView<BufferBase> vector_view_impl(vector);
+        ConstView& vector_const_view = vector_const_view_impl;
+        MutableView& vector_view     = vector_view_impl;
         REQUIRE(vector_const_view.has_layout());
         REQUIRE(vector_view.has_layout());
         REQUIRE(vector_const_view.layout().are_equal(vector_layout));
@@ -73,62 +80,66 @@ TEST_CASE("BufferViewBase") {
     }
 
     SECTION("Copy construction") {
-        ConstView const_view(scalar);
-        ConstView copy_const(const_view);
+        TestView<const BufferBase> const_view(scalar);
+        TestView<const BufferBase> copy_const(const_view);
         REQUIRE(copy_const.has_layout());
         REQUIRE(copy_const.layout().are_equal(scalar_layout));
         REQUIRE(copy_const.rank() == 0);
 
-        MutableView mutable_view(scalar);
-        MutableView copy_mutable(mutable_view);
+        TestView<BufferBase> mutable_view(scalar);
+        TestView<BufferBase> copy_mutable(mutable_view);
         REQUIRE(copy_mutable.has_layout());
         REQUIRE(copy_mutable.layout().are_equal(scalar_layout));
         REQUIRE(copy_mutable.rank() == 0);
     }
 
     SECTION("Move construction") {
-        ConstView const_view(scalar);
-        ConstView moved_const(std::move(const_view));
+        TestView<const BufferBase> const_view(scalar);
+        TestView<const BufferBase> moved_const(std::move(const_view));
         REQUIRE(moved_const.has_layout());
         REQUIRE(moved_const.layout().are_equal(scalar_layout));
         REQUIRE(moved_const.rank() == 0);
 
-        MutableView mutable_view(scalar);
-        MutableView moved(std::move(mutable_view));
+        TestView<BufferBase> mutable_view(scalar);
+        TestView<BufferBase> moved(std::move(mutable_view));
         REQUIRE(moved.has_layout());
         REQUIRE(moved.layout().are_equal(scalar_layout));
         REQUIRE(moved.rank() == 0);
     }
 
     SECTION("Copy assignment") {
-        ConstView const_view(scalar);
-        ConstView other_const;
-        auto pother_const = &(other_const = const_view);
+        TestView<const BufferBase> const_view(scalar);
+        TestView<const BufferBase> other_const_impl;
+        ConstView& other_const = other_const_impl;
+        auto pother_const      = &(other_const = const_view);
         REQUIRE(pother_const == &other_const);
         REQUIRE(other_const.has_layout());
         REQUIRE(other_const.layout().are_equal(scalar_layout));
         REQUIRE(other_const.rank() == 0);
 
-        MutableView mutable_view(scalar);
-        MutableView other;
-        other = mutable_view;
+        TestView<BufferBase> mutable_view(scalar);
+        TestView<BufferBase> other_impl;
+        MutableView& other = other_impl;
+        other              = mutable_view;
         REQUIRE(other.has_layout());
         REQUIRE(other.layout().are_equal(scalar_layout));
         REQUIRE(other.rank() == 0);
     }
 
     SECTION("Move assignment") {
-        ConstView const_view(scalar);
-        ConstView other_const;
-        auto pother_const = &(other_const = std::move(const_view));
+        TestView<const BufferBase> const_view(scalar);
+        TestView<const BufferBase> other_const_impl;
+        ConstView& other_const = other_const_impl;
+        auto pother_const      = &(other_const = std::move(const_view));
         REQUIRE(pother_const == &other_const);
         REQUIRE(other_const.has_layout());
         REQUIRE(other_const.layout().are_equal(scalar_layout));
         REQUIRE(other_const.rank() == 0);
 
-        MutableView mutable_view(scalar);
-        MutableView other_mutable;
-        other_mutable = std::move(mutable_view);
+        TestView<BufferBase> mutable_view(scalar);
+        TestView<BufferBase> other_mutable_impl;
+        MutableView& other_mutable = other_mutable_impl;
+        other_mutable              = std::move(mutable_view);
         REQUIRE(other_mutable.has_layout());
         REQUIRE(other_mutable.layout().are_equal(scalar_layout));
         REQUIRE(other_mutable.rank() == 0);

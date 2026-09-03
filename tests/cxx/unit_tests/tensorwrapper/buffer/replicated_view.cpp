@@ -120,6 +120,28 @@ TEST_CASE("ReplicatedView") {
         REQUIRE(matrix.get_elem({0, 1}) == nine_nine);
     }
 
+    SECTION("get_element/set_element (BufferBaseCommon path)") {
+        // Regression test: BufferBaseCommon<BufferViewBase<X>>::get_element()
+        // dispatches through the virtual get_elem_()/set_elem_() hooks
+        // declared on BufferViewBase. This proves that dispatch actually
+        // reaches ReplicatedView's slice-aware override (via SlicePIMPL's
+        // index translation) instead of silently falling through to
+        // BufferViewBase's throwing default implementation.
+        REQUIRE(vector_view.get_element({0}) == vector_view.get_elem({0}));
+        REQUIRE(vector_view.get_element({0}) == vector.get_elem({1}));
+        REQUIRE(vector_view.get_element({1}) == vector.get_elem({2}));
+
+        REQUIRE(const_vector_view.get_element({0}) ==
+                const_vector_view.get_elem({0}));
+
+        vector_view.set_element({0}, 42.0);
+        REQUIRE(vector.get_elem({1}) == 42.0);
+        REQUIRE(vector_view.get_element({0}) == 42.0);
+
+        REQUIRE(matrix_view.get_element({0, 0}) == matrix.get_elem({0, 1}));
+        REQUIRE(matrix_view.get_element({1, 0}) == matrix.get_elem({1, 1}));
+    }
+
     SECTION("slice() const") {
         auto vector_slice = std::as_const(vector_view).slice({1}, {2});
         REQUIRE(vector_slice.layout().shape().size() == 1);

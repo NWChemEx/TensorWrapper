@@ -18,6 +18,8 @@
 #include <tensorwrapper/detail_/dsl_base.hpp>
 #include <tensorwrapper/detail_/polymorphic_base.hpp>
 #include <tensorwrapper/tensor/detail_/tensor_input.hpp>
+#include <tuple>
+#include <utility>
 
 namespace tensorwrapper {
 namespace detail_ {
@@ -84,6 +86,18 @@ public:
 
     /// Type of a pointer to a read-only buffer
     using const_buffer_pointer = input_type::const_buffer_pointer;
+
+    /// Type of an individual element of the tensor's buffer
+    using element_type = input_type::buffer_base::element_type;
+
+    /// Type of a read-only reference to an individual element of the
+    /// tensor's buffer
+    using const_element_reference =
+      input_type::buffer_base::const_element_reference;
+
+    /// Type used to index a single element of the tensor's buffer (one
+    /// offset per mode, in the buffer's physical index space)
+    using index_vector = input_type::buffer_base::index_vector;
 
     /// Type used to convey rank
     using rank_type = typename logical_layout_type::size_type;
@@ -319,6 +333,92 @@ public:
      */
     rank_type rank() const;
 
+    /** @brief Retrieves an individual element of the tensor's buffer.
+     *
+     *  @note This operates in the buffer's (physical) index space, not the
+     *        tensor's logical index space (see buffer() for context on the
+     *        distinction).
+     *
+     *  @param[in] index One offset per mode of the buffer. The length of
+     *                   @p index must equal the buffer's rank.
+     *
+     *  @return The requested element.
+     *
+     *  @throw std::runtime_error if *this is an empty tensor. Strong throw
+     *                            guarantee.
+     *  @throw std::out_of_range if @p index has the wrong length or contains
+     *                           an out-of-bounds offset. Strong throw
+     *                           guarantee.
+     */
+    const_element_reference get_element(index_vector index) const;
+
+    /** @brief Retrieves an individual element of the tensor's buffer.
+     *
+     *  This overload allows the offsets to be provided as an arbitrary
+     *  number of arguments (one per mode) instead of as an index_vector. It
+     *  is implemented in terms of get_element(index_vector) const.
+     *
+     *  @tparam Offsets The types of the offsets.
+     *
+     *  @param[in] offsets The offsets into each mode of the buffer.
+     *
+     *  @return The requested element.
+     *
+     *  @throw std::runtime_error if *this is an empty tensor. Strong throw
+     *                            guarantee.
+     *  @throw std::out_of_range if the number of offsets does not equal the
+     *                           buffer's rank or if any offset is out of
+     *                           bounds. Strong throw guarantee.
+     */
+    template<typename... Offsets>
+    const_element_reference get_element(Offsets... offsets) const {
+        return get_element(index_vector{
+          static_cast<typename index_vector::value_type>(offsets)...});
+    }
+
+    /** @brief Sets an individual element of the tensor's buffer.
+     *
+     *  @note This operates in the buffer's (physical) index space, not the
+     *        tensor's logical index space (see buffer() for context on the
+     *        distinction).
+     *
+     *  @param[in] index One offset per mode of the buffer. The length of
+     *                   @p index must equal the buffer's rank.
+     *  @param[in] value The new value for the specified element.
+     *
+     *  @throw std::runtime_error if *this is an empty tensor. Strong throw
+     *                            guarantee.
+     *  @throw std::out_of_range if @p index has the wrong length or contains
+     *                           an out-of-bounds offset. Strong throw
+     *                           guarantee.
+     */
+    void set_element(index_vector index, element_type value);
+
+    /** @brief Sets an individual element of the tensor's buffer.
+     *
+     *  This overload allows the offsets to be provided as an arbitrary
+     *  number of arguments (one per mode) instead of as an index_vector. It
+     *  is implemented in terms of set_element(index_vector, element_type).
+     *
+     *  @tparam Offsets The types of the offsets.
+     *
+     *  @param[in] offsets The offsets into each mode of the buffer.
+     *  @param[in] value The new value for the specified element.
+     *
+     *  @throw std::runtime_error if *this is an empty tensor. Strong throw
+     *                            guarantee.
+     *  @throw std::out_of_range if the number of offsets does not equal the
+     *                           buffer's rank or if any offset is out of
+     *                           bounds. Strong throw guarantee.
+     */
+    template<typename... Args>
+    void set_element(Args... args) {
+        static_assert(sizeof...(Args) >= 1,
+                      "set_element requires at least a value argument");
+        set_element_unpack_(std::make_index_sequence<sizeof...(Args) - 1>{},
+                            std::make_tuple(args...));
+    }
+
     // -------------------------------------------------------------------------
     // -- Utility methods
     // -------------------------------------------------------------------------
@@ -416,6 +516,18 @@ private:
 
     /// Throws if *this does not have a PIMPL.
     void assert_pimpl_() const;
+
+    /// Splits the last element of @p values off as the new value and
+    /// forwards the rest as the offsets for set_element(index_vector,
+    /// element_type). Used to implement the variadic overload of
+    /// set_element, since a function parameter pack can not be followed by
+    /// a deduced fixed parameter.
+    template<std::size_t... Is, typename Tuple>
+    void set_element_unpack_(std::index_sequence<Is...>, Tuple&& values) {
+        set_element(index_vector{static_cast<index_vector::value_type>(
+                      std::get<Is>(values))...},
+                    static_cast<element_type>(std::get<sizeof...(Is)>(values)));
+    }
 
     /// Object actually implementing *this
     pimpl_pointer m_pimpl_;

@@ -23,6 +23,7 @@
 
 using namespace tensorwrapper;
 using namespace buffer;
+using testing::TestView;
 
 TEST_CASE("BufferBaseCommon") {
     using MutableView = BufferViewBase<BufferBase>;
@@ -41,12 +42,22 @@ TEST_CASE("BufferBaseCommon") {
     auto vector_layout = testing::vector_physical(2);
 
     buffer::Contiguous defaulted;
-    MutableView defaulted_view(defaulted);
-    MutableView scalar_view(scalar);
-    MutableView vector_view(vector);
-    ConstView defaulted_const_view(defaulted);
-    ConstView scalar_const_view(scalar);
-    ConstView vector_const_view(vector);
+
+    // Concrete objects (BufferViewBase itself is abstract); the rest of this
+    // test only ever interacts with them through BufferViewBase references.
+    TestView<BufferBase> defaulted_view_impl(defaulted);
+    TestView<BufferBase> scalar_view_impl(scalar);
+    TestView<BufferBase> vector_view_impl(vector);
+    TestView<const BufferBase> defaulted_const_view_impl(defaulted);
+    TestView<const BufferBase> scalar_const_view_impl(scalar);
+    TestView<const BufferBase> vector_const_view_impl(vector);
+
+    MutableView& defaulted_view     = defaulted_view_impl;
+    MutableView& scalar_view        = scalar_view_impl;
+    MutableView& vector_view        = vector_view_impl;
+    ConstView& defaulted_const_view = defaulted_const_view_impl;
+    ConstView& scalar_const_view    = scalar_const_view_impl;
+    ConstView& vector_const_view    = vector_const_view_impl;
 
     SECTION("operator== (BufferBase with BufferBaseView)") {
         REQUIRE(defaulted_view == defaulted);
@@ -107,8 +118,46 @@ TEST_CASE("BufferBaseCommon") {
     }
 
     SECTION("Null view equals buffer with no layout") {
-        ConstView null_view;
+        TestView<const BufferBase> null_view_impl;
+        ConstView& null_view = null_view_impl;
         REQUIRE(null_view == defaulted);
         REQUIRE_FALSE(null_view == scalar);
+    }
+
+    SECTION("get_element/set_element (index_vector overload)") {
+        REQUIRE(scalar.get_element({}) == scalar.get_elem({}));
+        REQUIRE(vector.get_element({0}) == vector.get_elem({0}));
+        REQUIRE(vector.get_element({1}) == vector.get_elem({1}));
+
+        scalar.set_element({}, 2.0);
+        REQUIRE(scalar.get_elem({}) == 2.0);
+
+        vector.set_element({0}, 9.0);
+        REQUIRE(vector.get_elem({0}) == 9.0);
+    }
+
+    SECTION("get_element/set_element (variadic offset overload)") {
+        REQUIRE(scalar.get_element() == scalar.get_elem({}));
+        REQUIRE(vector.get_element(0) == vector.get_elem({0}));
+        REQUIRE(vector.get_element(1) == vector.get_elem({1}));
+
+        scalar.set_element(3.0);
+        REQUIRE(scalar.get_elem({}) == 3.0);
+
+        vector.set_element(0, 8.0);
+        REQUIRE(vector.get_elem({0}) == 8.0);
+
+        // Wrong number of offsets for the rank still throws, proving the
+        // variadic overload delegates to (and does not bypass) the existing
+        // rank/bounds check.
+        REQUIRE_THROWS_AS(vector.get_element(0, 1), std::out_of_range);
+        REQUIRE_THROWS_AS(vector.set_element(0, 1, 1.0), std::out_of_range);
+    }
+
+    SECTION("get_element/set_element on an unsupported view throws") {
+        REQUIRE_THROWS_AS(scalar_view.get_element({}), std::runtime_error);
+        REQUIRE_THROWS_AS(scalar_view.set_element({}, 1.0), std::runtime_error);
+        REQUIRE_THROWS_AS(scalar_const_view.get_element({}),
+                          std::runtime_error);
     }
 }

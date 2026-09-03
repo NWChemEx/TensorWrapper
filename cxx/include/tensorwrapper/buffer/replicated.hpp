@@ -39,12 +39,15 @@ protected:
     friend my_base_type;
     friend my_base_type::sliceable_base;
 
-    virtual const_element_reference get_elem_(index_vector index) const = 0;
-    virtual void set_elem_(index_vector index, element_type value)      = 0;
+    using typename my_base_type::const_element_reference;
+    using typename my_base_type::element_reference;
+    using typename my_base_type::element_type;
+    using typename my_base_type::index_vector;
+
     virtual slice_type slice_(index_vector first_elem,
-                              index_vector last_elem)                   = 0;
+                              index_vector last_elem)             = 0;
     virtual const_slice_type slice_(index_vector first_elem,
-                                    index_vector last_elem) const       = 0;
+                                    index_vector last_elem) const = 0;
 };
 
 } // namespace tensorwrapper::buffer

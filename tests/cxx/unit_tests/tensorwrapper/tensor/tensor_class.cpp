@@ -128,6 +128,37 @@ TEST_CASE("Tensor") {
         REQUIRE_THROWS_AS(defaulted.rank(), std::runtime_error);
     }
 
+    SECTION("get_element/set_element (index_vector overload)") {
+        REQUIRE(scalar.get_element({}) == 42.0);
+        REQUIRE(vector.get_element({0}) == 0.0);
+        REQUIRE(vector.get_element({4}) == 4.0);
+
+        scalar.set_element({}, 99.0);
+        REQUIRE(scalar.get_element({}) == 99.0);
+
+        vector.set_element({0}, 100.0);
+        REQUIRE(vector.get_element({0}) == 100.0);
+
+        REQUIRE_THROWS_AS(defaulted.get_element({}), std::runtime_error);
+        REQUIRE_THROWS_AS(defaulted.set_element({}, 1.0), std::runtime_error);
+    }
+
+    SECTION("get_element/set_element (variadic offset overload)") {
+        REQUIRE(scalar.get_element() == 42.0);
+        REQUIRE(vector.get_element(0) == 0.0);
+        REQUIRE(vector.get_element(4) == 4.0);
+
+        scalar.set_element(99.0);
+        REQUIRE(scalar.get_element() == 99.0);
+
+        vector.set_element(0, 100.0);
+        REQUIRE(vector.get_element(0) == 100.0);
+
+        REQUIRE_THROWS_AS(vector.get_element(0, 1), std::out_of_range);
+        REQUIRE_THROWS_AS(vector.set_element(0, 1, 1.0), std::out_of_range);
+        REQUIRE_THROWS_AS(defaulted.get_element(), std::runtime_error);
+    }
+
     SECTION("swap") {
         Tensor scalar_copy(scalar);
         Tensor vector_copy(vector);

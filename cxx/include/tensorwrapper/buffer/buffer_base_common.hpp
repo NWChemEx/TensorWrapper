@@ -18,6 +18,8 @@
 #include <stdexcept>
 #include <tensorwrapper/buffer/buffer_fwd.hpp>
 #include <tensorwrapper/types/buffer_traits.hpp>
+#include <tuple>
+#include <utility>
 
 namespace tensorwrapper::buffer {
 
@@ -45,6 +47,11 @@ public:
     using layout_pointer         = typename traits_type::layout_pointer;
     using const_layout_reference = typename traits_type::const_layout_reference;
     using rank_type              = typename traits_type::rank_type;
+    using size_type              = typename traits_type::size_type;
+    using element_type           = typename traits_type::element_type;
+    using const_element_reference =
+      typename traits_type::const_element_reference;
+    using index_vector = typename traits_type::index_vector;
     ///@}
 
     // -------------------------------------------------------------------------
@@ -91,6 +98,91 @@ public:
      */
     rank_type rank() const noexcept {
         return has_layout() ? layout().rank() : 0;
+    }
+
+    /** @brief Returns the element with the offsets specified by @p index.
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element. The length of @p index must equal rank().
+     *
+     *  @return A const reference to the element at the specified offsets.
+     *
+     *  @throw std::out_of_range if the length of @p index does not equal
+     *                           rank() or if any entry in @p index is out of
+     *                           bounds. Strong throw guarantee.
+     *  @throw std::runtime_error if *this does not support element access
+     *                            (e.g. *this is a view with no such
+     *                            implementation). Strong throw guarantee.
+     */
+    const_element_reference get_element(index_vector index) const {
+        return derived_().get_elem_(std::move(index));
+    }
+
+    /** @brief Sets the element with the offsets specified by @p index to
+     *         @p value.
+     *
+     *  @param[in] index The offsets into each mode of *this for the desired
+     *                   element. The length of @p index must equal rank().
+     *  @param[in] value The new value for the specified element.
+     *
+     *  @throw std::out_of_range if the length of @p index does not equal
+     *                           rank() or if any entry in @p index is out of
+     *                           bounds. Strong throw guarantee.
+     *  @throw std::runtime_error if *this does not support element access
+     *                            (e.g. *this is a view with no such
+     *                            implementation). Strong throw guarantee.
+     */
+    void set_element(index_vector index, element_type value) {
+        derived_().set_elem_(std::move(index), std::move(value));
+    }
+
+    /** @brief Returns the element with the offsets given by @p offsets.
+     *
+     *  This overload allows the offsets to be provided as an arbitrary
+     *  number of arguments (one per mode) instead of as an index_vector. It
+     *  is implemented in terms of get_element(index_vector) const.
+     *
+     *  @tparam Offsets The types of the offsets. Expected to be integral
+     *                  types implicitly convertible to size_type.
+     *
+     *  @param[in] offsets The offsets into each mode of *this for the
+     *                     desired element.
+     *
+     *  @return A const reference to the element at the specified offsets.
+     *
+     *  @throw std::out_of_range if the number of offsets does not equal
+     *                           rank() or if any offset is out of bounds.
+     *                           Strong throw guarantee.
+     */
+    template<typename... Offsets>
+    const_element_reference get_element(Offsets... offsets) const {
+        return get_element(index_vector{static_cast<size_type>(offsets)...});
+    }
+
+    /** @brief Sets the element with the offsets given by @p offsets to
+     *         @p value.
+     *
+     *  This overload allows the offsets to be provided as an arbitrary
+     *  number of arguments (one per mode) instead of as an index_vector. It
+     *  is implemented in terms of set_element(index_vector, element_type).
+     *
+     *  @tparam Offsets The types of the offsets. Expected to be integral
+     *                  types implicitly convertible to size_type.
+     *
+     *  @param[in] offsets The offsets into each mode of *this for the
+     *                     desired element.
+     *  @param[in] value The new value for the specified element.
+     *
+     *  @throw std::out_of_range if the number of offsets does not equal
+     *                           rank() or if any offset is out of bounds.
+     *                           Strong throw guarantee.
+     */
+    template<typename... Args>
+    void set_element(Args... args) {
+        static_assert(sizeof...(Args) >= 1,
+                      "set_element requires at least a value argument");
+        set_element_unpack_(std::make_index_sequence<sizeof...(Args) - 1>{},
+                            std::make_tuple(args...));
     }
 
     // -------------------------------------------------------------------------
@@ -149,6 +241,18 @@ protected:
 private:
     template<typename OtherDerived>
     friend class BufferBaseCommon;
+
+    /// Splits the last element of @p values off as the new value and
+    /// forwards the rest as the offsets for set_element(index_vector,
+    /// element_type). Used to implement the variadic overload of
+    /// set_element, since a function parameter pack can not be followed by
+    /// a deduced fixed parameter.
+    template<std::size_t... Is, typename Tuple>
+    void set_element_unpack_(std::index_sequence<Is...>, Tuple&& values) {
+        set_element(
+          index_vector{static_cast<size_type>(std::get<Is>(values))...},
+          static_cast<element_type>(std::get<sizeof...(Is)>(values)));
+    }
 
     Derived& derived_() noexcept { return static_cast<Derived&>(*this); }
 

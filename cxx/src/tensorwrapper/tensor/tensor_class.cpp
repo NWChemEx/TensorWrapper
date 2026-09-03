@@ -79,6 +79,16 @@ const_buffer_reference Tensor::buffer() const {
 
 Tensor::rank_type Tensor::rank() const { return logical_layout().rank(); }
 
+Tensor::const_element_reference Tensor::get_element(index_vector index) const {
+    assert_pimpl_();
+    return buffer().get_element(std::move(index));
+}
+
+void Tensor::set_element(index_vector index, element_type value) {
+    assert_pimpl_();
+    buffer().set_element(std::move(index), std::move(value));
+}
+
 // -- Utility
 
 void Tensor::swap(Tensor& other) noexcept { m_pimpl_.swap(other.m_pimpl_); }
