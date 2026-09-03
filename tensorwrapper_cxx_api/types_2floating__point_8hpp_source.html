@@ -283,16 +283,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">    MACRO_IN(tensorwrapper::types::tmdouble)</span></div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>} <span class="comment">// namespace tensorwrapper::types</span></div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::ufloat);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::udouble);</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::ifloat);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::idouble);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::afloat);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::adouble);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::tafloat);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::tadouble);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmfloat);</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>WTF_REGISTER_FP_TYPE(tensorwrapper::types::tmdouble);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::ufloat, <span class="stringliteral">&quot;ufloat&quot;</span>);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::udouble, <span class="stringliteral">&quot;udouble&quot;</span>);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::ifloat, <span class="stringliteral">&quot;ifloat&quot;</span>);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::idouble, <span class="stringliteral">&quot;idouble&quot;</span>);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::afloat, <span class="stringliteral">&quot;afloat&quot;</span>);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::adouble, <span class="stringliteral">&quot;adouble&quot;</span>);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tafloat, <span class="stringliteral">&quot;tafloat&quot;</span>);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tadouble, <span class="stringliteral">&quot;tadouble&quot;</span>);</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmfloat, <span class="stringliteral">&quot;tmfloat&quot;</span>);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmdouble, <span class="stringliteral">&quot;tmdouble&quot;</span>);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
