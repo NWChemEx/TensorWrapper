@@ -56,13 +56,17 @@ Tensor add_noise_impl(const Tensor& matrix, double t, std::mt19937& gen) {
 
 } // namespace
 
-template<concepts::FloatingPoint T>
+template<typename T>
 Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen) {
+    static_assert(concepts::FloatingPoint<T>,
+                  "T must be a floating point type");
     return add_noise_impl<T>(matrix, t, gen);
 }
 
-template<concepts::FloatingPoint T>
+template<typename T>
 Tensor add_noise(const Tensor& matrix, double t, std::uint64_t seed) {
+    static_assert(concepts::FloatingPoint<T>,
+                  "T must be a floating point type");
     auto gen = make_rng(seed);
     return add_noise<T>(matrix, t, gen);
 }
