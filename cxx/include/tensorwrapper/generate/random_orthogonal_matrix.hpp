@@ -39,7 +39,14 @@ namespace tensorwrapper::generate {
  *
  *  @throw std::invalid_argument if @p n is outside the allowed range.
  */
-template<concepts::FloatingPoint T>
+// NB: `typename T`, not `concepts::FloatingPoint T`. GCC 14 does not encode a
+// template parameter's type-constraint in the mangled name; Clang 18+ does
+// (`...ITkN3wtf8concepts13FloatingPointEdE...`). On an explicitly instantiated
+// template that yields two different symbols: this library, built by GCC,
+// exports the unconstrained name while a Clang consumer asks for the
+// constrained one and fails to link. The requirement on T is enforced by a
+// static_assert in the definition instead.
+template<typename T>
 Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen);
 
 /** @brief Creates a random orthogonal matrix with element type `double`.

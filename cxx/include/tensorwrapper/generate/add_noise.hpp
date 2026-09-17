@@ -44,7 +44,14 @@ namespace tensorwrapper::generate {
  *
  *  @throw std::invalid_argument if @p t is negative.
  */
-template<concepts::FloatingPoint T>
+// NB: `typename T`, not `concepts::FloatingPoint T`. GCC 14 does not encode a
+// template parameter's type-constraint in the mangled name; Clang 18+ does
+// (`...ITkN3wtf8concepts13FloatingPointEdE...`). On an explicitly instantiated
+// template that yields two different symbols: this library, built by GCC,
+// exports the unconstrained name while a Clang consumer asks for the
+// constrained one and fails to link. The requirement on T is enforced by a
+// static_assert in the definition instead.
+template<typename T>
 Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen);
 
 /** @brief Overload of add_noise that creates its own RNG from @p seed.
@@ -60,7 +67,14 @@ Tensor add_noise(const Tensor& matrix, double t, std::mt19937& gen);
  *
  *  @throw std::invalid_argument if @p t is negative.
  */
-template<concepts::FloatingPoint T>
+// NB: `typename T`, not `concepts::FloatingPoint T`. GCC 14 does not encode a
+// template parameter's type-constraint in the mangled name; Clang 18+ does
+// (`...ITkN3wtf8concepts13FloatingPointEdE...`). On an explicitly instantiated
+// template that yields two different symbols: this library, built by GCC,
+// exports the unconstrained name while a Clang consumer asks for the
+// constrained one and fails to link. The requirement on T is enforced by a
+// static_assert in the definition instead.
+template<typename T>
 Tensor add_noise(const Tensor& matrix, double t, std::uint64_t seed = 42);
 
 /** @brief Adds noise with element type `double`.

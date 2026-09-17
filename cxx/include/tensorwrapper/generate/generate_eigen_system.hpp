@@ -58,7 +58,14 @@ struct EigenSystem {
  *
  *  @throw std::invalid_argument if @p spec.n is outside `[1, kMaxMatrixDim]`.
  */
-template<concepts::FloatingPoint T>
+// NB: `typename T`, not `concepts::FloatingPoint T`. GCC 14 does not encode a
+// template parameter's type-constraint in the mangled name; Clang 18+ does
+// (`...ITkN3wtf8concepts13FloatingPointEdE...`). On an explicitly instantiated
+// template that yields two different symbols: this library, built by GCC,
+// exports the unconstrained name while a Clang consumer asks for the
+// constrained one and fails to link. The requirement on T is enforced by a
+// static_assert in the definition instead.
+template<typename T>
 EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec);
 
 /** @brief Generates an eigen-system with element type `double`.
