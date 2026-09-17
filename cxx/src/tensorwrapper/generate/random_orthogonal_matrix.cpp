@@ -40,8 +40,10 @@ Eigen::MatrixXd random_orthogonal_matrix_eigen(std::size_t n,
 
 } // namespace
 
-template<concepts::FloatingPoint T>
+template<typename T>
 Tensor random_orthogonal_matrix(std::size_t n, std::mt19937& gen) {
+    static_assert(concepts::FloatingPoint<T>,
+                  "T must be a floating point type");
     require_valid_n(n);
 
     const auto Q = random_orthogonal_matrix_eigen(n, gen);

@@ -155,9 +155,11 @@ void sort_eigenvalues(std::vector<T>& values) {
 
 } // namespace
 
-template<concepts::FloatingPoint T>
+template<typename T>
 Tensor generate_eigenvalues(const SymmetricMatrixSpec& spec,
                             std::mt19937& gen) {
+    static_assert(concepts::FloatingPoint<T>,
+                  "T must be a floating point type");
     require_valid_n(spec.n);
     const auto n = spec.n;
 

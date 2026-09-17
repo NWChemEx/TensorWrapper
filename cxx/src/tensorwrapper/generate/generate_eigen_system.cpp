@@ -22,8 +22,10 @@
 
 namespace tensorwrapper::generate {
 
-template<concepts::FloatingPoint T>
+template<typename T>
 EigenSystem generate_eigen_system(const SymmetricMatrixSpec& spec) {
+    static_assert(concepts::FloatingPoint<T>,
+                  "T must be a floating point type");
     require_valid_n(spec.n);
     auto gen     = make_rng(spec.seed);
     const auto n = spec.n;
