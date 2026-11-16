@@ -85,7 +85,9 @@ TEMPLATE_LIST_TEST_CASE("approximately_equal", "",
         // the default tolerance. Note that approximately_equal should work
         // for intervals and tolerances greater than machine epsilon; that is
         // tested in the "Differ by less than provided tolerance" section below.
-        if constexpr(!types::is_interval_v<TestType>) {
+        // Triplex bounds are intervals, so the same applies to them.
+        if constexpr(!types::is_interval_v<TestType> &&
+                     !types::is_triplex_v<TestType>) {
             pscalar2->set_elem({}, TestType{42.0} + value);
             pvector2->set_elem({0}, TestType{1.23} + value);
             Tensor scalar2(s0, std::move(pscalar2));

@@ -82,6 +82,13 @@ void hash_input(hash_type& seed, const types::interval_type<T>& value) {
 }
 
 template<typename T>
+void hash_input(hash_type& seed, const types::triplex_type<T>& value) {
+    hash_input(seed, value.lower());
+    hash_input(seed, value.nominal());
+    hash_input(seed, value.upper());
+}
+
+template<typename T>
 void hash_input(hash_type& seed, const types::affine_type<T>& value) {
     hash_input(seed, value.center());
     // error_terms() is an unordered_map, so its iteration order is not stable

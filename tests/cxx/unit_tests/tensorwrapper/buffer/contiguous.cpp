@@ -15,6 +15,7 @@
  */
 
 #include "../testing/testing.hpp"
+#include <limits>
 #include <tensorwrapper/buffer/contiguous.hpp>
 #include <tensorwrapper/types/floating_point.hpp>
 
@@ -554,6 +555,21 @@ TEMPLATE_LIST_TEST_CASE("Contiguous", "", types::floating_point_types) {
             REQUIRE_FALSE(ss.str().empty());
         }
     }
+}
+
+TEST_CASE("Contiguous with an extent larger than rank_type can hold") {
+    // Regression test: the extents of shape() were returned as rank_type, so
+    // they wrapped, e.g., 65537 became 1
+    using buffer::Contiguous;
+    using shape_type = typename Contiguous::shape_type;
+    using rank_type  = typename shape_type::rank_type;
+    const auto big   = std::size_t(std::numeric_limits<rank_type>::max()) + 2;
+
+    shape_type shape{2, big};
+    Contiguous buf(std::vector<double>(2 * big, 1.0), shape);
+    REQUIRE(buf.shape().extent(0) == 2);
+    REQUIRE(buf.shape().extent(1) == big);
+    REQUIRE(wtf::fp::float_cast<double>(buf.get_elem({1, big - 1})) == 1.0);
 }
 
 TEST_CASE("make_contiguous(buffer, shape)") {

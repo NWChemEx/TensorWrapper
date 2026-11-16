@@ -42,7 +42,7 @@ Contiguous::Contiguous(buffer_type buffer, shape_type shape) :
   my_base_type(std::make_unique<layout::Physical>(shape)),
   m_shape_(std::move(shape)),
   m_buffer_() {
-    if(buffer.size() == shape.size()) {
+    if(buffer.size() == m_shape_.size()) {
         m_buffer_ = std::move(buffer);
     } else {
         throw std::invalid_argument(

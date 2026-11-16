@@ -55,7 +55,7 @@ public:
       typename types::ClassTraits<parent_type>::const_pimpl_pointer;
 
     /// Derived class implements by overriding extent_
-    rank_type extent(size_type i) const { return extent_(i); }
+    size_type extent(size_type i) const { return extent_(i); }
 
     /// Derived class implements by overriding rank_
     rank_type rank() const noexcept { return rank_(); }
@@ -68,7 +68,7 @@ public:
 
 protected:
     /// Derived class should implement to be consistent with SmoothView::extent
-    virtual rank_type extent_(size_type i) const = 0;
+    virtual size_type extent_(size_type i) const = 0;
 
     /// Derived class should implement to be consistent with SmoothView::rank
     virtual rank_type rank_() const noexcept = 0;
