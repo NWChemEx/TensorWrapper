@@ -65,7 +65,7 @@ protected:
 
     /// These just call shape's member function with the same name
     ///@{
-    rank_type extent_(size_type i) const override { return shape_().extent(i); }
+    size_type extent_(size_type i) const override { return shape_().extent(i); }
     rank_type rank_() const noexcept override { return shape_().rank(); }
     size_type size_() const noexcept override { return shape_().size(); }
     ///@}

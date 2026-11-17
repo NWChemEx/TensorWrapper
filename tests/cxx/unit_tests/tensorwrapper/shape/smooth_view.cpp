@@ -15,6 +15,7 @@
  */
 
 #include "../testing/testing.hpp"
+#include <limits>
 #include <set>
 #include <tensorwrapper/shape/smooth.hpp>
 #include <tensorwrapper/shape/smooth_view.hpp>
@@ -81,6 +82,16 @@ TEMPLATE_LIST_TEST_CASE("SmoothView", "", types2test) {
     SECTION("size") {
         REQUIRE(alias_scalar.size() == size_type(1));
         REQUIRE(alias_vector.size() == size_type(3));
+    }
+
+    SECTION("extent larger than rank_type can hold") {
+        // Regression test: extents were returned as rank_type, so they wrapped
+        const auto big = size_type(std::numeric_limits<rank_type>::max()) + 2;
+        smooth_type big_shape{3, big};
+        view_type alias_big(big_shape);
+        REQUIRE(alias_big.extent(0) == size_type(3));
+        REQUIRE(alias_big.extent(1) == big);
+        REQUIRE(alias_big.size() == 3 * big);
     }
 
     SECTION("Utility methods") {

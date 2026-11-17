@@ -15,7 +15,9 @@
  */
 
 #pragma once
+#include <algorithm>
 #include <cmath>
+#include <stdexcept>
 #include <tuple>
 #include <wtf/wtf.hpp>
 #ifdef ENABLE_SIGMA
@@ -50,9 +52,15 @@ using taylor_model_type = sigma::TaylorModel<T>;
 using tmfloat           = taylor_model_type<float>;
 using tmdouble          = taylor_model_type<double>;
 
+/// An interval with an independently stored nominal value (see sigma::Triplex)
+template<typename T>
+using triplex_type = sigma::Triplex<sigma::Interval<T>>;
+using tpfloat      = triplex_type<float>;
+using tpdouble     = triplex_type<double>;
+
 using floating_point_types =
   std::tuple<float, double, ufloat, udouble, ifloat, idouble, afloat, adouble,
-             tafloat, tadouble, tmfloat, tmdouble>;
+             tafloat, tadouble, tmfloat, tmdouble, tpfloat, tpdouble>;
 
 template<typename T>
 constexpr bool is_uncertain_v =
@@ -75,9 +83,13 @@ constexpr bool is_taylor_model_v =
   std::is_same_v<T, tmfloat> || std::is_same_v<T, tmdouble>;
 
 template<typename T>
+constexpr bool is_triplex_v =
+  std::is_same_v<T, tpfloat> || std::is_same_v<T, tpdouble>;
+
+template<typename T>
 constexpr bool is_uq_type_v =
   is_uncertain_v<T> || is_interval_v<T> || is_affine_v<T> ||
-  is_thresholded_affine_v<T> || is_taylor_model_v<T>;
+  is_thresholded_affine_v<T> || is_taylor_model_v<T> || is_triplex_v<T>;
 
 template<typename T, typename U, typename V>
 T construct_uq_type(const U& center, const V& radius) {
@@ -88,10 +100,54 @@ T construct_uq_type(const U& center, const V& radius) {
     } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
                         is_taylor_model_v<T>) {
         return T(center - radius, center + radius);
+    } else if constexpr(is_triplex_v<T>) {
+        // Unlike the bounds of an interval, those of a triplex must bracket
+        // the nominal value, so a radius is treated as a magnitude
+        const auto r = radius < V(0) ? -radius : radius;
+        return T(center - r, center, center + r);
     } else if constexpr(is_uq_type_v<T>) {
         throw std::logic_error("UQ type not recognized in construct_uq_type.");
     } else {
         return T(center + radius);
+    }
+}
+
+/** @brief Constructs a UQ value from a nominal value and signed deviations.
+ *
+ *  The value lies in [nominal - minus, nominal + plus]. Types which can store
+ *  that exactly, i.e., triplex, do so. The others store the tightest
+ *  representation they can which contains it: the interval-like types store
+ *  the bounds, which drops the nominal value, and Uncertain stores @p nominal
+ *  as its mean and the larger of @p minus and @p plus as its standard
+ *  deviation. Non-UQ types store @p nominal.
+ *
+ *  @tparam T The type to construct.
+ *
+ *  @param[in] nominal The nominal value, i.e., the best estimate.
+ *  @param[in] minus The deviation below @p nominal. Must be non-negative.
+ *  @param[in] plus The deviation above @p nominal. Must be non-negative.
+ *
+ *  @return The constructed value.
+ *
+ *  @throw std::domain_error if @p minus or @p plus is negative. Strong throw
+ *                           guarantee.
+ */
+template<typename T, typename U, typename V, typename W>
+T construct_uq_type(const U& nominal, const V& minus, const W& plus) {
+    if(minus < V(0) || plus < W(0))
+        throw std::domain_error(
+          "construct_uq_type: deviations must be non-negative");
+    if constexpr(is_uncertain_v<T>) {
+        return T(nominal, std::max<U>(minus, plus));
+    } else if constexpr(is_interval_v<T> || is_affine_v<T> ||
+                        is_thresholded_affine_v<T> || is_taylor_model_v<T>) {
+        return T(nominal - minus, nominal + plus);
+    } else if constexpr(is_triplex_v<T>) {
+        return T(nominal - minus, nominal, nominal + plus);
+    } else if constexpr(is_uq_type_v<T>) {
+        throw std::logic_error("UQ type not recognized in construct_uq_type.");
+    } else {
+        return T(nominal);
     }
 }
 
@@ -101,6 +157,8 @@ auto uq_center(const T& value) {
         return value.mean();
     } else if constexpr(is_interval_v<T>) {
         return value.median();
+    } else if constexpr(is_triplex_v<T>) {
+        return value.nominal();
     } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T>) {
         return value.center();
     } else if constexpr(is_taylor_model_v<T>) {
@@ -116,7 +174,7 @@ template<typename T>
 auto uq_upper(const T& value) {
     if constexpr(is_uncertain_v<T>) {
         return value.mean() + value.sd();
-    } else if constexpr(is_interval_v<T>) {
+    } else if constexpr(is_interval_v<T> || is_triplex_v<T>) {
         return value.upper();
     } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
                         is_taylor_model_v<T>) {
@@ -132,7 +190,7 @@ template<typename T>
 auto uq_lower(const T& value) {
     if constexpr(is_uncertain_v<T>) {
         return value.mean() - value.sd();
-    } else if constexpr(is_interval_v<T>) {
+    } else if constexpr(is_interval_v<T> || is_triplex_v<T>) {
         return value.lower();
     } else if constexpr(is_affine_v<T> || is_thresholded_affine_v<T> ||
                         is_taylor_model_v<T>) {
@@ -197,7 +255,9 @@ T pow(T value, double pow) {
     MACRO_IN(tensorwrapper::types::tafloat);    \
     MACRO_IN(tensorwrapper::types::tadouble);   \
     MACRO_IN(tensorwrapper::types::tmfloat);    \
-    MACRO_IN(tensorwrapper::types::tmdouble)
+    MACRO_IN(tensorwrapper::types::tmdouble);   \
+    MACRO_IN(tensorwrapper::types::tpfloat);    \
+    MACRO_IN(tensorwrapper::types::tpdouble)
 } // namespace tensorwrapper::types
 
 WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::ufloat, "ufloat");
@@ -210,6 +270,8 @@ WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tafloat, "tafloat");
 WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tadouble, "tadouble");
 WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmfloat, "tmfloat");
 WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tmdouble, "tmdouble");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tpfloat, "tpfloat");
+WTF_REGISTER_FP_TYPE_AS(tensorwrapper::types::tpdouble, "tpdouble");
 
 #else
 template<typename T>
@@ -232,6 +294,10 @@ template<typename T>
 using taylor_model_type = T;
 using tmfloat           = float;
 using tmdouble          = double;
+template<typename T>
+using triplex_type = T;
+using tpfloat      = float;
+using tpdouble     = double;
 
 using floating_point_types = std::tuple<float, double>;
 
@@ -251,11 +317,23 @@ template<typename T>
 constexpr bool is_taylor_model_v = false;
 
 template<typename T>
+constexpr bool is_triplex_v = false;
+
+template<typename T>
 constexpr bool is_uq_type_v = false;
 
 template<typename T, typename U, typename V>
 T construct_uq_type(const U& center, const V&) {
     return T(center);
+}
+
+/// Without Sigma there are no UQ types, so only @p nominal is kept
+template<typename T, typename U, typename V, typename W>
+T construct_uq_type(const U& nominal, const V& minus, const W& plus) {
+    if(minus < V(0) || plus < W(0))
+        throw std::domain_error(
+          "construct_uq_type: deviations must be non-negative");
+    return T(nominal);
 }
 
 template<typename T>

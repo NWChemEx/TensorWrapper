@@ -35,7 +35,8 @@ template<typename T>
 constexpr double log_spacing_tol =
   std::is_same_v<T, float> || std::is_same_v<T, types::ufloat> ||
       std::is_same_v<T, types::ifloat> || std::is_same_v<T, types::afloat> ||
-      std::is_same_v<T, types::tafloat> || std::is_same_v<T, types::tmfloat> ?
+      std::is_same_v<T, types::tafloat> || std::is_same_v<T, types::tmfloat> ||
+      std::is_same_v<T, types::tpfloat> ?
     5e-3 :
     1e-9;
 } // namespace
