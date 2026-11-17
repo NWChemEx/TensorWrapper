@@ -200,6 +200,16 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>tmfloat</b> = float<
 <tr class="memitem:ac89fbff8b680fcf0750b8b31487d1e78" id="r_ac89fbff8b680fcf0750b8b31487d1e78"><td class="memItemLeft" align="right" valign="top"><a id="ac89fbff8b680fcf0750b8b31487d1e78" name="ac89fbff8b680fcf0750b8b31487d1e78"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>tmdouble</b> = double</td></tr>
 <tr class="separator:ac89fbff8b680fcf0750b8b31487d1e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795c33ee12bf7676485e8eb73be4540b" id="r_a795c33ee12bf7676485e8eb73be4540b"><td class="memTemplParams" colspan="2"><a id="a795c33ee12bf7676485e8eb73be4540b" name="a795c33ee12bf7676485e8eb73be4540b"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a795c33ee12bf7676485e8eb73be4540b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>triplex_type</b> = T</td></tr>
+<tr class="separator:a795c33ee12bf7676485e8eb73be4540b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba3beecee85731d8a2f310d223a61e27" id="r_aba3beecee85731d8a2f310d223a61e27"><td class="memItemLeft" align="right" valign="top"><a id="aba3beecee85731d8a2f310d223a61e27" name="aba3beecee85731d8a2f310d223a61e27"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>tpfloat</b> = float</td></tr>
+<tr class="separator:aba3beecee85731d8a2f310d223a61e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fb0d4ffbd3ced5a3c3decf725e8fb27" id="r_a5fb0d4ffbd3ced5a3c3decf725e8fb27"><td class="memItemLeft" align="right" valign="top"><a id="a5fb0d4ffbd3ced5a3c3decf725e8fb27" name="a5fb0d4ffbd3ced5a3c3decf725e8fb27"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>tpdouble</b> = double</td></tr>
+<tr class="separator:a5fb0d4ffbd3ced5a3c3decf725e8fb27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e7fc1fbd4a7e1933cf6f691b7e6a270" id="r_a9e7fc1fbd4a7e1933cf6f691b7e6a270"><td class="memItemLeft" align="right" valign="top"><a id="a9e7fc1fbd4a7e1933cf6f691b7e6a270" name="a9e7fc1fbd4a7e1933cf6f691b7e6a270"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>floating_point_types</b> = std::tuple&lt; float, double &gt;</td></tr>
 <tr class="separator:a9e7fc1fbd4a7e1933cf6f691b7e6a270"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,6 +223,11 @@ Functions</h2></td></tr>
 template&lt;typename T , typename U , typename V &gt; </td></tr>
 <tr class="memitem:a103b3da834221ae23de63dc561e96478"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>construct_uq_type</b> (const U &amp;center, const V &amp;)</td></tr>
 <tr class="separator:a103b3da834221ae23de63dc561e96478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10e08a905bd49d7772b24a26d40e8056" id="r_a10e08a905bd49d7772b24a26d40e8056"><td class="memTemplParams" colspan="2"><a id="a10e08a905bd49d7772b24a26d40e8056" name="a10e08a905bd49d7772b24a26d40e8056"></a>
+template&lt;typename T , typename U , typename V , typename W &gt; </td></tr>
+<tr class="memitem:a10e08a905bd49d7772b24a26d40e8056"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>construct_uq_type</b> (const U &amp;nominal, const V &amp;minus, const W &amp;plus)</td></tr>
+<tr class="memdesc:a10e08a905bd49d7772b24a26d40e8056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Without Sigma there are no UQ types, so only <code>nominal</code> is kept. <br /></td></tr>
+<tr class="separator:a10e08a905bd49d7772b24a26d40e8056"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89371da778908d7f803fa3f8d33d3fd9" id="r_a89371da778908d7f803fa3f8d33d3fd9"><td class="memTemplParams" colspan="2"><a id="a89371da778908d7f803fa3f8d33d3fd9" name="a89371da778908d7f803fa3f8d33d3fd9"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a89371da778908d7f803fa3f8d33d3fd9"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>uq_center</b> (const T &amp;value)</td></tr>
@@ -268,6 +283,10 @@ template&lt;typename T &gt; </td></tr>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a587fa635b9c28da2c1ac8ffe5fd2de4f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>is_taylor_model_v</b> = false</td></tr>
 <tr class="separator:a587fa635b9c28da2c1ac8ffe5fd2de4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0681bea9e4e0be8154b7f4d278b141f7" id="r_a0681bea9e4e0be8154b7f4d278b141f7"><td class="memTemplParams" colspan="2"><a id="a0681bea9e4e0be8154b7f4d278b141f7" name="a0681bea9e4e0be8154b7f4d278b141f7"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0681bea9e4e0be8154b7f4d278b141f7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>is_triplex_v</b> = false</td></tr>
+<tr class="separator:a0681bea9e4e0be8154b7f4d278b141f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d4ccbeb360285da27970272016cac1c" id="r_a9d4ccbeb360285da27970272016cac1c"><td class="memTemplParams" colspan="2"><a id="a9d4ccbeb360285da27970272016cac1c" name="a9d4ccbeb360285da27970272016cac1c"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9d4ccbeb360285da27970272016cac1c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>is_uq_type_v</b> = false</td></tr>
