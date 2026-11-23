@@ -18,6 +18,7 @@
 #include <tensorwrapper/operations/approximately_equal.hpp>
 #include <tensorwrapper/operations/norm.hpp>
 #include <tensorwrapper/operations/power.hpp>
+#include <tensorwrapper/operations/stack.hpp>
 
 /// Namespace for free functions that act on tensors
 namespace tensorwrapper::operations {}
