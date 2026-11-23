@@ -94,6 +94,9 @@ Functions</h2></td></tr>
 <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>power</b> (<a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> A, double pow)</td></tr>
 <tr class="memdesc:a2fee596cc90d1a03b88c6ef9bba0af3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appplies a power element-wise to a tensor. <br /></td></tr>
 <tr class="separator:a2fee596cc90d1a03b88c6ef9bba0af3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad82bf9642c7bbcbf64b02604387b124c" id="r_ad82bf9642c7bbcbf64b02604387b124c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorwrapper_1_1operations.html#ad82bf9642c7bbcbf64b02604387b124c">stack</a> (const std::vector&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &gt; &amp;tensors, int axis=0)</td></tr>
+<tr class="memdesc:ad82bf9642c7bbcbf64b02604387b124c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a series of same-shaped tensors along a new mode.  <br /></td></tr>
+<tr class="separator:ad82bf9642c7bbcbf64b02604387b124c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace for free functions that act on tensors. </p>
@@ -178,6 +181,53 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The infinity norm of <code>t</code>. </dd></dl>
+
+</div>
+</div>
+<a id="ad82bf9642c7bbcbf64b02604387b124c" name="ad82bf9642c7bbcbf64b02604387b124c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad82bf9642c7bbcbf64b02604387b124c">&#9670;&#160;</a></span>stack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> tensorwrapper::operations::stack </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classtensorwrapper_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>axis</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Joins a series of same-shaped tensors along a new mode. </p>
+<p>This function is modeled after <code>numpy.stack</code>. Given <picture><source srcset="form_14_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$N$" src="form_14.png"/></picture> tensors, each with rank <picture><source srcset="form_11_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$r$" src="form_11.png"/></picture> and shape <picture><source srcset="form_15_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$s$" src="form_15.png"/></picture>, the result is a rank <picture><source srcset="form_16_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$r+1$" src="form_16.png"/></picture> tensor whose shape is <picture><source srcset="form_15_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$s$" src="form_15.png"/></picture> with an extent of <picture><source srcset="form_14_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$N$" src="form_14.png"/></picture> inserted at mode <code>axis</code>, i.e., <code>s[:axis] + [N] + s[axis:]</code> in Python notation. Fixing the index of the new mode to <picture><source srcset="form_17_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$k$" src="form_17.png"/></picture> yields the <picture><source srcset="form_17_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$k$" src="form_17.png"/></picture>-th input tensor.</p>
+<p>For example, stacking two vectors of length 3 with <code>axis</code> equal to 0 yields a 2 by 3 matrix whose rows are the vectors, whereas <code>axis</code> equal to 1 yields a 3 by 2 matrix whose columns are the vectors.</p>
+<p>Like <code>numpy.stack</code>, <code>axis</code> may be negative, in which case it counts from the end of the result's modes (e.g., -1 makes the new mode the last mode). Unlike <code>numpy.stack</code>, no type promotion occurs; all tensors must hold the same floating-point type.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tensors</td><td>The tensors to stack. Must be non-empty and every tensor must have the same shape and floating-point type. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">axis</td><td>The mode of the result along which the tensors are stacked. Must be in the range [-(r+1), r]. Defaults to 0.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new tensor containing the stacked tensors.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if <code>tensors</code> is empty, if the tensors do not all have the same shape, if <code>axis</code> is out of range, if the tensors do not all hold the same floating-point type, or if any tensor's buffer is not contiguous. Strong throw guarantee. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
