@@ -27,6 +27,12 @@ _build_dir = pathlib.Path(__file__).resolve().parents[2] / "build"
 if _build_dir.is_dir():
     sys.path.insert(0, str(_build_dir))
 
+# When built with ENABLE_SIGMA (and Python bindings), sigma's own Python module
+# is likewise only in the build directory, under its FetchContent build tree.
+_sigma_build_dir = _build_dir / "_deps" / "sigma-build"
+if _sigma_build_dir.is_dir():
+    sys.path.insert(0, str(_sigma_build_dir))
+
 
 @pytest.fixture(scope="session", autouse=True)
 def _session_runtime_view():

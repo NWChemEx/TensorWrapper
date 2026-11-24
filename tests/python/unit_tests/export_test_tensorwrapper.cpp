@@ -24,6 +24,10 @@ PYBIND11_MODULE(py_test_tensorwrapper, m) {
     get_scalar(m_testing);
     get_vector(m_testing);
     get_matrix(m_testing);
+#ifdef ENABLE_SIGMA
+    get_interval_matrix(m_testing);
+    get_triplex_matrix(m_testing);
+#endif
 }
 
 void get_scalar(pybind11::module_& m) {
@@ -35,5 +39,37 @@ void get_vector(pybind11::module_& m) {
 void get_matrix(pybind11::module_& m) {
     m.def("get_matrix", []() { return Tensor{{1.0, 2.0}, {3.0, 4.0}}; });
 }
+
+#ifdef ENABLE_SIGMA
+namespace {
+
+/// Wraps the four elements of a row-major 2x2 matrix in a Tensor
+template<typename FloatType>
+Tensor make_2x2_(std::vector<FloatType> elements) {
+    shape::Smooth shape{2, 2};
+    auto pbuffer =
+      std::make_unique<buffer::Contiguous>(std::move(elements), shape);
+    return Tensor(shape, std::move(pbuffer));
+}
+
+} // namespace
+
+void get_interval_matrix(pybind11::module_& m) {
+    m.def("get_interval_matrix", []() {
+        using types::idouble;
+        return make_2x2_<idouble>({idouble(0.5, 1.5), idouble(1.5, 2.5),
+                                   idouble(2.5, 3.5), idouble(3.5, 4.5)});
+    });
+}
+
+void get_triplex_matrix(pybind11::module_& m) {
+    m.def("get_triplex_matrix", []() {
+        using types::tpdouble;
+        return make_2x2_<tpdouble>(
+          {tpdouble(0.5, 1.0, 1.5), tpdouble(1.5, 2.0, 2.5),
+           tpdouble(2.5, 3.0, 3.5), tpdouble(3.5, 4.0, 4.5)});
+    });
+}
+#endif
 
 } // namespace tensorwrapper::testing

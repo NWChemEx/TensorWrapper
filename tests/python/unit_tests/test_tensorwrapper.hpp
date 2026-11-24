@@ -23,4 +23,12 @@ void get_scalar(pybind11::module_& m);
 void get_vector(pybind11::module_& m);
 void get_matrix(pybind11::module_& m);
 
+#ifdef ENABLE_SIGMA
+/// Exposes a C++-built 2x2 tensor of types::idouble to Python
+void get_interval_matrix(pybind11::module_& m);
+
+/// Exposes a C++-built 2x2 tensor of types::tpdouble to Python
+void get_triplex_matrix(pybind11::module_& m);
+#endif
+
 } // namespace tensorwrapper::testing
